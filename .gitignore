@@ -4,3 +4,7 @@
 # React Router
 /.react-router/
 /build/
+
+
+# env files (can opt-in for committing if needed)
+.env*
