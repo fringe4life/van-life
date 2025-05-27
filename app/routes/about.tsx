@@ -1,5 +1,19 @@
 import aboutImg from "../assets/about.png";
 import largeImage from "../assets/about-large.jpg";
+import type { Route } from "./+types/about";
+import { Link } from "react-router";
+import { buttonVariants } from "~/components/ui/button";
+
+export function meta(_: Route.MetaArgs) {
+  return [
+    { title: "Available Vans" },
+    {
+      name: "description",
+      content: "Browse the Vans available for hire",
+    },
+  ];
+}
+
 export default function About() {
   return (
     <section className="grid gap-4 grid-rows-[auto_auto_auto_auto] grid-cols-[1fr]">
@@ -8,7 +22,7 @@ export default function About() {
         src={largeImage}
         alt="a person sitting on top of their camper van"
       />
-      <h2 className="text-3xl/normal font-bold text-balance ">
+      <h2 className="text-3xl/normal font-bold text-balance mx-4 ">
         Don&apos;t{" "}
         <span className="relative  after:absolute after:border-solid after:-bottom-1 after:w-full after:left-0  after:border-2 after:border-b-red-500 after:rounded-lg ">
           squeeze
@@ -20,15 +34,23 @@ export default function About() {
         in a van.
       </h2>
 
-      <p className="lg:max-w-1/2">
+      <p className="lg:max-w-1/2 mx-4">
         Our mission is to enliven your road trip with the perfect travel van
         rental. Our vans are recertified before each trip to ensure your travel
         plans can go off without a hitch. (Hitch costs extra 😉)
       </p>
-      <p className="lg:max-w-1/2 lg:ml-auto">
+      <p className="lg:max-w-1/2 mx-4">
         Our team is full of vanlife enthusiasts who know firsthand the magic of
         touring the world on 4 wheels.
       </p>
+      <article className="bg-[#FFCC8D] py-7.5 px-9 mx-4 my-14 lg:max-w-1/2 rounded-md">
+        <h3 className="text-2xl font-bold text-balance mb-6">
+          Your destination is waiting. Your van is ready.
+        </h3>
+        <Link to="/vans" className={buttonVariants({ variant: "secondary" })}>
+          Explore or vans
+        </Link>
+      </article>
     </section>
   );
 }

@@ -11,7 +11,7 @@
  */
 
 import * as runtime from "@prisma/client/runtime/library"
-import type * as Prisma from "./prismaNamespace"
+import type * as Prisma from "./prismaNamespace.ts"
 
 
 const config: runtime.GetPrismaClientConfig = {
@@ -26,6 +26,10 @@ const config: runtime.GetPrismaClientConfig = {
       "fromEnvVar": null
     },
     "config": {
+      "runtime": "bun",
+      "generatedFileExtension": "ts",
+      "moduleFormat": "esm",
+      "importFileExtension": "ts",
       "engineType": "library"
     },
     "binaryTargets": [
@@ -55,8 +59,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nmodel Van {\n  id          String @id @default(cuid())\n  name        String\n  price       Int\n  description String\n  imageUrl    String\n  type        Type\n  hostId      String\n}\n\nenum Type {\n  SIMPLE\n  LUXURY\n  RUGGED\n}\n",
-  "inlineSchemaHash": "eb3a08a1869dd8860fdce6f6cd5076be3e1d2d708d2dafb60d48f90b7a38afc0",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../app/generated/prisma\"\n\n  runtime                = \"bun\"\n  moduleFormat           = \"esm\"\n  generatedFileExtension = \"ts\"\n  importFileExtension    = \"ts\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nmodel Van {\n  id          String @id @default(cuid())\n  name        String\n  price       Int\n  description String\n  imageUrl    String\n  type        Type\n  hostId      String\n}\n\nenum Type {\n  SIMPLE\n  LUXURY\n  RUGGED\n}\n",
+  "inlineSchemaHash": "5fbd9c5f28c14155b8144aad1add1544013df852fe9ba2d8b5c245a31609a065",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},

@@ -5,27 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "~/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex capitalize items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
+  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
   {
     variants: {
       variant: {
-        default:
-          "border-transparent bg-orange-100 text-primary-foreground [a&]:hover:bg-orange-100/90",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-        destructive:
-          "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
-        outline:
-          "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-      },
-      color: {
-        SIMPLE: "bg-(--simple)",
-        LUXURY: "bg-neutral-900",
-        RUGGED: "bg-teal-800",
+        SIMPLE:
+          "border-transparent bg-(--simple) text-primary-foreground [a&]:hover:bg-(--simple)/90",
+        LUXURY:
+          "border-transparent bg-neutral-900 text-secondary-foreground [a&]:hover:bg-neutral-900/90",
+        RUGGED:
+          "border-transparent bg-teal-800 text-white [a&]:hover:bg-teal-800/90 focus-visible:ring-teal-800/20 dark:focus-visible:ring-teal-800/40 dark:bg-teal-800/60",
+        OUTLINE:
+          "bg-orange-100 text-neutral-600 [a&]:hover:bg-orange/80 [a&]:hover:text-neutral-600/80",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "SIMPLE",
     },
   }
 );

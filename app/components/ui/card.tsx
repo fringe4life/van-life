@@ -14,15 +14,12 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
     />
   );
 }
-
+// has-data-[slot=card-action]:grid-cols-[1fr_auto]
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-header"
-      className={cn(
-        "has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
-        className
-      )}
+      className={cn(" [.border-b]:pb-6", className)}
       {...props}
     />
   );
@@ -32,7 +29,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      className={cn("leading-none font-semibold text-balance", className)}
       {...props}
     />
   );
@@ -71,7 +68,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-footer"
-      className={cn("flex items-center [.border-t]:pt-6", className)}
+      className={cn(" [.border-t]:pt-6", className)}
       {...props}
     />
   );

@@ -7,5 +7,5 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Van'
-export type * from './commonInputTypes'
+export type * from './models/Van.ts'
+export type * from './commonInputTypes.ts'
