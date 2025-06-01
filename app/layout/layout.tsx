@@ -5,7 +5,9 @@ export default function Layout() {
     <>
       <header className="flex justify-between px-4 py-9 items-center">
         <h1 className="uppercase font-black text-2xl">
-          <Link to="/">#vanlife</Link>
+          <Link to="/" viewTransition>
+            #vanlife
+          </Link>
         </h1>
         <nav>
           <ul className="flex gap-3">
@@ -15,6 +17,7 @@ export default function Layout() {
                 className={({ isActive, isPending }) =>
                   isPending ? "text-green-500" : isActive ? "underline" : ""
                 }
+                viewTransition
               >
                 About
               </NavLink>
@@ -25,6 +28,7 @@ export default function Layout() {
                 className={({ isActive, isPending }) =>
                   isPending ? "text-green-500" : isActive ? "underline" : ""
                 }
+                viewTransition
               >
                 Vans
               </NavLink>
@@ -43,3 +47,10 @@ export default function Layout() {
     </>
   );
 }
+// Icon by <a href='https://iconpacks.net/?utm_source=link-attribution&utm_content=13335'>Iconpacks</a>
+
+// Icon by <a href='https://iconpacks.net/?utm_source=link-attribution&utm_content=13375'>Iconpacks</a>
+
+// Icon by <a href='https://iconpacks.net/?utm_source=link-attribution&utm_content=16709'>Iconpacks</a>
+
+// <a target="_blank" href="https://www.vexels.com/png-svg/preview/199192/rv-trailer-illustration">www.vexels.com</a>

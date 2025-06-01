@@ -26,9 +26,9 @@ const config: runtime.GetPrismaClientConfig = {
       "fromEnvVar": null
     },
     "config": {
-      "runtime": "bun",
-      "generatedFileExtension": "ts",
       "moduleFormat": "esm",
+      "generatedFileExtension": "ts",
+      "runtime": "bun",
       "importFileExtension": "ts",
       "engineType": "library"
     },

@@ -1,8 +1,85 @@
 @import "tailwindcss";
-
+@import "tw-animate-css";
 html {
   scrollbar-gutter: stable;
   scrollbar-width: thin;
+}
+
+@keyframes --fade-in {
+  from {
+    opacity: 0;
+    scale: 0;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes --scale-out {
+  to {
+    opacity: 0;
+    scale: 0;
+  }
+}
+
+@keyframes --fade-to-right {
+  to {
+    translate: 100vh 0;
+    opacity: 0.5;
+    scale: 0.5;
+  }
+}
+
+@keyframes --fade-in-from-left {
+  from {
+    translate: -100vh 0;
+    scale: 0.5;
+    opacity: 0.5;
+  }
+  to {
+    translate: 0 0;
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+/* only show view transition if no preference, the other option being:  */
+/* prefers-reduced-motion: reduce */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  /* sets speed for view transitions */
+  ::view-transition-group(*) {
+    animation-duration: 500ms;
+  }
+
+  /* only-child means there is not an after snapshot */
+  /* i.e. the card is no longer on the page after being filtered out */
+  ::view-transition-old(*):only-child {
+    animation-name: --scale-out;
+  }
+
+  /* only-child means there is not a before snapshot */
+  /* i.e. the card is new to being on the page */
+  ::view-transition-new(*):only-child {
+    animation-name: --fade-in;
+  }
+
+  ::view-transition-group(image) {
+    animation-duration: 250ms;
+  }
+
+  ::view-transition-new(image):only-child {
+    animation-name: --fade-in-from-left;
+  }
+
+  /* view transition for home page of hero section */
+  ::view-transition-old(image):only-child {
+    animation-name: --fade-to-right;
+  }
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -10,15 +87,14 @@ html {
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --simple: oklch(68.11% 0.142 38.30);
+  --simple: oklch(68.11% 0.142 38.3);
 
-    --container-sm: 12rem;
-    --container-md: 24rem;
-    --container-lg: 32rem;
+  --container-sm: 12rem;
+  --container-md: 24rem;
+  --container-lg: 32rem;
 
-    --color-orange-100: oklch(94.72% 0.041 73.17);
+  --color-orange-100: oklch(94.72% 0.041 73.17);
 }
-
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -136,14 +212,7 @@ html {
   }
 }
 
-
-@view-transition {
-  navigation: auto;
-}
-
-
 .grid-max {
-
   --_gap: 32px;
   --_max-columns: 3;
   --_min-column-size: 300px;
@@ -152,12 +221,14 @@ html {
   grid-template-columns: repeat(
     auto-fit,
     minmax(
-        min(
-          max(
-            var(--_min-column-size),
-            calc(( 100% - var(--_gap) * var(--_max-columns)) / var(--_max-columns)   )
-          ) , 100%
-        ), 1fr
-      )
+      min(
+        max(
+          var(--_min-column-size),
+          calc((100% - var(--_gap) * var(--_max-columns)) / var(--_max-columns))
+        ),
+        100%
+      ),
+      1fr
+    )
   );
 }

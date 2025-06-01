@@ -11,6 +11,7 @@ import {
 } from "~/components/ui/card";
 import { Badge, badgeVariants } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
+import { cn } from "~/lib/utils";
 
 export function meta({ data }: Route.MetaArgs) {
   if (!data?.van) {
@@ -57,18 +58,26 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
         &larr; back to {typeFilter ? typeFilter : "all"} vans
       </Link>
       <div className="@container/card-full">
-        <Card>
-          <CardHeader>
+        <Card className="@max-2xl/card-full:grid @max-2xl/card-full:grid-rows-[4fr_repeat(4,_auto)_auto] @max-2xl:/card-full:gap-4  @max-2xl/card-full:bg-green-500  @max-7xl/card-full:bg-indigo-500">
+          <CardHeader className=" ">
             <img src={imageUrl} alt={description} />
           </CardHeader>
-          <CardContent>
-            <Badge color={type}>{type}</Badge>
-            <CardTitle>{name}</CardTitle>
+          <CardContent className=" @max-2xl/card-full:rows-span-4  @max-2xl/card-full:grid-rows-subgrid @max-2xl/card-full:row-start-2  @max-2xl/card-full:align-between">
+            <Badge color={type} className="">
+              {type}
+            </Badge>
+            <CardTitle className="">{name}</CardTitle>
             <p>{price}</p>
             <CardDescription>{description}</CardDescription>
           </CardContent>
-          <CardFooter>
-            <Button className={badgeVariants({ variant: "SIMPLE" })}>
+          {/* @max-2xl/card-full:row-span-1 */}
+          <CardFooter className="">
+            <Button
+              className={cn(
+                badgeVariants({ variant: "SIMPLE" }),
+                "@max-lg/card-full:w-full"
+              )}
+            >
               Rent this van
             </Button>
           </CardFooter>

@@ -32,12 +32,17 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
   const { vans, badges } = loaderData;
 
   const [searchParams] = useSearchParams();
-
   const typeFilter = searchParams.get("type");
-  const vansToDisplay = vans.map(
+  const vansList = typeFilter
+    ? vans.filter((van) => van.type === typeFilter.toUpperCase())
+    : vans;
+  const vansToDisplay = vansList.map(
     ({ imageUrl, description, type, name, price, id: vanId }) => (
       <div className="@container/card" key={vanId}>
-        <Card className="relative grid @max-md/card:grid-cols-[1fr_fit-content] @max-md/card:grid-rows-[1fr_min-content_min-content] @md/card:grid-cols-[200px_1fr_min-content] @md/card:grid-rows-2 @md/card:gap-4 ">
+        <Card
+          style={{ viewTransitionName: `card-${vanId}` }}
+          className="relative grid @max-md/card:grid-cols-[1fr_fit-content] @max-md/card:grid-rows-[1fr_min-content_min-content] @md/card:grid-cols-[200px_1fr_min-content] @md/card:grid-rows-2 @md/card:gap-4 "
+        >
           <CardHeader className="@max-md/card:col-span-2  @md/card:col-start-1  @md/card:row-span-2">
             <img
               className="aspect-square rounded-md object-cover "
@@ -84,6 +89,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
           search: `?type=${lowerCaseType}`,
         }}
         className={badgeVariants({ variant })}
+        viewTransition
       >
         {type}
       </NavLink>
