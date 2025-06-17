@@ -8,4 +8,8 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Van.ts'
+export type * from './models/User.ts'
+export type * from './models/Session.ts'
+export type * from './models/Account.ts'
+export type * from './models/Verification.ts'
 export type * from './commonInputTypes.ts'

@@ -46,6 +46,26 @@ path.join(process.cwd(), "app/generated/prisma/libquery_engine-debian-openssl-3.
  * 
  */
 export type Van = Prisma.VanModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
+/**
+ * Model Account
+ * 
+ */
+export type Account = Prisma.AccountModel
+/**
+ * Model Verification
+ * 
+ */
+export type Verification = Prisma.VerificationModel
 
 export type Type = $Enums.Type
 export const Type = $Enums.Type

@@ -93,6 +93,9 @@ html {
   --container-md: 24rem;
   --container-lg: 32rem;
 
+  --color-text: oklch(20.02% 0 0);
+  --color-text-secondary: oklch(42.02% 0 0);
+
   --color-orange-100: oklch(94.72% 0.041 73.17);
 }
 

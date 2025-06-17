@@ -33,6 +33,17 @@ export default function Layout() {
                 Vans
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/Login"
+                className={({ isActive, isPending }) =>
+                  isPending ? "text-green-500" : isActive ? "underline" : ""
+                }
+                viewTransition
+              >
+                Login
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </header>
