@@ -1,4 +1,16 @@
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, redirect } from "react-router";
+import { auth } from "~/lib/auth/auth";
+import type { Route } from "./+types/hostLayout";
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const session = await auth.api.getSession({
+    headers: request.headers, // you need to pass the headers object.
+  });
+
+  if (!session?.session.token) {
+    redirect("/login");
+  }
+};
 
 export default function HostLayout() {
   return (

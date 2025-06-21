@@ -48,7 +48,10 @@ export default function Login({ actionData }: Route.ComponentProps) {
         </Button>
       </Form>
       <p>
-        <span>Don't have an account?</span> <Link to="">Create one now</Link>
+        <span>Don't have an account?</span>{" "}
+        <Link to="/signup" className="text-orange-400">
+          Create one now
+        </Link>
       </p>
     </div>
   );

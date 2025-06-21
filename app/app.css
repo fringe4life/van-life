@@ -97,6 +97,7 @@ html {
   --color-text-secondary: oklch(42.02% 0 0);
 
   --color-orange-100: oklch(94.72% 0.041 73.17);
+  --color-orange-400: oklch(75.76% 0.159 55.93);
 }
 
 @theme inline {

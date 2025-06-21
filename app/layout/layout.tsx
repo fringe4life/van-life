@@ -1,6 +1,8 @@
 import { Link, NavLink, Outlet } from "react-router";
+import { authClient } from "~/lib/auth/client";
 
 export default function Layout() {
+  const { data: session } = authClient.useSession();
   return (
     <>
       <header className="flex justify-between px-4 py-9 items-center">
@@ -33,17 +35,19 @@ export default function Layout() {
                 Vans
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/Login"
-                className={({ isActive, isPending }) =>
-                  isPending ? "text-green-500" : isActive ? "underline" : ""
-                }
-                viewTransition
-              >
-                Login
-              </NavLink>
-            </li>
+            {session?.session.token ? (
+              <li>
+                <NavLink
+                  to="/Login"
+                  className={({ isActive, isPending }) =>
+                    isPending ? "text-green-500" : isActive ? "underline" : ""
+                  }
+                  viewTransition
+                >
+                  Login
+                </NavLink>
+              </li>
+            ) : null}
           </ul>
         </nav>
       </header>

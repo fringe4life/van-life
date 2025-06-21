@@ -32,7 +32,7 @@ export function meta({ data }: Route.MetaArgs) {
   ];
 }
 
-export async function loader({ params }: Route.ClientLoaderArgs) {
+export async function loader({ params }: Route.LoaderArgs) {
   const van = await getVan(params.vanId);
   if (!van) throw redirect("/notfound");
   return { van };

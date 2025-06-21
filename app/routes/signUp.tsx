@@ -1,4 +1,4 @@
-import { Form, Link } from "react-router";
+import { Form, Link, redirect } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import type { Route } from "./+types/login";
@@ -15,12 +15,16 @@ export async function action({ request }: Route.ActionArgs) {
     return result.error;
   }
 
-  const { data, error } = await authClient.signUp.email({...result.data, callbackURL: '/'});
+  const { data, error } = await authClient.signUp.email({
+    ...result.data,
+    callbackURL: "/host",
+  });
 
   if (error) {
     console.error(error.message);
     return;
   }
+  redirect("/host", 303);
   console.log(data);
 }
 
@@ -30,7 +34,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
   return (
     <div className="grid gap-12 sm:justify-center justify-start items-center">
       <h2 className="font-bold text-3xl justify-center text-shadow-text">
-        Sign into your account
+        Create your account
       </h2>
       <Form method="POST" className="grid gap-4">
         <Input
@@ -57,7 +61,10 @@ export default function Login({ actionData }: Route.ComponentProps) {
         </Button>
       </Form>
       <p>
-        <span>Don't have an account?</span> <Link to="">Create one now</Link>
+        <span>Already have an account?</span>{" "}
+        <Link to="/login" className="text-orange-400">
+          Sign in now
+        </Link>
       </p>
     </div>
   );
