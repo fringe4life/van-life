@@ -17,6 +17,7 @@ export default [
     ]),
     route("login", "./routes/login.tsx"),
     route("signup", "./routes/signUp.tsx"),
+    route('signout', './routes/signOut.tsx'),
     layout("layout/hostLayout.tsx", [
       ...prefix("host", [
         index("./routes/host/host.tsx"),

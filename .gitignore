@@ -8,3 +8,4 @@
 
 # env files (can opt-in for committing if needed)
 .env*
+app/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node

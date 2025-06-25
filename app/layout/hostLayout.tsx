@@ -6,9 +6,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const session = await auth.api.getSession({
     headers: request.headers, // you need to pass the headers object.
   });
-
+  console.log(session);
   if (!session?.session.token) {
-    redirect("/login");
+    throw redirect("/login");
   }
 };
 

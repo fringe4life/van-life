@@ -24,8 +24,7 @@ export async function action({ request }: Route.ActionArgs) {
     console.error(error.message);
     return;
   }
-  redirect("/host", 303);
-  console.log(data);
+  throw redirect("/host", 303);
 }
 
 export default function Login({ actionData }: Route.ComponentProps) {
