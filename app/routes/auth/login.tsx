@@ -1,9 +1,16 @@
-import { Form, Link, replace } from "react-router";
+import { Form, Link, redirect, replace } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import type { Route } from "./+types/login";
-import {auth} from '~/lib/auth/auth'
+import { auth } from "~/lib/auth/auth";
 import { loginSchema } from "~/types";
+import type { Route } from "./+types/login";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const result = await auth.api.getSession({ headers: request.headers });
+  if (result?.session) {
+    throw redirect("/host");
+  }
+}
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = Object.fromEntries(await request.formData());
@@ -14,9 +21,11 @@ export async function action({ request }: Route.ActionArgs) {
     return result.error;
   }
 
-  const response = await auth.api.signInEmail({ body:result.data, asResponse: true });
+  const response = await auth.api.signInEmail({
+    body: result.data,
+    asResponse: true,
+  });
 
-  
   throw replace("/host", {
     headers: response.headers,
   });

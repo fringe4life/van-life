@@ -1,10 +1,10 @@
-import { Form, Link, redirect } from "react-router";
+import { Form, Link, replace } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import type { Route } from "./+types/login";
 
 import { signUpScheme } from "~/types";
-import { authClient } from "~/lib/auth/client";
+import { auth } from "~/lib/auth/auth";
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = Object.fromEntries(await request.formData());
@@ -15,16 +15,13 @@ export async function action({ request }: Route.ActionArgs) {
     return result.error;
   }
 
-  const { data, error } = await authClient.signUp.email({
-    ...result.data,
-    callbackURL: "/host",
+  const signUp = await auth.api.signUpEmail({
+    body: result.data,
+    asResponse: true,
   });
-
-  if (error) {
-    console.error(error.message);
-    return;
-  }
-  throw redirect("/host", 303);
+  throw replace("/host", {
+    headers: signUp.headers,
+  });
 }
 
 export default function Login({ actionData }: Route.ComponentProps) {

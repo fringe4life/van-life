@@ -2,17 +2,14 @@ import { NavLink, Outlet, redirect } from "react-router";
 import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/hostLayout";
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  const session = await auth.api.getSession({
-    headers: request.headers, // you need to pass the headers object.
-  });
-  console.log(session);
-  if (!session?.session.token) {
+export const loader = async ({ request }: Route.ClientLoaderArgs) => {
+  const result = await auth.api.getSession({ headers: request.headers });
+  if (!result?.session) {
     throw redirect("/login");
   }
 };
 
-export default function HostLayout() {
+export default async function HostLayout() {
   return (
     <div>
       <ul className="flex gap-3">

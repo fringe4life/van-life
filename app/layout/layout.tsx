@@ -4,15 +4,13 @@ import type { Route } from "./+types/layout";
 import { authClient } from "~/lib/auth/client";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  // const session = await auth.api.getSession({
-  //   headers: request.headers, // you need to pass the headers object.
-  // });
-  // return { session };
+  const result = await auth.api.getSession({ headers: request.headers });
+  return { session: result?.session ? true : false };
 };
 
-export default function Layout({}: Route.ComponentProps) {
+export default function Layout({ loaderData }: Route.ComponentProps) {
   const { data: session } = authClient.useSession();
-  console.log(session);
+  console.log(session?.session);
   return (
     <>
       <header className="flex justify-between px-4 py-9 items-center">
@@ -45,7 +43,7 @@ export default function Layout({}: Route.ComponentProps) {
                 Vans
               </NavLink>
             </li>
-            {!session?.session.token ? (
+            {!session?.session ? (
               <li>
                 <NavLink
                   to="/login"
