@@ -12,8 +12,8 @@ export default [
     index("./routes/home.tsx"),
     route("about", "./routes/about.tsx"),
     ...prefix("vans", [
-      index("./routes/vans.tsx"),
-      route(":vanId", "./routes/van.tsx"),
+      index("./routes/vans/vans.tsx"),
+      route(":vanId", "./routes/vans/van.tsx"),
     ]),
     route("login", "./routes/auth/login.tsx"),
     route("signup", "./routes/auth/signUp.tsx"),

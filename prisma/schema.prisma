@@ -27,7 +27,7 @@ model Van {
   description String
   imageUrl String 
   type Type
-  hostId String
+  hostId String 
 }
 
 

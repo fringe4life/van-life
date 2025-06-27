@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/host";
+import { auth } from "~/lib/auth/auth";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -9,6 +10,11 @@ export function meta(_: Route.MetaArgs) {
       content: "the dashboard page whe you are logged in",
     },
   ];
+}
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const session = await auth.api.getSession({ headers: request.headers })
+  
 }
 
 export default function Host() {
