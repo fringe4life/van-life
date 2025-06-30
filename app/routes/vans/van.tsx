@@ -1,6 +1,6 @@
 import { getVan } from "~/db/getVan";
 import type { Route } from "./+types/van";
-import { data, Link, redirect, useLocation } from "react-router";
+import { Link, redirect, useLocation } from "react-router";
 import {
   Card,
   CardContent,

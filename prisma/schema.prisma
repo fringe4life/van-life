@@ -27,7 +27,9 @@ model Van {
   description String
   imageUrl String 
   type Type
-  hostId String 
+
+  hostId String
+  user User @relation(fields: [hostId], references: [id])
 }
 
 
@@ -50,6 +52,8 @@ model User {
   firstName String?
   lastName  String?
   phone     String?
+
+  vans Van[]
 
   @@unique([email])
   @@map("user")

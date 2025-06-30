@@ -231,6 +231,7 @@ export type VanWhereInput = {
   imageUrl?: Prisma.StringFilter<"Van"> | string
   type?: Prisma.EnumTypeFilter<"Van"> | $Enums.Type
   hostId?: Prisma.StringFilter<"Van"> | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type VanOrderByWithRelationInput = {
@@ -241,6 +242,7 @@ export type VanOrderByWithRelationInput = {
   imageUrl?: Prisma.SortOrder
   type?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type VanWhereUniqueInput = Prisma.AtLeast<{
@@ -254,6 +256,7 @@ export type VanWhereUniqueInput = Prisma.AtLeast<{
   imageUrl?: Prisma.StringFilter<"Van"> | string
   type?: Prisma.EnumTypeFilter<"Van"> | $Enums.Type
   hostId?: Prisma.StringFilter<"Van"> | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type VanOrderByWithAggregationInput = {
@@ -291,7 +294,7 @@ export type VanCreateInput = {
   description: string
   imageUrl: string
   type: $Enums.Type
-  hostId: string
+  user: Prisma.UserCreateNestedOneWithoutVansInput
 }
 
 export type VanUncheckedCreateInput = {
@@ -311,7 +314,7 @@ export type VanUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
-  hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  user?: Prisma.UserUpdateOneRequiredWithoutVansNestedInput
 }
 
 export type VanUncheckedUpdateInput = {
@@ -341,7 +344,6 @@ export type VanUpdateManyMutationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
-  hostId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type VanUncheckedUpdateManyInput = {
@@ -392,6 +394,16 @@ export type VanSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
 }
 
+export type VanListRelationFilter = {
+  every?: Prisma.VanWhereInput
+  some?: Prisma.VanWhereInput
+  none?: Prisma.VanWhereInput
+}
+
+export type VanOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -408,6 +420,141 @@ export type EnumTypeFieldUpdateOperationsInput = {
   set?: $Enums.Type
 }
 
+export type VanCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput> | Prisma.VanCreateWithoutUserInput[] | Prisma.VanUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInput | Prisma.VanCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.VanCreateManyUserInputEnvelope
+  connect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
+}
+
+export type VanUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput> | Prisma.VanCreateWithoutUserInput[] | Prisma.VanUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInput | Prisma.VanCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.VanCreateManyUserInputEnvelope
+  connect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
+}
+
+export type VanUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput> | Prisma.VanCreateWithoutUserInput[] | Prisma.VanUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInput | Prisma.VanCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.VanUpsertWithWhereUniqueWithoutUserInput | Prisma.VanUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.VanCreateManyUserInputEnvelope
+  set?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
+  disconnect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
+  delete?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
+  connect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
+  update?: Prisma.VanUpdateWithWhereUniqueWithoutUserInput | Prisma.VanUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.VanUpdateManyWithWhereWithoutUserInput | Prisma.VanUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.VanScalarWhereInput | Prisma.VanScalarWhereInput[]
+}
+
+export type VanUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput> | Prisma.VanCreateWithoutUserInput[] | Prisma.VanUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInput | Prisma.VanCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.VanUpsertWithWhereUniqueWithoutUserInput | Prisma.VanUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.VanCreateManyUserInputEnvelope
+  set?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
+  disconnect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
+  delete?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
+  connect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
+  update?: Prisma.VanUpdateWithWhereUniqueWithoutUserInput | Prisma.VanUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.VanUpdateManyWithWhereWithoutUserInput | Prisma.VanUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.VanScalarWhereInput | Prisma.VanScalarWhereInput[]
+}
+
+export type VanCreateWithoutUserInput = {
+  id?: string
+  name: string
+  price: number
+  description: string
+  imageUrl: string
+  type: $Enums.Type
+}
+
+export type VanUncheckedCreateWithoutUserInput = {
+  id?: string
+  name: string
+  price: number
+  description: string
+  imageUrl: string
+  type: $Enums.Type
+}
+
+export type VanCreateOrConnectWithoutUserInput = {
+  where: Prisma.VanWhereUniqueInput
+  create: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput>
+}
+
+export type VanCreateManyUserInputEnvelope = {
+  data: Prisma.VanCreateManyUserInput | Prisma.VanCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type VanUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.VanWhereUniqueInput
+  update: Prisma.XOR<Prisma.VanUpdateWithoutUserInput, Prisma.VanUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput>
+}
+
+export type VanUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.VanWhereUniqueInput
+  data: Prisma.XOR<Prisma.VanUpdateWithoutUserInput, Prisma.VanUncheckedUpdateWithoutUserInput>
+}
+
+export type VanUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.VanScalarWhereInput
+  data: Prisma.XOR<Prisma.VanUpdateManyMutationInput, Prisma.VanUncheckedUpdateManyWithoutUserInput>
+}
+
+export type VanScalarWhereInput = {
+  AND?: Prisma.VanScalarWhereInput | Prisma.VanScalarWhereInput[]
+  OR?: Prisma.VanScalarWhereInput[]
+  NOT?: Prisma.VanScalarWhereInput | Prisma.VanScalarWhereInput[]
+  id?: Prisma.StringFilter<"Van"> | string
+  name?: Prisma.StringFilter<"Van"> | string
+  price?: Prisma.IntFilter<"Van"> | number
+  description?: Prisma.StringFilter<"Van"> | string
+  imageUrl?: Prisma.StringFilter<"Van"> | string
+  type?: Prisma.EnumTypeFilter<"Van"> | $Enums.Type
+  hostId?: Prisma.StringFilter<"Van"> | string
+}
+
+export type VanCreateManyUserInput = {
+  id?: string
+  name: string
+  price: number
+  description: string
+  imageUrl: string
+  type: $Enums.Type
+}
+
+export type VanUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
+}
+
+export type VanUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
+}
+
+export type VanUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
+}
+
 
 
 export type VanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -418,6 +565,7 @@ export type VanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   imageUrl?: boolean
   type?: boolean
   hostId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["van"]>
 
 export type VanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -428,6 +576,7 @@ export type VanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   imageUrl?: boolean
   type?: boolean
   hostId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["van"]>
 
 export type VanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -438,6 +587,7 @@ export type VanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   imageUrl?: boolean
   type?: boolean
   hostId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["van"]>
 
 export type VanSelectScalar = {
@@ -451,10 +601,21 @@ export type VanSelectScalar = {
 }
 
 export type VanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "price" | "description" | "imageUrl" | "type" | "hostId", ExtArgs["result"]["van"]>
+export type VanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type VanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type VanIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $VanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Van"
-  objects: {}
+  objects: {
+    user: Prisma.$UserPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
@@ -857,6 +1018,7 @@ readonly fields: VanFieldRefs;
  */
 export interface Prisma__VanClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -910,6 +1072,10 @@ export type VanFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.VanOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanInclude<ExtArgs> | null
+  /**
    * Filter, which Van to fetch.
    */
   where: Prisma.VanWhereUniqueInput
@@ -928,6 +1094,10 @@ export type VanFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.VanOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanInclude<ExtArgs> | null
+  /**
    * Filter, which Van to fetch.
    */
   where: Prisma.VanWhereUniqueInput
@@ -945,6 +1115,10 @@ export type VanFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Van
    */
   omit?: Prisma.VanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanInclude<ExtArgs> | null
   /**
    * Filter, which Van to fetch.
    */
@@ -994,6 +1168,10 @@ export type VanFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.VanOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanInclude<ExtArgs> | null
+  /**
    * Filter, which Van to fetch.
    */
   where?: Prisma.VanWhereInput
@@ -1042,6 +1220,10 @@ export type VanFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.VanOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanInclude<ExtArgs> | null
+  /**
    * Filter, which Vans to fetch.
    */
   where?: Prisma.VanWhereInput
@@ -1085,6 +1267,10 @@ export type VanCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    */
   omit?: Prisma.VanOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanInclude<ExtArgs> | null
+  /**
    * The data needed to create a Van.
    */
   data: Prisma.XOR<Prisma.VanCreateInput, Prisma.VanUncheckedCreateInput>
@@ -1118,6 +1304,10 @@ export type VanCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.
    */
   data: Prisma.VanCreateManyInput | Prisma.VanCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1132,6 +1322,10 @@ export type VanUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    * Omit specific fields from the Van
    */
   omit?: Prisma.VanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanInclude<ExtArgs> | null
   /**
    * The data needed to update a Van.
    */
@@ -1184,6 +1378,10 @@ export type VanUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many Vans to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1198,6 +1396,10 @@ export type VanUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    * Omit specific fields from the Van
    */
   omit?: Prisma.VanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanInclude<ExtArgs> | null
   /**
    * The filter to search for the Van to update in case it exists.
    */
@@ -1224,6 +1426,10 @@ export type VanDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    * Omit specific fields from the Van
    */
   omit?: Prisma.VanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanInclude<ExtArgs> | null
   /**
    * Filter which Van to delete.
    */
@@ -1256,4 +1462,8 @@ export type VanDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the Van
    */
   omit?: Prisma.VanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VanInclude<ExtArgs> | null
 }
