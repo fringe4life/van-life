@@ -28,8 +28,33 @@ model Van {
   imageUrl String 
   type Type
 
-  hostId String
-  user User @relation(fields: [hostId], references: [id])
+  hostId String 
+  userInfo UserInfo @relation(fields: [hostId], references: [userId])
+}
+
+model Review {
+  id String @id @default(cuid())
+  createdAt DateTime
+  updatedAt DateTime
+  
+  text String 
+  userId String @unique
+  rating Int
+
+  user UserInfo @relation(fields: [userId], references: [userId])
+}
+
+model Rent {
+  id String @id @default(cuid())
+  amount Int
+
+  renterId String @unique
+
+  hostId String @unique
+  renter UserInfo @relation("renter",  fields: [renterId], references: [userId])
+  rented UserInfo @relation("rented",  fields: [hostId], references: [userId])
+
+  @@unique([hostId, renterId])
 }
 
 
@@ -53,10 +78,22 @@ model User {
   lastName  String?
   phone     String?
 
-  vans Van[]
+  
+
+  userInfo UserInfo?
 
   @@unique([email])
   @@map("user")
+}
+
+model UserInfo {
+  userId String @unique
+  user User @relation(fields: [userId], references: [id])
+
+  vans Van[]
+  reviews Review[]
+  renter Rent[] @relation("renter")
+  rented Rent[] @relation("rented")
 }
 
 model Session {

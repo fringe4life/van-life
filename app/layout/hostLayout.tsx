@@ -9,7 +9,7 @@ export const loader = async ({ request }: Route.ClientLoaderArgs) => {
   }
 };
 
-export default async function HostLayout() {
+export default function HostLayout() {
   return (
     <div>
       <ul className="flex gap-3">

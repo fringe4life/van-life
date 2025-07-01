@@ -1,12 +1,12 @@
-import { data, Link, redirect } from "react-router";
-import type { Route } from "./+types/host";
-import { auth } from "~/lib/auth/auth";
+import { redirect, data, Link } from "react-router";
 import { getHostVans } from "~/db/getHostVans";
+import { auth } from "~/lib/auth/auth";
+import type { Route } from "./+types/hostVans";
 import VanCard from "~/cards/van-card";
 
 export function meta(_: Route.MetaArgs) {
   return [
-    { title: "Host | Vanlife" },
+    { title: "Host Vans | Vanlife" },
     {
       name: "description",
       content: "the dashboard page whe you are logged in",
@@ -34,9 +34,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { vans } = loaderData;
 
-  const vansToDisplay = vans
-    .filter((_, index) => index < 4)
-    .map((van) => <VanCard key={van.id} {...van} />);
+  const vansToDisplay = vans.map((van) => <VanCard key={van.id} {...van} />);
 
   return (
     <section>

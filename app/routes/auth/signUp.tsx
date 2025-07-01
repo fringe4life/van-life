@@ -1,7 +1,7 @@
 import { Form, Link, replace } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import type { Route } from "./+types/login";
+import type { Route } from "./+types/signUp";
 
 import { signUpScheme } from "~/types";
 import { auth } from "~/lib/auth/auth";
@@ -24,7 +24,7 @@ export async function action({ request }: Route.ActionArgs) {
   });
 }
 
-export default function Login({ actionData }: Route.ComponentProps) {
+export default function SignUp({ actionData }: Route.ComponentProps) {
   console.log(actionData);
 
   return (
@@ -53,7 +53,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
           placeholder="confirm password"
         />
         <Button variant="default" type="submit">
-          Sign in
+          Sign up
         </Button>
       </Form>
       <p>

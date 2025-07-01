@@ -2,10 +2,10 @@ import type { Route } from "./+types/income";
 
 export function meta(_: Route.MetaArgs) {
   return [
-    { title: "About Vanlife" },
+    { title: "Host Income | Vanlife" },
     {
-      name: "description",
-      content: "About us",
+      name: "income",
+      content: "Income from vans rented to others",
     },
   ];
 }

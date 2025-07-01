@@ -23,6 +23,10 @@ export default [
         index("./routes/host/host.tsx"),
         route("income", "./routes/host/income.tsx"),
         route("review", "./routes/host/reviews.tsx"),
+        ...prefix("vans", [
+          index("./routes/host/hostVans.tsx"),
+          route(":vanId", "./routes/host/vanDetail.tsx"),
+        ]),
       ]),
     ]),
     route("*", "./routes/404.tsx"),

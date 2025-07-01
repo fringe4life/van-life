@@ -5,5 +5,8 @@ export async function getHostVans(id: string) {
     where: {
       hostId: id,
     },
+    orderBy: {
+      
+    }
   });
 }

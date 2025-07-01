@@ -231,7 +231,7 @@ export type VanWhereInput = {
   imageUrl?: Prisma.StringFilter<"Van"> | string
   type?: Prisma.EnumTypeFilter<"Van"> | $Enums.Type
   hostId?: Prisma.StringFilter<"Van"> | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  userInfo?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
 }
 
 export type VanOrderByWithRelationInput = {
@@ -242,7 +242,7 @@ export type VanOrderByWithRelationInput = {
   imageUrl?: Prisma.SortOrder
   type?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
+  userInfo?: Prisma.UserInfoOrderByWithRelationInput
 }
 
 export type VanWhereUniqueInput = Prisma.AtLeast<{
@@ -256,7 +256,7 @@ export type VanWhereUniqueInput = Prisma.AtLeast<{
   imageUrl?: Prisma.StringFilter<"Van"> | string
   type?: Prisma.EnumTypeFilter<"Van"> | $Enums.Type
   hostId?: Prisma.StringFilter<"Van"> | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  userInfo?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
 }, "id">
 
 export type VanOrderByWithAggregationInput = {
@@ -294,7 +294,7 @@ export type VanCreateInput = {
   description: string
   imageUrl: string
   type: $Enums.Type
-  user: Prisma.UserCreateNestedOneWithoutVansInput
+  userInfo: Prisma.UserInfoCreateNestedOneWithoutVansInput
 }
 
 export type VanUncheckedCreateInput = {
@@ -314,7 +314,7 @@ export type VanUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
-  user?: Prisma.UserUpdateOneRequiredWithoutVansNestedInput
+  userInfo?: Prisma.UserInfoUpdateOneRequiredWithoutVansNestedInput
 }
 
 export type VanUncheckedUpdateInput = {
@@ -420,49 +420,49 @@ export type EnumTypeFieldUpdateOperationsInput = {
   set?: $Enums.Type
 }
 
-export type VanCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput> | Prisma.VanCreateWithoutUserInput[] | Prisma.VanUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInput | Prisma.VanCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.VanCreateManyUserInputEnvelope
+export type VanCreateNestedManyWithoutUserInfoInput = {
+  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInfoInput, Prisma.VanUncheckedCreateWithoutUserInfoInput> | Prisma.VanCreateWithoutUserInfoInput[] | Prisma.VanUncheckedCreateWithoutUserInfoInput[]
+  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInfoInput | Prisma.VanCreateOrConnectWithoutUserInfoInput[]
+  createMany?: Prisma.VanCreateManyUserInfoInputEnvelope
   connect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
 }
 
-export type VanUncheckedCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput> | Prisma.VanCreateWithoutUserInput[] | Prisma.VanUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInput | Prisma.VanCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.VanCreateManyUserInputEnvelope
+export type VanUncheckedCreateNestedManyWithoutUserInfoInput = {
+  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInfoInput, Prisma.VanUncheckedCreateWithoutUserInfoInput> | Prisma.VanCreateWithoutUserInfoInput[] | Prisma.VanUncheckedCreateWithoutUserInfoInput[]
+  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInfoInput | Prisma.VanCreateOrConnectWithoutUserInfoInput[]
+  createMany?: Prisma.VanCreateManyUserInfoInputEnvelope
   connect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
 }
 
-export type VanUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput> | Prisma.VanCreateWithoutUserInput[] | Prisma.VanUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInput | Prisma.VanCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.VanUpsertWithWhereUniqueWithoutUserInput | Prisma.VanUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.VanCreateManyUserInputEnvelope
+export type VanUpdateManyWithoutUserInfoNestedInput = {
+  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInfoInput, Prisma.VanUncheckedCreateWithoutUserInfoInput> | Prisma.VanCreateWithoutUserInfoInput[] | Prisma.VanUncheckedCreateWithoutUserInfoInput[]
+  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInfoInput | Prisma.VanCreateOrConnectWithoutUserInfoInput[]
+  upsert?: Prisma.VanUpsertWithWhereUniqueWithoutUserInfoInput | Prisma.VanUpsertWithWhereUniqueWithoutUserInfoInput[]
+  createMany?: Prisma.VanCreateManyUserInfoInputEnvelope
   set?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
   disconnect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
   delete?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
   connect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
-  update?: Prisma.VanUpdateWithWhereUniqueWithoutUserInput | Prisma.VanUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.VanUpdateManyWithWhereWithoutUserInput | Prisma.VanUpdateManyWithWhereWithoutUserInput[]
+  update?: Prisma.VanUpdateWithWhereUniqueWithoutUserInfoInput | Prisma.VanUpdateWithWhereUniqueWithoutUserInfoInput[]
+  updateMany?: Prisma.VanUpdateManyWithWhereWithoutUserInfoInput | Prisma.VanUpdateManyWithWhereWithoutUserInfoInput[]
   deleteMany?: Prisma.VanScalarWhereInput | Prisma.VanScalarWhereInput[]
 }
 
-export type VanUncheckedUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput> | Prisma.VanCreateWithoutUserInput[] | Prisma.VanUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInput | Prisma.VanCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.VanUpsertWithWhereUniqueWithoutUserInput | Prisma.VanUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.VanCreateManyUserInputEnvelope
+export type VanUncheckedUpdateManyWithoutUserInfoNestedInput = {
+  create?: Prisma.XOR<Prisma.VanCreateWithoutUserInfoInput, Prisma.VanUncheckedCreateWithoutUserInfoInput> | Prisma.VanCreateWithoutUserInfoInput[] | Prisma.VanUncheckedCreateWithoutUserInfoInput[]
+  connectOrCreate?: Prisma.VanCreateOrConnectWithoutUserInfoInput | Prisma.VanCreateOrConnectWithoutUserInfoInput[]
+  upsert?: Prisma.VanUpsertWithWhereUniqueWithoutUserInfoInput | Prisma.VanUpsertWithWhereUniqueWithoutUserInfoInput[]
+  createMany?: Prisma.VanCreateManyUserInfoInputEnvelope
   set?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
   disconnect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
   delete?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
   connect?: Prisma.VanWhereUniqueInput | Prisma.VanWhereUniqueInput[]
-  update?: Prisma.VanUpdateWithWhereUniqueWithoutUserInput | Prisma.VanUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.VanUpdateManyWithWhereWithoutUserInput | Prisma.VanUpdateManyWithWhereWithoutUserInput[]
+  update?: Prisma.VanUpdateWithWhereUniqueWithoutUserInfoInput | Prisma.VanUpdateWithWhereUniqueWithoutUserInfoInput[]
+  updateMany?: Prisma.VanUpdateManyWithWhereWithoutUserInfoInput | Prisma.VanUpdateManyWithWhereWithoutUserInfoInput[]
   deleteMany?: Prisma.VanScalarWhereInput | Prisma.VanScalarWhereInput[]
 }
 
-export type VanCreateWithoutUserInput = {
+export type VanCreateWithoutUserInfoInput = {
   id?: string
   name: string
   price: number
@@ -471,7 +471,7 @@ export type VanCreateWithoutUserInput = {
   type: $Enums.Type
 }
 
-export type VanUncheckedCreateWithoutUserInput = {
+export type VanUncheckedCreateWithoutUserInfoInput = {
   id?: string
   name: string
   price: number
@@ -480,30 +480,30 @@ export type VanUncheckedCreateWithoutUserInput = {
   type: $Enums.Type
 }
 
-export type VanCreateOrConnectWithoutUserInput = {
+export type VanCreateOrConnectWithoutUserInfoInput = {
   where: Prisma.VanWhereUniqueInput
-  create: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput>
+  create: Prisma.XOR<Prisma.VanCreateWithoutUserInfoInput, Prisma.VanUncheckedCreateWithoutUserInfoInput>
 }
 
-export type VanCreateManyUserInputEnvelope = {
-  data: Prisma.VanCreateManyUserInput | Prisma.VanCreateManyUserInput[]
+export type VanCreateManyUserInfoInputEnvelope = {
+  data: Prisma.VanCreateManyUserInfoInput | Prisma.VanCreateManyUserInfoInput[]
   skipDuplicates?: boolean
 }
 
-export type VanUpsertWithWhereUniqueWithoutUserInput = {
+export type VanUpsertWithWhereUniqueWithoutUserInfoInput = {
   where: Prisma.VanWhereUniqueInput
-  update: Prisma.XOR<Prisma.VanUpdateWithoutUserInput, Prisma.VanUncheckedUpdateWithoutUserInput>
-  create: Prisma.XOR<Prisma.VanCreateWithoutUserInput, Prisma.VanUncheckedCreateWithoutUserInput>
+  update: Prisma.XOR<Prisma.VanUpdateWithoutUserInfoInput, Prisma.VanUncheckedUpdateWithoutUserInfoInput>
+  create: Prisma.XOR<Prisma.VanCreateWithoutUserInfoInput, Prisma.VanUncheckedCreateWithoutUserInfoInput>
 }
 
-export type VanUpdateWithWhereUniqueWithoutUserInput = {
+export type VanUpdateWithWhereUniqueWithoutUserInfoInput = {
   where: Prisma.VanWhereUniqueInput
-  data: Prisma.XOR<Prisma.VanUpdateWithoutUserInput, Prisma.VanUncheckedUpdateWithoutUserInput>
+  data: Prisma.XOR<Prisma.VanUpdateWithoutUserInfoInput, Prisma.VanUncheckedUpdateWithoutUserInfoInput>
 }
 
-export type VanUpdateManyWithWhereWithoutUserInput = {
+export type VanUpdateManyWithWhereWithoutUserInfoInput = {
   where: Prisma.VanScalarWhereInput
-  data: Prisma.XOR<Prisma.VanUpdateManyMutationInput, Prisma.VanUncheckedUpdateManyWithoutUserInput>
+  data: Prisma.XOR<Prisma.VanUpdateManyMutationInput, Prisma.VanUncheckedUpdateManyWithoutUserInfoInput>
 }
 
 export type VanScalarWhereInput = {
@@ -519,7 +519,7 @@ export type VanScalarWhereInput = {
   hostId?: Prisma.StringFilter<"Van"> | string
 }
 
-export type VanCreateManyUserInput = {
+export type VanCreateManyUserInfoInput = {
   id?: string
   name: string
   price: number
@@ -528,7 +528,7 @@ export type VanCreateManyUserInput = {
   type: $Enums.Type
 }
 
-export type VanUpdateWithoutUserInput = {
+export type VanUpdateWithoutUserInfoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -537,7 +537,7 @@ export type VanUpdateWithoutUserInput = {
   type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
 }
 
-export type VanUncheckedUpdateWithoutUserInput = {
+export type VanUncheckedUpdateWithoutUserInfoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -546,7 +546,7 @@ export type VanUncheckedUpdateWithoutUserInput = {
   type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
 }
 
-export type VanUncheckedUpdateManyWithoutUserInput = {
+export type VanUncheckedUpdateManyWithoutUserInfoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -565,7 +565,7 @@ export type VanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   imageUrl?: boolean
   type?: boolean
   hostId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["van"]>
 
 export type VanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -576,7 +576,7 @@ export type VanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   imageUrl?: boolean
   type?: boolean
   hostId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["van"]>
 
 export type VanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -587,7 +587,7 @@ export type VanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   imageUrl?: boolean
   type?: boolean
   hostId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["van"]>
 
 export type VanSelectScalar = {
@@ -602,19 +602,19 @@ export type VanSelectScalar = {
 
 export type VanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "price" | "description" | "imageUrl" | "type" | "hostId", ExtArgs["result"]["van"]>
 export type VanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
 }
 export type VanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
 }
 export type VanIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
 }
 
 export type $VanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Van"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
+    userInfo: Prisma.$UserInfoPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1018,7 +1018,7 @@ readonly fields: VanFieldRefs;
  */
 export interface Prisma__VanClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  userInfo<T extends Prisma.UserInfoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInfoDefaultArgs<ExtArgs>>): Prisma.Prisma__UserInfoClient<runtime.Types.Result.GetResult<Prisma.$UserInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

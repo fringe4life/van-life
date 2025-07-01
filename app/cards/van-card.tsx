@@ -1,6 +1,6 @@
 import { Card, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
 
-import type { Van } from "~/generated/prisma";
+import type { Van } from "~/generated/prisma/client";
 import { Badge } from "~/components/ui/badge";
 import { href, Link } from "react-router";
 // import { useSearchParams } from "react-router";
