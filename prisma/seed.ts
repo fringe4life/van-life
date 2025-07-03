@@ -1,6 +1,5 @@
-import { PrismaClient } from "app/generated/prisma/client";
-
-const prisma = new PrismaClient();
+import { type User } from "app/generated/prisma/client";
+import { prisma } from "~/lib/prisma";
 
 const vans = [
   {
@@ -11,7 +10,6 @@ const vans = [
     imageUrl:
       "https://assets.scrimba.com/advanced-react/react-router/modest-explorer.png",
     type: "SIMPLE" as const,
-    hostId: "123",
   },
   {
     name: "Beach Bum",
@@ -21,7 +19,6 @@ const vans = [
     imageUrl:
       "https://assets.scrimba.com/advanced-react/react-router/beach-bum.png",
     type: "RUGGED" as const,
-    hostId: "123",
   },
   {
     name: "Reliable Red",
@@ -31,7 +28,6 @@ const vans = [
     imageUrl:
       "https://assets.scrimba.com/advanced-react/react-router/reliable-red.png",
     type: "LUXURY" as const,
-    hostId: "456",
   },
   {
     name: "Dreamfinder",
@@ -41,7 +37,6 @@ const vans = [
     imageUrl:
       "https://assets.scrimba.com/advanced-react/react-router/dreamfinder.png",
     type: "SIMPLE" as const,
-    hostId: "789",
   },
   {
     name: "The Cruiser",
@@ -51,7 +46,6 @@ const vans = [
     imageUrl:
       "https://assets.scrimba.com/advanced-react/react-router/the-cruiser.png",
     type: "LUXURY" as const,
-    hostId: "789",
   },
   {
     name: "Green Wonder",
@@ -61,15 +55,50 @@ const vans = [
     imageUrl:
       "https://assets.scrimba.com/advanced-react/react-router/green-wonder.png",
     type: "RUGGED" as const,
-    hostId: "123",
+  },
+];
+
+type RequiredProps<T> = {
+  [K in keyof T]-?: null extends T[K] ? never : K;
+}[keyof T];
+
+type UserWithoutId = Omit<User, "id">;
+type UserRequired = RequiredProps<UserWithoutId>;
+
+type UserObj = {
+  name: string;
+  email: string;
+  emailVerified: boolean;
+};
+
+const users: UserObj[] = [
+  {
+    name: "Josh",
+    email: "josh@winner.com",
+    emailVerified: false,
+  },
+  {
+    name: "Dylan",
+    email: "dylan@email.com",
+    emailVerified: false,
   },
 ];
 
 const main = async () => {
+  // clear table
   await prisma.van.deleteMany();
 
+  const data = await prisma.user.findMany();
+  const userIds = data.map((user) => user.id);
+  const lengthOfUserIds = userIds.length;
+
+  const vansWithHosts = vans.map((van) => ({
+    ...van,
+    hostId: userIds[Math.floor(Math.random() * lengthOfUserIds)],
+  }));
+
   await prisma.van.createMany({
-    data: vans,
+    data: vansWithHosts,
   });
 
   console.log("DB main: Finished");

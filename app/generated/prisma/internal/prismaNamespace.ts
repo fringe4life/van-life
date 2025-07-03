@@ -398,7 +398,6 @@ export const ModelName = {
   Review: 'Review',
   Rent: 'Rent',
   User: 'User',
-  UserInfo: 'UserInfo',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification'
@@ -417,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "van" | "review" | "rent" | "user" | "userInfo" | "session" | "account" | "verification"
+    modelProps: "van" | "review" | "rent" | "user" | "session" | "account" | "verification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -714,80 +713,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
-        }
-      }
-    }
-    UserInfo: {
-      payload: Prisma.$UserInfoPayload<ExtArgs>
-      fields: Prisma.UserInfoFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.UserInfoFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.UserInfoFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload>
-        }
-        findFirst: {
-          args: Prisma.UserInfoFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.UserInfoFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload>
-        }
-        findMany: {
-          args: Prisma.UserInfoFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload>[]
-        }
-        create: {
-          args: Prisma.UserInfoCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload>
-        }
-        createMany: {
-          args: Prisma.UserInfoCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.UserInfoCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload>[]
-        }
-        delete: {
-          args: Prisma.UserInfoDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload>
-        }
-        update: {
-          args: Prisma.UserInfoUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload>
-        }
-        deleteMany: {
-          args: Prisma.UserInfoDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.UserInfoUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.UserInfoUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload>[]
-        }
-        upsert: {
-          args: Prisma.UserInfoUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserInfoPayload>
-        }
-        aggregate: {
-          args: Prisma.UserInfoAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateUserInfo>
-        }
-        groupBy: {
-          args: Prisma.UserInfoGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.UserInfoGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.UserInfoCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.UserInfoCountAggregateOutputType> | number
         }
       }
     }
@@ -1107,13 +1032,6 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const UserInfoScalarFieldEnum = {
-  userId: 'userId'
-} as const
-
-export type UserInfoScalarFieldEnum = (typeof UserInfoScalarFieldEnum)[keyof typeof UserInfoScalarFieldEnum]
-
-
 export const SessionScalarFieldEnum = {
   id: 'id',
   expiresAt: 'expiresAt',
@@ -1345,7 +1263,6 @@ export type GlobalOmitConfig = {
   review?: Prisma.ReviewOmit
   rent?: Prisma.RentOmit
   user?: Prisma.UserOmit
-  userInfo?: Prisma.UserInfoOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit

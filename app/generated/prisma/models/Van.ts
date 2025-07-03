@@ -231,7 +231,7 @@ export type VanWhereInput = {
   imageUrl?: Prisma.StringFilter<"Van"> | string
   type?: Prisma.EnumTypeFilter<"Van"> | $Enums.Type
   hostId?: Prisma.StringFilter<"Van"> | string
-  userInfo?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
+  userInfo?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type VanOrderByWithRelationInput = {
@@ -242,7 +242,7 @@ export type VanOrderByWithRelationInput = {
   imageUrl?: Prisma.SortOrder
   type?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
-  userInfo?: Prisma.UserInfoOrderByWithRelationInput
+  userInfo?: Prisma.UserOrderByWithRelationInput
 }
 
 export type VanWhereUniqueInput = Prisma.AtLeast<{
@@ -256,7 +256,7 @@ export type VanWhereUniqueInput = Prisma.AtLeast<{
   imageUrl?: Prisma.StringFilter<"Van"> | string
   type?: Prisma.EnumTypeFilter<"Van"> | $Enums.Type
   hostId?: Prisma.StringFilter<"Van"> | string
-  userInfo?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
+  userInfo?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type VanOrderByWithAggregationInput = {
@@ -294,7 +294,7 @@ export type VanCreateInput = {
   description: string
   imageUrl: string
   type: $Enums.Type
-  userInfo: Prisma.UserInfoCreateNestedOneWithoutVansInput
+  userInfo: Prisma.UserCreateNestedOneWithoutVansInput
 }
 
 export type VanUncheckedCreateInput = {
@@ -314,7 +314,7 @@ export type VanUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
-  userInfo?: Prisma.UserInfoUpdateOneRequiredWithoutVansNestedInput
+  userInfo?: Prisma.UserUpdateOneRequiredWithoutVansNestedInput
 }
 
 export type VanUncheckedUpdateInput = {
@@ -565,7 +565,7 @@ export type VanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   imageUrl?: boolean
   type?: boolean
   hostId?: boolean
-  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["van"]>
 
 export type VanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -576,7 +576,7 @@ export type VanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   imageUrl?: boolean
   type?: boolean
   hostId?: boolean
-  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["van"]>
 
 export type VanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -587,7 +587,7 @@ export type VanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   imageUrl?: boolean
   type?: boolean
   hostId?: boolean
-  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["van"]>
 
 export type VanSelectScalar = {
@@ -602,19 +602,19 @@ export type VanSelectScalar = {
 
 export type VanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "price" | "description" | "imageUrl" | "type" | "hostId", ExtArgs["result"]["van"]>
 export type VanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type VanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type VanIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  userInfo?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  userInfo?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $VanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Van"
   objects: {
-    userInfo: Prisma.$UserInfoPayload<ExtArgs>
+    userInfo: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1018,7 +1018,7 @@ readonly fields: VanFieldRefs;
  */
 export interface Prisma__VanClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  userInfo<T extends Prisma.UserInfoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInfoDefaultArgs<ExtArgs>>): Prisma.Prisma__UserInfoClient<runtime.Types.Result.GetResult<Prisma.$UserInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  userInfo<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

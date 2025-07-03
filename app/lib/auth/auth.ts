@@ -15,4 +15,18 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  databaseHooks: {
+    user: {
+      create: {
+
+        // after: async (user) => {
+        //   const {data: vans} = 
+        //   //perform additional actions, like creating a stripe customer
+        //   await prisma.userInfo.create({
+            
+        //   })
+        },
+      }
+    }
+  },
 });

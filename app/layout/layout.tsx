@@ -1,14 +1,7 @@
 import { Link, NavLink, Outlet } from "react-router";
-import { auth } from "~/lib/auth/auth";
-import type { Route } from "./+types/layout";
 import { authClient } from "~/lib/auth/client";
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
-  const result = await auth.api.getSession({ headers: request.headers });
-  return { session: result?.session ? true : false };
-};
-
-export default function Layout({ loaderData }: Route.ComponentProps) {
+export default function Layout() {
   const { data: session } = authClient.useSession();
   console.log(session?.session);
   return (

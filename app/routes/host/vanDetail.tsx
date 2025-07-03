@@ -33,7 +33,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     }
   );
 }
-export default function VanDetail({ loaderData }: Route.ComponentProps) {
+export default function VanDetail({}: Route.ComponentProps) {
   const context = useOutletContext<Van>();
   console.log(context);
   return (

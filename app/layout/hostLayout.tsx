@@ -1,4 +1,4 @@
-import { NavLink, Outlet, redirect } from "react-router";
+import { href, NavLink, Outlet, redirect } from "react-router";
 import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/hostLayout";
 
@@ -15,7 +15,7 @@ export default function HostLayout() {
       <ul className="flex gap-3">
         <li>
           <NavLink
-            to="/host"
+            to={ href("/host") }
             className={({ isActive, isPending }) =>
               isPending ? "text-green-500" : isActive ? "underline" : ""
             }
@@ -37,7 +37,7 @@ export default function HostLayout() {
         </li>
         <li>
           <NavLink
-            to="/host/vans"
+            to={href("/host/vans")}
             end
             className={({ isActive, isPending }) =>
               isPending ? "text-green-500" : isActive ? "underline" : ""
@@ -49,7 +49,7 @@ export default function HostLayout() {
         </li>
         <li>
           <NavLink
-            to="/host/reviews"
+            to={href("/host/review")}
             className={({ isActive, isPending }) =>
               isPending ? "text-green-500" : isActive ? "underline" : ""
             }

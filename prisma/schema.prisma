@@ -29,19 +29,19 @@ model Van {
   type Type
 
   hostId String 
-  userInfo UserInfo @relation(fields: [hostId], references: [userId])
+  userInfo User @relation(fields: [hostId], references: [id])
 }
 
 model Review {
   id String @id @default(cuid())
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime  @default(now())
   
   text String 
   userId String @unique
   rating Int
 
-  user UserInfo @relation(fields: [userId], references: [userId])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Rent {
@@ -50,11 +50,9 @@ model Rent {
 
   renterId String @unique
 
-  hostId String @unique
-  renter  UserInfo @relation("renter", fields: [renterId], references: [userId])
-  rented  UserInfo @relation("rented", fields: [hostId],  references: [userId])
-
-  
+  hostId String
+  renter  User @relation("renter", fields: [renterId], references: [id])
+  rented  User @relation("rented", fields: [hostId],  references: [id])
 }
 
 
@@ -80,21 +78,26 @@ model User {
 
   
 
-  userInfo UserInfo?
+  vans Van[]
+  reviews Review[]
+  renter Rent[] @relation("renter")
+  rented Rent[] @relation("rented")
+
+  //
 
   @@unique([email])
   @@map("user")
 }
 
-model UserInfo {
-  userId String @unique
-  user User @relation(fields: [userId], references: [id])
+// model UserInfo {
+//   userId String @unique
+//   user User @relation(fields: [userId], references: [id])
 
-  vans Van[]
-  reviews Review[]
-  renter Rent[] @relation("renter")
-  rented Rent[] @relation("rented")
-}
+//   vans Van[]
+//   reviews Review[]
+//   renter Rent[] @relation("renter")
+//   rented Rent[] @relation("rented")
+// }
 
 model Session {
   id        String    @id

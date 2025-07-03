@@ -62,11 +62,6 @@ export type Rent = Prisma.RentModel
  */
 export type User = Prisma.UserModel
 /**
- * Model UserInfo
- * 
- */
-export type UserInfo = Prisma.UserInfoModel
-/**
  * Model Session
  * 
  */
