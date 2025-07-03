@@ -51,10 +51,10 @@ model Rent {
   renterId String @unique
 
   hostId String @unique
-  renter UserInfo @relation("renter",  fields: [renterId], references: [userId])
-  rented UserInfo @relation("rented",  fields: [hostId], references: [userId])
+  renter  UserInfo @relation("renter", fields: [renterId], references: [userId])
+  rented  UserInfo @relation("rented", fields: [hostId],  references: [userId])
 
-  @@unique([hostId, renterId])
+  
 }
 
 

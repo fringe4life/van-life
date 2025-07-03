@@ -1,17 +1,15 @@
-import { redirect, data } from "react-router";
+import { redirect, data, Link, useOutletContext } from "react-router";
 import { getHostVan } from "~/db/getHostVan";
 import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/vanDetail";
+import type { Van } from "~/generated/prisma/client";
 
 export function meta({ data }: Route.MetaArgs) {
-  if (!data?.van) {
-    throw redirect("/notfound");
-  }
   return [
-    { title: `${data.van.name} | Vanlife` },
+    { title: `${data?.van?.name ?? "unknown"} | Vanlife` },
     {
       name: "details",
-      content: `The details about ${data.van.name}`,
+      content: `The details about ${data?.van?.name ?? "unknown"} van`,
     },
   ];
 }
@@ -19,9 +17,10 @@ export function meta({ data }: Route.MetaArgs) {
 export async function loader({ request, params }: Route.LoaderArgs) {
   const session = await auth.api.getSession({ headers: request.headers });
   const { vanId } = params;
-  if (!session) throw redirect("login");
+  if (!session) throw redirect("/login");
   if (!vanId) throw redirect("/notfound");
   const van = await getHostVan(session.user.id, vanId);
+  if (!van) throw redirect("/notfound");
 
   return data(
     {
@@ -34,5 +33,14 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     }
   );
 }
-
-export default function VanDetail({ loaderData }: Route.ComponentProps) {}
+export default function VanDetail({ loaderData }: Route.ComponentProps) {
+  const context = useOutletContext<Van>();
+  console.log(context);
+  return (
+    <section>
+      <Link to=".." relative="path">
+        &larr; Back to all vans
+      </Link>
+    </section>
+  );
+}

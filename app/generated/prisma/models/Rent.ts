@@ -224,14 +224,13 @@ export type RentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   renterId?: string
   hostId?: string
-  hostId_renterId?: Prisma.RentHostIdRenterIdCompoundUniqueInput
   AND?: Prisma.RentWhereInput | Prisma.RentWhereInput[]
   OR?: Prisma.RentWhereInput[]
   NOT?: Prisma.RentWhereInput | Prisma.RentWhereInput[]
   amount?: Prisma.IntFilter<"Rent"> | number
   renter?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
   rented?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
-}, "id" | "renterId" | "hostId" | "hostId_renterId">
+}, "id" | "renterId" | "hostId">
 
 export type RentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -300,11 +299,6 @@ export type RentUncheckedUpdateManyInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   renterId?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
-}
-
-export type RentHostIdRenterIdCompoundUniqueInput = {
-  hostId: string
-  renterId: string
 }
 
 export type RentCountOrderByAggregateInput = {

@@ -25,7 +25,11 @@ export default [
         route("review", "./routes/host/reviews.tsx"),
         ...prefix("vans", [
           index("./routes/host/hostVans.tsx"),
-          route(":vanId", "./routes/host/vanDetail.tsx"),
+          route(":vanId", "./routes/host/vanDetailLayout.tsx", [
+            index("./routes/host/vanDetail.tsx"),
+            route("pricing", "./routes/host/vanDetailPricing.tsx"),
+            route("photos", "./routes/host/vanDetailPhotos.tsx"),
+          ]),
         ]),
       ]),
     ]),
