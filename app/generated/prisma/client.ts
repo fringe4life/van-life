@@ -62,6 +62,11 @@ export type Rent = Prisma.RentModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model UserInfo
+ * 
+ */
+export type UserInfo = Prisma.UserInfoModel
+/**
  * Model Session
  * 
  */
@@ -79,3 +84,6 @@ export type Verification = Prisma.VerificationModel
 
 export type Type = $Enums.Type
 export const Type = $Enums.Type
+
+export type RentRole = $Enums.RentRole
+export const RentRole = $Enums.RentRole

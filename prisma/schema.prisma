@@ -29,7 +29,7 @@ model Van {
   type Type
 
   hostId String 
-  userInfo User @relation(fields: [hostId], references: [id])
+  userInfo UserInfo @relation(fields: [hostId], references: [userId])
 }
 
 model Review {
@@ -41,18 +41,18 @@ model Review {
   userId String @unique
   rating Int
 
-  user User @relation(fields: [userId], references: [id])
+  user UserInfo @relation(fields: [userId], references: [userId])
 }
 
 model Rent {
   id String @id @default(cuid())
   amount Int
+  role RentRole
 
-  renterId String @unique
+  renterId String
 
   hostId String
-  renter  User @relation("renter", fields: [renterId], references: [id])
-  rented  User @relation("rented", fields: [hostId],  references: [id])
+  renter  UserInfo @relation(fields: [renterId], references: [userId])
 }
 
 
@@ -78,26 +78,25 @@ model User {
 
   
 
-  vans Van[]
-  reviews Review[]
-  renter Rent[] @relation("renter")
-  rented Rent[] @relation("rented")
+  // vans Van[]
+  // reviews Review[]
+  // renter Rent[] @relation("renter")
+  // rented Rent[] @relation("rented")
 
-  //
+  userInfo UserInfo?
 
   @@unique([email])
   @@map("user")
 }
 
-// model UserInfo {
-//   userId String @unique
-//   user User @relation(fields: [userId], references: [id])
+model UserInfo {
+  userId String @unique
+  user User @relation(fields: [userId], references: [id])
 
-//   vans Van[]
-//   reviews Review[]
-//   renter Rent[] @relation("renter")
-//   rented Rent[] @relation("rented")
-// }
+  vans Van[]
+  reviews Review[]
+  rent Rent[]
+}
 
 model Session {
   id        String    @id
@@ -150,4 +149,9 @@ enum Type {
   SIMPLE
   LUXURY
   RUGGED
+}
+
+enum RentRole {
+  RENTED
+  RENTER
 }

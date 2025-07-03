@@ -18,15 +18,14 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-
-        // after: async (user) => {
-        //   const {data: vans} = 
-        //   //perform additional actions, like creating a stripe customer
-        //   await prisma.userInfo.create({
-            
-        //   })
+        after: async (user) => {
+          const { id: userId } = user;
+          //perform additional actions, like creating a stripe customer
+          await prisma.userInfo.create({
+            data: { userId },
+          });
         },
-      }
-    }
+      },
+    },
   },
 });
