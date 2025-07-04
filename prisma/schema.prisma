@@ -41,7 +41,7 @@ model Review {
   userId String 
   rating Int
 
-  rentId String @unique
+  rentId String 
   renter Rent @relation(fields: [rentId], references: [id])
 }
 
