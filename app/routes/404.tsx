@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { href, Link } from "react-router";
 import { buttonVariants } from "~/components/ui/button";
 
 export default function NotFound() {
@@ -7,7 +7,7 @@ export default function NotFound() {
       <h2 className="text-[#161616] font-bold text-3xl ">
         Sorry, the page you were looking for was not found.
       </h2>
-      <Link to="/" className={buttonVariants({ variant: "secondary" })}>
+      <Link to={href("/")} className={buttonVariants({ variant: "secondary" })}>
         Return to home
       </Link>
     </section>

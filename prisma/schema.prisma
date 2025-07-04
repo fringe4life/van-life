@@ -33,26 +33,30 @@ model Van {
 }
 
 model Review {
-  id String @id @default(cuid())
+  id String @id @default(dbgenerated("gen_random_uuid()"))
   createdAt DateTime @default(now())
   updatedAt DateTime  @default(now())
   
   text String 
-  userId String
+  userId String 
   rating Int
 
-  userInfo UserInfo @relation(fields: [userId], references: [userId])
+  rentId String @unique
+  renter Rent @relation(fields: [rentId], references: [id])
 }
 
 model Rent {
-  id String @id @default(cuid())
+  id String @id @default(dbgenerated("gen_random_uuid()"))
   amount Int
-  role RentRole
 
   renterId String
 
-  hostId String
-  renter  UserInfo @relation(fields: [renterId], references: [userId])
+  hostId String 
+  renter  UserInfo @relation("renter", fields: [renterId], references: [userId])
+  host UserInfo @relation("host", fields: [hostId], references: [userId])
+
+  reviews Review[]
+
 }
 
 
@@ -76,13 +80,6 @@ model User {
   lastName  String?
   phone     String?
 
-  
-
-  // vans Van[]
-  // reviews Review[]
-  // renter Rent[] @relation("renter")
-  // rented Rent[] @relation("rented")
-
   userInfo UserInfo?
 
   @@unique([email])
@@ -94,8 +91,9 @@ model UserInfo {
   user User @relation(fields: [userId], references: [id])
 
   vans Van[]
-  reviews Review[]
-  rent Rent[]
+  
+  renter Rent[] @relation("renter")
+  rented Rent[] @relation("host")
 }
 
 model Session {
@@ -149,9 +147,4 @@ enum Type {
   SIMPLE
   LUXURY
   RUGGED
-}
-
-enum RentRole {
-  RENTED
-  RENTER
 }

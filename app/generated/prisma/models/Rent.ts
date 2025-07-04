@@ -36,7 +36,6 @@ export type RentSumAggregateOutputType = {
 export type RentMinAggregateOutputType = {
   id: string | null
   amount: number | null
-  role: $Enums.RentRole | null
   renterId: string | null
   hostId: string | null
 }
@@ -44,7 +43,6 @@ export type RentMinAggregateOutputType = {
 export type RentMaxAggregateOutputType = {
   id: string | null
   amount: number | null
-  role: $Enums.RentRole | null
   renterId: string | null
   hostId: string | null
 }
@@ -52,7 +50,6 @@ export type RentMaxAggregateOutputType = {
 export type RentCountAggregateOutputType = {
   id: number
   amount: number
-  role: number
   renterId: number
   hostId: number
   _all: number
@@ -70,7 +67,6 @@ export type RentSumAggregateInputType = {
 export type RentMinAggregateInputType = {
   id?: true
   amount?: true
-  role?: true
   renterId?: true
   hostId?: true
 }
@@ -78,7 +74,6 @@ export type RentMinAggregateInputType = {
 export type RentMaxAggregateInputType = {
   id?: true
   amount?: true
-  role?: true
   renterId?: true
   hostId?: true
 }
@@ -86,7 +81,6 @@ export type RentMaxAggregateInputType = {
 export type RentCountAggregateInputType = {
   id?: true
   amount?: true
-  role?: true
   renterId?: true
   hostId?: true
   _all?: true
@@ -181,7 +175,6 @@ export type RentGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type RentGroupByOutputType = {
   id: string
   amount: number
-  role: $Enums.RentRole
   renterId: string
   hostId: string
   _count: RentCountAggregateOutputType | null
@@ -212,19 +205,21 @@ export type RentWhereInput = {
   NOT?: Prisma.RentWhereInput | Prisma.RentWhereInput[]
   id?: Prisma.StringFilter<"Rent"> | string
   amount?: Prisma.IntFilter<"Rent"> | number
-  role?: Prisma.EnumRentRoleFilter<"Rent"> | $Enums.RentRole
   renterId?: Prisma.StringFilter<"Rent"> | string
   hostId?: Prisma.StringFilter<"Rent"> | string
   renter?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
+  host?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
+  reviews?: Prisma.ReviewListRelationFilter
 }
 
 export type RentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   renterId?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
   renter?: Prisma.UserInfoOrderByWithRelationInput
+  host?: Prisma.UserInfoOrderByWithRelationInput
+  reviews?: Prisma.ReviewOrderByRelationAggregateInput
 }
 
 export type RentWhereUniqueInput = Prisma.AtLeast<{
@@ -233,16 +228,16 @@ export type RentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.RentWhereInput[]
   NOT?: Prisma.RentWhereInput | Prisma.RentWhereInput[]
   amount?: Prisma.IntFilter<"Rent"> | number
-  role?: Prisma.EnumRentRoleFilter<"Rent"> | $Enums.RentRole
   renterId?: Prisma.StringFilter<"Rent"> | string
   hostId?: Prisma.StringFilter<"Rent"> | string
   renter?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
+  host?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
+  reviews?: Prisma.ReviewListRelationFilter
 }, "id">
 
 export type RentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   renterId?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
   _count?: Prisma.RentCountOrderByAggregateInput
@@ -258,7 +253,6 @@ export type RentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.RentScalarWhereWithAggregatesInput | Prisma.RentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Rent"> | string
   amount?: Prisma.IntWithAggregatesFilter<"Rent"> | number
-  role?: Prisma.EnumRentRoleWithAggregatesFilter<"Rent"> | $Enums.RentRole
   renterId?: Prisma.StringWithAggregatesFilter<"Rent"> | string
   hostId?: Prisma.StringWithAggregatesFilter<"Rent"> | string
 }
@@ -266,39 +260,38 @@ export type RentScalarWhereWithAggregatesInput = {
 export type RentCreateInput = {
   id?: string
   amount: number
-  role: $Enums.RentRole
-  hostId: string
-  renter: Prisma.UserInfoCreateNestedOneWithoutRentInput
+  renter: Prisma.UserInfoCreateNestedOneWithoutRenterInput
+  host: Prisma.UserInfoCreateNestedOneWithoutRentedInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutRenterInput
 }
 
 export type RentUncheckedCreateInput = {
   id?: string
   amount: number
-  role: $Enums.RentRole
   renterId: string
   hostId: string
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRenterInput
 }
 
 export type RentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
-  role?: Prisma.EnumRentRoleFieldUpdateOperationsInput | $Enums.RentRole
-  hostId?: Prisma.StringFieldUpdateOperationsInput | string
-  renter?: Prisma.UserInfoUpdateOneRequiredWithoutRentNestedInput
+  renter?: Prisma.UserInfoUpdateOneRequiredWithoutRenterNestedInput
+  host?: Prisma.UserInfoUpdateOneRequiredWithoutRentedNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutRenterNestedInput
 }
 
 export type RentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
-  role?: Prisma.EnumRentRoleFieldUpdateOperationsInput | $Enums.RentRole
   renterId?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutRenterNestedInput
 }
 
 export type RentCreateManyInput = {
   id?: string
   amount: number
-  role: $Enums.RentRole
   renterId: string
   hostId: string
 }
@@ -306,22 +299,23 @@ export type RentCreateManyInput = {
 export type RentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
-  role?: Prisma.EnumRentRoleFieldUpdateOperationsInput | $Enums.RentRole
-  hostId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
-  role?: Prisma.EnumRentRoleFieldUpdateOperationsInput | $Enums.RentRole
   renterId?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type RentScalarRelationFilter = {
+  is?: Prisma.RentWhereInput
+  isNot?: Prisma.RentWhereInput
 }
 
 export type RentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   renterId?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
 }
@@ -333,7 +327,6 @@ export type RentAvgOrderByAggregateInput = {
 export type RentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   renterId?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
 }
@@ -341,7 +334,6 @@ export type RentMaxOrderByAggregateInput = {
 export type RentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   renterId?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
 }
@@ -360,8 +352,18 @@ export type RentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type EnumRentRoleFieldUpdateOperationsInput = {
-  set?: $Enums.RentRole
+export type RentCreateNestedOneWithoutReviewsInput = {
+  create?: Prisma.XOR<Prisma.RentCreateWithoutReviewsInput, Prisma.RentUncheckedCreateWithoutReviewsInput>
+  connectOrCreate?: Prisma.RentCreateOrConnectWithoutReviewsInput
+  connect?: Prisma.RentWhereUniqueInput
+}
+
+export type RentUpdateOneRequiredWithoutReviewsNestedInput = {
+  create?: Prisma.XOR<Prisma.RentCreateWithoutReviewsInput, Prisma.RentUncheckedCreateWithoutReviewsInput>
+  connectOrCreate?: Prisma.RentCreateOrConnectWithoutReviewsInput
+  upsert?: Prisma.RentUpsertWithoutReviewsInput
+  connect?: Prisma.RentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RentUpdateToOneWithWhereWithoutReviewsInput, Prisma.RentUpdateWithoutReviewsInput>, Prisma.RentUncheckedUpdateWithoutReviewsInput>
 }
 
 export type RentCreateNestedManyWithoutRenterInput = {
@@ -371,10 +373,24 @@ export type RentCreateNestedManyWithoutRenterInput = {
   connect?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
 }
 
+export type RentCreateNestedManyWithoutHostInput = {
+  create?: Prisma.XOR<Prisma.RentCreateWithoutHostInput, Prisma.RentUncheckedCreateWithoutHostInput> | Prisma.RentCreateWithoutHostInput[] | Prisma.RentUncheckedCreateWithoutHostInput[]
+  connectOrCreate?: Prisma.RentCreateOrConnectWithoutHostInput | Prisma.RentCreateOrConnectWithoutHostInput[]
+  createMany?: Prisma.RentCreateManyHostInputEnvelope
+  connect?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
+}
+
 export type RentUncheckedCreateNestedManyWithoutRenterInput = {
   create?: Prisma.XOR<Prisma.RentCreateWithoutRenterInput, Prisma.RentUncheckedCreateWithoutRenterInput> | Prisma.RentCreateWithoutRenterInput[] | Prisma.RentUncheckedCreateWithoutRenterInput[]
   connectOrCreate?: Prisma.RentCreateOrConnectWithoutRenterInput | Prisma.RentCreateOrConnectWithoutRenterInput[]
   createMany?: Prisma.RentCreateManyRenterInputEnvelope
+  connect?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
+}
+
+export type RentUncheckedCreateNestedManyWithoutHostInput = {
+  create?: Prisma.XOR<Prisma.RentCreateWithoutHostInput, Prisma.RentUncheckedCreateWithoutHostInput> | Prisma.RentCreateWithoutHostInput[] | Prisma.RentUncheckedCreateWithoutHostInput[]
+  connectOrCreate?: Prisma.RentCreateOrConnectWithoutHostInput | Prisma.RentCreateOrConnectWithoutHostInput[]
+  createMany?: Prisma.RentCreateManyHostInputEnvelope
   connect?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
 }
 
@@ -392,6 +408,20 @@ export type RentUpdateManyWithoutRenterNestedInput = {
   deleteMany?: Prisma.RentScalarWhereInput | Prisma.RentScalarWhereInput[]
 }
 
+export type RentUpdateManyWithoutHostNestedInput = {
+  create?: Prisma.XOR<Prisma.RentCreateWithoutHostInput, Prisma.RentUncheckedCreateWithoutHostInput> | Prisma.RentCreateWithoutHostInput[] | Prisma.RentUncheckedCreateWithoutHostInput[]
+  connectOrCreate?: Prisma.RentCreateOrConnectWithoutHostInput | Prisma.RentCreateOrConnectWithoutHostInput[]
+  upsert?: Prisma.RentUpsertWithWhereUniqueWithoutHostInput | Prisma.RentUpsertWithWhereUniqueWithoutHostInput[]
+  createMany?: Prisma.RentCreateManyHostInputEnvelope
+  set?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
+  disconnect?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
+  delete?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
+  connect?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
+  update?: Prisma.RentUpdateWithWhereUniqueWithoutHostInput | Prisma.RentUpdateWithWhereUniqueWithoutHostInput[]
+  updateMany?: Prisma.RentUpdateManyWithWhereWithoutHostInput | Prisma.RentUpdateManyWithWhereWithoutHostInput[]
+  deleteMany?: Prisma.RentScalarWhereInput | Prisma.RentScalarWhereInput[]
+}
+
 export type RentUncheckedUpdateManyWithoutRenterNestedInput = {
   create?: Prisma.XOR<Prisma.RentCreateWithoutRenterInput, Prisma.RentUncheckedCreateWithoutRenterInput> | Prisma.RentCreateWithoutRenterInput[] | Prisma.RentUncheckedCreateWithoutRenterInput[]
   connectOrCreate?: Prisma.RentCreateOrConnectWithoutRenterInput | Prisma.RentCreateOrConnectWithoutRenterInput[]
@@ -406,18 +436,76 @@ export type RentUncheckedUpdateManyWithoutRenterNestedInput = {
   deleteMany?: Prisma.RentScalarWhereInput | Prisma.RentScalarWhereInput[]
 }
 
+export type RentUncheckedUpdateManyWithoutHostNestedInput = {
+  create?: Prisma.XOR<Prisma.RentCreateWithoutHostInput, Prisma.RentUncheckedCreateWithoutHostInput> | Prisma.RentCreateWithoutHostInput[] | Prisma.RentUncheckedCreateWithoutHostInput[]
+  connectOrCreate?: Prisma.RentCreateOrConnectWithoutHostInput | Prisma.RentCreateOrConnectWithoutHostInput[]
+  upsert?: Prisma.RentUpsertWithWhereUniqueWithoutHostInput | Prisma.RentUpsertWithWhereUniqueWithoutHostInput[]
+  createMany?: Prisma.RentCreateManyHostInputEnvelope
+  set?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
+  disconnect?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
+  delete?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
+  connect?: Prisma.RentWhereUniqueInput | Prisma.RentWhereUniqueInput[]
+  update?: Prisma.RentUpdateWithWhereUniqueWithoutHostInput | Prisma.RentUpdateWithWhereUniqueWithoutHostInput[]
+  updateMany?: Prisma.RentUpdateManyWithWhereWithoutHostInput | Prisma.RentUpdateManyWithWhereWithoutHostInput[]
+  deleteMany?: Prisma.RentScalarWhereInput | Prisma.RentScalarWhereInput[]
+}
+
+export type RentCreateWithoutReviewsInput = {
+  id?: string
+  amount: number
+  renter: Prisma.UserInfoCreateNestedOneWithoutRenterInput
+  host: Prisma.UserInfoCreateNestedOneWithoutRentedInput
+}
+
+export type RentUncheckedCreateWithoutReviewsInput = {
+  id?: string
+  amount: number
+  renterId: string
+  hostId: string
+}
+
+export type RentCreateOrConnectWithoutReviewsInput = {
+  where: Prisma.RentWhereUniqueInput
+  create: Prisma.XOR<Prisma.RentCreateWithoutReviewsInput, Prisma.RentUncheckedCreateWithoutReviewsInput>
+}
+
+export type RentUpsertWithoutReviewsInput = {
+  update: Prisma.XOR<Prisma.RentUpdateWithoutReviewsInput, Prisma.RentUncheckedUpdateWithoutReviewsInput>
+  create: Prisma.XOR<Prisma.RentCreateWithoutReviewsInput, Prisma.RentUncheckedCreateWithoutReviewsInput>
+  where?: Prisma.RentWhereInput
+}
+
+export type RentUpdateToOneWithWhereWithoutReviewsInput = {
+  where?: Prisma.RentWhereInput
+  data: Prisma.XOR<Prisma.RentUpdateWithoutReviewsInput, Prisma.RentUncheckedUpdateWithoutReviewsInput>
+}
+
+export type RentUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  renter?: Prisma.UserInfoUpdateOneRequiredWithoutRenterNestedInput
+  host?: Prisma.UserInfoUpdateOneRequiredWithoutRentedNestedInput
+}
+
+export type RentUncheckedUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  renterId?: Prisma.StringFieldUpdateOperationsInput | string
+  hostId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
 export type RentCreateWithoutRenterInput = {
   id?: string
   amount: number
-  role: $Enums.RentRole
-  hostId: string
+  host: Prisma.UserInfoCreateNestedOneWithoutRentedInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutRenterInput
 }
 
 export type RentUncheckedCreateWithoutRenterInput = {
   id?: string
   amount: number
-  role: $Enums.RentRole
   hostId: string
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRenterInput
 }
 
 export type RentCreateOrConnectWithoutRenterInput = {
@@ -427,6 +515,30 @@ export type RentCreateOrConnectWithoutRenterInput = {
 
 export type RentCreateManyRenterInputEnvelope = {
   data: Prisma.RentCreateManyRenterInput | Prisma.RentCreateManyRenterInput[]
+  skipDuplicates?: boolean
+}
+
+export type RentCreateWithoutHostInput = {
+  id?: string
+  amount: number
+  renter: Prisma.UserInfoCreateNestedOneWithoutRenterInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutRenterInput
+}
+
+export type RentUncheckedCreateWithoutHostInput = {
+  id?: string
+  amount: number
+  renterId: string
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRenterInput
+}
+
+export type RentCreateOrConnectWithoutHostInput = {
+  where: Prisma.RentWhereUniqueInput
+  create: Prisma.XOR<Prisma.RentCreateWithoutHostInput, Prisma.RentUncheckedCreateWithoutHostInput>
+}
+
+export type RentCreateManyHostInputEnvelope = {
+  data: Prisma.RentCreateManyHostInput | Prisma.RentCreateManyHostInput[]
   skipDuplicates?: boolean
 }
 
@@ -452,96 +564,171 @@ export type RentScalarWhereInput = {
   NOT?: Prisma.RentScalarWhereInput | Prisma.RentScalarWhereInput[]
   id?: Prisma.StringFilter<"Rent"> | string
   amount?: Prisma.IntFilter<"Rent"> | number
-  role?: Prisma.EnumRentRoleFilter<"Rent"> | $Enums.RentRole
   renterId?: Prisma.StringFilter<"Rent"> | string
   hostId?: Prisma.StringFilter<"Rent"> | string
+}
+
+export type RentUpsertWithWhereUniqueWithoutHostInput = {
+  where: Prisma.RentWhereUniqueInput
+  update: Prisma.XOR<Prisma.RentUpdateWithoutHostInput, Prisma.RentUncheckedUpdateWithoutHostInput>
+  create: Prisma.XOR<Prisma.RentCreateWithoutHostInput, Prisma.RentUncheckedCreateWithoutHostInput>
+}
+
+export type RentUpdateWithWhereUniqueWithoutHostInput = {
+  where: Prisma.RentWhereUniqueInput
+  data: Prisma.XOR<Prisma.RentUpdateWithoutHostInput, Prisma.RentUncheckedUpdateWithoutHostInput>
+}
+
+export type RentUpdateManyWithWhereWithoutHostInput = {
+  where: Prisma.RentScalarWhereInput
+  data: Prisma.XOR<Prisma.RentUpdateManyMutationInput, Prisma.RentUncheckedUpdateManyWithoutHostInput>
 }
 
 export type RentCreateManyRenterInput = {
   id?: string
   amount: number
-  role: $Enums.RentRole
   hostId: string
+}
+
+export type RentCreateManyHostInput = {
+  id?: string
+  amount: number
+  renterId: string
 }
 
 export type RentUpdateWithoutRenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
-  role?: Prisma.EnumRentRoleFieldUpdateOperationsInput | $Enums.RentRole
-  hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  host?: Prisma.UserInfoUpdateOneRequiredWithoutRentedNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutRenterNestedInput
 }
 
 export type RentUncheckedUpdateWithoutRenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
-  role?: Prisma.EnumRentRoleFieldUpdateOperationsInput | $Enums.RentRole
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutRenterNestedInput
 }
 
 export type RentUncheckedUpdateManyWithoutRenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
-  role?: Prisma.EnumRentRoleFieldUpdateOperationsInput | $Enums.RentRole
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+export type RentUpdateWithoutHostInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  renter?: Prisma.UserInfoUpdateOneRequiredWithoutRenterNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutRenterNestedInput
+}
+
+export type RentUncheckedUpdateWithoutHostInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  renterId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutRenterNestedInput
+}
+
+export type RentUncheckedUpdateManyWithoutHostInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  renterId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+
+/**
+ * Count Type RentCountOutputType
+ */
+
+export type RentCountOutputType = {
+  reviews: number
+}
+
+export type RentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  reviews?: boolean | RentCountOutputTypeCountReviewsArgs
+}
+
+/**
+ * RentCountOutputType without action
+ */
+export type RentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RentCountOutputType
+   */
+  select?: Prisma.RentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * RentCountOutputType without action
+ */
+export type RentCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewWhereInput
+}
 
 
 export type RentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   amount?: boolean
-  role?: boolean
   renterId?: boolean
   hostId?: boolean
   renter?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  host?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  reviews?: boolean | Prisma.Rent$reviewsArgs<ExtArgs>
+  _count?: boolean | Prisma.RentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rent"]>
 
 export type RentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   amount?: boolean
-  role?: boolean
   renterId?: boolean
   hostId?: boolean
   renter?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  host?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rent"]>
 
 export type RentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   amount?: boolean
-  role?: boolean
   renterId?: boolean
   hostId?: boolean
   renter?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  host?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rent"]>
 
 export type RentSelectScalar = {
   id?: boolean
   amount?: boolean
-  role?: boolean
   renterId?: boolean
   hostId?: boolean
 }
 
-export type RentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "role" | "renterId" | "hostId", ExtArgs["result"]["rent"]>
+export type RentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "renterId" | "hostId", ExtArgs["result"]["rent"]>
 export type RentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   renter?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  host?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  reviews?: boolean | Prisma.Rent$reviewsArgs<ExtArgs>
+  _count?: boolean | Prisma.RentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type RentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   renter?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  host?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
 }
 export type RentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   renter?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
+  host?: boolean | Prisma.UserInfoDefaultArgs<ExtArgs>
 }
 
 export type $RentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Rent"
   objects: {
     renter: Prisma.$UserInfoPayload<ExtArgs>
+    host: Prisma.$UserInfoPayload<ExtArgs>
+    reviews: Prisma.$ReviewPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     amount: number
-    role: $Enums.RentRole
     renterId: string
     hostId: string
   }, ExtArgs["result"]["rent"]>
@@ -939,6 +1126,8 @@ readonly fields: RentFieldRefs;
 export interface Prisma__RentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   renter<T extends Prisma.UserInfoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInfoDefaultArgs<ExtArgs>>): Prisma.Prisma__UserInfoClient<runtime.Types.Result.GetResult<Prisma.$UserInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  host<T extends Prisma.UserInfoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInfoDefaultArgs<ExtArgs>>): Prisma.Prisma__UserInfoClient<runtime.Types.Result.GetResult<Prisma.$UserInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  reviews<T extends Prisma.Rent$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rent$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -970,7 +1159,6 @@ export interface Prisma__RentClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface RentFieldRefs {
   readonly id: Prisma.FieldRef<"Rent", 'String'>
   readonly amount: Prisma.FieldRef<"Rent", 'Int'>
-  readonly role: Prisma.FieldRef<"Rent", 'RentRole'>
   readonly renterId: Prisma.FieldRef<"Rent", 'String'>
   readonly hostId: Prisma.FieldRef<"Rent", 'String'>
 }
@@ -1366,6 +1554,30 @@ export type RentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Rents to delete.
    */
   limit?: number
+}
+
+/**
+ * Rent.reviews
+ */
+export type Rent$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Review
+   */
+  select?: Prisma.ReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Review
+   */
+  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewInclude<ExtArgs> | null
+  where?: Prisma.ReviewWhereInput
+  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
 }
 
 /**

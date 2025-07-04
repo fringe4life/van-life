@@ -1,4 +1,4 @@
-import { type User } from "app/generated/prisma/client";
+import type { Rating } from "~/generated/prisma/enums";
 import { prisma } from "~/lib/prisma";
 
 const vans = [
@@ -58,35 +58,52 @@ const vans = [
   },
 ];
 
-type RequiredProps<T> = {
-  [K in keyof T]-?: null extends T[K] ? never : K;
-}[keyof T];
-
-type UserWithoutId = Omit<User, "id">;
-type UserRequired = RequiredProps<UserWithoutId>;
-
-type UserObj = {
-  name: string;
-  email: string;
-  emailVerified: boolean;
-};
-
-const users: UserObj[] = [
+const rents = [
   {
-    name: "Josh",
-    email: "josh@winner.com",
-    emailVerified: false,
+    amount: 8000,
   },
   {
-    name: "Dylan",
-    email: "dylan@email.com",
-    emailVerified: false,
+    amount: 4000,
+  },
+  {
+    amount: 6000,
+  },
+  {
+    amount: 800,
+  },
+  {
+    amount: 12000,
+  },
+];
+
+const reviews = [
+  {
+    rating: 1,
+    text: "The van was not a good experience. It was not roadworthy",
+  },
+  {
+    rating: 2,
+    text: "The van was not a good experience. It had a terrible smell",
+  },
+  {
+    rating: 3,
+    text: "The van was an average experience. It had a few minor issues that made driving it less pleasent then it needed to be.",
+  },
+  {
+    rating: 4,
+    text: "The van was not a good experience. It was almost without flaws!",
+  },
+  {
+    rating: 5,
+    text: "The van was a great experience. It was without flaws!",
   },
 ];
 
 const main = async () => {
-  // clear table
+  // clear tables
   await prisma.van.deleteMany();
+  await prisma.rent.deleteMany();
+  await prisma.review.deleteMany();
 
   const data = await prisma.user.findMany();
   const userIds = data.map((user) => user.id);
@@ -100,8 +117,34 @@ const main = async () => {
   await prisma.van.createMany({
     data: vansWithHosts,
   });
+  const rentsWithIds = rents.map((rent) => {
+    const { id1, id2 } = generateUniqueIds(userIds);
+    return { ...rent, hostId: id1, renterId: id2 };
+  });
+  await prisma.rent.createMany({
+    data: rentsWithIds,
+  });
+  const reviewsWithIds = reviews.map((review) => ({
+    ...review,
+    userId: userIds[Math.floor(Math.random() * lengthOfUserIds)],
+  }));
 
-  console.log("DB main: Finished");
+  await prisma.review.createMany({
+    data: reviewsWithIds,
+  });
 };
+
+function generateUniqueIds(ids: string[]): { id1: string; id2: string } {
+  // if (ids.length < 2) {
+  //   throw new Error("length of ids is too short for this function")
+  // }
+  const id1 = ids.at(Math.floor(Math.random() * ids.length)) as string;
+  let id2 = ids.at(Math.floor(Math.random() * ids.length)) as string;
+
+  while (id1 === id2) {
+    id2 = ids.at(Math.floor(Math.random() * ids.length)) as string;
+  }
+  return { id1, id2 };
+}
 
 main();

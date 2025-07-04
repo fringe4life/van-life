@@ -4,7 +4,6 @@ import { Type as VanTypes } from "~/generated/prisma/enums";
 import type { Route } from "./+types/vans";
 import { data, href, Link, NavLink, useSearchParams } from "react-router";
 import { Badge, badgeVariants } from "~/components/ui/badge";
-import { Card, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import Van from "~/components/Van";
 
 export function meta(_: Route.MetaArgs) {
@@ -37,11 +36,9 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
   const vansList = typeFilter
     ? vans.filter((van) => van.type === typeFilter.toUpperCase())
     : vans;
-  const vansToDisplay = vansList.map(
-    (van) => (
-      <Van van={van} filter={ typeFilter} />
-     )
-  );
+  const vansToDisplay = vansList.map((van) => (
+    <Van van={van} filter={typeFilter} />
+  ));
 
   const filtersToDisplay = badges.map((type) => {
     const lowerCaseType = type.toLowerCase();
@@ -68,7 +65,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
         </h2>
         <p className="flex justify-between md:justify-start md:gap-6">
           {filtersToDisplay}{" "}
-          <Link className="hover:underline" to={{ search: "" }}>
+          <Link className="hover:underline" to={href("/vans")}>
             Clear filters
           </Link>
         </p>
@@ -77,41 +74,3 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
     </section>
   );
 }
-{/* <div className="@container/card" key={vanId}>
-<Card
-  style={{ viewTransitionName: `card-${vanId}` }}
-  className="relative grid @max-md/card:grid-cols-[1fr_fit-content] @max-md/card:grid-rows-[1fr_min-content_min-content] @md/card:grid-cols-[200px_1fr_min-content] @md/card:grid-rows-2 @md/card:gap-4 "
->
-  <CardHeader className="@max-md/card:col-span-2  @md/card:col-start-1  @md/card:row-span-2">
-    <img
-      className="aspect-square rounded-md object-cover "
-      src={imageUrl}
-      alt={description}
-    />
-  </CardHeader>
-  <CardFooter className="@max-md/card:py-2 @md/card:content-center @max-md/card:row-span-2 @max-md/card:grid @max-md/card:col-span-2 @md/card:grid-cols-subgrid @md/card:col-span-2 @md/card:col-start-2  @md/card:row-span-2 @md/card:grid-rows-subgrid ">
-    <CardTitle className=" text-2xl @md/card:col-start-1  @md/card:self-end">
-      <Link
-        to={href("/vans/:vanId", { vanId })}
-        state={{
-          type: typeFilter,
-        }}
-        className="  "
-      >
-        {name}
-        <span className="absolute w-full h-full inset-0 overflow-hidden"></span>
-      </Link>
-    </CardTitle>
-    <p className="@max-md/card:justify-self-end @max-md/card:col-start-2 @md/card:row-span-2 @md/card:self-center @md/card:justify-self-end text-lg">
-      ${price}
-      <p className="@max-md/card:inline text-base @md/card:text-right">
-        {" "}
-        /day
-      </p>
-    </p>
-    <Badge className="@md/card:self-start " variant={type}>
-      {type}
-    </Badge>
-  </CardFooter>
-</Card>
-</div> */}

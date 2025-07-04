@@ -14,11 +14,3 @@ export const Type = {
 } as const
 
 export type Type = (typeof Type)[keyof typeof Type]
-
-
-export const RentRole = {
-  RENTED: 'RENTED',
-  RENTER: 'RENTER'
-} as const
-
-export type RentRole = (typeof RentRole)[keyof typeof RentRole]

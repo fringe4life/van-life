@@ -84,6 +84,3 @@ export type Verification = Prisma.VerificationModel
 
 export type Type = $Enums.Type
 export const Type = $Enums.Type
-
-export type RentRole = $Enums.RentRole
-export const RentRole = $Enums.RentRole

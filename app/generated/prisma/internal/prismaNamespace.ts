@@ -1071,7 +1071,8 @@ export const ReviewScalarFieldEnum = {
   updatedAt: 'updatedAt',
   text: 'text',
   userId: 'userId',
-  rating: 'rating'
+  rating: 'rating',
+  rentId: 'rentId'
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
@@ -1080,7 +1081,6 @@ export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof 
 export const RentScalarFieldEnum = {
   id: 'id',
   amount: 'amount',
-  role: 'role',
   renterId: 'renterId',
   hostId: 'hostId'
 } as const
@@ -1244,20 +1244,6 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
- * Reference to a field of type 'RentRole'
- */
-export type EnumRentRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RentRole'>
-    
-
-
-/**
- * Reference to a field of type 'RentRole[]'
- */
-export type ListEnumRentRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RentRole[]'>
     
 
 

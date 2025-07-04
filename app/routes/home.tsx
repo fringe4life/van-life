@@ -1,6 +1,7 @@
 import type { Route } from "./+types/home";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import home from "../assets/home.png";
+import { href, Link } from "react-router";
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "Van life" },
@@ -22,12 +23,13 @@ export default function Home() {
         Add adventure to your life by joining the #vanlife movement. Rent the
         perfect van to make your perfect road trip.
       </p>
-      <Button
-        variant="default"
-        className="self-end max-w-[80ch] sm:justify-self-center"
+      <Link
+        to={href("/vans")}
+        className={buttonVariants({ variant: "default" })}
       >
         Find your van
-      </Button>
+      </Link>
     </section>
   );
 }
+// "self-end max-w-[80ch] sm:justify-self-center"

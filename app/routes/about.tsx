@@ -1,7 +1,7 @@
 import aboutImg from "../assets/about.png";
 import largeImage from "../assets/about-large.jpg";
 import type { Route } from "./+types/about";
-import { Link } from "react-router";
+import { href, Link } from "react-router";
 import { buttonVariants } from "~/components/ui/button";
 
 export function meta(_: Route.MetaArgs) {
@@ -47,7 +47,10 @@ export default function About() {
         <h3 className="text-2xl font-bold text-balance mb-6">
           Your destination is waiting. Your van is ready.
         </h3>
-        <Link to="/vans" className={buttonVariants({ variant: "secondary" })}>
+        <Link
+          to={href("/vans")}
+          className={buttonVariants({ variant: "secondary" })}
+        >
           Explore our vans
         </Link>
       </article>

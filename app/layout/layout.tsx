@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router";
+import { href, Link, NavLink, Outlet } from "react-router";
 import { authClient } from "~/lib/auth/client";
 
 export default function Layout() {
@@ -8,7 +8,7 @@ export default function Layout() {
     <>
       <header className="flex justify-between px-4 py-9 items-center">
         <h1 className="uppercase font-black text-2xl">
-          <Link to="/" viewTransition>
+          <Link to={href("/")} viewTransition>
             #vanlife
           </Link>
         </h1>
@@ -16,7 +16,7 @@ export default function Layout() {
           <ul className="flex gap-3">
             <li>
               <NavLink
-                to="/about"
+                to={href("/about")}
                 className={({ isActive, isPending }) =>
                   isPending ? "text-green-500" : isActive ? "underline" : ""
                 }
@@ -27,7 +27,7 @@ export default function Layout() {
             </li>
             <li>
               <NavLink
-                to="/vans"
+                to={href("/vans")}
                 className={({ isActive, isPending }) =>
                   isPending ? "text-green-500" : isActive ? "underline" : ""
                 }
@@ -39,7 +39,7 @@ export default function Layout() {
             {!session?.session ? (
               <li>
                 <NavLink
-                  to="/login"
+                  to={href("/login")}
                   className={({ isActive, isPending }) =>
                     isPending ? "text-green-500" : isActive ? "underline" : ""
                   }
@@ -50,7 +50,7 @@ export default function Layout() {
               </li>
             ) : (
               <li>
-                <Link to="/signout">Sign out</Link>
+                <Link to={href("/signout")}>Sign out</Link>
               </li>
             )}
           </ul>

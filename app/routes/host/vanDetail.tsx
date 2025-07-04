@@ -35,7 +35,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 }
 export default function VanDetail({}: Route.ComponentProps) {
   const context = useOutletContext<Van>();
-  console.log(context);
+  console.log({ context });
   return (
     <section>
       <Link to=".." relative="path">

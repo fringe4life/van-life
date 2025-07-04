@@ -36,7 +36,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
   const { van } = loaderData;
-
+  console.log({ van });
   return (
     <VanDetailCard van={van}>
       <Outlet context={van} />
