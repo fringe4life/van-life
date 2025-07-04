@@ -20,7 +20,7 @@ export const auth = betterAuth({
       create: {
         after: async (user) => {
           const { id: userId } = user;
-          //perform additional actions, like creating a stripe customer
+          // TODO: add error handling...
           await prisma.userInfo.create({
             data: { userId },
           });

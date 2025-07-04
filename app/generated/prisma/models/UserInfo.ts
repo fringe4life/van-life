@@ -172,7 +172,7 @@ export type UserInfoWhereUniqueInput = Prisma.AtLeast<{
   vans?: Prisma.VanListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   rent?: Prisma.RentListRelationFilter
-}, "userId">
+}, "userId" | "userId">
 
 export type UserInfoOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
@@ -191,28 +191,28 @@ export type UserInfoScalarWhereWithAggregatesInput = {
 export type UserInfoCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutUserInfoInput
   vans?: Prisma.VanCreateNestedManyWithoutUserInfoInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInfoInput
   rent?: Prisma.RentCreateNestedManyWithoutRenterInput
 }
 
 export type UserInfoUncheckedCreateInput = {
   userId: string
   vans?: Prisma.VanUncheckedCreateNestedManyWithoutUserInfoInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInfoInput
   rent?: Prisma.RentUncheckedCreateNestedManyWithoutRenterInput
 }
 
 export type UserInfoUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutUserInfoNestedInput
   vans?: Prisma.VanUpdateManyWithoutUserInfoNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserInfoNestedInput
   rent?: Prisma.RentUpdateManyWithoutRenterNestedInput
 }
 
 export type UserInfoUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   vans?: Prisma.VanUncheckedUpdateManyWithoutUserInfoNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserInfoNestedInput
   rent?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
 }
 
@@ -326,13 +326,13 @@ export type UserInfoUncheckedUpdateOneWithoutUserNestedInput = {
 
 export type UserInfoCreateWithoutVansInput = {
   user: Prisma.UserCreateNestedOneWithoutUserInfoInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInfoInput
   rent?: Prisma.RentCreateNestedManyWithoutRenterInput
 }
 
 export type UserInfoUncheckedCreateWithoutVansInput = {
   userId: string
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInfoInput
   rent?: Prisma.RentUncheckedCreateNestedManyWithoutRenterInput
 }
 
@@ -354,13 +354,13 @@ export type UserInfoUpdateToOneWithWhereWithoutVansInput = {
 
 export type UserInfoUpdateWithoutVansInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutUserInfoNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserInfoNestedInput
   rent?: Prisma.RentUpdateManyWithoutRenterNestedInput
 }
 
 export type UserInfoUncheckedUpdateWithoutVansInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserInfoNestedInput
   rent?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
 }
 
@@ -407,13 +407,13 @@ export type UserInfoUncheckedUpdateWithoutReviewsInput = {
 export type UserInfoCreateWithoutRentInput = {
   user: Prisma.UserCreateNestedOneWithoutUserInfoInput
   vans?: Prisma.VanCreateNestedManyWithoutUserInfoInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInfoInput
 }
 
 export type UserInfoUncheckedCreateWithoutRentInput = {
   userId: string
   vans?: Prisma.VanUncheckedCreateNestedManyWithoutUserInfoInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInfoInput
 }
 
 export type UserInfoCreateOrConnectWithoutRentInput = {
@@ -435,24 +435,24 @@ export type UserInfoUpdateToOneWithWhereWithoutRentInput = {
 export type UserInfoUpdateWithoutRentInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutUserInfoNestedInput
   vans?: Prisma.VanUpdateManyWithoutUserInfoNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserInfoNestedInput
 }
 
 export type UserInfoUncheckedUpdateWithoutRentInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   vans?: Prisma.VanUncheckedUpdateManyWithoutUserInfoNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserInfoNestedInput
 }
 
 export type UserInfoCreateWithoutUserInput = {
   vans?: Prisma.VanCreateNestedManyWithoutUserInfoInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInfoInput
   rent?: Prisma.RentCreateNestedManyWithoutRenterInput
 }
 
 export type UserInfoUncheckedCreateWithoutUserInput = {
   vans?: Prisma.VanUncheckedCreateNestedManyWithoutUserInfoInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInfoInput
   rent?: Prisma.RentUncheckedCreateNestedManyWithoutRenterInput
 }
 
@@ -474,13 +474,13 @@ export type UserInfoUpdateToOneWithWhereWithoutUserInput = {
 
 export type UserInfoUpdateWithoutUserInput = {
   vans?: Prisma.VanUpdateManyWithoutUserInfoNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserInfoNestedInput
   rent?: Prisma.RentUpdateManyWithoutRenterNestedInput
 }
 
 export type UserInfoUncheckedUpdateWithoutUserInput = {
   vans?: Prisma.VanUncheckedUpdateManyWithoutUserInfoNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserInfoNestedInput
   rent?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
 }
 
