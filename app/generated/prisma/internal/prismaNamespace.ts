@@ -14,7 +14,7 @@
  * model files in the `model` directory!
  */
 
-import * as runtime from "@prisma/client/runtime/library"
+import * as runtime from "@prisma/client/runtime/client"
 import type * as Prisma from "../models.ts"
 import { type PrismaClient } from "./class.ts"
 
@@ -1065,6 +1065,14 @@ export const VanScalarFieldEnum = {
 export type VanScalarFieldEnum = (typeof VanScalarFieldEnum)[keyof typeof VanScalarFieldEnum]
 
 
+export const RelationLoadStrategy = {
+  query: 'query',
+  join: 'join'
+} as const
+
+export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
+
+
 export const ReviewScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -1325,6 +1333,10 @@ export interface PrismaClientOptions {
     timeout?: number
     isolationLevel?: TransactionIsolationLevel
   }
+  /**
+   * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+   */
+  adapter?: runtime.SqlDriverAdapterFactory | null
   /**
    * Global configuration for omitting model fields by default.
    * 

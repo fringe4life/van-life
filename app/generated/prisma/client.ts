@@ -13,7 +13,7 @@ import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-import * as runtime from "@prisma/client/runtime/library"
+import * as runtime from "@prisma/client/runtime/client"
 import * as $Enums from "./enums.ts"
 import * as $Class from "./internal/class.ts"
 import * as Prisma from "./internal/prismaNamespace.ts"
@@ -37,9 +37,6 @@ export type PrismaClient<ClientOptions extends Prisma.PrismaClientOptions = Pris
 export { Prisma }
 
 
-// file annotations for bundling tools to include these files
-path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node")
-path.join(process.cwd(), "app/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node")
 
 /**
  * Model Van

@@ -37,7 +37,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
     ? vans.filter((van) => van.type === typeFilter.toUpperCase())
     : vans;
   const vansToDisplay = vansList.map((van) => (
-    <Van van={van} filter={typeFilter} />
+    <Van van={van} key={van.id} filter={typeFilter} />
   ));
 
   const filtersToDisplay = badges.map((type) => {

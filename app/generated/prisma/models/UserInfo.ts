@@ -7,7 +7,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import * as runtime from "@prisma/client/runtime/library"
+import * as runtime from "@prisma/client/runtime/client"
 import type * as $Enums from "../enums.ts"
 import type * as Prisma from "../internal/prismaNamespace.ts"
 
@@ -588,7 +588,7 @@ export type $UserInfoPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type UserInfoGetPayload<S extends boolean | null | undefined | UserInfoDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$UserInfoPayload, S>
 
 export type UserInfoCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<UserInfoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<UserInfoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: UserInfoCountAggregateInputType | true
   }
 
@@ -1033,6 +1033,7 @@ export type UserInfoFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter, which UserInfo to fetch.
    */
   where: Prisma.UserInfoWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1055,6 +1056,7 @@ export type UserInfoFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    * Filter, which UserInfo to fetch.
    */
   where: Prisma.UserInfoWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1107,6 +1109,7 @@ export type UserInfoFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Filter by unique combinations of UserInfos.
    */
   distinct?: Prisma.UserInfoScalarFieldEnum | Prisma.UserInfoScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1159,6 +1162,7 @@ export type UserInfoFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extension
    * Filter by unique combinations of UserInfos.
    */
   distinct?: Prisma.UserInfoScalarFieldEnum | Prisma.UserInfoScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1206,6 +1210,7 @@ export type UserInfoFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   skip?: number
   distinct?: Prisma.UserInfoScalarFieldEnum | Prisma.UserInfoScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1228,6 +1233,7 @@ export type UserInfoCreateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data needed to create a UserInfo.
    */
   data: Prisma.XOR<Prisma.UserInfoCreateInput, Prisma.UserInfoUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1288,6 +1294,7 @@ export type UserInfoUpdateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Choose, which UserInfo to update.
    */
   where: Prisma.UserInfoWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1366,6 +1373,7 @@ export type UserInfoUpsertArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * In case the UserInfo was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.UserInfoUpdateInput, Prisma.UserInfoUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1388,6 +1396,7 @@ export type UserInfoDeleteArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter which UserInfo to delete.
    */
   where: Prisma.UserInfoWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

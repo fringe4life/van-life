@@ -1,9 +1,17 @@
 import { href, Link, NavLink, Outlet } from "react-router";
+import { auth } from "~/lib/auth/auth";
 import { authClient } from "~/lib/auth/client";
+import type { Route } from "./+types/layout";
 
-export default function Layout() {
-  const { data: session } = authClient.useSession();
-  console.log(session?.session);
+export const loader = async ({ request }: Route.ClientLoaderArgs) => {
+  const result = await auth.api.getSession({ headers: request.headers });
+  console.log({ result });
+};
+
+export default async function Layout({}: Route.ComponentProps) {
+  const session = await authClient.getSession();
+  const hasToken = session?.data?.session?.token !== null;
+  console.log({ session: session?.data?.session?.token });
   return (
     <>
       <header className="flex justify-between px-4 py-9 items-center">
@@ -25,18 +33,32 @@ export default function Layout() {
                 About
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to={href("/vans")}
-                className={({ isActive, isPending }) =>
-                  isPending ? "text-green-500" : isActive ? "underline" : ""
-                }
-                viewTransition
-              >
-                Vans
-              </NavLink>
-            </li>
-            {!session?.session ? (
+            {hasToken ? (
+              <li>
+                <NavLink
+                  to={href("/host")}
+                  className={({ isActive, isPending }) =>
+                    isPending ? "text-green-500" : isActive ? "underline" : ""
+                  }
+                  viewTransition
+                >
+                  Host
+                </NavLink>
+              </li>
+            ) : (
+              <li>
+                <NavLink
+                  to={href("/vans")}
+                  className={({ isActive, isPending }) =>
+                    isPending ? "text-green-500" : isActive ? "underline" : ""
+                  }
+                  viewTransition
+                >
+                  Vans
+                </NavLink>
+              </li>
+            )}
+            {hasToken ? (
               <li>
                 <NavLink
                   to={href("/login")}

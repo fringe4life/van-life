@@ -7,7 +7,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import * as runtime from "@prisma/client/runtime/library"
+import * as runtime from "@prisma/client/runtime/client"
 import type * as $Enums from "../enums.ts"
 import type * as Prisma from "../internal/prismaNamespace.ts"
 
@@ -383,7 +383,7 @@ export type $VerificationPayload<ExtArgs extends runtime.Types.Extensions.Intern
 export type VerificationGetPayload<S extends boolean | null | undefined | VerificationDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$VerificationPayload, S>
 
 export type VerificationCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<VerificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<VerificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: VerificationCountAggregateInputType | true
   }
 
@@ -825,6 +825,7 @@ export type VerificationFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    * Filter, which Verification to fetch.
    */
   where: Prisma.VerificationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -843,6 +844,7 @@ export type VerificationFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    * Filter, which Verification to fetch.
    */
   where: Prisma.VerificationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -891,6 +893,7 @@ export type VerificationFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter by unique combinations of Verifications.
    */
   distinct?: Prisma.VerificationScalarFieldEnum | Prisma.VerificationScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -939,6 +942,7 @@ export type VerificationFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    * Filter by unique combinations of Verifications.
    */
   distinct?: Prisma.VerificationScalarFieldEnum | Prisma.VerificationScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -982,6 +986,7 @@ export type VerificationFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   skip?: number
   distinct?: Prisma.VerificationScalarFieldEnum | Prisma.VerificationScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1000,6 +1005,7 @@ export type VerificationCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data needed to create a Verification.
    */
   data: Prisma.XOR<Prisma.VerificationCreateInput, Prisma.VerificationUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1052,6 +1058,7 @@ export type VerificationUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Choose, which Verification to update.
    */
   where: Prisma.VerificationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1122,6 +1129,7 @@ export type VerificationUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * In case the Verification was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.VerificationUpdateInput, Prisma.VerificationUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1140,6 +1148,7 @@ export type VerificationDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Filter which Verification to delete.
    */
   where: Prisma.VerificationWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

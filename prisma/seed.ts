@@ -1,4 +1,3 @@
-import type { Rating } from "~/generated/prisma/enums";
 import { prisma } from "~/lib/prisma";
 
 const vans = [
@@ -124,9 +123,13 @@ const main = async () => {
   await prisma.rent.createMany({
     data: rentsWithIds,
   });
+
+  const rentIds = (await prisma.rent.findMany()).map((rent) => rent.id);
+
   const reviewsWithIds = reviews.map((review) => ({
     ...review,
-    userId: userIds[Math.floor(Math.random() * lengthOfUserIds)],
+    userId: getRandomId(userIds),
+    rentId: getRandomId(rentIds),
   }));
 
   await prisma.review.createMany({
@@ -134,15 +137,20 @@ const main = async () => {
   });
 };
 
+function getRandomId(ids: string[]) {
+  if (ids.length === 0) throw new Error("No ids to get");
+  return ids[Math.floor(Math.random() * ids.length)];
+}
+
 function generateUniqueIds(ids: string[]): { id1: string; id2: string } {
-  // if (ids.length < 2) {
-  //   throw new Error("length of ids is too short for this function")
-  // }
-  const id1 = ids.at(Math.floor(Math.random() * ids.length)) as string;
-  let id2 = ids.at(Math.floor(Math.random() * ids.length)) as string;
+  if (ids.length < 2) {
+    throw new Error("length of ids is too short for this function");
+  }
+  const id1 = getRandomId(ids);
+  let id2 = getRandomId(ids);
 
   while (id1 === id2) {
-    id2 = ids.at(Math.floor(Math.random() * ids.length)) as string;
+    id2 = getRandomId(ids);
   }
   return { id1, id2 };
 }

@@ -7,7 +7,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import * as runtime from "@prisma/client/runtime/library"
+import * as runtime from "@prisma/client/runtime/client"
 import type * as $Enums from "../enums.ts"
 import type * as Prisma from "../internal/prismaNamespace.ts"
 
@@ -631,7 +631,7 @@ export type $VanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type VanGetPayload<S extends boolean | null | undefined | VanDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$VanPayload, S>
 
 export type VanCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<VanFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<VanFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: VanCountAggregateInputType | true
   }
 
@@ -1079,6 +1079,7 @@ export type VanFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Filter, which Van to fetch.
    */
   where: Prisma.VanWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1101,6 +1102,7 @@ export type VanFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter, which Van to fetch.
    */
   where: Prisma.VanWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1153,6 +1155,7 @@ export type VanFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Filter by unique combinations of Vans.
    */
   distinct?: Prisma.VanScalarFieldEnum | Prisma.VanScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1205,6 +1208,7 @@ export type VanFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Filter by unique combinations of Vans.
    */
   distinct?: Prisma.VanScalarFieldEnum | Prisma.VanScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1252,6 +1256,7 @@ export type VanFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   skip?: number
   distinct?: Prisma.VanScalarFieldEnum | Prisma.VanScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1274,6 +1279,7 @@ export type VanCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    * The data needed to create a Van.
    */
   data: Prisma.XOR<Prisma.VanCreateInput, Prisma.VanUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1334,6 +1340,7 @@ export type VanUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    * Choose, which Van to update.
    */
   where: Prisma.VanWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1412,6 +1419,7 @@ export type VanUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    * In case the Van was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.VanUpdateInput, Prisma.VanUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1434,6 +1442,7 @@ export type VanDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    * Filter which Van to delete.
    */
   where: Prisma.VanWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

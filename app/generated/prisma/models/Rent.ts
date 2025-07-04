@@ -7,7 +7,7 @@
  *
  * 🟢 You can import this file directly.
  */
-import * as runtime from "@prisma/client/runtime/library"
+import * as runtime from "@prisma/client/runtime/client"
 import type * as $Enums from "../enums.ts"
 import type * as Prisma from "../internal/prismaNamespace.ts"
 
@@ -738,7 +738,7 @@ export type $RentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type RentGetPayload<S extends boolean | null | undefined | RentDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$RentPayload, S>
 
 export type RentCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<RentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  Omit<RentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
     select?: RentCountAggregateInputType | true
   }
 
@@ -1185,6 +1185,7 @@ export type RentFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Filter, which Rent to fetch.
    */
   where: Prisma.RentWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1207,6 +1208,7 @@ export type RentFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    * Filter, which Rent to fetch.
    */
   where: Prisma.RentWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1259,6 +1261,7 @@ export type RentFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Filter by unique combinations of Rents.
    */
   distinct?: Prisma.RentScalarFieldEnum | Prisma.RentScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1311,6 +1314,7 @@ export type RentFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    * Filter by unique combinations of Rents.
    */
   distinct?: Prisma.RentScalarFieldEnum | Prisma.RentScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1358,6 +1362,7 @@ export type RentFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   skip?: number
   distinct?: Prisma.RentScalarFieldEnum | Prisma.RentScalarFieldEnum[]
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1380,6 +1385,7 @@ export type RentCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * The data needed to create a Rent.
    */
   data: Prisma.XOR<Prisma.RentCreateInput, Prisma.RentUncheckedCreateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1440,6 +1446,7 @@ export type RentUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Choose, which Rent to update.
    */
   where: Prisma.RentWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1518,6 +1525,7 @@ export type RentUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * In case the Rent was found with the provided `where` argument, update it with this data.
    */
   update: Prisma.XOR<Prisma.RentUpdateInput, Prisma.RentUncheckedUpdateInput>
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**
@@ -1540,6 +1548,7 @@ export type RentDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Filter which Rent to delete.
    */
   where: Prisma.RentWhereUniqueInput
+  relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
 /**

@@ -1,0 +1,14 @@
+
+model Rent {
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+  amount Int
+
+  renterId String
+
+  hostId String 
+  renter  UserInfo @relation("renter", fields: [renterId], references: [userId])
+  host UserInfo @relation("host", fields: [hostId], references: [userId])
+
+  reviews Review[]
+
+}

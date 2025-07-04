@@ -1,0 +1,9 @@
+model UserInfo {
+  userId String @id @unique
+  user User @relation(fields: [userId], references: [id])
+
+  vans Van[]
+  
+  renter Rent[] @relation("renter")
+  rented Rent[] @relation("host")
+}
