@@ -30,35 +30,28 @@ export async function loader({ request }: Route.LoaderArgs) {
     }
   );
 }
-
+{
+  /* <p className="justify-self-end">{price}</p>; */
+}
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { vans } = loaderData;
 
-  const vansToDisplay = vans.map((van) => <VanCard key={van.id} {...van} />);
+  const vansToDisplay = vans.map((van) => (
+    <VanCard
+      key={van.id}
+      van={van}
+      link={href("/host/vans/:vanId", { vanId: van.id })}
+      action={
+        <Link to={href("/host/vans/:vanId", { vanId: van.id })}>Edit</Link>
+      }
+    />
+  ));
 
   return (
     <section>
-      <div className="bg-orange-100 py-9 px-6.5 grid justify-between items-center grid-cols-[auto_fit-content]">
-        <h2 className="col-start-1 font-bold text-4xl text-text">Welcome!</h2>
-        <p className="col-start-1 my-8 text-base text-text-secondary font-light">
-          Income last <span className="underline font-medium">30 days</span>
-        </p>
-        <p className="col-start-1 font-extrabold text-5xl text-text">$2,260</p>
-        <Link to={href("/host/income")} className="col-start-2 row-start-2">
-          Details
-        </Link>
-      </div>
-      <div className="flex justify-between py-11 px-6.5 ">
-        <p className="text-2xl font-bold text-shadow-text">
-          Review Score star 5.0/5
-        </p>
-        <Link
-          to={href("/host/review")}
-          className="text-base font-medium text-shadow-text"
-        >
-          Details
-        </Link>
-      </div>
+      <h2 className="font-bold text-4xl mt-13.5 mb-8 text-text">
+        Your listed vans
+      </h2>
       {vansToDisplay}
     </section>
   );

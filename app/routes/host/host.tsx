@@ -44,7 +44,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 
   const vansToDisplay = vans
     .filter((_, index) => index < 4)
-    .map((van) => <VanCard key={van.id} {...van} />);
+    .map((van) => <VanCard key={van.id} van={van} link={ href('/host/vans/:vanId', {vanId: van.id})} action={<p></p>} />);
 
   return (
     <section>
