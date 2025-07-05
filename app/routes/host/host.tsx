@@ -1,10 +1,18 @@
-import { data, href, Link, redirect } from "react-router";
+import {
+  data,
+  Form,
+  href,
+  Link,
+  redirect,
+  useSearchParams,
+} from "react-router";
 import type { Route } from "./+types/host";
 import { auth } from "~/lib/auth/auth";
 import { getHostVans } from "~/db/getHostVans";
 import VanCard from "~/cards/van-card";
 import { getAccountSummary } from "~/db/getAccountSummary";
 import { getAverageReviewRating } from "~/db/getAvgReviews";
+import { getHostVanCount } from "~/db/getHostVanCount";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -19,7 +27,9 @@ export function meta(_: Route.MetaArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session) throw redirect("login");
-  const vans = await getHostVans(session.user.id);
+  const vans = await getHostVans(session.user.id, 1, 3);
+
+  const hostVansCount = await getHostVanCount(session.user.id);
 
   const sumIncome = await getAccountSummary(session.user.id);
 
@@ -30,6 +40,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       vans,
       sumIncome,
       avgRating,
+      hostVansCount,
     },
     {
       headers: {
@@ -44,7 +55,14 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 
   const vansToDisplay = vans
     .filter((_, index) => index < 4)
-    .map((van) => <VanCard key={van.id} van={van} link={ href('/host/vans/:vanId', {vanId: van.id})} action={<p></p>} />);
+    .map((van) => (
+      <VanCard
+        key={van.id}
+        van={van}
+        link={href("/host/vans/:vanId", { vanId: van.id })}
+        action={<p></p>}
+      />
+    ));
 
   return (
     <section>

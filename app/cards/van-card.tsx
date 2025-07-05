@@ -32,7 +32,7 @@ export default function VanCard({
               <span className="absolute w-full h-full inset-0 overflow-hidden"></span>
             </Link>
           </CardTitle>
-          {action}
+          <div className="justify-self-end">{action}</div>
           <Badge className="@sm/card:-row-end-1 " color={type}>
             {type}
           </Badge>

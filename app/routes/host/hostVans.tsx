@@ -1,8 +1,17 @@
-import { redirect, data, Link, href } from "react-router";
+import { redirect, data, Link, href, useSearchParams } from "react-router";
 import { getHostVans } from "~/db/getHostVans";
 import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/hostVans";
 import VanCard from "~/cards/van-card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationLink,
+  PaginationEllipsis,
+  PaginationNext,
+} from "~/components/ui/pagination";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -17,7 +26,13 @@ export function meta(_: Route.MetaArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session) throw redirect("login");
-  const vans = await getHostVans(session.user.id);
+
+  const url = new URLSearchParams(request.url.split("?")?.[1] ?? "");
+  console.log({ url, page: url.get("page") });
+
+  const page = Number.parseInt(url.get("page") ?? "1");
+  const limit = Number.parseInt(url.get("limit") ?? "1");
+  const vans = await getHostVans(session.user.id, page, limit);
 
   return data(
     {
@@ -30,11 +45,14 @@ export async function loader({ request }: Route.LoaderArgs) {
     }
   );
 }
-{
-  /* <p className="justify-self-end">{price}</p>; */
-}
+
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { vans } = loaderData;
+
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    limit: "10",
+  });
 
   const vansToDisplay = vans.map((van) => (
     <VanCard

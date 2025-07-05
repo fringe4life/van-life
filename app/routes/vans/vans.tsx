@@ -32,7 +32,7 @@ export async function loader() {
 export default function Vans({ loaderData }: Route.ComponentProps) {
   const { vans, badges } = loaderData;
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const typeFilter = searchParams.get("type");
   const vansList = typeFilter
     ? vans.filter((van) => van.type === typeFilter.toUpperCase())
