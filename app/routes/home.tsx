@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import { Button, buttonVariants } from "~/components/ui/button";
+import { buttonVariants } from "~/components/ui/button";
 import home from "../assets/home.png";
 import { href, Link } from "react-router";
 export function meta({}: Route.MetaArgs) {

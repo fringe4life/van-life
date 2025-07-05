@@ -26,10 +26,10 @@ const config: runtime.GetPrismaClientConfig = {
       "fromEnvVar": null
     },
     "config": {
+      "runtime": "nodejs",
+      "moduleFormat": "esm",
       "generatedFileExtension": "ts",
       "importFileExtension": "ts",
-      "moduleFormat": "esm",
-      "runtime": "nodejs",
       "engineType": "client"
     },
     "binaryTargets": [
@@ -41,6 +41,7 @@ const config: runtime.GetPrismaClientConfig = {
     ],
     "previewFeatures": [
       "driverAdapters",
+      "fullTextSearchPostgres",
       "queryCompiler",
       "relationJoins"
     ],
@@ -62,8 +63,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider               = \"prisma-client\"\n  output                 = \"../app/generated/prisma\"\n  runtime                = \"nodejs\"\n  moduleFormat           = \"esm\"\n  generatedFileExtension = \"ts\"\n  importFileExtension    = \"ts\"\n  previewFeatures        = [\"relationJoins\", \"queryCompiler\", \"driverAdapters\"]\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nmodel Van {\n  id          String @id @default(cuid())\n  name        String\n  price       Int\n  description String\n  imageUrl    String\n  type        Type\n\n  hostId   String\n  userInfo UserInfo @relation(fields: [hostId], references: [userId])\n}\n\nmodel Review {\n  id        String   @id @default(dbgenerated(\"gen_random_uuid()\"))\n  createdAt DateTime @default(now())\n  updatedAt DateTime @default(now())\n\n  text   String\n  userId String\n  rating Int\n\n  rentId String\n  renter Rent   @relation(fields: [rentId], references: [id])\n}\n\nmodel Rent {\n  id     String @id @default(dbgenerated(\"gen_random_uuid()\"))\n  amount Int\n\n  renterId String\n\n  hostId String\n  renter UserInfo @relation(\"renter\", fields: [renterId], references: [userId])\n  host   UserInfo @relation(\"host\", fields: [hostId], references: [userId])\n\n  reviews Review[]\n}\n\nmodel User {\n  id            String    @id\n  name          String\n  email         String\n  emailVerified Boolean\n  image         String?\n  createdAt     DateTime?\n  updatedAt     DateTime?\n  Session       Session[]\n  Account       Account[]\n\n  role       String?\n  banned     Boolean?\n  banReason  String?\n  banExpires DateTime?\n\n  firstName String?\n  lastName  String?\n  phone     String?\n\n  userInfo UserInfo?\n\n  @@unique([email])\n  @@map(\"user\")\n}\n\nmodel UserInfo {\n  userId String @id @unique\n  user   User   @relation(fields: [userId], references: [id])\n\n  vans Van[]\n\n  renter Rent[] @relation(\"renter\")\n  rented Rent[] @relation(\"host\")\n}\n\nmodel Session {\n  id        String    @id\n  expiresAt DateTime\n  token     String\n  createdAt DateTime?\n  updatedAt DateTime?\n  ipAddress String?\n  userAgent String?\n  userId    String\n  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  impersonatedBy String?\n\n  @@unique([token])\n  @@map(\"session\")\n}\n\nmodel Account {\n  id                    String    @id\n  accountId             String\n  providerId            String\n  userId                String\n  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  accessToken           String?\n  refreshToken          String?\n  idToken               String?\n  accessTokenExpiresAt  DateTime?\n  refreshTokenExpiresAt DateTime?\n  scope                 String?\n  password              String?\n  createdAt             DateTime?\n  updatedAt             DateTime?\n\n  @@map(\"account\")\n}\n\nmodel Verification {\n  id         String    @id\n  identifier String\n  value      String\n  expiresAt  DateTime\n  createdAt  DateTime?\n  updatedAt  DateTime?\n\n  @@map(\"verification\")\n}\n\nenum Type {\n  SIMPLE\n  LUXURY\n  RUGGED\n}\n",
-  "inlineSchemaHash": "d2f095f39823b0792ba692367b27915b2aaed95414c0ef1c26507f786961653a",
+  "inlineSchema": "model User {\n  id            String    @id\n  name          String\n  email         String\n  emailVerified Boolean\n  image         String?\n  createdAt     DateTime?\n  updatedAt     DateTime?\n  Session       Session[]\n  Account       Account[]\n\n  role       String?\n  banned     Boolean?\n  banReason  String?\n  banExpires DateTime?\n\n  firstName String?\n  lastName  String?\n  phone     String?\n\n  userInfo UserInfo?\n\n  @@unique([email])\n  @@map(\"user\")\n}\n\nmodel Session {\n  id        String    @id\n  expiresAt DateTime\n  token     String\n  createdAt DateTime?\n  updatedAt DateTime?\n  ipAddress String?\n  userAgent String?\n  userId    String\n  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  impersonatedBy String?\n\n  @@unique([token])\n  @@map(\"session\")\n}\n\nmodel Account {\n  id                    String    @id\n  accountId             String\n  providerId            String\n  userId                String\n  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  accessToken           String?\n  refreshToken          String?\n  idToken               String?\n  accessTokenExpiresAt  DateTime?\n  refreshTokenExpiresAt DateTime?\n  scope                 String?\n  password              String?\n  createdAt             DateTime?\n  updatedAt             DateTime?\n\n  @@map(\"account\")\n}\n\nmodel Verification {\n  id         String    @id\n  identifier String\n  value      String\n  expiresAt  DateTime\n  createdAt  DateTime?\n  updatedAt  DateTime?\n\n  @@map(\"verification\")\n}\n\nenum Type {\n  SIMPLE\n  LUXURY\n  RUGGED\n}\n\nmodel Rent {\n  id     String  @id @default(dbgenerated(\"gen_random_uuid()\"))\n  amount Decimal\n\n  renterId String\n\n  hostId String\n  renter UserInfo @relation(\"renter\", fields: [renterId], references: [userId])\n  host   UserInfo @relation(\"host\", fields: [hostId], references: [userId])\n\n  reviews Review[]\n}\n\nmodel Review {\n  id        String   @id @default(dbgenerated(\"gen_random_uuid()\"))\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  text   String\n  userId String\n  rating Int\n\n  rentId String\n  renter Rent   @relation(fields: [rentId], references: [id])\n\n  //   user UserInfo @relation(fields: [userId], references: [userId])\n}\n\nmodel UserInfo {\n  userId String @id @unique\n  user   User   @relation(fields: [userId], references: [id])\n\n  vans Van[]\n\n  renter Rent[] @relation(\"renter\")\n  rented Rent[] @relation(\"host\")\n}\n\nmodel Van {\n  id          String @id @default(cuid())\n  name        String\n  price       Int\n  description String\n  imageUrl    String\n  type        Type\n\n  hostId   String\n  userInfo UserInfo @relation(fields: [hostId], references: [userId])\n}\n\n// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider               = \"prisma-client\"\n  output                 = \"../app/generated/prisma\"\n  runtime                = \"nodejs\"\n  moduleFormat           = \"esm\"\n  generatedFileExtension = \"ts\"\n  importFileExtension    = \"ts\"\n  previewFeatures        = [\"relationJoins\", \"queryCompiler\", \"driverAdapters\", \"fullTextSearchPostgres\"]\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n",
+  "inlineSchemaHash": "2c87e79e1963b4eb7c481ad195f146727c6f15fbd08c2f6a45ed796c45e6fd4e",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
@@ -73,7 +74,7 @@ const config: runtime.GetPrismaClientConfig = {
   "dirname": ""
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Van\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"Type\"},{\"name\":\"hostId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userInfo\",\"kind\":\"object\",\"type\":\"UserInfo\",\"relationName\":\"UserInfoToVan\"}],\"dbName\":null},\"Review\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rating\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"rentId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"renter\",\"kind\":\"object\",\"type\":\"Rent\",\"relationName\":\"RentToReview\"}],\"dbName\":null},\"Rent\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"renterId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hostId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"renter\",\"kind\":\"object\",\"type\":\"UserInfo\",\"relationName\":\"renter\"},{\"name\":\"host\",\"kind\":\"object\",\"type\":\"UserInfo\",\"relationName\":\"host\"},{\"name\":\"reviews\",\"kind\":\"object\",\"type\":\"Review\",\"relationName\":\"RentToReview\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emailVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Session\",\"kind\":\"object\",\"type\":\"Session\",\"relationName\":\"SessionToUser\"},{\"name\":\"Account\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToUser\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"banned\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"banReason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"banExpires\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"firstName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userInfo\",\"kind\":\"object\",\"type\":\"UserInfo\",\"relationName\":\"UserToUserInfo\"}],\"dbName\":\"user\"},\"UserInfo\":{\"fields\":[{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToUserInfo\"},{\"name\":\"vans\",\"kind\":\"object\",\"type\":\"Van\",\"relationName\":\"UserInfoToVan\"},{\"name\":\"renter\",\"kind\":\"object\",\"type\":\"Rent\",\"relationName\":\"renter\"},{\"name\":\"rented\",\"kind\":\"object\",\"type\":\"Rent\",\"relationName\":\"host\"}],\"dbName\":null},\"Session\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"ipAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userAgent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SessionToUser\"},{\"name\":\"impersonatedBy\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"session\"},\"Account\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accountId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AccountToUser\"},{\"name\":\"accessToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"refreshToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"idToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accessTokenExpiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"refreshTokenExpiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"scope\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"account\"},\"Verification\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"verification\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emailVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Session\",\"kind\":\"object\",\"type\":\"Session\",\"relationName\":\"SessionToUser\"},{\"name\":\"Account\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToUser\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"banned\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"banReason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"banExpires\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"firstName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userInfo\",\"kind\":\"object\",\"type\":\"UserInfo\",\"relationName\":\"UserToUserInfo\"}],\"dbName\":\"user\"},\"Session\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"ipAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userAgent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SessionToUser\"},{\"name\":\"impersonatedBy\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"session\"},\"Account\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accountId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AccountToUser\"},{\"name\":\"accessToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"refreshToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"idToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accessTokenExpiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"refreshTokenExpiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"scope\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"account\"},\"Verification\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"verification\"},\"Rent\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"renterId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hostId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"renter\",\"kind\":\"object\",\"type\":\"UserInfo\",\"relationName\":\"renter\"},{\"name\":\"host\",\"kind\":\"object\",\"type\":\"UserInfo\",\"relationName\":\"host\"},{\"name\":\"reviews\",\"kind\":\"object\",\"type\":\"Review\",\"relationName\":\"RentToReview\"}],\"dbName\":null},\"Review\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rating\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"rentId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"renter\",\"kind\":\"object\",\"type\":\"Rent\",\"relationName\":\"RentToReview\"}],\"dbName\":null},\"UserInfo\":{\"fields\":[{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToUserInfo\"},{\"name\":\"vans\",\"kind\":\"object\",\"type\":\"Van\",\"relationName\":\"UserInfoToVan\"},{\"name\":\"renter\",\"kind\":\"object\",\"type\":\"Rent\",\"relationName\":\"renter\"},{\"name\":\"rented\",\"kind\":\"object\",\"type\":\"Rent\",\"relationName\":\"host\"}],\"dbName\":null},\"Van\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"Type\"},{\"name\":\"hostId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userInfo\",\"kind\":\"object\",\"type\":\"UserInfo\",\"relationName\":\"UserInfoToVan\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 config.engineWasm = undefined
 config.compilerWasm = {
   getRuntime: async () => await import("@prisma/client/runtime/query_compiler_bg.postgresql.mjs"),
@@ -110,8 +111,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Vans
-   * const vans = await prisma.van.findMany()
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
    * ```
    * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -131,8 +132,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Vans
- * const vans = await prisma.van.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -234,36 +235,6 @@ export interface PrismaClient<
   }>>
 
       /**
-   * `prisma.van`: Exposes CRUD operations for the **Van** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Vans
-    * const vans = await prisma.van.findMany()
-    * ```
-    */
-  get van(): Prisma.VanDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.review`: Exposes CRUD operations for the **Review** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Reviews
-    * const reviews = await prisma.review.findMany()
-    * ```
-    */
-  get review(): Prisma.ReviewDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.rent`: Exposes CRUD operations for the **Rent** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Rents
-    * const rents = await prisma.rent.findMany()
-    * ```
-    */
-  get rent(): Prisma.RentDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -272,16 +243,6 @@ export interface PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.userInfo`: Exposes CRUD operations for the **UserInfo** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more UserInfos
-    * const userInfos = await prisma.userInfo.findMany()
-    * ```
-    */
-  get userInfo(): Prisma.UserInfoDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.session`: Exposes CRUD operations for the **Session** model.
@@ -312,6 +273,46 @@ export interface PrismaClient<
     * ```
     */
   get verification(): Prisma.VerificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.rent`: Exposes CRUD operations for the **Rent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Rents
+    * const rents = await prisma.rent.findMany()
+    * ```
+    */
+  get rent(): Prisma.RentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.review`: Exposes CRUD operations for the **Review** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Reviews
+    * const reviews = await prisma.review.findMany()
+    * ```
+    */
+  get review(): Prisma.ReviewDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userInfo`: Exposes CRUD operations for the **UserInfo** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserInfos
+    * const userInfos = await prisma.userInfo.findMany()
+    * ```
+    */
+  get userInfo(): Prisma.UserInfoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.van`: Exposes CRUD operations for the **Van** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Vans
+    * const vans = await prisma.van.findMany()
+    * ```
+    */
+  get van(): Prisma.VanDelegate<ExtArgs, ClientOptions>;
 }
 
 export function getPrismaClientClass(dirname: string): PrismaClientConstructor {

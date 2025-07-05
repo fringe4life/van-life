@@ -26,23 +26,23 @@ export type AggregateRent = {
 }
 
 export type RentAvgAggregateOutputType = {
-  amount: number | null
+  amount: runtime.Decimal | null
 }
 
 export type RentSumAggregateOutputType = {
-  amount: number | null
+  amount: runtime.Decimal | null
 }
 
 export type RentMinAggregateOutputType = {
   id: string | null
-  amount: number | null
+  amount: runtime.Decimal | null
   renterId: string | null
   hostId: string | null
 }
 
 export type RentMaxAggregateOutputType = {
   id: string | null
-  amount: number | null
+  amount: runtime.Decimal | null
   renterId: string | null
   hostId: string | null
 }
@@ -174,7 +174,7 @@ export type RentGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type RentGroupByOutputType = {
   id: string
-  amount: number
+  amount: runtime.Decimal
   renterId: string
   hostId: string
   _count: RentCountAggregateOutputType | null
@@ -204,7 +204,7 @@ export type RentWhereInput = {
   OR?: Prisma.RentWhereInput[]
   NOT?: Prisma.RentWhereInput | Prisma.RentWhereInput[]
   id?: Prisma.StringFilter<"Rent"> | string
-  amount?: Prisma.IntFilter<"Rent"> | number
+  amount?: Prisma.DecimalFilter<"Rent"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId?: Prisma.StringFilter<"Rent"> | string
   hostId?: Prisma.StringFilter<"Rent"> | string
   renter?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
@@ -220,6 +220,7 @@ export type RentOrderByWithRelationInput = {
   renter?: Prisma.UserInfoOrderByWithRelationInput
   host?: Prisma.UserInfoOrderByWithRelationInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  _relevance?: Prisma.RentOrderByRelevanceInput
 }
 
 export type RentWhereUniqueInput = Prisma.AtLeast<{
@@ -227,7 +228,7 @@ export type RentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.RentWhereInput | Prisma.RentWhereInput[]
   OR?: Prisma.RentWhereInput[]
   NOT?: Prisma.RentWhereInput | Prisma.RentWhereInput[]
-  amount?: Prisma.IntFilter<"Rent"> | number
+  amount?: Prisma.DecimalFilter<"Rent"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId?: Prisma.StringFilter<"Rent"> | string
   hostId?: Prisma.StringFilter<"Rent"> | string
   renter?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
@@ -252,14 +253,14 @@ export type RentScalarWhereWithAggregatesInput = {
   OR?: Prisma.RentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.RentScalarWhereWithAggregatesInput | Prisma.RentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Rent"> | string
-  amount?: Prisma.IntWithAggregatesFilter<"Rent"> | number
+  amount?: Prisma.DecimalWithAggregatesFilter<"Rent"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId?: Prisma.StringWithAggregatesFilter<"Rent"> | string
   hostId?: Prisma.StringWithAggregatesFilter<"Rent"> | string
 }
 
 export type RentCreateInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   renter: Prisma.UserInfoCreateNestedOneWithoutRenterInput
   host: Prisma.UserInfoCreateNestedOneWithoutRentedInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutRenterInput
@@ -267,7 +268,7 @@ export type RentCreateInput = {
 
 export type RentUncheckedCreateInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId: string
   hostId: string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRenterInput
@@ -275,7 +276,7 @@ export type RentUncheckedCreateInput = {
 
 export type RentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   renter?: Prisma.UserInfoUpdateOneRequiredWithoutRenterNestedInput
   host?: Prisma.UserInfoUpdateOneRequiredWithoutRentedNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutRenterNestedInput
@@ -283,7 +284,7 @@ export type RentUpdateInput = {
 
 export type RentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutRenterNestedInput
@@ -291,26 +292,27 @@ export type RentUncheckedUpdateInput = {
 
 export type RentCreateManyInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId: string
   hostId: string
 }
 
 export type RentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type RentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-export type RentScalarRelationFilter = {
-  is?: Prisma.RentWhereInput
-  isNot?: Prisma.RentWhereInput
+export type RentOrderByRelevanceInput = {
+  fields: Prisma.RentOrderByRelevanceFieldEnum | Prisma.RentOrderByRelevanceFieldEnum[]
+  sort: Prisma.SortOrder
+  search: string
 }
 
 export type RentCountOrderByAggregateInput = {
@@ -342,6 +344,11 @@ export type RentSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
 }
 
+export type RentScalarRelationFilter = {
+  is?: Prisma.RentWhereInput
+  isNot?: Prisma.RentWhereInput
+}
+
 export type RentListRelationFilter = {
   every?: Prisma.RentWhereInput
   some?: Prisma.RentWhereInput
@@ -350,6 +357,14 @@ export type RentListRelationFilter = {
 
 export type RentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type RentCreateNestedOneWithoutReviewsInput = {
@@ -452,14 +467,14 @@ export type RentUncheckedUpdateManyWithoutHostNestedInput = {
 
 export type RentCreateWithoutReviewsInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   renter: Prisma.UserInfoCreateNestedOneWithoutRenterInput
   host: Prisma.UserInfoCreateNestedOneWithoutRentedInput
 }
 
 export type RentUncheckedCreateWithoutReviewsInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId: string
   hostId: string
 }
@@ -482,28 +497,28 @@ export type RentUpdateToOneWithWhereWithoutReviewsInput = {
 
 export type RentUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   renter?: Prisma.UserInfoUpdateOneRequiredWithoutRenterNestedInput
   host?: Prisma.UserInfoUpdateOneRequiredWithoutRentedNestedInput
 }
 
 export type RentUncheckedUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RentCreateWithoutRenterInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   host: Prisma.UserInfoCreateNestedOneWithoutRentedInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutRenterInput
 }
 
 export type RentUncheckedCreateWithoutRenterInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   hostId: string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRenterInput
 }
@@ -520,14 +535,14 @@ export type RentCreateManyRenterInputEnvelope = {
 
 export type RentCreateWithoutHostInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   renter: Prisma.UserInfoCreateNestedOneWithoutRenterInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutRenterInput
 }
 
 export type RentUncheckedCreateWithoutHostInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId: string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRenterInput
 }
@@ -563,7 +578,7 @@ export type RentScalarWhereInput = {
   OR?: Prisma.RentScalarWhereInput[]
   NOT?: Prisma.RentScalarWhereInput | Prisma.RentScalarWhereInput[]
   id?: Prisma.StringFilter<"Rent"> | string
-  amount?: Prisma.IntFilter<"Rent"> | number
+  amount?: Prisma.DecimalFilter<"Rent"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId?: Prisma.StringFilter<"Rent"> | string
   hostId?: Prisma.StringFilter<"Rent"> | string
 }
@@ -586,53 +601,53 @@ export type RentUpdateManyWithWhereWithoutHostInput = {
 
 export type RentCreateManyRenterInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   hostId: string
 }
 
 export type RentCreateManyHostInput = {
   id?: string
-  amount: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId: string
 }
 
 export type RentUpdateWithoutRenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   host?: Prisma.UserInfoUpdateOneRequiredWithoutRentedNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutRenterNestedInput
 }
 
 export type RentUncheckedUpdateWithoutRenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutRenterNestedInput
 }
 
 export type RentUncheckedUpdateManyWithoutRenterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RentUpdateWithoutHostInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   renter?: Prisma.UserInfoUpdateOneRequiredWithoutRenterNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutRenterNestedInput
 }
 
 export type RentUncheckedUpdateWithoutHostInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId?: Prisma.StringFieldUpdateOperationsInput | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutRenterNestedInput
 }
 
 export type RentUncheckedUpdateManyWithoutHostInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   renterId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -728,7 +743,7 @@ export type $RentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    amount: number
+    amount: runtime.Decimal
     renterId: string
     hostId: string
   }, ExtArgs["result"]["rent"]>
@@ -1158,7 +1173,7 @@ export interface Prisma__RentClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface RentFieldRefs {
   readonly id: Prisma.FieldRef<"Rent", 'String'>
-  readonly amount: Prisma.FieldRef<"Rent", 'Int'>
+  readonly amount: Prisma.FieldRef<"Rent", 'Decimal'>
   readonly renterId: Prisma.FieldRef<"Rent", 'String'>
   readonly hostId: Prisma.FieldRef<"Rent", 'String'>
 }

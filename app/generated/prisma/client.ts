@@ -26,8 +26,8 @@ export * as $Enums from './enums.ts'
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Vans
- * const vans = await prisma.van.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -39,30 +39,10 @@ export { Prisma }
 
 
 /**
- * Model Van
- * 
- */
-export type Van = Prisma.VanModel
-/**
- * Model Review
- * 
- */
-export type Review = Prisma.ReviewModel
-/**
- * Model Rent
- * 
- */
-export type Rent = Prisma.RentModel
-/**
  * Model User
  * 
  */
 export type User = Prisma.UserModel
-/**
- * Model UserInfo
- * 
- */
-export type UserInfo = Prisma.UserInfoModel
 /**
  * Model Session
  * 
@@ -78,6 +58,26 @@ export type Account = Prisma.AccountModel
  * 
  */
 export type Verification = Prisma.VerificationModel
+/**
+ * Model Rent
+ * 
+ */
+export type Rent = Prisma.RentModel
+/**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
+/**
+ * Model UserInfo
+ * 
+ */
+export type UserInfo = Prisma.UserInfoModel
+/**
+ * Model Van
+ * 
+ */
+export type Van = Prisma.VanModel
 
 export type Type = $Enums.Type
 export const Type = $Enums.Type

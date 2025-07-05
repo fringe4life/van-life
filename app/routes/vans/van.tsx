@@ -1,6 +1,6 @@
 import { getVan } from "~/db/getVan";
 import type { Route } from "./+types/van";
-import { Link, redirect, useLocation } from "react-router";
+import { data, href, Link, redirect, useLocation } from "react-router";
 import {
   Card,
   CardContent,
@@ -35,7 +35,14 @@ export function meta({ data }: Route.MetaArgs) {
 export async function loader({ params }: Route.LoaderArgs) {
   const van = await getVan(params.vanId);
   if (!van) throw redirect("/notfound");
-  return { van };
+  return data(
+    { van },
+    {
+      headers: {
+        "Cache-Control": "max-age=259200",
+      },
+    }
+  );
 }
 
 export default function VanDetail({ loaderData }: Route.ComponentProps) {
@@ -51,7 +58,7 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
     <>
       <Link
         to={{
-          pathname: "/vans",
+          pathname: href("/vans"),
           search: `?type=${typeFilter}`,
         }}
       >
@@ -59,7 +66,7 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
       </Link>
       <div className="@container/card-full">
         <Card className="@max-2xl/card-full:grid @max-2xl/card-full:grid-rows-[4fr_repeat(4,_auto)_auto] @max-2xl:/card-full:gap-4  @max-2xl/card-full:bg-green-500  @max-7xl/card-full:bg-indigo-500">
-          <CardHeader className=" ">
+          <CardHeader >
             <img src={imageUrl} alt={description} />
           </CardHeader>
           <CardContent className=" @max-2xl/card-full:rows-span-4  @max-2xl/card-full:grid-rows-subgrid @max-2xl/card-full:row-start-2  @max-2xl/card-full:align-between">
@@ -70,7 +77,6 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
             <p>{price}</p>
             <CardDescription>{description}</CardDescription>
           </CardContent>
-          {/* @max-2xl/card-full:row-span-1 */}
           <CardFooter className="">
             <Button
               className={cn(

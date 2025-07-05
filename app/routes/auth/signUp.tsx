@@ -1,4 +1,4 @@
-import { Form, Link, replace } from "react-router";
+import { Form, href, Link, replace } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import type { Route } from "./+types/signUp";
@@ -58,7 +58,7 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
       </Form>
       <p>
         <span>Already have an account?</span>{" "}
-        <Link to="/login" className="text-orange-400">
+        <Link to={href("/login")} className="text-orange-400">
           Sign in now
         </Link>
       </p>

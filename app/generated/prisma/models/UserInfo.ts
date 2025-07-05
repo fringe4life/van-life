@@ -161,6 +161,7 @@ export type UserInfoOrderByWithRelationInput = {
   vans?: Prisma.VanOrderByRelationAggregateInput
   renter?: Prisma.RentOrderByRelationAggregateInput
   rented?: Prisma.RentOrderByRelationAggregateInput
+  _relevance?: Prisma.UserInfoOrderByRelevanceInput
 }
 
 export type UserInfoWhereUniqueInput = Prisma.AtLeast<{
@@ -228,14 +229,20 @@ export type UserInfoUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+export type UserInfoNullableScalarRelationFilter = {
+  is?: Prisma.UserInfoWhereInput | null
+  isNot?: Prisma.UserInfoWhereInput | null
+}
+
 export type UserInfoScalarRelationFilter = {
   is?: Prisma.UserInfoWhereInput
   isNot?: Prisma.UserInfoWhereInput
 }
 
-export type UserInfoNullableScalarRelationFilter = {
-  is?: Prisma.UserInfoWhereInput | null
-  isNot?: Prisma.UserInfoWhereInput | null
+export type UserInfoOrderByRelevanceInput = {
+  fields: Prisma.UserInfoOrderByRelevanceFieldEnum | Prisma.UserInfoOrderByRelevanceFieldEnum[]
+  sort: Prisma.SortOrder
+  search: string
 }
 
 export type UserInfoCountOrderByAggregateInput = {
@@ -248,48 +255,6 @@ export type UserInfoMaxOrderByAggregateInput = {
 
 export type UserInfoMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
-}
-
-export type UserInfoCreateNestedOneWithoutVansInput = {
-  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutVansInput, Prisma.UserInfoUncheckedCreateWithoutVansInput>
-  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutVansInput
-  connect?: Prisma.UserInfoWhereUniqueInput
-}
-
-export type UserInfoUpdateOneRequiredWithoutVansNestedInput = {
-  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutVansInput, Prisma.UserInfoUncheckedCreateWithoutVansInput>
-  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutVansInput
-  upsert?: Prisma.UserInfoUpsertWithoutVansInput
-  connect?: Prisma.UserInfoWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserInfoUpdateToOneWithWhereWithoutVansInput, Prisma.UserInfoUpdateWithoutVansInput>, Prisma.UserInfoUncheckedUpdateWithoutVansInput>
-}
-
-export type UserInfoCreateNestedOneWithoutRenterInput = {
-  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutRenterInput, Prisma.UserInfoUncheckedCreateWithoutRenterInput>
-  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutRenterInput
-  connect?: Prisma.UserInfoWhereUniqueInput
-}
-
-export type UserInfoCreateNestedOneWithoutRentedInput = {
-  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutRentedInput, Prisma.UserInfoUncheckedCreateWithoutRentedInput>
-  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutRentedInput
-  connect?: Prisma.UserInfoWhereUniqueInput
-}
-
-export type UserInfoUpdateOneRequiredWithoutRenterNestedInput = {
-  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutRenterInput, Prisma.UserInfoUncheckedCreateWithoutRenterInput>
-  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutRenterInput
-  upsert?: Prisma.UserInfoUpsertWithoutRenterInput
-  connect?: Prisma.UserInfoWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserInfoUpdateToOneWithWhereWithoutRenterInput, Prisma.UserInfoUpdateWithoutRenterInput>, Prisma.UserInfoUncheckedUpdateWithoutRenterInput>
-}
-
-export type UserInfoUpdateOneRequiredWithoutRentedNestedInput = {
-  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutRentedInput, Prisma.UserInfoUncheckedCreateWithoutRentedInput>
-  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutRentedInput
-  upsert?: Prisma.UserInfoUpsertWithoutRentedInput
-  connect?: Prisma.UserInfoWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserInfoUpdateToOneWithWhereWithoutRentedInput, Prisma.UserInfoUpdateWithoutRentedInput>, Prisma.UserInfoUncheckedUpdateWithoutRentedInput>
 }
 
 export type UserInfoCreateNestedOneWithoutUserInput = {
@@ -324,42 +289,84 @@ export type UserInfoUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserInfoUpdateToOneWithWhereWithoutUserInput, Prisma.UserInfoUpdateWithoutUserInput>, Prisma.UserInfoUncheckedUpdateWithoutUserInput>
 }
 
-export type UserInfoCreateWithoutVansInput = {
-  user: Prisma.UserCreateNestedOneWithoutUserInfoInput
+export type UserInfoCreateNestedOneWithoutRenterInput = {
+  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutRenterInput, Prisma.UserInfoUncheckedCreateWithoutRenterInput>
+  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutRenterInput
+  connect?: Prisma.UserInfoWhereUniqueInput
+}
+
+export type UserInfoCreateNestedOneWithoutRentedInput = {
+  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutRentedInput, Prisma.UserInfoUncheckedCreateWithoutRentedInput>
+  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutRentedInput
+  connect?: Prisma.UserInfoWhereUniqueInput
+}
+
+export type UserInfoUpdateOneRequiredWithoutRenterNestedInput = {
+  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutRenterInput, Prisma.UserInfoUncheckedCreateWithoutRenterInput>
+  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutRenterInput
+  upsert?: Prisma.UserInfoUpsertWithoutRenterInput
+  connect?: Prisma.UserInfoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserInfoUpdateToOneWithWhereWithoutRenterInput, Prisma.UserInfoUpdateWithoutRenterInput>, Prisma.UserInfoUncheckedUpdateWithoutRenterInput>
+}
+
+export type UserInfoUpdateOneRequiredWithoutRentedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutRentedInput, Prisma.UserInfoUncheckedCreateWithoutRentedInput>
+  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutRentedInput
+  upsert?: Prisma.UserInfoUpsertWithoutRentedInput
+  connect?: Prisma.UserInfoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserInfoUpdateToOneWithWhereWithoutRentedInput, Prisma.UserInfoUpdateWithoutRentedInput>, Prisma.UserInfoUncheckedUpdateWithoutRentedInput>
+}
+
+export type UserInfoCreateNestedOneWithoutVansInput = {
+  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutVansInput, Prisma.UserInfoUncheckedCreateWithoutVansInput>
+  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutVansInput
+  connect?: Prisma.UserInfoWhereUniqueInput
+}
+
+export type UserInfoUpdateOneRequiredWithoutVansNestedInput = {
+  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutVansInput, Prisma.UserInfoUncheckedCreateWithoutVansInput>
+  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutVansInput
+  upsert?: Prisma.UserInfoUpsertWithoutVansInput
+  connect?: Prisma.UserInfoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserInfoUpdateToOneWithWhereWithoutVansInput, Prisma.UserInfoUpdateWithoutVansInput>, Prisma.UserInfoUncheckedUpdateWithoutVansInput>
+}
+
+export type UserInfoCreateWithoutUserInput = {
+  vans?: Prisma.VanCreateNestedManyWithoutUserInfoInput
   renter?: Prisma.RentCreateNestedManyWithoutRenterInput
   rented?: Prisma.RentCreateNestedManyWithoutHostInput
 }
 
-export type UserInfoUncheckedCreateWithoutVansInput = {
-  userId: string
+export type UserInfoUncheckedCreateWithoutUserInput = {
+  vans?: Prisma.VanUncheckedCreateNestedManyWithoutUserInfoInput
   renter?: Prisma.RentUncheckedCreateNestedManyWithoutRenterInput
   rented?: Prisma.RentUncheckedCreateNestedManyWithoutHostInput
 }
 
-export type UserInfoCreateOrConnectWithoutVansInput = {
+export type UserInfoCreateOrConnectWithoutUserInput = {
   where: Prisma.UserInfoWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserInfoCreateWithoutVansInput, Prisma.UserInfoUncheckedCreateWithoutVansInput>
+  create: Prisma.XOR<Prisma.UserInfoCreateWithoutUserInput, Prisma.UserInfoUncheckedCreateWithoutUserInput>
 }
 
-export type UserInfoUpsertWithoutVansInput = {
-  update: Prisma.XOR<Prisma.UserInfoUpdateWithoutVansInput, Prisma.UserInfoUncheckedUpdateWithoutVansInput>
-  create: Prisma.XOR<Prisma.UserInfoCreateWithoutVansInput, Prisma.UserInfoUncheckedCreateWithoutVansInput>
+export type UserInfoUpsertWithoutUserInput = {
+  update: Prisma.XOR<Prisma.UserInfoUpdateWithoutUserInput, Prisma.UserInfoUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.UserInfoCreateWithoutUserInput, Prisma.UserInfoUncheckedCreateWithoutUserInput>
   where?: Prisma.UserInfoWhereInput
 }
 
-export type UserInfoUpdateToOneWithWhereWithoutVansInput = {
+export type UserInfoUpdateToOneWithWhereWithoutUserInput = {
   where?: Prisma.UserInfoWhereInput
-  data: Prisma.XOR<Prisma.UserInfoUpdateWithoutVansInput, Prisma.UserInfoUncheckedUpdateWithoutVansInput>
+  data: Prisma.XOR<Prisma.UserInfoUpdateWithoutUserInput, Prisma.UserInfoUncheckedUpdateWithoutUserInput>
 }
 
-export type UserInfoUpdateWithoutVansInput = {
-  user?: Prisma.UserUpdateOneRequiredWithoutUserInfoNestedInput
+export type UserInfoUpdateWithoutUserInput = {
+  vans?: Prisma.VanUpdateManyWithoutUserInfoNestedInput
   renter?: Prisma.RentUpdateManyWithoutRenterNestedInput
   rented?: Prisma.RentUpdateManyWithoutHostNestedInput
 }
 
-export type UserInfoUncheckedUpdateWithoutVansInput = {
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+export type UserInfoUncheckedUpdateWithoutUserInput = {
+  vans?: Prisma.VanUncheckedUpdateManyWithoutUserInfoNestedInput
   renter?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
   rented?: Prisma.RentUncheckedUpdateManyWithoutHostNestedInput
 }
@@ -444,42 +451,42 @@ export type UserInfoUncheckedUpdateWithoutRentedInput = {
   renter?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
 }
 
-export type UserInfoCreateWithoutUserInput = {
-  vans?: Prisma.VanCreateNestedManyWithoutUserInfoInput
+export type UserInfoCreateWithoutVansInput = {
+  user: Prisma.UserCreateNestedOneWithoutUserInfoInput
   renter?: Prisma.RentCreateNestedManyWithoutRenterInput
   rented?: Prisma.RentCreateNestedManyWithoutHostInput
 }
 
-export type UserInfoUncheckedCreateWithoutUserInput = {
-  vans?: Prisma.VanUncheckedCreateNestedManyWithoutUserInfoInput
+export type UserInfoUncheckedCreateWithoutVansInput = {
+  userId: string
   renter?: Prisma.RentUncheckedCreateNestedManyWithoutRenterInput
   rented?: Prisma.RentUncheckedCreateNestedManyWithoutHostInput
 }
 
-export type UserInfoCreateOrConnectWithoutUserInput = {
+export type UserInfoCreateOrConnectWithoutVansInput = {
   where: Prisma.UserInfoWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserInfoCreateWithoutUserInput, Prisma.UserInfoUncheckedCreateWithoutUserInput>
+  create: Prisma.XOR<Prisma.UserInfoCreateWithoutVansInput, Prisma.UserInfoUncheckedCreateWithoutVansInput>
 }
 
-export type UserInfoUpsertWithoutUserInput = {
-  update: Prisma.XOR<Prisma.UserInfoUpdateWithoutUserInput, Prisma.UserInfoUncheckedUpdateWithoutUserInput>
-  create: Prisma.XOR<Prisma.UserInfoCreateWithoutUserInput, Prisma.UserInfoUncheckedCreateWithoutUserInput>
+export type UserInfoUpsertWithoutVansInput = {
+  update: Prisma.XOR<Prisma.UserInfoUpdateWithoutVansInput, Prisma.UserInfoUncheckedUpdateWithoutVansInput>
+  create: Prisma.XOR<Prisma.UserInfoCreateWithoutVansInput, Prisma.UserInfoUncheckedCreateWithoutVansInput>
   where?: Prisma.UserInfoWhereInput
 }
 
-export type UserInfoUpdateToOneWithWhereWithoutUserInput = {
+export type UserInfoUpdateToOneWithWhereWithoutVansInput = {
   where?: Prisma.UserInfoWhereInput
-  data: Prisma.XOR<Prisma.UserInfoUpdateWithoutUserInput, Prisma.UserInfoUncheckedUpdateWithoutUserInput>
+  data: Prisma.XOR<Prisma.UserInfoUpdateWithoutVansInput, Prisma.UserInfoUncheckedUpdateWithoutVansInput>
 }
 
-export type UserInfoUpdateWithoutUserInput = {
-  vans?: Prisma.VanUpdateManyWithoutUserInfoNestedInput
+export type UserInfoUpdateWithoutVansInput = {
+  user?: Prisma.UserUpdateOneRequiredWithoutUserInfoNestedInput
   renter?: Prisma.RentUpdateManyWithoutRenterNestedInput
   rented?: Prisma.RentUpdateManyWithoutHostNestedInput
 }
 
-export type UserInfoUncheckedUpdateWithoutUserInput = {
-  vans?: Prisma.VanUncheckedUpdateManyWithoutUserInfoNestedInput
+export type UserInfoUncheckedUpdateWithoutVansInput = {
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   renter?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
   rented?: Prisma.RentUncheckedUpdateManyWithoutHostNestedInput
 }

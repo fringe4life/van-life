@@ -243,6 +243,7 @@ export type ReviewOrderByWithRelationInput = {
   rating?: Prisma.SortOrder
   rentId?: Prisma.SortOrder
   renter?: Prisma.RentOrderByWithRelationInput
+  _relevance?: Prisma.ReviewOrderByRelevanceInput
 }
 
 export type ReviewWhereUniqueInput = Prisma.AtLeast<{
@@ -356,6 +357,22 @@ export type ReviewUncheckedUpdateManyInput = {
   rentId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+export type ReviewListRelationFilter = {
+  every?: Prisma.ReviewWhereInput
+  some?: Prisma.ReviewWhereInput
+  none?: Prisma.ReviewWhereInput
+}
+
+export type ReviewOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type ReviewOrderByRelevanceInput = {
+  fields: Prisma.ReviewOrderByRelevanceFieldEnum | Prisma.ReviewOrderByRelevanceFieldEnum[]
+  sort: Prisma.SortOrder
+  search: string
+}
+
 export type ReviewCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -392,20 +409,6 @@ export type ReviewMinOrderByAggregateInput = {
 
 export type ReviewSumOrderByAggregateInput = {
   rating?: Prisma.SortOrder
-}
-
-export type ReviewListRelationFilter = {
-  every?: Prisma.ReviewWhereInput
-  some?: Prisma.ReviewWhereInput
-  none?: Prisma.ReviewWhereInput
-}
-
-export type ReviewOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
 }
 
 export type ReviewCreateNestedManyWithoutRenterInput = {
@@ -448,6 +451,14 @@ export type ReviewUncheckedUpdateManyWithoutRenterNestedInput = {
   update?: Prisma.ReviewUpdateWithWhereUniqueWithoutRenterInput | Prisma.ReviewUpdateWithWhereUniqueWithoutRenterInput[]
   updateMany?: Prisma.ReviewUpdateManyWithWhereWithoutRenterInput | Prisma.ReviewUpdateManyWithWhereWithoutRenterInput[]
   deleteMany?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type ReviewCreateWithoutRenterInput = {

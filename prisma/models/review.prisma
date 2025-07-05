@@ -1,7 +1,7 @@
 model Review {
   id String @id @default(dbgenerated("gen_random_uuid()"))
   createdAt DateTime @default(now())
-  updatedAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   
   text String 
   userId String 
@@ -9,4 +9,6 @@ model Review {
 
   rentId String 
   renter Rent @relation(fields: [rentId], references: [id])
+
+//   user UserInfo @relation(fields: [userId], references: [userId])
 }

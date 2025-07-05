@@ -1,15 +1,17 @@
-import { data, Link, redirect } from "react-router";
+import { data, href, Link, redirect } from "react-router";
 import type { Route } from "./+types/host";
 import { auth } from "~/lib/auth/auth";
 import { getHostVans } from "~/db/getHostVans";
 import VanCard from "~/cards/van-card";
+import { getAccountSummary } from "~/db/getAccountSummary";
+import { getAverageReviewRating } from "~/db/getAvgReviews";
 
 export function meta(_: Route.MetaArgs) {
   return [
     { title: "Host | Vanlife" },
     {
       name: "description",
-      content: "the dashboard page whe you are logged in",
+      content: "the dashboard page when you are logged in",
     },
   ];
 }
@@ -19,9 +21,15 @@ export async function loader({ request }: Route.LoaderArgs) {
   if (!session) throw redirect("login");
   const vans = await getHostVans(session.user.id);
 
+  const sumIncome = await getAccountSummary(session.user.id);
+
+  const avgRating = await getAverageReviewRating(session.user.id);
+
   return data(
     {
       vans,
+      sumIncome,
+      avgRating,
     },
     {
       headers: {
@@ -32,7 +40,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Host({ loaderData }: Route.ComponentProps) {
-  const { vans } = loaderData;
+  const { vans, sumIncome, avgRating } = loaderData;
 
   const vansToDisplay = vans
     .filter((_, index) => index < 4)
@@ -45,16 +53,21 @@ export default function Host({ loaderData }: Route.ComponentProps) {
         <p className="col-start-1 my-8 text-base text-text-secondary font-light">
           Income last <span className="underline font-medium">30 days</span>
         </p>
-        <p className="col-start-1 font-extrabold text-5xl text-text">$2,260</p>
-        <Link to="income" className="col-start-2 row-start-2">
+        <p className="col-start-1 font-extrabold text-5xl text-text">
+          {((sumIncome as number) ?? 0).toFixed(2)}
+        </p>
+        <Link to={href("/host/income")} className="col-start-2 row-start-2">
           Details
         </Link>
       </div>
       <div className="flex justify-between py-11 px-6.5 ">
         <p className="text-2xl font-bold text-shadow-text">
-          Review Score star 5.0/5
+          Review Score star {avgRating.toFixed(1)}/5
         </p>
-        <Link to="reviews" className="text-base font-medium text-shadow-text">
+        <Link
+          to={href("/host/review")}
+          className="text-base font-medium text-shadow-text"
+        >
           Details
         </Link>
       </div>

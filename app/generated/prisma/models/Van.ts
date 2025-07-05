@@ -243,6 +243,7 @@ export type VanOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
   userInfo?: Prisma.UserInfoOrderByWithRelationInput
+  _relevance?: Prisma.VanOrderByRelevanceInput
 }
 
 export type VanWhereUniqueInput = Prisma.AtLeast<{
@@ -356,6 +357,22 @@ export type VanUncheckedUpdateManyInput = {
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+export type VanListRelationFilter = {
+  every?: Prisma.VanWhereInput
+  some?: Prisma.VanWhereInput
+  none?: Prisma.VanWhereInput
+}
+
+export type VanOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type VanOrderByRelevanceInput = {
+  fields: Prisma.VanOrderByRelevanceFieldEnum | Prisma.VanOrderByRelevanceFieldEnum[]
+  sort: Prisma.SortOrder
+  search: string
+}
+
 export type VanCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -392,32 +409,6 @@ export type VanMinOrderByAggregateInput = {
 
 export type VanSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
-}
-
-export type VanListRelationFilter = {
-  every?: Prisma.VanWhereInput
-  some?: Prisma.VanWhereInput
-  none?: Prisma.VanWhereInput
-}
-
-export type VanOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type EnumTypeFieldUpdateOperationsInput = {
-  set?: $Enums.Type
 }
 
 export type VanCreateNestedManyWithoutUserInfoInput = {
@@ -460,6 +451,10 @@ export type VanUncheckedUpdateManyWithoutUserInfoNestedInput = {
   update?: Prisma.VanUpdateWithWhereUniqueWithoutUserInfoInput | Prisma.VanUpdateWithWhereUniqueWithoutUserInfoInput[]
   updateMany?: Prisma.VanUpdateManyWithWhereWithoutUserInfoInput | Prisma.VanUpdateManyWithWhereWithoutUserInfoInput[]
   deleteMany?: Prisma.VanScalarWhereInput | Prisma.VanScalarWhereInput[]
+}
+
+export type EnumTypeFieldUpdateOperationsInput = {
+  set?: $Enums.Type
 }
 
 export type VanCreateWithoutUserInfoInput = {

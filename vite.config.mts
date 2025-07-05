@@ -6,21 +6,21 @@ import babel from "vite-plugin-babel";
 
 export default defineConfig({
   plugins: [
-    // babel({
-    //   filter: /\.tsx?$/,
-    //   babelConfig: {
-    //     presets: ["@babel/preset-typescript"],
-    //     plugins: ["babel-plugin-react-compiler"],
-    //   },
-    // }),
+    babel({
+      filter: /\.tsx?$/,
+      babelConfig: {
+        presets: ["@babel/preset-typescript"],
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
     tailwindcss(),
     reactRouter(),
     tsconfigPaths(),
   ],
-  // ssr: {
-  //   noExternal: process.env.COMMAND === "build" ? true : undefined,
-  // },
-  // server: {
-  //   hmr: true,
-  // },
+  ssr: {
+    noExternal: process.env.COMMAND === "build" ? true : undefined,
+  },
+  server: {
+    hmr: true,
+  },
 });

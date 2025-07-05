@@ -3,15 +3,16 @@ import { auth } from "~/lib/auth/auth";
 import { authClient } from "~/lib/auth/client";
 import type { Route } from "./+types/layout";
 
-export const loader = async ({ request }: Route.ClientLoaderArgs) => {
-  const result = await auth.api.getSession({ headers: request.headers });
-  console.log({ result });
-};
+// export const loader = async ({ request }: Route.ClientLoaderArgs) => {
+//   const result = await auth.api.getSession({ headers: request.headers });
+//   console.log({ result });
+// };
 
-export default async function Layout({}: Route.ComponentProps) {
-  const session = await authClient.getSession();
-  const hasToken = session?.data?.session?.token !== null;
-  console.log({ session: session?.data?.session?.token });
+export default function Layout({}: Route.ComponentProps) {
+  const { data: session } = authClient.useSession();
+  const hasToken = session?.session;
+  console.log({ session: hasToken });
+  // const hasToken = false;
   return (
     <>
       <header className="flex justify-between px-4 py-9 items-center">
@@ -58,7 +59,7 @@ export default async function Layout({}: Route.ComponentProps) {
                 </NavLink>
               </li>
             )}
-            {hasToken ? (
+            {!hasToken ? (
               <li>
                 <NavLink
                   to={href("/login")}

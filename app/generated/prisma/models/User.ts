@@ -276,6 +276,7 @@ export type UserOrderByWithRelationInput = {
   Session?: Prisma.SessionOrderByRelationAggregateInput
   Account?: Prisma.AccountOrderByRelationAggregateInput
   userInfo?: Prisma.UserInfoOrderByWithRelationInput
+  _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -472,6 +473,12 @@ export type UserUncheckedUpdateManyInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
+export type UserOrderByRelevanceInput = {
+  fields: Prisma.UserOrderByRelevanceFieldEnum | Prisma.UserOrderByRelevanceFieldEnum[]
+  sort: Prisma.SortOrder
+  search: string
+}
+
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -528,6 +535,10 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
+export type StringFieldUpdateOperationsInput = {
+  set?: string
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
@@ -542,20 +553,6 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
 
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
-}
-
-export type UserCreateNestedOneWithoutUserInfoInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutUserInfoInput, Prisma.UserUncheckedCreateWithoutUserInfoInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserInfoInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutUserInfoNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutUserInfoInput, Prisma.UserUncheckedCreateWithoutUserInfoInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserInfoInput
-  upsert?: Prisma.UserUpsertWithoutUserInfoInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserInfoInput, Prisma.UserUpdateWithoutUserInfoInput>, Prisma.UserUncheckedUpdateWithoutUserInfoInput>
 }
 
 export type UserCreateNestedOneWithoutSessionInput = {
@@ -586,96 +583,18 @@ export type UserUpdateOneRequiredWithoutAccountNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountInput, Prisma.UserUpdateWithoutAccountInput>, Prisma.UserUncheckedUpdateWithoutAccountInput>
 }
 
-export type UserCreateWithoutUserInfoInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt?: Date | string | null
-  updatedAt?: Date | string | null
-  role?: string | null
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  firstName?: string | null
-  lastName?: string | null
-  phone?: string | null
-  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
-  Account?: Prisma.AccountCreateNestedManyWithoutUserInput
+export type UserCreateNestedOneWithoutUserInfoInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserInfoInput, Prisma.UserUncheckedCreateWithoutUserInfoInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserInfoInput
+  connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUncheckedCreateWithoutUserInfoInput = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image?: string | null
-  createdAt?: Date | string | null
-  updatedAt?: Date | string | null
-  role?: string | null
-  banned?: boolean | null
-  banReason?: string | null
-  banExpires?: Date | string | null
-  firstName?: string | null
-  lastName?: string | null
-  phone?: string | null
-  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  Account?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutUserInfoInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutUserInfoInput, Prisma.UserUncheckedCreateWithoutUserInfoInput>
-}
-
-export type UserUpsertWithoutUserInfoInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutUserInfoInput, Prisma.UserUncheckedUpdateWithoutUserInfoInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutUserInfoInput, Prisma.UserUncheckedCreateWithoutUserInfoInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutUserInfoInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutUserInfoInput, Prisma.UserUncheckedUpdateWithoutUserInfoInput>
-}
-
-export type UserUpdateWithoutUserInfoInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  Account?: Prisma.AccountUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutUserInfoInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  Account?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+export type UserUpdateOneRequiredWithoutUserInfoNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserInfoInput, Prisma.UserUncheckedCreateWithoutUserInfoInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserInfoInput
+  upsert?: Prisma.UserUpsertWithoutUserInfoInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserInfoInput, Prisma.UserUpdateWithoutUserInfoInput>, Prisma.UserUncheckedUpdateWithoutUserInfoInput>
 }
 
 export type UserCreateWithoutSessionInput = {
@@ -860,6 +779,98 @@ export type UserUncheckedUpdateWithoutAccountInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   userInfo?: Prisma.UserInfoUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutUserInfoInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified: boolean
+  image?: string | null
+  createdAt?: Date | string | null
+  updatedAt?: Date | string | null
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  Session?: Prisma.SessionCreateNestedManyWithoutUserInput
+  Account?: Prisma.AccountCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUserInfoInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified: boolean
+  image?: string | null
+  createdAt?: Date | string | null
+  updatedAt?: Date | string | null
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  Session?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  Account?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUserInfoInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserInfoInput, Prisma.UserUncheckedCreateWithoutUserInfoInput>
+}
+
+export type UserUpsertWithoutUserInfoInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserInfoInput, Prisma.UserUncheckedUpdateWithoutUserInfoInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserInfoInput, Prisma.UserUncheckedCreateWithoutUserInfoInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserInfoInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserInfoInput, Prisma.UserUncheckedUpdateWithoutUserInfoInput>
+}
+
+export type UserUpdateWithoutUserInfoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Session?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  Account?: Prisma.AccountUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserInfoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  Session?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  Account?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
 }
 
 

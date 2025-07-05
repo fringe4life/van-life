@@ -1,4 +1,4 @@
-import { redirect, data, Link } from "react-router";
+import { redirect, data, Link, href } from "react-router";
 import { getHostVans } from "~/db/getHostVans";
 import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/hostVans";
@@ -44,7 +44,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
           Income last <span className="underline font-medium">30 days</span>
         </p>
         <p className="col-start-1 font-extrabold text-5xl text-text">$2,260</p>
-        <Link to="income" className="col-start-2 row-start-2">
+        <Link to={href("/host/income")} className="col-start-2 row-start-2">
           Details
         </Link>
       </div>
@@ -52,7 +52,10 @@ export default function Host({ loaderData }: Route.ComponentProps) {
         <p className="text-2xl font-bold text-shadow-text">
           Review Score star 5.0/5
         </p>
-        <Link to="reviews" className="text-base font-medium text-shadow-text">
+        <Link
+          to={href("/host/review")}
+          className="text-base font-medium text-shadow-text"
+        >
           Details
         </Link>
       </div>

@@ -6,4 +6,5 @@ model UserInfo {
   
   renter Rent[] @relation("renter")
   rented Rent[] @relation("host")
+
 }

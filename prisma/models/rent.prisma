@@ -1,7 +1,8 @@
 
 model Rent {
   id String @id @default(dbgenerated("gen_random_uuid()"))
-  amount Int
+  amount Decimal 
+
 
   renterId String
 

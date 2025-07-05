@@ -1,17 +1,18 @@
 import { getVans } from "~/db/getVans";
 
 import { Type as VanTypes } from "~/generated/prisma/enums";
-import type { Route } from "./+types/vans";
+
 import { data, href, Link, NavLink, useSearchParams } from "react-router";
-import { Badge, badgeVariants } from "~/components/ui/badge";
+import { badgeVariants } from "~/components/ui/badge";
 import Van from "~/components/Van";
+import type { Route } from "./+types/vans";
 
 export function meta(_: Route.MetaArgs) {
   return [
-    { title: "About Vanlife" },
+    { title: "Vans | Vanlife" },
     {
       name: "description",
-      content: "About us",
+      content: "Browse our vans for rent",
     },
   ];
 }

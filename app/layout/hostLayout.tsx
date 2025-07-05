@@ -15,7 +15,8 @@ export default function HostLayout() {
       <ul className="flex gap-3">
         <li>
           <NavLink
-            to={ href("/host") }
+            to={href("/host")}
+            end
             className={({ isActive, isPending }) =>
               isPending ? "text-green-500" : isActive ? "underline" : ""
             }
@@ -26,7 +27,7 @@ export default function HostLayout() {
         </li>
         <li>
           <NavLink
-            to="/host/income"
+            to={href("/host/income")}
             className={({ isActive, isPending }) =>
               isPending ? "text-green-500" : isActive ? "underline" : ""
             }
