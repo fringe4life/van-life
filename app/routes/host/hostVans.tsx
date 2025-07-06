@@ -7,6 +7,8 @@ import { getPaginationParams } from "~/lib/getPaginationParams";
 import { getHostVanCount } from "~/db/getHostVanCount";
 import { badgeVariants } from "~/components/ui/badge";
 import { buttonVariants } from "~/components/ui/button";
+import { getParamsClientSide } from "~/lib/getParamsClientSide";
+import GenericComponent from "~/components/vanList";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -47,8 +49,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
     limit: "10",
   });
 
-  const limit = Number.parseInt(searchParams.get("limit") ?? "10");
-  const page = Number.parseInt(searchParams.get("page") ?? "1");
+  const { page, limit } = getParamsClientSide(searchParams);
   const hasPagesOfVans = vansCount > vans.length;
   let numberOfPages = 1;
   let listOfLinks = [];
@@ -69,24 +70,29 @@ export default function Host({ loaderData }: Route.ComponentProps) {
       ></Link>
     );
   }
-  console.log({ vansCount, vansLenght: vans.length });
-  const vansToDisplay = vans.map((van) => (
-    <VanCard
-      key={van.id}
-      van={van}
-      link={href("/host/vans/:vanId", { vanId: van.id })}
-      action={
-        <Link to={href("/host/vans/:vanId", { vanId: van.id })}>Edit</Link>
-      }
+
+  const vansList = (
+    <GenericComponent
+      className="space-y-4"
+      Component={VanCard}
+      items={vans}
+      renderKey={(van) => van.id}
+      renderProps={(van) => ({
+        link: href("/host/vans/:vanId", { vanId: van.id }),
+        van,
+        action: (
+          <Link to={href("/host/vans/:vanId", { vanId: van.id })}>Edit</Link>
+        ),
+      })}
     />
-  ));
+  );
 
   return (
     <section>
       <h2 className="font-bold text-4xl mt-13.5 mb-8 text-text">
         Your listed vans
       </h2>
-      {vansToDisplay}
+      {vansList}
       {listOfLinks}
     </section>
   );

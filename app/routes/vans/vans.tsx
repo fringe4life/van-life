@@ -17,6 +17,7 @@ import { getPaginationParams } from "~/lib/getPaginationParams";
 import { buttonVariants } from "~/components/ui/button";
 import { getVansCount } from "~/db/getVansCount";
 import { getParamsClientSide } from "~/lib/getParamsClientSide";
+import GenericComponent from "~/components/vanList";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -58,9 +59,19 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
   const vansList = typeFilter
     ? vans.filter((van) => van.type === typeFilter.toUpperCase())
     : vans;
-  const vansToDisplay = vansList.map((van) => (
-    <Van van={van} key={van.id} filter={typeFilter} />
-  ));
+
+  const vansToDisplay = (
+    <GenericComponent
+      className="grid-max mt-6 "
+      Component={Van}
+      items={vansList}
+      renderKey={(van) => van.id}
+      renderProps={(van) => ({
+        van,
+        filter: typeFilter,
+      })}
+    />
+  );
 
   const hasPagesOfVans = vansCount > vans.length;
   let numberOfPages = 1;
@@ -105,8 +116,8 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
   });
 
   return (
-    <section className="grid-max mb-20">
-      <div className="col-span-full">
+    <section className=" mb-20">
+      <div>
         <h2 className="text-3xl font-bold mb-5.75 text-balance">
           Explore our van options
         </h2>

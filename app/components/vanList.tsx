@@ -5,6 +5,7 @@ interface GenericComponentProps<T, P> {
   items: T[];
   renderProps: (item: T) => P;
   renderKey: (item: T) => React.Key;
+  className: string;
 }
 
 const GenericComponent = <T, P>({
@@ -12,9 +13,10 @@ const GenericComponent = <T, P>({
   items,
   renderProps,
   renderKey,
+  className,
 }: GenericComponentProps<T, P>) => {
   return (
-    <div>
+    <div className={className}>
       {items.map((item) => (
         <Component key={renderKey(item)} {...renderProps(item)} />
       ))}
@@ -22,4 +24,4 @@ const GenericComponent = <T, P>({
   );
 };
 
-export default GenericComponent
+export default GenericComponent;
