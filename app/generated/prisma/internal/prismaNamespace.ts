@@ -1351,16 +1351,16 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'Type'
+ * Reference to a field of type 'VanType'
  */
-export type EnumTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Type'>
+export type EnumVanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VanType'>
     
 
 
 /**
- * Reference to a field of type 'Type[]'
+ * Reference to a field of type 'VanType[]'
  */
-export type ListEnumTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Type[]'>
+export type ListEnumVanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VanType[]'>
     
 
 

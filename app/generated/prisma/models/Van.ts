@@ -39,7 +39,7 @@ export type VanMinAggregateOutputType = {
   price: number | null
   description: string | null
   imageUrl: string | null
-  type: $Enums.Type | null
+  type: $Enums.VanType | null
   hostId: string | null
 }
 
@@ -49,7 +49,7 @@ export type VanMaxAggregateOutputType = {
   price: number | null
   description: string | null
   imageUrl: string | null
-  type: $Enums.Type | null
+  type: $Enums.VanType | null
   hostId: string | null
 }
 
@@ -196,7 +196,7 @@ export type VanGroupByOutputType = {
   price: number
   description: string
   imageUrl: string
-  type: $Enums.Type
+  type: $Enums.VanType
   hostId: string
   _count: VanCountAggregateOutputType | null
   _avg: VanAvgAggregateOutputType | null
@@ -229,7 +229,7 @@ export type VanWhereInput = {
   price?: Prisma.IntFilter<"Van"> | number
   description?: Prisma.StringFilter<"Van"> | string
   imageUrl?: Prisma.StringFilter<"Van"> | string
-  type?: Prisma.EnumTypeFilter<"Van"> | $Enums.Type
+  type?: Prisma.EnumVanTypeFilter<"Van"> | $Enums.VanType
   hostId?: Prisma.StringFilter<"Van"> | string
   userInfo?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
 }
@@ -255,7 +255,7 @@ export type VanWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.IntFilter<"Van"> | number
   description?: Prisma.StringFilter<"Van"> | string
   imageUrl?: Prisma.StringFilter<"Van"> | string
-  type?: Prisma.EnumTypeFilter<"Van"> | $Enums.Type
+  type?: Prisma.EnumVanTypeFilter<"Van"> | $Enums.VanType
   hostId?: Prisma.StringFilter<"Van"> | string
   userInfo?: Prisma.XOR<Prisma.UserInfoScalarRelationFilter, Prisma.UserInfoWhereInput>
 }, "id">
@@ -284,7 +284,7 @@ export type VanScalarWhereWithAggregatesInput = {
   price?: Prisma.IntWithAggregatesFilter<"Van"> | number
   description?: Prisma.StringWithAggregatesFilter<"Van"> | string
   imageUrl?: Prisma.StringWithAggregatesFilter<"Van"> | string
-  type?: Prisma.EnumTypeWithAggregatesFilter<"Van"> | $Enums.Type
+  type?: Prisma.EnumVanTypeWithAggregatesFilter<"Van"> | $Enums.VanType
   hostId?: Prisma.StringWithAggregatesFilter<"Van"> | string
 }
 
@@ -294,7 +294,7 @@ export type VanCreateInput = {
   price: number
   description: string
   imageUrl: string
-  type: $Enums.Type
+  type: $Enums.VanType
   userInfo: Prisma.UserInfoCreateNestedOneWithoutVansInput
 }
 
@@ -304,7 +304,7 @@ export type VanUncheckedCreateInput = {
   price: number
   description: string
   imageUrl: string
-  type: $Enums.Type
+  type: $Enums.VanType
   hostId: string
 }
 
@@ -314,7 +314,7 @@ export type VanUpdateInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
+  type?: Prisma.EnumVanTypeFieldUpdateOperationsInput | $Enums.VanType
   userInfo?: Prisma.UserInfoUpdateOneRequiredWithoutVansNestedInput
 }
 
@@ -324,7 +324,7 @@ export type VanUncheckedUpdateInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
+  type?: Prisma.EnumVanTypeFieldUpdateOperationsInput | $Enums.VanType
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -334,7 +334,7 @@ export type VanCreateManyInput = {
   price: number
   description: string
   imageUrl: string
-  type: $Enums.Type
+  type: $Enums.VanType
   hostId: string
 }
 
@@ -344,7 +344,7 @@ export type VanUpdateManyMutationInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
+  type?: Prisma.EnumVanTypeFieldUpdateOperationsInput | $Enums.VanType
 }
 
 export type VanUncheckedUpdateManyInput = {
@@ -353,7 +353,7 @@ export type VanUncheckedUpdateManyInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
+  type?: Prisma.EnumVanTypeFieldUpdateOperationsInput | $Enums.VanType
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -453,8 +453,8 @@ export type VanUncheckedUpdateManyWithoutUserInfoNestedInput = {
   deleteMany?: Prisma.VanScalarWhereInput | Prisma.VanScalarWhereInput[]
 }
 
-export type EnumTypeFieldUpdateOperationsInput = {
-  set?: $Enums.Type
+export type EnumVanTypeFieldUpdateOperationsInput = {
+  set?: $Enums.VanType
 }
 
 export type VanCreateWithoutUserInfoInput = {
@@ -463,7 +463,7 @@ export type VanCreateWithoutUserInfoInput = {
   price: number
   description: string
   imageUrl: string
-  type: $Enums.Type
+  type: $Enums.VanType
 }
 
 export type VanUncheckedCreateWithoutUserInfoInput = {
@@ -472,7 +472,7 @@ export type VanUncheckedCreateWithoutUserInfoInput = {
   price: number
   description: string
   imageUrl: string
-  type: $Enums.Type
+  type: $Enums.VanType
 }
 
 export type VanCreateOrConnectWithoutUserInfoInput = {
@@ -510,7 +510,7 @@ export type VanScalarWhereInput = {
   price?: Prisma.IntFilter<"Van"> | number
   description?: Prisma.StringFilter<"Van"> | string
   imageUrl?: Prisma.StringFilter<"Van"> | string
-  type?: Prisma.EnumTypeFilter<"Van"> | $Enums.Type
+  type?: Prisma.EnumVanTypeFilter<"Van"> | $Enums.VanType
   hostId?: Prisma.StringFilter<"Van"> | string
 }
 
@@ -520,7 +520,7 @@ export type VanCreateManyUserInfoInput = {
   price: number
   description: string
   imageUrl: string
-  type: $Enums.Type
+  type: $Enums.VanType
 }
 
 export type VanUpdateWithoutUserInfoInput = {
@@ -529,7 +529,7 @@ export type VanUpdateWithoutUserInfoInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
+  type?: Prisma.EnumVanTypeFieldUpdateOperationsInput | $Enums.VanType
 }
 
 export type VanUncheckedUpdateWithoutUserInfoInput = {
@@ -538,7 +538,7 @@ export type VanUncheckedUpdateWithoutUserInfoInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
+  type?: Prisma.EnumVanTypeFieldUpdateOperationsInput | $Enums.VanType
 }
 
 export type VanUncheckedUpdateManyWithoutUserInfoInput = {
@@ -547,7 +547,7 @@ export type VanUncheckedUpdateManyWithoutUserInfoInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumTypeFieldUpdateOperationsInput | $Enums.Type
+  type?: Prisma.EnumVanTypeFieldUpdateOperationsInput | $Enums.VanType
 }
 
 
@@ -617,7 +617,7 @@ export type $VanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     price: number
     description: string
     imageUrl: string
-    type: $Enums.Type
+    type: $Enums.VanType
     hostId: string
   }, ExtArgs["result"]["van"]>
   composites: {}
@@ -1048,7 +1048,7 @@ export interface VanFieldRefs {
   readonly price: Prisma.FieldRef<"Van", 'Int'>
   readonly description: Prisma.FieldRef<"Van", 'String'>
   readonly imageUrl: Prisma.FieldRef<"Van", 'String'>
-  readonly type: Prisma.FieldRef<"Van", 'Type'>
+  readonly type: Prisma.FieldRef<"Van", 'VanType'>
   readonly hostId: Prisma.FieldRef<"Van", 'String'>
 }
     

@@ -3,15 +3,10 @@ import { getHostVans } from "~/db/getHostVans";
 import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/hostVans";
 import VanCard from "~/cards/van-card";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationLink,
-  PaginationEllipsis,
-  PaginationNext,
-} from "~/components/ui/pagination";
+import { getPaginationParams } from "~/lib/getPaginationParams";
+import { getHostVanCount } from "~/db/getHostVanCount";
+import { badgeVariants } from "~/components/ui/badge";
+import { buttonVariants } from "~/components/ui/button";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -27,16 +22,14 @@ export async function loader({ request }: Route.LoaderArgs) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session) throw redirect("login");
 
-  const url = new URLSearchParams(request.url.split("?")?.[1] ?? "");
-  console.log({ url, page: url.get("page") });
-
-  const page = Number.parseInt(url.get("page") ?? "1");
-  const limit = Number.parseInt(url.get("limit") ?? "1");
+  const { page, limit } = getPaginationParams(request.url);
   const vans = await getHostVans(session.user.id, page, limit);
+  const vansCount = await getHostVanCount(session.user.id);
 
   return data(
     {
       vans,
+      vansCount,
     },
     {
       headers: {
@@ -47,13 +40,36 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Host({ loaderData }: Route.ComponentProps) {
-  const { vans } = loaderData;
+  const { vans, vansCount } = loaderData;
 
-  const [searchParams, setSearchParams] = useSearchParams({
+  const [searchParams] = useSearchParams({
     page: "1",
     limit: "10",
   });
 
+  const limit = Number.parseInt(searchParams.get("limit") ?? "10");
+  const page = Number.parseInt(searchParams.get("page") ?? "1");
+  const hasPagesOfVans = vansCount > vans.length;
+  let numberOfPages = 1;
+  let listOfLinks = [];
+  if (hasPagesOfVans) {
+    numberOfPages = Math.ceil(vansCount / limit);
+  }
+  for (let i = 0; i < numberOfPages; i++) {
+    listOfLinks.push(
+      <Link
+        key={i}
+        className={buttonVariants({
+          variant: page === i + 1 ? "link" : "outline",
+        })}
+        to={{
+          pathname: href("/host/vans"),
+          search: `?page=${i + 1}&limit=${limit}`,
+        }}
+      ></Link>
+    );
+  }
+  console.log({ vansCount, vansLenght: vans.length });
   const vansToDisplay = vans.map((van) => (
     <VanCard
       key={van.id}
@@ -71,6 +87,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
         Your listed vans
       </h2>
       {vansToDisplay}
+      {listOfLinks}
     </section>
   );
 }

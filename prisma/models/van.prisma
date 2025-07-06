@@ -1,12 +1,11 @@
-
 model Van {
-  id String @id @default(cuid())
-  name String 
-  price Int
+  id          String  @id @default(cuid())
+  name        String
+  price       Int
   description String
-  imageUrl String 
-  type Type
+  imageUrl    String
+  type        VanType
 
-  hostId String 
+  hostId   String
   userInfo UserInfo @relation(fields: [hostId], references: [userId])
 }

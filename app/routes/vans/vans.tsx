@@ -1,11 +1,22 @@
 import { getVans } from "~/db/getVans";
 
-import { Type as VanTypes } from "~/generated/prisma/enums";
+import { VanType } from "~/generated/prisma/enums";
 
-import { data, href, Link, NavLink, useSearchParams } from "react-router";
+import {
+  data,
+  href,
+  Link,
+  NavLink,
+  useLocation,
+  useSearchParams,
+} from "react-router";
 import { badgeVariants } from "~/components/ui/badge";
 import Van from "~/components/Van";
 import type { Route } from "./+types/vans";
+import { getPaginationParams } from "~/lib/getPaginationParams";
+import { buttonVariants } from "~/components/ui/button";
+import { getVansCount } from "~/db/getVansCount";
+import { getParamsClientSide } from "~/lib/getParamsClientSide";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -17,10 +28,15 @@ export function meta(_: Route.MetaArgs) {
   ];
 }
 
-export async function loader() {
-  const badges = Object.values(VanTypes);
+export async function loader({ request }: Route.LoaderArgs) {
+  const badges = Object.values(VanType);
+
+  const { page, limit, typeFilter } = getPaginationParams(request.url);
+
+  const vans = await getVans(page, limit, typeFilter.toUpperCase() as VanType);
+  const vansCount = await getVansCount(typeFilter.toUpperCase() as VanType);
   return data(
-    { vans: await getVans(), badges },
+    { vans, badges, vansCount },
     {
       headers: {
         "Cache-Control": "max-age=259200",
@@ -30,16 +46,46 @@ export async function loader() {
 }
 
 export default function Vans({ loaderData }: Route.ComponentProps) {
-  const { vans, badges } = loaderData;
+  const { vans, badges, vansCount } = loaderData;
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const typeFilter = searchParams.get("type");
+  const [searchParams] = useSearchParams({
+    page: "1",
+    limit: "10",
+  });
+  const location = useLocation();
+  console.log({ searchParams, vansCount, location });
+  const { page, limit, typeFilter } = getParamsClientSide(searchParams);
   const vansList = typeFilter
     ? vans.filter((van) => van.type === typeFilter.toUpperCase())
     : vans;
   const vansToDisplay = vansList.map((van) => (
     <Van van={van} key={van.id} filter={typeFilter} />
   ));
+
+  const hasPagesOfVans = vansCount > vans.length;
+  let numberOfPages = 1;
+  let listOfLinks = [];
+  if (hasPagesOfVans) {
+    numberOfPages = Math.ceil(vansCount / limit);
+  }
+  for (let i = 0; i < numberOfPages; i++) {
+    listOfLinks.push(
+      <Link
+        key={i}
+        className={buttonVariants({
+          variant: page === i + 1 ? "link" : "outline",
+        })}
+        to={{
+          pathname: href("/vans"),
+          search: `?page=${i + 1}&limit=${limit}&filter=${
+            typeFilter ? typeFilter : ""
+          }`,
+        }}
+      >
+        {i + 1}
+      </Link>
+    );
+  }
 
   const filtersToDisplay = badges.map((type) => {
     const lowerCaseType = type.toLowerCase();
@@ -72,6 +118,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
         </p>
       </div>
       {vansToDisplay}
+      {listOfLinks}
     </section>
   );
 }

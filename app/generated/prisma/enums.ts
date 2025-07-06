@@ -7,10 +7,10 @@
 *
 * 🟢 You can import this file directly.
 */
-export const Type = {
+export const VanType = {
   SIMPLE: 'SIMPLE',
   LUXURY: 'LUXURY',
   RUGGED: 'RUGGED'
 } as const
 
-export type Type = (typeof Type)[keyof typeof Type]
+export type VanType = (typeof VanType)[keyof typeof VanType]

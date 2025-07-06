@@ -1,18 +1,9 @@
 import { href, Link, NavLink, Outlet } from "react-router";
-import { auth } from "~/lib/auth/auth";
 import { authClient } from "~/lib/auth/client";
-import type { Route } from "./+types/layout";
 
-// export const loader = async ({ request }: Route.ClientLoaderArgs) => {
-//   const result = await auth.api.getSession({ headers: request.headers });
-//   console.log({ result });
-// };
-
-export default function Layout({}: Route.ComponentProps) {
-  const { data: session } = authClient.useSession();
+export default function Layout() {
+  const { data: session } = authClient.useSession(); 
   const hasToken = session?.session;
-  console.log({ session: hasToken });
-  // const hasToken = false;
   return (
     <>
       <header className="flex justify-between px-4 py-9 items-center">

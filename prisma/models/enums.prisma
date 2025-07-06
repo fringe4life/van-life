@@ -1,4 +1,4 @@
-enum Type {
+enum VanType {
   SIMPLE
   LUXURY
   RUGGED

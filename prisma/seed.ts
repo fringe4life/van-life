@@ -199,9 +199,13 @@ const reviews = [
 
 const main = async () => {
   // clear tables
-  await prisma.review.deleteMany();
-  await prisma.rent.deleteMany();
-  await prisma.van.deleteMany();
+  try {
+    await prisma.review.deleteMany();
+    await prisma.rent.deleteMany();
+    await prisma.van.deleteMany();
+  } catch (error) {
+    console.error(error);
+  }
 
   const data = await prisma.user.findMany();
   const userIds = data.map((user) => user.id);

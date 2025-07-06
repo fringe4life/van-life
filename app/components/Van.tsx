@@ -2,8 +2,6 @@ import { Link, href } from "react-router";
 import { Badge } from "./ui/badge";
 import { Card, CardHeader, CardFooter, CardTitle } from "./ui/card";
 import type { Van } from "~/generated/prisma/client";
-import type { Type } from "~/generated/prisma/enums";
-
 type VanProps = {
   van: Van;
   filter: string | null;

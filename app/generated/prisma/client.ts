@@ -79,5 +79,5 @@ export type UserInfo = Prisma.UserInfoModel
  */
 export type Van = Prisma.VanModel
 
-export type Type = $Enums.Type
-export const Type = $Enums.Type
+export type VanType = $Enums.VanType
+export const VanType = $Enums.VanType

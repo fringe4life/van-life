@@ -153,6 +153,7 @@ export type UserInfoWhereInput = {
   vans?: Prisma.VanListRelationFilter
   renter?: Prisma.RentListRelationFilter
   rented?: Prisma.RentListRelationFilter
+  review?: Prisma.ReviewListRelationFilter
 }
 
 export type UserInfoOrderByWithRelationInput = {
@@ -161,6 +162,7 @@ export type UserInfoOrderByWithRelationInput = {
   vans?: Prisma.VanOrderByRelationAggregateInput
   renter?: Prisma.RentOrderByRelationAggregateInput
   rented?: Prisma.RentOrderByRelationAggregateInput
+  review?: Prisma.ReviewOrderByRelationAggregateInput
   _relevance?: Prisma.UserInfoOrderByRelevanceInput
 }
 
@@ -173,6 +175,7 @@ export type UserInfoWhereUniqueInput = Prisma.AtLeast<{
   vans?: Prisma.VanListRelationFilter
   renter?: Prisma.RentListRelationFilter
   rented?: Prisma.RentListRelationFilter
+  review?: Prisma.ReviewListRelationFilter
 }, "userId" | "userId">
 
 export type UserInfoOrderByWithAggregationInput = {
@@ -194,6 +197,7 @@ export type UserInfoCreateInput = {
   vans?: Prisma.VanCreateNestedManyWithoutUserInfoInput
   renter?: Prisma.RentCreateNestedManyWithoutRenterInput
   rented?: Prisma.RentCreateNestedManyWithoutHostInput
+  review?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
 export type UserInfoUncheckedCreateInput = {
@@ -201,6 +205,7 @@ export type UserInfoUncheckedCreateInput = {
   vans?: Prisma.VanUncheckedCreateNestedManyWithoutUserInfoInput
   renter?: Prisma.RentUncheckedCreateNestedManyWithoutRenterInput
   rented?: Prisma.RentUncheckedCreateNestedManyWithoutHostInput
+  review?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserInfoUpdateInput = {
@@ -208,6 +213,7 @@ export type UserInfoUpdateInput = {
   vans?: Prisma.VanUpdateManyWithoutUserInfoNestedInput
   renter?: Prisma.RentUpdateManyWithoutRenterNestedInput
   rented?: Prisma.RentUpdateManyWithoutHostNestedInput
+  review?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
 export type UserInfoUncheckedUpdateInput = {
@@ -215,6 +221,7 @@ export type UserInfoUncheckedUpdateInput = {
   vans?: Prisma.VanUncheckedUpdateManyWithoutUserInfoNestedInput
   renter?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
   rented?: Prisma.RentUncheckedUpdateManyWithoutHostNestedInput
+  review?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserInfoCreateManyInput = {
@@ -317,6 +324,20 @@ export type UserInfoUpdateOneRequiredWithoutRentedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserInfoUpdateToOneWithWhereWithoutRentedInput, Prisma.UserInfoUpdateWithoutRentedInput>, Prisma.UserInfoUncheckedUpdateWithoutRentedInput>
 }
 
+export type UserInfoCreateNestedOneWithoutReviewInput = {
+  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutReviewInput, Prisma.UserInfoUncheckedCreateWithoutReviewInput>
+  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutReviewInput
+  connect?: Prisma.UserInfoWhereUniqueInput
+}
+
+export type UserInfoUpdateOneRequiredWithoutReviewNestedInput = {
+  create?: Prisma.XOR<Prisma.UserInfoCreateWithoutReviewInput, Prisma.UserInfoUncheckedCreateWithoutReviewInput>
+  connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutReviewInput
+  upsert?: Prisma.UserInfoUpsertWithoutReviewInput
+  connect?: Prisma.UserInfoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserInfoUpdateToOneWithWhereWithoutReviewInput, Prisma.UserInfoUpdateWithoutReviewInput>, Prisma.UserInfoUncheckedUpdateWithoutReviewInput>
+}
+
 export type UserInfoCreateNestedOneWithoutVansInput = {
   create?: Prisma.XOR<Prisma.UserInfoCreateWithoutVansInput, Prisma.UserInfoUncheckedCreateWithoutVansInput>
   connectOrCreate?: Prisma.UserInfoCreateOrConnectWithoutVansInput
@@ -335,12 +356,14 @@ export type UserInfoCreateWithoutUserInput = {
   vans?: Prisma.VanCreateNestedManyWithoutUserInfoInput
   renter?: Prisma.RentCreateNestedManyWithoutRenterInput
   rented?: Prisma.RentCreateNestedManyWithoutHostInput
+  review?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
 export type UserInfoUncheckedCreateWithoutUserInput = {
   vans?: Prisma.VanUncheckedCreateNestedManyWithoutUserInfoInput
   renter?: Prisma.RentUncheckedCreateNestedManyWithoutRenterInput
   rented?: Prisma.RentUncheckedCreateNestedManyWithoutHostInput
+  review?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserInfoCreateOrConnectWithoutUserInput = {
@@ -363,24 +386,28 @@ export type UserInfoUpdateWithoutUserInput = {
   vans?: Prisma.VanUpdateManyWithoutUserInfoNestedInput
   renter?: Prisma.RentUpdateManyWithoutRenterNestedInput
   rented?: Prisma.RentUpdateManyWithoutHostNestedInput
+  review?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
 export type UserInfoUncheckedUpdateWithoutUserInput = {
   vans?: Prisma.VanUncheckedUpdateManyWithoutUserInfoNestedInput
   renter?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
   rented?: Prisma.RentUncheckedUpdateManyWithoutHostNestedInput
+  review?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserInfoCreateWithoutRenterInput = {
   user: Prisma.UserCreateNestedOneWithoutUserInfoInput
   vans?: Prisma.VanCreateNestedManyWithoutUserInfoInput
   rented?: Prisma.RentCreateNestedManyWithoutHostInput
+  review?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
 export type UserInfoUncheckedCreateWithoutRenterInput = {
   userId: string
   vans?: Prisma.VanUncheckedCreateNestedManyWithoutUserInfoInput
   rented?: Prisma.RentUncheckedCreateNestedManyWithoutHostInput
+  review?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserInfoCreateOrConnectWithoutRenterInput = {
@@ -392,12 +419,14 @@ export type UserInfoCreateWithoutRentedInput = {
   user: Prisma.UserCreateNestedOneWithoutUserInfoInput
   vans?: Prisma.VanCreateNestedManyWithoutUserInfoInput
   renter?: Prisma.RentCreateNestedManyWithoutRenterInput
+  review?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
 export type UserInfoUncheckedCreateWithoutRentedInput = {
   userId: string
   vans?: Prisma.VanUncheckedCreateNestedManyWithoutUserInfoInput
   renter?: Prisma.RentUncheckedCreateNestedManyWithoutRenterInput
+  review?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserInfoCreateOrConnectWithoutRentedInput = {
@@ -420,12 +449,14 @@ export type UserInfoUpdateWithoutRenterInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutUserInfoNestedInput
   vans?: Prisma.VanUpdateManyWithoutUserInfoNestedInput
   rented?: Prisma.RentUpdateManyWithoutHostNestedInput
+  review?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
 export type UserInfoUncheckedUpdateWithoutRenterInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   vans?: Prisma.VanUncheckedUpdateManyWithoutUserInfoNestedInput
   rented?: Prisma.RentUncheckedUpdateManyWithoutHostNestedInput
+  review?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserInfoUpsertWithoutRentedInput = {
@@ -443,24 +474,72 @@ export type UserInfoUpdateWithoutRentedInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutUserInfoNestedInput
   vans?: Prisma.VanUpdateManyWithoutUserInfoNestedInput
   renter?: Prisma.RentUpdateManyWithoutRenterNestedInput
+  review?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
 export type UserInfoUncheckedUpdateWithoutRentedInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   vans?: Prisma.VanUncheckedUpdateManyWithoutUserInfoNestedInput
   renter?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
+  review?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserInfoCreateWithoutReviewInput = {
+  user: Prisma.UserCreateNestedOneWithoutUserInfoInput
+  vans?: Prisma.VanCreateNestedManyWithoutUserInfoInput
+  renter?: Prisma.RentCreateNestedManyWithoutRenterInput
+  rented?: Prisma.RentCreateNestedManyWithoutHostInput
+}
+
+export type UserInfoUncheckedCreateWithoutReviewInput = {
+  userId: string
+  vans?: Prisma.VanUncheckedCreateNestedManyWithoutUserInfoInput
+  renter?: Prisma.RentUncheckedCreateNestedManyWithoutRenterInput
+  rented?: Prisma.RentUncheckedCreateNestedManyWithoutHostInput
+}
+
+export type UserInfoCreateOrConnectWithoutReviewInput = {
+  where: Prisma.UserInfoWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserInfoCreateWithoutReviewInput, Prisma.UserInfoUncheckedCreateWithoutReviewInput>
+}
+
+export type UserInfoUpsertWithoutReviewInput = {
+  update: Prisma.XOR<Prisma.UserInfoUpdateWithoutReviewInput, Prisma.UserInfoUncheckedUpdateWithoutReviewInput>
+  create: Prisma.XOR<Prisma.UserInfoCreateWithoutReviewInput, Prisma.UserInfoUncheckedCreateWithoutReviewInput>
+  where?: Prisma.UserInfoWhereInput
+}
+
+export type UserInfoUpdateToOneWithWhereWithoutReviewInput = {
+  where?: Prisma.UserInfoWhereInput
+  data: Prisma.XOR<Prisma.UserInfoUpdateWithoutReviewInput, Prisma.UserInfoUncheckedUpdateWithoutReviewInput>
+}
+
+export type UserInfoUpdateWithoutReviewInput = {
+  user?: Prisma.UserUpdateOneRequiredWithoutUserInfoNestedInput
+  vans?: Prisma.VanUpdateManyWithoutUserInfoNestedInput
+  renter?: Prisma.RentUpdateManyWithoutRenterNestedInput
+  rented?: Prisma.RentUpdateManyWithoutHostNestedInput
+}
+
+export type UserInfoUncheckedUpdateWithoutReviewInput = {
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  vans?: Prisma.VanUncheckedUpdateManyWithoutUserInfoNestedInput
+  renter?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
+  rented?: Prisma.RentUncheckedUpdateManyWithoutHostNestedInput
 }
 
 export type UserInfoCreateWithoutVansInput = {
   user: Prisma.UserCreateNestedOneWithoutUserInfoInput
   renter?: Prisma.RentCreateNestedManyWithoutRenterInput
   rented?: Prisma.RentCreateNestedManyWithoutHostInput
+  review?: Prisma.ReviewCreateNestedManyWithoutUserInput
 }
 
 export type UserInfoUncheckedCreateWithoutVansInput = {
   userId: string
   renter?: Prisma.RentUncheckedCreateNestedManyWithoutRenterInput
   rented?: Prisma.RentUncheckedCreateNestedManyWithoutHostInput
+  review?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserInfoCreateOrConnectWithoutVansInput = {
@@ -483,12 +562,14 @@ export type UserInfoUpdateWithoutVansInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutUserInfoNestedInput
   renter?: Prisma.RentUpdateManyWithoutRenterNestedInput
   rented?: Prisma.RentUpdateManyWithoutHostNestedInput
+  review?: Prisma.ReviewUpdateManyWithoutUserNestedInput
 }
 
 export type UserInfoUncheckedUpdateWithoutVansInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   renter?: Prisma.RentUncheckedUpdateManyWithoutRenterNestedInput
   rented?: Prisma.RentUncheckedUpdateManyWithoutHostNestedInput
+  review?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -500,12 +581,14 @@ export type UserInfoCountOutputType = {
   vans: number
   renter: number
   rented: number
+  review: number
 }
 
 export type UserInfoCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   vans?: boolean | UserInfoCountOutputTypeCountVansArgs
   renter?: boolean | UserInfoCountOutputTypeCountRenterArgs
   rented?: boolean | UserInfoCountOutputTypeCountRentedArgs
+  review?: boolean | UserInfoCountOutputTypeCountReviewArgs
 }
 
 /**
@@ -539,6 +622,13 @@ export type UserInfoCountOutputTypeCountRentedArgs<ExtArgs extends runtime.Types
   where?: Prisma.RentWhereInput
 }
 
+/**
+ * UserInfoCountOutputType without action
+ */
+export type UserInfoCountOutputTypeCountReviewArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewWhereInput
+}
+
 
 export type UserInfoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
@@ -546,6 +636,7 @@ export type UserInfoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   vans?: boolean | Prisma.UserInfo$vansArgs<ExtArgs>
   renter?: boolean | Prisma.UserInfo$renterArgs<ExtArgs>
   rented?: boolean | Prisma.UserInfo$rentedArgs<ExtArgs>
+  review?: boolean | Prisma.UserInfo$reviewArgs<ExtArgs>
   _count?: boolean | Prisma.UserInfoCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userInfo"]>
 
@@ -569,6 +660,7 @@ export type UserInfoInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   vans?: boolean | Prisma.UserInfo$vansArgs<ExtArgs>
   renter?: boolean | Prisma.UserInfo$renterArgs<ExtArgs>
   rented?: boolean | Prisma.UserInfo$rentedArgs<ExtArgs>
+  review?: boolean | Prisma.UserInfo$reviewArgs<ExtArgs>
   _count?: boolean | Prisma.UserInfoCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserInfoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -585,6 +677,7 @@ export type $UserInfoPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     vans: Prisma.$VanPayload<ExtArgs>[]
     renter: Prisma.$RentPayload<ExtArgs>[]
     rented: Prisma.$RentPayload<ExtArgs>[]
+    review: Prisma.$ReviewPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     userId: string
@@ -986,6 +1079,7 @@ export interface Prisma__UserInfoClient<T, Null = never, ExtArgs extends runtime
   vans<T extends Prisma.UserInfo$vansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInfo$vansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   renter<T extends Prisma.UserInfo$renterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInfo$renterArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   rented<T extends Prisma.UserInfo$rentedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInfo$rentedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  review<T extends Prisma.UserInfo$reviewArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserInfo$reviewArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1490,6 +1584,30 @@ export type UserInfo$rentedArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.RentScalarFieldEnum | Prisma.RentScalarFieldEnum[]
+}
+
+/**
+ * UserInfo.review
+ */
+export type UserInfo$reviewArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Review
+   */
+  select?: Prisma.ReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Review
+   */
+  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewInclude<ExtArgs> | null
+  where?: Prisma.ReviewWhereInput
+  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
 }
 
 /**

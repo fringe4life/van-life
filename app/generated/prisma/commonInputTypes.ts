@@ -218,21 +218,21 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
-export type EnumTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.Type | Prisma.EnumTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.Type[] | Prisma.ListEnumTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.Type[] | Prisma.ListEnumTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTypeFilter<$PrismaModel> | $Enums.Type
+export type EnumVanTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.VanType | Prisma.EnumVanTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VanType[] | Prisma.ListEnumVanTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VanType[] | Prisma.ListEnumVanTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVanTypeFilter<$PrismaModel> | $Enums.VanType
 }
 
-export type EnumTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.Type | Prisma.EnumTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.Type[] | Prisma.ListEnumTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.Type[] | Prisma.ListEnumTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTypeWithAggregatesFilter<$PrismaModel> | $Enums.Type
+export type EnumVanTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VanType | Prisma.EnumVanTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VanType[] | Prisma.ListEnumVanTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VanType[] | Prisma.ListEnumVanTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVanTypeWithAggregatesFilter<$PrismaModel> | $Enums.VanType
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumTypeFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVanTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVanTypeFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -453,21 +453,21 @@ export type NestedFloatFilter<$PrismaModel = never> = {
   not?: Prisma.NestedFloatFilter<$PrismaModel> | number
 }
 
-export type NestedEnumTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.Type | Prisma.EnumTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.Type[] | Prisma.ListEnumTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.Type[] | Prisma.ListEnumTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTypeFilter<$PrismaModel> | $Enums.Type
+export type NestedEnumVanTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.VanType | Prisma.EnumVanTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VanType[] | Prisma.ListEnumVanTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VanType[] | Prisma.ListEnumVanTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVanTypeFilter<$PrismaModel> | $Enums.VanType
 }
 
-export type NestedEnumTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.Type | Prisma.EnumTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.Type[] | Prisma.ListEnumTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.Type[] | Prisma.ListEnumTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTypeWithAggregatesFilter<$PrismaModel> | $Enums.Type
+export type NestedEnumVanTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VanType | Prisma.EnumVanTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VanType[] | Prisma.ListEnumVanTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VanType[] | Prisma.ListEnumVanTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVanTypeWithAggregatesFilter<$PrismaModel> | $Enums.VanType
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumTypeFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVanTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVanTypeFilter<$PrismaModel>
 }
 
 
