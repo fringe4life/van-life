@@ -2,13 +2,7 @@ import { getVans } from "~/db/getVans";
 
 import { VanType } from "~/generated/prisma/enums";
 
-import {
-  data,
-  href,
-  Link,
-  NavLink,
-  useSearchParams,
-} from "react-router";
+import { data, href, Link, NavLink, useSearchParams } from "react-router";
 import { badgeVariants } from "~/components/ui/badge";
 import Van from "~/components/Van";
 import type { Route } from "./+types/vans";

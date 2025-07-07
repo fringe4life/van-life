@@ -11,6 +11,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { StarIcon } from "lucide-react";
+import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 export function meta(_: Route.MetaArgs) {
   return [
     { title: "Reviews | Vanlife" },
@@ -22,8 +24,7 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await auth.api.getSession({ headers: request.headers });
-  if (!session) throw redirect(href("/login"));
+  const session = await getSessionOrRedirect(request)
 
   const reviews = await getHostReviews(session.user.id);
   return data(
@@ -49,6 +50,8 @@ export default function Host({ loaderData }: Route.ComponentProps) {
     { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
   );
 
+  console.log({ user: reviews[0].user.user.name });
+
   const mappedData = [
     { name: "1 stars", amount: result[1] },
     { name: "2 stars", amount: result[2] },
@@ -56,6 +59,10 @@ export default function Host({ loaderData }: Route.ComponentProps) {
     { name: "4 stars", amount: result[4] },
     { name: "5 stars", amount: result[5] },
   ];
+
+  const ratingInStars = reviews.map((review) => new Array(review.rating));
+
+  const reviewText = reviews.map((review) => review);
 
   console.log({ reviews });
   return (
@@ -69,7 +76,14 @@ export default function Host({ loaderData }: Route.ComponentProps) {
         <Legend />
         <Bar dataKey="amount" fill="oklch(75.27% 0.167 52.58)" />
       </BarChart>
-      <article></article>
+      <article>
+        <h3 className="text-text text-lg font-bold">
+          Reviews ({reviews.length})
+        </h3>
+        <div>
+          <p>{}</p>
+        </div>
+      </article>
     </section>
   );
 }

@@ -195,6 +195,66 @@ const reviews = [
     rating: 5,
     text: "The van was a great experience. It was without flaws!",
   },
+  {
+    rating: 1,
+    text: "The van was not a good experience. It was not roadworthy",
+  },
+  {
+    rating: 2,
+    text: "The van was not a good experience. It had a terrible smell",
+  },
+  {
+    rating: 3,
+    text: "The van was an average experience. It had a few minor issues that made driving it less pleasent then it needed to be.",
+  },
+  {
+    rating: 4,
+    text: "The van was not a good experience. It was almost without flaws!",
+  },
+  {
+    rating: 5,
+    text: "The van was a great experience. It was without flaws!",
+  },
+  {
+    rating: 1,
+    text: "The van was not a good experience. It was not roadworthy",
+  },
+  {
+    rating: 2,
+    text: "The van was not a good experience. It had a terrible smell",
+  },
+  {
+    rating: 3,
+    text: "The van was an average experience. It had a few minor issues that made driving it less pleasent then it needed to be.",
+  },
+  {
+    rating: 4,
+    text: "The van was not a good experience. It was almost without flaws!",
+  },
+  {
+    rating: 5,
+    text: "The van was a great experience. It was without flaws!",
+  },
+  {
+    rating: 1,
+    text: "The van was not a good experience. It was not roadworthy",
+  },
+  {
+    rating: 2,
+    text: "The van was not a good experience. It had a terrible smell",
+  },
+  {
+    rating: 3,
+    text: "The van was an average experience. It had a few minor issues that made driving it less pleasent then it needed to be.",
+  },
+  {
+    rating: 4,
+    text: "The van was not a good experience. It was almost without flaws!",
+  },
+  {
+    rating: 5,
+    text: "The van was a great experience. It was without flaws!",
+  },
 ];
 
 const main = async () => {

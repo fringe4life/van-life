@@ -5,6 +5,17 @@ export async function getHostReviews(userId: string) {
     where: {
       userId,
     },
+    include: {
+      user: {
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   console.log(reviews);
