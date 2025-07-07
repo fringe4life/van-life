@@ -13,10 +13,9 @@ import { badgeVariants } from "~/components/ui/badge";
 import Van from "~/components/Van";
 import type { Route } from "./+types/vans";
 import { getPaginationParams } from "~/lib/getPaginationParams";
-import { buttonVariants } from "~/components/ui/button";
 import { getVansCount } from "~/db/getVansCount";
 import { getParamsClientSide } from "~/lib/getParamsClientSide";
-import GenericComponent from "~/components/vanList";
+import GenericComponent from "~/components/Container";
 import Pagination from "~/components/Pagination";
 
 export function meta(_: Route.MetaArgs) {
@@ -54,7 +53,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
     limit: "10",
   });
   const { page, limit, typeFilter } = getParamsClientSide(searchParams);
-  
+
   const vansList = typeFilter
     ? vans.filter((van) => van.type === typeFilter.toUpperCase())
     : vans;

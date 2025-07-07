@@ -6,7 +6,7 @@ import VanCard from "~/cards/van-card";
 import { getPaginationParams } from "~/lib/getPaginationParams";
 import { getHostVanCount } from "~/db/getHostVanCount";
 import { getParamsClientSide } from "~/lib/getParamsClientSide";
-import GenericComponent from "~/components/vanList";
+import GenericComponent from "~/components/Container";
 import Pagination from "~/components/Pagination";
 
 export function meta(_: Route.MetaArgs) {
@@ -50,30 +50,26 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 
   const { page, limit } = getParamsClientSide(searchParams);
 
-  const vansList = (
-    <GenericComponent
-      className="space-y-4"
-      Component={VanCard}
-      items={vans}
-      renderKey={(van) => van.id}
-      renderProps={(van) => ({
-        link: href("/host/vans/:vanId", { vanId: van.id }),
-        van,
-        action: (
-          <Link to={href("/host/vans/:vanId", { vanId: van.id })}>Edit</Link>
-        ),
-      })}
-    />
-  );
-
   return (
     <section>
       <h2 className="font-bold text-4xl mt-13.5 mb-8 text-text">
         Your listed vans
       </h2>
-      {vansList}
+      <GenericComponent
+        className="space-y-4"
+        Component={VanCard}
+        items={vans}
+        renderKey={(van) => van.id}
+        renderProps={(van) => ({
+          link: href("/host/vans/:vanId", { vanId: van.id }),
+          van,
+          action: (
+            <Link to={href("/host/vans/:vanId", { vanId: van.id })}>Edit</Link>
+          ),
+        })}
+      />
       <Pagination
-        pathname={href('/host/vans')}
+        pathname={href("/host/vans")}
         itemsCount={vansCount}
         limit={limit}
         page={page}

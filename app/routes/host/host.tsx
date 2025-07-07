@@ -1,18 +1,11 @@
-import {
-  data,
-  Form,
-  href,
-  Link,
-  redirect,
-  useSearchParams,
-} from "react-router";
+import { data, href, Link, redirect } from "react-router";
 import type { Route } from "./+types/host";
 import { auth } from "~/lib/auth/auth";
 import { getHostVans } from "~/db/getHostVans";
 import VanCard from "~/cards/van-card";
 import { getAccountSummary } from "~/db/getAccountSummary";
 import { getAverageReviewRating } from "~/db/getAvgReviews";
-import { getHostVanCount } from "~/db/getHostVanCount";
+import GenericComponent from "~/components/Container";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -26,10 +19,8 @@ export function meta(_: Route.MetaArgs) {
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await auth.api.getSession({ headers: request.headers });
-  if (!session) throw redirect("login");
+  if (!session) throw redirect(href("/login"));
   const vans = await getHostVans(session.user.id, 1, 3);
-
-  const hostVansCount = await getHostVanCount(session.user.id);
 
   const sumIncome = await getAccountSummary(session.user.id);
 
@@ -40,7 +31,6 @@ export async function loader({ request }: Route.LoaderArgs) {
       vans,
       sumIncome,
       avgRating,
-      hostVansCount,
     },
     {
       headers: {
@@ -52,18 +42,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { vans, sumIncome, avgRating } = loaderData;
-
-  const vansToDisplay = vans
-    .filter((_, index) => index < 4)
-    .map((van) => (
-      <VanCard
-        key={van.id}
-        van={van}
-        link={href("/host/vans/:vanId", { vanId: van.id })}
-        action={<p></p>}
-      />
-    ));
-
   return (
     <section>
       <div className="bg-orange-100 py-9 px-6.5 grid justify-between items-center grid-cols-[auto_fit-content]">
@@ -89,7 +67,17 @@ export default function Host({ loaderData }: Route.ComponentProps) {
           Details
         </Link>
       </div>
-      {vansToDisplay}
+      <GenericComponent
+        items={vans}
+        Component={VanCard}
+        className="space-y-6"
+        renderKey={(item) => item.id}
+        renderProps={(item) => ({
+          van: item,
+          link: href("/host/vans/:vanId", { vanId: item.id }),
+          action: <p></p>,
+        })}
+      />
     </section>
   );
 }
