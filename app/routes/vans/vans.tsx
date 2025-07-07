@@ -18,6 +18,7 @@ import { buttonVariants } from "~/components/ui/button";
 import { getVansCount } from "~/db/getVansCount";
 import { getParamsClientSide } from "~/lib/getParamsClientSide";
 import GenericComponent from "~/components/vanList";
+import Pagination from "~/components/Pagination";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -60,44 +61,6 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
     ? vans.filter((van) => van.type === typeFilter.toUpperCase())
     : vans;
 
-  const vansToDisplay = (
-    <GenericComponent
-      className="grid-max mt-6 "
-      Component={Van}
-      items={vansList}
-      renderKey={(van) => van.id}
-      renderProps={(van) => ({
-        van,
-        filter: typeFilter,
-      })}
-    />
-  );
-
-  const hasPagesOfVans = vansCount > vans.length;
-  let numberOfPages = 1;
-  let listOfLinks = [];
-  if (hasPagesOfVans) {
-    numberOfPages = Math.ceil(vansCount / limit);
-  }
-  for (let i = 0; i < numberOfPages; i++) {
-    listOfLinks.push(
-      <Link
-        key={i}
-        className={buttonVariants({
-          variant: page === i + 1 ? "link" : "outline",
-        })}
-        to={{
-          pathname: href("/vans"),
-          search: `?page=${i + 1}&limit=${limit}&filter=${
-            typeFilter ? typeFilter : ""
-          }`,
-        }}
-      >
-        {i + 1}
-      </Link>
-    );
-  }
-
   const filtersToDisplay = badges.map((type) => {
     const lowerCaseType = type.toLowerCase();
     const variant = typeFilter === type.toLowerCase() ? type : "OUTLINE";
@@ -128,8 +91,23 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
           </Link>
         </p>
       </div>
-      {vansToDisplay}
-      {listOfLinks}
+      <GenericComponent
+        className="grid-max mt-6 "
+        Component={Van}
+        items={vansList}
+        renderKey={(van) => van.id}
+        renderProps={(van) => ({
+          van,
+          filter: typeFilter,
+        })}
+      />
+      <Pagination
+        itemsCount={vansCount}
+        limit={limit}
+        page={page}
+        typeFilter={typeFilter}
+        items={vans}
+      />
     </section>
   );
 }

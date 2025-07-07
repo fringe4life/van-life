@@ -5,10 +5,9 @@ import type { Route } from "./+types/hostVans";
 import VanCard from "~/cards/van-card";
 import { getPaginationParams } from "~/lib/getPaginationParams";
 import { getHostVanCount } from "~/db/getHostVanCount";
-import { badgeVariants } from "~/components/ui/badge";
-import { buttonVariants } from "~/components/ui/button";
 import { getParamsClientSide } from "~/lib/getParamsClientSide";
 import GenericComponent from "~/components/vanList";
+import Pagination from "~/components/Pagination";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -50,26 +49,6 @@ export default function Host({ loaderData }: Route.ComponentProps) {
   });
 
   const { page, limit } = getParamsClientSide(searchParams);
-  const hasPagesOfVans = vansCount > vans.length;
-  let numberOfPages = 1;
-  let listOfLinks = [];
-  if (hasPagesOfVans) {
-    numberOfPages = Math.ceil(vansCount / limit);
-  }
-  for (let i = 0; i < numberOfPages; i++) {
-    listOfLinks.push(
-      <Link
-        key={i}
-        className={buttonVariants({
-          variant: page === i + 1 ? "link" : "outline",
-        })}
-        to={{
-          pathname: href("/host/vans"),
-          search: `?page=${i + 1}&limit=${limit}`,
-        }}
-      ></Link>
-    );
-  }
 
   const vansList = (
     <GenericComponent
@@ -93,7 +72,13 @@ export default function Host({ loaderData }: Route.ComponentProps) {
         Your listed vans
       </h2>
       {vansList}
-      {listOfLinks}
+      <Pagination
+        itemsCount={vansCount}
+        limit={limit}
+        page={page}
+        typeFilter={undefined}
+        items={vans}
+      />
     </section>
   );
 }

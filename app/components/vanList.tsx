@@ -3,8 +3,8 @@ import React from "react";
 interface GenericComponentProps<T, P> {
   Component: React.ComponentType<P>;
   items: T[];
-  renderProps: (item: T) => P;
-  renderKey: (item: T) => React.Key;
+  renderProps: (item: T, index: number) => P;
+  renderKey: (item: T, index: number) => React.Key;
   className: string;
 }
 
@@ -17,8 +17,8 @@ const GenericComponent = <T, P>({
 }: GenericComponentProps<T, P>) => {
   return (
     <div className={className}>
-      {items.map((item) => (
-        <Component key={renderKey(item)} {...renderProps(item)} />
+      {items.map((item, index) => (
+        <Component key={renderKey(item, index)} {...renderProps(item, index)} />
       ))}
     </div>
   );
