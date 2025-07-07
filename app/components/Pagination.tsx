@@ -1,44 +1,47 @@
 import { href, Link } from "react-router";
 import { buttonVariants } from "./ui/button";
 
-type PaginationProps<T> = {
+type PaginationProps = {
   itemsCount: number;
   limit: number;
   page: number;
   typeFilter: string | undefined;
-  items: T[];
+  pathname: string;
 };
 
-export default function Pagination<T>({
+export default function Pagination({
   itemsCount,
-  items,
   typeFilter,
   limit,
   page,
-}: PaginationProps<T>) {
-  const hasPagesOfVans = itemsCount > items.length;
-  let numberOfPages = 1;
-  let listOfLinks = [];
-  if (hasPagesOfVans) {
-    numberOfPages = Math.ceil(itemsCount / limit);
-  }
+  pathname,
+}: PaginationProps) {
+  const numberOfPages = Math.ceil(itemsCount / limit);
+  const listOfLinks = [];
+
   for (let i = 0; i < numberOfPages; i++) {
+    const pageNumber = i + 1;
+    const isPage = pageNumber === page;
     listOfLinks.push(
       <Link
+        aria-label={`page ${pageNumber}`}
+        aria-selected={isPage}
         key={i}
         className={buttonVariants({
-          variant: page === i + 1 ? "link" : "outline",
+          variant: isPage ? "link" : "outline",
         })}
         to={{
-          pathname: href("/vans"),
-          search: `?page=${i + 1}&limit=${limit}&filter=${
+          pathname,
+          search: `?page=${pageNumber}&limit=${limit}&filter=${
             typeFilter ? typeFilter : ""
           }`,
         }}
       >
-        {i + 1}
+        {pageNumber}
       </Link>
     );
   }
-  return <section className="flex justify-center gap-6">{listOfLinks}</section>;
+  return (
+    <section className="flex justify-center gap-6 my-6">{listOfLinks}</section>
+  );
 }

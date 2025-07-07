@@ -7,7 +7,6 @@ import {
   href,
   Link,
   NavLink,
-  useLocation,
   useSearchParams,
 } from "react-router";
 import { badgeVariants } from "~/components/ui/badge";
@@ -54,9 +53,8 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
     page: "1",
     limit: "10",
   });
-  const location = useLocation();
-  console.log({ searchParams, vansCount, location });
   const { page, limit, typeFilter } = getParamsClientSide(searchParams);
+  
   const vansList = typeFilter
     ? vans.filter((van) => van.type === typeFilter.toUpperCase())
     : vans;
@@ -106,7 +104,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
         limit={limit}
         page={page}
         typeFilter={typeFilter}
-        items={vans}
+        pathname={href("/vans")}
       />
     </section>
   );

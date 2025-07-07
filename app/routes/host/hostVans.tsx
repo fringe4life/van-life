@@ -73,11 +73,11 @@ export default function Host({ loaderData }: Route.ComponentProps) {
       </h2>
       {vansList}
       <Pagination
+        pathname={href('/host/vans')}
         itemsCount={vansCount}
         limit={limit}
         page={page}
         typeFilter={undefined}
-        items={vans}
       />
     </section>
   );
