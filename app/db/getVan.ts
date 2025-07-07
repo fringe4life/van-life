@@ -1,7 +1,7 @@
 import { prisma } from "~/lib/prisma";
 
-export function getVan(id: string) {
-  return prisma.van.findUnique({
+export async function getVan(id: string) {
+  return await prisma.van.findUnique({
     where: {
       id,
     },

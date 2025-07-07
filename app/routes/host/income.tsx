@@ -2,7 +2,7 @@ import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/income";
 import { data, href, redirect } from "react-router";
 import { getAccountSummary } from "~/db/getAccountSummary";
-
+import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 export function meta(_: Route.MetaArgs) {
   return [
     { title: "Your Income | Vanlife" },
@@ -14,8 +14,7 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await auth.api.getSession({ headers: request.headers });
-  if (!session) throw redirect(href("/login"));
+  const session = await getSessionOrRedirect(request);
 
   const sumIncome = await getAccountSummary(session.user.id);
 

@@ -8,6 +8,7 @@ import { getHostVanCount } from "~/db/getHostVanCount";
 import { getParamsClientSide } from "~/lib/getParamsClientSide";
 import GenericComponent from "~/components/Container";
 import Pagination from "~/components/Pagination";
+import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -20,8 +21,7 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await auth.api.getSession({ headers: request.headers });
-  if (!session) throw redirect("login");
+  const session = await getSessionOrRedirect(request);
 
   const { page, limit } = getPaginationParams(request.url);
   const vans = await getHostVans(session.user.id, page, limit);

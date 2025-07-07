@@ -1,8 +1,8 @@
 import { redirect, data, Link, useOutletContext } from "react-router";
 import { getHostVan } from "~/db/getHostVan";
-import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/vanDetail";
 import type { Van } from "~/generated/prisma/client";
+import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 
 export function meta({ data }: Route.MetaArgs) {
   return [
@@ -15,9 +15,8 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const session = await auth.api.getSession({ headers: request.headers });
+  const session = await getSessionOrRedirect(request);
   const { vanId } = params;
-  if (!session) throw redirect("/login");
   if (!vanId) throw redirect("/notfound");
   const van = await getHostVan(session.user.id, vanId);
   if (!van) throw redirect("/notfound");
