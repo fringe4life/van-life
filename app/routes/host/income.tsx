@@ -1,6 +1,5 @@
-import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/income";
-import { data, href, redirect } from "react-router";
+import { data } from "react-router";
 import { getAccountSummary } from "~/db/getAccountSummary";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 export function meta(_: Route.MetaArgs) {

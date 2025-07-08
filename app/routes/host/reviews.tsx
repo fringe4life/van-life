@@ -14,6 +14,8 @@ import {
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 import GenericComponent from "~/components/Container";
 import Review from "~/components/Review";
+import clsx from "clsx";
+import useIsNavigating from "~/hooks/useIsNavigating";
 export function meta(_: Route.MetaArgs) {
   return [
     { title: "Reviews | Vanlife" },
@@ -43,6 +45,8 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { reviews } = loaderData;
 
+  const { changingPage } = useIsNavigating();
+
   const result = reviews.reduce(
     (acc, cur) => {
       acc[cur.rating as 1 | 2 | 3 | 4 | 5] += 1;
@@ -63,13 +67,17 @@ export default function Host({ loaderData }: Route.ComponentProps) {
     name: review.user.user.name,
     text: review.text,
     rating: review.rating,
-    timestamp: review.updatedAt.toLocaleString(),
+    timestamp: review.updatedAt?.toLocaleString() ?? "unknown",
     id: review.id,
   }));
 
   console.log({ reviews });
   return (
-    <section>
+    <section
+      className={clsx({
+        "opacity-75": changingPage,
+      })}
+    >
       <h3 className="">Reviews</h3>
       <ResponsiveContainer width="100%" height={250}>
         <BarChart data={mappedData}>

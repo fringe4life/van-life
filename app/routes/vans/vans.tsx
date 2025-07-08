@@ -11,6 +11,8 @@ import { getVansCount } from "~/db/getVansCount";
 import { getParamsClientSide } from "~/lib/getParamsClientSide";
 import GenericComponent from "~/components/Container";
 import Pagination from "~/components/Pagination";
+import useIsNavigating from "~/hooks/useIsNavigating";
+import clsx from "clsx";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -48,6 +50,8 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
   });
   const { page, limit, typeFilter } = getParamsClientSide(searchParams);
 
+  const { changingPage } = useIsNavigating();
+
   const vansList = typeFilter
     ? vans.filter((van) => van.type === typeFilter.toUpperCase())
     : vans;
@@ -75,7 +79,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
         <h2 className="text-3xl font-bold mb-5.75 text-balance">
           Explore our van options
         </h2>
-        <p className="flex justify-between md:justify-start md:gap-6">
+        <p className="flex justify-between md:justify-start md:gap-6 mb-6">
           {filtersToDisplay}{" "}
           <Link className="hover:underline" to={href("/vans")}>
             Clear filters
@@ -83,7 +87,10 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
         </p>
       </div>
       <GenericComponent
-        className="grid-max mt-6 "
+        className={clsx({
+          "grid-max mt-6": true,
+          "opacity-75": changingPage,
+        })}
         Component={Van}
         items={vansList}
         renderKey={(van) => van.id}

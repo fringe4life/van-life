@@ -1,6 +1,5 @@
-import { redirect, data, Link, href, useSearchParams } from "react-router";
+import { data, Link, href, useSearchParams } from "react-router";
 import { getHostVans } from "~/db/getHostVans";
-import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/hostVans";
 import VanCard from "~/cards/van-card";
 import { getPaginationParams } from "~/lib/getPaginationParams";
@@ -9,6 +8,8 @@ import { getParamsClientSide } from "~/lib/getParamsClientSide";
 import GenericComponent from "~/components/Container";
 import Pagination from "~/components/Pagination";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
+import useIsNavigating from "~/hooks/useIsNavigating";
+import clsx from "clsx";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -43,6 +44,8 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { vans, vansCount } = loaderData;
 
+  const { changingPage } = useIsNavigating();
+
   const [searchParams] = useSearchParams({
     page: "1",
     limit: "10",
@@ -56,7 +59,10 @@ export default function Host({ loaderData }: Route.ComponentProps) {
         Your listed vans
       </h2>
       <GenericComponent
-        className="space-y-4"
+        className={clsx({
+          "space-y-6 mt-6": true,
+          "opacity-75": changingPage,
+        })}
         Component={VanCard}
         items={vans}
         renderKey={(van) => van.id}

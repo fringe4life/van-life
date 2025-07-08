@@ -23,7 +23,8 @@ export default function Review({ name, rating, text, timestamp }: ReviewProps) {
       <CardHeader>
         <RatingStars rating={rating} />
         <CardTitle className="my-4">
-          {name} <span>{timestamp ?? "unknown"}</span>
+          {name}{" "}
+          <span className="text-text-secondary">{timestamp ?? "unknown"}</span>
         </CardTitle>
       </CardHeader>
       <CardContent>{text}</CardContent>

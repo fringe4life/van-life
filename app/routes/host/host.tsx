@@ -1,11 +1,13 @@
-import { data, href, Link, redirect } from "react-router";
+import { data, href, Link } from "react-router";
 import type { Route } from "./+types/host";
-import { auth } from "~/lib/auth/auth";
 import { getHostVans } from "~/db/getHostVans";
 import VanCard from "~/cards/van-card";
 import { getAccountSummary } from "~/db/getAccountSummary";
 import { getAverageReviewRating } from "~/db/getAvgReviews";
 import GenericComponent from "~/components/Container";
+import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
+import clsx from "clsx";
+import useIsNavigating from "~/hooks/useIsNavigating";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -18,8 +20,7 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await auth.api.getSession({ headers: request.headers });
-  if (!session) throw redirect(href("/login"));
+  const session = await getSessionOrRedirect(request);
   const vans = await getHostVans(session.user.id, 1, 3);
 
   const sumIncome = await getAccountSummary(session.user.id);
@@ -31,6 +32,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       vans,
       sumIncome,
       avgRating,
+      name: session.user.name,
     },
     {
       headers: {
@@ -41,11 +43,15 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Host({ loaderData }: Route.ComponentProps) {
-  const { vans, sumIncome, avgRating } = loaderData;
+  const { vans, sumIncome, avgRating, name } = loaderData;
+
+  const { changingPage } = useIsNavigating();
   return (
     <section>
       <div className="bg-orange-100 py-9 px-6.5 grid justify-between items-center grid-cols-[auto_fit-content]">
-        <h2 className="col-start-1 font-bold text-4xl text-text">Welcome!</h2>
+        <h2 className="col-start-1 font-bold text-4xl text-text">
+          Welcome {name ? name : "User"}!
+        </h2>
         <p className="col-start-1 my-8 text-base text-text-secondary font-light">
           Income last <span className="underline font-medium">30 days</span>
         </p>
@@ -70,7 +76,10 @@ export default function Host({ loaderData }: Route.ComponentProps) {
       <GenericComponent
         items={vans}
         Component={VanCard}
-        className="space-y-6"
+        className={clsx({
+          "space-y-6": true,
+          "opacity-75": changingPage,
+        })}
         renderKey={(item) => item.id}
         renderProps={(item) => ({
           van: item,

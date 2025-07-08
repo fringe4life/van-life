@@ -366,6 +366,8 @@ const main = async () => {
   await prisma.review.createMany({
     data: reviewsWithIds,
   });
+
+  await prisma.$disconnect()
 };
 
 function getRandomId(ids: string[]) {
