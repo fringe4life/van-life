@@ -1,4 +1,4 @@
-import { href, Link } from "react-router";
+import { Link } from "react-router";
 import { buttonVariants } from "./ui/button";
 
 type PaginationProps = {

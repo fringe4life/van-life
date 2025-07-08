@@ -5,17 +5,17 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider               = "prisma-client"
+  output                 = "../app/generated/prisma"
   runtime                = "nodejs"
   moduleFormat           = "esm"
   generatedFileExtension = "ts"
   importFileExtension    = "ts"
-  previewFeatures = ["relationJoins", "queryCompiler", "driverAdapters", "fullTextSearchPostgres"]
+  previewFeatures        = ["relationJoins", "queryCompiler", "driverAdapters", "fullTextSearchPostgres"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }

@@ -176,7 +176,7 @@ export type UserInfoWhereUniqueInput = Prisma.AtLeast<{
   renter?: Prisma.RentListRelationFilter
   rented?: Prisma.RentListRelationFilter
   review?: Prisma.ReviewListRelationFilter
-}, "userId" | "userId">
+}, "userId">
 
 export type UserInfoOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
