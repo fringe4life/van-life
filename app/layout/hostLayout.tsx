@@ -9,7 +9,7 @@ export const loader = async ({ request }: Route.ClientLoaderArgs) => {
 export default function HostLayout() {
   return (
     <div>
-      <ul className="flex gap-3">
+      <ul className="flex gap-3 mb-14">
         <li>
           <NavLink
             to={href("/host")}

@@ -208,18 +208,26 @@ const reviews = [
   {
     rating: 1,
     text: "The van was not a good experience. It was not roadworthy",
+    createdAt: new Date("2024-12-16T00:00:00Z"),
+    updatedAt: new Date("2024-12-16T00:00:00Z"),
   },
   {
     rating: 2,
     text: "The van was not a good experience. It had a terrible smell",
+    createdAt: new Date("2019-03-12T00:00:00Z"),
+    updatedAt: new Date("2019-03-12T00:00:00Z"),
   },
   {
     rating: 3,
     text: "The van was an average experience. It had a few minor issues that made driving it less pleasent then it needed to be.",
+    createdAt: new Date("2020-03-15T00:00:00Z"),
+    updatedAt: new Date("2020-03-15T00:00:00Z"),
   },
   {
     rating: 4,
     text: "The van was not a good experience. It was almost without flaws!",
+    createdAt: new Date("2021-12-05T00:00:00Z"),
+    updatedAt: new Date("2021-12-05T00:00:00Z"),
   },
   {
     rating: 5,
@@ -228,62 +236,92 @@ const reviews = [
   {
     rating: 1,
     text: "The van was a terrible experience it went through gas like nobody's business",
+    createdAt: new Date("2022-12-04T00:00:00Z"),
+    updatedAt: new Date("2022-12-04T00:00:00Z"),
   },
   {
     rating: 2,
     text: "The van was not a good experience. It had a terrible mattress, sleeping was almost impossible.",
+    createdAt: new Date("2025-02-28:00:00Z"),
+    updatedAt: new Date("2025-02-28:00:00Z"),
   },
   {
     rating: 3,
     text: "The van was not really good or bad, just average. ",
+    createdAt: new Date("2025-03-21T00:00:00Z"),
+    updatedAt: new Date("2025-03-21T00:00:00Z"),
   },
   {
     rating: 4,
     text: "The van was a pleasure most of the time, but not quite 5 stars due to the occasional squeaky mattress",
+    createdAt: new Date("2024-09-17T00:00:00Z"),
+    updatedAt: new Date("2024-09-17T00:00:00Z"),
   },
   {
     rating: 5,
     text: "The van was a flawless experience a real trip down memory lane!",
+    createdAt: new Date("2023-03-13T00:00:00Z"),
+    updatedAt: new Date("2023-03-13T00:00:00Z"),
   },
   {
     rating: 1,
     text: "This van barely worked and required a mechanic to fix on multiple occasions. A terrible trip!",
+    createdAt: new Date("2023-01-24T00:00:00Z"),
+    updatedAt: new Date("2023-01-24T00:00:00Z"),
   },
   {
     rating: 2,
     text: "This van was not in good condition. I do not recommend.",
+    createdAt: new Date("2023-05-29T00:00:00Z"),
+    updatedAt: new Date("2023-05-29T00:00:00Z"),
   },
   {
     rating: 3,
     text: "This van was not in as great a condition as the photos suggested and could clearly use a car wash!",
+    createdAt: new Date("2023-06-07T00:00:00Z"),
+    updatedAt: new Date("2023-06-07T00:00:00Z"),
   },
   {
     rating: 4,
     text: "This van was mostly great to use and allowed us to enjoy our trip!",
+    createdAt: new Date("2021-07-07T00:00:00Z"),
+    updatedAt: new Date("2021-07-07T00:00:00Z"),
   },
   {
     rating: 5,
     text: "A flawless adventure to the great outdoors, I would highly recommend this van!",
+    createdAt: new Date("2022-06-06T00:00:00Z"),
+    updatedAt: new Date("2022-06-06T00:00:00Z"),
   },
   {
     rating: 1,
     text: "This van and the owner were a nightmare to deal with. Please choose a different van!",
+    createdAt: new Date("2025-10-10T00:00:00Z"),
+    updatedAt: new Date("2025-10-10T00:00:00Z"),
   },
   {
     rating: 2,
     text: "Our trip did not go as expected due to the need for multiple mechanics to keep this van roadworthy!",
+    createdAt: new Date("2024-01-09T00:00:00Z"),
+    updatedAt: new Date("2024-01-09T00:00:00Z"),
   },
   {
     rating: 3,
     text: "You might choose this Van if you have to travel within a fixed/small budget",
+    createdAt: new Date("2023-06-01T00:00:00Z"),
+    updatedAt: new Date("2023-06-01T00:00:00Z"),
   },
   {
     rating: 4,
     text: "A van that is easy to recommend but could be better!",
+    createdAt: new Date("2025-01-11T00:00:00Z"),
+    updatedAt: new Date("2025-01-11T00:00:00Z"),
   },
   {
     rating: 5,
     text: "The trip we took in this van was an amazing experience and makes recommending this van very easy!",
+    createdAt: new Date("2024-11-01T00:00:00Z"),
+    updatedAt: new Date("2024-11-01T00:00:00Z"),
   },
 ];
 

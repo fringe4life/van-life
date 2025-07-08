@@ -9,6 +9,7 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  ResponsiveContainer,
 } from "recharts";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 import GenericComponent from "~/components/Container";
@@ -50,8 +51,6 @@ export default function Host({ loaderData }: Route.ComponentProps) {
     { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
   );
 
-  console.log({ user: reviews[0].user.user.name });
-
   const mappedData = [
     { name: "1 stars", amount: result[1] },
     { name: "2 stars", amount: result[2] },
@@ -59,8 +58,6 @@ export default function Host({ loaderData }: Route.ComponentProps) {
     { name: "4 stars", amount: result[4] },
     { name: "5 stars", amount: result[5] },
   ];
-
-  const ratingInStars = reviews.map((review) => new Array(review.rating));
 
   const reviewItems = reviews.map((review) => ({
     name: review.user.user.name,
@@ -70,33 +67,31 @@ export default function Host({ loaderData }: Route.ComponentProps) {
     id: review.id,
   }));
 
-  const displayReviews = (
-    <GenericComponent
-      className=""
-      Component={Review}
-      items={reviewItems}
-      renderProps={(item) => item}
-      renderKey={(item) => item.id}
-    />
-  );
-
   console.log({ reviews });
   return (
     <section>
-      <h2 className="">Reviews</h2>
-      <BarChart width={730} height={250} data={mappedData}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="amount" fill="oklch(75.27% 0.167 52.58)" />
-      </BarChart>
+      <h3 className="">Reviews</h3>
+      <ResponsiveContainer width="100%" height={250}>
+        <BarChart data={mappedData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="amount" fill="oklch(75.27% 0.167 52.58)" />
+        </BarChart>
+      </ResponsiveContainer>
       <article>
         <h3 className="text-text text-lg font-bold">
           Reviews ({reviews.length})
         </h3>
-        {displayReviews}
+        <GenericComponent
+          className="space-y-6"
+          Component={Review}
+          items={reviewItems}
+          renderProps={(item) => item}
+          renderKey={(item) => item.id}
+        />
       </article>
     </section>
   );

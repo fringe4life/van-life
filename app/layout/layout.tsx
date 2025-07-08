@@ -2,7 +2,7 @@ import { href, Link, NavLink, Outlet } from "react-router";
 import { authClient } from "~/lib/auth/client";
 
 export default function Layout() {
-  const { data: session } = authClient.useSession(); 
+  const { data: session } = authClient.useSession();
   const hasToken = session?.session;
   return (
     <>
@@ -70,10 +70,10 @@ export default function Layout() {
           </ul>
         </nav>
       </header>
-      <main className="grid grid-rows-subgrid">
+      <main className="grid grid-rows-subgrid mb-16">
         <Outlet />
       </main>
-      <footer className="bg-neutral-800">
+      <footer className="bg-neutral-800 ">
         <p className="uppercase text-sm text-center py-6.25 text-[#aaa]">
           &copy;{new Date().getFullYear()} #vanlife
         </p>

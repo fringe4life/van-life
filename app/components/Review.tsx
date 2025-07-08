@@ -7,6 +7,7 @@ import {
   CardTitle,
   CardContent,
 } from "./ui/card";
+import RatingStars from "./RatingStars";
 
 type ReviewProps = {
   name: string;
@@ -20,8 +21,8 @@ export default function Review({ name, rating, text, timestamp }: ReviewProps) {
   return (
     <Card>
       <CardHeader>
-        <p>{rating}</p>
-        <CardTitle>
+        <RatingStars rating={rating} />
+        <CardTitle className="my-4">
           {name} <span>{timestamp ?? "unknown"}</span>
         </CardTitle>
       </CardHeader>
