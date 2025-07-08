@@ -172,6 +172,36 @@ const rents = [
   {
     amount: 12000,
   },
+  {
+    amount: 7000,
+  },
+  {
+    amount: 300,
+  },
+  {
+    amount: 5000,
+  },
+  {
+    amount: 800,
+  },
+  {
+    amount: 600,
+  },
+  {
+    amount: 2000,
+  },
+  {
+    amount: 1000,
+  },
+  {
+    amount: 6000,
+  },
+  {
+    amount: 800,
+  },
+  {
+    amount: 200,
+  },
 ];
 
 const reviews = [
@@ -193,67 +223,67 @@ const reviews = [
   },
   {
     rating: 5,
-    text: "The van was a great experience. It was without flaws!",
+    text: "The van was a great experience. It was genuine luxury and a pleasure to drive",
   },
   {
     rating: 1,
-    text: "The van was not a good experience. It was not roadworthy",
+    text: "The van was a terrible experience it went through gas like nobody's business",
   },
   {
     rating: 2,
-    text: "The van was not a good experience. It had a terrible smell",
+    text: "The van was not a good experience. It had a terrible mattress, sleeping was almost impossible.",
   },
   {
     rating: 3,
-    text: "The van was an average experience. It had a few minor issues that made driving it less pleasent then it needed to be.",
+    text: "The van was not really good or bad, just average. ",
   },
   {
     rating: 4,
-    text: "The van was not a good experience. It was almost without flaws!",
+    text: "The van was a pleasure most of the time, but not quite 5 stars due to the occasional squeaky mattress",
   },
   {
     rating: 5,
-    text: "The van was a great experience. It was without flaws!",
+    text: "The van was a flawless experience a real trip down memory lane!",
   },
   {
     rating: 1,
-    text: "The van was not a good experience. It was not roadworthy",
+    text: "This van barely worked and required a mechanic to fix on multiple occasions. A terrible trip!",
   },
   {
     rating: 2,
-    text: "The van was not a good experience. It had a terrible smell",
+    text: "This van was not in good condition. I do not recommend.",
   },
   {
     rating: 3,
-    text: "The van was an average experience. It had a few minor issues that made driving it less pleasent then it needed to be.",
+    text: "This van was not in as great a condition as the photos suggested and could clearly use a car wash!",
   },
   {
     rating: 4,
-    text: "The van was not a good experience. It was almost without flaws!",
+    text: "This van was mostly great to use and allowed us to enjoy our trip!",
   },
   {
     rating: 5,
-    text: "The van was a great experience. It was without flaws!",
+    text: "A flawless adventure to the great outdoors, I would highly recommend this van!",
   },
   {
     rating: 1,
-    text: "The van was not a good experience. It was not roadworthy",
+    text: "This van and the owner were a nightmare to deal with. Please choose a different van!",
   },
   {
     rating: 2,
-    text: "The van was not a good experience. It had a terrible smell",
+    text: "Our trip did not go as expected due to the need for multiple mechanics to keep this van roadworthy!",
   },
   {
     rating: 3,
-    text: "The van was an average experience. It had a few minor issues that made driving it less pleasent then it needed to be.",
+    text: "You might choose this Van if you have to travel within a fixed/small budget",
   },
   {
     rating: 4,
-    text: "The van was not a good experience. It was almost without flaws!",
+    text: "A van that is easy to recommend but could be better!",
   },
   {
     rating: 5,
-    text: "The van was a great experience. It was without flaws!",
+    text: "The trip we took in this van was an amazing experience and makes recommending this van very easy!",
   },
 ];
 

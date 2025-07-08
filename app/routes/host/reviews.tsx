@@ -1,6 +1,5 @@
-import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/reviews";
-import { data, href, redirect } from "react-router";
+import { data } from "react-router";
 import { getHostReviews } from "~/db/getHostReviews";
 import {
   Bar,
@@ -11,8 +10,9 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { StarIcon } from "lucide-react";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
+import GenericComponent from "~/components/Container";
+import Review from "~/components/Review";
 export function meta(_: Route.MetaArgs) {
   return [
     { title: "Reviews | Vanlife" },
@@ -24,7 +24,7 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await getSessionOrRedirect(request)
+  const session = await getSessionOrRedirect(request);
 
   const reviews = await getHostReviews(session.user.id);
   return data(
@@ -62,12 +62,28 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 
   const ratingInStars = reviews.map((review) => new Array(review.rating));
 
-  const reviewText = reviews.map((review) => review);
+  const reviewItems = reviews.map((review) => ({
+    name: review.user.user.name,
+    text: review.text,
+    rating: review.rating,
+    timestamp: review.updatedAt.toLocaleString(),
+    id: review.id,
+  }));
+
+  const displayReviews = (
+    <GenericComponent
+      className=""
+      Component={Review}
+      items={reviewItems}
+      renderProps={(item) => item}
+      renderKey={(item) => item.id}
+    />
+  );
 
   console.log({ reviews });
   return (
     <section>
-      <h2></h2>Reviews
+      <h2 className="">Reviews</h2>
       <BarChart width={730} height={250} data={mappedData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
@@ -80,9 +96,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
         <h3 className="text-text text-lg font-bold">
           Reviews ({reviews.length})
         </h3>
-        <div>
-          <p>{}</p>
-        </div>
+        {displayReviews}
       </article>
     </section>
   );
