@@ -2,6 +2,7 @@ import type { Route } from "./+types/income";
 import { data } from "react-router";
 import { getAccountSummary } from "~/db/getAccountSummary";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
+import { displayPrice } from "~/lib/displayPrice";
 export function meta(_: Route.MetaArgs) {
   return [
     { title: "Your Income | Vanlife" },
@@ -31,5 +32,5 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { sumIncome } = loaderData;
-  return <div>{((sumIncome as number) ?? 0).toFixed(2)}</div>;
+  return <div>{displayPrice(sumIncome)}</div>;
 }

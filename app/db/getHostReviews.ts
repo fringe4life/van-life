@@ -18,6 +18,6 @@ export async function getHostReviews(userId: string) {
     },
   });
 
-  console.log(reviews);
+  console.log(reviews[0].createdAt);
   return reviews;
 }
