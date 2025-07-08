@@ -1130,7 +1130,8 @@ export const RentScalarFieldEnum = {
   id: 'id',
   amount: 'amount',
   renterId: 'renterId',
-  hostId: 'hostId'
+  hostId: 'hostId',
+  rentedAt: 'rentedAt'
 } as const
 
 export type RentScalarFieldEnum = (typeof RentScalarFieldEnum)[keyof typeof RentScalarFieldEnum]

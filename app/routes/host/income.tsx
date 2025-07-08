@@ -1,6 +1,7 @@
 import type { Route } from "./+types/income";
 import { data } from "react-router";
 import { getAccountSummary } from "~/db/getAccountSummary";
+import { getHostTransactions } from "~/db/getHostTransactions";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 import { displayPrice } from "~/lib/displayPrice";
 export function meta(_: Route.MetaArgs) {
@@ -18,9 +19,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   const sumIncome = await getAccountSummary(session.user.id);
 
+  const hostIncomes = await getHostTransactions(session.user.id);
   return data(
     {
       sumIncome,
+      hostIncomes,
     },
     {
       headers: {
@@ -31,6 +34,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Host({ loaderData }: Route.ComponentProps) {
-  const { sumIncome } = loaderData;
+  const { sumIncome, hostIncomes } = loaderData;
   return <div>{displayPrice(sumIncome)}</div>;
 }

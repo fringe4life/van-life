@@ -44,12 +44,9 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 
   const typeFilter = location.state?.type || "";
 
-
-const {changingPage} = useIsNavigating()
+  const { changingPage } = useIsNavigating();
   return (
-    <div className={
-      clsx({'opacity-75': changingPage})
-    }>
+    <div className={clsx({ "opacity-75": changingPage })}>
       <Link
         to={{
           pathname: href("/vans"),
