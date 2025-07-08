@@ -3,9 +3,9 @@ model Review {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  text   String
+  text   String @db.VarChar(512)
   userId String
-  rating Int
+  rating Int    @db.SmallInt
 
   rentId String
   renter Rent   @relation(fields: [rentId], references: [id])
