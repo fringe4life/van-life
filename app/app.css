@@ -236,3 +236,7 @@ html {
     )
   );
 }
+
+.grid-max-medium {
+  --_max-columns: 2;
+}
