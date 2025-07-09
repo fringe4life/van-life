@@ -7,7 +7,6 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  route("/api/auth/*", "routes/api/auth.ts"),
   layout("layout/layout.tsx", [
     index("./routes/home.tsx"),
     route("about", "./routes/about.tsx"),
@@ -33,6 +32,7 @@ export default [
         ]),
       ]),
     ]),
-    route("*", "./routes/404.tsx"),
   ]),
+  route("/api/auth/*", "routes/api/auth.ts"),
+  route("*", "./routes/404.tsx"),
 ] satisfies RouteConfig;
