@@ -20,6 +20,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@react-router/node": "^7.6.3",
     "@react-router/serve": "^7.6.3",
+    "@vercel/react-router": "^1.2.0",
     "better-auth": "^1.2.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

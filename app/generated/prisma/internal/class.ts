@@ -27,9 +27,9 @@ const config: runtime.GetPrismaClientConfig = {
     },
     "config": {
       "importFileExtension": "ts",
+      "runtime": "nodejs",
       "generatedFileExtension": "ts",
       "moduleFormat": "esm",
-      "runtime": "nodejs",
       "engineType": "client"
     },
     "binaryTargets": [
