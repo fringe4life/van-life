@@ -18,3 +18,9 @@ export default defineConfig({
     tsconfigPaths(),
   ],
 });
+
+// {
+//   "$schema": "https://openapi.vercel.sh/vercel.json",
+//   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+//   "framework": "react-router"
+// }
