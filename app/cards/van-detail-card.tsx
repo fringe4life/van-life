@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { href, NavLink } from "react-router";
 import { Badge } from "~/components/ui/badge";
 import {
@@ -20,10 +19,10 @@ export default function VanDetailCard({
   children,
 }: VanDetailCardProps) {
   return (
-    <div className="@container/detail max-w-full">
+    <div className="@container/detail ">
       <Card className="">
         <CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] @min-md/detail:gap-4">
-          <div className="@min-md/detail:col-span-1">
+          <div className="@min-md/detail:col-span-1 rounded-sm">
             <img src={imageUrl} alt={name} width={300} height={300} />
           </div>
           <div className="@min-md/detail:col-span-1  @min-md/detail:col-start-2 content-center">

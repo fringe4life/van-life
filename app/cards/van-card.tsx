@@ -29,7 +29,7 @@ export default function VanCard({
             height={200}
           />
         </CardHeader>
-        <CardFooter className="@min-md/card:content-center  @md/card:bg-red-500 @min-md/card:grid-cols-subgrid @min-md/card:col-span-2   @min-md/card:row-span-2 @min-md/card:grid-rows-subgrid @min-md/card:col-start-2">
+        <CardFooter className="@min-md/card:content-center  @min-md/card:grid-cols-subgrid @min-md/card:col-span-2   @min-md/card:row-span-2 @min-md/card:grid-rows-subgrid @min-md/card:col-start-2">
           <CardTitle className="text-2xl @min-md/card:col-start-2 @min-md/card:row-end-2 @min-md/card:self-start">
             <Link to={link}>
               {name}

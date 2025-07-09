@@ -3,6 +3,8 @@ import type { Route } from "./+types/vanDetailLayout";
 import { data, redirect, Outlet, Link } from "react-router";
 import { getHostVan } from "~/db/getHostVan";
 import VanDetailCard from "~/cards/van-detail-card";
+import useIsNavigating from "~/hooks/useIsNavigating";
+import clsx from "clsx";
 
 export function meta({ data }: Route.MetaArgs) {
   return [
@@ -36,13 +38,20 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
   const { van } = loaderData;
+  const { changingPage } = useIsNavigating();
   return (
     <>
       <Link to=".." relative="path" className="mt-15 mb-8">
         &larr; Back to all vans
       </Link>
       <VanDetailCard van={van}>
-        <Outlet context={van} />
+        <div
+          className={clsx({
+            "opacity-50": changingPage,
+          })}
+        >
+          <Outlet context={van} />
+        </div>
       </VanDetailCard>
     </>
   );

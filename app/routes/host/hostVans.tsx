@@ -60,7 +60,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
       </h2>
       <GenericComponent
         className={clsx({
-          "space-y-6 mt-6": true,
+          "grid-max mt-6": true,
           "opacity-75": changingPage,
         })}
         Component={VanCard}
