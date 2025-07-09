@@ -1,6 +1,6 @@
 import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/vanDetailLayout";
-import { data, redirect, Outlet } from "react-router";
+import { data, redirect, Outlet, Link } from "react-router";
 import { getHostVan } from "~/db/getHostVan";
 import VanDetailCard from "~/cards/van-detail-card";
 
@@ -36,10 +36,14 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
   const { van } = loaderData;
-  console.log({ van });
   return (
-    <VanDetailCard van={van}>
-      <Outlet context={van} />
-    </VanDetailCard>
+    <>
+      <Link to=".." relative="path" className="mt-15 mb-8">
+        &larr; Back to all vans
+      </Link>
+      <VanDetailCard van={van}>
+        <Outlet context={van} />
+      </VanDetailCard>
+    </>
   );
 }

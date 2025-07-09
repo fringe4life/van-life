@@ -23,7 +23,7 @@ export default function VanDetail({
     <div className="@container/card-full">
       <Card className="@max-2xl/card-full:grid @max-2xl/card-full:grid-rows-[4fr_repeat(4,_auto)_auto] @max-2xl/card-full:gap-4 @max-2xl/card-full:bg-green-500 @max-7xl/card-full:bg-indigo-500">
         <CardHeader>
-          <img src={imageUrl} alt={description} />
+          <img src={imageUrl} alt={description} width={200} height={200} />
         </CardHeader>
         <CardContent className=" @max-2xl/card-full:row-span-4  @max-2xl/card-full:grid-rows-subgrid @max-2xl/card-full:row-start-2  @max-2xl/card-full:align-between">
           <Badge color={type}>{type}</Badge>

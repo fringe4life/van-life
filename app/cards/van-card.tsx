@@ -11,29 +11,33 @@ type VanCardProps = {
 };
 
 export default function VanCard({
-  van: { type, name, description, imageUrl },
+  van: { type, name, description, imageUrl, id: vanId },
   link,
   action,
 }: VanCardProps) {
   return (
     <div className="@container/card">
-      <Card className="relative grid @sm/card:grid-cols-[200px_1fr_min-content] @sm/card:grid-rows-2 @sm/card:gap-4 ">
-        <CardHeader className="@sm/card:col-start-1 @sm/card:row-span-2">
+      <Card
+        className="relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4"
+        style={{ viewTransitionName: `card-${vanId}` }}
+      >
+        <CardHeader className="@min-md/card:col-start-1 @min-md/card:row-span-2">
           <img
             className="aspect-square rounded-md object-cover "
             src={imageUrl}
             alt={description}
+            height={200}
           />
         </CardHeader>
-        <CardFooter className="@sm/card:content-center @sm/card:bg-amber-500 @md/card:bg-red-500 @sm/card:grid-cols-subgrid @sm/card:col-span-2   @sm/card:row-span-2 @sm/card:grid-rows-subgrid @sm/card:col-start-2">
-          <CardTitle className="text-2xl @sm/card:col-start-2 @sm/card:row-end-2 @sm/card:self-start">
+        <CardFooter className="@min-md/card:content-center  @md/card:bg-red-500 @min-md/card:grid-cols-subgrid @min-md/card:col-span-2   @min-md/card:row-span-2 @min-md/card:grid-rows-subgrid @min-md/card:col-start-2">
+          <CardTitle className="text-2xl @min-md/card:col-start-2 @min-md/card:row-end-2 @min-md/card:self-start">
             <Link to={link}>
               {name}
               <span className="absolute w-full h-full inset-0 overflow-hidden"></span>
             </Link>
           </CardTitle>
           <div className="justify-self-end">{action}</div>
-          <Badge className="@sm/card:-row-end-1 " color={type}>
+          <Badge className="@min-md/card:-row-end-1 " color={type}>
             {type}
           </Badge>
         </CardFooter>

@@ -224,7 +224,7 @@ export type ReviewWhereInput = {
   AND?: Prisma.ReviewWhereInput | Prisma.ReviewWhereInput[]
   OR?: Prisma.ReviewWhereInput[]
   NOT?: Prisma.ReviewWhereInput | Prisma.ReviewWhereInput[]
-  id?: Prisma.StringFilter<"Review"> | string
+  id?: Prisma.UuidFilter<"Review"> | string
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   text?: Prisma.StringFilter<"Review"> | string
@@ -281,7 +281,7 @@ export type ReviewScalarWhereWithAggregatesInput = {
   AND?: Prisma.ReviewScalarWhereWithAggregatesInput | Prisma.ReviewScalarWhereWithAggregatesInput[]
   OR?: Prisma.ReviewScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ReviewScalarWhereWithAggregatesInput | Prisma.ReviewScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Review"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"Review"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Review"> | Date | string
   text?: Prisma.StringWithAggregatesFilter<"Review"> | string
@@ -546,7 +546,7 @@ export type ReviewScalarWhereInput = {
   AND?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
   OR?: Prisma.ReviewScalarWhereInput[]
   NOT?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
-  id?: Prisma.StringFilter<"Review"> | string
+  id?: Prisma.UuidFilter<"Review"> | string
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   text?: Prisma.StringFilter<"Review"> | string

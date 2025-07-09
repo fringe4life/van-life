@@ -1,9 +1,9 @@
 import { useOutletContext } from "react-router";
 import type { Route } from "./+types/vanDetailPricing";
 import type { Van } from "~/generated/prisma/client";
+import { displayPrice } from "~/lib/displayPrice";
 
 export default function VanDetailPricing({}: Route.ComponentProps) {
-  const data = useOutletContext<Van>();
-  console.log({ data });
-  return <p>pricing</p>;
+  const van = useOutletContext<Van>();
+  return <p className="my-6">{displayPrice(van.price)}/day</p>;
 }

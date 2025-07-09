@@ -6,6 +6,20 @@ import { getHostTransactions } from "~/db/getHostTransactions";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 import { displayPrice } from "~/lib/displayPrice";
 import Income from "~/components/Income";
+import type { Decimal } from "@prisma/client/runtime/client";
+
+import {
+  ResponsiveContainer,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar,
+  BarChart,
+} from "recharts";
+import useIsNavigating from "~/hooks/useIsNavigating";
+import clsx from "clsx";
 export function meta(_: Route.MetaArgs) {
   return [
     { title: "Your Income | Vanlife" },
@@ -37,19 +51,46 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { sumIncome, hostIncomes } = loaderData;
-  console.log({ hostIncomes });
-  const listIncomes = (
-    <GenericComponent
-      items={hostIncomes}
-      renderKey={(item) => item.id}
-      renderProps={(item) => ({ ...item, amount: item.amount })}
-      Component={Income}
-    />
-  );
+
+  const mappedData = hostIncomes.map((income) => ({
+    name: new Date().getDate().toLocaleString(),
+    amount: Math.round(income.amount as unknown as number),
+  }));
+
+  const {changingPage} = useIsNavigating()
+
   return (
-    <div>
-      {displayPrice(sumIncome)}
-      {listIncomes}
+    <div className={
+      clsx({'opacity-75': changingPage})
+    }>
+      <h2 className="mb-11 mt-13 text-3xl font-bold">Income</h2>
+      <p>
+        Last{" "}
+        <span className="underline text-text-secondary font-bold">30 days</span>
+      </p>
+      <p className="text-5xl font-extrabold mt-8 mb-13">
+        {displayPrice(sumIncome as unknown as Decimal)}
+      </p>
+      <ResponsiveContainer width="100%" height={350}>
+        <BarChart data={mappedData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="amount" fill="oklch(75.27% 0.167 52.58)" />
+        </BarChart>
+      </ResponsiveContainer>
+      <GenericComponent
+        className=" grid-max"
+        items={hostIncomes}
+        renderKey={(item) => item.id}
+        renderProps={(item) => ({
+          ...item,
+          amount: item.amount as unknown as Decimal,
+        })}
+        Component={Income}
+      />
     </div>
   );
 }

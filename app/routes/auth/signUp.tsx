@@ -5,6 +5,7 @@ import type { Route } from "./+types/signUp";
 
 import { signUpScheme } from "~/types";
 import { auth } from "~/lib/auth/auth";
+import useIsNavigating from "~/hooks/useIsNavigating";
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = Object.fromEntries(await request.formData());
@@ -27,6 +28,8 @@ export async function action({ request }: Route.ActionArgs) {
 export default function SignUp({ actionData }: Route.ComponentProps) {
   console.log(actionData);
 
+  const { usingForm } = useIsNavigating();
+
   return (
     <div className="grid gap-12 sm:justify-center justify-start items-center">
       <h2 className="font-bold text-3xl justify-center text-shadow-text">
@@ -38,21 +41,30 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
           id="email"
           type="email"
           placeholder="your.email@email.com"
+          disabled={usingForm}
         />
-        <Input type="text" name="name" id="name" placeholder="John Doe" />
+        <Input
+          type="text"
+          name="name"
+          id="name"
+          placeholder="John Doe"
+          disabled={usingForm}
+        />
         <Input
           name="password"
           id="password"
           type="password"
           placeholder="password"
+          disabled={usingForm}
         />
         <Input
           name="confirmPassword"
           id="confirmPassword"
           type="password"
           placeholder="confirm password"
+          disabled={usingForm}
         />
-        <Button variant="default" type="submit">
+        <Button variant="default" type="submit" disabled={usingForm}>
           Sign up
         </Button>
       </Form>

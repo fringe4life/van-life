@@ -4,6 +4,7 @@ import { Input } from "~/components/ui/input";
 import { auth } from "~/lib/auth/auth";
 import { loginSchema } from "~/types";
 import type { Route } from "./+types/login";
+import useIsNavigating from "~/hooks/useIsNavigating";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const result = await auth.api.getSession({ headers: request.headers });
@@ -32,6 +33,7 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function Login({ actionData }: Route.ComponentProps) {
+  const { usingForm } = useIsNavigating();
   return (
     <div className="grid gap-12 sm:justify-center justify-start items-center">
       <h2 className="font-bold text-3xl justify-center text-shadow-text">
@@ -43,14 +45,16 @@ export default function Login({ actionData }: Route.ComponentProps) {
           id="email"
           type="email"
           placeholder="your.email@email.com"
+          disabled={usingForm}
         />
         <Input
           name="password"
           id="password"
           type="password"
           placeholder="password"
+          disabled={usingForm}
         />
-        <Button variant="default" type="submit">
+        <Button variant="default" type="submit" disabled={usingForm}>
           Sign in
         </Button>
       </Form>

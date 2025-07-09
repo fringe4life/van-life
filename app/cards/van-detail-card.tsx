@@ -1,6 +1,13 @@
+import clsx from "clsx";
 import { href, NavLink } from "react-router";
 import { Badge } from "~/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import type { Van } from "~/generated/prisma/client";
 
 type VanDetailCardProps = {
@@ -13,27 +20,49 @@ export default function VanDetailCard({
   children,
 }: VanDetailCardProps) {
   return (
-    <Card>
-      <div>
-        <img src={imageUrl} alt={name} />
-      </div>
-      <CardHeader>
-        <Badge variant={type} />
-        <CardTitle>{name}</CardTitle>
-        <p>{price}</p>
-        <div className="flex gap-6 ">
-          <NavLink to={href("/host/vans/:vanId", { vanId })} end>
-            Details
-          </NavLink>
-          <NavLink to={href("/host/vans/:vanId/pricing", { vanId })}>
-            Pricing
-          </NavLink>
-          <NavLink to={href("/host/vans/:vanId/photos", { vanId })}>
-            Photos
-          </NavLink>
-        </div>
-      </CardHeader>
-      <CardContent>{children}</CardContent>
-    </Card>
+    <div className="@container/detail max-w-full">
+      <Card className="">
+        <CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] @min-md/detail:gap-4">
+          <div className="@min-md/detail:col-span-1">
+            <img src={imageUrl} alt={name} width={300} height={300} />
+          </div>
+          <div className="@min-md/detail:col-span-1  @min-md/detail:col-start-2 content-center">
+            <Badge variant={type}>{type}</Badge>
+            <CardTitle className="my-6 font-bold text-2xl">{name}</CardTitle>
+            <p>${price}/day</p>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-6 my-6">
+            <NavLink
+              className={({ isActive, isPending }) =>
+                isPending ? "text-green-500" : isActive ? "underline" : ""
+              }
+              to={href("/host/vans/:vanId", { vanId })}
+              end
+            >
+              Details
+            </NavLink>
+            <NavLink
+              className={({ isActive, isPending }) =>
+                isPending ? "text-green-500" : isActive ? "underline" : ""
+              }
+              to={href("/host/vans/:vanId/pricing", { vanId })}
+            >
+              Pricing
+            </NavLink>
+            <NavLink
+              className={({ isActive, isPending }) =>
+                isPending ? "text-green-500" : isActive ? "underline" : ""
+              }
+              to={href("/host/vans/:vanId/photos", { vanId })}
+            >
+              Photos
+            </NavLink>
+          </div>
+        </CardContent>
+        <CardFooter>{children}</CardFooter>
+      </Card>
+    </div>
   );
 }

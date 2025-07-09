@@ -8,6 +8,8 @@ import GenericComponent from "~/components/Container";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 import clsx from "clsx";
 import useIsNavigating from "~/hooks/useIsNavigating";
+import { displayPrice } from "~/lib/displayPrice";
+import type { Decimal } from "~/generated/prisma/internal/prismaNamespace";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -56,7 +58,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
           Income last <span className="underline font-medium">30 days</span>
         </p>
         <p className="col-start-1 font-extrabold text-5xl text-text">
-          {((sumIncome as number) ?? 0).toFixed(2)}
+          {displayPrice(sumIncome as unknown as Decimal)}
         </p>
         <Link to={href("/host/income")} className="col-start-2 row-start-2">
           Details

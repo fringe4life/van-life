@@ -1,8 +1,9 @@
-import { redirect, data, Link, useOutletContext } from "react-router";
+import { redirect, data, Link, useOutletContext, Outlet } from "react-router";
 import { getHostVan } from "~/db/getHostVan";
 import type { Route } from "./+types/vanDetail";
 import type { Van } from "~/generated/prisma/client";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
+import { capitalize } from "~/lib/utils";
 
 export function meta({ data }: Route.MetaArgs) {
   return [
@@ -33,13 +34,18 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   );
 }
 export default function VanDetail({}: Route.ComponentProps) {
-  const context = useOutletContext<Van>();
-  console.log({ context });
+  const van = useOutletContext<Van>();
   return (
-    <section>
-      <Link to=".." relative="path">
-        &larr; Back to all vans
-      </Link>
-    </section>
+    <article>
+      <p className="font-bold">
+        Name: <span className="font-normal">{van.name}</span>
+      </p>
+      <p className="font-bold my-4">
+        Category: <span className="font-normal">{capitalize(van.type)}</span>
+      </p>
+      <p className="font-bold min-w-full max-w-3xs">
+        Description: <span className="font-normal">{van.description}</span>
+      </p>
+    </article>
   );
 }

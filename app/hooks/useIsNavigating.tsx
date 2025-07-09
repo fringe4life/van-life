@@ -4,6 +4,6 @@ export default function useIsNavigating() {
   const navigation = useNavigation();
   return {
     changingPage: Boolean(navigation.location),
-    usingForm: navigation.formAction,
+    usingForm: navigation.formAction !== undefined,
   };
 }
