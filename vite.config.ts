@@ -17,10 +17,4 @@ export default defineConfig({
     reactRouter(),
     tsconfigPaths(),
   ],
-  ssr: {
-    noExternal: process.env.COMMAND === "build" ? true : undefined,
-  },
-  server: {
-    hmr: true,
-  },
 });
