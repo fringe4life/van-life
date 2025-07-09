@@ -1,9 +1,11 @@
+import GenericComponent from "~/components/Container";
 import type { Route } from "./+types/income";
 import { data } from "react-router";
 import { getAccountSummary } from "~/db/getAccountSummary";
 import { getHostTransactions } from "~/db/getHostTransactions";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 import { displayPrice } from "~/lib/displayPrice";
+import Income from "~/components/Income";
 export function meta(_: Route.MetaArgs) {
   return [
     { title: "Your Income | Vanlife" },
@@ -35,5 +37,19 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { sumIncome, hostIncomes } = loaderData;
-  return <div>{displayPrice(sumIncome)}</div>;
+  console.log({ hostIncomes });
+  const listIncomes = (
+    <GenericComponent
+      items={hostIncomes}
+      renderKey={(item) => item.id}
+      renderProps={(item) => ({ ...item, amount: item.amount })}
+      Component={Income}
+    />
+  );
+  return (
+    <div>
+      {displayPrice(sumIncome)}
+      {listIncomes}
+    </div>
+  );
 }

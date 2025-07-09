@@ -227,7 +227,6 @@ export type SessionOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   impersonatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.SessionOrderByRelevanceInput
 }
 
 export type SessionWhereUniqueInput = Prisma.AtLeast<{
@@ -367,12 +366,6 @@ export type SessionListRelationFilter = {
 
 export type SessionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type SessionOrderByRelevanceInput = {
-  fields: Prisma.SessionOrderByRelevanceFieldEnum | Prisma.SessionOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type SessionCountOrderByAggregateInput = {

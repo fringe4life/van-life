@@ -163,7 +163,6 @@ export type UserInfoOrderByWithRelationInput = {
   renter?: Prisma.RentOrderByRelationAggregateInput
   rented?: Prisma.RentOrderByRelationAggregateInput
   review?: Prisma.ReviewOrderByRelationAggregateInput
-  _relevance?: Prisma.UserInfoOrderByRelevanceInput
 }
 
 export type UserInfoWhereUniqueInput = Prisma.AtLeast<{
@@ -244,12 +243,6 @@ export type UserInfoNullableScalarRelationFilter = {
 export type UserInfoScalarRelationFilter = {
   is?: Prisma.UserInfoWhereInput
   isNot?: Prisma.UserInfoWhereInput
-}
-
-export type UserInfoOrderByRelevanceInput = {
-  fields: Prisma.UserInfoOrderByRelevanceFieldEnum | Prisma.UserInfoOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type UserInfoCountOrderByAggregateInput = {

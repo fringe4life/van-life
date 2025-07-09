@@ -276,7 +276,6 @@ export type UserOrderByWithRelationInput = {
   Session?: Prisma.SessionOrderByRelationAggregateInput
   Account?: Prisma.AccountOrderByRelationAggregateInput
   userInfo?: Prisma.UserInfoOrderByWithRelationInput
-  _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -471,12 +470,6 @@ export type UserUncheckedUpdateManyInput = {
   firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-}
-
-export type UserOrderByRelevanceInput = {
-  fields: Prisma.UserOrderByRelevanceFieldEnum | Prisma.UserOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type UserCountOrderByAggregateInput = {

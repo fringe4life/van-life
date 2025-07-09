@@ -229,7 +229,6 @@ export type RentOrderByWithRelationInput = {
   renter?: Prisma.UserInfoOrderByWithRelationInput
   host?: Prisma.UserInfoOrderByWithRelationInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
-  _relevance?: Prisma.RentOrderByRelevanceInput
 }
 
 export type RentWhereUniqueInput = Prisma.AtLeast<{
@@ -326,12 +325,6 @@ export type RentUncheckedUpdateManyInput = {
   renterId?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
   rentedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type RentOrderByRelevanceInput = {
-  fields: Prisma.RentOrderByRelevanceFieldEnum | Prisma.RentOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type RentCountOrderByAggregateInput = {

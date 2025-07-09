@@ -245,7 +245,6 @@ export type ReviewOrderByWithRelationInput = {
   rentId?: Prisma.SortOrder
   renter?: Prisma.RentOrderByWithRelationInput
   user?: Prisma.UserInfoOrderByWithRelationInput
-  _relevance?: Prisma.ReviewOrderByRelevanceInput
 }
 
 export type ReviewWhereUniqueInput = Prisma.AtLeast<{
@@ -367,12 +366,6 @@ export type ReviewListRelationFilter = {
 
 export type ReviewOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type ReviewOrderByRelevanceInput = {
-  fields: Prisma.ReviewOrderByRelevanceFieldEnum | Prisma.ReviewOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type ReviewCountOrderByAggregateInput = {

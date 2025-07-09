@@ -243,7 +243,6 @@ export type VanOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
   userInfo?: Prisma.UserInfoOrderByWithRelationInput
-  _relevance?: Prisma.VanOrderByRelevanceInput
 }
 
 export type VanWhereUniqueInput = Prisma.AtLeast<{
@@ -365,12 +364,6 @@ export type VanListRelationFilter = {
 
 export type VanOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type VanOrderByRelevanceInput = {
-  fields: Prisma.VanOrderByRelevanceFieldEnum | Prisma.VanOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type VanCountOrderByAggregateInput = {
