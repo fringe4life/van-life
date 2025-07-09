@@ -1,6 +1,6 @@
 model Rent {
   id       String   @id @default(dbgenerated("gen_random_uuid()"))
-  amount   Decimal
+  amount   Float    @db.DoublePrecision
   renterId String
   hostId   String
   rentedAt DateTime @default(now()) @db.Date

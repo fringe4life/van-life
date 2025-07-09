@@ -1,8 +1,8 @@
 model Van {
   id          String  @id @default(cuid())
-  name        String
-  price       Int
-  description String
+  name        String  @db.VarChar(60)
+  price       Int     @db.SmallInt
+  description String  @db.VarChar(1024)
   imageUrl    String
   type        VanType
 
