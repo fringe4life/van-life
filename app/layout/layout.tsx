@@ -77,6 +77,13 @@ export default function Layout() {
         <p className="uppercase text-sm text-center py-6.25 text-[#aaa]">
           &copy;{new Date().getFullYear()} #vanlife
         </p>
+        <a
+          href="https://www.flaticon.com/free-icons/camper-van"
+          title="camper van icons"
+          className="text-center text-sm text-[#aaa]"
+        >
+          Camper van icons created by Iconfromus - Flaticon
+        </a>
       </footer>
     </>
   );
