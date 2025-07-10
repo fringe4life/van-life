@@ -2,7 +2,7 @@ import { Form, Link, redirect, replace } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { auth } from "~/lib/auth/auth";
-import { loginSchema } from "~/types";
+import { loginSchema } from "~/utils/types";
 import type { Route } from "./+types/login";
 import useIsNavigating from "~/hooks/useIsNavigating";
 import { z } from "zod/v4";
@@ -68,7 +68,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
           defaultValue=""
         />
         {actionData?.errors ? <p>{actionData.errors}</p> : null}
-        <Button  type="submit" disabled={usingForm}>
+        <Button type="submit" disabled={usingForm}>
           Sign in
         </Button>
       </Form>

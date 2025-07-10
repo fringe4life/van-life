@@ -3,7 +3,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import type { Route } from "./+types/signUp";
 
-import { signUpScheme } from "~/types";
+import { signUpScheme } from "~/utils/types";
 import { auth } from "~/lib/auth/auth";
 import useIsNavigating from "~/hooks/useIsNavigating";
 import { z } from "zod/v4";

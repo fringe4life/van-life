@@ -1,5 +1,5 @@
 import { URLSearchParams } from "url";
-import { searchParamsSchema } from "~/types";
+import { searchParamsSchema } from "~/utils/types";
 export function getPaginationParams(url: string) {
   const searchParams = Object.fromEntries(
     new URLSearchParams(url.split("?").at(1) ?? "")

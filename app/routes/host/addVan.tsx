@@ -3,7 +3,7 @@ import type { Route } from "./+types/addVan";
 import { Form } from "react-router";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
-import { addVanSchema } from "~/types";
+import { addVanSchema } from "~/utils/types";
 import useIsNavigating from "~/hooks/useIsNavigating";
 import { createVan } from "~/db/createVan";
 import { Button } from "~/components/ui/button";
