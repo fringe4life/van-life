@@ -1,11 +1,14 @@
 model Rent {
-  id       String   @id @default(dbgenerated("gen_random_uuid()"))
-  amount   Float    @db.DoublePrecision
+  id       String    @id @default(dbgenerated("gen_random_uuid()"))
+  amount   Float?    @db.DoublePrecision
   renterId String
   hostId   String
-  rentedAt DateTime @default(now()) @db.Date
-  renter   UserInfo @relation("renter", fields: [renterId], references: [userId])
-  host     UserInfo @relation("host", fields: [hostId], references: [userId])
+  rentedAt DateTime  @default(now()) @db.Date
+  rentedTo DateTime? @db.Date
+  vanId    String
+  van      Van       @relation(fields: [vanId], references: [id])
+  renter   UserInfo  @relation("renter", fields: [renterId], references: [userId])
+  host     UserInfo  @relation("host", fields: [hostId], references: [userId])
 
   reviews Review[]
 }

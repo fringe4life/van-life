@@ -1,10 +1,10 @@
 import type { Decimal } from "~/generated/prisma/internal/prismaNamespace";
 import { Card, CardContent } from "./ui/card";
-import { displayPrice } from "~/lib/displayPrice";
+import { displayPrice } from "~/utils/displayPrice";
 
 type IncomeProps = {
   id: string;
-  amount: number | Decimal | null | undefined;
+  amount: number;
   rentedAt: Date;
 };
 

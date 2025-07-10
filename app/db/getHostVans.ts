@@ -1,4 +1,4 @@
-import getSkipAmount from "~/lib/getSkipAmount";
+import getSkipAmount from "~/utils/getSkipAmount";
 import { prisma } from "~/lib/prisma";
 
 export async function getHostVans(id: string, page: number, limit: number) {

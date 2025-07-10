@@ -6,20 +6,32 @@ import type { Route } from "./+types/signUp";
 import { signUpScheme } from "~/types";
 import { auth } from "~/lib/auth/auth";
 import useIsNavigating from "~/hooks/useIsNavigating";
+import { z } from "zod/v4";
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = Object.fromEntries(await request.formData());
 
   const result = signUpScheme.safeParse(formData);
 
+  const name = (formData["name"] as string) ?? "";
+  const email = (formData["email"] as string) ?? "";
+
   if (!result.success) {
-    return result.error;
+    return {
+      errors: z.prettifyError(result.error),
+      name,
+      email,
+    };
   }
 
   const signUp = await auth.api.signUpEmail({
     body: result.data,
     asResponse: true,
   });
+
+  if (!signUp.ok) {
+    return { errors: "Sign up failed please try again later", name, email };
+  }
   throw replace("/host", {
     headers: signUp.headers,
   });
@@ -42,6 +54,7 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
           type="email"
           placeholder="your.email@email.com"
           disabled={usingForm}
+          defaultValue={actionData?.email ?? ""}
         />
         <Input
           type="text"
@@ -49,6 +62,7 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
           id="name"
           placeholder="John Doe"
           disabled={usingForm}
+          defaultValue={actionData?.name ?? ""}
         />
         <Input
           name="password"
@@ -64,6 +78,7 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
           placeholder="confirm password"
           disabled={usingForm}
         />
+        {actionData?.errors ? <p>actionData.errors</p> : null}
         <Button variant="default" type="submit" disabled={usingForm}>
           Sign up
         </Button>

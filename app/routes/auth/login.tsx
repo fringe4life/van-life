@@ -5,6 +5,7 @@ import { auth } from "~/lib/auth/auth";
 import { loginSchema } from "~/types";
 import type { Route } from "./+types/login";
 import useIsNavigating from "~/hooks/useIsNavigating";
+import { z } from "zod/v4";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const result = await auth.api.getSession({ headers: request.headers });
@@ -19,13 +20,23 @@ export async function action({ request }: Route.ActionArgs) {
   const result = loginSchema.safeParse(formData);
 
   if (!result.success) {
-    return result.error;
+    return {
+      errors: z.prettifyError(result.error),
+      email: (formData["email"] as string) ?? "",
+    };
   }
 
   const response = await auth.api.signInEmail({
     body: result.data,
     asResponse: true,
   });
+
+  if (!response.ok) {
+    return {
+      errors: "Your email or password is incorrect",
+      email: (formData["email"] as string) ?? "",
+    };
+  }
 
   throw replace("/host", {
     headers: response.headers,
@@ -46,6 +57,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
           type="email"
           placeholder="your.email@email.com"
           disabled={usingForm}
+          defaultValue={actionData?.email ?? ""}
         />
         <Input
           name="password"
@@ -53,8 +65,10 @@ export default function Login({ actionData }: Route.ComponentProps) {
           type="password"
           placeholder="password"
           disabled={usingForm}
+          defaultValue=""
         />
-        <Button variant="default" type="submit" disabled={usingForm}>
+        {actionData?.errors ? <p>{actionData.errors}</p> : null}
+        <Button  type="submit" disabled={usingForm}>
           Sign in
         </Button>
       </Form>

@@ -7,5 +7,6 @@ model Van {
   type        VanType
 
   hostId   String
-  userInfo UserInfo @relation(fields: [hostId], references: [userId])
+  userInfo UserInfo @relation(fields: [hostId], references: [userId], onDelete: Cascade)
+  rent     Rent[]
 }

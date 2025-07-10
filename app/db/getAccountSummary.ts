@@ -10,7 +10,6 @@ export async function getAccountSummary(userId: string) {
         hostId: userId,
       },
     });
-    console.log(sum);
     return sum._sum.amount ?? 0;
   } catch (error) {
     console.error("Failed to get account summary:", error);

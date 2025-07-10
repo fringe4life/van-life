@@ -56,6 +56,17 @@ export default function HostLayout() {
             Reviews
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            to={href("/host/add")}
+            className={({ isActive, isPending }) =>
+              isPending ? "text-green-500" : isActive ? "underline" : ""
+            }
+            viewTransition
+          >
+            Add Van
+          </NavLink>
+        </li>
       </ul>
       <Outlet />
     </div>

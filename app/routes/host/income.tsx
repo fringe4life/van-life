@@ -4,7 +4,7 @@ import { data } from "react-router";
 import { getAccountSummary } from "~/db/getAccountSummary";
 import { getHostTransactions } from "~/db/getHostTransactions";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
-import { displayPrice } from "~/lib/displayPrice";
+import { displayPrice } from "~/utils/displayPrice";
 import Income from "~/components/Income";
 import {
   ResponsiveContainer,

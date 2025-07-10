@@ -1,5 +1,5 @@
 import { Badge } from "~/components/ui/badge";
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils/utils";
 import { badgeVariants } from "./ui/badge";
 import { Button } from "./ui/button";
 import {

@@ -8,7 +8,7 @@ import GenericComponent from "~/components/Container";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 import clsx from "clsx";
 import useIsNavigating from "~/hooks/useIsNavigating";
-import { displayPrice } from "~/lib/displayPrice";
+import { displayPrice } from "~/utils/displayPrice";
 
 export function meta(_: Route.MetaArgs) {
   return [

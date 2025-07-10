@@ -1,4 +1,4 @@
-import aboutImg from "../assets/about.png";
+
 import largeImage from "../assets/about-large.jpg";
 import type { Route } from "./+types/about";
 import { href, Link } from "react-router";

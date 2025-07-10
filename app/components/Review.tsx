@@ -3,7 +3,6 @@ import { Badge } from "./ui/badge";
 import {
   Card,
   CardHeader,
-  CardFooter,
   CardTitle,
   CardContent,
 } from "./ui/card";

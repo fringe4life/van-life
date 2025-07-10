@@ -1,10 +1,4 @@
-// import { PrismaPg } from "@prisma/adapter-pg";
-// import type { SqlDriverAdapterFactory } from "@prisma/client/runtime/client";
 import { PrismaClient } from "@prisma/client";
-
-// const connectionString = `${process.env.DATABASE_URL}`;
-
-// const adapter = new PrismaPg({ connectionString }) as SqlDriverAdapterFactory;
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 

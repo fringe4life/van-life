@@ -49,19 +49,24 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 
   const result = reviews.reduce(
     (acc, cur) => {
-      acc[cur.rating as 1 | 2 | 3 | 4 | 5] += 1;
+      acc[cur.rating - 1] += 1;
       return acc;
     },
-    { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
-  );
+    new Array<number>(5)
+  ).map((res, index) => ({
+    name: `${index + 1}`,
+    amount: res
+  }));
 
-  const mappedData = [
-    { name: "1 stars", amount: result[1] },
-    { name: "2 stars", amount: result[2] },
-    { name: "3 stars", amount: result[3] },
-    { name: "4 stars", amount: result[4] },
-    { name: "5 stars", amount: result[5] },
-  ];
+  
+
+  // const mappedData = [
+  //   { name: "1 stars", amount: result[1] },
+  //   { name: "2 stars", amount: result[2] },
+  //   { name: "3 stars", amount: result[3] },
+  //   { name: "4 stars", amount: result[4] },
+  //   { name: "5 stars", amount: result[5] },
+  // ];
 
   const reviewItems = reviews.map((review) => ({
     name: review.user.user.name,
@@ -80,7 +85,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
     >
       <h3 className="">Reviews</h3>
       <ResponsiveContainer width="100%" height={250}>
-        <BarChart data={mappedData}>
+        <BarChart data={result}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />

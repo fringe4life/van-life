@@ -1,5 +1,5 @@
 import type { VanType } from "~/generated/prisma/enums";
-import getSkipAmount from "~/lib/getSkipAmount";
+import getSkipAmount from "~/utils/getSkipAmount";
 import { prisma } from "~/lib/prisma";
 
 export async function getVans(
