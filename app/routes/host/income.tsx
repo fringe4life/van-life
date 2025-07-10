@@ -6,8 +6,6 @@ import { getHostTransactions } from "~/db/getHostTransactions";
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 import { displayPrice } from "~/lib/displayPrice";
 import Income from "~/components/Income";
-import type { Decimal } from "@prisma/client/runtime/client";
-
 import {
   ResponsiveContainer,
   CartesianGrid,
@@ -57,19 +55,17 @@ export default function Host({ loaderData }: Route.ComponentProps) {
     amount: Math.round(income.amount as unknown as number),
   }));
 
-  const {changingPage} = useIsNavigating()
+  const { changingPage } = useIsNavigating();
 
   return (
-    <div className={
-      clsx({'opacity-75': changingPage})
-    }>
+    <div className={clsx({ "opacity-75": changingPage })}>
       <h2 className="mb-11 mt-13 text-3xl font-bold">Income</h2>
       <p>
         Last{" "}
         <span className="underline text-text-secondary font-bold">30 days</span>
       </p>
       <p className="text-5xl font-extrabold mt-8 mb-13">
-        {displayPrice(sumIncome as unknown as Decimal)}
+        {displayPrice(sumIncome)}
       </p>
       <ResponsiveContainer width="100%" height={350}>
         <BarChart data={mappedData}>
@@ -87,7 +83,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
         renderKey={(item) => item.id}
         renderProps={(item) => ({
           ...item,
-          amount: item.amount as unknown as Decimal,
+          amount: item.amount,
         })}
         Component={Income}
       />
