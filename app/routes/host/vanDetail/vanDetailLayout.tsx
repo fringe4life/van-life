@@ -1,6 +1,5 @@
-import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/vanDetailLayout";
-import { data, redirect, Outlet, Link } from "react-router";
+import { data, redirect, Outlet, Link, href } from "react-router";
 import { getHostVan } from "~/db/getHostVan";
 import VanDetailCard from "~/components/cards/van-detail-card";
 import useIsNavigating from "~/hooks/useIsNavigating";
@@ -40,7 +39,7 @@ export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
   const { changingPage } = useIsNavigating();
   return (
     <>
-      <Link to=".." relative="path" className="mt-15 mb-8">
+      <Link to={href("/host/vans")} className="mt-15 mb-8">
         &larr; Back to all vans
       </Link>
       <VanDetailCard van={van}>

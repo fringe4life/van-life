@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import type { Van } from "~/generated/prisma/client";
+import type { Van } from "@prisma/client";
 
 type VanDetailCardProps = {
   van: Van;
@@ -19,15 +19,23 @@ export default function VanDetailCard({
   children,
 }: VanDetailCardProps) {
   return (
-    <div className="@container/detail ">
+    <div className="@container/detail max-w-xl">
       <Card className="">
         <CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] @min-md/detail:gap-4">
           <div className="@min-md/detail:col-span-1 rounded-sm">
-            <img src={imageUrl} alt={name} width={300} height={300} />
+            <img
+              className="aspect-square block"
+              src={imageUrl}
+              alt={name}
+              width={300}
+              height={300}
+            />
           </div>
           <div className="@min-md/detail:col-span-1  @min-md/detail:col-start-2 content-center">
             <Badge variant={type}>{type}</Badge>
-            <CardTitle className="my-6 font-bold text-2xl">{name}</CardTitle>
+            <CardTitle className="my-6 font-bold text-2xl text-balance">
+              {name}
+            </CardTitle>
             <p>${price}/day</p>
           </div>
         </CardHeader>

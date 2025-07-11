@@ -1,5 +1,5 @@
 import { URLSearchParams } from "url";
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from "~/constants/constants";
+import { DEFAULT_FILTER, DEFAULT_LIMIT, DEFAULT_PAGE } from "~/constants/constants";
 
 export function getParamsClientSide(
   searchParams: URLSearchParams,
@@ -16,7 +16,7 @@ export function getParamsClientSide(
     searchParams.get("limit") ?? defaultLimit.toString()
   );
 
-  const type = searchParams.get("type") ?? "";
+  const type = searchParams.get("type") ?? DEFAULT_FILTER;
 
   return { page, limit, type };
 }

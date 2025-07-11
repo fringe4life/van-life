@@ -1,17 +1,19 @@
 import { URLSearchParams } from "url";
 import { searchParamsSchema } from "~/utils/types";
+import {
+  DEFAULT_PAGE,
+  DEFAULT_LIMIT,
+  DEFAULT_FILTER,
+} from "~/constants/constants";
 export function getPaginationParams(url: string) {
   const searchParams = Object.fromEntries(
     new URLSearchParams(url.split("?").at(1) ?? "")
   );
-  console.log({ searchParams });
   const { success, data } = searchParamsSchema.safeParse(searchParams);
-  // TODO return defa
+
   if (!success) {
-    console.log("unsuccesful");
-    return { page: 1, limit: 10, type: "" };
+    return { page: DEFAULT_PAGE, limit: DEFAULT_LIMIT, type: DEFAULT_FILTER };
   }
-  console.log("success");
   const { page, limit, type } = data;
 
   return { page, limit, type };

@@ -1,6 +1,10 @@
 import { VanType } from "@prisma/client";
 import { z } from "zod/v4";
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from "~/constants/constants";
+import {
+  DEFAULT_FILTER,
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+} from "~/constants/constants";
 
 export const loginSchema = z.object({
   email: z.email(),
@@ -44,7 +48,7 @@ export const uuidSchema = z.object({
 
 function zodEnumFromRecordKeys<K extends string>(record: Record<K, any>) {
   const keys = Object.keys(record) as K[];
-  return z.enum(keys as [K, ...K[], ""]);
+  return z.enum(keys as [K, ...K[], typeof DEFAULT_FILTER]);
 }
 
 const vanType = zodEnumFromRecordKeys(VanType);
@@ -52,5 +56,10 @@ const vanType = zodEnumFromRecordKeys(VanType);
 export const searchParamsSchema = z.object({
   page: z.coerce.number().optional().default(DEFAULT_PAGE),
   limit: z.coerce.number().optional().default(DEFAULT_LIMIT),
-  type: z.string().toUpperCase().optional().default("").pipe(vanType),
+  type: z
+    .string()
+    .toUpperCase()
+    .optional()
+    .default(DEFAULT_FILTER)
+    .pipe(vanType),
 });
