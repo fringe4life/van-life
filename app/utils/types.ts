@@ -6,22 +6,21 @@ import {
   DEFAULT_PAGE,
 } from "~/constants/constants";
 
+const passwordSchema = z
+  .string()
+  .min(10, "Password has to be a minimum of 10 characters")
+  .catch(() => "");
+
 export const loginSchema = z.object({
   email: z.email(),
-  password: z
-    .string()
-    .min(10, "Password has to be a minimum of 10 characters")
-    .catch(() => ""),
+  password: passwordSchema,
 });
 
 export type loginSchemaType = z.infer<typeof loginSchema>;
 
 export const signUpScheme = loginSchema
   .extend({
-    confirmPassword: z
-      .string()
-      .min(10)
-      .catch(() => ""),
+    confirmPassword: passwordSchema,
     name: z.string().min(2).max(124),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -32,14 +31,17 @@ export const signUpScheme = loginSchema
 const vanTypeSchema = z.enum(Object.values(VanType));
 
 export const addVanSchema = z.object({
-  name: z.string().max(60),
-  description: z.string().max(1024),
-  type: z
+  name: z
     .string()
-    .transform((value) => value.trim().toUpperCase())
-    .pipe(vanTypeSchema),
+    .max(60, { error: "Name cannot be longer then 60 characters" }),
+  description: z.string().max(1024, {
+    error: "Description is too long. Max length is 1024 characters",
+  }),
+  type: z.string().toUpperCase().pipe(vanTypeSchema),
   imageUrl: z.url(),
-  price: z.coerce.number().positive().max(32767),
+  price: z.coerce.number().positive().max(32767, {
+    error: "Your van cannot be more expensive then $32,767 dollars",
+  }),
 });
 
 export const uuidSchema = z.object({
@@ -53,9 +55,11 @@ function zodEnumFromRecordKeys<K extends string>(record: Record<K, any>) {
 
 const vanType = zodEnumFromRecordKeys(VanType);
 
+const paginationSchema = z.coerce.number().optional();
+
 export const searchParamsSchema = z.object({
-  page: z.coerce.number().optional().default(DEFAULT_PAGE),
-  limit: z.coerce.number().optional().default(DEFAULT_LIMIT),
+  page: paginationSchema.default(DEFAULT_PAGE),
+  limit: paginationSchema.default(DEFAULT_LIMIT),
   type: z
     .string()
     .toUpperCase()
