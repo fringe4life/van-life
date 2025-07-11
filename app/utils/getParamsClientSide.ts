@@ -1,10 +1,14 @@
 import { URLSearchParams } from "url";
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from "~/constants/constants";
 
 export function getParamsClientSide(
   searchParams: URLSearchParams,
-  defaultPage: number = 1,
-  defaultLimit: number = 10
+  defaultPage?: number ,
+  defaultLimit?: number ,
 ) {
+
+  if (!defaultPage) defaultPage = DEFAULT_PAGE
+  if(!defaultLimit) defaultLimit = DEFAULT_LIMIT
   const page = Number.parseInt(
     searchParams.get("page") ?? defaultPage.toString()
   );
