@@ -50,9 +50,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { sumIncome, hostIncomes } = loaderData;
 
+  console.log({ sumIncome, hostIncomes });
+
   const mappedData = hostIncomes.map((income) => ({
     name: new Date().getDate().toLocaleString(),
-    amount: Math.round(income.amount as unknown as number),
+    amount: Math.round(income.amount),
   }));
 
   const { changingPage } = useIsNavigating();

@@ -1,6 +1,6 @@
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 import type { Route } from "./+types/addVan";
-import { Form } from "react-router";
+import { Form, redirect, href } from "react-router";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { addVanSchema } from "~/utils/types";
@@ -42,10 +42,7 @@ export async function action({ request }: Route.ActionArgs) {
       formData,
     };
   }
-  return {
-    errors: "",
-    formData: {},
-  };
+  throw redirect(href("/host/vans"));
 }
 
 export default function AddVan({ actionData }: Route.ComponentProps) {

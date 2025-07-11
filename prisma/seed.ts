@@ -5,8 +5,8 @@ const main = async () => {
   // clear tables
   try {
     await prisma.review.deleteMany();
-    await prisma.van.deleteMany();
     await prisma.rent.deleteMany();
+    await prisma.van.deleteMany();
   } catch (error) {
     console.error(error);
   }
@@ -45,7 +45,13 @@ const main = async () => {
     data: rentsWithIds,
   });
 
-  const rentIds = await prisma.rent.findMany();
+  const rentIds = await prisma.rent.findMany({
+    where: {
+      NOT: {
+        rentedTo: null,
+      },
+    },
+  });
 
   const reviewsWithIds = reviews.map((review) => ({
     ...review,
@@ -98,10 +104,7 @@ function getRandomNumber(min = 3, max = 21) {
 }
 
 function getCost(rentedAt: Date, rentedTo: Date, price: number) {
-  const daysDifferent = Math.ceil(
-    (rentedTo.getMilliseconds() - rentedAt.getMilliseconds()) /
-      (1000 * 3600 * 24)
-  );
+  const daysDifferent = Math.ceil((rentedTo - rentedAt) / (1000 * 3600 * 24));
   return price * daysDifferent;
 }
 

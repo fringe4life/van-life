@@ -6,6 +6,6 @@ model Review {
   userId    String
   rating    Int      @db.SmallInt
   rentId    String
-  renter    Rent     @relation(fields: [rentId], references: [id])
+  rent      Rent     @relation(fields: [rentId], references: [id])
   user      UserInfo @relation(fields: [userId], references: [userId])
 }
