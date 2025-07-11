@@ -1,7 +1,7 @@
 import { data, Link, href, useSearchParams } from "react-router";
 import { getHostVans } from "~/db/getHostVans";
 import type { Route } from "./+types/hostVans";
-import VanCard from "~/cards/van-card";
+import VanCard from "~/components/cards/van-card";
 import { getPaginationParams } from "~/utils/getPaginationParams";
 import { getHostVanCount } from "~/db/getHostVanCount";
 import { getParamsClientSide } from "~/utils/getParamsClientSide";

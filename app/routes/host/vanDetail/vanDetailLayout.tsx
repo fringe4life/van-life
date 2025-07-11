@@ -2,10 +2,10 @@ import { auth } from "~/lib/auth/auth";
 import type { Route } from "./+types/vanDetailLayout";
 import { data, redirect, Outlet, Link } from "react-router";
 import { getHostVan } from "~/db/getHostVan";
-import VanDetailCard from "~/cards/van-detail-card";
+import VanDetailCard from "~/components/cards/van-detail-card";
 import useIsNavigating from "~/hooks/useIsNavigating";
 import clsx from "clsx";
-
+import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
 export function meta({ data }: Route.MetaArgs) {
   return [
     { title: `${data?.van?.name ?? "unknown"} | Vanlife` },
@@ -17,9 +17,8 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const session = await auth.api.getSession({ headers: request.headers });
+  const session = await getSessionOrRedirect(request);
   const { vanId } = params;
-  if (!session) throw redirect("/login");
   if (!vanId) throw redirect("/notfound");
   const van = await getHostVan(session.user.id, vanId);
   if (!van) throw redirect("/notfound");

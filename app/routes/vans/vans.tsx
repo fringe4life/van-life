@@ -1,6 +1,6 @@
 import { getVans } from "~/db/getVans";
 
-import { VanType } from "~/generated/prisma/enums";
+
 
 import { data, href, Link, NavLink, useSearchParams } from "react-router";
 import { badgeVariants } from "~/components/ui/badge";
@@ -13,6 +13,7 @@ import GenericComponent from "~/components/Container";
 import Pagination from "~/components/Pagination";
 import useIsNavigating from "~/hooks/useIsNavigating";
 import clsx from "clsx";
+import { VanType } from "@prisma/client";
 
 export function meta(_: Route.MetaArgs) {
   return [

@@ -38,7 +38,7 @@ export async function action({ request }: Route.ActionArgs) {
 
   if (!success) {
     return {
-      errors: "Something wen wrong please try again later",
+      errors: "Something wen't wrong please try again later",
       formData,
     };
   }

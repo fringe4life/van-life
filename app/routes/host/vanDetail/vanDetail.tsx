@@ -1,8 +1,8 @@
 import { useOutletContext } from "react-router";
 
 import type { Route } from "./+types/vanDetail";
-import type { Van } from "~/generated/prisma/client";
 import { capitalize } from "~/utils/utils";
+import type { Van } from "@prisma/client";
 
 export default function VanDetail({}: Route.ComponentProps) {
   const van = useOutletContext<Van>();

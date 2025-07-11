@@ -31,3 +31,4 @@ export const auth = betterAuth({
   },
   secret: env.BETTER_AUTH_SECRET,
 });
+type Session = typeof auth.$Infer.Session;

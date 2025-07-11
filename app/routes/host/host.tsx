@@ -1,7 +1,7 @@
 import { data, href, Link } from "react-router";
 import type { Route } from "./+types/host";
 import { getHostVans } from "~/db/getHostVans";
-import VanCard from "~/cards/van-card";
+import VanCard from "~/components/cards/van-card";
 import { getAccountSummary } from "~/db/getAccountSummary";
 import { getAverageReviewRating } from "~/db/getAvgReviews";
 import GenericComponent from "~/components/Container";
