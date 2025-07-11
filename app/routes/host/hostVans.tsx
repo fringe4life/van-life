@@ -1,15 +1,13 @@
-import { data, Link, href, useSearchParams } from "react-router";
+import { data, Link, href } from "react-router";
 import { getHostVans } from "~/db/getHostVans";
 import type { Route } from "./+types/hostVans";
 import VanCard from "~/components/cards/van-card";
 import { getPaginationParams } from "~/utils/getPaginationParams";
 import { getHostVanCount } from "~/db/getHostVanCount";
-import { getParamsClientSide } from "~/utils/getParamsClientSide";
-import GenericComponent from "~/components/Container";
-import Pagination from "~/components/Pagination";
+
 import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
-import useIsNavigating from "~/hooks/useIsNavigating";
-import clsx from "clsx";
+
+import VanPages from "~/components/VanPages";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -44,43 +42,27 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
   const { vans, vansCount } = loaderData;
 
-  const { changingPage } = useIsNavigating();
-
-  const [searchParams] = useSearchParams({
-    page: "1",
-    limit: "10",
-  });
-
-  const { page, limit } = getParamsClientSide(searchParams);
-
   return (
-    <section>
-      <h2 className="font-bold text-4xl mt-13.5 mb-8 text-text">
-        Your listed vans
-      </h2>
-      <GenericComponent
-        className={clsx({
-          "grid-max grid-max-medium mt-6": true,
-          "opacity-75": changingPage,
-        })}
-        Component={VanCard}
-        items={vans}
-        renderKey={(van) => van.id}
-        renderProps={(van) => ({
-          link: href("/host/vans/:vanId", { vanId: van.id }),
-          van,
-          action: (
-            <Link to={href("/host/vans/:vanId", { vanId: van.id })}>Edit</Link>
-          ),
-        })}
-      />
-      <Pagination
-        pathname={href("/host/vans")}
-        itemsCount={vansCount}
-        limit={limit}
-        page={page}
-        typeFilter={undefined}
-      />
-    </section>
+    <VanPages
+      // generic component props
+      className=""
+      Component={VanCard}
+      renderKey={(van) => van.id}
+      renderProps={(van) => ({
+        link: href("/host/vans/:vanId", { vanId: van.id }),
+        van,
+        action: (
+          <Link to={href("/host/vans/:vanId", { vanId: van.id })}>Edit</Link>
+        ),
+      })}
+      items={vans}
+      itemsCount={vansCount}
+      // generic component props end
+      // used for discriminated union in case needed
+      variant="host"
+      // props for all use cases
+      path={href("/host/vans")}
+      title="Explore our van options"
+    />
   );
 }

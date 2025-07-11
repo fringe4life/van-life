@@ -1,6 +1,6 @@
-import React from "react";
+import type React from "react";
 
-interface GenericComponentProps<T, P> {
+export interface GenericComponentProps<T, P> {
   Component: React.ComponentType<P>;
   items: T[];
   renderProps: (item: T, index: number) => P;

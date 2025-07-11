@@ -33,7 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="grid grid-rows-[104px_1fr_70px] mx-auto px-2 sm:px-6 min-h-[100dvh]">
+      <body className="grid grid-rows-[104px_1fr_70px] mx-auto px-2 sm:px-6 min-h-[100dvh] bg-orange-50">
         {children}
         <ScrollRestoration />
         <Scripts />

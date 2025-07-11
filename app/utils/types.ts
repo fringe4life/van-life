@@ -28,6 +28,12 @@ export const signUpScheme = loginSchema
     path: ["confirmPassword"],
   });
 
+function zodEnumFromRecordKeys<K extends string>(record: Record<K, any>) {
+  const keys = Object.keys(record) as K[];
+  return z.enum(keys as [K, ...K[], typeof DEFAULT_FILTER]);
+}
+
+const vanType = zodEnumFromRecordKeys(VanType);
 const vanTypeSchema = z.enum(Object.values(VanType));
 
 export const addVanSchema = z.object({
@@ -47,13 +53,6 @@ export const addVanSchema = z.object({
 export const uuidSchema = z.object({
   possibleUUID: z.uuid(),
 });
-
-function zodEnumFromRecordKeys<K extends string>(record: Record<K, any>) {
-  const keys = Object.keys(record) as K[];
-  return z.enum(keys as [K, ...K[], typeof DEFAULT_FILTER]);
-}
-
-const vanType = zodEnumFromRecordKeys(VanType);
 
 const paginationSchema = z.coerce.number().optional();
 

@@ -1,8 +1,8 @@
 import type React from "react";
 import { Fragment } from "react";
 
-type ListItemProps<T> = {
-  data: T[];
+export type ListItemProps<T> = {
+  items: T[];
   getKey: (t: T) => React.Key;
   getRow: (t: T) => React.ReactNode;
 };
@@ -10,7 +10,7 @@ type ListItemProps<T> = {
 export default function ListItems<T>({
   getKey,
   getRow,
-  data,
+  items,
 }: ListItemProps<T>) {
-  return data.map((d) => <Fragment key={getKey(d)}>{getRow(d)}</Fragment>);
+  return items.map((d) => <Fragment key={getKey(d)}>{getRow(d)}</Fragment>);
 }
