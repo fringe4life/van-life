@@ -4,14 +4,15 @@ export function getPaginationParams(url: string) {
   const searchParams = Object.fromEntries(
     new URLSearchParams(url.split("?").at(1) ?? "")
   );
-
+  console.log({ searchParams });
   const { success, data } = searchParamsSchema.safeParse(searchParams);
   // TODO return defa
   if (!success) {
     console.log("unsuccesful");
-    return {page: 1, limit: 10, typeFilter: ''};
+    return { page: 1, limit: 10, type: "" };
   }
-  const { page, limit, typeFilter } = data;
+  console.log("success");
+  const { page, limit, type } = data;
 
-  return { page, limit, typeFilter };
+  return { page, limit, type };
 }

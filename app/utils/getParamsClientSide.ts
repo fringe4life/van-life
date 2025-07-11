@@ -12,7 +12,7 @@ export function getParamsClientSide(
     searchParams.get("limit") ?? defaultLimit.toString()
   );
 
-  const typeFilter = searchParams.get("type") ?? "";
+  const type = searchParams.get("type") ?? "";
 
-  return { page, limit, typeFilter };
+  return { page, limit, type };
 }

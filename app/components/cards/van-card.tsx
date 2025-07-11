@@ -1,8 +1,8 @@
-import { Card, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 
-import type { Van } from "~/generated/prisma/client";
 import { Badge } from "~/components/ui/badge";
 import { Link } from "react-router";
+import type { Van } from "@prisma/client";
 
 type VanCardProps = {
   van: Van;

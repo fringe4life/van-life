@@ -73,14 +73,14 @@ export default function Layout() {
       <main className="grid grid-rows-subgrid mb-16">
         <Outlet />
       </main>
-      <footer className="bg-neutral-800 ">
-        <p className="uppercase text-sm text-center py-6.25 text-[#aaa]">
+      <footer className="bg-neutral-800  py-6.25">
+        <p className="uppercase text-sm text-center text-[#aaa]">
           &copy;{new Date().getFullYear()} #vanlife
         </p>
         <a
           href="https://www.flaticon.com/free-icons/camper-van"
           title="camper van icons"
-          className="text-center text-sm text-[#aaa]"
+          className="text-center text-sm text-[#aaa] inline-block w-full"
         >
           Camper van icons created by Iconfromus - Flaticon
         </a>

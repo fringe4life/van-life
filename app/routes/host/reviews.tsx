@@ -46,27 +46,19 @@ export default function Host({ loaderData }: Route.ComponentProps) {
   const { reviews } = loaderData;
 
   const { changingPage } = useIsNavigating();
-
-  const result = reviews.reduce(
-    (acc, cur) => {
-      acc[cur.rating - 1] += 1;
-      return acc;
-    },
-    new Array<number>(5)
-  ).map((res, index) => ({
-    name: `${index + 1}`,
-    amount: res
-  }));
-
-  
-
-  // const mappedData = [
-  //   { name: "1 stars", amount: result[1] },
-  //   { name: "2 stars", amount: result[2] },
-  //   { name: "3 stars", amount: result[3] },
-  //   { name: "4 stars", amount: result[4] },
-  //   { name: "5 stars", amount: result[5] },
-  // ];
+  const result = reviews
+    .reduce(
+      (acc, cur) => {
+        console.log({ acc });
+        acc[cur.rating - 1] += 1;
+        return acc;
+      },
+      [0, 0, 0, 0, 0]
+    )
+    .map((res, index) => ({
+      name: `${index + 1}`,
+      amount: res,
+    }));
 
   const reviewItems = reviews.map((review) => ({
     name: review.user.user.name,

@@ -1,7 +1,5 @@
 import { getVans } from "~/db/getVans";
 
-
-
 import { data, href, Link, NavLink, useSearchParams } from "react-router";
 import { badgeVariants } from "~/components/ui/badge";
 import Van from "~/components/Van";
@@ -14,6 +12,7 @@ import Pagination from "~/components/Pagination";
 import useIsNavigating from "~/hooks/useIsNavigating";
 import clsx from "clsx";
 import { VanType } from "@prisma/client";
+import ListItems from "~/components/ListItems";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -28,10 +27,11 @@ export function meta(_: Route.MetaArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
   const badges = Object.values(VanType);
 
-  const { page, limit, typeFilter } = getPaginationParams(request.url);
+  const { page, limit, type = "" } = getPaginationParams(request.url);
 
-  const vans = await getVans(page, limit, typeFilter.toUpperCase() as VanType);
-  const vansCount = await getVansCount(typeFilter.toUpperCase() as VanType);
+  const vans = await getVans(page, limit, type as VanType);
+  const vansCount = await getVansCount(type as VanType);
+
   return data(
     { vans, badges, vansCount },
     {
@@ -45,43 +45,45 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Vans({ loaderData }: Route.ComponentProps) {
   const { vans, badges, vansCount } = loaderData;
 
+  console.log({ vansCount });
   const [searchParams] = useSearchParams({
     page: "1",
     limit: "10",
   });
-  const { page, limit, typeFilter } = getParamsClientSide(searchParams);
+  const { page, limit, type: typeFilter } = getParamsClientSide(searchParams);
 
+  console.log({ typeFilter });
   const { changingPage } = useIsNavigating();
 
   const vansList = typeFilter
     ? vans.filter((van) => van.type === typeFilter.toUpperCase())
     : vans;
-
-  const filtersToDisplay = badges.map((type) => {
-    const lowerCaseType = type.toLowerCase();
-    const variant = typeFilter === type.toLowerCase() ? type : "OUTLINE";
-    return (
-      <NavLink
-        key={lowerCaseType}
-        to={{
-          search: `?type=${lowerCaseType}`,
-        }}
-        className={badgeVariants({ variant })}
-        viewTransition
-      >
-        {type}
-      </NavLink>
-    );
-  });
-
   return (
-    <section className=" mb-20">
+    <section>
       <div>
         <h2 className="text-3xl font-bold mb-5.75 text-balance">
           Explore our van options
         </h2>
         <p className="flex justify-between md:justify-start md:gap-6 mb-6">
-          {filtersToDisplay}{" "}
+          <ListItems
+            data={badges}
+            getKey={(badge) => badge}
+            getRow={(type) => {
+              const lowerCaseType = type.toLowerCase();
+              const variant = typeFilter === lowerCaseType ? type : "OUTLINE";
+              return (
+                <NavLink
+                  to={{
+                    search: `?type=${lowerCaseType}`,
+                  }}
+                  className={badgeVariants({ variant })}
+                  viewTransition
+                >
+                  {type}
+                </NavLink>
+              );
+            }}
+          />
           <Link className="hover:underline" to={href("/vans")}>
             Clear filters
           </Link>

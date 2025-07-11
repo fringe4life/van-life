@@ -1,11 +1,12 @@
-import type { VanType } from "~/generated/prisma/enums";
+import type { VanType } from "@prisma/client";
 import getSkipAmount from "~/utils/getSkipAmount";
 import { prisma } from "~/lib/prisma";
 
 export async function getVans(
-  page: number = 1,
-  limit: number = 10,
-  typeFilter: VanType | undefined
+  page: number,
+  limit: number,
+
+  typeFilter: VanType | null
 ) {
   const skip = getSkipAmount(page, limit);
 

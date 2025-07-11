@@ -41,8 +41,15 @@ export const uuidSchema = z.object({
   possibleUUID: z.uuid(),
 });
 
+function zodEnumFromRecordKeys<K extends string>(record: Record<K, any>) {
+  const keys = Object.keys(record) as K[];
+  return z.enum(keys as [K, ...K[], ""]);
+}
+
+const vanType = zodEnumFromRecordKeys(VanType);
+
 export const searchParamsSchema = z.object({
-  page: z.coerce.number().default(1),
-  limit: z.coerce.number().default(10),
-  typeFilter: z.enum([...Object.values(VanType), ""]).default(""),
+  page: z.coerce.number().optional().default(1),
+  limit: z.coerce.number().optional().default(10),
+  type: z.string().toUpperCase().optional().default("").pipe(vanType),
 });

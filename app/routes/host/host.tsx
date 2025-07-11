@@ -78,7 +78,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
         items={vans}
         Component={VanCard}
         className={clsx({
-          "space-y-6": true,
+          "grid-max grid-max-medium": true,
           "opacity-75": changingPage,
         })}
         renderKey={(item) => item.id}
