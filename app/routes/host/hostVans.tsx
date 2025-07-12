@@ -42,7 +42,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<VanPages
-			// generic component props
+			// generic component props start
 			Component={VanCard}
 			renderKey={(van) => van.id}
 			renderProps={(van) => ({
