@@ -1,22 +1,14 @@
 import clsx from 'clsx';
 import { data } from 'react-router';
-import {
-	Bar,
-	BarChart,
-	CartesianGrid,
-	Legend,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from 'recharts';
+
+import BarChartComponent from '~/components/BarChart';
 import GenericComponent from '~/components/GenericComponent';
 import Review from '~/components/Review';
 import { getHostReviews } from '~/db/getHostReviews';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import type { Route } from './+types/reviews';
-export function meta(_: Route.MetaArgs) {
+export function meta() {
 	return [
 		{ title: 'Reviews | Vanlife' },
 		{
@@ -77,16 +69,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			})}
 		>
 			<h2 className="font-bold text-3xl text-text">Your Reviews</h2>
-			<ResponsiveContainer width="100%" height={250}>
-				<BarChart data={result}>
-					<CartesianGrid strokeDasharray="3 3" />
-					<XAxis dataKey="name" />
-					<YAxis />
-					<Tooltip />
-					<Legend />
-					<Bar dataKey="amount" fill="oklch(75.27% 0.167 52.58)" />
-				</BarChart>
-			</ResponsiveContainer>
+			<BarChartComponent mappedData={result} />
 			<article>
 				<h3 className="font-bold text-lg text-text">
 					Reviews ({reviews.length})

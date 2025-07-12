@@ -49,6 +49,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 		<VanPages
 			// generic component props
 			Component={VanCard}
+			emptyStateMessage='There are no vans in our site.'
 			renderKey={(van) => van.id}
 			renderProps={(van) => ({
 				van,

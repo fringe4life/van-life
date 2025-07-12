@@ -1,15 +1,6 @@
 import clsx from 'clsx';
 import { data } from 'react-router';
-import {
-	Bar,
-	BarChart,
-	CartesianGrid,
-	Legend,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from 'recharts';
+import BarChartComponent from '~/components/BarChart';
 import GenericComponent from '~/components/GenericComponent';
 import Income from '~/components/Income';
 import { getAccountSummary } from '~/db/getAccountSummary';
@@ -60,7 +51,12 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	const { changingPage } = useIsNavigating();
 
 	return (
-		<div className={clsx({ 'opacity-75': changingPage })}>
+		<div
+			className={clsx({
+				'opacity-75': changingPage,
+				'flex flex-col ': true,
+			})}
+		>
 			<h2 className="mt-13 mb-11 font-bold text-3xl">Income</h2>
 			<p>
 				Last{' '}
@@ -69,16 +65,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			<p className="mt-8 mb-13 font-extrabold text-5xl">
 				{displayPrice(sumIncome)}
 			</p>
-			<ResponsiveContainer width="100%" height={350}>
-				<BarChart data={mappedData}>
-					<CartesianGrid strokeDasharray="3 3" />
-					<XAxis dataKey="name" />
-					<YAxis />
-					<Tooltip />
-					<Legend />
-					<Bar dataKey="amount" fill="oklch(75.27% 0.167 52.58)" />
-				</BarChart>
-			</ResponsiveContainer>
+			<BarChartComponent mappedData={mappedData} />
 			<GenericComponent
 				emptyStateMessage="Rent some vans and your income will appear here."
 				className="grid-max"

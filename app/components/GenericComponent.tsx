@@ -20,7 +20,6 @@ const GenericComponent = <T, P>({
 	emptyStateMessage,
 }: GenericComponentProps<T, P>) => {
 	const isEmpty = isEmptyList(items);
-
 	if (isEmpty) {
 		return <EmptyState message={emptyStateMessage} />;
 	}

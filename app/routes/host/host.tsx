@@ -48,7 +48,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 
 	const { changingPage } = useIsNavigating();
 	return (
-		<section>
+		<section className="flex h-full grow-1 flex-col">
 			<div className="grid grid-cols-[auto_fit-content] items-center justify-between bg-orange-100 px-6.5 py-9">
 				<h2 className="col-start-1 font-bold text-4xl text-text">
 					Welcome {name ? name : 'User'}!

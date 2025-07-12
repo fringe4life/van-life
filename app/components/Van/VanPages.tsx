@@ -43,8 +43,8 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 	const { changingPage } = useIsNavigating();
 
 	return (
-		<section>
-			<h2 className="mb-5.75 text-balance font-bold text-3xl">{title}</h2>
+		<section className="flex flex-col ">
+			<h2 className="mb-6 text-balance font-bold text-3xl">{title}</h2>
 			{variant === 'vans' && (
 				<p className="mb-6 flex justify-between md:justify-start md:gap-6">
 					{
