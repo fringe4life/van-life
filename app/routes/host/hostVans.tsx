@@ -59,7 +59,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			variant="host"
 			// props for all use cases
 			path={href('/host/vans')}
-			title="Explore our van options"
+			title="Your listed vans"
 		/>
 	);
 }
