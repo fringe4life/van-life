@@ -58,7 +58,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
       items={vans}
       itemsCount={vansCount}
       // generic component props end
-      // used for discriminated union in case needed
+      // used for discriminated union in case needed and to manage vans route
       variant="host"
       // props for all use cases
       path={href("/host/vans")}

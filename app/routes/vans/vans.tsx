@@ -7,12 +7,9 @@ import type { Route } from "./+types/vans";
 import { getPaginationParams } from "~/utils/getPaginationParams";
 import { getVansCount } from "~/db/getVansCount";
 import { getParamsClientSide } from "~/utils/getParamsClientSide";
-import { VanType, type Van as VanModel } from "@prisma/client";
-import ListItems from "~/components/ListItems";
+import { VanType } from "@prisma/client";
 import VanPages from "~/components/VanPages";
 import { DEFAULT_FILTER } from "~/constants/constants";
-import type { JSX } from "react/jsx-runtime";
-import type { GenericComponentProps } from "~/components/Container";
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -27,7 +24,7 @@ export function meta(_: Route.MetaArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
   const badges = Object.values(VanType);
 
-  const { page, limit, type = "" } = getPaginationParams(request.url);
+  const { page, limit, type } = getPaginationParams(request.url);
 
   const vans = await getVans(page, limit, type as VanType);
   const vansCount = await getVansCount(type as VanType);

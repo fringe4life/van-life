@@ -1,4 +1,4 @@
-import { href, NavLink, useSearchParams } from "react-router";
+import { NavLink, useSearchParams } from "react-router";
 import useIsNavigating from "~/hooks/useIsNavigating";
 import { getParamsClientSide } from "~/utils/getParamsClientSide";
 import GenericComponent, {
@@ -9,7 +9,6 @@ import Pagination from "~/components/Pagination";
 import type { ListItemProps } from "./ListItems";
 import type { VanType } from "@prisma/client";
 import ListItems from "./ListItems";
-import { DEFAULT_FILTER } from "~/constants/constants";
 
 type HostVanPages = {
   variant: "host";
@@ -20,15 +19,24 @@ type VansPages<U> = {
   listItem: ListItemProps<U>;
 };
 
-type VanPagesProps<T, P, U = VanType> = (HostVanPages | VansPages<U>) & {
+type VanPagesProps<T, P, U> = (HostVanPages | VansPages<U>) & {
   title: string;
   path: string;
   itemsCount: number;
 } & GenericComponentProps<T, P>;
 
 export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
-  const { path, items, itemsCount, title, Component, renderKey, renderProps } =
-    props;
+  const {
+    path,
+    items,
+    itemsCount,
+    title,
+    Component,
+    renderKey,
+    renderProps,
+    variant,
+  } = props;
+  // TODO: consider passing in this information
   const [searchParams] = useSearchParams();
   const { page, limit, type: typeFilter } = getParamsClientSide(searchParams);
 
@@ -37,7 +45,7 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
   return (
     <section>
       <h2 className="text-3xl font-bold mb-5.75 text-balance">{title}</h2>
-      {props.variant === "vans" && (
+      {variant === "vans" && (
         <p className="flex justify-between md:justify-start md:gap-6 mb-6">
           {
             <ListItems
@@ -58,8 +66,8 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
         })}
         Component={Component}
         items={items}
-        renderKey={(item, index) => renderKey(item, index)}
-        renderProps={(item, index) => renderProps(item, index)}
+        renderKey={renderKey}
+        renderProps={renderProps}
       />
       <Pagination
         pathname={path}

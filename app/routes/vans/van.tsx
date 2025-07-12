@@ -42,7 +42,7 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 
   const location = useLocation();
 
-  const typeFilter = location.state?.type || "";
+  const typeFilter = location.state?.type ?? "";
 
   const { changingPage } = useIsNavigating();
   return (
