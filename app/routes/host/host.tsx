@@ -49,12 +49,12 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	const { changingPage } = useIsNavigating();
 	return (
 		<section>
-			<div className="bg-orange-100 py-9 px-6.5 grid justify-between items-center grid-cols-[auto_fit-content]">
+			<div className="grid grid-cols-[auto_fit-content] items-center justify-between bg-orange-100 px-6.5 py-9">
 				<h2 className="col-start-1 font-bold text-4xl text-text">
 					Welcome {name ? name : 'User'}!
 				</h2>
-				<p className="col-start-1 my-8 text-base text-text-secondary font-light">
-					Income last <span className="underline font-medium">30 days</span>
+				<p className="col-start-1 my-8 font-light text-base text-text-secondary">
+					Income last <span className="font-medium underline">30 days</span>
 				</p>
 				<p className="col-start-1 font-extrabold text-5xl text-text">
 					{displayPrice(sumIncome)}
@@ -63,13 +63,13 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					Details
 				</Link>
 			</div>
-			<div className="flex justify-between py-11 px-6.5 ">
-				<p className="text-2xl font-bold text-shadow-text">
+			<div className="flex justify-between bg-orange-200 px-6.5 py-11 ">
+				<p className="font-bold text-2xl text-shadow-text">
 					Review Score star {avgRating.toFixed(1)}/5
 				</p>
 				<Link
 					to={href('/host/review')}
-					className="text-base font-medium text-shadow-text"
+					className="font-medium text-base text-shadow-text"
 				>
 					Details
 				</Link>
@@ -78,14 +78,14 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				items={vans}
 				Component={VanCard}
 				className={clsx({
-					'grid-max grid-max-medium': true,
+					'grid-max grid-max-medium mt-11': true,
 					'opacity-75': changingPage,
 				})}
 				renderKey={(item) => item.id}
 				renderProps={(item) => ({
 					van: item,
 					link: href('/host/vans/:vanId', { vanId: item.id }),
-					action: <p></p>,
+					action: <p>Edit</p>,
 				})}
 			/>
 		</section>

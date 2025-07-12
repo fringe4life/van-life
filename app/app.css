@@ -48,6 +48,7 @@ html {
 /* prefers-reduced-motion: reduce */
 @media screen and (prefers-reduced-motion: no-preference) {
   @view-transition {
+    /* biome-ignore lint/correctness/noUnknownProperty: rule exists*/
     navigation: auto;
   }
 
@@ -97,6 +98,7 @@ html {
   --color-text-secondary: oklch(42.02% 0 0);
 
   --color-orange-100: oklch(94.72% 0.041 73.17);
+  --color-orange-200: oklch(91.55% 0.067 73.33);
   --color-orange-400: oklch(75.76% 0.159 55.93);
 }
 
