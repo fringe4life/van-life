@@ -7,7 +7,6 @@ import GenericComponent, {
 import clsx from "clsx";
 import Pagination from "~/components/Pagination";
 import type { ListItemProps } from "./ListItems";
-import type { VanType } from "@prisma/client";
 import ListItems from "./ListItems";
 
 type HostVanPages = {
