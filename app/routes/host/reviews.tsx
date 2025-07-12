@@ -10,7 +10,7 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
-import GenericComponent from '~/components/Container';
+import GenericComponent from '~/components/GenericComponent';
 import Review from '~/components/Review';
 import { getHostReviews } from '~/db/getHostReviews';
 import useIsNavigating from '~/hooks/useIsNavigating';
@@ -76,7 +76,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				'opacity-75': changingPage,
 			})}
 		>
-			<h3 className="">Reviews</h3>
+			<h2 className="font-bold text-3xl text-text">Your Reviews</h2>
 			<ResponsiveContainer width="100%" height={250}>
 				<BarChart data={result}>
 					<CartesianGrid strokeDasharray="3 3" />
@@ -97,6 +97,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					items={reviewItems}
 					renderProps={(item) => item}
 					renderKey={(item) => item.id}
+					emptyStateMessage="You have received no reviews"
 				/>
 			</article>
 		</section>

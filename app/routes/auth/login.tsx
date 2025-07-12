@@ -55,7 +55,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
 					name="email"
 					id="email"
 					type="email"
-					placeholder="your.email@email.com"
+					placeholder="john.doe@email.com"
 					disabled={usingForm}
 					defaultValue={actionData?.email ?? ''}
 				/>

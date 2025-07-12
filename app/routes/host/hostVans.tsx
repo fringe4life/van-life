@@ -54,6 +54,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			})}
 			items={vans}
 			itemsCount={vansCount}
+			emptyStateMessage="You are currently not renting any vans."
 			// generic component props end
 			// used for discriminated union in case needed and to manage vans route
 			variant="host"

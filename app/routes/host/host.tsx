@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { data, href, Link } from 'react-router';
-import GenericComponent from '~/components/Container';
+import GenericComponent from '~/components/GenericComponent';
 import VanCard from '~/components/Van/VanCard';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getAverageReviewRating } from '~/db/getAvgReviews';
@@ -75,6 +75,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				</Link>
 			</div>
 			<GenericComponent
+				emptyStateMessage="You are not currently renting any vans"
 				items={vans}
 				Component={VanCard}
 				className={clsx({

@@ -11,7 +11,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 export function HydrateFallback() {
-	return <div>Loading...</div>;
+	return <div>Signing out...</div>;
 }
 
 export default function Signout() {

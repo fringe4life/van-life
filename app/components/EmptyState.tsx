@@ -4,7 +4,7 @@ type EmptyStateProps = {
 
 export default function EmptyState({ message }: EmptyStateProps) {
 	return (
-		<div className="flex ">
+		<div className="flex h-full w-full grow-1 items-center justify-center">
 			<p>{message}</p>
 		</div>
 	);

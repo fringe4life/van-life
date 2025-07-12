@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { NavLink, useSearchParams } from 'react-router';
 import GenericComponent, {
 	type GenericComponentProps,
-} from '~/components/Container';
+} from '~/components/GenericComponent';
 import Pagination from '~/components/Pagination';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getParamsClientSide } from '~/utils/getParamsClientSide';
@@ -34,6 +34,7 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 		renderKey,
 		renderProps,
 		variant,
+		emptyStateMessage,
 	} = props;
 	// TODO: consider passing in this information
 	const [searchParams] = useSearchParams();
@@ -59,6 +60,7 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 				</p>
 			)}
 			<GenericComponent
+				emptyStateMessage={emptyStateMessage}
 				className={clsx({
 					'grid-max grid-max-medium mt-6': true,
 					'opacity-75': changingPage,

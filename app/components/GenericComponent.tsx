@@ -1,4 +1,6 @@
 import type React from 'react';
+import { isEmptyList } from '~/utils/utils';
+import EmptyState from './EmptyState';
 
 export interface GenericComponentProps<T, P> {
 	Component: React.ComponentType<P>;
@@ -6,6 +8,7 @@ export interface GenericComponentProps<T, P> {
 	renderProps: (item: T, index: number) => P;
 	renderKey: (item: T, index: number) => React.Key;
 	className?: string;
+	emptyStateMessage: string;
 }
 
 const GenericComponent = <T, P>({
@@ -14,7 +17,13 @@ const GenericComponent = <T, P>({
 	renderProps,
 	renderKey,
 	className = '',
+	emptyStateMessage,
 }: GenericComponentProps<T, P>) => {
+	const isEmpty = isEmptyList(items);
+
+	if (isEmpty) {
+		return <EmptyState message={emptyStateMessage} />;
+	}
 	return (
 		<div className={className}>
 			{items.map((item, index) => (
