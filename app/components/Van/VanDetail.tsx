@@ -1,16 +1,16 @@
+import type { Van } from '@prisma/client';
+import { href, Link } from 'react-router';
 import { Badge } from '~/components/ui/badge';
 import { cn } from '~/utils/utils';
-import { badgeVariants } from './ui/badge';
-import { Button } from './ui/button';
+import { badgeVariants } from '../ui/badge';
 import {
 	Card,
-	CardHeader,
 	CardContent,
-	CardTitle,
 	CardDescription,
 	CardFooter,
-} from './ui/card';
-import type { Van } from '@prisma/client';
+	CardHeader,
+	CardTitle,
+} from '../ui/card';
 
 export default function VanDetail({
 	imageUrl,
@@ -32,14 +32,15 @@ export default function VanDetail({
 					<CardDescription>{description}</CardDescription>
 				</CardContent>
 				<CardFooter>
-					<Button
+					<Link
 						className={cn(
-							badgeVariants({ variant: 'SIMPLE' }),
+							badgeVariants({ variant: type }),
 							'@max-lg/card-full:w-full',
 						)}
+						to={href('/')}
 					>
 						Rent this van
-					</Button>
+					</Link>
 				</CardFooter>
 			</Card>
 		</div>

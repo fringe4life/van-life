@@ -1,10 +1,15 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+	return twMerge(clsx(inputs));
 }
 
+/**
+ * @abstract capitalizes the first letter and makes rest of string passed in lowercase
+ * @param str the string to capitalize
+ * @returns the string which is now capitalized
+ */
 export function capitalize(str: string) {
-  return `${str[0].toUpperCase()}${str.substring(1).toLowerCase()}`;
+	return `${str[0].toUpperCase()}${str.substring(1).toLowerCase()}`;
 }

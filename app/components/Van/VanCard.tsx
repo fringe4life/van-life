@@ -1,8 +1,7 @@
-import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
-
-import { Badge } from '~/components/ui/badge';
-import { Link } from 'react-router';
 import type { Van } from '@prisma/client';
+import { Link } from 'react-router';
+import { Badge } from '~/components/ui/badge';
+import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 
 type VanCardProps = {
 	van: Van;
@@ -29,11 +28,11 @@ export default function VanCard({
 						height={200}
 					/>
 				</CardHeader>
-				<CardFooter className="@min-md/card:content-center  @min-md/card:grid-cols-subgrid @min-md/card:col-span-2   @min-md/card:row-span-2 @min-md/card:grid-rows-subgrid @min-md/card:col-start-2">
-					<CardTitle className="text-2xl @min-md/card:col-start-2 @min-md/card:row-end-2 @min-md/card:self-start">
+				<CardFooter className="@min-md/card:col-span-2 @min-md/card:col-start-2 @min-md/card:row-span-2 @min-md/card:grid-cols-subgrid @min-md/card:grid-rows-subgrid @min-md/card:content-center">
+					<CardTitle className="@min-md/card:col-start-2 @min-md/card:row-end-2 @min-md/card:self-start text-2xl">
 						<Link to={link} title={name}>
 							{name}
-							<span className="absolute w-full h-full inset-0 overflow-hidden"></span>
+							<span className="absolute inset-0 h-full w-full overflow-hidden"></span>
 						</Link>
 					</CardTitle>
 					<div className="justify-self-end">{action}</div>

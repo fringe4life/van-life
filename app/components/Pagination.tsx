@@ -42,6 +42,6 @@ export default function Pagination({
     );
   }
   return (
-    <section className="flex justify-center gap-6 my-6">{listOfLinks}</section>
+    <section className="my-6 flex justify-center gap-6">{listOfLinks}</section>
   );
 }

@@ -1,16 +1,15 @@
-import { getVans } from '~/db/getVans';
+import { VanType } from '@prisma/client';
 
 import { data, href, NavLink, useSearchParams } from 'react-router';
 import { badgeVariants } from '~/components/ui/badge';
-
-import type { Route } from './+types/vans';
-import { getPaginationParams } from '~/utils/getPaginationParams';
-import { getVansCount } from '~/db/getVansCount';
-import { getParamsClientSide } from '~/utils/getParamsClientSide';
-import { VanType } from '@prisma/client';
-import VanPages from '~/components/VanPages';
+import VanCard from '~/components/Van/VanCard';
+import VanPages from '~/components/Van/VanPages';
 import { DEFAULT_FILTER } from '~/constants/constants';
-import VanCard from '~/components/cards/van-card';
+import { getVans } from '~/db/getVans';
+import { getVansCount } from '~/db/getVansCount';
+import { getPaginationParams } from '~/utils/getPaginationParams';
+import { getParamsClientSide } from '~/utils/getParamsClientSide';
+import type { Route } from './+types/vans';
 
 export function meta(_: Route.MetaArgs) {
 	return [
@@ -49,16 +48,15 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 	return (
 		<VanPages
 			// generic component props
-			className=""
 			Component={VanCard}
 			renderKey={(van) => van.id}
 			renderProps={(van) => ({
 				van,
 				filter: typeFilter ? typeFilter : DEFAULT_FILTER,
 				action: (
-					<p className="@max-md/card:justify-self-end @max-md/card:col-start-2 @md/card:row-span-2 @md/card:self-center @md/card:justify-self-end text-lg">
+					<p className="@max-md/card:col-start-2 @md/card:row-span-2 @md/card:self-center @max-md/card:justify-self-end @md/card:justify-self-end text-lg">
 						${van.price}
-						<p className="@max-md/card:inline text-base @md/card:text-right">
+						<p className="@max-md/card:inline @md/card:text-right text-base">
 							{' '}
 							/day
 						</p>

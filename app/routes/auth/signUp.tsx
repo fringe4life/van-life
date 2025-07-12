@@ -1,94 +1,93 @@
-import { Form, href, Link, replace } from "react-router";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import type { Route } from "./+types/signUp";
-
-import { signUpScheme } from "~/utils/types";
-import { auth } from "~/lib/auth/auth";
-import useIsNavigating from "~/hooks/useIsNavigating";
-import { z } from "zod/v4";
+import { Form, href, Link, replace } from 'react-router';
+import { z } from 'zod/v4';
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
+import useIsNavigating from '~/hooks/useIsNavigating';
+import { auth } from '~/lib/auth/auth';
+import { signUpScheme } from '~/utils/types';
+import type { Route } from './+types/signUp';
 
 export async function action({ request }: Route.ActionArgs) {
-  const formData = Object.fromEntries(await request.formData());
+	const formData = Object.fromEntries(await request.formData());
 
-  const result = signUpScheme.safeParse(formData);
+	const result = signUpScheme.safeParse(formData);
 
-  const name = (formData["name"] as string) ?? "";
-  const email = (formData["email"] as string) ?? "";
+	const name = (formData.name as string) ?? '';
+	const email = (formData.email as string) ?? '';
 
-  if (!result.success) {
-    return {
-      errors: z.prettifyError(result.error),
-      name,
-      email,
-    };
-  }
+	if (!result.success) {
+		return {
+			errors: z.prettifyError(result.error),
+			name,
+			email,
+		};
+	}
 
-  const signUp = await auth.api.signUpEmail({
-    body: result.data,
-    asResponse: true,
-  });
+	const signUp = await auth.api.signUpEmail({
+		body: result.data,
+		asResponse: true,
+	});
 
-  if (!signUp.ok) {
-    return { errors: "Sign up failed please try again later", name, email };
-  }
-  throw replace("/host", {
-    headers: signUp.headers,
-  });
+	if (!signUp.ok) {
+		return { errors: 'Sign up failed please try again later', name, email };
+	}
+	throw replace('/host', {
+		headers: signUp.headers,
+	});
 }
 
 export default function SignUp({ actionData }: Route.ComponentProps) {
-  console.log(actionData);
+	console.log(actionData);
 
-  const { usingForm } = useIsNavigating();
+	const { usingForm } = useIsNavigating();
 
-  return (
-    <div className="grid gap-12 sm:justify-center justify-start items-center">
-      <h2 className="font-bold text-3xl justify-center text-shadow-text">
-        Create your account
-      </h2>
-      <Form method="POST" className="grid gap-4">
-        <Input
-          name="email"
-          id="email"
-          type="email"
-          placeholder="your.email@email.com"
-          disabled={usingForm}
-          defaultValue={actionData?.email ?? ""}
-        />
-        <Input
-          type="text"
-          name="name"
-          id="name"
-          placeholder="John Doe"
-          disabled={usingForm}
-          defaultValue={actionData?.name ?? ""}
-        />
-        <Input
-          name="password"
-          id="password"
-          type="password"
-          placeholder="password"
-          disabled={usingForm}
-        />
-        <Input
-          name="confirmPassword"
-          id="confirmPassword"
-          type="password"
-          placeholder="confirm password"
-          disabled={usingForm}
-        />
-        {actionData?.errors ? <p>actionData.errors</p> : null}
-        <Button variant="default" type="submit" disabled={usingForm}>
-          Sign up
-        </Button>
-      </Form>
-      <p>
-        <span>Already have an account?</span>{" "}
-        <Link to={href("/login")} className="text-orange-400">
-          Sign in now
-        </Link>
-      </p>
-    </div>
-  );
+	return (
+		<div className="grid items-center justify-start gap-12 sm:justify-center">
+			<h2 className="justify-center font-bold text-3xl text-shadow-text">
+				Create your account
+			</h2>
+			<Form method="POST" className="grid gap-4">
+				<Input
+					name="email"
+					id="email"
+					type="email"
+					placeholder="your.email@email.com"
+					disabled={usingForm}
+					defaultValue={actionData?.email ?? ''}
+				/>
+				<Input
+					type="text"
+					name="name"
+					id="name"
+					placeholder="John Doe"
+					disabled={usingForm}
+					defaultValue={actionData?.name ?? ''}
+				/>
+				<Input
+					name="password"
+					id="password"
+					type="password"
+					placeholder="password"
+					disabled={usingForm}
+				/>
+				<Input
+					name="confirmPassword"
+					id="confirmPassword"
+					type="password"
+					placeholder="confirm password"
+					disabled={usingForm}
+				/>
+				{actionData?.errors ? <p>actionData.errors</p> : null}
+				<Button variant="default" type="submit" disabled={usingForm}>
+					Sign up
+				</Button>
+			</Form>
+			<p>
+				<span>Already have an account?</span>{' '}
+				<Link to={href('/login')} className="text-orange-400">
+					Sign in now
+				</Link>
+			</p>
+		</div>
+	);
 }

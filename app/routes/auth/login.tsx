@@ -1,83 +1,83 @@
-import { Form, Link, redirect, replace } from "react-router";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { auth } from "~/lib/auth/auth";
-import { loginSchema } from "~/utils/types";
-import type { Route } from "./+types/login";
-import useIsNavigating from "~/hooks/useIsNavigating";
-import { z } from "zod/v4";
+import { Form, Link, redirect, replace } from 'react-router';
+import { z } from 'zod/v4';
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
+import useIsNavigating from '~/hooks/useIsNavigating';
+import { auth } from '~/lib/auth/auth';
+import { loginSchema } from '~/utils/types';
+import type { Route } from './+types/login';
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const result = await auth.api.getSession({ headers: request.headers });
-  if (result?.session) {
-    throw redirect("/host");
-  }
+	const result = await auth.api.getSession({ headers: request.headers });
+	if (result?.session) {
+		throw redirect('/host');
+	}
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  const formData = Object.fromEntries(await request.formData());
+	const formData = Object.fromEntries(await request.formData());
 
-  const result = loginSchema.safeParse(formData);
+	const result = loginSchema.safeParse(formData);
 
-  if (!result.success) {
-    return {
-      errors: z.prettifyError(result.error),
-      email: (formData["email"] as string) ?? "",
-    };
-  }
+	if (!result.success) {
+		return {
+			errors: z.prettifyError(result.error),
+			email: (formData.email as string) ?? '',
+		};
+	}
 
-  const response = await auth.api.signInEmail({
-    body: result.data,
-    asResponse: true,
-  });
+	const response = await auth.api.signInEmail({
+		body: result.data,
+		asResponse: true,
+	});
 
-  if (!response.ok) {
-    return {
-      errors: "Your email or password is incorrect",
-      email: (formData["email"] as string) ?? "",
-    };
-  }
+	if (!response.ok) {
+		return {
+			errors: 'Your email or password is incorrect',
+			email: (formData.email as string) ?? '',
+		};
+	}
 
-  throw replace("/host", {
-    headers: response.headers,
-  });
+	throw replace('/host', {
+		headers: response.headers,
+	});
 }
 
 export default function Login({ actionData }: Route.ComponentProps) {
-  const { usingForm } = useIsNavigating();
-  return (
-    <div className="grid gap-12 sm:justify-center justify-start items-center">
-      <h2 className="font-bold text-3xl justify-center text-shadow-text">
-        Sign into your account
-      </h2>
-      <Form method="POST" className="grid gap-4">
-        <Input
-          name="email"
-          id="email"
-          type="email"
-          placeholder="your.email@email.com"
-          disabled={usingForm}
-          defaultValue={actionData?.email ?? ""}
-        />
-        <Input
-          name="password"
-          id="password"
-          type="password"
-          placeholder="password"
-          disabled={usingForm}
-          defaultValue=""
-        />
-        {actionData?.errors ? <p>{actionData.errors}</p> : null}
-        <Button type="submit" disabled={usingForm}>
-          Sign in
-        </Button>
-      </Form>
-      <p>
-        <span>Don't have an account?</span>{" "}
-        <Link to="/signup" className="text-orange-400">
-          Create one now
-        </Link>
-      </p>
-    </div>
-  );
+	const { usingForm } = useIsNavigating();
+	return (
+		<div className="grid items-center justify-start gap-12 sm:justify-center">
+			<h2 className="justify-center font-bold text-3xl text-shadow-text">
+				Sign into your account
+			</h2>
+			<Form method="POST" className="grid gap-4">
+				<Input
+					name="email"
+					id="email"
+					type="email"
+					placeholder="your.email@email.com"
+					disabled={usingForm}
+					defaultValue={actionData?.email ?? ''}
+				/>
+				<Input
+					name="password"
+					id="password"
+					type="password"
+					placeholder="password"
+					disabled={usingForm}
+					defaultValue=""
+				/>
+				{actionData?.errors ? <p>{actionData.errors}</p> : null}
+				<Button type="submit" disabled={usingForm}>
+					Sign in
+				</Button>
+			</Form>
+			<p>
+				<span>Don't have an account?</span>{' '}
+				<Link to="/signup" className="text-orange-400">
+					Create one now
+				</Link>
+			</p>
+		</div>
+	);
 }
