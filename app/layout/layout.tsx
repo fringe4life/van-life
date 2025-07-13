@@ -1,24 +1,21 @@
-import { useEffect } from 'react';
 import { href, Outlet } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import CustomNavLink from '~/components/CustomNavLink';
 import { authClient } from '~/lib/auth/client';
 
 export default function Layout() {
-	const { data: session } = authClient.useSession();
-	let hasToken = session?.session !== undefined;
-	useEffect(() => {
-		hasToken = session?.session !== undefined;
-		console.log({ hasToken });
-	}, [session?.session, hasToken]);
+	const { data } = authClient.useSession();
+
+	const hasToken = data?.session !== undefined;
+	console.log({ hasToken });
 	return (
 		<>
 			<header className="flex items-center justify-between gap-6 px-4 py-9">
 				<h1 className="font-black text-2xl uppercase">
 					<CustomLink to={href('/')}>#vanlife</CustomLink>
 				</h1>
-				<nav>
-					<ul className="flex flex-wrap gap-3 sm:flex-nowrap">
+				<nav className="justify-self-end-safe">
+					<ul className="flex flex-wrap justify-end gap-3 sm:flex-nowrap">
 						<li>
 							<CustomNavLink
 								to={href('/about')}
