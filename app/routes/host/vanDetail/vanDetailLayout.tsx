@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import { data, href, Link, Outlet, redirect } from 'react-router';
+import { data, href, Outlet, redirect } from 'react-router';
+import CustomLink from '~/components/CustomLink';
 import VanDetailCard from '~/components/Van/HostVanDetailCard';
 import { getHostVan } from '~/db/getHostVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
@@ -39,9 +40,9 @@ export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
 	const { changingPage } = useIsNavigating();
 	return (
 		<>
-			<Link to={href('/host/vans')} className="mt-15 mb-8">
+			<CustomLink to={href('/host/vans')} className="mt-15 mb-8">
 				&larr; Back to all vans
-			</Link>
+			</CustomLink>
 			<VanDetailCard van={van}>
 				<div
 					className={clsx({

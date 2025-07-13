@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
-import { href, Link, NavLink, Outlet } from 'react-router';
+import { href, Outlet } from 'react-router';
+import CustomLink from '~/components/CustomLink';
+import CustomNavLink from '~/components/CustomNavLink';
 import { authClient } from '~/lib/auth/client';
 
 export default function Layout() {
@@ -13,63 +15,56 @@ export default function Layout() {
 		<>
 			<header className="flex items-center justify-between px-4 py-9">
 				<h1 className="font-black text-2xl uppercase">
-					<Link to={href('/')} viewTransition>
-						#vanlife
-					</Link>
+					<CustomLink to={href('/')}>#vanlife</CustomLink>
 				</h1>
 				<nav>
-					<ul className="flex gap-3">
+					<ul className="flex flex-wrap gap-3 sm:flex-nowrap">
 						<li>
-							<NavLink
+							<CustomNavLink
 								to={href('/about')}
 								className={({ isActive, isPending }) =>
 									isPending ? 'text-green-500' : isActive ? 'underline' : ''
 								}
-								viewTransition
 							>
 								About
-							</NavLink>
+							</CustomNavLink>
 						</li>
-						{hasToken ? (
-							<li>
-								<NavLink
-									to={href('/host')}
-									className={({ isActive, isPending }) =>
-										isPending ? 'text-green-500' : isActive ? 'underline' : ''
-									}
-									viewTransition
-								>
-									Host
-								</NavLink>
-							</li>
-						) : (
-							<li>
-								<NavLink
-									to={href('/vans')}
-									className={({ isActive, isPending }) =>
-										isPending ? 'text-green-500' : isActive ? 'underline' : ''
-									}
-									viewTransition
-								>
-									Vans
-								</NavLink>
-							</li>
-						)}
+
+						<li>
+							<CustomNavLink
+								to={href('/host')}
+								className={({ isActive, isPending }) =>
+									isPending ? 'text-green-500' : isActive ? 'underline' : ''
+								}
+							>
+								Host
+							</CustomNavLink>
+						</li>
+						<li>
+							<CustomNavLink
+								to={href('/vans')}
+								className={({ isActive, isPending }) =>
+									isPending ? 'text-green-500' : isActive ? 'underline' : ''
+								}
+							>
+								Vans
+							</CustomNavLink>
+						</li>
+
 						{!hasToken ? (
 							<li>
-								<NavLink
+								<CustomNavLink
 									to={href('/login')}
 									className={({ isActive, isPending }) =>
 										isPending ? 'text-green-500' : isActive ? 'underline' : ''
 									}
-									viewTransition
 								>
 									Login
-								</NavLink>
+								</CustomNavLink>
 							</li>
 						) : (
 							<li>
-								<Link to={href('/signout')}>Sign out</Link>
+								<CustomLink to={href('/signout')}>Sign out</CustomLink>
 							</li>
 						)}
 					</ul>

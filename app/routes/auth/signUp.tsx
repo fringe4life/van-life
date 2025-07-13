@@ -1,5 +1,6 @@
-import { Form, href, Link, replace } from 'react-router';
+import { Form, href, replace } from 'react-router';
 import { z } from 'zod/v4';
+import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import useIsNavigating from '~/hooks/useIsNavigating';
@@ -84,9 +85,9 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 			</Form>
 			<p>
 				<span>Already have an account?</span>{' '}
-				<Link to={href('/login')} className="text-orange-400">
+				<CustomLink to={href('/login')} className="text-orange-400">
 					Sign in now
-				</Link>
+				</CustomLink>
 			</p>
 		</div>
 	);

@@ -1,74 +1,70 @@
-import { href, NavLink, Outlet } from "react-router";
-import type { Route } from "./+types/hostLayout";
-import { getSessionOrRedirect } from "~/lib/auth/getSessionOrRedirect";
+import { href, Outlet } from 'react-router';
+import CustomNavLink from '~/components/CustomNavLink';
+import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
+import type { Route } from './+types/hostLayout';
 
 export const loader = async ({ request }: Route.ClientLoaderArgs) => {
-  await getSessionOrRedirect(request);
+	await getSessionOrRedirect(request);
 };
 
 export default function HostLayout() {
-  return (
-    <div>
-      <ul className="flex gap-3 mb-14 flex-wrap">
-        <li>
-          <NavLink
-            to={href("/host")}
-            end
-            className={({ isActive, isPending }) =>
-              isPending ? "text-green-500" : isActive ? "underline" : ""
-            }
-            viewTransition
-          >
-            Dashboard
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to={href("/host/income")}
-            className={({ isActive, isPending }) =>
-              isPending ? "text-green-500" : isActive ? "underline" : ""
-            }
-            viewTransition
-          >
-            Income
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to={href("/host/vans")}
-            end
-            className={({ isActive, isPending }) =>
-              isPending ? "text-green-500" : isActive ? "underline" : ""
-            }
-            viewTransition
-          >
-            Vans
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to={href("/host/review")}
-            className={({ isActive, isPending }) =>
-              isPending ? "text-green-500" : isActive ? "underline" : ""
-            }
-            viewTransition
-          >
-            Reviews
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to={href("/host/add")}
-            className={({ isActive, isPending }) =>
-              isPending ? "text-green-500" : isActive ? "underline" : ""
-            }
-            viewTransition
-          >
-            Add Van
-          </NavLink>
-        </li>
-      </ul>
-      <Outlet />
-    </div>
-  );
+	return (
+		<div>
+			<ul className="mb-14 flex flex-wrap gap-3">
+				<li>
+					<CustomNavLink
+						to={href('/host')}
+						end
+						className={({ isActive, isPending }) =>
+							isPending ? 'text-green-500' : isActive ? 'underline' : ''
+						}
+					>
+						Dashboard
+					</CustomNavLink>
+				</li>
+				<li>
+					<CustomNavLink
+						to={href('/host/income')}
+						className={({ isActive, isPending }) =>
+							isPending ? 'text-green-500' : isActive ? 'underline' : ''
+						}
+					>
+						Income
+					</CustomNavLink>
+				</li>
+				<li>
+					<CustomNavLink
+						to={href('/host/vans')}
+						end
+						className={({ isActive, isPending }) =>
+							isPending ? 'text-green-500' : isActive ? 'underline' : ''
+						}
+					>
+						Vans
+					</CustomNavLink>
+				</li>
+				<li>
+					<CustomNavLink
+						to={href('/host/review')}
+						className={({ isActive, isPending }) =>
+							isPending ? 'text-green-500' : isActive ? 'underline' : ''
+						}
+					>
+						Reviews
+					</CustomNavLink>
+				</li>
+				<li>
+					<CustomNavLink
+						to={href('/host/add')}
+						className={({ isActive, isPending }) =>
+							isPending ? 'text-green-500' : isActive ? 'underline' : ''
+						}
+					>
+						Add Van
+					</CustomNavLink>
+				</li>
+			</ul>
+			<Outlet />
+		</div>
+	);
 }

@@ -9,7 +9,7 @@ import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/income';
-export function meta(_: Route.MetaArgs) {
+export function meta() {
 	return [
 		{ title: 'Your Income | Vanlife' },
 		{
@@ -44,7 +44,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	console.log({ sumIncome, hostIncomes });
 
 	const mappedData = hostIncomes.map((income) => ({
-		name: new Date().getDate().toLocaleString(),
+		name: income.rentedAt.toLocaleDateString(),
 		amount: Math.round(income.amount),
 	}));
 
@@ -71,10 +71,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				className="grid-max"
 				items={hostIncomes}
 				renderKey={(item) => item.id}
-				renderProps={(item) => ({
-					...item,
-					amount: item.amount,
-				})}
+				renderProps={(item) => item}
 				Component={Income}
 			/>
 		</div>

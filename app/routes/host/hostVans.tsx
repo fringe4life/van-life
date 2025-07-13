@@ -1,4 +1,5 @@
-import { data, href, Link } from 'react-router';
+import { data, href } from 'react-router';
+import CustomLink from '~/components/CustomLink';
 import VanCard from '~/components/Van/VanCard';
 import VanPages from '~/components/Van/VanPages';
 import { getHostVanCount } from '~/db/getHostVanCount';
@@ -7,7 +8,7 @@ import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import { getPaginationParams } from '~/utils/getPaginationParams';
 import type { Route } from './+types/hostVans';
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
 	return [
 		{ title: 'Host Vans | Vanlife' },
 		{
@@ -49,7 +50,9 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				link: href('/host/vans/:vanId', { vanId: van.id }),
 				van,
 				action: (
-					<Link to={href('/host/vans/:vanId', { vanId: van.id })}>Edit</Link>
+					<CustomLink to={href('/host/vans/:vanId', { vanId: van.id })}>
+						Edit
+					</CustomLink>
 				),
 			})}
 			items={vans}

@@ -21,12 +21,15 @@ export default function VanCard({
 				style={{ viewTransitionName: `card-${vanId}` }}
 			>
 				<CardHeader className="@min-md/card:col-start-1 @min-md/card:row-span-2">
-					<img
-						className="aspect-square rounded-md object-cover "
-						src={imageUrl}
-						alt={description}
-						height={200}
-					/>
+					<div className="w-full">
+						<img
+							className="aspect-square w-full rounded-md object-cover "
+							src={imageUrl}
+							alt={description}
+							height="200"
+							width="200"
+						/>
+					</div>
 				</CardHeader>
 				<CardFooter className="@min-md/card:col-span-2 @min-md/card:col-start-2 @min-md/card:row-span-2 @min-md/card:grid-cols-subgrid @min-md/card:grid-rows-subgrid @min-md/card:content-center">
 					<CardTitle className="@min-md/card:col-start-2 @min-md/card:row-end-2 @min-md/card:self-start text-2xl">

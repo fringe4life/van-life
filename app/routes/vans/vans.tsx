@@ -11,7 +11,7 @@ import { getPaginationParams } from '~/utils/getPaginationParams';
 import { getParamsClientSide } from '~/utils/getParamsClientSide';
 import type { Route } from './+types/vans';
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
 	return [
 		{ title: 'Vans | Vanlife' },
 		{
@@ -49,7 +49,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 		<VanPages
 			// generic component props
 			Component={VanCard}
-			emptyStateMessage='There are no vans in our site.'
+			emptyStateMessage="There are no vans in our site."
 			renderKey={(van) => van.id}
 			renderProps={(van) => ({
 				van,
@@ -58,7 +58,6 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 					<p className="@max-md/card:col-start-2 @md/card:row-span-2 @md/card:self-center @max-md/card:justify-self-end @md/card:justify-self-end text-lg">
 						${van.price}
 						<p className="@max-md/card:inline @md/card:text-right text-base">
-							{' '}
 							/day
 						</p>
 					</p>

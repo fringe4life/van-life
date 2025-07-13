@@ -79,7 +79,7 @@ export default function AddVan({ actionData }: Route.ComponentProps) {
 					type="text"
 					name="type"
 					placeholder="simple or luxury or rugged"
-					defaultValue={(actionData?.formData?.['type'] as string) ?? ''}
+					defaultValue={(actionData?.formData?.type as string) ?? ''}
 					list="vanTypeList"
 				/>
 				<datalist id="vantypeList">
