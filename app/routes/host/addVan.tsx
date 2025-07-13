@@ -46,7 +46,7 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function AddVan({ actionData }: Route.ComponentProps) {
-	console.log({ actionData });
+	
 	const { usingForm } = useIsNavigating();
 	return (
 		<section>

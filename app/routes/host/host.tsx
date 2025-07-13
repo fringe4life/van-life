@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import { data, href, Link } from 'react-router';
+import { data, href } from 'react-router';
+import CustomLink from '~/components/CustomLink';
 import GenericComponent from '~/components/GenericComponent';
 import VanCard from '~/components/Van/VanCard';
 import { getAccountSummary } from '~/db/getAccountSummary';
@@ -10,7 +11,7 @@ import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/host';
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
 	return [
 		{ title: 'Host | Vanlife' },
 		{
@@ -59,20 +60,23 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				<p className="col-start-1 font-extrabold text-5xl text-text">
 					{displayPrice(sumIncome)}
 				</p>
-				<Link to={href('/host/income')} className="col-start-2 row-start-2">
+				<CustomLink
+					to={href('/host/income')}
+					className="col-start-2 row-start-2"
+				>
 					Details
-				</Link>
+				</CustomLink>
 			</div>
 			<div className="flex justify-between bg-orange-200 px-6.5 py-11 ">
 				<p className="font-bold text-2xl text-shadow-text">
 					Review Score star {avgRating.toFixed(1)}/5
 				</p>
-				<Link
+				<CustomLink
 					to={href('/host/review')}
 					className="font-medium text-base text-shadow-text"
 				>
 					Details
-				</Link>
+				</CustomLink>
 			</div>
 			<GenericComponent
 				emptyStateMessage="You are not currently renting any vans"

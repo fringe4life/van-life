@@ -1,11 +1,12 @@
 import clsx from 'clsx';
-import { NavLink, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import GenericComponent, {
 	type GenericComponentProps,
 } from '~/components/GenericComponent';
 import Pagination from '~/components/Pagination';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getParamsClientSide } from '~/utils/getParamsClientSide';
+import CustomNavLink from '../CustomNavLink';
 import type { ListItemProps } from '../ListItems';
 import ListItems from '../ListItems';
 
@@ -54,9 +55,12 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 							getRow={props.listItem.getRow}
 						/>
 					}
-					<NavLink to={path} className={(isActive) => isActive && 'underline'}>
+					<CustomNavLink
+						to={path}
+						className={(isActive) => isActive && 'underline'}
+					>
 						Clear ilters
-					</NavLink>
+					</CustomNavLink>
 				</p>
 			)}
 			<GenericComponent

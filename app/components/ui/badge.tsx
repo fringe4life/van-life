@@ -1,46 +1,48 @@
-import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type * as React from 'react';
 
-import { cn } from "~/utils/utils";
+import { cn } from '~/utils/utils';
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
-  {
-    variants: {
-      variant: {
-        SIMPLE:
-          "border-transparent bg-(--simple) text-primary-foreground [a&]:hover:bg-(--simple)/90",
-        LUXURY:
-          "border-transparent bg-neutral-900 text-secondary-foreground [a&]:hover:bg-neutral-900/90",
-        RUGGED:
-          "border-transparent bg-teal-800 text-white [a&]:hover:bg-teal-800/90 focus-visible:ring-teal-800/20 dark:focus-visible:ring-teal-800/40 dark:bg-teal-800/60",
-        OUTLINE:
-          "bg-orange-100 text-neutral-600 [a&]:hover:bg-orange/80 [a&]:hover:text-neutral-600/80",
-      },
-    },
-    defaultVariants: {
-      variant: "SIMPLE",
-    },
-  }
+	'inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden',
+	{
+		variants: {
+			variant: {
+				SIMPLE:
+					'border-transparent bg-(--simple) text-primary-foreground [a&]:hover:bg-(--simple)/90',
+				LUXURY:
+					'border-transparent bg-neutral-900 text-secondary-foreground [a&]:hover:bg-neutral-900/90',
+				RUGGED:
+					'border-transparent bg-teal-800 text-white [a&]:hover:bg-teal-800/90 focus-visible:ring-teal-800/20 dark:focus-visible:ring-teal-800/40 dark:bg-teal-800/60',
+				OUTLINE:
+					'bg-orange-100 text-neutral-600 [a&]:hover:bg-orange/80 [a&]:hover:text-neutral-600/80',
+				UNAVAILABLE:
+					'bg-red-500 text-white disabled cursor-not-allowed hover:bg-red-500',
+			},
+		},
+		defaultVariants: {
+			variant: 'SIMPLE',
+		},
+	},
 );
 
 function Badge({
-  className,
-  variant,
-  asChild = false,
-  ...props
-}: React.ComponentProps<"span"> &
-  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot : "span";
+	className,
+	variant,
+	asChild = false,
+	...props
+}: React.ComponentProps<'span'> &
+	VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
+	const Comp = asChild ? Slot : 'span';
 
-  return (
-    <Comp
-      data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
-      {...props}
-    />
-  );
+	return (
+		<Comp
+			data-slot="badge"
+			className={cn(badgeVariants({ variant }), className)}
+			{...props}
+		/>
+	);
 }
 
 export { Badge, badgeVariants };

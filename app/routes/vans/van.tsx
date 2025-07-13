@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import { data, href, Link, redirect, useLocation } from 'react-router';
+import { data, href, redirect, useLocation } from 'react-router';
+import CustomLink from '~/components/CustomLink';
 import VanDetails from '~/components/Van/VanDetail';
 import { getVan } from '~/db/getVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
@@ -45,18 +46,21 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 
 	const typeFilter = location.state?.type ?? '';
 
+	const vanIsAvailable = van?.rent?.every((v) => v.rentedTo !== null) ?? true;
+	console.log({ vanIsAvailable });
+
 	const { changingPage } = useIsNavigating();
 	return (
 		<div className={clsx({ 'opacity-75': changingPage })}>
-			<Link
+			<CustomLink
 				to={{
 					pathname: href('/vans'),
 					search: `?type=${typeFilter}`,
 				}}
 			>
 				&larr; back to {typeFilter ? typeFilter : 'all'} vans
-			</Link>
-			<VanDetails {...van} />
+			</CustomLink>
+			<VanDetails van={van} vanIsAvailable={vanIsAvailable} />
 		</div>
 	);
 }

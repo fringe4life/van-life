@@ -1,6 +1,7 @@
 import { VanType } from '@prisma/client';
 
-import { data, href, NavLink, useSearchParams } from 'react-router';
+import { data, href, useSearchParams } from 'react-router';
+import CustomNavLink from '~/components/CustomNavLink';
 import { badgeVariants } from '~/components/ui/badge';
 import VanCard from '~/components/Van/VanCard';
 import VanPages from '~/components/Van/VanPages';
@@ -74,14 +75,14 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 				items: badges,
 				getKey: (t) => t.toLowerCase(),
 				getRow: (t) => (
-					<NavLink
+					<CustomNavLink
 						className={badgeVariants({
 							variant: t === typeFilter.toUpperCase() ? t : 'OUTLINE',
 						})}
 						to={{ search: `?type=${t.toLowerCase()}` }}
 					>
 						{t}
-					</NavLink>
+					</CustomNavLink>
 				),
 			}}
 			// props for all use cases

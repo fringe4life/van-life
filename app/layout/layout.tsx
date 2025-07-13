@@ -13,7 +13,7 @@ export default function Layout() {
 	}, [session?.session, hasToken]);
 	return (
 		<>
-			<header className="flex items-center justify-between px-4 py-9">
+			<header className="flex items-center justify-between gap-6 px-4 py-9">
 				<h1 className="font-black text-2xl uppercase">
 					<CustomLink to={href('/')}>#vanlife</CustomLink>
 				</h1>

@@ -5,10 +5,16 @@ export async function getVan(id: string) {
 		where: {
 			id,
 		},
+		// todo fix this to be more more performant
 		include: {
 			rent: {
 				where: {
 					vanId: id,
+					AND: {
+						NOT: {
+							rentedTo: null,
+						},
+					},
 				},
 			},
 		},
