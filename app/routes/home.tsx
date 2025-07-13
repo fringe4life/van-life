@@ -21,11 +21,11 @@ export default function Home() {
 	return (
 		<section
 			className={clsx({
-				'mask-[url(/app/assets/rvMask.svg)] mask-center md:mask-right mask-add mask-no-repeat mask-cover grid place-content-center gap-6 bg-[url(/app/assets/home.png)] bg-cover text-white [view-transition-name:image]': true,
+				'mask-[url(/app/assets/rvMask.svg)] mask-center md:mask-right mask-add mask-no-repeat mask-cover grid aspect-[1/2] place-content-center gap-3 bg-[url(/app/assets/home.png)] bg-cover text-white [view-transition-name:image] sm:gap-6 md:aspect-video': true,
 				'opacity-75': changingPage,
 			})}
 		>
-			<h2 className="max-w-[26ch] text-balance font-extrabold text-2xl text-shadow-md md:text-4xl">
+			<h2 className="max-w-[26ch] text-balance font-extrabold text-lg text-shadow-md sm:text-2xl md:text-4xl">
 				You got the travel plans, we've got the travel vans.
 			</h2>
 			<p className="max-w-[26ch] text-pretty text-shadow-2xs md:max-w-[45ch]">
