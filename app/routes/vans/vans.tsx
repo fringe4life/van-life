@@ -57,9 +57,9 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 				action: (
 					<p className="@max-md/card:col-start-2 @md/card:row-span-2 @md/card:self-center @max-md/card:justify-self-end @md/card:justify-self-end text-lg">
 						${van.price}
-						<p className="@max-md/card:inline @md/card:text-right text-base">
+						<span className="@max-md/card:inline @md/card:text-right text-base">
 							/day
-						</p>
+						</span>
 					</p>
 				),
 				link: href('/vans/:vanId', { vanId: van.id }),

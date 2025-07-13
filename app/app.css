@@ -91,7 +91,7 @@ html {
   --simple: oklch(68.11% 0.142 38.3);
 
   --container-sm: 12rem;
-  --container-md: 24rem;
+  --container-md: 26rem;
   --container-lg: 32rem;
 
   --color-text: oklch(20.02% 0 0);

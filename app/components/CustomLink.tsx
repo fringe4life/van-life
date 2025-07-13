@@ -6,7 +6,7 @@ export default function CustomLink({
 	...rest
 }: Omit<LinkProps, 'style'>) {
 	const location = useLocation();
-	const isPage = location.pathname === to;
+	const isPage = location.pathname === to.toString();
 	return (
 		<Link
 			to={to}

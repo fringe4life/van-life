@@ -1,6 +1,8 @@
+import clsx from 'clsx';
 import { href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import { buttonVariants } from '~/components/ui/button';
+import useIsNavigating from '~/hooks/useIsNavigating';
 import largeImage from '../assets/about-large.jpg';
 
 export function meta() {
@@ -16,7 +18,12 @@ export function meta() {
 export default function About() {
 	const { changingPage } = useIsNavigating();
 	return (
-		<section className="grid grid-cols-[1fr] grid-rows-[auto_auto_auto_auto] gap-4">
+		<section
+			className={clsx({
+				'grid grid-cols-[1fr] grid-rows-[auto_auto_auto_auto] gap-4': true,
+				'opacity-75': changingPage,
+			})}
+		>
 			<div className="max-w-full">
 				<img
 					className="aspect-video h-auto object-cover md:aspect-4/1"

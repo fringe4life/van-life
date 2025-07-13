@@ -20,7 +20,7 @@ export default function VanDetail({
 	price,
 }: Van) {
 	return (
-		<div className="@container/card-full">
+		<div className="@container/card-full max-w-lg">
 			<Card className="@max-2xl/card-full:grid @max-2xl/card-full:grid-rows-[4fr_repeat(4,_auto)_auto] @max-2xl/card-full:gap-4 ">
 				<CardHeader className="h-full max-h-lg w-full max-w-lg">
 					<img

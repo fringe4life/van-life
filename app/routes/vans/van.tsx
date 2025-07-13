@@ -40,6 +40,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 export default function VanDetail({ loaderData }: Route.ComponentProps) {
 	const { van } = loaderData;
 
+	console.log({ van });
 	const location = useLocation();
 
 	const typeFilter = location.state?.type ?? '';

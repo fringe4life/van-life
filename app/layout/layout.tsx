@@ -6,10 +6,10 @@ import { authClient } from '~/lib/auth/client';
 
 export default function Layout() {
 	const { data: session } = authClient.useSession();
-	let hasToken = false;
-
+	let hasToken = session?.session !== undefined;
 	useEffect(() => {
-		hasToken = session?.session === undefined;
+		hasToken = session?.session !== undefined;
+		console.log({ hasToken });
 	}, [session?.session, hasToken]);
 	return (
 		<>
@@ -30,16 +30,18 @@ export default function Layout() {
 							</CustomNavLink>
 						</li>
 
-						<li>
-							<CustomNavLink
-								to={href('/host')}
-								className={({ isActive, isPending }) =>
-									isPending ? 'text-green-500' : isActive ? 'underline' : ''
-								}
-							>
-								Host
-							</CustomNavLink>
-						</li>
+						{hasToken && (
+							<li>
+								<CustomNavLink
+									to={href('/host')}
+									className={({ isActive, isPending }) =>
+										isPending ? 'text-green-500' : isActive ? 'underline' : ''
+									}
+								>
+									Host
+								</CustomNavLink>
+							</li>
+						)}
 						<li>
 							<CustomNavLink
 								to={href('/vans')}

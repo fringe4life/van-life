@@ -1,5 +1,5 @@
-import { Link } from 'react-router';
 import { DEFAULT_FILTER } from '~/constants/constants';
+import CustomLink from './CustomLink';
 import { buttonVariants } from './ui/button';
 
 type PaginationProps = {
@@ -24,8 +24,7 @@ export default function Pagination({
 		const pageNumber = i + 1;
 		const isPage = pageNumber === page;
 		listOfLinks.push(
-			<Link
-      inert
+			<CustomLink
 				aria-label={`page ${pageNumber}`}
 				aria-selected={isPage}
 				key={i}
@@ -33,18 +32,18 @@ export default function Pagination({
 				className={buttonVariants({
 					variant: isPage ? 'link' : 'outline',
 				})}
-				viewTransition
-				prefetch="viewport"
 				to={{
 					pathname,
 					search: `?page=${pageNumber}&limit=${limit}&filter=${typeFilter}`,
 				}}
 			>
 				{pageNumber}
-			</Link>,
+			</CustomLink>,
 		);
 	}
 	return (
-		<section className="my-6 flex justify-center gap-6">{listOfLinks}</section>
+		<section className="my-6 flex gap-6 self-center justify-self-end">
+			{listOfLinks}
+		</section>
 	);
 }
