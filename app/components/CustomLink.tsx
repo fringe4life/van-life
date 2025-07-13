@@ -1,8 +1,9 @@
-import { Link, type LinkProps } from 'react-router';
+import { Link, type LinkProps, useLocation } from 'react-router';
 
 type CustomLinkProps = LinkProps;
 
 export default function CustomLink({ children, to, ...rest }: CustomLinkProps) {
+	const location = useLocation();
 	const isPage = location.pathname === to;
 	return (
 		<Link

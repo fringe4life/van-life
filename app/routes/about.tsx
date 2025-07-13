@@ -14,6 +14,7 @@ export function meta() {
 }
 
 export default function About() {
+	const { changingPage } = useIsNavigating();
 	return (
 		<section className="grid grid-cols-[1fr] grid-rows-[auto_auto_auto_auto] gap-4">
 			<div className="max-w-full">
