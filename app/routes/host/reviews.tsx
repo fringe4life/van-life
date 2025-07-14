@@ -4,7 +4,7 @@ import { data } from 'react-router';
 import BarChartComponent from '~/components/BarChart';
 import GenericComponent from '~/components/GenericComponent';
 import Review from '~/components/Review';
-import { getHostReviews } from '~/db/getHostReviews';
+import { getHostReviews } from '~/db/host/getHostReviews';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import type { Route } from './+types/reviews';

@@ -3,27 +3,18 @@ import { z } from 'zod/v4';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
-import { createVan } from '~/db/createVan';
+import type { returnVan } from '~/db/host/returnVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
-import { addVanSchema } from '~/utils/types.server';
-import type { Route } from './+types/addVan';
-export function meta() {
-	return [
-		{ title: 'Add Van | Vanlife' },
-		{
-			name: 'description',
-			content: 'the page where you can add a van',
-		},
-	];
-}
+import { uuidSchema } from '~/utils/types.server';
+import type { Route } from './+types/rentalDetail';
 
 export async function action({ request }: Route.ActionArgs) {
 	const session = await getSessionOrRedirect(request);
 
 	const formData = Object.fromEntries(await request.formData());
 
-	const result = addVanSchema.safeParse(formData);
+	const result = uuidSchema.safeParse(formData);
 
 	if (!result.success) {
 		return {
@@ -32,17 +23,15 @@ export async function action({ request }: Route.ActionArgs) {
 		};
 	}
 
-	const resultWithHostId = { ...result.data, hostId: session.user.id };
+	// const success = await returnVan(resultWithHostId);
 
-	const success = await createVan(resultWithHostId);
-
-	if (!success) {
-		return {
-			errors: "Something wen't wrong please try again later",
-			formData,
-		};
-	}
-	throw redirect(href('/host/vans'));
+	// if (!success) {
+	// 	return {
+	// 		errors: "Something wen't wrong please try again later",
+	// 		formData,
+	// 	};
+	// }
+	// throw redirect(href('/host/vans'));
 }
 
 export default function AddVan({ actionData }: Route.ComponentProps) {
@@ -81,14 +70,9 @@ export default function AddVan({ actionData }: Route.ComponentProps) {
 					defaultValue={(actionData?.formData?.type as string) ?? ''}
 					list="vanTypeList"
 				/>
-				<datalist id="vantypeList">
-					<option value="LUXURY" />
-					<option value="SIMPLE" />
-					<option value="RUGGED" />
-				</datalist>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
 				<Button type="submit" disabled={usingForm}>
-					Add your van
+					Submit your review
 				</Button>
 			</Form>
 		</section>

@@ -1,6 +1,7 @@
 import type { Van } from '@prisma/client';
+import clsx from 'clsx';
 import CustomLink from '~/components/CustomLink';
-import Image from '~/components/Image';
+import Image from '~/components/Image.client';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 
@@ -8,12 +9,14 @@ type VanCardProps = {
 	van: Van;
 	link: string;
 	action: React.ReactElement;
+	linkCoversCard?: boolean;
 };
 
 export default function VanCard({
 	van: { type, name, description, imageUrl, id: vanId },
 	link,
 	action,
+	linkCoversCard = true,
 }: VanCardProps) {
 	return (
 		<div className="@container/card">
@@ -34,7 +37,12 @@ export default function VanCard({
 					<CardTitle className="@min-md/card:col-start-2 @min-md/card:row-end-2 @min-md/card:self-start text-2xl">
 						<CustomLink to={link} title={name}>
 							{name}
-							<span className="absolute inset-0 h-full w-full overflow-hidden"></span>
+							<span
+								className={clsx(
+									linkCoversCard &&
+										'absolute inset-0 h-full w-full overflow-hidden',
+								)}
+							></span>
 						</CustomLink>
 					</CardTitle>
 					<div className="justify-self-end">{action}</div>

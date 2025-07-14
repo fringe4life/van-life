@@ -2,18 +2,18 @@ import { data, href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import VanCard from '~/components/Van/VanCard';
 import VanPages from '~/components/Van/VanPages';
+import { getHostRentedVans } from '~/db/host/getHostRentedVans';
 import { getHostVanCount } from '~/db/host/getHostVanCount';
-import { getHostVans } from '~/db/host/getHostVans';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import { getPaginationParams } from '~/utils/getPaginationParams';
-import type { Route } from './+types/hostVans';
+import type { Route } from './+types/rentals';
 
 export function meta() {
 	return [
-		{ title: 'Host Vans | Vanlife' },
+		{ title: 'Rented Vans | Vanlife' },
 		{
 			name: 'description',
-			content: 'the dashboard page whe you are logged in',
+			content: 'The vans you are currently renting',
 		},
 	];
 }
@@ -22,7 +22,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
 
 	const { page, limit } = getPaginationParams(request.url);
-	const vans = await getHostVans(session.user.id, page, limit);
+	const vans = await getHostRentedVans(session.user.id, page, limit);
 	const vansCount = await getHostVanCount(session.user.id);
 
 	return data(
@@ -45,13 +45,21 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 		<VanPages
 			// generic component props start
 			Component={VanCard}
-			renderKey={(van) => van.id}
+			renderKey={(van) => van.van.id}
 			renderProps={(van) => ({
 				link: href('/host/vans/:vanId', { vanId: van.id }),
-				van,
+				van: van.van,
+				linkCoversCard: false,
 				action: (
-					<CustomLink to={href('/host/vans/:vanId', { vanId: van.id })}>
-						Edit
+					<CustomLink
+						state={{
+							hostId: van.hostId,
+							rentedAt: van.rentedAt,
+							amount: van.rentedAt,
+						}}
+						to={href('/host/rentals/:vanId', { vanId: van.van.id })}
+					>
+						Return
 					</CustomLink>
 				),
 			})}
@@ -62,8 +70,8 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			// used for discriminated union in case needed and to manage vans route
 			variant="host"
 			// props for all use cases
-			path={href('/host/vans')}
-			title="Your listed vans"
+			path={href('/host/rentals')}
+			title="Vans you are renting"
 		/>
 	);
 }

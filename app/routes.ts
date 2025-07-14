@@ -24,6 +24,10 @@ export default [
 				route('review', './routes/host/reviews.tsx'),
 				route('add', './routes/host/addVan.tsx'),
 				route('money', './routes/host/money.tsx'),
+				...prefix('rentals', [
+					index('./routes/host/rentals/rentals.tsx'),
+					route(':vanId', './routes/host/rentals/rentalDetail.tsx'),
+				]),
 				...prefix('vans', [
 					index('./routes/host/hostVans.tsx'),
 					route(':vanId', './routes/host/vanDetail/vanDetailLayout.tsx', [
@@ -35,6 +39,6 @@ export default [
 			]),
 		]),
 	]),
-	route('/api/auth/*', 'routes/api/auth.ts'),
+	route('/api/auth/*', 'routes/api/auth.server.ts'),
 	route('*', './routes/404.tsx'),
 ] satisfies RouteConfig;

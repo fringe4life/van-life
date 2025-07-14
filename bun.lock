@@ -37,7 +37,7 @@
         "babel-plugin-react-compiler": "^19.1.0-rc.2",
         "react-router-devtools": "^1.1.10",
         "tailwindcss": "^4.1.11",
-        "typescript": "^5.9.0-dev.20250713",
+        "typescript": "^5.9.0-dev.20250714",
         "vite": "^7.0.4",
         "vite-plugin-babel": "^1.3.2",
         "vite-tsconfig-paths": "^5.1.4",

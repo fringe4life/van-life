@@ -4,8 +4,8 @@ import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { auth } from '~/lib/auth/auth';
-import { signUpScheme } from '~/utils/types';
+import { auth } from '~/lib/auth/auth.server';
+import { signUpScheme } from '~/utils/types.server';
 import type { Route } from './+types/signUp';
 
 export async function action({ request }: Route.ActionArgs) {

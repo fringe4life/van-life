@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { data, href, Outlet, redirect } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import VanDetailCard from '~/components/Van/HostVanDetailCard';
-import { getHostVan } from '~/db/getHostVan';
+import { getHostVan } from '~/db/host/getHostVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import type { Route } from './+types/vanDetailLayout';

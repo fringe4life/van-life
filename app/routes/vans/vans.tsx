@@ -44,6 +44,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 	const { vans, badges, vansCount } = loaderData;
 
 	const { type } = getParamsClientSide();
+	console.log({ type });
 
 	return (
 		<VanPages
@@ -76,7 +77,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 				getRow: (t) => (
 					<CustomNavLink
 						className={badgeVariants({
-							variant: t === type ? t : 'OUTLINE',
+							variant: t === type.toUpperCase() ? t : 'OUTLINE',
 						})}
 						to={{ search: `?type=${t.toLowerCase()}` }}
 					>

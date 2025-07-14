@@ -12,11 +12,11 @@ export default function Image({
 	className,
 	...rest
 }: React.ComponentProps<'img'>) {
-	const [loaded, setLoaded] = useState<boolean>(() => false);
+	const [loaded, setLoaded] = useState<boolean>(false);
 	// TODO add image not found image, and onError function
 
 	const updatedSrc = src?.replace(/w=\d+/g, 'w=20');
-
+	console.log({ updatedSrc });
 	return (
 		<div
 			className={clsx(

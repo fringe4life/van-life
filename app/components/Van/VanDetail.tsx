@@ -1,8 +1,9 @@
 import type { Van } from '@prisma/client';
-import Image from '~/components/Image';
+import { href } from 'react-router';
+import Image from '~/components/Image.client';
 import { Badge, badgeVariants } from '~/components/ui/badge';
-import { Button } from '~/components/ui/button';
 import { cn } from '~/utils/utils';
+import CustomLink from '../CustomLink';
 import {
 	Card,
 	CardContent,
@@ -18,7 +19,7 @@ type VanDetailProps = {
 };
 
 export default function VanDetail({
-	van: { imageUrl, description, type, name, price },
+	van: { imageUrl, description, type, name, price, id: vanId },
 	vanIsAvailable,
 }: VanDetailProps) {
 	return (
@@ -42,14 +43,19 @@ export default function VanDetail({
 					<CardDescription>{description}</CardDescription>
 				</CardContent>
 				<CardFooter>
-					<Button
+					<CustomLink
+						to={
+							vanIsAvailable
+								? href('/host/rentals/:vanId', { vanId })
+								: href('/vans/:vanId', { vanId })
+						}
 						className={cn(
 							badgeVariants({ variant: vanIsAvailable ? type : 'UNAVAILABLE' }),
 							'@max-lg/card-full:w-full',
 						)}
 					>
 						{vanIsAvailable ? 'Rent this van' : 'Not available'}
-					</Button>
+					</CustomLink>
 				</CardFooter>
 			</Card>
 		</div>

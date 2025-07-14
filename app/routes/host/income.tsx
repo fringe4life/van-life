@@ -4,7 +4,7 @@ import BarChartComponent from '~/components/BarChart';
 import GenericComponent from '~/components/GenericComponent';
 import Income from '~/components/Income';
 import { getAccountSummary } from '~/db/getAccountSummary';
-import { getHostTransactions } from '~/db/getHostTransactions';
+import { getHostTransactions } from '~/db/host/getHostTransactions';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import { displayPrice } from '~/utils/displayPrice';

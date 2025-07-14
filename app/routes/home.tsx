@@ -3,6 +3,7 @@ import { href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import { buttonVariants } from '~/components/ui/button';
 import useIsNavigating from '~/hooks/useIsNavigating';
+import { cn } from '~/utils/utils';
 
 export function meta() {
 	return [
@@ -32,10 +33,12 @@ export default function Home() {
 				Add adventure to your life by joining the #vanlife movement. Rent the
 				perfect van to make your perfect road trip.
 			</p>
-			<CustomLink to={href('/vans')} className={buttonVariants()}>
+			<CustomLink
+				to={href('/vans')}
+				className={cn(buttonVariants(), 'max-w-[46ch] self-end ')}
+			>
 				Find your van
 			</CustomLink>
 		</section>
 	);
 }
-// "self-end max-w-[80ch] sm:justify-self-center"

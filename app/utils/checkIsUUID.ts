@@ -1,11 +1,11 @@
-import { uuidSchema } from "~/utils/types";
+import { uuidSchema } from '~/utils/types.server';
 
 export function checkIsUUID(possibleUUID: string) {
-  const objectUUID = {
-    possibleUUID,
-  };
+	const objectUUID = {
+		possibleUUID,
+	};
 
-  const result = uuidSchema.safeParse(objectUUID);
+	const result = uuidSchema.safeParse(objectUUID);
 
-  return result.success;
+	return result.success;
 }

@@ -73,6 +73,16 @@ export default function HostLayout() {
 						Add Money
 					</CustomNavLink>
 				</li>
+				<li>
+					<CustomNavLink
+						to={href('/host/rentals')}
+						className={({ isActive, isPending }) =>
+							isPending ? 'text-green-500' : isActive ? 'underline' : ''
+						}
+					>
+						Rentals
+					</CustomNavLink>
+				</li>
 			</ul>
 			<Outlet />
 		</div>

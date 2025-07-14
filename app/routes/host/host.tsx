@@ -5,7 +5,7 @@ import GenericComponent from '~/components/GenericComponent';
 import VanCard from '~/components/Van/VanCard';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getAverageReviewRating } from '~/db/getAvgReviews';
-import { getHostVans } from '~/db/getHostVans';
+import { getHostVans } from '~/db/host/getHostVans';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import { displayPrice } from '~/utils/displayPrice';
