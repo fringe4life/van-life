@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
+import Image from '~/components/Image';
 import { buttonVariants } from '~/components/ui/button';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import largeImage from '../assets/about-large.jpg';
 
 export function meta() {
 	return [
@@ -24,15 +24,13 @@ export default function About() {
 				'opacity-75': changingPage,
 			})}
 		>
-			<div className="max-w-full">
-				<img
-					className="aspect-video h-auto object-cover md:aspect-4/1"
-					src={largeImage}
-					alt="a person sitting on top of their camper van"
-					height="400"
-					width="1600"
-				/>
-			</div>
+			<Image
+				className="aspect-video md:aspect-4/1"
+				src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNhbXBpbmd8ZW58MHx8MHx8fDI%3D"
+				alt="a person sitting on top of their camper van"
+				height="400"
+				width="1600"
+			/>
 			<h2 className="mx-4 text-balance font-bold text-3xl/normal lg:mx-auto lg:max-w-1/2">
 				Don&apos;t{' '}
 				<span className="after:-bottom-1 relative after:absolute after:left-0 after:w-full after:rounded-lg after:border-2 after:border-b-red-500 after:border-solid ">

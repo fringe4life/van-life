@@ -7,7 +7,6 @@ export default function Layout() {
 	const { data } = authClient.useSession();
 
 	const hasToken = data?.session !== undefined;
-	console.log({ hasToken });
 	return (
 		<>
 			<header className="flex items-center justify-between gap-6 px-4 py-9">

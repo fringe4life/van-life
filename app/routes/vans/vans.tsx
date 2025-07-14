@@ -1,6 +1,6 @@
 import { VanType } from '@prisma/client';
 
-import { data, href, useSearchParams } from 'react-router';
+import { data, href } from 'react-router';
 import CustomNavLink from '~/components/CustomNavLink';
 import { badgeVariants } from '~/components/ui/badge';
 import VanCard from '~/components/Van/VanCard';
@@ -43,8 +43,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Vans({ loaderData }: Route.ComponentProps) {
 	const { vans, badges, vansCount } = loaderData;
 
-	const [searchParams] = useSearchParams();
-	const { type: typeFilter } = getParamsClientSide(searchParams);
+	const { type: typeFilter } = getParamsClientSide();
 
 	return (
 		<VanPages

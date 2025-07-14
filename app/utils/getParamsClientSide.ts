@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router';
 import {
 	DEFAULT_FILTER,
 	DEFAULT_LIMIT,
@@ -5,10 +6,10 @@ import {
 } from '~/constants/constants';
 
 export function getParamsClientSide(
-	searchParams: URLSearchParams,
 	defaultPage?: number,
 	defaultLimit?: number,
 ) {
+	const [searchParams] = useSearchParams()
 	if (!defaultPage) defaultPage = DEFAULT_PAGE;
 	if (!defaultLimit) defaultLimit = DEFAULT_LIMIT;
 	const page = Number.parseInt(

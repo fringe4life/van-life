@@ -6,7 +6,9 @@ export default function CustomNavLink({
 	...rest
 }: Omit<NavLinkProps, 'style'>) {
 	const location = useLocation();
-	const isPage = location.pathname === to;
+	const isPath = location.pathname === to;
+	const isSearch = to.search === location.search;
+	const isPage = isSearch && isPath;
 	return (
 		<NavLink
 			to={to}

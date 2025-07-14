@@ -41,8 +41,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
 	const { sumIncome, hostIncomes } = loaderData;
 
-	console.log({ sumIncome, hostIncomes });
-
 	const mappedData = hostIncomes.map((income) => ({
 		name: income.rentedAt.toLocaleDateString(),
 		amount: Math.round(income.amount),

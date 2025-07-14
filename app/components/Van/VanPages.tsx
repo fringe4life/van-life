@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { useSearchParams } from 'react-router';
 import GenericComponent, {
 	type GenericComponentProps,
 } from '~/components/GenericComponent';
@@ -37,9 +36,8 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 		variant,
 		emptyStateMessage,
 	} = props;
-	// TODO: consider passing in this information
-	const [searchParams] = useSearchParams();
-	const { page, limit, type: typeFilter } = getParamsClientSide(searchParams);
+
+	const { page, limit, type: typeFilter } = getParamsClientSide();
 
 	const { changingPage } = useIsNavigating();
 
@@ -59,7 +57,7 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 						to={path}
 						className={(isActive) => isActive && 'underline'}
 					>
-						Clear ilters
+						Clear filters
 					</CustomNavLink>
 				</p>
 			)}
