@@ -4,6 +4,8 @@ import {
 	DEFAULT_FILTER,
 	DEFAULT_LIMIT,
 	DEFAULT_PAGE,
+	MAX_ADD,
+	MIN_ADD,
 } from '~/constants/constants';
 
 const passwordSchema = z
@@ -65,4 +67,9 @@ export const searchParamsSchema = z.object({
 		.optional()
 		.default(DEFAULT_FILTER)
 		.pipe(vanType),
+});
+
+export const moneySchema = z.object({
+	type: z.enum(['withdraw', 'deposit']),
+	amount: z.coerce.number().min(MIN_ADD).max(MAX_ADD),
 });

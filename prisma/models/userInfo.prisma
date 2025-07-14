@@ -1,6 +1,7 @@
 model UserInfo {
-  userId String @id
-  user   User   @relation(fields: [userId], references: [id])
+  userId     String @id
+  user       User   @relation(fields: [userId], references: [id])
+  moneyAdded Float  @default(0) @db.DoublePrecision
 
   vans Van[]
 
