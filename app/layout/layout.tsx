@@ -82,6 +82,13 @@ export default function Layout() {
 				>
 					Camper van icons created by Iconfromus - Flaticon
 				</a>
+				<a
+					href="https://www.flaticon.com/free-icons/image-placeholder"
+					title="image placeholder icons"
+					className="inline-block w-full text-center text-[#aaa] text-sm"
+				>
+					Image placeholder icons created by Graphics Plazza - Flaticon
+				</a>
 			</footer>
 		</>
 	);

@@ -1,8 +1,8 @@
 import type { Van } from '@prisma/client';
+import CustomLink from '~/components/CustomLink';
+import Image from '~/components/Image';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
-import CustomLink from '../CustomLink';
-import Image from '../Image';
 
 type VanCardProps = {
 	van: Van;

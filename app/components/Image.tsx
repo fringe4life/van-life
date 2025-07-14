@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
-
+import { useState } from 'react';
+import fallbackSrc from '/placeholder.png';
 /**
  * @abstract receives an img from unsplash and lazy loads it
  * @param props the attributes received by an img tag
@@ -12,49 +12,40 @@ export default function Image({
 	className,
 	...rest
 }: React.ComponentProps<'img'>) {
-	const [loaded, setLoaded] = useState<boolean>(false);
-	const imgRef = useRef<HTMLImageElement>(null);
+	const [loaded, setLoaded] = useState<boolean>(() => false);
 	// TODO add image not found image, and onError function
-	useEffect(() => {
-		const onLoad: EventListener = (e) => {
-			const target = e.currentTarget as HTMLImageElement;
-			console.log({ target, message: 'target' });
-			console.log(target.complete);
-			if (target.complete) {
-				setLoaded(true);
 
-				target.src = src || '';
-			}
-		};
-		if (imgRef.current && !imgRef.current.src) {
-			imgRef.current.addEventListener('load', onLoad);
-		} else {
-			setLoaded(true);
-		}
-		return () => {
-			imgRef.current?.removeEventListener('load', onLoad);
-		};
-	}, [src]);
-	if (!src) return;
-	const updatedSrc = src.replace(/w=\d+/g, 'w=20');
+	const updatedSrc = src?.replace(/w=\d+/g, 'w=20');
+
 	return (
 		<div
 			className={clsx(
-				!loaded && `bg-[url(${updatedSrc})] animate-pulse bg-center bg-cover`,
+				!loaded &&
+					`bg-[url(${updatedSrc})] animate-pulse bg-center bg-cover blur-sm`,
 				' max-w-full transition-opacity duration-200 ease-in-out',
-				loaded && 'animate-none bg-none',
+				loaded && 'animate-none bg-none blur-none',
 			)}
 		>
 			<img
-				ref={imgRef}
 				className={clsx(
-					'h-auto object-cover object-center opacity-100',
-					className,
+					!loaded && 'opacity-0',
+					loaded && ' opacity-100',
+					`h-auto object-cover object-center transition-opacity duration-200 ease-in-out, ${className}`,
 				)}
 				{...rest}
 				loading="lazy"
 				alt={alt}
 				src={src}
+				onLoad={(e) => {
+					if (e.currentTarget.complete) {
+						setLoaded(true);
+					}
+				}}
+				onError={(e) => {
+					// Handle broken image
+					(e.target as HTMLImageElement).src = fallbackSrc;
+					setLoaded(true);
+				}}
 			/>
 		</div>
 	);

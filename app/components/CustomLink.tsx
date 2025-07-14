@@ -1,18 +1,17 @@
-import { Link, type LinkProps, useLocation } from 'react-router';
+import { Link, type LinkProps } from 'react-router';
+import useIsPage from '~/hooks/useIsPage';
 
 export default function CustomLink({
 	children,
 	to,
 	...rest
 }: Omit<LinkProps, 'style'>) {
-	const location = useLocation();
-	const isPage = location.pathname === to.toString();
+	const { isPage } = useIsPage({ to });
 	return (
 		<Link
 			to={to}
 			{...rest}
 			viewTransition
-			prefetch="viewport"
 			style={{
 				pointerEvents: isPage ? 'none' : 'auto',
 			}}

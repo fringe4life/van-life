@@ -1,5 +1,5 @@
 import type { Van } from '@prisma/client';
-import { href, NavLink } from 'react-router';
+import { href } from 'react-router';
 import { Badge } from '~/components/ui/badge';
 import {
 	Card,
@@ -8,6 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '~/components/ui/card';
+import CustomNavLink from '../CustomNavLink';
 
 type VanDetailCardProps = {
 	van: Van;
@@ -41,7 +42,7 @@ export default function VanDetailCard({
 				</CardHeader>
 				<CardContent>
 					<div className="my-6 flex gap-6">
-						<NavLink
+						<CustomNavLink
 							className={({ isActive, isPending }) =>
 								isPending ? 'text-green-500' : isActive ? 'underline' : ''
 							}
@@ -49,23 +50,23 @@ export default function VanDetailCard({
 							end
 						>
 							Details
-						</NavLink>
-						<NavLink
+						</CustomNavLink>
+						<CustomNavLink
 							className={({ isActive, isPending }) =>
 								isPending ? 'text-green-500' : isActive ? 'underline' : ''
 							}
 							to={href('/host/vans/:vanId/pricing', { vanId })}
 						>
 							Pricing
-						</NavLink>
-						<NavLink
+						</CustomNavLink>
+						<CustomNavLink
 							className={({ isActive, isPending }) =>
 								isPending ? 'text-green-500' : isActive ? 'underline' : ''
 							}
 							to={href('/host/vans/:vanId/photos', { vanId })}
 						>
 							Photos
-						</NavLink>
+						</CustomNavLink>
 					</div>
 				</CardContent>
 				<CardFooter>{children}</CardFooter>

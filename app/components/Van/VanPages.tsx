@@ -1,13 +1,13 @@
 import clsx from 'clsx';
+import CustomNavLink from '~/components/CustomNavLink';
 import GenericComponent, {
 	type GenericComponentProps,
 } from '~/components/GenericComponent';
+import type { ListItemProps } from '~/components/ListItems';
+import ListItems from '~/components/ListItems';
 import Pagination from '~/components/Pagination';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getParamsClientSide } from '~/utils/getParamsClientSide';
-import CustomNavLink from '../CustomNavLink';
-import type { ListItemProps } from '../ListItems';
-import ListItems from '../ListItems';
 
 type HostVanPages = {
 	variant: 'host';

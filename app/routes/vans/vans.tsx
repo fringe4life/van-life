@@ -43,7 +43,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Vans({ loaderData }: Route.ComponentProps) {
 	const { vans, badges, vansCount } = loaderData;
 
-	const { type: typeFilter } = getParamsClientSide();
+	const { type } = getParamsClientSide();
 
 	return (
 		<VanPages
@@ -53,7 +53,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			renderKey={(van) => van.id}
 			renderProps={(van) => ({
 				van,
-				filter: typeFilter ? typeFilter : DEFAULT_FILTER,
+				filter: type ? type : DEFAULT_FILTER,
 				action: (
 					<p className="@max-md/card:col-start-2 @md/card:row-span-2 @md/card:self-center @max-md/card:justify-self-end @md/card:justify-self-end text-lg">
 						${van.price}
@@ -76,7 +76,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 				getRow: (t) => (
 					<CustomNavLink
 						className={badgeVariants({
-							variant: t === typeFilter.toUpperCase() ? t : 'OUTLINE',
+							variant: t === type ? t : 'OUTLINE',
 						})}
 						to={{ search: `?type=${t.toLowerCase()}` }}
 					>

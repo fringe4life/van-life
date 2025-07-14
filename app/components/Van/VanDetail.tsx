@@ -1,8 +1,8 @@
 import type { Van } from '@prisma/client';
-import { Badge } from '~/components/ui/badge';
+import Image from '~/components/Image';
+import { Badge, badgeVariants } from '~/components/ui/badge';
+import { Button } from '~/components/ui/button';
 import { cn } from '~/utils/utils';
-import { badgeVariants } from '../ui/badge';
-import { Button } from '../ui/button';
 import {
 	Card,
 	CardContent,
@@ -25,7 +25,7 @@ export default function VanDetail({
 		<div className="@container/card-full max-w-lg">
 			<Card className="@max-2xl/card-full:grid @max-2xl/card-full:grid-rows-[4fr_repeat(4,_auto)_auto] @max-2xl/card-full:gap-4 ">
 				<CardHeader className="h-full max-h-lg w-full max-w-lg">
-					<img
+					<Image
 						className="aspect-square"
 						src={imageUrl}
 						alt={description}
