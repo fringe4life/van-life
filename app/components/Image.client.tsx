@@ -1,27 +1,25 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import fallbackSrc from '/placeholder.png';
+import { createNewImageSize } from '~/utils/createNewImageSize';
+
+type ImgProps = React.ComponentProps<'img'> & {
+	src: string;
+};
 /**
  * @abstract receives an img from unsplash and lazy loads it
  * @param props the attributes received by an img tag
  * @returns a div with a background image with an img inside that is lazy loaded
  */
-export default function Image({
-	src,
-	alt,
-	className,
-	...rest
-}: React.ComponentProps<'img'>) {
+export default function Image({ src, alt, className, ...rest }: ImgProps) {
 	const [loaded, setLoaded] = useState<boolean>(false);
-	// TODO add image not found image, and onError function
 
-	const updatedSrc = src?.replace(/w=\d+/g, 'w=20');
-	console.log({ updatedSrc });
+	const placeholderSrc = createNewImageSize(src, 20)
 	return (
 		<div
 			className={clsx(
 				!loaded &&
-					`bg-[url(${updatedSrc})] animate-pulse bg-center bg-cover blur-sm`,
+					`bg-[url(${placeholderSrc})] animate-pulse bg-center bg-cover blur-sm`,
 				' max-w-full transition-opacity duration-200 ease-in-out',
 				loaded && 'animate-none bg-none blur-none',
 			)}
@@ -34,6 +32,7 @@ export default function Image({
 				)}
 				{...rest}
 				loading="lazy"
+				decoding="async"
 				alt={alt}
 				src={src}
 				onLoad={(e) => {
@@ -43,7 +42,7 @@ export default function Image({
 				}}
 				onError={(e) => {
 					// Handle broken image
-					(e.target as HTMLImageElement).src = fallbackSrc;
+					e.currentTarget.src = fallbackSrc;
 					setLoaded(true);
 				}}
 			/>

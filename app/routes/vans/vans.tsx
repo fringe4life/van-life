@@ -27,8 +27,10 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	const { page, limit, type } = getPaginationParams(request.url);
 
-	const vans = await getVans(page, limit, type as VanType);
-	const vansCount = await getVansCount(type as VanType);
+	const [vans, vansCount] = await Promise.all([
+		getVans(page, limit, type as VanType),
+		getVansCount(type as VanType),
+	]);
 
 	return data(
 		{ vans, badges, vansCount },
@@ -73,11 +75,11 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			//  vans part of discriminated union
 			listItem={{
 				items: badges,
-				getKey: (t) => t.toLowerCase(),
+				getKey: (t) => t,
 				getRow: (t) => (
 					<CustomNavLink
 						className={badgeVariants({
-							variant: t === type.toUpperCase() ? t : 'OUTLINE',
+							variant: t === type ? t : 'OUTLINE',
 						})}
 						to={{ search: `?type=${t.toLowerCase()}` }}
 					>

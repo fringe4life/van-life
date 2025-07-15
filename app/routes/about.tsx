@@ -3,7 +3,9 @@ import { href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import Image from '~/components/Image.client';
 import { buttonVariants } from '~/components/ui/button';
+import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/constants';
 import useIsNavigating from '~/hooks/useIsNavigating';
+import { createNewImageSize } from '~/utils/createNewImageSize';
 
 export function meta() {
 	return [
@@ -17,6 +19,11 @@ export function meta() {
 
 export default function About() {
 	const { changingPage } = useIsNavigating();
+
+	const srcSet = ABOUT_IMG_SIZES.map(
+		(size) => `${createNewImageSize(ABOUT_IMG, size)} ${size}w`,
+	).join(', ');
+
 	return (
 		<section
 			className={clsx({
@@ -26,10 +33,11 @@ export default function About() {
 		>
 			<Image
 				className="aspect-video md:aspect-4/1"
-				src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNhbXBpbmd8ZW58MHx8MHx8fDI%3D"
+				src={ABOUT_IMG}
 				alt="a couple enjoying their adventure"
 				height="400"
 				width="1600"
+				srcSet={srcSet}
 			/>
 			<h2 className="mx-4 text-balance font-bold text-3xl/normal lg:mx-auto lg:max-w-1/2">
 				Don&apos;t{' '}

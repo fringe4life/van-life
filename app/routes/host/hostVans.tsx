@@ -22,8 +22,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
 
 	const { page, limit } = getPaginationParams(request.url);
-	const vans = await getHostVans(session.user.id, page, limit);
-	const vansCount = await getHostVanCount(session.user.id);
+
+	const [vans, vansCount] = await Promise.all([
+		getHostVans(session.user.id, page, limit),
+		getHostVanCount(session.user.id),
+	]);
 
 	return data(
 		{

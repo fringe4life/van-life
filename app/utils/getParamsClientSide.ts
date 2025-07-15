@@ -9,7 +9,7 @@ export function getParamsClientSide(
 	defaultPage?: number,
 	defaultLimit?: number,
 ) {
-	const [searchParams] = useSearchParams()
+	const [searchParams] = useSearchParams();
 	if (!defaultPage) defaultPage = DEFAULT_PAGE;
 	if (!defaultLimit) defaultLimit = DEFAULT_LIMIT;
 	const page = Number.parseInt(
@@ -19,7 +19,7 @@ export function getParamsClientSide(
 		searchParams.get('limit') ?? defaultLimit.toString(),
 	);
 
-	const type = searchParams.get('type') ?? DEFAULT_FILTER;
+	const type = searchParams.get('type')?.toUpperCase() ?? DEFAULT_FILTER;
 
 	return { page, limit, type };
 }

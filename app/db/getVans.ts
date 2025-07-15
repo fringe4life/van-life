@@ -9,7 +9,7 @@ export async function getVans(
 	typeFilter: VanType | null,
 ) {
 	const skip = getSkipAmount(page, limit);
-
+	console.log({ typeFilter });
 	if (!typeFilter) {
 		return await prisma.van.findMany({
 			take: limit,
