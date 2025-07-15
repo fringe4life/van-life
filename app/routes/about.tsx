@@ -17,10 +17,10 @@ export function meta() {
 	];
 }
 
+const srcSet = createSrcSet(ABOUT_IMG_SIZES, ABOUT_IMG);
 export default function About() {
 	const { changingPage } = useIsNavigating();
 
-	const srcSet = createSrcSet(ABOUT_IMG_SIZES, ABOUT_IMG);
 
 	return (
 		<section
