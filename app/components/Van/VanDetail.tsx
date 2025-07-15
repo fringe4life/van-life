@@ -2,7 +2,7 @@ import type { Van } from '@prisma/client';
 import { href } from 'react-router';
 import Image from '~/components/Image.client';
 import { Badge, badgeVariants } from '~/components/ui/badge';
-import { ABOUT_IMG_SIZES } from '~/constants/constants';
+import { ABOUT_IMG_SIZES, VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
 import { createSrcSet } from '~/utils/createSrcSet';
 import { cn } from '~/utils/utils';
 import CustomLink from '../CustomLink';
@@ -24,7 +24,7 @@ export default function VanDetail({
 	van: { imageUrl, description, type, name, price, id: vanId },
 	vanIsAvailable,
 }: VanDetailProps) {
-	const srcSet = createSrcSet(ABOUT_IMG_SIZES, imageUrl);
+	const srcSet = createSrcSet(VAN_DETAIL_IMG_SIZES, imageUrl);
 	return (
 		<div className="@container/card-full max-w-lg">
 			<Card className="@max-2xl/card-full:grid @max-2xl/card-full:grid-rows-[4fr_repeat(4,_auto)_auto] @max-2xl/card-full:gap-4 ">

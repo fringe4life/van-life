@@ -21,7 +21,6 @@ const srcSet = createSrcSet(ABOUT_IMG_SIZES, ABOUT_IMG);
 export default function About() {
 	const { changingPage } = useIsNavigating();
 
-
 	return (
 		<section
 			className={clsx({

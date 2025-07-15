@@ -6,7 +6,7 @@ import { Textarea } from '~/components/ui/textarea';
 import type { returnVan } from '~/db/host/returnVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
-import { uuidSchema } from '~/utils/types.server';
+import { uuidSchema } from '~/utils/types';
 import type { Route } from './+types/rentalDetail';
 
 export async function action({ request }: Route.ActionArgs) {

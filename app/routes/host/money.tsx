@@ -9,7 +9,7 @@ import { addMoney } from '~/db/addMoney';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
-import { moneySchema } from '~/utils/types.server';
+import { moneySchema } from '~/utils/types';
 import type { Route } from './+types/money';
 export function meta() {
 	return [
