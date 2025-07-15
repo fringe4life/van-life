@@ -4,7 +4,8 @@ import CustomLink from '~/components/CustomLink';
 import Image from '~/components/Image.client';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
-import { createNewImageSize } from '~/utils/createNewImageSize';
+import { VAN_CARD_IMG_SIZES } from '~/constants/constants';
+import { createSrcSet } from '~/utils/createSrcSet';
 
 type VanCardProps = {
 	van: Van;
@@ -20,6 +21,7 @@ export default function VanCard({
 	linkCoversCard = true,
 }: VanCardProps) {
 	const { type, name, description, imageUrl, id: vanId } = van;
+	const srcSet = createSrcSet(VAN_CARD_IMG_SIZES, imageUrl);
 	return (
 		<div className="@container/card">
 			<Card
@@ -33,7 +35,7 @@ export default function VanCard({
 						alt={description}
 						height="200"
 						width="200"
-						srcSet={createNewImageSize(imageUrl, 340)}
+						srcSet={srcSet}
 					/>
 				</CardHeader>
 				<CardFooter className="@min-md/card:col-span-2 @min-md/card:col-start-2 @min-md/card:row-span-2 @min-md/card:grid-cols-subgrid @min-md/card:grid-rows-subgrid @min-md/card:content-center">

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useState } from 'react';
-import fallbackSrc from '/placeholder.png';
 import { createNewImageSize } from '~/utils/createNewImageSize';
+import fallbackSrc from '/placeholder.png';
 
 type ImgProps = React.ComponentProps<'img'> & {
 	src: string;
@@ -14,7 +14,7 @@ type ImgProps = React.ComponentProps<'img'> & {
 export default function Image({ src, alt, className, ...rest }: ImgProps) {
 	const [loaded, setLoaded] = useState<boolean>(false);
 
-	const placeholderSrc = createNewImageSize(src, 20)
+	const placeholderSrc = createNewImageSize(src, 20);
 	return (
 		<div
 			className={clsx(

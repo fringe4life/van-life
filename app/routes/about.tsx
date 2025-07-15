@@ -6,6 +6,7 @@ import { buttonVariants } from '~/components/ui/button';
 import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/constants';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { createNewImageSize } from '~/utils/createNewImageSize';
+import { createSrcSet } from '~/utils/createSrcSet';
 
 export function meta() {
 	return [
@@ -20,9 +21,7 @@ export function meta() {
 export default function About() {
 	const { changingPage } = useIsNavigating();
 
-	const srcSet = ABOUT_IMG_SIZES.map(
-		(size) => `${createNewImageSize(ABOUT_IMG, size)} ${size}w`,
-	).join(', ');
+	const srcSet = createSrcSet(ABOUT_IMG_SIZES, ABOUT_IMG);
 
 	return (
 		<section
