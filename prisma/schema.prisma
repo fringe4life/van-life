@@ -7,7 +7,7 @@
 generator client {
   provider        = "prisma-client"
   output          = "../app/generated/prisma"
-  runtime         = "edge"
+  runtime         = "edge-light"
   // moduleFormat           = "esm"
   // generatedFileExtension = "ts"
   // importFileExtension    = "ts"
