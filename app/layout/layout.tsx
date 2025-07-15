@@ -1,7 +1,7 @@
 import { href, Outlet } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import CustomNavLink from '~/components/CustomNavLink';
-import { authClient } from '~/lib/auth/authClient.client';
+import { authClient } from '~/lib/auth/client';
 
 export default function Layout() {
 	const { data } = authClient.useSession();

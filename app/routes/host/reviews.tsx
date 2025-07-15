@@ -22,6 +22,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
 
 	const reviews = await getHostReviews(session.user.id);
+
 	return data(
 		{
 			reviews,
@@ -34,7 +35,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 	);
 }
 
-export default function Host({ loaderData }: Route.ComponentProps) {
+export default function Reviews({ loaderData }: Route.ComponentProps) {
 	const { reviews } = loaderData;
 
 	const { changingPage } = useIsNavigating();

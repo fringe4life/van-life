@@ -22,9 +22,10 @@ export function meta() {
 export async function loader({ request }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
 
-	const sumIncome = await getAccountSummary(session.user.id);
-
-	const hostIncomes = await getHostTransactions(session.user.id);
+	const [sumIncome, hostIncomes] = await Promise.all([
+		getAccountSummary(session.user.id),
+		getHostTransactions(session.user.id),
+	]);
 	return data(
 		{
 			sumIncome,

@@ -10,12 +10,12 @@ export async function getVans(
 ) {
 	const skip = getSkipAmount(page, limit);
 	if (!typeFilter) {
-		return await prisma.van.findMany({
+		return prisma.van.findMany({
 			take: limit,
 			skip,
 		});
 	}
-	return await prisma.van.findMany({
+	return prisma.van.findMany({
 		take: limit,
 		skip,
 		where: {

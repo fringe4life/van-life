@@ -3,7 +3,7 @@ import getSkipAmount from '~/utils/getSkipAmount';
 
 export async function getHostVans(id: string, page: number, limit: number) {
 	const skip = getSkipAmount(page, limit);
-	return await prisma.van.findMany({
+	return prisma.van.findMany({
 		where: {
 			hostId: id,
 		},

@@ -10,7 +10,7 @@ import { getAccountSummary } from '~/db/getAccountSummary';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import { moneySchema } from '~/utils/types.server';
-import type { Route } from './+types/addVan';
+import type { Route } from './+types/money';
 export function meta() {
 	return [
 		{ title: 'Host Transactions | Vanlife' },
@@ -32,9 +32,6 @@ export async function action({ request }: Route.ActionArgs) {
 	const session = await getSessionOrRedirect(request);
 
 	const formData = Object.fromEntries(await request.formData());
-
-	console.log({ formData });
-
 	const result = moneySchema.safeParse(formData);
 
 	if (!result.success) {
@@ -55,7 +52,7 @@ export async function action({ request }: Route.ActionArgs) {
 	throw redirect(href('/host'));
 }
 
-export default function AddVan({
+export default function MoneyTransaction({
 	actionData,
 	loaderData,
 }: Route.ComponentProps) {

@@ -8,8 +8,8 @@ import VanPages from '~/components/Van/VanPages';
 import { DEFAULT_FILTER } from '~/constants/constants';
 import { getVans } from '~/db/getVans';
 import { getVansCount } from '~/db/getVansCount';
+import { useParamsClientSide } from '~/hooks/useParamsClientSide';
 import { getPaginationParams } from '~/utils/getPaginationParams';
-import { getParamsClientSide } from '~/utils/getParamsClientSide';
 import type { Route } from './+types/vans';
 
 export function meta() {
@@ -45,7 +45,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Vans({ loaderData }: Route.ComponentProps) {
 	const { vans, badges, vansCount } = loaderData;
 
-	const { type } = getParamsClientSide();
+	const { type } = useParamsClientSide();
 	console.log({ type });
 
 	return (

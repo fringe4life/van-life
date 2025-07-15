@@ -5,13 +5,11 @@ import {
 	DEFAULT_PAGE,
 } from '~/constants/constants';
 
-export function getParamsClientSide(
-	defaultPage?: number,
-	defaultLimit?: number,
+export function useParamsClientSide(
+	defaultPage: number = DEFAULT_PAGE,
+	defaultLimit: number = DEFAULT_LIMIT,
 ) {
 	const [searchParams] = useSearchParams();
-	if (!defaultPage) defaultPage = DEFAULT_PAGE;
-	if (!defaultLimit) defaultLimit = DEFAULT_LIMIT;
 	const page = Number.parseInt(
 		searchParams.get('page') ?? defaultPage.toString(),
 	);

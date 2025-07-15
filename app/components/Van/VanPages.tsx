@@ -7,7 +7,7 @@ import type { ListItemProps } from '~/components/ListItems';
 import ListItems from '~/components/ListItems';
 import Pagination from '~/components/Pagination';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { getParamsClientSide } from '~/utils/getParamsClientSide';
+import { useParamsClientSide } from '~/hooks/useParamsClientSide';
 
 type HostVanPages = {
 	variant: 'host';
@@ -37,7 +37,7 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 		emptyStateMessage,
 	} = props;
 
-	const { page, limit, type: typeFilter } = getParamsClientSide();
+	const { page, limit, type: typeFilter } = useParamsClientSide();
 
 	const { changingPage } = useIsNavigating();
 

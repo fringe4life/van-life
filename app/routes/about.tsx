@@ -5,7 +5,6 @@ import Image from '~/components/Image.client';
 import { buttonVariants } from '~/components/ui/button';
 import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/constants';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { createNewImageSize } from '~/utils/createNewImageSize';
 import { createSrcSet } from '~/utils/createSrcSet';
 
 export function meta() {

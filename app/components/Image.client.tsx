@@ -45,6 +45,7 @@ export default function Image({ src, alt, className, ...rest }: ImgProps) {
 					e.currentTarget.src = fallbackSrc;
 					setLoaded(true);
 				}}
+				fetchPriority="high"
 			/>
 		</div>
 	);
