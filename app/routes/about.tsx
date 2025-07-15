@@ -35,6 +35,9 @@ export default function About() {
 				height="400"
 				width="1600"
 				srcSet={srcSet}
+				loading="eager"
+				decoding="sync"
+				fetchPriority="high"
 			/>
 			<h2 className="mx-4 text-balance font-bold text-3xl/normal lg:mx-auto lg:max-w-1/2">
 				Don&apos;t{' '}

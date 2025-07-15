@@ -30,9 +30,9 @@ export default function Image({ src, alt, className, ...rest }: ImgProps) {
 					loaded && ' opacity-100',
 					`h-auto object-cover object-center transition-opacity duration-200 ease-in-out, ${className}`,
 				)}
-				{...rest}
 				loading="lazy"
 				decoding="async"
+				{...rest}
 				alt={alt}
 				src={src}
 				onLoad={(e) => {

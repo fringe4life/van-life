@@ -18,9 +18,7 @@ export async function getAccountSummary(userId: string) {
 				moneyAdded: true,
 			},
 		});
-		const amount = (sum._sum.amount ?? 0) + (moneyAdded?.moneyAdded ?? 0);
-
-		return amount;
+		return (sum._sum.amount ?? 0) + (moneyAdded?.moneyAdded ?? 0);
 	} catch (error) {
 		console.error('Failed to get account summary:', error);
 		throw new Error('Unable to retrieve account summary');
