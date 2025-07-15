@@ -39,6 +39,6 @@ export default [
 			]),
 		]),
 	]),
-	route('/api/auth/*', 'routes/api/auth.server.ts'),
+	route('/api/auth/*', 'routes/api/auth.ts'),
 	route('*', './routes/404.tsx'),
 ] satisfies RouteConfig;
