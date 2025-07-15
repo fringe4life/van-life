@@ -39,6 +39,7 @@ export default function About() {
 				decoding="sync"
 				fetchPriority="high"
 			/>
+
 			<h2 className="mx-4 text-balance font-bold text-3xl/normal lg:mx-auto lg:max-w-1/2">
 				Don&apos;t{' '}
 				<span className="after:-bottom-1 relative after:absolute after:left-0 after:w-full after:rounded-lg after:border-2 after:border-b-red-500 after:border-solid ">

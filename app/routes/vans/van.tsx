@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { data, href, redirect, useLocation } from 'react-router';
+import { data, href, useLocation } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import VanDetails from '~/components/Van/VanDetail';
 import { getVan } from '~/db/getVan';
@@ -26,8 +26,11 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
+	// if (request.headers.get('referer') === href('/vans')) {
+	// 	return
+	// }
 	const van = await getVan(params.vanId);
-	if (!van) throw redirect('/notfound');
+	if (!van) throw data('Van not found', { status: 404 });
 	return data(
 		{ van },
 		{
@@ -39,15 +42,15 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export default function VanDetail({ loaderData }: Route.ComponentProps) {
-	const { van } = loaderData;
+	const {
+		van: { rent, ...van },
+	} = loaderData;
 
-	console.log({ van });
 	const location = useLocation();
 
 	const typeFilter = location.state?.type ?? '';
 
-	const vanIsAvailable = van?.rent?.every((v) => v.rentedTo !== null) ?? true;
-	console.log({ vanIsAvailable });
+	const vanIsAvailable = rent?.every((v) => v.rentedTo !== null) ?? true;
 
 	const { changingPage } = useIsNavigating();
 	return (

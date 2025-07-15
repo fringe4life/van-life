@@ -11,10 +11,12 @@ export async function getVan(id: string) {
 				where: {
 					vanId: id,
 					AND: {
-						NOT: {
-							rentedTo: null,
-						},
+						rentedTo: null,
 					},
+				},
+				select: {
+					id: true,
+					rentedTo: true,
 				},
 			},
 		},

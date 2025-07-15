@@ -48,22 +48,22 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 		<VanPages
 			// generic component props start
 			Component={VanCard}
-			renderKey={(van) => van.van.id}
-			renderProps={(van) => ({
-				link: href('/host/vans/:vanId', { vanId: van.id }),
-				van: van.van,
+			renderKey={(van) => van.id}
+			renderProps={(rent) => ({
+				link: href('/host/vans/:vanId', { vanId: rent.van.id }),
+				van: rent.van,
 				linkCoversCard: false,
 				action: (
-					<CustomLink
-						state={{
-							hostId: van.hostId,
-							rentedAt: van.rentedAt,
-							amount: van.rentedAt,
-						}}
-						to={href('/host/rentals/:vanId', { vanId: van.van.id })}
-					>
-						Return
-					</CustomLink>
+					<div className="justify-self-end">
+						<CustomLink
+							state={{
+								rent,
+							}}
+							to={href('/host/rentals/:vanId', { vanId: rent.vanId })}
+						>
+							Return
+						</CustomLink>
+					</div>
 				),
 			})}
 			items={vans}

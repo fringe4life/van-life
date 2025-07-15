@@ -44,6 +44,19 @@ html {
   }
 }
 
+@keyframes --fade-in-from-right {
+  from {
+    translate: 100vh 0;
+    scale: 0.5;
+    opacity: 0.5;
+  }
+  to {
+    translate: 0 0;
+    scale: 1;
+    opacity: 1;
+  }
+}
+
 /* only show view transition if no preference, the other option being:  */
 /* prefers-reduced-motion: reduce */
 @media screen and (prefers-reduced-motion: no-preference) {
@@ -80,6 +93,18 @@ html {
   /* view transition for home page of hero section */
   ::view-transition-old(image):only-child {
     animation-name: --fade-to-right;
+  }
+
+  .scroll:nth-child(2n + 3) {
+    animation-timeline: view();
+    animation-range: 0% 25%;
+    animation-name: --fade-in-from-left;
+  }
+
+  .scroll:nth-child(2n):nth-child(n + 3) {
+    animation-timeline: view();
+    animation-range: 0% 25%;
+    animation-name: --fade-in-from-right;
   }
 }
 

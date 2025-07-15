@@ -8,7 +8,7 @@ export async function getHostRentedVans(
 	limit: number,
 ) {
 	const skip = getSkipAmount(page, limit);
-	return await prisma.rent.findMany({
+	return prisma.rent.findMany({
 		where: {
 			renterId: id,
 			rentedTo: null,

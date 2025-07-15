@@ -21,7 +21,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 	const { vanId } = params;
 	if (!vanId) throw redirect('/notfound');
 	const van = await getHostVan(session.user.id, vanId);
-	if (!van) throw redirect('/notfound');
+	if (!van) throw data("Van not found", {status: 404});
 
 	return data(
 		{

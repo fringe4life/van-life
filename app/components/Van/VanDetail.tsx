@@ -2,7 +2,7 @@ import type { Van } from '@prisma/client';
 import { href } from 'react-router';
 import Image from '~/components/Image.client';
 import { Badge, badgeVariants } from '~/components/ui/badge';
-import { ABOUT_IMG_SIZES, VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
+import { VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
 import { createSrcSet } from '~/utils/createSrcSet';
 import { cn } from '~/utils/utils';
 import CustomLink from '../CustomLink';

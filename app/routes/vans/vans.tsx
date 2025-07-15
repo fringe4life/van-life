@@ -46,7 +46,6 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 	const { vans, badges, vansCount } = loaderData;
 
 	const { type } = useParamsClientSide();
-	console.log({ type });
 
 	return (
 		<VanPages
