@@ -1,28 +1,23 @@
-import type { Van } from '@prisma/client';
-import { data, Form, href, redirect, useLocation } from 'react-router';
+import { data, Form, href } from 'react-router';
 import { z } from 'zod/v4';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
-import { Textarea } from '~/components/ui/textarea';
 import VanCard from '~/components/Van/VanCard';
 import { getHostRentedVan } from '~/db/host/getHostRentedVan';
-import type { returnVan } from '~/db/host/returnVan';
+import { rentVan } from '~/db/host/rentVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
-import { getCost } from '~/utils/getCost';
-import { uuidSchema } from '~/utils/types';
+import { rentVanSchema } from '~/utils/types';
 import type { Route } from './+types/rentalDetail';
 
 export async function loader({ params, request }: Route.LoaderArgs) {
-	const session = await getSessionOrRedirect(request);
+	await getSessionOrRedirect(request);
+	console.log({ vanId: params.vanId });
+	if (!params.vanId) throw data('Van not found', { status: 404 });
 
-	const rentId = params.rentalId;
-	if (!rentId) throw data('Rental not found', { status: 404 });
-
-	const rental = await getHostRentedVan(rentId);
-
-	if (!rental) throw data('Rental not found', { status: 404 });
-
+	const rental = await getHostRentedVan(params.vanId);
+	console.log();
+	if (!rental) throw data('Van not found', { status: 404 });
 	return data(
 		{
 			rental,
@@ -35,29 +30,41 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 	);
 }
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request, params }: Route.ActionArgs) {
 	const session = await getSessionOrRedirect(request);
 
 	const formData = Object.fromEntries(await request.formData());
 
-	const result = uuidSchema.safeParse(formData);
+	const hostId = formData.hostId as string;
 
-	if (!result.success) {
+	const { vanId } = params;
+	if (!vanId) throw data('Rental not found', { status: 404 });
+
+	const {
+		success,
+		data: values,
+		error,
+	} = rentVanSchema.safeParse({
+		vanId,
+		renterId: session.user.id,
+		hostId,
+	});
+
+	if (!success) {
 		return {
-			errors: z.prettifyError(result.error),
+			errors: z.prettifyError(error),
 			formData,
 		};
 	}
 
-	// const success = await returnVan(resultWithHostId);
+	const rental = await rentVan(values.vanId, values.renterId, values.hostId);
 
-	// if (!success) {
-	// 	return {
-	// 		errors: "Something wen't wrong please try again later",
-	// 		formData,
-	// 	};
-	// }
-	// throw redirect(href('/host/vans'));
+	if (!rental) {
+		return {
+			errors: 'Something went wrong try again later!',
+			formData,
+		};
+	}
 }
 
 export default function AddVan({
@@ -71,20 +78,21 @@ export default function AddVan({
 	return (
 		<section>
 			<VanCard
-				van={rental.van}
-				link={href('/host/rentals/:rentalId', { rentalId: rental.id })}
+				van={rental}
+				link={href('/host/rentals/rent/:vanId', { vanId: rental.id })}
 				action={<p />}
 			/>
 			<h2 className="font-bold text-4xl text-text">Return Van</h2>
 			<Form method="POST" className="mt-6 grid max-w-102 gap-4">
 				<Input
-					defaultValue={rental.id}
-					name="possibleUUID"
+					type="text"
+					defaultValue={rental.hostId}
 					className="hidden"
+					aria-hidden="true"
 				/>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
 				<Button type="submit" disabled={usingForm}>
-					Return {rental.van.name}
+					Rent {rental.name}
 				</Button>
 			</Form>
 		</section>

@@ -59,7 +59,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 							state={{
 								rent,
 							}}
-							to={href('/host/rentals/:vanId', { vanId: rent.vanId })}
+							to={href('/host/rentals/rent/:vanId', { vanId: rent.vanId })}
 						>
 							Return
 						</CustomLink>

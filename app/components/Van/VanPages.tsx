@@ -45,7 +45,7 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 		<section className="flex flex-col ">
 			<h2 className="mb-6 text-balance font-bold text-3xl">{title}</h2>
 			{variant === 'vans' && (
-				<p className="mb-6 flex justify-between md:justify-start md:gap-6">
+				<p className="mb-6 flex gap-3 sm:gap-6 md:justify-start">
 					{
 						<ListItems
 							items={props.listItem.items}

@@ -95,15 +95,15 @@ html {
     animation-name: --fade-to-right;
   }
 
-  .scroll:nth-child(2n + 3) {
+  .scroll:nth-child(2n + 5) {
     animation-timeline: view();
     animation-range: 0% 25%;
     animation-name: --fade-in-from-left;
   }
 
-  .scroll:nth-child(2n):nth-child(n + 3) {
+  .scroll:nth-child(2n):nth-child(n + 5) {
     animation-timeline: view();
-    animation-range: 0% 25%;
+    animation-range: entry 0% cover 25%;
     animation-name: --fade-in-from-right;
   }
 }

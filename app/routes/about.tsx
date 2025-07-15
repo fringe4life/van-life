@@ -40,7 +40,7 @@ export default function About() {
 				fetchPriority="high"
 			/>
 
-			<h2 className="mx-4 text-balance font-bold text-3xl/normal lg:mx-auto lg:max-w-1/2">
+			<h2 className="mx-4 text-balance font-bold text-3xl/normal lg:max-w-1/2">
 				Don&apos;t{' '}
 				<span className="after:-bottom-1 relative after:absolute after:left-0 after:w-full after:rounded-lg after:border-2 after:border-b-red-500 after:border-solid ">
 					squeeze
@@ -52,16 +52,16 @@ export default function About() {
 				in a van.
 			</h2>
 
-			<p className="mx-4 lg:mx-auto lg:max-w-1/2">
+			<p className="mx-4 lg:max-w-1/2">
 				Our mission is to enliven your road trip with the perfect travel van
 				rental. Our vans are recertified before each trip to ensure your travel
 				plans can go off without a hitch. (Hitch costs extra 😉)
 			</p>
-			<p className="mx-4 lg:mx-auto lg:max-w-1/2">
+			<p className="mx-4 lg:max-w-1/2">
 				Our team is full of vanlife enthusiasts who know firsthand the magic of
 				touring the world on 4 wheels.
 			</p>
-			<article className="mx-4 my-14 rounded-md bg-[#FFCC8D] px-9 py-7.5 lg:mx-auto lg:max-w-1/2">
+			<article className="mx-4 mt-14 rounded-md bg-[#FFCC8D] px-9 py-7.5 lg:max-w-1/2">
 				<h3 className="mb-6 text-balance font-bold text-2xl">
 					Your destination is waiting. Your van is ready.
 				</h3>

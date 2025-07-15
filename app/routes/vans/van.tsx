@@ -29,6 +29,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 	// if (request.headers.get('referer') === href('/vans')) {
 	// 	return
 	// }
+	if (!params.vanId) throw data('No van id', { status: 404 });
 	const van = await getVan(params.vanId);
 	if (!van) throw data('Van not found', { status: 404 });
 	return data(

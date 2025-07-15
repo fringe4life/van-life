@@ -51,7 +51,7 @@ export default function VanDetail({
 					<CustomLink
 						to={
 							vanIsAvailable
-								? href('/host/rentals/:vanId', { vanId })
+								? href('/host/rentals/rent/:vanId', { vanId })
 								: href('/vans/:vanId', { vanId })
 						}
 						className={cn(

@@ -78,3 +78,9 @@ export const moneySchema = z.object({
 	type: z.enum(['withdraw', 'deposit']),
 	amount: z.coerce.number().min(MIN_ADD).max(MAX_ADD),
 });
+
+export const rentVanSchema = z.object({
+	vanId: z.uuid(),
+	hostId: z.uuid(),
+	renterId: z.uuid(),
+});
