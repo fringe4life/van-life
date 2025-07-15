@@ -5,14 +5,14 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider        = "prisma-client-js"
-  // output                 = "../app/generated/prisma"
+  provider        = "prisma-client"
+  output          = "../app/generated/prisma"
   // runtime                = "nodejs"
   // moduleFormat           = "esm"
   // generatedFileExtension = "ts"
   // importFileExtension    = "ts"
-  previewFeatures = ["relationJoins"]
-  binaryTargets   = ["native", "rhel-openssl-3.0.x"]
+  previewFeatures = ["relationJoins", "driverAdapters", "queryCompiler"]
+  // binaryTargets   = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {

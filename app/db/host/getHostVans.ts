@@ -1,6 +1,7 @@
-import { prisma } from '~/lib/prisma';
-import getSkipAmount from '~/utils/getSkipAmount';
+// import { prisma } from '~/lib/prisma';
 
+import prisma from '~/lib/prisma';
+import getSkipAmount from '~/utils/getSkipAmount';
 export async function getHostVans(id: string, page: number, limit: number) {
 	const skip = getSkipAmount(page, limit);
 	return prisma.van.findMany({

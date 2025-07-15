@@ -1,7 +1,27 @@
-import { PrismaClient } from '@prisma/client';
 
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+import { PrismaPg } from '@prisma/adapter-pg';
+import type { SqlDriverAdapterFactory } from '@prisma/client/runtime/library';
 
-export const prisma = globalForPrisma.prisma || new PrismaClient({});
+import { PrismaClient } from '~/generated/prisma/client';
+// import { env } from '~/utils/env';
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+export type GetDbParams = {
+	connectionString: string;
+};
+
+export function getDb({ connectionString }: GetDbParams) {
+	const pool = new PrismaPg({ connectionString }) as SqlDriverAdapterFactory;
+	const prisma = new PrismaClient({ adapter: pool });
+	return prisma;
+}
+const prisma = getDb({ connectionString: process.env.DIRECT_URL! });
+console.log({prisma})
+export default prisma;
+
+// import { PrismaClient } from '@prisma/client';
+
+// const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+
+// export const prisma = globalForPrisma.prisma || new PrismaClient({});
+
+// if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;

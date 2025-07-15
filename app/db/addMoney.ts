@@ -1,5 +1,5 @@
-import { prisma } from '~/lib/prisma';
-
+// import { prisma } from '~/lib/prisma';
+import prisma from "~/lib/prisma";
 export async function addMoney(userId: string, amount: number) {
 	console.log({ userId, amount });
 	const updatedRecord = await prisma.userInfo.update({
