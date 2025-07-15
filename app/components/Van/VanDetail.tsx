@@ -12,6 +12,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from '../ui/card';
+import { createSrcSet } from '~/utils/createSrcSet';
+import { ABOUT_IMG_SIZES } from '~/constants/constants';
 
 type VanDetailProps = {
 	van: Van;
@@ -22,6 +24,7 @@ export default function VanDetail({
 	van: { imageUrl, description, type, name, price, id: vanId },
 	vanIsAvailable,
 }: VanDetailProps) {
+	const srcSet = createSrcSet(ABOUT_IMG_SIZES, imageUrl);
 	return (
 		<div className="@container/card-full max-w-lg">
 			<Card className="@max-2xl/card-full:grid @max-2xl/card-full:grid-rows-[4fr_repeat(4,_auto)_auto] @max-2xl/card-full:gap-4 ">
@@ -32,6 +35,7 @@ export default function VanDetail({
 						alt={description}
 						width="500"
 						height="500"
+						srcSet={srcSet}
 					/>
 				</CardHeader>
 				<CardContent className="@max-2xl/card-full:row-span-4 @max-2xl/card-full:row-start-2 @max-2xl/card-full:grid-rows-subgrid @max-2xl/card-full:align-between">
