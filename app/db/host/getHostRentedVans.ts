@@ -1,6 +1,6 @@
-// import { prisma } from '~/lib/prisma';
+import { prisma } from '~/lib/prisma';
 
-import prisma from '~/lib/prisma';
+// import prisma from '~/lib/prisma';
 import getSkipAmount from '~/utils/getSkipAmount';
 export async function getHostRentedVans(
 	id: string,

@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import babel from "vite-plugin-babel";
-import { resolve } from "path";
+// import { resolve } from "path";
 
 export default defineConfig({
   plugins: [
@@ -18,14 +18,14 @@ export default defineConfig({
     reactRouter(),
     tsconfigPaths(),
   ],
-  build: {
-    rollupOptions: {
-      external: ['@prisma/client'],
-    }
-  },
-   resolve: {
-    alias: {
-      '@prisma/client': resolve(__dirname, 'app/generated/'),
-    },
-  }
+  // build: {
+  //   rollupOptions: {
+  //     external: ['@prisma/client'],
+  //   }
+  // },
+  //  resolve: {
+  //   alias: {
+  //     '@prisma/client': resolve(__dirname, 'app/generated/'),
+  //   },
+  // }
 });

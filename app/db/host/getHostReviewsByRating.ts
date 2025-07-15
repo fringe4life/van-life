@@ -1,5 +1,5 @@
-// import { prisma } from '~/lib/prisma';
-import prisma from '~/lib/prisma';
+import { prisma } from '~/lib/prisma';
+// import prisma from '~/lib/prisma';
 export async function getAverageReviewRating(userId: string) {
 	return prisma.review.groupBy({
 		where: {
