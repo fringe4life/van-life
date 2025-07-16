@@ -27,6 +27,10 @@ export default [
 				...prefix('rentals', [
 					index('./routes/host/rentals/rentals.tsx'),
 					route('rent/:vanId', './routes/host/rentals/rentalDetail.tsx'),
+					route(
+						'returnRental/:rentId',
+						'./routes/host/rentals/returnRental.tsx',
+					),
 				]),
 				...prefix('vans', [
 					index('./routes/host/hostVans.tsx'),

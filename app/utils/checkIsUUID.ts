@@ -1,4 +1,4 @@
-import { uuidSchema } from '~/utils/types';
+import { uuidSchema } from '~/utils/schema';
 
 export function checkIsUUID(possibleUUID: string) {
 	const objectUUID = {

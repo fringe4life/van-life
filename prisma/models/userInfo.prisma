@@ -9,4 +9,6 @@ model UserInfo {
   rented Rent[] @relation("host")
 
   review Review[]
+
+  @@index([userId])
 }

@@ -8,4 +8,6 @@ model Review {
   rentId    String
   rent      Rent     @relation(fields: [rentId], references: [id])
   user      UserInfo @relation(fields: [userId], references: [userId])
+
+  @@index([rentId, userId])
 }

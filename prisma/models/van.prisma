@@ -9,4 +9,6 @@ model Van {
   hostId   String
   userInfo UserInfo @relation(fields: [hostId], references: [userId], onUpdate: Cascade)
   rent     Rent[]
+
+  @@index([hostId])
 }

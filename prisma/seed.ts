@@ -29,7 +29,7 @@ const main = async () => {
 	const rentsWithIds = rents.map((rent) => {
 		const { id1, id2 } = generateUniqueIds(data);
 		const vanId = getRandomId(vanIds);
-		const van = vanIds.find((van) => van.id === van.id)!;
+		const van = vanIds.find((van) => van.id === vanId)!;
 		const rentedTo = randomTrueOrFalse() ? getEndDate(rent.rentedAt) : null;
 		const amount = rentedTo ? getCost(rent.rentedAt, rentedTo, van.price) : 0;
 		return {

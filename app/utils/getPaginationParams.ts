@@ -4,7 +4,7 @@ import {
 	DEFAULT_LIMIT,
 	DEFAULT_PAGE,
 } from '~/constants/constants';
-import { searchParamsSchema } from '~/utils/types';
+import { searchParamsSchema } from '~/utils/schema';
 export function getPaginationParams(url: string) {
 	const searchParams = Object.fromEntries(
 		new URLSearchParams(url.split('?').at(1) ?? ''),

@@ -5,7 +5,7 @@ import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { auth } from '~/lib/auth/auth';
-import { loginSchema } from '~/utils/types';
+import { loginSchema } from '~/utils/schema';
 import type { Route } from './+types/login';
 
 export async function loader({ request }: Route.LoaderArgs) {

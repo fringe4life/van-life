@@ -95,15 +95,33 @@ html {
     animation-name: --fade-to-right;
   }
 
-  .scroll:nth-child(2n + 5) {
-    animation-timeline: view();
-    animation-range: 0% 25%;
-    animation-name: --fade-in-from-left;
-  }
-
-  .scroll:nth-child(2n):nth-child(n + 5) {
+  .scroll-sm {
     animation-timeline: view();
     animation-range: entry 0% cover 25%;
+  }
+
+  .scroll-md {
+    animation-range: entry 0% cover 10%;
+  }
+
+  .scroll-sm:nth-child(2n + 3) {
+    animation-name: --fade-in-from-left;
+  }
+  .scroll-sm:nth-child(2n):nth-child(n + 3) {
+    animation-name: --fade-in-from-right;
+  }
+
+  .scroll-md:nth-child(2n + 5) {
+    animation-name: --fade-in-from-left;
+  }
+  .scroll-md:nth-child(2n):nth-child(n + 6) {
+    animation-name: --fade-in-from-right;
+  }
+
+  .scroll-lg:nth-child(2n + 7) {
+    animation-name: --fade-in-from-left;
+  }
+  .scroll-lg:nth-child(2n):nth-child(n + 8) {
     animation-name: --fade-in-from-right;
   }
 }

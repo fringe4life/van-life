@@ -7,11 +7,11 @@
 generator client {
   provider        = "prisma-client-js"
   // output          = "../app/generated/prisma"
-  // runtime         = "edge-light"
+  // runtime         = "edge-light" or ""
   // moduleFormat           = "esm"
   // generatedFileExtension = "ts"
   // importFileExtension    = "ts"
-  previewFeatures = ["relationJoins"]
+  previewFeatures = ["relationJoins", "typedSql"]
   // , "driverAdapters", "queryCompiler"
   binaryTargets   = ["native", "rhel-openssl-3.0.x"]
 }

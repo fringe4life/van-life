@@ -1,8 +1,11 @@
 import { prisma } from '~/lib/prisma';
-export async function getHostRentedVan(vanId: string) {
-	return prisma.van.findUnique({
+export async function getHostRentedVan(rentId: string) {
+	return prisma.rent.findUnique({
 		where: {
-			id: vanId,
+			id: rentId,
+		},
+		include: {
+			van: true,
 		},
 	});
 }
