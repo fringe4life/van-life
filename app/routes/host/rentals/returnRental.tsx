@@ -1,24 +1,110 @@
-import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
-import type { Route } from './+types/returnRental';
-import { data } from 'react-router';
+import { data, Form, href, redirect } from 'react-router';
+import CustomLink from '~/components/CustomLink';
+import { Button } from '~/components/ui/button';
+import VanCard from '~/components/Van/VanCard';
+import { getAccountSummary } from '~/db/getAccountSummary';
 import { getHostRentedVan } from '~/db/host/getHostRentedVan';
+import { payForVan } from '~/db/host/payForVan';
+import { returnVan } from '~/db/host/returnVan';
+import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
+import { getCost } from '~/utils/getCost';
+import type { Route } from './+types/returnRental';
 
 export async function loader({ request, params }: Route.LoaderArgs) {
-	await getSessionOrRedirect(request);
+	const session = await getSessionOrRedirect(request);
 
-    const {rentId} = params
+	const { rentId } = params;
 
-    if(!rentId) throw data('Rental not found', {status: 404})
+	if (!rentId) throw data('Rental not found', { status: 404 });
 
-        const rent = getHostRentedVan()
+	const [rent, money] = await Promise.all([
+		getHostRentedVan(rentId),
+		getAccountSummary(session.user.id),
+	]);
+
+	if (!rent) throw data('Rented van not found', { status: 404 });
+
+	return data(
+		{
+			rent,
+			money,
+		},
+		{
+			headers: {
+				'Cache-Control': 'max-age=259200',
+			},
+		},
+	);
 }
 
-export async function action({request,params}: Route.ActionArgs) {
-    
+export async function action({ request, params }: Route.ActionArgs) {
+	const session = await getSessionOrRedirect(request);
+
+	const { rentId } = params;
+
+	if (!rentId) throw data('Rental not found', { status: 404 });
+
+	const [rent, money] = await Promise.all([
+		getHostRentedVan(rentId),
+		getAccountSummary(session.user.id),
+	]);
+	if (!rent) throw data('Rented van not found', { status: 404 });
+	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van.price);
+	console.log({ amountToPay });
+	const isUnableToPay = money < amountToPay;
+
+	if (isUnableToPay) {
+		return { errors: 'Cannot afford to return this rental' };
+	} else {
+		const [returnedVan, pay] = await Promise.all([
+			returnVan(rentId),
+			payForVan(session.user.id, amountToPay),
+		]);
+		if (!returnedVan || !pay) {
+			return { errors: 'Something went wrong try again later' };
+		}
+		throw redirect(href('/host'));
+	}
 }
 
-export default function ReturnRental() {
-	return <section>
-        <h2 className=''>Return this van</h2>
-    </section>;
+export default function ReturnRental({
+	loaderData,
+	actionData,
+	params,
+}: Route.ComponentProps) {
+	const { rent, money } = loaderData;
+
+	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van.price);
+	console.log({ amountToPay });
+	const isUnableToPay = money < amountToPay;
+	return (
+		<section className="flex flex-col gap-4">
+			<h2 className="">Return this van:</h2>
+			<div className="max-w-lg">
+				<VanCard
+					van={rent.van}
+					link={href('/host/rentals/returnRental/:rentId', {
+						rentId: params.rentId,
+					})}
+					action={<p></p>}
+				/>
+			</div>
+			{isUnableToPay && (
+				<article>
+					<p className="text-lg text-red-400">
+						You cannot afford to return this van.
+					</p>
+					<CustomLink to={href('/host/money')}>
+						Top up your account <span className="underline">here</span>
+					</CustomLink>
+				</article>
+			)}
+			<Form method="POST">
+				<Button type="submit" disabled={isUnableToPay}>
+					Return
+				</Button>
+				{actionData?.errors && <p>{actionData.errors}</p>}
+			</Form>
+		</section>
+	);
 }

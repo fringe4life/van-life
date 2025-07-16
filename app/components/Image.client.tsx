@@ -24,7 +24,7 @@ export default function Image({ src, alt, className, ...rest }: ImgProps) {
 				loaded && 'animate-none bg-none blur-none',
 			)}
 		>
-			<img
+			{window ? <img
 				className={clsx(
 					!loaded && 'opacity-0',
 					loaded && ' opacity-100',
@@ -45,7 +45,7 @@ export default function Image({ src, alt, className, ...rest }: ImgProps) {
 					e.currentTarget.src = fallbackSrc;
 					setLoaded(true);
 				}}
-			/>
+			/> : <div  ></div>}
 		</div>
 	);
 }

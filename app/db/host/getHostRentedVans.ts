@@ -1,22 +1,21 @@
 import { prisma } from '~/lib/prisma';
-
-// import prisma from '~/lib/prisma';
 import getSkipAmount from '~/utils/getSkipAmount';
+
 export async function getHostRentedVans(
-	id: string,
+	userId: string,
 	page: number,
-	limit: number,
+	take: number,
 ) {
-	const skip = getSkipAmount(page, limit);
+	const skip = getSkipAmount(page, take);
 	return prisma.rent.findMany({
 		where: {
-			renterId: id,
-			rentedTo: null,
+			renterId: userId,
 		},
 		include: {
 			van: true,
 		},
-		take: limit,
+
 		skip,
+		take,
 	});
 }

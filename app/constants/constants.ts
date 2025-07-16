@@ -3,7 +3,7 @@ export const DEFAULT_LIMIT = 10;
 export const DEFAULT_FILTER = '';
 
 export const MIN_ADD = 10;
-export const MAX_ADD = 10000;
+export const MAX_ADD = 100000;
 
 export const VAN_CARD_IMG_SIZES = [200, 250, 300, 350] as const;
 

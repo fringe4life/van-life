@@ -91,7 +91,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				renderProps={(item) => ({
 					van: item,
 					link: href('/host/vans/:vanId', { vanId: item.id }),
-					action: <p>Edit</p>,
+					action: <p className="justify-self-end">Edit</p>,
 				})}
 			/>
 		</section>

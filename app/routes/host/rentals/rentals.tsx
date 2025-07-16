@@ -2,8 +2,8 @@ import { data, href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import VanCard from '~/components/Van/VanCard';
 import VanPages from '~/components/Van/VanPages';
+import { getHostRentedVanCount } from '~/db/host/getHostRentedVanCount';
 import { getHostRentedVans } from '~/db/host/getHostRentedVans';
-import { getHostVanCount } from '~/db/host/getHostVanCount';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import { getPaginationParams } from '~/utils/getPaginationParams';
 import type { Route } from './+types/rentals';
@@ -25,7 +25,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	const [vans, vansCount] = await Promise.all([
 		getHostRentedVans(session.user.id, page, limit),
-		getHostVanCount(session.user.id),
+		getHostRentedVanCount(session.user.id),
 	]);
 
 	return data(
@@ -44,23 +44,25 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
 	const { vans, vansCount } = loaderData;
 
+	const rentedVans = vans.filter((van) => !van.rentedTo);
+	console.log({ vans, vansCount });
 	return (
 		<VanPages
 			// generic component props start
 			Component={VanCard}
-			renderKey={(van) => van.id}
-			renderProps={(rent) => ({
-				link: href('/host/vans/:vanId', { vanId: rent.van.id }),
-				van: rent.van,
+			renderKey={(van) => van.van.id}
+			renderProps={(van) => ({
+				link: href('/host/vans/:vanId', { vanId: van.id }),
+				van: van.van,
 				linkCoversCard: false,
 				action: (
 					<div className="justify-self-end">
 						<CustomLink
 							state={{
-								rent,
+								van,
 							}}
 							to={href('/host/rentals/returnRental/:rentId', {
-								rentId: rent.id,
+								rentId: van.id,
 							})}
 						>
 							Return
@@ -68,14 +70,13 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					</div>
 				),
 			})}
-			items={vans}
+			items={rentedVans}
 			itemsCount={vansCount}
 			emptyStateMessage="You are currently not renting any vans."
 			// generic component props end
-			// used for discriminated union in case needed and to manage vans route
-			variant="host"
+
 			// props for all use cases
-			path={href('/host/rentals')}
+			pathname={href('/host/rentals')}
 			title="Vans you are renting"
 		/>
 	);

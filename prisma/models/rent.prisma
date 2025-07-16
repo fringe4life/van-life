@@ -1,6 +1,6 @@
 model Rent {
   id       String    @id @default(dbgenerated("gen_random_uuid()"))
-  amount   Float    @default(0) @db.DoublePrecision
+  amount   Float     @default(0) @db.DoublePrecision
   renterId String
   hostId   String
   rentedAt DateTime  @default(now()) @db.Date
@@ -11,4 +11,6 @@ model Rent {
   host     UserInfo  @relation("host", fields: [hostId], references: [userId])
 
   reviews Review[]
+
+  @@unique([renterId, rentedTo])
 }
