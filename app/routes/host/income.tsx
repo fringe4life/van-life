@@ -69,7 +69,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				</>
 			}
 			title="Income"
-			path={href('/host/income')}
+			pathname={href('/host/income')}
 		/>
 	);
 }

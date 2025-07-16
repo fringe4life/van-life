@@ -64,7 +64,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			// generic component props end
 
 			// props for all use cases
-			path={href('/host/vans')}
+			pathname={href('/host/vans')}
 			title="Your listed vans"
 		/>
 	);

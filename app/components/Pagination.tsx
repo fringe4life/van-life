@@ -6,13 +6,17 @@ type PaginationProps = {
 	itemsCount: number;
 	limit: number;
 	page: number;
-	typeFilter: string | undefined;
+	type: string | undefined;
 	pathname: string;
 };
 
+export type PaginationPropsForVanPages = Pick<
+	PaginationProps,
+	'itemsCount' | 'pathname'
+>;
 export default function Pagination({
 	itemsCount,
-	typeFilter = DEFAULT_FILTER,
+	type = DEFAULT_FILTER,
 	limit,
 	page,
 	pathname,
@@ -34,7 +38,7 @@ export default function Pagination({
 				})}
 				to={{
 					pathname,
-					search: `?page=${pageNumber}&limit=${limit}&filter=${typeFilter}`,
+					search: `?page=${pageNumber}&limit=${limit}&filter=${type}`,
 				}}
 			>
 				{pageNumber}

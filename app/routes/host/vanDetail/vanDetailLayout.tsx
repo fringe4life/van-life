@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { data, href, Outlet, redirect } from 'react-router';
+import { data, href, Outlet } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import VanDetailCard from '~/components/Van/HostVanDetailCard';
 import { getHostVan } from '~/db/host/getHostVan';
@@ -19,9 +19,9 @@ export function meta({ data }: Route.MetaArgs) {
 export async function loader({ request, params }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
 	const { vanId } = params;
-	if (!vanId) throw redirect('/notfound');
+	if (!vanId) throw data('Van not found', { status: 404 });
 	const van = await getHostVan(session.user.id, vanId);
-	if (!van) throw data("Van not found", {status: 404});
+	if (!van) throw data('Van not found', { status: 404 });
 
 	return data(
 		{

@@ -72,7 +72,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			emptyStateMessage="You have received no reviews"
 			// props that are common
 			title="Your Reviews"
-			path={href('/host/review')}
+			pathname={href('/host/review')}
 			// optional
 			optionalElement={
 				<>
