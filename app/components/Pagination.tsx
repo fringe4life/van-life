@@ -41,6 +41,9 @@ export default function Pagination({
 			</CustomLink>,
 		);
 	}
+	if (listOfLinks.length === 1) {
+		return null;
+	}
 	return (
 		<section className="my-6 flex gap-6 self-center justify-self-end">
 			{listOfLinks}

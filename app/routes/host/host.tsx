@@ -23,11 +23,12 @@ export function meta() {
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
-	const vans = await getHostVans(session.user.id, 1, 3);
 
-	const sumIncome = await getAccountSummary(session.user.id);
-
-	const avgRating = await getAverageReviewRating(session.user.id);
+	const [vans, sumIncome, avgRating] = await Promise.all([
+		getHostVans(session.user.id, 1, 3),
+		getAccountSummary(session.user.id),
+		getAverageReviewRating(session.user.id),
+	]);
 
 	return data(
 		{

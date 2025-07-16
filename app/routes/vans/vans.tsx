@@ -2,6 +2,7 @@ import { VanType } from '@prisma/client';
 
 import { data, href } from 'react-router';
 import CustomNavLink from '~/components/CustomNavLink';
+import ListItems from '~/components/ListItems';
 import { badgeVariants } from '~/components/ui/badge';
 import VanCard from '~/components/Van/VanCard';
 import VanPages from '~/components/Van/VanPages';
@@ -69,26 +70,36 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			items={vans}
 			itemsCount={vansCount}
 			// generic component props end
-			// used to highlight its unique props as part of a discriminated union
-			variant="vans"
-			//  vans part of discriminated union
-			listItem={{
-				items: badges,
-				getKey: (t) => t,
-				getRow: (t) => (
-					<CustomNavLink
-						className={badgeVariants({
-							variant: t === type ? t : 'OUTLINE',
-						})}
-						to={{ search: `?type=${t.toLowerCase()}` }}
-					>
-						{t}
-					</CustomNavLink>
-				),
-			}}
+			
 			// props for all use cases
 			path={href('/vans')}
 			title="Explore our van options"
+			optionalElement={
+				<p className="mb-6 flex gap-3 sm:gap-6 md:justify-start">
+					{
+						<ListItems
+							items={badges}
+							getKey={(t) => t}
+							getRow={(t) => (
+								<CustomNavLink
+									className={badgeVariants({
+										variant: t === type ? t : 'OUTLINE',
+									})}
+									to={{ search: `?type=${t.toLowerCase()}` }}
+								>
+									{t}
+								</CustomNavLink>
+							)}
+						/>
+					}
+					<CustomNavLink
+						to={href('/vans')}
+						className={(isActive) => isActive && 'underline'}
+					>
+						Clear filters
+					</CustomNavLink>
+				</p>
+			}
 		/>
 	);
 }

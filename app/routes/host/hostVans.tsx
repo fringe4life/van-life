@@ -62,8 +62,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			itemsCount={vansCount}
 			emptyStateMessage="You are currently not renting any vans."
 			// generic component props end
-			// used for discriminated union in case needed and to manage vans route
-			variant="host"
+
 			// props for all use cases
 			path={href('/host/vans')}
 			title="Your listed vans"

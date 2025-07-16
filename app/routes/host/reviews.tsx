@@ -1,11 +1,9 @@
-import clsx from 'clsx';
-import { data } from 'react-router';
+import { data, href } from 'react-router';
 
 import BarChartComponent from '~/components/BarChart';
-import GenericComponent from '~/components/GenericComponent';
 import Review from '~/components/Review';
+import VanPages from '~/components/Van/VanPages';
 import { getHostReviews } from '~/db/host/getHostReviews';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import type { Route } from './+types/reviews';
 export function meta() {
@@ -38,7 +36,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Reviews({ loaderData }: Route.ComponentProps) {
 	const { reviews } = loaderData;
 
-	const { changingPage } = useIsNavigating();
 	const result = reviews
 		.reduce(
 			(acc, cur) => {
@@ -64,26 +61,28 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 	}));
 
 	return (
-		<section
-			className={clsx({
-				'opacity-75': changingPage,
-			})}
-		>
-			<h2 className="font-bold text-3xl text-text">Your Reviews</h2>
-			<BarChartComponent mappedData={result} />
-			<article>
-				<h3 className="font-bold text-lg text-text">
-					Reviews ({reviews.length})
-				</h3>
-				<GenericComponent
-					className="space-y-6"
-					Component={Review}
-					items={reviewItems}
-					renderProps={(item) => item}
-					renderKey={(item) => item.id}
-					emptyStateMessage="You have received no reviews"
-				/>
-			</article>
-		</section>
+		<VanPages
+			itemsCount={reviews.length}
+			// generic componet props start
+			Component={Review}
+			items={reviewItems}
+			renderProps={(item) => item}
+			renderKey={(item) => item.id}
+			// props to handle errors
+			emptyStateMessage="You have received no reviews"
+			// props that are common
+			title="Your Reviews"
+			path={href('/host/review')}
+			// optional
+			optionalElement={
+				<>
+					<BarChartComponent mappedData={result} />
+
+					<h3 className="font-bold text-lg text-text">
+						Reviews ({reviews.length})
+					</h3>
+				</>
+			}
+		/>
 	);
 }
