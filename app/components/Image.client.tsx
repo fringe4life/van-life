@@ -24,28 +24,32 @@ export default function Image({ src, alt, className, ...rest }: ImgProps) {
 				loaded && 'animate-none bg-none blur-none',
 			)}
 		>
-			{window ? <img
-				className={clsx(
-					!loaded && 'opacity-0',
-					loaded && ' opacity-100',
-					`h-auto object-cover object-center transition-opacity duration-200 ease-in-out, ${className}`,
-				)}
-				loading="lazy"
-				decoding="async"
-				{...rest}
-				alt={alt}
-				src={src}
-				onLoad={(e) => {
-					if (e.currentTarget.complete) {
+			{typeof window !== 'undefined' ? (
+				<img
+					className={clsx(
+						!loaded && 'opacity-0',
+						loaded && ' opacity-100',
+						`h-auto object-cover object-center transition-opacity duration-200 ease-in-out, ${className}`,
+					)}
+					loading="lazy"
+					decoding="async"
+					{...rest}
+					alt={alt}
+					src={src}
+					onLoad={(e) => {
+						if (e.currentTarget.complete) {
+							setLoaded(true);
+						}
+					}}
+					onError={(e) => {
+						// Handle broken image
+						e.currentTarget.src = fallbackSrc;
 						setLoaded(true);
-					}
-				}}
-				onError={(e) => {
-					// Handle broken image
-					e.currentTarget.src = fallbackSrc;
-					setLoaded(true);
-				}}
-			/> : <div  ></div>}
+					}}
+				/>
+			) : (
+				<div></div>
+			)}
 		</div>
 	);
 }

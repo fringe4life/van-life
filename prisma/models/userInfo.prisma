@@ -1,14 +1,11 @@
 model UserInfo {
-  userId     String @id
-  user       User   @relation(fields: [userId], references: [id])
-  moneyAdded Float  @default(0) @db.DoublePrecision
-
-  vans Van[]
-
-  renter Rent[] @relation("renter")
-  rented Rent[] @relation("host")
-
-  review Review[]
+  userId     String   @id
+  moneyAdded Float    @default(0)
+  rented     Rent[]   @relation("host")
+  renter     Rent[]   @relation("renter")
+  review     Review[]
+  user       User     @relation(fields: [userId], references: [id])
+  vans       Van[]
 
   @@index([userId])
 }

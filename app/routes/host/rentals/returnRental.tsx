@@ -4,7 +4,6 @@ import { Button } from '~/components/ui/button';
 import VanCard from '~/components/Van/VanCard';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getHostRentedVan } from '~/db/host/getHostRentedVan';
-import { payForVan } from '~/db/host/payForVan';
 import { returnVan } from '~/db/host/returnVan';
 import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
 import { getCost } from '~/utils/getCost';
@@ -56,11 +55,14 @@ export async function action({ request, params }: Route.ActionArgs) {
 	if (isUnableToPay) {
 		return { errors: 'Cannot afford to return this rental' };
 	} else {
-		const [returnedVan, pay] = await Promise.all([
-			returnVan(rentId),
-			payForVan(session.user.id, amountToPay),
-		]);
-		if (!returnedVan || !pay) {
+		const [returnedVan, user] = await returnVan(
+			rentId,
+			session.user.id,
+			amountToPay,
+		);
+		console.log({ returnedVan, user });
+
+		if (!returnedVan || !user) {
 			return { errors: 'Something went wrong try again later' };
 		}
 		throw redirect(href('/host'));

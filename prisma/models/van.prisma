@@ -1,14 +1,13 @@
 model Van {
-  id          String  @id @default(cuid())
-  name        String  @unique @db.VarChar(60)
-  price       Int     @db.SmallInt
-  description String  @db.VarChar(1024)
+  id          String   @id @default(cuid())
+  name        String   @unique @db.VarChar(60)
+  price       Int      @db.SmallInt
+  description String   @db.VarChar(1024)
   imageUrl    String
   type        VanType
-
-  hostId   String
-  userInfo UserInfo @relation(fields: [hostId], references: [userId], onUpdate: Cascade)
-  rent     Rent[]
+  hostId      String
+  rent        Rent[]
+  userInfo    UserInfo @relation(fields: [hostId], references: [userId])
 
   @@index([hostId])
 }

@@ -1,11 +1,11 @@
 model Review {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @db.Date
   updatedAt DateTime @updatedAt @db.Date
   text      String   @db.VarChar(512)
   userId    String
   rating    Int      @db.SmallInt
   rentId    String
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   rent      Rent     @relation(fields: [rentId], references: [id])
   user      UserInfo @relation(fields: [userId], references: [userId])
 
