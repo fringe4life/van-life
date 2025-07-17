@@ -12,5 +12,4 @@ model Rent {
   reviews  Review[]
 
   @@unique([renterId, rentedTo, vanId])
-  @@unique([id])
 }

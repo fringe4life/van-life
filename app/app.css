@@ -95,7 +95,9 @@ html {
     animation-name: --fade-to-right;
   }
 
-  .scroll-sm {
+  .scroll-sm,
+  .scroll-md,
+  .scroll-lg {
     animation-timeline: view();
     animation-range: entry 0% cover 25%;
   }

@@ -9,7 +9,7 @@ const formatter = new Intl.NumberFormat('en-us', {
  * @returns a string representation to be shown to users
  */
 export function displayPrice(price: number): string {
-	if (!price) return '$0.00';
+	if (!price) return 'Still rented';
 
 	return formatter.format(price);
 }
