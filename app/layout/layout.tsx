@@ -68,7 +68,7 @@ export default function Layout() {
 					</ul>
 				</nav>
 			</header>
-			<main className="mb-6 grid grid-rows-subgrid">
+			<main className="mb-6 grid grid-rows-subgrid px-4">
 				<Outlet />
 			</main>
 			<footer className="bg-neutral-800 py-6.25">

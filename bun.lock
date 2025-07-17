@@ -38,7 +38,7 @@
         "react-router-devtools": "^1.1.10",
         "tailwindcss": "^4.1.11",
         "typescript": "^5.9.0-dev.20250716",
-        "vite": "^7.0.4",
+        "vite": "^7.0.5",
         "vite-plugin-babel": "^1.3.2",
         "vite-tsconfig-paths": "^5.1.4",
       },
@@ -1163,7 +1163,7 @@
 
     "typedarray": ["typedarray@0.0.6", "", {}, "sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA=="],
 
-    "typescript": ["typescript@5.9.0-dev.20250716", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-wBOPAX99Y5n6c4JF9ZIPy4xrnUDfFmrzOaFoVWGeDAu8cfV3773xfvNMColH3EnaWf8JytB3rgbcLYDE2nhCQw=="],
+    "typescript": ["typescript@5.9.0-dev.20250717", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-txdoKMuQg9HgT4dRcGBUrpIXIBMabbBOjVWrS915z/yskIIq7FwGgriVoIlVIVNZP04INeuJw3NEFDnWb1Vzbw=="],
 
     "uncrypto": ["uncrypto@0.1.3", "", {}, "sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q=="],
 

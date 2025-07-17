@@ -59,7 +59,7 @@ export default function VanDetail({
 							'@max-lg/card-full:w-full',
 						)}
 					>
-						{vanIsAvailable ? 'Rent this van' : 'Return this van'}
+						{vanIsAvailable ? 'Rent this van' : 'Van not available'}
 					</CustomLink>
 				</CardFooter>
 			</Card>

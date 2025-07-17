@@ -1,4 +1,4 @@
-import { data, Form, href } from 'react-router';
+import { data, Form, href, redirect } from 'react-router';
 import { z } from 'zod/v4';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -65,6 +65,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 			formData,
 		};
 	}
+	throw redirect(href('/host/rentals'));
 }
 
 export default function AddVan({
@@ -78,8 +79,8 @@ export default function AddVan({
 	return (
 		<section>
 			<VanCard
-				van={rental}
-				link={href('/host/rentals/rent/:vanId', { vanId: rental.id })}
+				van={rental.van}
+				link={href('/host/rentals/rent/:vanId', { vanId: rental.van.id })}
 				action={<p />}
 			/>
 			<h2 className="font-bold text-4xl text-text">Return Van</h2>
@@ -92,7 +93,7 @@ export default function AddVan({
 				/>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
 				<Button type="submit" disabled={usingForm}>
-					Rent {rental.name}
+					Rent {rental.van.name}
 				</Button>
 			</Form>
 		</section>
