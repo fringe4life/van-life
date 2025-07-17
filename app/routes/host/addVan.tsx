@@ -71,7 +71,7 @@ export default function AddVan({ actionData }: Route.ComponentProps) {
 				<Input
 					type="url"
 					name="imageUrl"
-					placeholder="https://images.unsplash.com/https://plus.unsplash.com/"
+					placeholder="https://images.unsplash.com/"
 					defaultValue={(actionData?.formData?.imageUrl as string) ?? ''}
 				/>
 				<Input

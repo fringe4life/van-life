@@ -38,9 +38,6 @@ function zodEnumFromRecordKeys<K extends string>(record: Record<K, unknown>) {
 const vanType = zodEnumFromRecordKeys(VanType);
 const vanTypeSchema = z.enum(Object.values(VanType));
 
-const regexUnsplash =
-	/^https?:\/\/(?:www\.)?unsplash\.com\/photo-\d+.*\?w=\d+$/;
-
 export const addVanSchema = z.object({
 	name: z
 		.string()
@@ -51,7 +48,8 @@ export const addVanSchema = z.object({
 	type: z.string().toUpperCase().pipe(vanTypeSchema),
 	imageUrl: z
 		.url()
-		.regex(regexUnsplash, { error: 'Must be a free unsplash image' }),
+		.includes('unsplash', { error: 'Must be a free unsplash image' })
+		.includes('w='),
 	price: z.coerce.number().positive().max(32767, {
 		error: 'Your van cannot be more expensive then $32,767 dollars',
 	}),
