@@ -9,12 +9,12 @@ export default function Layout() {
 	const hasToken = data?.session !== undefined;
 	return (
 		<>
-			<header className="flex items-center justify-between gap-6 py-9">
+			<header className="flex items-center justify-between gap-3 py-9 sm:gap-6">
 				<h1 className="font-black text-2xl uppercase">
 					<CustomLink to={href('/')}>#vanlife</CustomLink>
 				</h1>
-				<nav className="justify-self-end-safe">
-					<ul className="flex flex-wrap justify-end gap-3 sm:flex-nowrap">
+				<nav>
+					<ul className="flex flex-wrap justify-end gap-2 sm:flex-nowrap sm:gap-3">
 						<li>
 							<CustomNavLink
 								to={href('/about')}

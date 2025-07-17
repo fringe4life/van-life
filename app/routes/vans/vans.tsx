@@ -75,7 +75,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			pathname={href('/vans')}
 			title="Explore our van options"
 			optionalElement={
-				<p className='mb-6 flex items-center gap-3 sm:gap-6 md:justify-start'>
+				<p className="mb-6 flex flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-4 md:justify-start">
 					{
 						<ListItems
 							items={badges}
