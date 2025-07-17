@@ -49,7 +49,6 @@ export async function action({ request, params }: Route.ActionArgs) {
 	]);
 	if (!rent) throw data('Rented van not found', { status: 404 });
 	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van.price);
-	console.log({ amountToPay });
 	const isUnableToPay = money < amountToPay;
 
 	if (isUnableToPay) {
@@ -60,7 +59,6 @@ export async function action({ request, params }: Route.ActionArgs) {
 			session.user.id,
 			amountToPay,
 		);
-		console.log({ returnedVan, user });
 
 		if (!returnedVan || !user) {
 			return { errors: 'Something went wrong try again later' };
@@ -77,7 +75,6 @@ export default function ReturnRental({
 	const { rent, money } = loaderData;
 
 	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van.price);
-	console.log({ amountToPay });
 	const isUnableToPay = money < amountToPay;
 	return (
 		<section className="flex flex-col gap-4">

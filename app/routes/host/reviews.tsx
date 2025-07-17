@@ -39,7 +39,6 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 	const result = reviews
 		.reduce(
 			(acc, cur) => {
-				console.log({ acc });
 				acc[cur.rating - 1] += 1;
 				return acc;
 			},

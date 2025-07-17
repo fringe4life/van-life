@@ -12,11 +12,9 @@ import type { Route } from './+types/rentalDetail';
 
 export async function loader({ params, request }: Route.LoaderArgs) {
 	await getSessionOrRedirect(request);
-	console.log({ vanId: params.vanId });
 	if (!params.vanId) throw data('Van not found', { status: 404 });
 
 	const rental = await getHostRentedVan(params.vanId);
-	console.log();
 	if (!rental) throw data('Van not found', { status: 404 });
 	return data(
 		{

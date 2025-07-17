@@ -45,7 +45,6 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	const { vans, vansCount } = loaderData;
 
 	const rentedVans = vans.filter((van) => !van.rentedTo);
-	console.log({ vans, vansCount });
 	return (
 		<VanPages
 			// generic component props start

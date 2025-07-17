@@ -62,7 +62,6 @@ export default function MoneyTransaction({
 	const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		setIsDepositing(e.currentTarget.checked);
 	};
-	console.log({ isDepositing });
 	return (
 		<section>
 			<h2 className="font-bold text-4xl text-text">Add or withdraw money</h2>
@@ -73,9 +72,10 @@ export default function MoneyTransaction({
 						<Input
 							type="radio"
 							name="type"
+							required
 							value="deposit"
 							defaultChecked={
-								(actionData?.formData?.type as string) === 'deposit'
+								(actionData?.formData?.type as string) === 'deposit' || true
 							}
 						/>
 					</Label>

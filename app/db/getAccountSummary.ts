@@ -19,8 +19,7 @@ export async function getAccountSummary(userId: string) {
 			},
 		});
 		return (sum._sum.amount ?? 0) + (moneyAdded?.moneyAdded ?? 0);
-	} catch (error) {
-		console.error('Failed to get account summary:', error);
+	} catch (_) {
 		throw new Error('Unable to retrieve account summary');
 	}
 }

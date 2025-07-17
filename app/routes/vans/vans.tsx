@@ -70,12 +70,12 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			items={vans}
 			itemsCount={vansCount}
 			// generic component props end
-			
+
 			// props for all use cases
 			pathname={href('/vans')}
 			title="Explore our van options"
 			optionalElement={
-				<p className="mb-6 flex gap-3 sm:gap-6 md:justify-start">
+				<p className='mb-6 flex items-center gap-3 sm:gap-6 md:justify-start'>
 					{
 						<ListItems
 							items={badges}

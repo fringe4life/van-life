@@ -1,4 +1,3 @@
-
 // import { PrismaPg } from '@prisma/adapter-pg';
 // import type { SqlDriverAdapterFactory } from '@prisma/client/runtime/library';
 
@@ -15,7 +14,6 @@
 // 	return prisma;
 // }
 // const prisma = getDb({ connectionString: process.env.DIRECT_URL! });
-// console.log({prisma})
 // export default prisma;
 
 import { PrismaClient } from '@prisma/client';
