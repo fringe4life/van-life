@@ -1,7 +1,7 @@
 import type { Van } from '@prisma/client';
 import clsx from 'clsx';
 import CustomLink from '~/components/CustomLink';
-import Image from '~/components/Image.client';
+import Image from '~/components/Image';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { VAN_CARD_IMG_SIZES } from '~/constants/constants';

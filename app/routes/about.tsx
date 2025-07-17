@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
-import Image from '~/components/Image.client';
+import Image from '~/components/Image';
 import { buttonVariants } from '~/components/ui/button';
 import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/constants';
 import useIsNavigating from '~/hooks/useIsNavigating';

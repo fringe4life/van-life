@@ -52,7 +52,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			Component={VanCard}
 			renderKey={(van) => van.van.id}
 			renderProps={(van) => ({
-				link: href('/host/vans/:vanId', { vanId: van.id }),
+				link: href('/host/vans/:vanId', { vanId: van.van.id }),
 				van: van.van,
 				linkCoversCard: false,
 				action: (
