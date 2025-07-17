@@ -11,5 +11,6 @@ model Rent {
   van      Van       @relation(fields: [vanId], references: [id])
   reviews  Review[]
 
-  @@unique([renterId, rentedTo])
+  @@unique([renterId, rentedTo, vanId])
+  @@unique([id])
 }
