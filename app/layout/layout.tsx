@@ -9,7 +9,7 @@ export default function Layout() {
 	const hasToken = data?.session !== undefined;
 	return (
 		<>
-			<header className="flex items-center justify-between gap-6 px-4 py-9">
+			<header className="flex items-center justify-between gap-6 py-9">
 				<h1 className="font-black text-2xl uppercase">
 					<CustomLink to={href('/')}>#vanlife</CustomLink>
 				</h1>
@@ -68,24 +68,24 @@ export default function Layout() {
 					</ul>
 				</nav>
 			</header>
-			<main className="mb-6 grid grid-rows-subgrid px-4">
+			<main className="mb-6 grid grid-rows-subgrid">
 				<Outlet />
 			</main>
-			<footer className="bg-neutral-800 py-6.25">
-				<p className="text-center text-[#aaa] text-sm uppercase">
+			<footer className="-px-2 sm:-px-6 w-full bg-neutral-800 py-6.25">
+				<p className="text-center text-gray-400 text-sm uppercase">
 					&copy;{new Date().getFullYear()} #vanlife
 				</p>
 				<a
 					href="https://www.flaticon.com/free-icons/camper-van"
 					title="camper van icons"
-					className="inline-block w-full text-center text-[#aaa] text-sm"
+					className="inline-block w-full text-center text-gray-400 text-sm"
 				>
 					Camper van icons created by Iconfromus - Flaticon
 				</a>
 				<a
 					href="https://www.flaticon.com/free-icons/image-placeholder"
 					title="image placeholder icons"
-					className="inline-block w-full text-center text-[#aaa] text-sm"
+					className="inline-block w-full text-center text-gray-400 text-sm"
 				>
 					Image placeholder icons created by Graphics Plazza - Flaticon
 				</a>
@@ -93,10 +93,3 @@ export default function Layout() {
 		</>
 	);
 }
-// Icon by <a href='https://iconpacks.net/?utm_source=link-attribution&utm_content=13335'>Iconpacks</a>
-
-// Icon by <a href='https://iconpacks.net/?utm_source=link-attribution&utm_content=13375'>Iconpacks</a>
-
-// Icon by <a href='https://iconpacks.net/?utm_source=link-attribution&utm_content=16709'>Iconpacks</a>
-
-// <a target="_blank" href="https://www.vexels.com/png-svg/preview/199192/rv-trailer-illustration">www.vexels.com</a>

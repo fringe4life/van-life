@@ -5,7 +5,7 @@ import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { auth } from '~/lib/auth/auth';
-import { signUpScheme } from '~/utils/schema';
+import { signUpScheme } from '~/utils/schema.server';
 import type { Route } from './+types/signUp';
 
 export async function action({ request }: Route.ActionArgs) {
