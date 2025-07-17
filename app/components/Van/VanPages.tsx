@@ -31,7 +31,7 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 		<section
 			className={clsx({ 'flex flex-col ': true, 'opacity-75': changingPage })}
 		>
-			<h2 className="mb-6 text-balance font-bold text-3xl">{title}</h2>
+			<h2 className="mb-6 font-bold text-3xl">{title}</h2>
 			{optionalElement}
 			<GenericComponent className="grid-max mt-6" {...rest} />
 			<Pagination pathname={pathname} itemsCount={itemsCount} {...params} />

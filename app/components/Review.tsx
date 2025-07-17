@@ -16,7 +16,7 @@ export default function Review({ name, rating, text, timestamp }: ReviewProps) {
 				<RatingStars rating={rating} />
 				<CardTitle className="my-4 flex justify-between">
 					{name}{' '}
-					<span className="text-text-secondary">{timestamp ?? 'unknown'}</span>
+					<span className="text-neutral-600">{timestamp ?? 'unknown'}</span>
 				</CardTitle>
 			</CardHeader>
 			<CardContent>{text}</CardContent>

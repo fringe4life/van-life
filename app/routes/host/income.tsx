@@ -58,7 +58,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				<>
 					<p>
 						Last{' '}
-						<span className="font-bold text-text-secondary underline">
+						<span className="font-bold text-neutral-600 underline">
 							30 days
 						</span>
 					</p>

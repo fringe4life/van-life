@@ -81,7 +81,7 @@ export default function AddVan({
 				link={href('/host/rentals/rent/:vanId', { vanId: rental.van.id })}
 				action={<p />}
 			/>
-			<h2 className="font-bold text-4xl text-text">Return Van</h2>
+			<h2 className="font-bold text-4xl text-neutral-900">Return Van</h2>
 			<Form method="POST" className="mt-6 grid max-w-102 gap-4">
 				<Input
 					type="text"

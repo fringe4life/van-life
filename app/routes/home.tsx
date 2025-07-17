@@ -26,7 +26,7 @@ export default function Home() {
 				'opacity-75': changingPage,
 			})}
 		>
-			<h2 className="max-w-[26ch] text-balance font-extrabold text-lg text-shadow-md sm:text-2xl md:text-4xl">
+			<h2 className="max-w-[26ch] font-extrabold text-lg text-shadow-md sm:text-2xl md:text-4xl">
 				You got the travel plans, we've got the travel vans.
 			</h2>
 			<p className="max-w-[26ch] text-pretty text-shadow-2xs md:max-w-[45ch]">

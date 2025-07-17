@@ -52,13 +52,13 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	return (
 		<section>
 			<div className="grid grid-cols-[auto_fit-content] items-center justify-between bg-orange-100 px-6.5 py-9">
-				<h2 className="col-start-1 font-bold text-4xl text-text">
+				<h2 className="col-start-1 font-bold text-4xl text-neutral-900">
 					Welcome {name ? name : 'User'}!
 				</h2>
-				<p className="col-start-1 my-8 font-light text-base text-text-secondary">
+				<p className="col-start-1 my-8 font-light text-base text-neutral-600">
 					Income last <span className="font-medium underline">30 days</span>
 				</p>
-				<p className="col-start-1 font-extrabold text-5xl text-text">
+				<p className="col-start-1 font-extrabold text-5xl text-neutral-900">
 					{displayPrice(sumIncome)}
 				</p>
 				<CustomLink

@@ -64,7 +64,9 @@ export default function MoneyTransaction({
 	};
 	return (
 		<section>
-			<h2 className="font-bold text-4xl text-text">Add or withdraw money</h2>
+			<h2 className="font-bold text-4xl text-neutral-900">
+				Add or withdraw money
+			</h2>
 			<Form method="POST" className="mt-6 grid max-w-102 gap-4">
 				<fieldset className="flex gap-4">
 					<Label>

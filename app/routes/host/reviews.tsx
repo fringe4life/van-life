@@ -76,7 +76,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 				<>
 					<BarChartComponent mappedData={result} />
 
-					<h3 className="font-bold text-lg text-text">
+					<h3 className="font-bold text-lg text-neutral-900">
 						Reviews ({reviews.length})
 					</h3>
 				</>
