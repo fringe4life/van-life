@@ -24,7 +24,7 @@ export default function Image({ src, alt, className, ...rest }: ImgProps) {
 				loaded && 'animate-none bg-none blur-none',
 			)}
 		>
-			{typeof window !== 'undefined' ? (
+			{typeof globalThis !== 'undefined' ? (
 				<img
 					className={clsx(
 						!loaded && 'opacity-0',

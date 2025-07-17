@@ -11,8 +11,11 @@ import { prisma } from '~/lib/prisma';
 // 	});
 // }
 
-
-export async function returnVan(rentId: string,userId: string, amount: number ) {
+export async function returnVan(
+	rentId: string,
+	userId: string,
+	amount: number,
+) {
 	return prisma.$transaction([
 		prisma.rent.update({
 			where: {
@@ -20,6 +23,7 @@ export async function returnVan(rentId: string,userId: string, amount: number ) 
 			},
 			data: {
 				rentedTo: new Date(),
+				amount,
 			},
 		}),
 		prisma.userInfo.update({
@@ -27,7 +31,6 @@ export async function returnVan(rentId: string,userId: string, amount: number ) 
 				userId,
 			},
 			data: { moneyAdded: { decrement: amount } },
-		})
-	])
-	
+		}),
+	]);
 }

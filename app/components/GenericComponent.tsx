@@ -1,5 +1,5 @@
 import type React from 'react';
-import { isEmptyList } from '~/utils/utils';
+import { cn, isEmptyList } from '~/utils/utils';
 import EmptyState from './EmptyState';
 
 export interface GenericComponentProps<T, P> {
@@ -24,7 +24,7 @@ const GenericComponent = <T, P>({
 		return <EmptyState message={emptyStateMessage} />;
 	}
 	return (
-		<div className={className}>
+		<div className={cn('flex grow flex-col ', className)}>
 			{items.map((item, index) => (
 				<Component key={renderKey(item, index)} {...renderProps(item, index)} />
 			))}

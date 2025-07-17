@@ -53,9 +53,11 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				link: href('/host/vans/:vanId', { vanId: van.id }),
 				van,
 				action: (
-					<CustomLink to={href('/host/vans/:vanId', { vanId: van.id })}>
-						Edit
-					</CustomLink>
+					<p className="justify-self-end">
+						<CustomLink to={href('/host/vans/:vanId', { vanId: van.id })}>
+							Edit
+						</CustomLink>
+					</p>
 				),
 			})}
 			items={vans}
