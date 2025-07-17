@@ -25,6 +25,7 @@
       "routes/host/money": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/rentals/rentals": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/rentals/rentalDetail": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/host/rentals/returnRental": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/hostVans": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/vanDetail/vanDetail": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/vanDetail/vanDetailPricing": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
@@ -151,7 +152,14 @@
         "id": "routes/host/rentals/rentalDetail",
         "parentId": "layout/hostLayout",
         "file": "app/routes/host/rentals/rentalDetail.tsx",
-        "path": "host/rentals/:vanId",
+        "path": "host/rentals/rent/:vanId",
+        "config": {}
+      },
+      "routes/host/rentals/returnRental": {
+        "id": "routes/host/rentals/returnRental",
+        "parentId": "layout/hostLayout",
+        "file": "app/routes/host/rentals/returnRental.tsx",
+        "path": "host/rentals/returnRental/:rentId",
         "config": {}
       },
       "routes/host/hostVans": {
@@ -218,7 +226,8 @@
       "unstable_viteEnvironmentApi": false
     },
     "prerender": [
-      "/"
+      "/",
+      "/about"
     ],
     "routes": {
       "root": {
@@ -321,7 +330,13 @@
         "id": "routes/host/rentals/rentalDetail",
         "parentId": "layout/hostLayout",
         "file": "./routes/host/rentals/rentalDetail.tsx",
-        "path": "host/rentals/:vanId"
+        "path": "host/rentals/rent/:vanId"
+      },
+      "routes/host/rentals/returnRental": {
+        "id": "routes/host/rentals/returnRental",
+        "parentId": "layout/hostLayout",
+        "file": "./routes/host/rentals/returnRental.tsx",
+        "path": "host/rentals/returnRental/:rentId"
       },
       "routes/host/hostVans": {
         "id": "routes/host/hostVans",
