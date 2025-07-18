@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/noUnknownTypeSelector: is for a view transition name and perfectly legit */
 @import "tailwindcss";
 html {
   scrollbar-gutter: stable;
@@ -91,6 +92,15 @@ html {
 
   /* view transition for home page of hero section */
   ::view-transition-old(image):only-child {
+    animation-name: --fade-to-right;
+  }
+
+  ::view-transition-new(aboutImage):only-child {
+    animation-name: --fade-in-from-left;
+  }
+
+  /* view transition for home page of hero section */
+  ::view-transition-old(aboutImage):only-child {
     animation-name: --fade-to-right;
   }
 

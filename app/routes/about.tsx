@@ -30,7 +30,7 @@ export default function About() {
 			})}
 		>
 			<Image
-				className="xs:mask-[url(/app/assets/cloud-4.svg)] mask-cover mask-center aspect-video [view-transition-name:image]"
+				className="xs:mask-[url(/app/assets/cloud-4.svg)] mask-cover mask-center aspect-video [view-transition-name:aboutImage]"
 				src={ABOUT_IMG}
 				alt="a couple enjoying their adventure"
 				height="900"
@@ -41,7 +41,7 @@ export default function About() {
 				fetchPriority="high"
 			/>
 
-			<h2 className="mx-2 font-bold text-2xl starting:opacity-50 duration-1000 sm:mx-4 sm:text-3xl/normal md:text-4xl">
+			<h2 className="mx-2 font-bold text-2xl starting:opacity-50 duration-1000 sm:mx-4 sm:text-3xl/normal md:text-4xl lg:max-w-3/4">
 				Don&apos;t{' '}
 				<span className="after:-bottom-1 relative after:absolute after:left-0 after:w-full after:rounded-lg after:border-2 after:border-b-red-500 after:border-solid ">
 					squeeze
