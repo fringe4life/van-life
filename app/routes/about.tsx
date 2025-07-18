@@ -30,7 +30,7 @@ export default function About() {
 			})}
 		>
 			<Image
-				className="xs:mask-[url(/app/assets/cloud-4.svg)] mask-cover mask-center aspect-video [view-transition-name:aboutImage]"
+				className="xs:mask-[url(/app/assets/cloud-4.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
 				src={ABOUT_IMG}
 				alt="a couple enjoying their adventure"
 				height="900"
@@ -61,8 +61,8 @@ export default function About() {
 
 				<p className="mx-2 grow-1 basis-1/2 starting:opacity-50 duration-1000 sm:mx-4 sm:text-xl">
 					Our team is full of vanlife enthusiasts who know firsthand the magic
-					of touring the world on 4 wheels. So dive into our vast collection
-					today and make your own magic in the great outdoors 🌳!
+					of touring the world on 4 wheels. So dive into our vast catalog today
+					and make your own magic in the great outdoors 🌳!
 				</p>
 			</div>
 			<article className="mx-4 grid max-w-max shrink grow-0 content-between gap-y-5 rounded-md bg-orange-400 px-4 py-3 sm:px-8 md:justify-self-center md:px-12 md:py-6">

@@ -22,7 +22,7 @@ export default function Home() {
 	return (
 		<section
 			className={clsx({
-				'md:mask-[url(/app/assets/rvMask.svg)] mask-center md:mask-right mask-add mask-no-repeat mask-cover grid aspect-[1/2] place-content-center gap-6 self-center bg-[url(https://images.unsplash.com/photo-1671783181591-55f8e18fbb21?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2FtcGVydmFuJTIwc2l0ZXxlbnwwfDB8MHx8fDI%3D)] bg-black/40 bg-cover text-white bg-blend-darken [view-transition-name:image] md:aspect-video': true,
+				'md:mask-[url(/app/assets/rvMask.svg)] mask-add mask-contain mask-no-repeat mask-right mask-type-luminance md:mask-right md:mask-add md:mask-no-repeat md:mask-cover grid aspect-[1/2] place-content-center gap-6 self-center bg-[url(https://images.unsplash.com/photo-1671783181591-55f8e18fbb21?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2FtcGVydmFuJTIwc2l0ZXxlbnwwfDB8MHx8fDI%3D)] bg-black/40 bg-cover text-white bg-blend-darken [view-transition-name:image] md:aspect-video': true,
 				'opacity-75': changingPage,
 			})}
 		>
