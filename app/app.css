@@ -137,13 +137,12 @@ html {
 
   --breakpoint-xs: 26rem;
 
-  --color-neutral-900: oklch(20.02% 0 0);
-
   --color-orange-100: oklch(94.72% 0.041 73.17);
   --color-orange-200: oklch(91.55% 0.067 73.33);
   --color-orange-400: oklch(75.76% 0.159 55.93);
   --color-orange-600: oklch(68.11% 0.142 38.3);
   --color-neutral-600: oklch(42.02% 0 0);
+  --color-neutral-900: oklch(20.02% 0 0);
 }
 
 .grid-max {
@@ -167,6 +166,7 @@ html {
   );
 }
 
+/* part of josh comeaus css reset */
 p,
 h1,
 h2,

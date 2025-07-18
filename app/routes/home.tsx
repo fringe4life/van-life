@@ -29,7 +29,7 @@ export default function Home() {
 			<h2 className="max-w-[26ch] font-extrabold text-lg text-shadow-md sm:text-2xl md:text-4xl">
 				You got the travel plans, we've got the travel vans.
 			</h2>
-			<p className="max-w-[26ch] text-pretty text-shadow-2xs md:max-w-[45ch]">
+			<p className="max-w-[26ch] text-shadow-2xs md:max-w-[45ch]">
 				Add adventure to your life by joining the #vanlife movement. Rent the
 				perfect van to make your perfect road trip.
 			</p>

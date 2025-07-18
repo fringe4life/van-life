@@ -5,6 +5,12 @@ import {
 	DEFAULT_PAGE,
 } from '~/constants/constants';
 import { searchParamsSchema } from '~/utils/schema.server';
+
+/**
+ * @abstract gets the url search params
+ * @param url from the request object
+ * @returns either the defaults or the values if successful
+ */
 export function getPaginationParams(url: string) {
 	const searchParams = Object.fromEntries(
 		new URLSearchParams(url.split('?').at(1) ?? ''),
