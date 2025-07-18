@@ -41,7 +41,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	const { sumIncome, hostIncomes } = loaderData;
 
 	const mappedData = hostIncomes.map((income) => ({
-		name: income.rentedAt.toLocaleDateString(),
+		name: income.rentedAt.toDateString(),
 		amount: Math.round(income.amount),
 	}));
 
@@ -62,7 +62,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 							30 days
 						</span>
 					</p>
-					<p className="mt-8 mb-13 font-extrabold text-5xl">
+					<p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
 						{displayPrice(sumIncome)}
 					</p>
 					<BarChartComponent mappedData={mappedData} />

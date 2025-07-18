@@ -9,6 +9,7 @@ import {
 	CardTitle,
 } from '~/components/ui/card';
 import CustomNavLink from '../CustomNavLink';
+import Image from '../Image';
 
 type VanDetailCardProps = {
 	van: Van;
@@ -20,18 +21,20 @@ export default function VanDetailCard({
 	children,
 }: VanDetailCardProps) {
 	return (
-		<div className="@container/detail max-w-xl">
-			<Card className="">
+		<div className="@container/detail max-w-xl contain-content">
+			<Card>
 				<CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] @min-md/detail:gap-4">
-					<div className="@min-md/detail:col-span-1 rounded-sm">
-						<img
-							className="block aspect-square"
-							src={imageUrl}
-							alt={name}
-							width={300}
-							height={300}
-						/>
-					</div>
+					<Image
+						className="block aspect-square"
+						src={imageUrl}
+						alt={name}
+						width="300"
+						height="300"
+						classesForContainer="@min-md/detail:col-span-1 rounded-sm"
+						srcSet=""
+						decoding="sync"
+						loading="eager"
+					/>
 					<div className="@min-md/detail:col-span-1 @min-md/detail:col-start-2 content-center">
 						<Badge variant={type}>{type}</Badge>
 						<CardTitle className="my-6 text-balance font-bold text-2xl">

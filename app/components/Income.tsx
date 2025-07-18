@@ -9,13 +9,13 @@ type IncomeProps = {
 
 export default function Income({ amount, rentedAt }: IncomeProps) {
 	return (
-		<Card>
+		<Card className="contain-content">
 			<CardContent>
 				<p className="flex justify-between">
 					<span>{displayPrice(amount)} </span>
 					<span>
 						{rentedAt && !Number.isNaN(rentedAt)
-							? rentedAt.toLocaleString()
+							? rentedAt.toDateString()
 							: 'unknown'}
 					</span>
 				</p>

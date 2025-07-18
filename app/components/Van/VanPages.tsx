@@ -29,7 +29,10 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 
 	return (
 		<section
-			className={clsx({ 'flex flex-col ': true, 'opacity-75': changingPage })}
+			className={clsx({
+				'grid contain-content': true,
+				'opacity-75': changingPage,
+			})}
 		>
 			<h2 className="mb-6 font-bold text-3xl">{title}</h2>
 			{optionalElement}

@@ -11,7 +11,7 @@ type ReviewProps = {
 
 export default function Review({ name, rating, text, timestamp }: ReviewProps) {
 	return (
-		<Card>
+		<Card className="contain-content">
 			<CardHeader>
 				<RatingStars rating={rating} />
 				<CardTitle className="my-4 flex justify-between">

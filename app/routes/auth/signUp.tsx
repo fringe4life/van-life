@@ -1,4 +1,4 @@
-import { Form, href, replace } from 'react-router';
+import { Form, href, redirect } from 'react-router';
 import { z } from 'zod/v4';
 import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
@@ -32,7 +32,7 @@ export async function action({ request }: Route.ActionArgs) {
 	if (!signUp.ok) {
 		return { errors: 'Sign up failed please try again later', name, email };
 	}
-	throw replace('/host', {
+	throw redirect('/host', {
 		headers: signUp.headers,
 	});
 }

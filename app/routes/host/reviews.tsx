@@ -54,7 +54,8 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 		text: review.text,
 		rating: review.rating,
 		timestamp:
-			review.updatedAt?.toLocaleDateString() ?? review.createdAt.toDateString(),
+			review.updatedAt?.toLocaleDateString() ??
+			review.createdAt.toLocaleDateString(),
 		id: review.id,
 	}));
 

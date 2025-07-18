@@ -36,7 +36,7 @@ export default function VanCard({
 						height="200"
 						width="200"
 						srcSet={srcSet}
-						sizes="(width > 300px) 350px, 200px"
+						sizes="(width > 300px) 350w, 200w"
 					/>
 				</CardHeader>
 				<CardFooter className="@min-md/card:col-span-2 @min-md/card:col-start-2 @min-md/card:row-span-2 grid-cols-subgrid grid-rows-subgrid @min-md/card:content-center">

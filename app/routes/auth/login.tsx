@@ -1,4 +1,4 @@
-import { Form, redirect, replace } from 'react-router';
+import { Form, redirect } from 'react-router';
 import { z } from 'zod/v4';
 import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
@@ -39,7 +39,7 @@ export async function action({ request }: Route.ActionArgs) {
 		};
 	}
 
-	throw replace('/host', {
+	throw redirect('/host', {
 		headers: response.headers,
 	});
 }

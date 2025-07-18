@@ -26,7 +26,7 @@ export default function VanDetail({
 }: VanDetailProps) {
 	const srcSet = createSrcSet(VAN_DETAIL_IMG_SIZES, imageUrl);
 	return (
-		<div className="@container/card-full max-w-lg">
+		<div className="@container/card-full max-w-lg contain-content">
 			<Card className="@max-2xl/card-full:grid @max-2xl/card-full:grid-rows-[4fr_repeat(4,_auto)_auto] @max-2xl/card-full:gap-4 ">
 				<CardHeader className="h-full max-h-lg w-full max-w-lg">
 					<Image

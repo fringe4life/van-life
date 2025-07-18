@@ -58,7 +58,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 				van,
 				filter: type ? type : DEFAULT_FILTER,
 				action: (
-					<p className="@max-md/card:col-start-2 @md/card:row-span-2 @md/card:self-center @max-md/card:justify-self-end @md/card:justify-self-end text-lg">
+					<p className="text-right text-lg">
 						${van.price}
 						<span className="@max-md/card:inline @md/card:text-right text-base">
 							/day
