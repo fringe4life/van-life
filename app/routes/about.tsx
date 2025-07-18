@@ -41,7 +41,7 @@ export default function About() {
 				fetchPriority="high"
 			/>
 
-			<h2 className="mx-2 sm:mx-4 font-bold text-2xl sm:text-3xl/normal md:text-4xl">
+			<h2 className="mx-2 sm:mx-4 font-bold text-2xl sm:text-3xl/normal md:text-4xl starting:opacity-50 duration-1000">
 				Don&apos;t{' '}
 				<span className="after:-bottom-1 relative after:absolute after:left-0 after:w-full after:rounded-lg after:border-2 after:border-b-red-500 after:border-solid ">
 					squeeze
@@ -52,14 +52,14 @@ export default function About() {
 				</span>{' '}
 				in a van.
 			</h2>
-			<div className='flex flex-col lg:flex-row gap-y-4 md:gap-x-2'>
+			<div className='flex flex-col lg:flex-row gap-y-4 md:gap-x-2 starting:opacity-50 duration-1000'>
 						<p className="mx-2 sm:mx-4 grow-1 basis-1/2 sm:text-xl">
 							Our mission is to enliven your road trip with the perfect travel van
 							rental. Our vans are recertified before each trip to ensure your travel
 							plans can go off without a hitch. (Hitch costs extra 😉)
 				</p>
 				
-						<p className="mx-2 sm:mx-4 grow-1 basis-1/2 sm:text-xl">
+						<p className="mx-2 sm:mx-4 grow-1 basis-1/2 sm:text-xl starting:opacity-50 duration-1000">
 							Our team is full of vanlife enthusiasts who know firsthand the magic of
 					touring the world on 4 wheels, or sometimes 6.
 					So dive into our vast collection today and make your own magic in the great outdoors 🌳!
