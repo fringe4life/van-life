@@ -5,6 +5,7 @@ export async function returnVan(
 	rentId: string,
 	userId: string,
 	amount: number,
+	hostId: string
 ) {
 	return prisma.$transaction([
 		prisma.rent.update({
@@ -22,5 +23,13 @@ export async function returnVan(
 			},
 			data: { moneyAdded: { decrement: amount } },
 		}),
+		// prisma.userInfo.update({
+		// 	where: {
+		// 		userId: hostId
+		// 	},
+		// 	data: {
+		// 		moneyAdded: {increment: amount}
+		// 	}
+		// })
 	]);
 }

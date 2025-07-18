@@ -8,9 +8,9 @@ type ImgProps = React.ComponentProps<'img'> & {
  */
 export default function Image({ src, alt, className, ...rest }: ImgProps) {
 	return (
-		<div>
+		<div className="block h-auto max-w-full m-0 p-0">
 			<img
-				className={`h-auto object-cover object-center transition-opacity duration-200 ease-in-out, ${className}`}
+				className={`h-auto decoration-0 text-none leading-0 object-cover object-center transition-opacity duration-200 ease-in-out, ${className}`}
 				loading="lazy"
 				decoding="async"
 				{...rest}

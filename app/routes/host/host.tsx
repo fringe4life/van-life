@@ -70,7 +70,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			</div>
 			<div className="flex justify-between bg-orange-200 px-3 py-6 sm:px-6.5 sm:py-9 ">
 				<p className="font-bold text-lg text-shadow-text sm:text-2xl">
-					Review Score star {avgRating.toFixed(1)}/5
+					Review Score star {avgRating.toFixed(1) ?? 'unknown'}/5
 				</p>
 				<CustomLink
 					to={href('/host/review')}

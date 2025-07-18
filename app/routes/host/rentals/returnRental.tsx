@@ -58,6 +58,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 			rentId,
 			session.user.id,
 			amountToPay,
+			rent.hostId
 		);
 
 		if (!returnedVan || !user) {

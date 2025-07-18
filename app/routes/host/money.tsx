@@ -13,7 +13,7 @@ import { moneySchema } from '~/utils/schema.server';
 import type { Route } from './+types/money';
 export function meta() {
 	return [
-		{ title: 'Host Transactions | Vanlife' },
+		{ title: 'Transactions | Vanlife' },
 		{
 			name: 'description',
 			description: 'the page where you can add or deposit money',

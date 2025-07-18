@@ -49,7 +49,7 @@ export default function AddVan({ actionData }: Route.ComponentProps) {
 	const { usingForm } = useIsNavigating();
 	return (
 		<section>
-			<h2 className="font-bold text-4xl text-neutral-900">Add Van</h2>
+			<h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-neutral-900">Add Van</h2>
 			<Form method="POST" className="mt-6 grid max-w-102 gap-4">
 				<Input
 					type="text"

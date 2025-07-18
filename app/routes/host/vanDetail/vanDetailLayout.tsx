@@ -40,7 +40,7 @@ export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
 	const { changingPage } = useIsNavigating();
 	return (
 		<>
-			<CustomLink to={href('/host/vans')} className="mt-15 mb-8">
+			<CustomLink to={href('/host/vans')} className="mt-4 mb-2 sm:mt-8 md:mt-15 sm:mb-4 md:mb-8">
 				&larr; Back to all vans
 			</CustomLink>
 			<VanDetailCard van={van}>

@@ -6,6 +6,7 @@ import { buttonVariants } from '~/components/ui/button';
 import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/constants';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { createSrcSet } from '~/utils/createSrcSet';
+import { cn } from '~/utils/utils';
 
 export function meta() {
 	return [
@@ -24,12 +25,12 @@ export default function About() {
 	return (
 		<section
 			className={clsx({
-				'grid grid-cols-[1fr] grid-rows-[auto_auto_auto_auto] gap-4': true,
+				'grid grid-cols-[1fr] grid-rows-[min-content_min-content_min-content_min-content] gap-4 sm:gap-6 md:gap-10': true,
 				'opacity-75': changingPage,
 			})}
 		>
 			<Image
-				className="aspect-video md:aspect-4/1"
+				className="aspect-video "
 				src={ABOUT_IMG}
 				alt="a couple enjoying their adventure"
 				height="400"
@@ -40,7 +41,7 @@ export default function About() {
 				fetchPriority="high"
 			/>
 
-			<h2 className="mx-4 font-bold text-3xl/normal lg:max-w-1/2">
+			<h2 className="mx-2 sm:mx-4 font-bold text-2xl sm:text-3xl/normal md:text-4xl">
 				Don&apos;t{' '}
 				<span className="after:-bottom-1 relative after:absolute after:left-0 after:w-full after:rounded-lg after:border-2 after:border-b-red-500 after:border-solid ">
 					squeeze
@@ -51,23 +52,26 @@ export default function About() {
 				</span>{' '}
 				in a van.
 			</h2>
-
-			<p className="mx-4 lg:max-w-1/2">
-				Our mission is to enliven your road trip with the perfect travel van
-				rental. Our vans are recertified before each trip to ensure your travel
-				plans can go off without a hitch. (Hitch costs extra 😉)
-			</p>
-			<p className="mx-4 lg:max-w-1/2">
-				Our team is full of vanlife enthusiasts who know firsthand the magic of
-				touring the world on 4 wheels.
-			</p>
-			<article className="mx-4 mt-14 rounded-md bg-[#FFCC8D] px-9 py-7.5 lg:max-w-1/2">
-				<h3 className="mb-6 font-bold text-2xl">
-					Your destination is waiting. Your van is ready.
+			<div className='flex flex-col lg:flex-row gap-y-4 md:gap-x-2'>
+						<p className="mx-2 sm:mx-4 grow-1 basis-1/2 sm:text-xl">
+							Our mission is to enliven your road trip with the perfect travel van
+							rental. Our vans are recertified before each trip to ensure your travel
+							plans can go off without a hitch. (Hitch costs extra 😉)
+				</p>
+				
+						<p className="mx-2 sm:mx-4 grow-1 basis-1/2 sm:text-xl">
+							Our team is full of vanlife enthusiasts who know firsthand the magic of
+					touring the world on 4 wheels, or sometimes 6.
+					So dive into our vast collection today and make your own magic in the great outdoors 🌳!
+						</p>
+			</div>
+			<article className="grid content-between  gap-y-5  mx-4 shrink grow-0  rounded-md bg-orange-400 px-4 sm:px-8 py-3  md:px-12 md:py-6 max-w-max">
+				<h3 className="font-bold text-xl xs:text-2xl">
+					Your destination is waiting. <span className='block'>Your van is ready.</span>
 				</h3>
 				<CustomLink
 					to={href('/vans')}
-					className={buttonVariants({ variant: 'secondary' })}
+					className={cn(buttonVariants({ variant: 'secondary' }), 'w-full')}
 				>
 					Explore our vans
 				</CustomLink>

@@ -10,7 +10,7 @@ export default function Layout() {
 	return (
 		<>
 			<header className="flex items-center justify-between gap-3 py-9 sm:gap-6">
-				<h1 className="font-black text-2xl uppercase">
+				<h1 className="font-black text-xl xs:text-2xl uppercase">
 					<CustomLink to={href('/')}>#vanlife</CustomLink>
 				</h1>
 				<nav>
