@@ -10,10 +10,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 	throw replace('/login', { headers: response.headers });
 };
 
-export function HydrateFallback() {
-	return <div>Signing out...</div>;
-}
-
 export default function Signout() {
 	return <p>Signing out</p>;
 }

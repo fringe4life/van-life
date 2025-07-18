@@ -51,14 +51,14 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	const { changingPage } = useIsNavigating();
 	return (
 		<section>
-			<div className="grid grid-cols-[auto_fit-content] items-center justify-between bg-orange-100 px-6.5 py-9">
-				<h2 className="col-start-1 font-bold text-4xl text-neutral-900">
+			<div className="grid grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-3 py-6 sm:px-6.5 sm:py-9">
+				<h2 className="col-start-1 font-bold text-neutral-900 text-xl sm:text-2xl md:text-4xl">
 					Welcome {name ? name : 'User'}!
 				</h2>
-				<p className="col-start-1 my-8 font-light text-base text-neutral-600">
+				<p className="col-start-1 my-4 font-light text-base text-neutral-600 sm:my-6 md:my-8">
 					Income last <span className="font-medium underline">30 days</span>
 				</p>
-				<p className="col-start-1 font-extrabold text-5xl text-neutral-900">
+				<p className="col-start-1 font-extrabold text-2xl text-neutral-900 sm:text-4xl md:text-5xl">
 					{displayPrice(sumIncome)}
 				</p>
 				<CustomLink
@@ -68,8 +68,8 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					Details
 				</CustomLink>
 			</div>
-			<div className="flex justify-between bg-orange-200 px-6.5 py-11 ">
-				<p className="font-bold text-2xl text-shadow-text">
+			<div className="flex justify-between bg-orange-200 px-3 py-6 sm:px-6.5 sm:py-9 ">
+				<p className="font-bold text-lg text-shadow-text sm:text-2xl">
 					Review Score star {avgRating.toFixed(1)}/5
 				</p>
 				<CustomLink

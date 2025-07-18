@@ -41,8 +41,8 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 	const { usingForm } = useIsNavigating();
 
 	return (
-		<div className="grid items-center justify-start gap-12 sm:justify-center">
-			<h2 className="justify-center font-bold text-3xl text-shadow-text">
+		<div className="grid items-center justify-center gap-4 sm:gap-6 md:gap-12">
+			<h2 className="justify-center font-bold text-2xl text-shadow-text sm:text-3xl">
 				Create your account
 			</h2>
 			<Form method="POST" className="grid gap-4">

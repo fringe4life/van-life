@@ -47,11 +47,11 @@ export async function action({ request }: Route.ActionArgs) {
 export default function Login({ actionData }: Route.ComponentProps) {
 	const { usingForm } = useIsNavigating();
 	return (
-		<div className="grid items-center justify-start gap-12 sm:justify-center">
-			<h2 className="justify-center font-bold text-3xl text-shadow-text">
+		<div className="grid items-center justify-center gap-4 sm:gap-6 md:gap-12">
+			<h2 className="font-bold text-2xl text-shadow-text sm:text-3xl">
 				Sign into your account
 			</h2>
-			<Form method="POST" className="grid gap-4">
+			<Form method="POST" className="grid items-center gap-4">
 				<Input
 					name="email"
 					id="email"
