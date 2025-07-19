@@ -23,7 +23,7 @@ export default function VanCard({
 	const { type, name, description, imageUrl, id: vanId } = van;
 	const srcSet = createSrcSet(VAN_CARD_IMG_SIZES, imageUrl);
 	return (
-		<div className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content">
+		<div className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content contain-inline-size [content-visibility:auto]">
 			<Card
 				className=" relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4"
 				style={{ viewTransitionName: `card-${vanId}` }}
