@@ -14,12 +14,10 @@ const main = async () => {
 	await clearTables();
 
 	const data = await prisma.user.findMany();
-	const userIds = data.map((user) => user.id);
-	const lengthOfUserIds = userIds.length;
 
 	const vansWithHosts = vans.map((van) => ({
 		...van,
-		hostId: userIds[Math.floor(Math.random() * lengthOfUserIds)],
+		hostId: getRandomId(data),
 	}));
 
 	await prisma.van.createMany({
@@ -28,13 +26,24 @@ const main = async () => {
 
 	const vanIds = await prisma.van.findMany();
 
+	const vansRented: string[] = [];
+	const vansReturned: string[] = [];
+
 	const rentsWithIds = rents.map((rent) => {
 		const { id1, id2 } = generateUniqueIds(data);
-		const vanId = getRandomId(vanIds);
+		let vanId = getRandomId(vanIds);
+		while (vansRented.includes(vanId)) {
+			vanId = getRandomId(vanIds);
+		}
 		// biome-ignore lint/style/noNonNullAssertion: guaranteed to be found
 		const van = vanIds.find((van) => van.id === vanId)!;
 		const rentedTo = randomTrueOrFalse() ? getEndDate(rent.rentedAt) : null;
 		const amount = rentedTo ? getCost(rent.rentedAt, rentedTo, van.price) : 0;
+		if (!rentedTo) {
+			vansRented.push(vanId);
+		} else {
+			vansReturned.push(vanId);
+		}
 		return {
 			...rent,
 			hostId: id1,
@@ -46,6 +55,15 @@ const main = async () => {
 	});
 	await prisma.rent.createMany({
 		data: rentsWithIds,
+	});
+
+	await prisma.van.updateMany({
+		where: {
+			id: { in: vansRented },
+		},
+		data: {
+			isRented: true,
+		},
 	});
 
 	const rentIds = await prisma.rent.findMany({

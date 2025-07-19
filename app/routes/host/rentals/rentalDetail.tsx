@@ -6,7 +6,7 @@ import VanCard from '~/components/Van/VanCard';
 import { getHostRentedVan } from '~/db/host/getHostRentedVan';
 import { rentVan } from '~/db/host/rentVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
 import { rentVanSchema } from '~/utils/schema.server';
 import type { Route } from './+types/rentalDetail';
 

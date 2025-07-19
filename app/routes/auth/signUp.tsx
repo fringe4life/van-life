@@ -1,10 +1,10 @@
-import { Form, href, redirect } from 'react-router';
+import { Form, href, replace } from 'react-router';
 import { z } from 'zod/v4';
 import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { auth } from '~/lib/auth/auth';
+import { auth } from '~/lib/auth.server';
 import { signUpScheme } from '~/utils/schema.server';
 import type { Route } from './+types/signUp';
 
@@ -32,7 +32,7 @@ export async function action({ request }: Route.ActionArgs) {
 	if (!signUp.ok) {
 		return { errors: 'Sign up failed please try again later', name, email };
 	}
-	throw redirect('/host', {
+	throw replace('/host', {
 		headers: signUp.headers,
 	});
 }

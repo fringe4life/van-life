@@ -27,6 +27,10 @@ function getRandomId<T extends { id: string }>(ids: T[]) {
 	return ids[Math.floor(Math.random() * ids.length)].id;
 }
 
+function getRandomIdWithConstraint(id: string, constraints: string[]){
+	return constraints.includes(id)
+}
+
 function generateUniqueIds<T extends { id: string }>(
 	ids: T[],
 ): { id1: string; id2: string } {
@@ -61,4 +65,5 @@ export {
 	getEndDate,
 	generateUniqueIds,
 	getRandomId,
+	getRandomIdWithConstraint
 };

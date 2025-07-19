@@ -1,12 +1,17 @@
 import { href, Outlet } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import CustomNavLink from '~/components/CustomNavLink';
-import { authClient } from '~/lib/auth/client';
+import { auth } from '~/lib/auth.server';
+import type { Route } from './+types/layout';
+export async function loader({ request }: Route.LoaderArgs) {
+	console.log({ headers: request.headers });
+	const session = await auth.api.getSession({ headers: request.headers });
+	console.log({ session });
+	return session !== null;
+}
 
-export default function Layout() {
-	const { data } = authClient.useSession();
-
-	const hasToken = data?.session !== undefined;
+export default function Layout({ loaderData }: Route.ComponentProps) {
+	const hasToken = loaderData;
 	return (
 		<>
 			<header className="flex items-center justify-between gap-3 py-9 contain-strict sm:gap-6">

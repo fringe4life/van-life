@@ -1,6 +1,7 @@
 import { VanType } from '@prisma/client';
 import { z } from 'zod/v4';
 import {
+	DEFAULT_CURSOR,
 	DEFAULT_FILTER,
 	DEFAULT_LIMIT,
 	DEFAULT_PAGE,
@@ -83,5 +84,11 @@ export const rentVanSchema = z.object({
 
 export const cursorPaginationSchema = z.object({
 	limit: paginationSchema.default(DEFAULT_LIMIT),
-	cursor: z.cuid().nullable().optional(),
+	cursor: z.cuid().optional().default(DEFAULT_CURSOR),
+	type: z
+		.string()
+		.toUpperCase()
+		.optional()
+		.default(DEFAULT_FILTER)
+		.pipe(vanType),
 });

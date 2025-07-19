@@ -9,7 +9,9 @@ import VanPages from '~/components/Van/VanPages';
 import { DEFAULT_FILTER } from '~/constants/constants';
 import { getVans } from '~/db/getVans';
 import { getVansCount } from '~/db/getVansCount';
+import { getVansCursor } from '~/db/getVansCursor';
 import { useParamsClientSide } from '~/hooks/useParamsClientSide';
+import { getCursorPagination } from '~/utils/getCursorPagination';
 import { getPaginationParams } from '~/utils/getPaginationParams';
 import type { Route } from './+types/vans';
 
@@ -26,6 +28,7 @@ export function meta() {
 export async function loader({ request }: Route.LoaderArgs) {
 	const badges = Object.values(VanType);
 
+	// const { cursor, limit, type } = getCursorPagination(request.url);
 	const { page, limit, type } = getPaginationParams(request.url);
 
 	const [vans, vansCount] = await Promise.all([

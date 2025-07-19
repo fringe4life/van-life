@@ -9,6 +9,9 @@ export async function getAccountSummary(userId: string) {
 			where: {
 				hostId: userId,
 			},
+			orderBy: {
+				hostId: 'desc',
+			},
 		});
 		const moneyAdded = await prisma.userInfo.findUnique({
 			where: {

@@ -3,12 +3,14 @@ model Van {
   name        String   @unique @db.VarChar(60)
   price       Int      @db.SmallInt
   description String   @db.VarChar(1024)
-  imageUrl    String
+  imageUrl    String  
   type        VanType
   hostId      String
+  isRented    Boolean  @default(false)
   rent        Rent[]
   userInfo    UserInfo @relation(fields: [hostId], references: [userId])
-  createdAt   DateTime @default(now())
+  createdAt   DateTime @default(now()) @db.Date
 
+  @@unique([createdAt(sort: Desc), id(sort: Desc)])
   @@index([hostId])
 }

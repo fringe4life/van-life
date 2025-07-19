@@ -4,7 +4,7 @@ import VanCard from '~/components/Van/VanCard';
 import VanPages from '~/components/Van/VanPages';
 import { getHostVanCount } from '~/db/host/getHostVanCount';
 import { getHostVans } from '~/db/host/getHostVans';
-import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
 import { getPaginationParams } from '~/utils/getPaginationParams';
 import type { Route } from './+types/hostVans';
 

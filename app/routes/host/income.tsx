@@ -4,7 +4,7 @@ import Income from '~/components/Income';
 import VanPages from '~/components/Van/VanPages';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getHostTransactions } from '~/db/host/getHostTransactions';
-import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/income';
 export function meta() {

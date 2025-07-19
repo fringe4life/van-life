@@ -10,5 +10,8 @@ export async function getHostVans(id: string, page: number, limit: number) {
 		},
 		take: limit,
 		skip,
+		orderBy: {
+			id: 'desc',
+		},
 	});
 }

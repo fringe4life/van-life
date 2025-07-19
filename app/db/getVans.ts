@@ -9,17 +9,14 @@ export async function getVans(
 	typeFilter: VanType | null,
 ) {
 	const skip = getSkipAmount(page, limit);
-	if (!typeFilter) {
-		return prisma.van.findMany({
-			take: limit,
-			skip,
-		});
-	}
 	return prisma.van.findMany({
 		take: limit,
 		skip,
 		where: {
-			type: typeFilter,
+			type: typeFilter ? typeFilter : undefined,
+		},
+		orderBy: {
+			id: 'desc',
 		},
 	});
 }

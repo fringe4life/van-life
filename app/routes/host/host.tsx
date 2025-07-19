@@ -7,7 +7,7 @@ import { getAccountSummary } from '~/db/getAccountSummary';
 import { getAverageReviewRating } from '~/db/getAvgReviews';
 import { getHostVans } from '~/db/host/getHostVans';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/host';
 

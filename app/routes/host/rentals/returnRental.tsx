@@ -5,7 +5,7 @@ import VanCard from '~/components/Van/VanCard';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getHostRentedVan } from '~/db/host/getHostRentedVan';
 import { returnVan } from '~/db/host/returnVan';
-import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
 import { getCost } from '~/utils/getCost';
 import type { Route } from './+types/returnRental';
 
@@ -58,7 +58,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 			rentId,
 			session.user.id,
 			amountToPay,
-			rent.hostId
+			rent.van.id,
 		);
 
 		if (!returnedVan || !user) {

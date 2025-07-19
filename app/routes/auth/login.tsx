@@ -1,16 +1,16 @@
-import { Form, redirect } from 'react-router';
+import { Form, redirect, replace } from 'react-router';
 import { z } from 'zod/v4';
 import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { auth } from '~/lib/auth/auth';
+import { auth } from '~/lib/auth.server';
 import { loginSchema } from '~/utils/schema.server';
 import type { Route } from './+types/login';
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const result = await auth.api.getSession({ headers: request.headers });
-	if (result?.session) {
+	if (result) {
 		throw redirect('/host');
 	}
 }
@@ -39,7 +39,7 @@ export async function action({ request }: Route.ActionArgs) {
 		};
 	}
 
-	throw redirect('/host', {
+	throw replace('/host', {
 		headers: response.headers,
 	});
 }

@@ -4,7 +4,7 @@ import VanCard from '~/components/Van/VanCard';
 import VanPages from '~/components/Van/VanPages';
 import { getHostRentedVanCount } from '~/db/host/getHostRentedVanCount';
 import { getHostRentedVans } from '~/db/host/getHostRentedVans';
-import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
 import { getPaginationParams } from '~/utils/getPaginationParams';
 import type { Route } from './+types/rentals';
 
@@ -43,8 +43,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Host({ loaderData }: Route.ComponentProps) {
 	const { vans, vansCount } = loaderData;
-
-	const rentedVans = vans.filter((van) => !van.rentedTo);
+	console.log({ vansCount });
 	return (
 		<VanPages
 			// generic component props start
@@ -69,7 +68,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					</div>
 				),
 			})}
-			items={rentedVans}
+			items={vans}
 			itemsCount={vansCount}
 			emptyStateMessage="You are currently not renting any vans."
 			// generic component props end

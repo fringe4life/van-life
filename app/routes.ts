@@ -7,7 +7,7 @@ import {
 } from '@react-router/dev/routes';
 
 export default [
-	layout('layout/layout.tsx', [
+	layout('./routes/layout/layout.tsx', [
 		index('./routes/home.tsx'),
 		route('about', './routes/about.tsx'),
 		...prefix('vans', [
@@ -17,7 +17,7 @@ export default [
 		route('login', './routes/auth/login.tsx'),
 		route('signup', './routes/auth/signUp.tsx'),
 		route('signout', './routes/auth/signOut.tsx'),
-		layout('layout/hostLayout.tsx', [
+		layout('./routes/layout/hostLayout.tsx', [
 			...prefix('host', [
 				index('./routes/host/host.tsx'),
 				route('income', './routes/host/income.tsx'),
@@ -43,6 +43,6 @@ export default [
 			]),
 		]),
 	]),
-	route('/api/auth/*', 'routes/api/auth.ts'),
+	route('/api/auth/*', './routes/api/auth.ts'),
 	route('*', './routes/404.tsx'),
 ] satisfies RouteConfig;

@@ -4,7 +4,7 @@ import CustomLink from '~/components/CustomLink';
 import VanDetailCard from '~/components/Van/HostVanDetailCard';
 import { getHostVan } from '~/db/host/getHostVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { getSessionOrRedirect } from '~/lib/auth/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
 import type { Route } from './+types/vanDetailLayout';
 export function meta({ data }: Route.MetaArgs) {
 	return [
@@ -40,7 +40,10 @@ export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
 	const { changingPage } = useIsNavigating();
 	return (
 		<>
-			<CustomLink to={href('/host/vans')} className="mt-4 mb-2 sm:mt-8 md:mt-15 sm:mb-4 md:mb-8">
+			<CustomLink
+				to={href('/host/vans')}
+				className="mt-4 mb-2 sm:mt-8 sm:mb-4 md:mt-15 md:mb-8"
+			>
 				&larr; Back to all vans
 			</CustomLink>
 			<VanDetailCard van={van}>

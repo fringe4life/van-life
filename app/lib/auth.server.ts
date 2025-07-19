@@ -7,12 +7,7 @@ import { env } from '~/utils/env';
 export const auth = betterAuth({
 	emailAndPassword: {
 		enabled: true,
-	},
-	socialProviders: {
-		google: {
-			clientId: env.GOOGLE_CLIENT_ID,
-			clientSecret: env.GOOGLE_CLIENT_SECRET,
-		},
+		requireEmailVerification: false,
 	},
 	database: prismaAdapter(prisma, {
 		provider: 'postgresql',
@@ -32,13 +27,9 @@ export const auth = betterAuth({
 	},
 	secret: env.BETTER_AUTH_SECRET,
 	session: {
-		cookieCache: {
-			enabled: true,
-			maxAge: 5 * 60, // Cache duration in seconds
-		},
-		freshAge: 60 * 60 * 24,
-		expiresIn: 60 * 60 * 24 * 7, // 7 days
-		updateAge: 60 * 60 * 24, // 1 day (every 1 day the session expiration is updated)
+		cookieCache: { enabled: true },
+		expiresIn: 60 * 60 * 24 * 30, // 30 days
+		updateAge: 60 * 60 * 24 * 3, // 1 day (every 1 day the session expiration is updated)
 	},
 });
-export type Session = typeof auth.$Infer.Session;
+// export type Session = typeof auth.$Infer.Session;

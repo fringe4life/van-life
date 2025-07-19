@@ -8,6 +8,9 @@ export async function getAverageReviewRating(userId: string) {
 		where: {
 			userId,
 		},
+		orderBy: {
+			userId: 'desc',
+		},
 	});
 
 	return avg._avg.rating ?? 0;
