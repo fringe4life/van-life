@@ -7,6 +7,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1516394399858-ae258cf724cc?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNhbXBlcnZhbnxlbnwwfHwwfHx8Mg%3D%3D',
 		type: 'SIMPLE' as const,
+		createdAt: new Date(2018, 11, 16),
 	},
 	{
 		name: 'Beach Bum',
@@ -16,6 +17,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1647629825421-2f7441004492?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTR8fGNhbXBlcnZhbnxlbnwwfHwwfHx8Mg%3D%3D',
 		type: 'RUGGED' as const,
+		createdAt: new Date(2019, 1, 16),
 	},
 	{
 		name: 'Reliable Red',
@@ -25,6 +27,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1639156814151-334b5327665b?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjEzfHxjYW1wZXJ2YW58ZW58MHx8MHx8fDI%3D',
 		type: 'LUXURY' as const,
+		createdAt: new Date(2019, 4, 22),
 	},
 	{
 		name: 'Dreamfinder',
@@ -34,6 +37,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1515876305430-f06edab8282a?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2FtcGVyJTIwdmFufGVufDB8fDB8fHwy',
 		type: 'SIMPLE' as const,
+		createdAt: new Date(2017, 4, 4),
 	},
 	{
 		name: 'The Cruiser',
@@ -43,6 +47,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1626680114529-3f6ffa002b80?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhbXBlciUyMHZhbnxlbnwwfHwwfHx8Mg%3D%3D',
 		type: 'LUXURY' as const,
+		createdAt: new Date(2016, 10, 12),
 	},
 	{
 		name: 'Mountain Wonder',
@@ -52,6 +57,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1549194898-60fd030ecc0f?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHZhbnxlbnwwfHwwfHx8Mg%3D%3D',
 		type: 'SIMPLE' as const,
+		createdAt: new Date(2017, 11, 29),
 	},
 	{
 		name: 'Silver Wonder',
@@ -61,6 +67,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1597685204565-110abf469a1e?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dmFufGVufDB8fDB8fHwy',
 		type: 'LUXURY' as const,
+		createdAt: new Date(2019, 2, 2),
 	},
 	{
 		name: 'Yellow Beginner',
@@ -70,6 +77,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1464219789935-c2d9d9aba644?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dmFufGVufDB8fDB8fHwy',
 		type: 'RUGGED' as const,
+		createdAt: new Date(2019, 5, 26),
 	},
 	{
 		name: 'Grey Wonder',
@@ -79,6 +87,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1569520884908-682f382556e1?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fHZhbnxlbnwwfHwwfHx8Mg%3D%3D',
 		type: 'LUXURY' as const,
+		createdAt: new Date(2019, 3, 20),
 	},
 	{
 		name: 'Shapeshifter Explorer',
@@ -88,6 +97,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1572830093421-377d162ca866?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDB8fHZhbnxlbnwwfHwwfHx8Mg%3D%3D',
 		type: 'SIMPLE' as const,
+		createdAt: new Date(2018, 1, 16),
 	},
 	{
 		name: 'Shapeshifter lite',
@@ -97,6 +107,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1601231091320-5ee5140fcd09?w=300&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 		type: 'SIMPLE' as const,
+		createdAt: new Date(2017, 11, 12),
 	},
 	{
 		name: 'Red Wonder',
@@ -106,6 +117,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1597131527856-13cdb8dc050e?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTV8fHZhbnxlbnwwfHwwfHx8Mg%3D%3D',
 		type: 'RUGGED' as const,
+		createdAt: new Date(2015, 1, 12),
 	},
 	{
 		name: 'Tank Van',
@@ -115,6 +127,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1598013362701-c1a614b6bd04?w=300&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 		type: 'LUXURY' as const,
+		createdAt: new Date(2016, 11, 23),
 	},
 	{
 		name: 'Luxury Van',
@@ -124,6 +137,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1627386172764-1d1b7ea90b66?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njd8fHZhbnxlbnwwfHwwfHx8Mg%3D%3D',
 		type: 'LUXURY' as const,
+		createdAt: new Date(2019, 9, 2),
 	},
 	{
 		name: 'Peach Wonder',
@@ -133,6 +147,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1731603215747-8793302468f3?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTI2fHx2YW58ZW58MHx8MHx8fDI%3D',
 		type: 'RUGGED' as const,
+		createdAt: new Date(2015, 3, 16),
 	},
 	{
 		name: 'Modern Wonder',
@@ -142,6 +157,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1629793456114-96853e011f5e?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTcyfHx2YW58ZW58MHx8MHx8fDI%3D',
 		type: 'LUXURY' as const,
+		createdAt: new Date(2016, 8, 29),
 	},
 	{
 		name: 'Maui Wonder',
@@ -151,6 +167,7 @@ const vans = [
 		imageUrl:
 			'https://images.unsplash.com/photo-1513311068348-19c8fbdc0bb6?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyYXZhbnxlbnwwfHwwfHx8Mg%3D%3D',
 		type: 'LUXURY' as const,
+		createdAt: new Date(2019, 9, 12),
 	},
 ];
 

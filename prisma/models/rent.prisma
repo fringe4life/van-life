@@ -1,5 +1,5 @@
 model Rent {
-  id       String    @id @default(dbgenerated("gen_random_uuid()"))
+  id       String    @id @default(cuid())
   amount   Float     @default(0)
   renterId String
   hostId   String
@@ -13,3 +13,5 @@ model Rent {
 
   @@unique([renterId, rentedTo, vanId])
 }
+
+// dbgenerated("uuid_generate_v4()")

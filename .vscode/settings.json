@@ -7,5 +7,5 @@
 	},
 
 	"tailwindCSS.classFunctions": ["cva", "cx"],
-	"npm.packageManager": "bun"
+	"npm.packageManager": "bun",
 }

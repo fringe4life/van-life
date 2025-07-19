@@ -5,7 +5,7 @@ model Review {
   userId    String
   rating    Int      @db.SmallInt
   rentId    String
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String   @id @default(cuid())
   rent      Rent     @relation(fields: [rentId], references: [id])
   user      UserInfo @relation(fields: [userId], references: [userId])
 

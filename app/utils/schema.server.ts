@@ -55,11 +55,9 @@ export const addVanSchema = z.object({
 	}),
 });
 
-export const uuidSchema = z.object({
-	possibleUUID: z.uuid(),
-});
+export const uuidSchema = z.uuidv4();
 
-const paginationSchema = z.coerce.number().optional();
+const paginationSchema = z.coerce.number().positive().optional();
 
 export const searchParamsSchema = z.object({
 	page: paginationSchema.default(DEFAULT_PAGE),
@@ -81,4 +79,9 @@ export const rentVanSchema = z.object({
 	vanId: z.uuid(),
 	hostId: z.uuid(),
 	renterId: z.uuid(),
+});
+
+export const cursorPaginationSchema = z.object({
+	limit: paginationSchema.default(DEFAULT_LIMIT),
+	cursor: z.cuid().nullable().optional(),
 });

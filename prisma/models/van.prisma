@@ -8,6 +8,7 @@ model Van {
   hostId      String
   rent        Rent[]
   userInfo    UserInfo @relation(fields: [hostId], references: [userId])
+  createdAt   DateTime @default(now())
 
   @@index([hostId])
 }
