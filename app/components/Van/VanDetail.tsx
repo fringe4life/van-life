@@ -40,7 +40,7 @@ export default function VanDetail({
 						sizes=" (width > 500px) 500px, 300px"
 					/>
 				</CardHeader>
-				<CardContent className="@min-xl/card-full:col-start-2 @max-xl/card-full:row-span-4 @min-xl/card-full:row-span-3 @max-xl/card-full:row-start-2 @min-xl/card-full:row-start-1 @min-xl/card-full:grid @min-xl/card-full:grid-cols-[min-content_max-content_1fr] @min-xl/card-full:grid-rows-subgrid @min-xl/card-full:gap-2">
+				<CardContent className="@min-xl/card-full:col-start-2 @max-xl/card-full:row-span-4 @min-xl/card-full:row-span-3 @max-xl/card-full:row-start-2 @min-xl/card-full:row-start-1 @min-xl/card-full:grid @min-xl/card-full:grid-cols-[min-content_max-content_1fr] @min-xl/card-full:grid-rows-subgrid @min-md/card-full:gap-2">
 					<Badge
 						className="@min-xl/card-full:row-start-1 @min-xl/card-full:m-0 @min-xl/card-full:self-end "
 						variant={type}
