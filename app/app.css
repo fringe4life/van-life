@@ -143,7 +143,9 @@ html {
 
   --container-sm: 12rem;
   --container-md: 26rem;
-  --container-lg: 32rem;
+  --container-lg: 36rem;
+
+  --container-2xl: 44rem;
 
   --breakpoint-xs: 26rem;
 

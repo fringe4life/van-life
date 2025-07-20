@@ -12,7 +12,7 @@ const badgeVariants = cva(
 				SIMPLE: ' bg-orange-600 text-white [a&]:hover:bg-orange-600/90',
 				LUXURY: ' bg-neutral-900 text-white [a&]:hover:bg-neutral-900/90',
 				RUGGED:
-					' bg-teal-800 text-white  [a&]:hover:bg-teal-800/90 focus-visible:ring-teal-800/20 dark:focus-visible:ring-teal-800/40 dark:bg-teal-800/60',
+					'bg-teal-800 text-white  [a&]:hover:bg-teal-800/90 focus-visible:ring-teal-800/20 dark:focus-visible:ring-teal-800/40 dark:bg-teal-800/60',
 				OUTLINE: 'bg-orange-100  hover:bg-orange/80 ',
 				UNAVAILABLE:
 					'bg-red-500 text-white disabled cursor-not-allowed hover:bg-red-500',

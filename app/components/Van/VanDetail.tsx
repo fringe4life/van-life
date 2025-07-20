@@ -28,8 +28,8 @@ export default function VanDetail({
 	const srcSet = createSrcSet(VAN_DETAIL_IMG_SIZES, imageUrl);
 	return (
 		<div className="@container/card-full contain-content">
-			<Card className="@min-md:grid @min-xl/card-full:grid-cols-2 @max-xl/card-full:grid-rows-[4fr_min-content_min-content_min-content_min-content_min-content] @min-xl/card-full:grid-rows-[min-content_min-content_1fr_1fr_max-content] @max-xl/card-full:gap-4 @min-xl/card-full:gap-x-4 ">
-				<CardHeader className="@min-xl/card-full:col-span-1 @min-md/card-full:row-span-1 @min-xl/card-full:row-span-2 ">
+			<Card className="grid @min-xl/card-full:grid-cols-2 @max-xl/card-full:grid-rows-[4fr_min-content_min-content_min-content_min-content_min-content] @min-xl/card-full:grid-rows-[.75fr_1fr] @max-xl/card-full:gap-4 gap-2 @min-xl/card-full:gap-x-4 ">
+				<CardHeader className="@min-xl/card-full:col-span-1 @min-xl/card-full:row-span-2 row-span-1 ">
 					<Image
 						className="aspect-square"
 						src={imageUrl}
@@ -40,7 +40,7 @@ export default function VanDetail({
 						sizes=" (width > 500px) 500px, 300px"
 					/>
 				</CardHeader>
-				<CardContent className="@min-xl/card-full:col-start-2 @max-xl/card-full:row-span-4 @min-xl/card-full:row-span-3 @max-xl/card-full:row-start-2 @min-xl/card-full:row-start-1 @min-xl/card-full:grid @min-xl/card-full:grid-cols-[min-content_max-content_1fr] @min-xl/card-full:grid-rows-subgrid @min-md/card-full:gap-2">
+				<CardContent className="@min-xl/card-full:col-start-2 @max-xl/card-full:row-span-4 @min-xl/card-full:row-span-full @max-xl/card-full:row-start-2 @min-xl/card-full:row-start-1 @min-xl/card-full:grid @min-xl/card-full:grid-cols-[min-content_max-content_1fr] @min-xl/card-full:grid-rows-subgrid gap-2 @min-xl/card-full:gap-y-4">
 					<Badge
 						className="@min-xl/card-full:row-start-1 @min-xl/card-full:m-0 @min-xl/card-full:self-end "
 						variant={type}
@@ -48,17 +48,17 @@ export default function VanDetail({
 					>
 						{type}
 					</Badge>
-					<CardTitle className="@min-xl/card-full:row-start-1 @min-xl/card-full:self-end">
+					<CardTitle className="@min-xl/card-full:row-start-1 @min-xl/card-full:self-end @min-2xl/card-full:text-xl">
 						{name}
 					</CardTitle>
-					<p className="@min-xl/card-full:row-start-1 @min-xl/card-full:self-end @min-2xl/card-full:justify-self-end">
+					<p className="@min-xl/card-full:row-start-1 @min-xl/card-full:self-end @min-2xl/card-full:justify-self-end @min-2xl/card-full:text-2xl">
 						{displayPrice(price)}
 					</p>
-					<CardDescription className="@min-xl/card-full:col-span-3 @max-xl/card-full:row-span-2 @min-xl/card-full:row-start-2 @min-2xl/card-full:self-start">
+					<CardDescription className="@min-xl/card-full:col-span-3 @max-xl/card-full:row-span-2 @min-xl/card-full:row-start-2 @min-2xl/card-full:self-start @min-2xl/card-full:text-xl">
 						{description}
 					</CardDescription>
 				</CardContent>
-				<CardFooter className="@min-xl/card-full:absolute @min-xl/card-full:inset-[1.5rem_1.5rem_auto_auto] @max-lg/card-full:row-span-1 ">
+				<CardFooter className="@min-xl/card-full:absolute @min-xl/card-full:inset-[1.5rem_calc(50%_-_1rem)_1.5rem_calc(50%_+_.5rem)] @max-lg/card-full:row-span-1 ">
 					<CustomLink
 						to={
 							vanIsAvailable
