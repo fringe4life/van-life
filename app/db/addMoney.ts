@@ -10,6 +10,6 @@ export async function addMoney(userId: string, amount: number) {
 				increment: amount,
 			},
 		},
-	});
+	}); 
 	return updatedRecord.moneyAdded;
 }

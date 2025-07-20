@@ -5,7 +5,7 @@ import type * as React from 'react';
 import { cn } from '~/utils/utils';
 
 const badgeVariants = cva(
-	'inline-flex items-center  justify-center  rounded-md px-4 py-2 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-red-500/50 focus-visible:ring-[3px]  transition-[color,box-shadow] overflow-hidden',
+	'inline-flex items-center  justify-center  rounded-md  text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-red-500/50 focus-visible:ring-[3px]  transition-[color,box-shadow] overflow-hidden',
 	{
 		variants: {
 			variant: {
@@ -17,9 +17,14 @@ const badgeVariants = cva(
 				UNAVAILABLE:
 					'bg-red-500 text-white disabled cursor-not-allowed hover:bg-red-500',
 			},
+			size: {
+				default: 'px-4 py-2',
+				small: 'px-1 py-0.5',
+			},
 		},
 		defaultVariants: {
 			variant: 'OUTLINE',
+			size: 'default',
 		},
 	},
 );

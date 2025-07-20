@@ -4,6 +4,7 @@ import Image from '~/components/Image';
 import { Badge, badgeVariants } from '~/components/ui/badge';
 import { VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
 import { createSrcSet } from '~/utils/createSrcSet';
+import { displayPrice } from '~/utils/displayPrice';
 import { cn } from '~/utils/utils';
 import CustomLink from '../CustomLink';
 import {
@@ -26,28 +27,38 @@ export default function VanDetail({
 }: VanDetailProps) {
 	const srcSet = createSrcSet(VAN_DETAIL_IMG_SIZES, imageUrl);
 	return (
-		<div className="@container/card-full max-w-lg contain-content">
-			<Card className="@max-2xl/card-full:grid @max-2xl/card-full:grid-rows-[4fr_repeat(4,_auto)_auto] @max-2xl/card-full:gap-4 ">
-				<CardHeader className="h-full max-h-lg w-full max-w-lg">
+		<div className="@container/card-full contain-content">
+			<Card className="@min-md:grid @min-xl/card-full:grid-cols-2 @max-xl/card-full:grid-rows-[4fr_min-content_min-content_min-content_min-content_min-content] @min-xl/card-full:grid-rows-[min-content_min-content_1fr_1fr_max-content] @max-xl/card-full:gap-4 @min-xl/card-full:gap-x-4 ">
+				<CardHeader className="@min-xl/card-full:col-span-1 @min-md/card-full:row-span-1 @min-xl/card-full:row-span-2 ">
 					<Image
 						className="aspect-square"
 						src={imageUrl}
 						alt={description}
-						width="500"
-						height="500"
+						width="600"
+						height="600"
 						srcSet={srcSet}
-						sizes=" (width > 500px) 500px,  (width > 750px) 750px, (width > 1000px) 1000px, 300px"
+						sizes=" (width > 500px) 500px, 300px"
 					/>
 				</CardHeader>
-				<CardContent className="@max-2xl/card-full:row-span-4 @max-2xl/card-full:row-start-2 @max-2xl/card-full:grid-rows-subgrid @max-2xl/card-full:align-between">
-					<Badge className="mt-6 mb-5" variant={type}>
+				<CardContent className="@min-xl/card-full:col-start-2 @max-xl/card-full:row-span-4 @min-xl/card-full:row-span-3 @max-xl/card-full:row-start-2 @min-xl/card-full:row-start-1 @min-xl/card-full:grid @min-xl/card-full:grid-cols-[min-content_max-content_1fr] @min-xl/card-full:grid-rows-subgrid @min-xl/card-full:gap-2">
+					<Badge
+						className="@min-xl/card-full:row-start-1 @min-xl/card-full:m-0 @min-xl/card-full:self-end "
+						variant={type}
+						size="small"
+					>
 						{type}
 					</Badge>
-					<CardTitle>{name}</CardTitle>
-					<p className="my-2">{price}</p>
-					<CardDescription>{description}</CardDescription>
+					<CardTitle className="@min-xl/card-full:row-start-1 @min-xl/card-full:self-end">
+						{name}
+					</CardTitle>
+					<p className="@min-xl/card-full:row-start-1 @min-xl/card-full:self-end @min-2xl/card-full:justify-self-end">
+						{displayPrice(price)}
+					</p>
+					<CardDescription className="@min-xl/card-full:col-span-3 @max-xl/card-full:row-span-2 @min-xl/card-full:row-start-2 @min-2xl/card-full:self-start">
+						{description}
+					</CardDescription>
 				</CardContent>
-				<CardFooter>
+				<CardFooter className="@min-xl/card-full:absolute @min-xl/card-full:inset-[1.5rem_1.5rem_auto_auto] @max-lg/card-full:row-span-1 ">
 					<CustomLink
 						to={
 							vanIsAvailable
@@ -56,7 +67,7 @@ export default function VanDetail({
 						}
 						className={cn(
 							badgeVariants({ variant: vanIsAvailable ? type : 'UNAVAILABLE' }),
-							'@max-lg/card-full:w-full',
+							'@max-lg/card-full:w-full ',
 						)}
 					>
 						{vanIsAvailable ? 'Rent this van' : 'Van not available'}

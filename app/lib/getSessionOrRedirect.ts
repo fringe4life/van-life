@@ -7,7 +7,6 @@ export async function getSessionOrRedirect(
 	const session = await auth.api.getSession({
 		headers: request.headers,
 	});
-	console.log({ session });
 	if (!session) throw redirect(redirectTo, { headers: request.headers });
 
 	return session;

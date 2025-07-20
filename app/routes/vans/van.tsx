@@ -55,7 +55,12 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 
 	const { changingPage } = useIsNavigating();
 	return (
-		<div className={clsx({ 'opacity-75': changingPage })}>
+		<div
+			className={clsx({
+				'opacity-75': changingPage,
+				'grid grid-rows-[auto_1fr]': true,
+			})}
+		>
 			<CustomLink
 				to={{
 					pathname: href('/vans'),
@@ -64,7 +69,9 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 			>
 				&larr; back to {typeFilter ? typeFilter : 'all'} vans
 			</CustomLink>
-			<VanDetails van={van} vanIsAvailable={vanIsAvailable} />
+			<div className="self-center">
+				<VanDetails van={van} vanIsAvailable={vanIsAvailable} />
+			</div>
 		</div>
 	);
 }

@@ -1,10 +1,11 @@
 import type React from 'react';
 import { cn, isEmptyList } from '~/utils/utils';
-import EmptyState from './EmptyState';
+
+import UnsuccesfulState from './UnsuccesfulState';
 
 export interface GenericComponentProps<T, P> {
 	Component: React.ComponentType<P>;
-	items: T[];
+	items: T[] | string;
 	renderProps: (item: T, index: number) => P;
 	renderKey: (item: T, index: number) => React.Key;
 	className?: string;
@@ -20,8 +21,9 @@ const GenericComponent = <T, P>({
 	emptyStateMessage,
 }: GenericComponentProps<T, P>) => {
 	const isEmpty = isEmptyList(items);
-	if (isEmpty) {
-		return <EmptyState message={emptyStateMessage} />;
+	const isError = typeof items === 'string';
+	if (isEmpty || isError) {
+		return <UnsuccesfulState message={emptyStateMessage} isError />;
 	}
 	return (
 		<div className={cn('flex grow flex-col ', className)}>

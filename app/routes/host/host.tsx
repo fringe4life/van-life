@@ -1,3 +1,4 @@
+import type { Van } from '@prisma/client';
 import clsx from 'clsx';
 import { data, href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
@@ -24,17 +25,23 @@ export function meta() {
 export async function loader({ request }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
 
-	const [vans, sumIncome, avgRating] = await Promise.all([
+	const results = await Promise.allSettled([
 		getHostVans(session.user.id, 1, 3),
 		getAccountSummary(session.user.id),
 		getAverageReviewRating(session.user.id),
 	]);
 
+	const [vans, sumIncome, avgRating] = results.map((result) =>
+		result.status === 'fulfilled'
+			? result.value
+			: 'There was an error getting this data.',
+	);
+
 	return data(
 		{
-			vans,
-			sumIncome,
-			avgRating,
+			vans: vans as Van[] | string,
+			sumIncome: sumIncome as number | string,
+			avgRating: avgRating as number | string,
 			name: session.user.name,
 		},
 		{
@@ -70,7 +77,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			</div>
 			<div className="flex justify-between bg-orange-200 px-3 py-6 sm:px-6.5 sm:py-9 ">
 				<p className="font-bold text-lg text-shadow-text sm:text-2xl">
-					Review Score star {avgRating.toFixed(1) ?? 'unknown'}/5
+					Review Score star {typeof avgRating === 'number' ? avgRating.toFixed(1) : avgRating ?? 'unknown'}/5
 				</p>
 				<CustomLink
 					to={href('/host/review')}

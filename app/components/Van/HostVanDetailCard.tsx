@@ -30,7 +30,7 @@ export default function VanDetailCard({
 						alt={name}
 						width="300"
 						height="300"
-						classesForContainer="@min-md/detail:col-span-1 rounded-sm"
+						// classesForContainer="@min-md/detail:col-span-1 rounded-sm"
 						srcSet=""
 						decoding="sync"
 						loading="eager"

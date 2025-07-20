@@ -8,8 +8,8 @@ const formatter = new Intl.NumberFormat('en-us', {
  * @param price the price of the item
  * @returns a string representation to be shown to users
  */
-export function displayPrice(price: number): string {
-	if (!price) return '$0.00';
+export function displayPrice(price: number | string | null): string {
+	if (!price || typeof price === 'string') return '$0.00';
 
 	return formatter.format(price);
 }

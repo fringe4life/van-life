@@ -43,7 +43,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Host({ loaderData }: Route.ComponentProps) {
 	const { vans, vansCount } = loaderData;
-	console.log({ vansCount });
+
 	return (
 		<VanPages
 			// generic component props start

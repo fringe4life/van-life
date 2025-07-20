@@ -1,4 +1,7 @@
-import { cn } from '~/utils/utils';
+// import { createNewImageSize } from '~/utils/createNewImageSize';
+// import { cn } from '~/utils/utils';
+
+import { cn } from "~/utils/utils";
 
 type ImgProps = React.ComponentProps<'img'> & {
 	src: string;
@@ -19,11 +22,13 @@ export default function Image({
 	classesForContainer = '',
 	...rest
 }: ImgProps) {
+	// const lowRes = createNewImageSize(src, 20);
 	return (
-		<div className={cn('m-0 h-auto max-w-full p-0', classesForContainer)}>
+		<div className={cn('m-0 p-0', classesForContainer)}>
 			<img
-				className={`h-auto object-cover object-center text-none leading-0 decoration-0 transition-opacity duration-200 ease-in-out, contain-strict ${className}`}
+				className={` max-w-full bg-cover bg-no-repeat object-cover object-center align-middle text-none italic leading-0 decoration-0 transition-opacity duration-200 ease-in-out, contain-strict ${className}`}
 				loading="lazy"
+				// style={{ backgroundImage: lowRes }}
 				decoding="async"
 				{...rest}
 				alt={alt}
