@@ -13,7 +13,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 	const hasToken = loaderData;
 	return (
 		<>
-			<header className="flex items-center justify-between gap-3 py-9 contain-strict sm:gap-6">
+			<header className="flex items-center justify-between gap-3 px-2 py-9 contain-strict sm:gap-6 sm:px-6">
 				<h1 className="font-black text-xl xs:text-2xl uppercase">
 					<CustomLink to={href('/')}>#vanlife</CustomLink>
 				</h1>
@@ -72,10 +72,10 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 					</ul>
 				</nav>
 			</header>
-			<main className="mb-6 grid grid-rows-subgrid contain-content">
+			<main className="mb-6 grid grid-rows-subgrid px-2 contain-content sm:px-6">
 				<Outlet />
 			</main>
-			<footer className="-px-2 sm:-px-6 strict] w-full bg-neutral-800 py-6.25 contain-strict">
+			<footer className=" w-full bg-neutral-800 py-6.25 contain-strict">
 				<p className="text-center text-gray-400 text-sm uppercase">
 					&copy;{new Date().getFullYear()} #vanlife
 				</p>

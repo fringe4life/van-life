@@ -65,7 +65,7 @@ export default function About() {
 					and make your own magic in the great outdoors 🌳!
 				</p>
 			</div>
-			<article className="mx-4 grid max-w-max shrink grow-0 content-between gap-y-5 rounded-md bg-orange-400 px-4 py-3 sm:px-8 md:justify-self-center md:px-12 md:py-6">
+			<article className="mx-4 grid max-w-max shrink grow-0 content-between gap-y-5 rounded-md bg-orange-400 px-4 py-3 sm:px-8 md:px-12 md:py-6">
 				<h3 className="font-bold text-xl xs:text-2xl">
 					Your destination is waiting.{' '}
 					<span className="block">Your van is ready.</span>
