@@ -25,12 +25,12 @@ export default function About() {
 	return (
 		<section
 			className={clsx({
-				'grid grid-cols-[1fr] grid-rows-[min-content_min-content_min-content_min-content] gap-4 contain-content sm:gap-6 md:gap-10': true,
+				'grid grid-cols-1 gap-4 contain-content sm:gap-6 md:gap-10': true,
 				'opacity-75': changingPage,
 			})}
 		>
 			<Image
-				className="xs:mask-[url(/app/assets/cloud-4.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
+				className="xs:mask-[url(/app/assets/bed.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
 				src={ABOUT_IMG}
 				alt="a couple enjoying their adventure"
 				height="900"
@@ -80,3 +80,27 @@ export default function About() {
 		</section>
 	);
 }
+
+{
+	/* <a href="https://www.flaticon.com/free-icons/bed" title="bed icons">
+	Bed icons created by Freepik - Flaticon
+</a>; */
+}
+
+// <a href="https://www.flaticon.com/free-icons/breakfast" title="breakfast icons">
+// 	Breakfast icons created by juicy_fish - Flaticon
+// </a>;
+
+{
+	/* <a href="https://www.flaticon.com/free-icons/bed" title="bed icons">
+	Bed icons created by Freepik - Flaticon
+</a>; */
+}
+
+<a href="" title="sleep icons">
+	Sleep icons created by Freepik - Flaticon
+</a>;
+
+<a href="" title="mattress icons">
+	Mattress icons created by smashingstocks - Flaticon
+</a>;
