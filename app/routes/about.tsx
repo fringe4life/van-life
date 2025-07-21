@@ -30,7 +30,7 @@ export default function About() {
 			})}
 		>
 			<Image
-				className="xs:mask-[url(/app/assets/bed.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
+				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
 				src={ABOUT_IMG}
 				alt="a couple enjoying their adventure"
 				height="900"
