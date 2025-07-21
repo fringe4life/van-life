@@ -80,27 +80,3 @@ export default function About() {
 		</section>
 	);
 }
-
-{
-	/* <a href="https://www.flaticon.com/free-icons/bed" title="bed icons">
-	Bed icons created by Freepik - Flaticon
-</a>; */
-}
-
-// <a href="https://www.flaticon.com/free-icons/breakfast" title="breakfast icons">
-// 	Breakfast icons created by juicy_fish - Flaticon
-// </a>;
-
-{
-	/* <a href="https://www.flaticon.com/free-icons/bed" title="bed icons">
-	Bed icons created by Freepik - Flaticon
-</a>; */
-}
-
-<a href="" title="sleep icons">
-	Sleep icons created by Freepik - Flaticon
-</a>;
-
-<a href="" title="mattress icons">
-	Mattress icons created by smashingstocks - Flaticon
-</a>;
