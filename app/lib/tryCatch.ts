@@ -3,7 +3,7 @@ type Failure<E> = { data: null; error: E };
 
 type Result<T, E> = Success<T> | Failure<E>;
 
-export async function tryCatchPrisma<T, E>(
+export async function tryCatch<T, E>(
 	operation: () => Promise<T>,
 ): Promise<Result<T, E>> {
 	try {

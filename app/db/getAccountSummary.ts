@@ -8,6 +8,9 @@ export async function getAccountSummary(userId: string) {
 			},
 			where: {
 				hostId: userId,
+				rentedTo: {
+					not: null,
+				},
 			},
 			orderBy: {
 				hostId: 'desc',
@@ -23,6 +26,6 @@ export async function getAccountSummary(userId: string) {
 		});
 		return (sum._sum.amount ?? 0) + (moneyAdded?.moneyAdded ?? 0);
 	} catch (_) {
-		throw new Error('Unable to retrieve account summary');
+		return 'Unable to retrieve account summary';
 	}
 }

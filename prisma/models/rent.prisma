@@ -12,4 +12,5 @@ model Rent {
   reviews  Review[]
 
   @@unique([rentedTo, vanId])
+  @@index([rentedTo])
 }

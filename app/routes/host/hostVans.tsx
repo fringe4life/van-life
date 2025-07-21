@@ -1,3 +1,4 @@
+import type { Van } from '@prisma/client';
 import { data, href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import VanCard from '~/components/Van/VanCard';
@@ -23,15 +24,21 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	const { page, limit } = getPaginationParams(request.url);
 
-	const [vans, vansCount] = await Promise.all([
+	const results = await Promise.allSettled([
 		getHostVans(session.user.id, page, limit),
 		getHostVanCount(session.user.id),
 	]);
 
+	const [vans, vansCount] = results.map((result) =>
+		result.status === 'fulfilled'
+			? result.value
+			: 'There was an error getting this data.',
+	);
+
 	return data(
 		{
-			vans,
-			vansCount,
+			vans: vans as Van[] | string,
+			vansCount: vansCount as number | string,
 		},
 		{
 			headers: {

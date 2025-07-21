@@ -3,7 +3,7 @@ import CustomLink from './CustomLink';
 import { buttonVariants } from './ui/button';
 
 type PaginationProps = {
-	itemsCount: number;
+	itemsCount: number | string;
 	limit: number;
 	page: number;
 	type: string | undefined;
@@ -21,6 +21,9 @@ export default function Pagination({
 	page,
 	pathname,
 }: PaginationProps) {
+	if (typeof itemsCount === 'string') {
+		return <p>Something Went wrong try again later</p>;
+	}
 	const numberOfPages = Math.ceil(itemsCount / limit);
 	const listOfLinks = [];
 

@@ -1,3 +1,4 @@
+import type { Rent } from '@prisma/client';
 import { data, href } from 'react-router';
 import BarChartComponent from '~/components/BarChart';
 import Income from '~/components/Income';
@@ -20,14 +21,22 @@ export function meta() {
 export async function loader({ request }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
 
-	const [sumIncome, hostIncomes] = await Promise.all([
+	const results = await Promise.allSettled([
 		getAccountSummary(session.user.id),
 		getHostTransactions(session.user.id),
 	]);
+
+	const [sumIncome, hostIncomes] = results.map((result) =>
+		result.status === 'fulfilled'
+			? result.value
+			: 'There was an error getting this data.',
+	);
 	return data(
 		{
-			sumIncome,
-			hostIncomes,
+			sumIncome: sumIncome as number | string,
+			hostIncomes: hostIncomes as
+				| Pick<Rent, 'amount' | 'id' | 'rentedAt'>[]
+				| string,
 		},
 		{
 			headers: {
@@ -40,10 +49,12 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
 	const { sumIncome, hostIncomes } = loaderData;
 
-	const mappedData = hostIncomes.map((income) => ({
-		name: income.rentedAt.toDateString(),
-		amount: Math.round(income.amount),
-	}));
+	const mappedData = Array.isArray(hostIncomes)
+		? hostIncomes.map((income) => ({
+				name: income.rentedAt.toDateString(),
+				amount: Math.round(income.amount),
+			}))
+		: [];
 
 	return (
 		<VanPages

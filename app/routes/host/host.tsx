@@ -1,6 +1,6 @@
 import type { Van } from '@prisma/client';
 import clsx from 'clsx';
-import { data, href } from 'react-router';
+import { data, href, useParams } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import GenericComponent from '~/components/GenericComponent';
 import VanCard from '~/components/Van/VanCard';
@@ -106,5 +106,25 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				})}
 			/>
 		</section>
+	);
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+	const message = 'Oops!';
+	const details = 'An unexpected error occurred. Please try again later';
+
+	const params = useParams();
+	console.log({ error });
+	return (
+		<main className="container mx-auto p-4 pt-16">
+			<h1>{message}</h1>
+			<p>{details}</p>
+			{Object.entries(params).length >= 1 && (
+				<p>
+					Your Van could not be found. Add i{' '}
+					<CustomLink to={href('/host/add')}>Add a new Van</CustomLink>
+				</p>
+			)}
+		</main>
 	);
 }
