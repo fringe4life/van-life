@@ -23,18 +23,25 @@ export async function action({ request }: Route.ActionArgs) {
 			email,
 		};
 	}
+	try {
+		const signUp = await auth.api.signUpEmail({
+			body: result.data,
+			asResponse: true,
+		});
 
-	const signUp = await auth.api.signUpEmail({
-		body: result.data,
-		asResponse: true,
-	});
-
-	if (!signUp.ok) {
-		return { errors: 'Sign up failed please try again later', name, email };
+		if (!signUp.ok) {
+			return { errors: 'Sign up failed please try again later', name, email };
+		}
+		throw replace('/host', {
+			headers: signUp.headers,
+		});
+	} catch {
+		return {
+			errors: 'Something went wrong, please try again later',
+			name,
+			email,
+		};
 	}
-	throw replace('/host', {
-		headers: signUp.headers,
-	});
 }
 
 export default function SignUp({ actionData }: Route.ComponentProps) {

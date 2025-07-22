@@ -26,22 +26,28 @@ export async function action({ request }: Route.ActionArgs) {
 			email: (formData.email as string) ?? '',
 		};
 	}
+	try {
+		const response = await auth.api.signInEmail({
+			body: result.data,
+			asResponse: true,
+		});
 
-	const response = await auth.api.signInEmail({
-		body: result.data,
-		asResponse: true,
-	});
+		if (!response.ok) {
+			return {
+				errors: 'Your email or password is incorrect',
+				email: (formData.email as string) ?? '',
+			};
+		}
 
-	if (!response.ok) {
+		throw replace('/host', {
+			headers: response.headers,
+		});
+	} catch {
 		return {
-			errors: 'Your email or password is incorrect',
+			errors: 'Something went wrong try again later.',
 			email: (formData.email as string) ?? '',
 		};
 	}
-
-	throw replace('/host', {
-		headers: response.headers,
-	});
 }
 
 export default function Login({ actionData }: Route.ComponentProps) {
