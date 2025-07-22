@@ -16,7 +16,7 @@
 // const prisma = getDb({ connectionString: process.env.DIRECT_URL! });
 // export default prisma;
 
-import { PrismaClient } from '@prisma/client/edge';
+import { PrismaClient } from '@prisma/client';
 
 // import { withAccelerate } from '@prisma/extension-accelerate';
 // .$extends(withAccelerate());
