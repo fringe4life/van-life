@@ -1,4 +1,4 @@
-import { VanType } from '@prisma/client';
+import { type Van, VanType } from '@prisma/client';
 
 import { data, href } from 'react-router';
 import CustomNavLink from '~/components/CustomNavLink';
@@ -9,9 +9,7 @@ import VanPages from '~/components/Van/VanPages';
 import { DEFAULT_FILTER } from '~/constants/constants';
 import { getVans } from '~/db/getVans';
 import { getVansCount } from '~/db/getVansCount';
-import { getVansCursor } from '~/db/getVansCursor';
 import { useParamsClientSide } from '~/hooks/useParamsClientSide';
-import { getCursorPagination } from '~/utils/getCursorPagination';
 import { getPaginationParams } from '~/utils/getPaginationParams';
 import type { Route } from './+types/vans';
 
@@ -31,13 +29,21 @@ export async function loader({ request }: Route.LoaderArgs) {
 	// const { cursor, limit, type } = getCursorPagination(request.url);
 	const { page, limit, type } = getPaginationParams(request.url);
 
-	const [vans, vansCount] = await Promise.all([
+	const results = await Promise.allSettled([
 		getVans(page, limit, type as VanType),
 		getVansCount(type as VanType),
 	]);
 
+	const [vans, vansCount] = results.map((result) =>
+		result.status === 'fulfilled' ? result.value : 'Error fetching data',
+	);
+
 	return data(
-		{ vans, badges, vansCount },
+		{
+			vans: vans as Van[] | string,
+			badges,
+			vansCount: vansCount as number | string,
+		},
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
