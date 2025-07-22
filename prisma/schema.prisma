@@ -1,7 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["relationJoins", "typedSql"]
-  binaryTargets   = ["native", "rhel-openssl-3.0.x"]
+  previewFeatures = ["relationJoins"]
+  // binaryTargets   = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {

@@ -10,7 +10,7 @@
 		"build": "react-router build",
 		"dev": " react-router dev",
 		"typecheck": "react-router typegen && tsgo",
-		"postinstall": "prisma generate"
+		"postinstall": "prisma generate "
 	},
 	"dependencies": {
 		"@prisma/adapter-pg": "^6.12.0",

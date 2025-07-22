@@ -5,13 +5,13 @@ import { prisma } from '~/lib/prisma';
 import { env } from '~/utils/env';
 
 export const auth = betterAuth({
+	database: prismaAdapter(prisma, {
+		provider: 'postgresql',
+	}),
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: false,
 	},
-	database: prismaAdapter(prisma, {
-		provider: 'postgresql',
-	}),
 	databaseHooks: {
 		user: {
 			create: {

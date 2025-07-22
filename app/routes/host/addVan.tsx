@@ -6,7 +6,7 @@ import { Textarea } from '~/components/ui/textarea';
 import { createVan } from '~/db/createVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
-import { addVanSchema } from '~/utils/schema.server';
+import { addVanSchema } from '~/utils/schema';
 import type { Route } from './+types/addVan';
 export function meta() {
 	return [

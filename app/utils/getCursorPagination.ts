@@ -4,7 +4,7 @@ import {
 	DEFAULT_LIMIT,
 } from '~/constants/constants';
 import { getSearchParams } from '~/utils/getSearchParams';
-import { cursorPaginationSchema } from './schema.server';
+import { cursorPaginationSchema } from './schema';
 
 export function getCursorPagination(url: string) {
 	const searchParams = getSearchParams(url);

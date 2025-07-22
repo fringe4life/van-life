@@ -7,7 +7,7 @@ import { getHostRentedVan } from '~/db/host/getHostRentedVan';
 import { rentVan } from '~/db/host/rentVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
-import { rentVanSchema } from '~/utils/schema.server';
+import { rentVanSchema } from '~/utils/schema';
 import type { Route } from './+types/rentalDetail';
 
 export async function loader({ params, request }: Route.LoaderArgs) {

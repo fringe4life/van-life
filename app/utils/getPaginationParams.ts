@@ -4,7 +4,7 @@ import {
 	DEFAULT_PAGE,
 } from '~/constants/constants';
 import { getSearchParams } from '~/utils/getSearchParams';
-import { searchParamsSchema } from '~/utils/schema.server';
+import { searchParamsSchema } from '~/utils/schema';
 
 /**
  * @abstract gets the url search params

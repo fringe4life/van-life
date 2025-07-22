@@ -4,8 +4,8 @@ import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { auth } from '~/lib/auth.server';
-import { loginSchema } from '~/utils/schema.server';
+import { auth } from '~/lib/auth';
+import { loginSchema } from '~/utils/schema';
 import type { Route } from './+types/login';
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -26,28 +26,21 @@ export async function action({ request }: Route.ActionArgs) {
 			email: (formData.email as string) ?? '',
 		};
 	}
-	try {
-		const response = await auth.api.signInEmail({
-			body: result.data,
-			asResponse: true,
-		});
+	// try {
+	const response = await auth.api.signInEmail({
+		body: result.data,
+		asResponse: true,
+	});
 
-		if (!response.ok) {
-			return {
-				errors: 'Your email or password is incorrect',
-				email: (formData.email as string) ?? '',
-			};
-		}
-
-		throw replace('/host', {
-			headers: response.headers,
-		});
-	} catch {
+	if (!response.ok) {
 		return {
-			errors: 'Something went wrong try again later.',
+			errors: 'Your email or password is incorrect',
 			email: (formData.email as string) ?? '',
 		};
 	}
+	throw replace('/host', {
+		headers: response.headers,
+	});
 }
 
 export default function Login({ actionData }: Route.ComponentProps) {

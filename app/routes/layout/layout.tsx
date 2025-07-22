@@ -1,7 +1,7 @@
 import { href, Outlet } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import CustomNavLink from '~/components/CustomNavLink';
-import { auth } from '~/lib/auth.server';
+import { auth } from '~/lib/auth';
 import type { Route } from './+types/layout';
 export async function loader({ request }: Route.LoaderArgs) {
 	const session = await auth.api.getSession({ headers: request.headers });

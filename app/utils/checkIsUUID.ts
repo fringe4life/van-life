@@ -1,7 +1,7 @@
-import { uuidSchema } from '~/utils/schema.server';
+import { uuidSchema } from '~/utils/schema';
 
 /**
- * @abstract will test if the string is a UUID 
+ * @abstract will test if the string is a UUID
  * @param {string} possibleUUID a possible UUID
  * @returns {boolean} true if UUID. else false
  */

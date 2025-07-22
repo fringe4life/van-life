@@ -4,8 +4,8 @@ import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { auth } from '~/lib/auth.server';
-import { signUpScheme } from '~/utils/schema.server';
+import { auth } from '~/lib/auth';
+import { signUpScheme } from '~/utils/schema';
 import type { Route } from './+types/signUp';
 
 export async function action({ request }: Route.ActionArgs) {
@@ -23,25 +23,17 @@ export async function action({ request }: Route.ActionArgs) {
 			email,
 		};
 	}
-	try {
-		const signUp = await auth.api.signUpEmail({
-			body: result.data,
-			asResponse: true,
-		});
+	const signUp = await auth.api.signUpEmail({
+		body: result.data,
+		asResponse: true,
+	});
 
-		if (!signUp.ok) {
-			return { errors: 'Sign up failed please try again later', name, email };
-		}
-		throw replace('/host', {
-			headers: signUp.headers,
-		});
-	} catch {
-		return {
-			errors: 'Something went wrong, please try again later',
-			name,
-			email,
-		};
+	if (!signUp.ok) {
+		return { errors: 'Sign up failed please try again later', name, email };
 	}
+	throw replace('/host', {
+		headers: signUp.headers,
+	});
 }
 
 export default function SignUp({ actionData }: Route.ComponentProps) {
