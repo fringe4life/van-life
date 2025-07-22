@@ -1,5 +1,5 @@
 import { href, redirect } from 'react-router';
-import { auth } from './auth';
+import { auth } from './auth.server';
 export async function getSessionOrRedirect(
 	request: Request,
 	redirectTo = href('/login'),

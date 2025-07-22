@@ -8,8 +8,8 @@ import { MAX_ADD, MIN_ADD } from '~/constants/constants';
 import { addMoney } from '~/db/addMoney';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
-import { moneySchema } from '~/utils/schema';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { moneySchema } from '~/lib/schemas.server';
 import type { Route } from './+types/money';
 export function meta() {
 	return [

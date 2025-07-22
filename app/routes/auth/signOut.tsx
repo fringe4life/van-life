@@ -1,5 +1,5 @@
 import { replace } from 'react-router';
-import { auth } from '~/lib/auth';
+import { auth } from '~/lib/auth.server';
 import type { Route } from './+types/signOut';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {

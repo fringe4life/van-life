@@ -5,7 +5,7 @@ import VanCard from '~/components/Van/VanCard';
 import VanPages from '~/components/Van/VanPages';
 import { getHostVanCount } from '~/db/host/getHostVanCount';
 import { getHostVans } from '~/db/host/getHostVans';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { getPaginationParams } from '~/utils/getPaginationParams';
 import type { Route } from './+types/hostVans';
 
@@ -17,6 +17,10 @@ export function meta() {
 			content: 'the dashboard page whe you are logged in',
 		},
 	];
+}
+
+export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
+	return actionHeaders ? actionHeaders : loaderHeaders;
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -43,6 +47,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
+				...request.headers,
 			},
 		},
 	);

@@ -4,7 +4,7 @@ import BarChartComponent from '~/components/BarChart';
 import Review from '~/components/Review';
 import VanPages from '~/components/Van/VanPages';
 import { getHostReviews } from '~/db/host/getHostReviews';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import type { Route } from './+types/reviews';
 export function meta() {
 	return [

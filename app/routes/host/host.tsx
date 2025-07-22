@@ -8,7 +8,7 @@ import { getAccountSummary } from '~/db/getAccountSummary';
 import { getAverageReviewRating } from '~/db/getAvgReviews';
 import { getHostVans } from '~/db/host/getHostVans';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/host';
 
@@ -22,8 +22,15 @@ export function meta() {
 	];
 }
 
+export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
+	return actionHeaders ? actionHeaders : loaderHeaders;
+}
+
 export async function loader({ request }: Route.LoaderArgs) {
+	console.log('loader from host');
 	const session = await getSessionOrRedirect(request);
+
+	console.log(request.headers);
 
 	const results = await Promise.allSettled([
 		getHostVans(session.user.id, 1, 3),
@@ -47,6 +54,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
+				...request.headers,
 			},
 		},
 	);

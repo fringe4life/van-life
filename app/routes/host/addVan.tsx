@@ -5,8 +5,8 @@ import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
 import { createVan } from '~/db/createVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
-import { addVanSchema } from '~/utils/schema';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { addVanSchema } from '~/lib/schemas.server';
 import type { Route } from './+types/addVan';
 export function meta() {
 	return [

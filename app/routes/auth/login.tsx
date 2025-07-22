@@ -4,9 +4,13 @@ import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { auth } from '~/lib/auth';
-import { loginSchema } from '~/utils/schema';
+import { auth } from '~/lib/auth.server';
+import { loginSchema } from '~/lib/schemas.server';
 import type { Route } from './+types/login';
+
+// export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
+// 	return actionHeaders ? actionHeaders : loaderHeaders;
+// }
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const result = await auth.api.getSession({ headers: request.headers });
@@ -38,6 +42,7 @@ export async function action({ request }: Route.ActionArgs) {
 			email: (formData.email as string) ?? '',
 		};
 	}
+	console.log(response.headers);
 	throw replace('/host', {
 		headers: response.headers,
 	});

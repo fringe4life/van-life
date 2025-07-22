@@ -3,8 +3,8 @@ import {
 	DEFAULT_LIMIT,
 	DEFAULT_PAGE,
 } from '~/constants/constants';
+import { searchParamsSchema } from '~/lib/schemas.server';
 import { getSearchParams } from '~/utils/getSearchParams';
-import { searchParamsSchema } from '~/utils/schema';
 
 /**
  * @abstract gets the url search params

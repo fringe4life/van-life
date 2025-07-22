@@ -4,7 +4,7 @@ import CustomLink from '~/components/CustomLink';
 import VanDetailCard from '~/components/Van/HostVanDetailCard';
 import { getHostVan } from '~/db/host/getHostVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import type { Route } from './+types/vanDetailLayout';
 export function meta({ data }: Route.MetaArgs) {
 	return [

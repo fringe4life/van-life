@@ -4,9 +4,14 @@ import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { auth } from '~/lib/auth';
-import { signUpScheme } from '~/utils/schema';
+import { auth } from '~/lib/auth.server';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { signUpScheme } from '~/lib/schemas.server';
 import type { Route } from './+types/signUp';
+
+export async function loader({ request }: Route.LoaderArgs) {
+	await getSessionOrRedirect(request);
+}
 
 export async function action({ request }: Route.ActionArgs) {
 	const formData = Object.fromEntries(await request.formData());

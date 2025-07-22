@@ -1,6 +1,6 @@
 import { href, Outlet } from 'react-router';
 import CustomNavLink from '~/components/CustomNavLink';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect';
+import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import type { Route } from './+types/hostLayout';
 
 export const loader = async ({ request }: Route.ClientLoaderArgs) => {

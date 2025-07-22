@@ -1,4 +1,4 @@
-import { uuidSchema } from '~/utils/schema';
+import { uuidSchema } from '~/lib/schemas.server';
 
 /**
  * @abstract will test if the string is a UUID
