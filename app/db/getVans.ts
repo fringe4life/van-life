@@ -1,6 +1,6 @@
 import type { VanType } from '@prisma/client';
 // import prisma from '~/lib/prisma';
-import { prisma } from '~/lib/prisma';
+import { prisma } from '~/lib/prisma.server';
 import getSkipAmount from '~/utils/getSkipAmount';
 export async function getVans(
 	page: number,

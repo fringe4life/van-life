@@ -27,8 +27,8 @@ function getRandomId<T extends { id: string }>(ids: T[]) {
 	return ids[Math.floor(Math.random() * ids.length)].id;
 }
 
-function getRandomIdWithConstraint(id: string, constraints: string[]){
-	return constraints.includes(id)
+function getRandomIdWithConstraint(id: string, constraints: string[]) {
+	return constraints.includes(id);
 }
 
 function generateUniqueIds<T extends { id: string }>(
@@ -46,7 +46,7 @@ function generateUniqueIds<T extends { id: string }>(
 	return { id1, id2 };
 }
 
-import { prisma } from '~/lib/prisma';
+import { prisma } from '~/lib/prisma.server';
 
 async function clearTables() {
 	try {
@@ -65,5 +65,5 @@ export {
 	getEndDate,
 	generateUniqueIds,
 	getRandomId,
-	getRandomIdWithConstraint
+	getRandomIdWithConstraint,
 };

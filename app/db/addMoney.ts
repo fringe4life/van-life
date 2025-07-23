@@ -1,4 +1,4 @@
-import { prisma } from '~/lib/prisma';
+import { prisma } from '~/lib/prisma.server';
 // import prisma from "~/lib/prisma";
 export async function addMoney(userId: string, amount: number) {
 	const updatedRecord = await prisma.userInfo.update({
@@ -10,6 +10,6 @@ export async function addMoney(userId: string, amount: number) {
 				increment: amount,
 			},
 		},
-	}); 
+	});
 	return updatedRecord.moneyAdded;
 }

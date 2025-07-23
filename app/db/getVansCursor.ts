@@ -1,6 +1,6 @@
 import type { VanType } from '@prisma/client';
 // import prisma from '~/lib/prisma';
-import { prisma } from '~/lib/prisma';
+import { prisma } from '~/lib/prisma.server';
 export async function getVansCursor(
 	cursor: string | undefined,
 	limit: number,

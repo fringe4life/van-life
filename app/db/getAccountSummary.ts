@@ -1,4 +1,4 @@
-import { prisma } from '~/lib/prisma';
+import { prisma } from '~/lib/prisma.server';
 // import prisma from '~/lib/prisma';
 export async function getAccountSummary(userId: string) {
 	try {

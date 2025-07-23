@@ -1,4 +1,4 @@
-import { prisma } from '~/lib/prisma';
+import { prisma } from '~/lib/prisma.server';
 
 export async function getHostRentedVanCount(renterId: string) {
 	return prisma.rent.count({

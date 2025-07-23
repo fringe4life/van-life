@@ -1,4 +1,4 @@
-import { prisma } from '~/lib/prisma';
+import { prisma } from '~/lib/prisma.server';
 // import prisma from "~/lib/prisma";
 export async function getHostReviews(userId: string) {
 	return prisma.review.findMany({
