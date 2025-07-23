@@ -1,6 +1,6 @@
 import type { Van } from '@prisma/client';
 import clsx from 'clsx';
-import { data, href, useParams } from 'react-router';
+import { data, href, redirect, useParams } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import GenericComponent from '~/components/GenericComponent';
 import VanCard from '~/components/Van/VanCard';
@@ -8,6 +8,7 @@ import { getAccountSummary } from '~/db/getAccountSummary';
 import { getAverageReviewRating } from '~/db/getAvgReviews';
 import { getHostVans } from '~/db/host/getHostVans';
 import useIsNavigating from '~/hooks/useIsNavigating';
+import { auth } from '~/lib/auth.server';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/host';
@@ -28,7 +29,10 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 
 export async function loader({ request }: Route.LoaderArgs) {
 	console.log('loader from host');
-	const session = await getSessionOrRedirect(request);
+	const session = await auth.api.getSession({
+		headers: request.headers,
+	});
+	if (!session) throw redirect(href('/login'), { headers: request.headers });
 
 	console.log(request.headers);
 
