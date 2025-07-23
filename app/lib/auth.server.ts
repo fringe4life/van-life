@@ -35,7 +35,7 @@ export const auth = betterAuth({
 	// advanced: {
 	// 	crossSubDomainCookies: {
 	// 		enabled: true,
-	// 		domain: 'localhost:5173', // your domain
+	// 		domain: 'van-life-five-beryl.vercel.app', // your domain
 	// 	},
 	// 	useSecureCookies: true,
 	// },
@@ -47,6 +47,7 @@ export const auth = betterAuth({
 	// 	'http://localhost:5173',
 	// 	'https://van-life-coinnichs-projects.vercel.app',
 	// 	'https://van-life-3ofrhtwbv-coinnichs-projects.vercel.app/',
+	// 	'https://van-life-4l1wpq5q2-coinnichs-projects.vercel.app',
 	// ],
 });
 // export type Session = typeof auth.$Infer.Session;

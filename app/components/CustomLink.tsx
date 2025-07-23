@@ -17,7 +17,6 @@ export default function CustomLink({
 			style={{
 				pointerEvents: isPage ? 'none' : 'auto',
 			}}
-			// prefetch="viewport"
 		>
 			{children}
 		</Link>
