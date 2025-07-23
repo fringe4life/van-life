@@ -8,9 +8,9 @@ import { auth } from '~/lib/auth.server';
 import { loginSchema } from '~/lib/schemas.server';
 import type { Route } from './+types/login';
 
-// export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
-// 	return actionHeaders ? actionHeaders : loaderHeaders;
-// }
+export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
+	return actionHeaders ? actionHeaders : loaderHeaders;
+}
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const result = await auth.api.getSession({ headers: request.headers });
@@ -30,7 +30,6 @@ export async function action({ request }: Route.ActionArgs) {
 			email: (formData.email as string) ?? '',
 		};
 	}
-	// try {
 	const response = await auth.api.signInEmail({
 		body: result.data,
 		asResponse: true,
