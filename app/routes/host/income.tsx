@@ -45,7 +45,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...request.headers,
 			},
 		},
 	);

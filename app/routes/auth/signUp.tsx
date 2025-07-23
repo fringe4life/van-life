@@ -49,7 +49,7 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 			<h2 className="justify-center font-bold text-2xl text-shadow-text sm:text-3xl">
 				Create your account
 			</h2>
-			<Form method="POST" className="grid gap-4">
+			<Form method="POST" className="grid items-center gap-4">
 				<Input
 					name="email"
 					id="email"

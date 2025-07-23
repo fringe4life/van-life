@@ -1,4 +1,4 @@
-import { Form, redirect, replace } from 'react-router';
+import { Form, href, redirect, replace } from 'react-router';
 import { z } from 'zod/v4';
 import CustomLink from '~/components/CustomLink';
 import { Button } from '~/components/ui/button';
@@ -77,7 +77,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
 			</Form>
 			<p>
 				<span>Don't have an account?</span>{' '}
-				<CustomLink to="/signup" className="text-orange-400">
+				<CustomLink to={href('/signup')} className="text-orange-400">
 					Create one now
 				</CustomLink>
 			</p>

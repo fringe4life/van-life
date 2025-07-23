@@ -9,8 +9,8 @@ export const loader = async ({ request }: Route.ClientLoaderArgs) => {
 
 export default function HostLayout() {
 	return (
-		<div>
-			<ul className=" mb-10 flex flex-wrap gap-2 sm:gap-3">
+		<div className="max-w-[calc(100dvw_-_2rem)]">
+			<ul className="mask-r-from-85% no-scrollbar flex h-[3lh] max-w-full gap-3 overflow-x-auto pr-4 pb-10">
 				<li>
 					<CustomNavLink
 						to={href('/host')}
