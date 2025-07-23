@@ -41,6 +41,7 @@ export async function action({ request }: Route.ActionArgs) {
 			email: (formData.email as string) ?? '',
 		};
 	}
+	console.log(response.headers);
 	throw replace('/host', {
 		headers: response.headers,
 	});
