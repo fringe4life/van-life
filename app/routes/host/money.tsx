@@ -1,5 +1,5 @@
 import { type ChangeEventHandler, useState } from 'react';
-import { Form, href, redirect } from 'react-router';
+import { data, Form, href, redirect } from 'react-router';
 import { z } from 'zod/v4';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -21,11 +21,23 @@ export function meta() {
 	];
 }
 
+export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
+	return actionHeaders ? actionHeaders : loaderHeaders;
+}
+
 export async function loader({ request }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
 	const maxWithrawalAmount = await getAccountSummary(session.user.id);
 
-	return { maxWithrawalAmount };
+	return data(
+		{ maxWithrawalAmount },
+		{
+			headers: {
+				'Cache-Control': 'max-age=259200',
+				...request.headers,
+			},
+		},
+	);
 }
 
 export async function action({ request }: Route.ActionArgs) {

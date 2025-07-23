@@ -18,6 +18,10 @@ export function meta() {
 	];
 }
 
+export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
+	return actionHeaders ? actionHeaders : loaderHeaders;
+}
+
 export async function loader({ request }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
 
@@ -41,6 +45,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
+				...request.headers,
 			},
 		},
 	);

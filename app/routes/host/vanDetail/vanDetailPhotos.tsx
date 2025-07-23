@@ -4,5 +4,13 @@ import Image from '~/components/Image';
 
 export default function VanDetailPhotos() {
 	const van = useOutletContext<Van>();
-	return <Image src={van.imageUrl} alt={van.name} width="100" height="100" />;
+	return (
+		<Image
+			src={van.imageUrl}
+			alt={van.name}
+			width="100"
+			height="100"
+			srcSet=""
+		/>
+	);
 }

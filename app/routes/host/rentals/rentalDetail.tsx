@@ -10,6 +10,20 @@ import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { rentVanSchema } from '~/lib/schemas.server';
 import type { Route } from './+types/rentalDetail';
 
+export function meta({ data }: Route.MetaArgs) {
+	return [
+		{ title: `Rent ${data?.rental.van.name} | Vanlife` },
+		{
+			name: 'description',
+			content: 'The van you might rent',
+		},
+	];
+}
+
+export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
+	return actionHeaders ? actionHeaders : loaderHeaders;
+}
+
 export async function loader({ params, request }: Route.LoaderArgs) {
 	await getSessionOrRedirect(request);
 	if (!params.vanId) throw data('Van not found', { status: 404 });

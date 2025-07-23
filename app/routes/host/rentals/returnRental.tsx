@@ -9,6 +9,20 @@ import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { getCost } from '~/utils/getCost';
 import type { Route } from './+types/returnRental';
 
+export function meta({ data }: Route.MetaArgs) {
+	return [
+		{ title: `Return ${data?.rent.van.name} | Vanlife` },
+		{
+			name: 'description',
+			content: "The van you might return to it's owner",
+		},
+	];
+}
+
+export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
+	return actionHeaders ? actionHeaders : loaderHeaders;
+}
+
 export async function loader({ request, params }: Route.LoaderArgs) {
 	const session = await getSessionOrRedirect(request);
 
@@ -49,7 +63,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 	]);
 	if (!rent) throw data('Rented van not found', { status: 404 });
 	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van.price);
-	const isUnableToPay = money < amountToPay;
+	const isUnableToPay = typeof money === 'number' ? money < amountToPay : false;
 
 	if (isUnableToPay) {
 		return { errors: 'Cannot afford to return this rental' };
@@ -76,7 +90,7 @@ export default function ReturnRental({
 	const { rent, money } = loaderData;
 
 	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van.price);
-	const isUnableToPay = money < amountToPay;
+	const isUnableToPay = typeof money === 'number' ? money < amountToPay : false;
 	return (
 		<section className="flex flex-col gap-4">
 			<h2 className="">Return this van:</h2>
