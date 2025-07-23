@@ -2,7 +2,7 @@
 // import type { SqlDriverAdapterFactory } from '@prisma/client/runtime/library';
 
 // import { PrismaClient } from '~/generated/prisma/client';
-// // import { env } from '~/utils/env';
+// // import { env } from '~/utils/env.server';
 
 // export type GetDbParams = {
 // 	connectionString: string;
