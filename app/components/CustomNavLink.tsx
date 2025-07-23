@@ -10,10 +10,10 @@ export default function CustomNavLink({
 	return (
 		<NavLink
 			to={to}
-			prefetch="none"
 			{...rest}
 			style={{ pointerEvents: isPage ? 'none' : 'auto' }}
 			viewTransition
+			prefetch="none"
 		>
 			{children}
 		</NavLink>
