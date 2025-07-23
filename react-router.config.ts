@@ -6,4 +6,7 @@ export default {
 	ssr: true,
 	// prerender: ['/', '/about'],
 	presets: [vercelPreset()],
+	routeDiscovery: {
+		mode: 'initial',
+	},
 } satisfies Config;
