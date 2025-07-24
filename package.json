@@ -1,62 +1,63 @@
 {
-	"name": "van-life",
-	"private": true,
-	"type": "module",
-	"prisma": {
-		"schema": "./prisma",
-		"seed": "tsx prisma/seed.ts"
-	},
-	"scripts": {
-		"build": "react-router build",
-		"dev": " react-router dev",
-		"typecheck": "react-router typegen && tsgo",
-		"postinstall": "prisma generate "
-	},
-	"dependencies": {
-		"@prisma/adapter-pg": "^6.12.0",
-		"@prisma/client": "6.7.0",
-		"@prisma/extension-accelerate": "^2.0.2",
-		"@radix-ui/react-dialog": "^1.1.14",
-		"@radix-ui/react-label": "^2.1.7",
-		"@radix-ui/react-slot": "^1.2.3",
-		"@react-router/node": "^7.7.0",
-		"@react-router/serve": "^7.7.0",
-		"@vercel/react-router": "^1.2.2",
-		"better-auth": "^1.3.3",
-		"class-variance-authority": "^0.7.1",
-		"clsx": "^2.1.1",
-		"isbot": "^5.1.28",
-		"lucide-react": "^0.501.0",
-		"prisma": "^6.12.0",
-		"react": "^19.1.0",
-		"react-dom": "^19.1.0",
-		"react-router": "^7.7.0",
-		"recharts": "^3.1.0",
-		"tailwind-merge": "^3.3.1",
-		"tsx": "^4.20.3",
-		"tw-animate-css": "^1.3.5",
-		"zod": "^3.25.76"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.1.2",
-		"@react-router/dev": "^7.7.0",
-		"@tailwindcss/vite": "^4.1.11",
-		"@types/node": "^20.19.9",
-		"@types/react": "^19.1.8",
-		"@types/react-dom": "^19.1.6",
-		"@typescript/native-preview": "^7.0.0-dev.20250723.1",
-		"babel-plugin-react-compiler": "^19.1.0-rc.2",
-		"react-router-devtools": "^1.1.10",
-		"tailwindcss": "^4.1.11",
-		"typescript": "^5.9.0-dev.20250723",
-		"vite": "^7.0.5",
-		"vite-plugin-babel": "^1.3.2",
-		"vite-tsconfig-paths": "^5.1.4"
-	},
-	"trustedDependencies": [
-		"@prisma/engines",
-		"@tailwindcss/oxide",
-		"esbuild",
-		"prisma"
-	]
+  "name": "van-life",
+  "private": true,
+  "type": "module",
+  "prisma": {
+    "schema": "./prisma",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "scripts": {
+    "build": "react-router build",
+    "dev": " react-router dev",
+    "typecheck": "react-router typegen && tsgo",
+    "postinstall": "prisma generate "
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^6.12.0",
+    "@prisma/client": "6.7.0",
+    "@prisma/extension-accelerate": "^2.0.2",
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@react-router/node": "^7.7.0",
+    "@react-router/serve": "^7.7.0",
+    "@vercel/react-router": "^1.2.2",
+    "better-auth": "^1.3.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "isbot": "^5.1.28",
+    "lucide-react": "^0.501.0",
+    "prisma": "^6.12.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router": "^7.7.0",
+    "recharts": "^3.1.0",
+    "tailwind-merge": "^3.3.1",
+    "tsx": "^4.20.3",
+    "tw-animate-css": "^1.3.5",
+    "zod": "^4.0.8"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.1.2",
+    "@react-router/dev": "^7.7.0",
+    "@tailwindcss/vite": "^4.1.11",
+    "@types/node": "^24.1.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@typescript/native-preview": "^7.0.0-dev.20250724.1",
+    "babel-plugin-react-compiler": "^19.1.0-rc.2",
+    "react-router-devtools": "^5.0.6",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.9.0-dev.20250724",
+    "vite": "^7.0.6",
+    "vite-plugin-babel": "^1.3.2",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "trustedDependencies": [
+    "@prisma/client",
+    "@prisma/engines",
+    "@tailwindcss/oxide",
+    "esbuild",
+    "prisma"
+  ]
 }

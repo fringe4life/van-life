@@ -23,23 +23,28 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const session = await getSessionOrRedirect(request);
+	const { session, headers } = await getSessionOrRedirect(request);
 
 	const { page, limit } = getPaginationParams(request.url);
 
-	const [vans, vansCount] = await Promise.all([
+	const results = await Promise.allSettled([
 		getHostRentedVans(session.user.id, page, limit),
 		getHostRentedVanCount(session.user.id),
 	]);
 
+	const [vans, vansCount] = results.map((result) =>
+		result.status === 'fulfilled' ? result.value : 'Error fetching data',
+	);
+
 	return data(
 		{
-			vans,
-			vansCount,
+			vans: vans as any, // or Van[] | string
+			vansCount: vansCount as any, // or number | string
 		},
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
+				...headers,
 			},
 		},
 	);

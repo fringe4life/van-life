@@ -1,13 +1,19 @@
 import { href, redirect } from 'react-router';
 import { auth } from './auth.server';
+
+type Session = typeof auth.$Infer.Session;
+
 export async function getSessionOrRedirect(
 	request: Request,
 	redirectTo = href('/login'),
-) {
-	const session = await auth.api.getSession({
+): Promise<{ session: Session; headers: Headers }> {
+	const response = await auth.api.getSession({
 		headers: request.headers,
+		asResponse: true,
 	});
-	if (!session) throw redirect(redirectTo, { headers: request.headers });
+	const session: Session = await response.json();
 
-	return session;
+	if (!session) throw redirect(redirectTo, { headers: response.headers });
+
+	return { session, headers: response.headers };
 }

@@ -1,11 +1,15 @@
-import { Outlet } from 'react-router';
+import { data, Outlet } from 'react-router';
 import Nav from '~/components/Nav';
 import { auth } from '~/lib/auth.server';
 import type { Route } from './+types/layout';
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const session = await auth.api.getSession({ headers: request.headers });
-	return session !== null;
+	const response = await auth.api.getSession({
+		headers: request.headers,
+		asResponse: true,
+	});
+	const session = await response.json();
+	return data(session !== null, { headers: response.headers });
 }
 
 export default function Layout({ loaderData }: Route.ComponentProps) {

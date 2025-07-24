@@ -16,8 +16,12 @@ export function meta({ data }: Route.MetaArgs) {
 	];
 }
 
+export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
+	return actionHeaders ? actionHeaders : loaderHeaders;
+}
+
 export async function loader({ request, params }: Route.LoaderArgs) {
-	const session = await getSessionOrRedirect(request);
+	const { session, headers } = await getSessionOrRedirect(request);
 	const { vanId } = params;
 	if (!vanId) throw data('Van not found', { status: 404 });
 	const van = await getHostVan(session.user.id, vanId);
@@ -30,6 +34,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
+				...headers,
 			},
 		},
 	);

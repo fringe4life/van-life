@@ -21,7 +21,7 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const session = await getSessionOrRedirect(request);
+	const { session, headers } = await getSessionOrRedirect(request);
 
 	const reviews = await getHostReviews(session.user.id);
 
@@ -32,6 +32,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
+				...headers,
 			},
 		},
 	);

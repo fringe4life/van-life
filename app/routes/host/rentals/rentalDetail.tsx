@@ -25,7 +25,7 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ params, request }: Route.LoaderArgs) {
-	await getSessionOrRedirect(request);
+	const { headers } = await getSessionOrRedirect(request);
 	if (!params.vanId) throw data('Van not found', { status: 404 });
 
 	const rental = await getHostRentedVan(params.vanId);
@@ -37,13 +37,14 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
+				...headers,
 			},
 		},
 	);
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
-	const session = await getSessionOrRedirect(request);
+	const { session } = await getSessionOrRedirect(request);
 
 	const formData = Object.fromEntries(await request.formData());
 

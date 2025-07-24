@@ -26,7 +26,7 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const session = await getSessionOrRedirect(request);
+	const { session, headers } = await getSessionOrRedirect(request);
 	const maxWithrawalAmount = await getAccountSummary(session.user.id);
 
 	return data(
@@ -34,13 +34,14 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
+				...headers,
 			},
 		},
 	);
 }
 
 export async function action({ request }: Route.ActionArgs) {
-	const session = await getSessionOrRedirect(request);
+	const { session } = await getSessionOrRedirect(request);
 
 	const formData = Object.fromEntries(await request.formData());
 	const result = moneySchema.safeParse(formData);
