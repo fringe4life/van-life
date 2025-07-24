@@ -7,6 +7,7 @@ import {
 	useState,
 } from 'react';
 import { href } from 'react-router';
+import navLinkClassName from '~/utils/navLinkClassName';
 import CustomLink from './CustomLink';
 import CustomNavLink from './CustomNavLink';
 import GenericComponent from './GenericComponent';
@@ -17,13 +18,10 @@ interface NavProps {
 	hasToken: boolean;
 }
 
-const navLinkClassName: NonNullable<
-	ComponentProps<typeof CustomNavLink>['className']
-> = ({ isActive }) =>
-	`transition-colors duration-250 px-2 py-1 rounded ${isActive ? 'underline' : ''} hover:bg-orange-400`;
 const linkClassName: NonNullable<
 	ComponentProps<typeof CustomLink>['className']
-> = 'transition-colors duration-250 px-2 py-1 rounded hover:bg-orange-400';
+> =
+	'transition-colors duration-250 px-2 py-1 rounded hover:bg-orange-400 hover:text-white';
 
 type NavLinkLikeProps = ComponentProps<typeof CustomNavLink>;
 type LinkLikeProps = ComponentProps<typeof CustomLink>;
@@ -72,7 +70,9 @@ export default function Nav({ hasToken }: NavProps) {
 		};
 	}, []);
 
-	const handleClick: MouseEventHandler<HTMLButtonElement> = () => {
+	const handleClick: MouseEventHandler<
+		HTMLButtonElement | HTMLAnchorElement
+	> = () => {
 		if (isNavOpen && !isAnimatingOut) {
 			setIsAnimatingOut(true);
 			animationTimeout.current = setTimeout(() => {
@@ -152,8 +152,11 @@ export default function Nav({ hasToken }: NavProps) {
 				props: {
 					...rest,
 					onClick: handleNavLinkClick,
-					className: typeof className === 'string' ? className : linkClassName,
+					...(typeof className === 'string'
+						? { className }
+						: { className: linkClassName }),
 				},
+				Component: CustomLink,
 			};
 		}
 	});
