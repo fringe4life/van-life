@@ -26,7 +26,7 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" className="w-full bg-neutral-50">
+		<html lang="en" className="max-w-dvw bg-neutral-50">
 			<head>
 				<meta charSet="utf-8" />
 				<link rel="icon" type="image/png" href="/camper-van.png" />
@@ -34,7 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Meta />
 				<Links />
 			</head>
-			<body className="mx-auto grid min-h-dvh max-w-5xl grid-rows-[104px_1fr_100px] bg-orange-50">
+			<body className="mx-auto grid min-h-dvh w-full max-w-5xl grid-rows-[104px_1fr_100px] bg-orange-50">
 				{children}
 				<ScrollRestoration />
 				<Scripts />

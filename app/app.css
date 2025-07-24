@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/correctness/noUnknownTypeSelector: is for a view transition name and perfectly legit */
+/** biome-ignore-all lint/correctness/noUnknownProperty: the property exists */
 @import "tailwindcss";
 html {
   scrollbar-gutter: stable;
@@ -57,14 +58,61 @@ html {
   }
 }
 
+@keyframes --slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes --slideOutRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+
+@keyframes --overlayFadeIn {
+  from {
+    opacity: 0;
+    background-color: rgba(0,0,0,0);
+  }
+  to {
+    opacity: 1;
+    background-color: rgba(0,0,0,0.6);
+  }
+}
+
+@keyframes --overlayFadeOut {
+  from {
+    opacity: 1;
+    background-color: rgba(0,0,0,0.6);
+  }
+  to {
+    opacity: 0;
+    background-color: rgba(0,0,0,0);
+  }
+}
+
+
 /* only show view transition if no preference, the other option being:  */
 /* prefers-reduced-motion: reduce */
 @media screen and (prefers-reduced-motion: no-preference) {
   @view-transition {
-    /* biome-ignore lint/correctness/noUnknownProperty: rule exists*/
     navigation: auto;
   }
-
+  
+  .mobile-sidebar {
+    animation: --slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  .mobile-sidebar.out {
+    animation: --slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
   /* sets speed for view transitions */
   ::view-transition-group(*) {
     animation-duration: 500ms;

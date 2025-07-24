@@ -1,11 +1,10 @@
-import { href, Outlet } from 'react-router';
-import CustomLink from '~/components/CustomLink';
-import CustomNavLink from '~/components/CustomNavLink';
+import { Outlet } from 'react-router';
+import Nav from '~/components/Nav';
 import { auth } from '~/lib/auth.server';
 import type { Route } from './+types/layout';
+
 export async function loader({ request }: Route.LoaderArgs) {
 	const session = await auth.api.getSession({ headers: request.headers });
-
 	return session !== null;
 }
 
@@ -13,69 +12,11 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 	const hasToken = loaderData;
 	return (
 		<>
-			<header className="flex items-center justify-between gap-3 px-2 py-9 contain-strict sm:gap-6 sm:px-6">
-				<h1 className="font-black text-xl xs:text-2xl uppercase">
-					<CustomLink to={href('/')}>#vanlife</CustomLink>
-				</h1>
-				<nav>
-					<ul className="flex flex-wrap justify-end gap-2 sm:flex-nowrap sm:gap-3">
-						<li>
-							<CustomNavLink
-								to={href('/about')}
-								className={({ isActive, isPending }) =>
-									isPending ? 'text-green-500' : isActive ? 'underline' : ''
-								}
-							>
-								About
-							</CustomNavLink>
-						</li>
-
-						{hasToken && (
-							<li>
-								<CustomNavLink
-									to={href('/host')}
-									className={({ isActive, isPending }) =>
-										isPending ? 'text-green-500' : isActive ? 'underline' : ''
-									}
-								>
-									Host
-								</CustomNavLink>
-							</li>
-						)}
-						<li>
-							<CustomNavLink
-								to={href('/vans')}
-								className={({ isActive, isPending }) =>
-									isPending ? 'text-green-500' : isActive ? 'underline' : ''
-								}
-							>
-								Vans
-							</CustomNavLink>
-						</li>
-
-						{!hasToken ? (
-							<li>
-								<CustomNavLink
-									to={href('/login')}
-									className={({ isActive, isPending }) =>
-										isPending ? 'text-green-500' : isActive ? 'underline' : ''
-									}
-								>
-									Login
-								</CustomNavLink>
-							</li>
-						) : (
-							<li>
-								<CustomLink to={href('/signout')}>Sign out</CustomLink>
-							</li>
-						)}
-					</ul>
-				</nav>
-			</header>
+			<Nav hasToken={hasToken} />
 			<main className="mb-6 grid grid-rows-subgrid px-2 contain-content sm:px-6">
 				<Outlet />
 			</main>
-			<footer className=" w-full bg-neutral-800 py-6.25 contain-strict">
+			<footer className="w-full bg-neutral-800 py-6.25 contain-strict">
 				<p className="text-center text-gray-400 text-sm uppercase">
 					&copy;{new Date().getFullYear()} #vanlife
 				</p>
@@ -90,10 +31,3 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 		</>
 	);
 }
-/* <a
-	href="https://www.flaticon.com/free-icons/image-placeholder"
-	title="image placeholder icons"
-	className="inline-block w-full text-center text-gray-400 text-sm"
->
-	Image placeholder icons created by Graphics Plazza - Flaticon
-</a>; */
