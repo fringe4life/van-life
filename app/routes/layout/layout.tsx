@@ -17,17 +17,17 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 	return (
 		<>
 			<Nav hasToken={hasToken} />
-			<main className="mb-6 grid grid-rows-subgrid px-2 contain-content sm:px-6">
+			<main className="mb-6 grid grid-rows-subgrid px-2 contain-content md:px-6">
 				<Outlet />
 			</main>
-			<footer className="w-full bg-neutral-800 py-6.25 contain-strict">
+			<footer className="grid place-content-center bg-neutral-800 py-6.25 contain-strict">
 				<p className="text-center text-gray-400 text-sm uppercase">
 					&copy;{new Date().getFullYear()} #vanlife
 				</p>
 				<a
 					href="https://www.flaticon.com/free-icons/camper-van"
 					title="camper van icons"
-					className="inline-block w-full text-center text-gray-400 text-xs"
+					className="inline-block w-full break-words text-center text-[.5rem] text-gray-400 xs:text-xs"
 				>
 					Camper van icons created by Iconfromus - Flaticon
 				</a>

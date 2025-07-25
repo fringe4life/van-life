@@ -35,7 +35,7 @@ const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	}
 	const Wrapper = as || 'div';
 	return (
-		<Wrapper className={cn('flex grow ', className)} {...wrapperProps}>
+		<Wrapper className={className} {...wrapperProps}>
 			{items.map((item, index) => (
 				<Component key={renderKey(item, index)} {...renderProps(item, index)} />
 			))}

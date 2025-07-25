@@ -162,7 +162,7 @@ export default function Nav({ hasToken }: NavProps) {
 	});
 
 	return (
-		<header className="flex items-center justify-between gap-3 px-2 py-9 sm:gap-6 sm:px-6">
+		<header className="flex items-center justify-between gap-3 px-3 py-9 sm:gap-6 md:px-6">
 			<h1 className="font-black text-xl xs:text-2xl uppercase">
 				<CustomLink to={href('/')}>#vanlife</CustomLink>
 			</h1>
