@@ -59,6 +59,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	return (
 		<VanPages
 			// generic component props start
+			className="grid-max"
 			Component={VanCard}
 			renderKey={(van) => van.id}
 			renderProps={(van) => ({

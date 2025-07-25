@@ -25,8 +25,8 @@ export default function Home() {
 				'opacity-75': changingPage,
 			})}
 		>
-			<h2 className="max-w-[19ch] font-extrabold text-lg text-shadow-lg xs:text-2xl backdrop-blur-sm md:text-4xl">
-				You got the travel plans, we&apos;ve got the travel vans.
+			<h2 className="max-w-[20ch] font-extrabold text-lg text-shadow-lg xs:text-2xl backdrop-blur-sm md:text-4xl">
+				You got the travel plans, we got the travel vans.
 			</h2>
 			<p className="max-w-[26ch] text-shadow-sm backdrop-blur-xs md:max-w-[45ch]">
 				Add adventure to your life by joining the #vanlife movement. Rent the

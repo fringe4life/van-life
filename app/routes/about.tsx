@@ -43,11 +43,11 @@ export default function About() {
 
 			<h2 className="mx-2 font-bold text-2xl starting:opacity-50 duration-1000 sm:mx-4 sm:text-3xl/normal md:text-4xl lg:max-w-3/4">
 				Don&apos;t{' '}
-				<span className="after:-bottom-1 relative after:absolute after:left-0 after:w-full after:rounded-lg after:border-2 after:border-b-red-500 after:border-solid ">
+				<span className="underline decoration-4 decoration-red-500 underline-offset-2">
 					squeeze
 				</span>{' '}
 				in a sedan when you could{' '}
-				<span className="after:-bottom-1 relative after:absolute after:left-0 after:w-full after:rounded-lg after:border-2 after:border-b-green-500 after:border-double ">
+				<span className="underline decoration-4 decoration-green-500 underline-offset-2">
 					relax
 				</span>{' '}
 				in a van.
