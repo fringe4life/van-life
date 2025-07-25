@@ -13,4 +13,8 @@ model Van {
 
   @@unique([createdAt(sort: Desc), id(sort: Desc)])
   @@index([hostId])
+  @@index([type])
+  @@index([id(sort: Desc), hostId])
+  @@index([isRented])
+  @@index([type(sort: Desc), id(sort: Desc)])
 }

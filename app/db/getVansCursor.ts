@@ -27,9 +27,7 @@ export async function getVansCursor(
 	if (!cursor && typeFilter) {
 		return prisma.van.findMany({
 			take: limit,
-			orderBy: {
-				id: 'desc',
-			},
+			orderBy: [{ type: 'desc' }, { id: 'desc' }],
 			where: {
 				type: typeFilter,
 			},
@@ -41,8 +39,6 @@ export async function getVansCursor(
 		where: {
 			type: typeFilter,
 		},
-		orderBy: {
-			id: 'desc',
-		},
+		orderBy: [{ type: 'desc' }, { id: 'desc' }],
 	});
 }

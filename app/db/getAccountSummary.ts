@@ -1,6 +1,8 @@
+import { isCUID } from '~/lib/checkIsCUID';
 import { prisma } from '~/lib/prisma.server';
 // import prisma from '~/lib/prisma';
 export async function getAccountSummary(userId: string) {
+	if (!isCUID(userId)) return 'Something went wrong, please try again later';
 	try {
 		const sum = await prisma.rent.aggregate({
 			_sum: {

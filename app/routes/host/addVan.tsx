@@ -1,10 +1,10 @@
-import { Form, href, redirect } from 'react-router';
+import { href, redirect } from 'react-router';
 import { z } from 'zod/v4';
+import CustomForm from '~/components/Form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
 import { createVan } from '~/db/createVan';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { addVanSchema } from '~/lib/schemas.server';
 import type { Route } from './+types/addVan';
@@ -19,7 +19,7 @@ export function meta() {
 }
 
 export async function action({ request }: Route.ActionArgs) {
-	const session = await getSessionOrRedirect(request);
+	const { session } = await getSessionOrRedirect(request);
 
 	const formData = Object.fromEntries(await request.formData());
 
@@ -46,13 +46,12 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function AddVan({ actionData }: Route.ComponentProps) {
-	const { usingForm } = useIsNavigating();
 	return (
 		<section>
 			<h2 className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 				Add Van
 			</h2>
-			<Form method="POST" className="mt-6 grid max-w-102 gap-4">
+			<CustomForm method="POST" className="mt-6 grid max-w-102 gap-4">
 				<Input
 					type="text"
 					name="name"
@@ -83,16 +82,14 @@ export default function AddVan({ actionData }: Route.ComponentProps) {
 					defaultValue={(actionData?.formData?.type as string) ?? ''}
 					list="vanTypeList"
 				/>
-				<datalist id="vantypeList">
+				<datalist id="vanTypeList">
 					<option value="LUXURY" />
 					<option value="SIMPLE" />
 					<option value="RUGGED" />
 				</datalist>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
-				<Button type="submit" disabled={usingForm}>
-					Add your van
-				</Button>
-			</Form>
+				<Button type="submit">Add your van</Button>
+			</CustomForm>
 		</section>
 	);
 }

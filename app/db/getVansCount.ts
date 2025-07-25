@@ -6,8 +6,6 @@ export async function getVansCount(typeFilter: VanType | null) {
 		where: {
 			type: typeFilter ? typeFilter : undefined,
 		},
-		orderBy: {
-			id: 'desc',
-		},
+		orderBy: typeFilter ? [{ type: 'desc' }, { id: 'desc' }] : { id: 'desc' },
 	});
 }

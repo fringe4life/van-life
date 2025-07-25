@@ -10,4 +10,9 @@ model Review {
   user      UserInfo @relation(fields: [userId], references: [userId])
 
   @@index([rentId, userId])
+  @@index([userId(sort: Desc)])
+  @@index([rentId(sort: Desc)])
+  @@index([rating(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@index([updatedAt(sort: Desc)])
 }

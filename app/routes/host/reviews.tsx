@@ -41,7 +41,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Reviews({ loaderData }: Route.ComponentProps) {
 	const { reviews } = loaderData;
 
-	const result = reviews
+	const safeReviews = Array.isArray(reviews) ? reviews : [];
+
+	const result = safeReviews
 		.reduce(
 			(acc, cur) => {
 				acc[cur.rating - 1] += 1;
@@ -54,7 +56,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			amount: res,
 		}));
 
-	const reviewItems = reviews.map((review) => ({
+	const reviewItems = safeReviews.map((review) => ({
 		name: review.user.user.name,
 		text: review.text,
 		rating: review.rating,

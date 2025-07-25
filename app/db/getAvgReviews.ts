@@ -1,16 +1,14 @@
+import { isCUID } from '~/lib/checkIsCUID';
 import { prisma } from '~/lib/prisma.server';
 // import prisma from '~/lib/prisma';
 export async function getAverageReviewRating(userId: string) {
+	if (!isCUID(userId)) return 'Something went wrong, please try again later';
 	const avg = await prisma.review.aggregate({
 		_avg: {
 			rating: true,
 		},
-		where: {
-			userId,
-		},
-		orderBy: {
-			userId: 'desc',
-		},
+		where: { userId },
+		orderBy: { createdAt: 'desc' },
 	});
 
 	return avg._avg.rating ?? 0;

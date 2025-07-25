@@ -38,8 +38,10 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	return data(
 		{
-			vans: vans as any, // or Van[] | string
-			vansCount: vansCount as any, // or number | string
+			vans: vans as Awaited<ReturnType<typeof getHostRentedVans>> | string, // or Van[] | string
+			vansCount: vansCount as
+				| Awaited<ReturnType<typeof getHostRentedVanCount>>
+				| string, // or number | string
 		},
 		{
 			headers: {

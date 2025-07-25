@@ -1,13 +1,13 @@
 import { type ChangeEventHandler, useState } from 'react';
-import { data, Form, href, redirect } from 'react-router';
+import { data, href, redirect } from 'react-router';
 import { z } from 'zod/v4';
+import CustomForm from '~/components/Form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
 import { addMoney } from '~/db/addMoney';
 import { getAccountSummary } from '~/db/getAccountSummary';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { moneySchema } from '~/lib/schemas.server';
 import type { Route } from './+types/money';
@@ -68,7 +68,6 @@ export default function MoneyTransaction({
 	actionData,
 	loaderData,
 }: Route.ComponentProps) {
-	const { usingForm } = useIsNavigating();
 	const [isDepositing, setIsDepositing] = useState(() => false);
 
 	const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -79,8 +78,8 @@ export default function MoneyTransaction({
 			<h2 className="font-bold text-4xl text-neutral-900">
 				Add or withdraw money
 			</h2>
-			<Form method="POST" className="mt-6 grid max-w-102 gap-4">
-				<fieldset className="flex gap-4">
+			<CustomForm method="POST" className="mt-6 grid max-w-102 gap-4">
+				<div className="flex gap-4">
 					<Label>
 						Deposit
 						<Input
@@ -105,7 +104,8 @@ export default function MoneyTransaction({
 							}
 						/>
 					</Label>
-				</fieldset>
+				</div>
+
 				<Input
 					type="number"
 					name="amount"
@@ -116,10 +116,8 @@ export default function MoneyTransaction({
 					max={isDepositing ? loaderData?.maxWithrawalAmount : MAX_ADD}
 				/>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
-				<Button type="submit" disabled={usingForm}>
-					Complete transaction
-				</Button>
-			</Form>
+				<Button type="submit">Complete transaction</Button>
+			</CustomForm>
 		</section>
 	);
 }

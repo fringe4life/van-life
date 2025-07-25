@@ -1,11 +1,11 @@
-import { data, Form, href, redirect } from 'react-router';
+import { data, href, redirect } from 'react-router';
 import { z } from 'zod/v4';
+import CustomForm from '~/components/Form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import VanCard from '~/components/Van/VanCard';
 import { getHostRentedVan } from '~/db/host/getHostRentedVan';
 import { rentVan } from '~/db/host/rentVan';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { rentVanSchema } from '~/lib/schemas.server';
 import type { Route } from './+types/rentalDetail';
@@ -29,7 +29,8 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 	if (!params.vanId) throw data('Van not found', { status: 404 });
 
 	const rental = await getHostRentedVan(params.vanId);
-	if (!rental) throw data('Van not found', { status: 404 });
+	if (!rental || typeof rental === 'string')
+		throw data('Van not found', { status: 404 });
 	return data(
 		{
 			rental,
@@ -85,8 +86,6 @@ export default function AddVan({
 	actionData,
 	loaderData,
 }: Route.ComponentProps) {
-	const { usingForm } = useIsNavigating();
-
 	const { rental } = loaderData;
 
 	return (
@@ -97,7 +96,7 @@ export default function AddVan({
 				action={<p />}
 			/>
 			<h2 className="font-bold text-4xl text-neutral-900">Return Van</h2>
-			<Form method="POST" className="mt-6 grid max-w-102 gap-4">
+			<CustomForm method="POST" className="mt-6 grid max-w-102 gap-4">
 				<Input
 					type="text"
 					defaultValue={rental.hostId}
@@ -105,10 +104,8 @@ export default function AddVan({
 					aria-hidden="true"
 				/>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
-				<Button type="submit" disabled={usingForm}>
-					Rent {rental.van.name}
-				</Button>
-			</Form>
+				<Button type="submit">Rent {rental.van.name}</Button>
+			</CustomForm>
 		</section>
 	);
 }

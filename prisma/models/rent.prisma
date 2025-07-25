@@ -13,4 +13,9 @@ model Rent {
 
   @@unique([rentedTo, vanId])
   @@index([rentedTo])
+  @@index([vanId])
+  @@index([renterId])
+  @@index([hostId])
+  @@index([renterId, rentedTo])
+  @@index([hostId, rentedTo])
 }

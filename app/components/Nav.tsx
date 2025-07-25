@@ -143,7 +143,7 @@ export default function Nav({ hasToken }: NavProps) {
 					...item.props,
 					onClick: handleNavLinkClick,
 				},
-			};
+			} as NavItemType;
 		} else {
 			// For CustomLink, ensure className is a string
 			const { className, ...rest } = item.props;
@@ -157,7 +157,7 @@ export default function Nav({ hasToken }: NavProps) {
 						: { className: linkClassName }),
 				},
 				Component: CustomLink,
-			};
+			} as NavItemType;
 		}
 	});
 

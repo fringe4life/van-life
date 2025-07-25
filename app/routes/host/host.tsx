@@ -1,4 +1,3 @@
-import type { Van } from '@prisma/client';
 import clsx from 'clsx';
 import { data, href, useParams } from 'react-router';
 import CustomLink from '~/components/CustomLink';
@@ -43,9 +42,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	return data(
 		{
-			vans: vans as Van[] | string,
-			sumIncome: sumIncome as number | string,
-			avgRating: avgRating as number | string,
+			vans: vans as Awaited<ReturnType<typeof getHostVans>>,
+			sumIncome: sumIncome as Awaited<ReturnType<typeof getAccountSummary>>,
+			avgRating: avgRating as Awaited<
+				ReturnType<typeof getAverageReviewRating>
+			>,
 			name: session.user.name,
 		},
 		{

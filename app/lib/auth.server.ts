@@ -1,9 +1,9 @@
+import { createId } from '@paralleldrive/cuid2';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 // import prisma from '~/lib/prisma';
 import { env } from '~/lib/env.server';
 import { prisma } from '~/lib/prisma.server';
-
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
 		provider: 'postgresql',
@@ -15,6 +15,14 @@ export const auth = betterAuth({
 	databaseHooks: {
 		user: {
 			create: {
+				before: async (user) => {
+					return {
+						data: {
+							...user,
+							id: createId(),
+						},
+					};
+				},
 				after: async (user) => {
 					const { id: userId } = user;
 					// TODO: add error handling...
@@ -32,4 +40,9 @@ export const auth = betterAuth({
 		updateAge: 60 * 60 * 24 * 3, // 1 day (every 1 day the session expiration is updated)
 		preserveSessionInDatabase: true,
 	},
+	// advanced: {
+	// 	database: {
+	// 		generateId: false,
+	// 	},
+	// },
 });

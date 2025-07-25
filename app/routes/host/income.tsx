@@ -1,4 +1,3 @@
-import type { Rent } from '@prisma/client';
 import { data, href } from 'react-router';
 import BarChartComponent from '~/components/BarChart';
 import Income from '~/components/Income';
@@ -37,10 +36,10 @@ export async function loader({ request }: Route.LoaderArgs) {
 	);
 	return data(
 		{
-			sumIncome: sumIncome as number | string,
-			hostIncomes: hostIncomes as
-				| Pick<Rent, 'amount' | 'id' | 'rentedAt'>[]
-				| string,
+			sumIncome: sumIncome as Awaited<ReturnType<typeof getAccountSummary>>,
+			hostIncomes: hostIncomes as Awaited<
+				ReturnType<typeof getHostTransactions>
+			>,
 		},
 		{
 			headers: {
@@ -54,22 +53,23 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
 	const { sumIncome, hostIncomes } = loaderData;
 
-	const mappedData = Array.isArray(hostIncomes)
-		? hostIncomes.map((income) => ({
-				name: income.rentedAt.toDateString(),
-				amount: Math.round(income.amount),
-			}))
+	const filteredHostIncomes = Array.isArray(hostIncomes)
+		? hostIncomes.filter((income) => income.amount > 0)
 		: [];
+	const mappedData = filteredHostIncomes.map((income) => ({
+		name: income.rentedAt.toDateString(),
+		amount: Math.round(income.amount),
+	}));
 
 	return (
 		<VanPages
 			emptyStateMessage="Rent some vans and your income will appear here."
 			className="grid-max"
-			items={hostIncomes}
+			items={filteredHostIncomes}
 			renderKey={(item) => item.id}
 			renderProps={(item) => item}
 			Component={Income}
-			itemsCount={hostIncomes.length}
+			itemsCount={filteredHostIncomes.length}
 			optionalElement={
 				<>
 					<p>

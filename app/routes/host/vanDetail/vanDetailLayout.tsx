@@ -25,7 +25,8 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 	const { vanId } = params;
 	if (!vanId) throw data('Van not found', { status: 404 });
 	const van = await getHostVan(session.user.id, vanId);
-	if (!van) throw data('Van not found', { status: 404 });
+	if (!van || typeof van === 'string')
+		throw data('Van not found', { status: 404 });
 
 	return data(
 		{

@@ -1,16 +1,19 @@
-import { Form, href, replace } from 'react-router';
+import { href, redirect, replace } from 'react-router';
 import { z } from 'zod/v4';
 import CustomLink from '~/components/CustomLink';
+import CustomForm from '~/components/Form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { auth } from '~/lib/auth.server';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { signUpScheme } from '~/lib/schemas.server';
 import type { Route } from './+types/signUp';
 
 export async function loader({ request }: Route.LoaderArgs) {
-	await getSessionOrRedirect(request);
+	const session = await auth.api.getSession({ headers: request.headers });
+
+	if (session) {
+		throw redirect(href('/host'));
+	}
 }
 
 export async function action({ request }: Route.ActionArgs) {
@@ -42,20 +45,17 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function SignUp({ actionData }: Route.ComponentProps) {
-	const { usingForm } = useIsNavigating();
-
 	return (
 		<div className="grid items-center justify-center gap-4 sm:gap-6 md:gap-12">
 			<h2 className="justify-center font-bold text-2xl text-shadow-text sm:text-3xl">
 				Create your account
 			</h2>
-			<Form method="POST" className="grid items-center gap-4">
+			<CustomForm method="POST" className="grid items-center gap-4">
 				<Input
 					name="email"
 					id="email"
 					type="email"
 					placeholder="your.email@email.com"
-					disabled={usingForm}
 					defaultValue={actionData?.email ?? ''}
 				/>
 				<Input
@@ -63,7 +63,6 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 					name="name"
 					id="name"
 					placeholder="John Doe"
-					disabled={usingForm}
 					defaultValue={actionData?.name ?? ''}
 				/>
 				<Input
@@ -71,20 +70,18 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 					id="password"
 					type="password"
 					placeholder="password"
-					disabled={usingForm}
 				/>
 				<Input
 					name="confirmPassword"
 					id="confirmPassword"
 					type="password"
 					placeholder="confirm password"
-					disabled={usingForm}
 				/>
-				{actionData?.errors ? <p>actionData.errors</p> : null}
-				<Button variant="default" type="submit" disabled={usingForm}>
+				{actionData?.errors ? <p>{actionData.errors}</p> : null}
+				<Button variant="default" type="submit">
 					Sign up
 				</Button>
-			</Form>
+			</CustomForm>
 			<p>
 				<span>Already have an account?</span>{' '}
 				<CustomLink to={href('/login')} className="text-orange-400">

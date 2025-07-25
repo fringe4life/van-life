@@ -1,9 +1,9 @@
-import { Form, href, redirect, replace } from 'react-router';
+import { href, redirect, replace } from 'react-router';
 import { z } from 'zod/v4';
 import CustomLink from '~/components/CustomLink';
+import CustomForm from '~/components/Form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { auth } from '~/lib/auth.server';
 import { loginSchema } from '~/lib/schemas.server';
 import type { Route } from './+types/login';
@@ -47,19 +47,17 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function Login({ actionData }: Route.ComponentProps) {
-	const { usingForm } = useIsNavigating();
 	return (
 		<div className="grid items-center justify-center gap-4 sm:gap-6 md:gap-12">
 			<h2 className="font-bold text-2xl text-shadow-text sm:text-3xl">
 				Sign into your account
 			</h2>
-			<Form method="POST" className="grid items-center gap-4">
+			<CustomForm method="POST" className="grid items-center gap-4">
 				<Input
 					name="email"
 					id="email"
 					type="email"
 					placeholder="john.doe@email.com"
-					disabled={usingForm}
 					defaultValue={actionData?.email ?? ''}
 				/>
 				<Input
@@ -67,14 +65,11 @@ export default function Login({ actionData }: Route.ComponentProps) {
 					id="password"
 					type="password"
 					placeholder="password"
-					disabled={usingForm}
 					defaultValue=""
 				/>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
-				<Button type="submit" disabled={usingForm}>
-					Sign in
-				</Button>
-			</Form>
+				<Button type="submit">Sign in</Button>
+			</CustomForm>
 			<p>
 				<span>Don't have an account?</span>{' '}
 				<CustomLink to={href('/signup')} className="text-orange-400">

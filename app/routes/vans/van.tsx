@@ -30,8 +30,10 @@ export async function loader({ params }: Route.LoaderArgs) {
 	// 	return
 	// }
 	if (!params.vanId) throw data('No van id', { status: 404 });
+
 	const van = await getVan(params.vanId);
-	if (!van) throw data('Van not found', { status: 404 });
+	if (!van || typeof van === 'string')
+		throw data('Van not found', { status: 404 });
 	return data(
 		{ van },
 		{

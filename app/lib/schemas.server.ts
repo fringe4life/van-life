@@ -9,86 +9,142 @@ import {
 	MIN_ADD,
 } from '~/constants/constants';
 
+/**
+ * Schema for validating user passwords.
+ * - Must be a string with at least 10 characters.
+ */
 const passwordSchema = z
 	.string()
-	.min(10, 'Password has to be a minimum of 10 characters')
-	.catch(() => '');
+	.min(10, { error: 'Password has to be a minimum of 10 characters' });
 
+/**
+ * Schema for user login form.
+ * - Requires a valid email and password.
+ */
 export const loginSchema = z.object({
-	email: z.email(),
-	password: passwordSchema,
+	email: z.email().describe('User email address'),
+	password: passwordSchema.describe('User password'),
 });
 
+/**
+ * TypeScript type inferred from loginSchema.
+ */
 export type loginSchemaType = z.infer<typeof loginSchema>;
 
+/**
+ * Schema for user sign-up form.
+ * - Extends loginSchema with confirmPassword and name fields.
+ * - Ensures password and confirmPassword match.
+ */
 export const signUpScheme = loginSchema
 	.extend({
-		confirmPassword: passwordSchema,
-		name: z.string().min(2).max(124),
+		confirmPassword: passwordSchema.describe('Password confirmation'),
+		name: z.string().min(2).max(124).describe('User display name'),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
 		error: "Passwords don't match.",
 		path: ['confirmPassword'],
 	});
 
-function zodEnumFromRecordKeys<K extends string>(record: Record<K, unknown>) {
-	const keys = Object.keys(record) as K[];
-	return z.enum(keys as [K, ...K[], typeof DEFAULT_FILTER]);
-}
-
-const vanType = zodEnumFromRecordKeys(VanType);
+/**
+ * Zod enum schema for van types, allowing a default filter value.
+ */
 const vanTypeSchema = z.enum(Object.values(VanType));
 
+/**
+ * Schema for adding a new van.
+ * - Validates name, description, type, imageUrl, and price fields.
+ */
 export const addVanSchema = z.object({
 	name: z
 		.string()
-		.max(60, { error: 'Name cannot be longer then 60 characters' }),
-	description: z.string().max(1024, {
-		error: 'Description is too long. Max length is 1024 characters',
-	}),
-	type: z.string().toUpperCase().pipe(vanTypeSchema),
+		.max(60, { error: 'Name cannot be longer then 60 characters' })
+		.describe('Van name (max 60 chars)'),
+	description: z
+		.string()
+		.max(1024, {
+			error: 'Description is too long. Max length is 1024 characters',
+		})
+		.describe('Van description (max 1024 chars)'),
+	type: z
+		.string()
+		.toUpperCase()
+		.pipe(vanTypeSchema)
+		.describe('Van type (enum)'),
 	imageUrl: z
 		.url()
 		.includes('unsplash', { error: 'Must be a free unsplash image' })
-		.includes('w='),
-	price: z.coerce.number().positive().max(32767, {
-		error: 'Your van cannot be more expensive then $32,767 dollars',
-	}),
+		.includes('w=')
+		.describe('Van image URL (must be Unsplash)'),
+	price: z.coerce
+		.number()
+		.positive()
+		.max(32767, {
+			error: 'Your van cannot be more expensive then $32,767 dollars',
+		})
+		.describe('Van price (max $32,767)'),
 });
 
-export const uuidSchema = z.uuidv4();
+/**
+ * Schema for validating CUID or CUID2 strings.
+ */
+export const cuidSchema = z
+	.cuid()
+	.or(z.cuid2())
+	.describe('CUID or CUID2 string');
 
+/**
+ * Schema for pagination parameters (page, limit, type).
+ */
 const paginationSchema = z.coerce.number().positive().optional();
 
+/**
+ * Schema for validating search parameters in van listings.
+ */
 export const searchParamsSchema = z.object({
-	page: paginationSchema.default(DEFAULT_PAGE),
-	limit: paginationSchema.default(DEFAULT_LIMIT),
+	page: paginationSchema.default(DEFAULT_PAGE).describe('Page number'),
+	limit: paginationSchema.default(DEFAULT_LIMIT).describe('Items per page'),
 	type: z
 		.string()
 		.toUpperCase()
 		.optional()
 		.default(DEFAULT_FILTER)
-		.pipe(vanType),
+		.pipe(vanTypeSchema.or(z.literal(DEFAULT_FILTER)))
+		.describe('Van type filter'),
 });
 
+/**
+ * Schema for money operations (withdraw, deposit) and amount.
+ */
 export const moneySchema = z.object({
-	type: z.enum(['withdraw', 'deposit']),
-	amount: z.coerce.number().min(MIN_ADD).max(MAX_ADD),
+	type: z.enum(['withdraw', 'deposit']).describe('Money operation type'),
+	amount: z.coerce.number().min(MIN_ADD).max(MAX_ADD).describe('Amount'),
 });
 
+/**
+ * Schema for renting a van (vanId, hostId, renterId as CUIDs).
+ */
 export const rentVanSchema = z.object({
-	vanId: z.uuid(),
-	hostId: z.uuid(),
-	renterId: z.uuid(),
+	vanId: cuidSchema.describe('Van CUID'),
+	hostId: cuidSchema.describe('Host CUID'),
+	renterId: cuidSchema.describe('Renter CUID'),
 });
 
+/**
+ * Schema for cursor-based pagination in van listings.
+ */
 export const cursorPaginationSchema = z.object({
-	limit: paginationSchema.default(DEFAULT_LIMIT),
-	cursor: z.cuid().optional().default(DEFAULT_CURSOR),
+	limit: paginationSchema.default(DEFAULT_LIMIT).describe('Items per page'),
+	cursor: z
+		.cuid()
+		.optional()
+		.default(DEFAULT_CURSOR)
+		.describe('Pagination cursor'),
 	type: z
 		.string()
 		.toUpperCase()
 		.optional()
 		.default(DEFAULT_FILTER)
-		.pipe(vanType),
+		.pipe(vanTypeSchema.or(z.literal(DEFAULT_FILTER)))
+		.describe('Van type filter'),
 });

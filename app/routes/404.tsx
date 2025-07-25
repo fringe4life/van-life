@@ -1,4 +1,5 @@
-import { href, Link } from 'react-router';
+import { href } from 'react-router';
+import CustomLink from '~/components/CustomLink';
 import { buttonVariants } from '~/components/ui/button';
 
 export default function NotFound() {
@@ -7,9 +8,12 @@ export default function NotFound() {
 			<h2 className="font-bold text-2xl text-neutral-900 sm:text-3xl">
 				Sorry, the page you were looking for was not found.
 			</h2>
-			<Link to={href('/')} className={buttonVariants({ variant: 'secondary' })}>
+			<CustomLink
+				to={href('/')}
+				className={buttonVariants({ variant: 'secondary' })}
+			>
 				Return to home
-			</Link>
+			</CustomLink>
 		</section>
 	);
 }

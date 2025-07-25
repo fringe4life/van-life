@@ -1,3 +1,4 @@
+import { isCUID } from '~/lib/checkIsCUID';
 import { prisma } from '~/lib/prisma.server';
 // import prisma from '~/lib/prisma';
 
@@ -7,6 +8,8 @@ export async function returnVan(
 	amount: number,
 	vanId: string,
 ) {
+	if (!isCUID(rentId) || !isCUID(vanId) || !isCUID(userId))
+		return 'Something went wrong, please try again later';
 	return prisma.$transaction([
 		prisma.rent.update({
 			where: {

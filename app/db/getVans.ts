@@ -15,8 +15,6 @@ export async function getVans(
 		where: {
 			type: typeFilter ? typeFilter : undefined,
 		},
-		orderBy: {
-			id: 'desc',
-		},
+		orderBy: typeFilter ? [{ type: 'desc' }, { id: 'desc' }] : { id: 'desc' },
 	});
 }

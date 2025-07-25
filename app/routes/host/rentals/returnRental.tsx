@@ -1,5 +1,6 @@
-import { data, Form, href, redirect } from 'react-router';
+import { data, href, redirect } from 'react-router';
 import CustomLink from '~/components/CustomLink';
+import CustomForm from '~/components/Form';
 import UnsuccesfulState from '~/components/UnsuccesfulState';
 import { Button } from '~/components/ui/button';
 import VanCard from '~/components/Van/VanCard';
@@ -11,8 +12,12 @@ import { getCost } from '~/utils/getCost';
 import type { Route } from './+types/returnRental';
 
 export function meta({ data }: Route.MetaArgs) {
+	const vanName =
+		typeof data?.rent === 'object' && data?.rent !== null && 'van' in data.rent
+			? data.rent.van.name
+			: 'Van';
 	return [
-		{ title: `Return ${data?.rent.van.name} | Vanlife` },
+		{ title: `Return ${vanName} | Vanlife` },
 		{
 			name: 'description',
 			content: "The van you might return to it's owner",
@@ -131,12 +136,12 @@ export default function ReturnRental({
 					</CustomLink>
 				</article>
 			)}
-			<Form method="POST">
+			<CustomForm method="POST">
 				<Button type="submit" disabled={isUnableToPay}>
 					Return
 				</Button>
 				{actionData?.errors && <p>{actionData.errors}</p>}
-			</Form>
+			</CustomForm>
 		</section>
 	);
 }
