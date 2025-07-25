@@ -1,4 +1,4 @@
-import { type Van, VanType } from '@prisma/client';
+import { VanType } from '@prisma/client';
 
 import { data, href } from 'react-router';
 import CustomNavLink from '~/components/CustomNavLink';
@@ -40,9 +40,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	return data(
 		{
-			vans: vans as Van[] | string,
+			vans: vans as Awaited<ReturnType<typeof getVans>>,
 			badges,
-			vansCount: vansCount as number | string,
+			vansCount: vansCount as Awaited<ReturnType<typeof getVansCount>>,
 		},
 		{
 			headers: {

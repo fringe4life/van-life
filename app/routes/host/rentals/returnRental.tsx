@@ -116,7 +116,7 @@ export default function ReturnRental({
 	const isUnableToPay = money < amountToPay;
 	return (
 		<section className="flex flex-col gap-4">
-			<h2 className="">Return this van:</h2>
+			<h2>Return this van:</h2>
 			<div className="max-w-lg">
 				<VanCard
 					van={rent.van}

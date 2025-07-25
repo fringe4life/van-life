@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { data, href, useParams } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import GenericComponent from '~/components/GenericComponent';
+import RatingStars from '~/components/RatingStars';
 import VanCard from '~/components/Van/VanCard';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getAverageReviewRating } from '~/db/getAvgReviews';
@@ -71,7 +72,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				<p className="col-start-1 my-4 font-light text-base text-neutral-600 sm:my-6 md:my-8">
 					Income last <span className="font-medium underline">30 days</span>
 				</p>
-				<p className="col-start-1 font-extrabold text-3xl text-neutral-900 sm:text-4xl md:text-5xl">
+				<p className="col-start-1 font-extrabold text-2xl text-neutral-900 xs:text-3xl sm:text-4xl md:text-5xl">
 					{displayPrice(sumIncome)}
 				</p>
 				<CustomLink
@@ -81,13 +82,15 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					Details
 				</CustomLink>
 			</div>
-			<div className="flex justify-between bg-orange-200 px-3 py-6 sm:px-6.5 sm:py-9 ">
+			<div className="flex items-center justify-between bg-orange-200 px-3 py-6 sm:px-6.5 sm:py-9 ">
 				<p className="font-bold text-lg text-shadow-text sm:text-2xl">
-					Review Score star{' '}
-					{typeof avgRating === 'number'
-						? avgRating.toFixed(1)
-						: (avgRating ?? 'unknown')}
-					/5
+					{typeof avgRating === 'number' ? (
+						<span>
+							Your Avg Review <RatingStars rating={avgRating} />
+						</span>
+					) : (
+						<span>something went wrong</span>
+					)}
 				</p>
 				<CustomLink
 					to={href('/host/review')}

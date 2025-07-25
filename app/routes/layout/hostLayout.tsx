@@ -21,10 +21,10 @@ const hostNavItems = [
 
 export default function HostLayout() {
 	return (
-		<div className="max-w-[calc(100dvw_-_2rem)]">
+		<div className="max-w-[calc(100dvw_-_1.5rem)]">
 			<GenericComponent
 				as="ul"
-				className="mask-r-from-85% no-scrollbar flex h-[3lh] max-w-full gap-2 overflow-x-auto pr-4 pb-10 sm:gap-3"
+				className="mask-r-from-85% no-scrollbar flex h-[3lh] max-w-full gap-2 overflow-x-auto pb-5 sm:gap-3"
 				Component={CustomNavLink}
 				items={hostNavItems}
 				renderProps={(item) => ({

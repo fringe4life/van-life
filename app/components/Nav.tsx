@@ -188,7 +188,6 @@ export default function Nav({ hasToken }: NavProps) {
 					})}
 					renderKey={(item) => item.key}
 					emptyStateMessage="No nav items"
-					wrapperProps={{}}
 				/>
 			</nav>
 			{/* Mobile nav: only visible when open or animating out and below md */}
@@ -226,7 +225,6 @@ export default function Nav({ hasToken }: NavProps) {
 							})}
 							renderKey={(item) => item.key}
 							emptyStateMessage="No nav items"
-							wrapperProps={{}}
 						/>
 					</nav>
 				</>
