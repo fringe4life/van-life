@@ -1,5 +1,5 @@
 import type React from 'react';
-import { cn, isEmptyList } from '~/utils/utils';
+import { isEmptyList } from '~/utils/utils';
 
 import UnsuccesfulState from './UnsuccesfulState';
 
