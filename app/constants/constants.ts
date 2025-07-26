@@ -22,7 +22,7 @@ export const ABOUT_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
 export const HOME_IMG_SIZES = [400, 600, 800, 1000, 1200, 1400] as const;
 
 // Separate sizes for mobile (portrait) and desktop (landscape) aspect ratios
-export const HOME_MOBILE_IMG_SIZES = [400, 600, 800, 1000] as const;
+export const HOME_MOBILE_IMG_SIZES = [300, 450, 600] as const;
 export const HOME_DESKTOP_IMG_SIZES = [800, 1000, 1200, 1400] as const;
 
 export const HOME_IMG_URL =

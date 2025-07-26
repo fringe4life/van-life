@@ -5,7 +5,9 @@ export async function getHostReviews(userId: string) {
 	if (!isCUID(userId)) return 'Something went wrong, please try again later';
 	return prisma.review.findMany({
 		where: {
-			userId,
+			rent: {
+				hostId: userId,
+			},
 		},
 		orderBy: { createdAt: 'desc' },
 		include: {

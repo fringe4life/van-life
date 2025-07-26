@@ -23,25 +23,24 @@ export function meta() {
 	];
 }
 
+const srcSet = createResponsiveSrcSet(
+	HOME_IMG_URL,
+	HOME_MOBILE_IMG_SIZES,
+	HOME_DESKTOP_IMG_SIZES,
+	1.5, // mobile aspect ratio (1:1.5)
+	0.5625, // desktop aspect ratio (16:9)
+);
 export default function Home() {
 	const { changingPage } = useIsNavigating();
 
 	// Create responsive srcSet with different aspect ratios:
 	// Mobile: 1:1.5 (portrait) - below md breakpoint
 	// Desktop: 16:9 (landscape) - md breakpoint and above
-	const srcSet = createResponsiveSrcSet(
-		HOME_IMG_URL,
-		HOME_MOBILE_IMG_SIZES,
-		HOME_DESKTOP_IMG_SIZES,
-		1.5, // mobile aspect ratio (1:1.5)
-		16 / 9, // desktop aspect ratio (16:9)
-	);
-
+	console.log({ srcSet });
 	// Sizes attribute optimized for the aspect ratio changes:
 	// Mobile: aspect-[1/1.5] (portrait), Desktop: aspect-video (16:9 landscape)
 	// Container max-width is 5xl (1024px), but image can be full viewport width
-	const sizes =
-		'(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw';
+	const sizes = '(min-width: 1024px) 100vw, calc(100vw - 1rem)';
 
 	return (
 		<section

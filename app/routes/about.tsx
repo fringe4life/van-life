@@ -27,8 +27,8 @@ export default function About() {
 		ABOUT_IMG,
 		ABOUT_IMG_SIZES, // mobile sizes
 		ABOUT_IMG_SIZES, // desktop sizes (same as mobile)
-		9 / 16, // mobile aspect ratio (16:9 = 9/16 = 0.5625)
-		9 / 16, // desktop aspect ratio (16:9 = 9/16 = 0.5625)
+		0.5625, // mobile aspect ratio (16:9 = 9/16 = 0.5625)
+		0.5625, // desktop aspect ratio (16:9 = 9/16 = 0.5625)
 	);
 
 	return (
