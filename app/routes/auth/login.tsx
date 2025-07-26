@@ -59,6 +59,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
 					type="email"
 					placeholder="john.doe@email.com"
 					defaultValue={actionData?.email ?? ''}
+					autoFocus
 				/>
 				<Input
 					name="password"
