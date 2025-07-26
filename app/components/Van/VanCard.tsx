@@ -33,7 +33,7 @@ export default function VanCard({
 	);
 
 	return (
-		<div className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content contain-inline-size content-auto [contain-intrinsic-size:auto_300px_auto_200px] [content-visibility:auto]">
+		<div className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content contain-inline-size [contain-intrinsic-size:auto_300px_auto_200px] [content-visibility:auto]">
 			<Card
 				className=" relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4"
 				style={{ viewTransitionName: `card-${vanId}` }}
