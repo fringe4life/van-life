@@ -17,7 +17,7 @@ export default function CustomLink({
 			style={{
 				pointerEvents: isPage ? 'none' : 'auto',
 			}}
-			prefetch="none"
+			prefetch="intent"
 		>
 			{children}
 		</Link>

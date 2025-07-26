@@ -13,7 +13,7 @@ export default function CustomNavLink({
 			{...rest}
 			style={{ pointerEvents: isPage ? 'none' : 'auto' }}
 			viewTransition
-			prefetch="none"
+			prefetch="intent"
 		>
 			{children}
 		</NavLink>

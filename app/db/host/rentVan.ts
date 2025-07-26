@@ -1,4 +1,4 @@
-import { isCUID } from '~/lib/checkIsCUID';
+import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
 
 export async function rentVan(vanId: string, renterId: string, hostId: string) {

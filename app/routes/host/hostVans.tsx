@@ -1,4 +1,3 @@
-import type { Van } from '@prisma/client';
 import { data, href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import VanCard from '~/components/Van/VanCard';

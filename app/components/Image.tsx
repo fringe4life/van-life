@@ -43,7 +43,7 @@ export default function Image({
 		<div className={cn('m-0 p-0', classesForContainer)}>
 			<img
 				className={cn(
-					'max-w-full bg-cover bg-no-repeat object-cover object-center align-middle text-none italic leading-0 decoration-0 transition-opacity duration-200 ease-in-out contain-strict',
+					'h-full max-w-full bg-cover bg-no-repeat object-cover object-center align-middle text-none italic leading-0 decoration-0 transition-opacity duration-200 ease-in-out contain-strict',
 					!loaded && 'animate-pulse blur-sm',
 					className,
 				)}

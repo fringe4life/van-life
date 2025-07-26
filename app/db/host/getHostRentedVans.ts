@@ -1,4 +1,4 @@
-import { isCUID } from '~/lib/checkIsCUID';
+import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
 import getSkipAmount from '~/utils/getSkipAmount';
 
