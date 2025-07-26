@@ -19,7 +19,5 @@ export default function useIsPage({ to }: LinkProps) {
 	const isSearch = hasSearch ? resolved.search === location.search : true;
 	const isPage = isPath && isSearch;
 
-	console.log(isPath, isSearch, isPage, to);
-
 	return { isPage };
 }

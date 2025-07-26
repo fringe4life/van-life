@@ -46,5 +46,5 @@ export default function RatingStars({ rating }: RatingStarsProps) {
 			stars.push(<StarIcon key={i} className="size-5 stroke-orange-400" />);
 		}
 	}
-	return <p className="flex h-5 w-30 gap-2 contain-strict">{stars}</p>;
+	return <div className="flex h-5 w-30 gap-2 contain-strict">{stars}</div>;
 }
