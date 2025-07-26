@@ -20,7 +20,16 @@ export function createNewImageSizeWithHeight(
 	width: number,
 	height: number,
 ): string {
-	return imgSrc
-		.replace(/w=\d+/g, `w=${width}`)
-		.replace(/h=\d+/g, `h=${height}`);
+	let result = imgSrc.replace(/w=\d+/g, `w=${width}`);
+
+	// Check if height parameter already exists in the URL
+	if (result.includes('h=')) {
+		// Replace existing height parameter
+		result = result.replace(/h=\d+/g, `h=${height}`);
+	} else {
+		// Add height parameter to the URL
+		result = result.replace(/w=\d+/, `w=${width}&h=${height}`);
+	}
+
+	return result;
 }

@@ -8,6 +8,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from '~/components/ui/card';
+import { VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
+import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import CustomNavLink from '../CustomNavLink';
 import Image from '../Image';
 
@@ -20,6 +22,16 @@ export default function VanDetailCard({
 	van: { imageUrl, id: vanId, price, name, type },
 	children,
 }: VanDetailCardProps) {
+	// Create responsive srcSet with 1:1 aspect ratio for both mobile and desktop
+	// since the HostVanDetailCard uses aspect-square
+	const srcSet = createResponsiveSrcSet(
+		imageUrl,
+		VAN_DETAIL_IMG_SIZES, // mobile sizes
+		VAN_DETAIL_IMG_SIZES, // desktop sizes (same as mobile)
+		1, // mobile aspect ratio (1:1 = square)
+		1, // desktop aspect ratio (1:1 = square)
+	);
+
 	return (
 		<div className="@container/detail max-w-xl contain-content">
 			<Card>
@@ -31,7 +43,8 @@ export default function VanDetailCard({
 						width="300"
 						height="300"
 						// classesForContainer="@min-md/detail:col-span-1 rounded-sm"
-						srcSet=""
+						srcSet={srcSet}
+						sizes="(width < 768px) 300px, (width < 1280px) 200px, 300px"
 						decoding="sync"
 						loading="eager"
 					/>

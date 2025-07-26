@@ -5,7 +5,7 @@ import Image from '~/components/Image';
 import { buttonVariants } from '~/components/ui/button';
 import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/constants';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { createSrcSet } from '~/utils/createSrcSet';
+import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import { cn } from '~/utils/utils';
 
 export function meta() {
@@ -18,9 +18,18 @@ export function meta() {
 	];
 }
 
-const srcSet = createSrcSet(ABOUT_IMG_SIZES, ABOUT_IMG);
 export default function About() {
 	const { changingPage } = useIsNavigating();
+
+	// Create responsive srcSet with 16:9 aspect ratio for both mobile and desktop
+	// since the about page only uses aspect-video
+	const srcSet = createResponsiveSrcSet(
+		ABOUT_IMG,
+		ABOUT_IMG_SIZES, // mobile sizes
+		ABOUT_IMG_SIZES, // desktop sizes (same as mobile)
+		9 / 16, // mobile aspect ratio (16:9 = 9/16 = 0.5625)
+		9 / 16, // desktop aspect ratio (16:9 = 9/16 = 0.5625)
+	);
 
 	return (
 		<section
@@ -36,6 +45,7 @@ export default function About() {
 				height="900"
 				width="1600"
 				srcSet={srcSet}
+				// sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
 				loading="eager"
 				decoding="sync"
 				fetchPriority="high"

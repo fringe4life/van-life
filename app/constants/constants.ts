@@ -6,7 +6,7 @@ export const DEFAULT_CURSOR = undefined;
 export const MIN_ADD = 10;
 export const MAX_ADD = 100000;
 
-export const VAN_CARD_IMG_SIZES = [200, 250, 300, 350] as const;
+export const VAN_CARD_IMG_SIZES = [200, 250, 300, 350, 500] as const;
 
 export const VAN_DETAIL_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
 

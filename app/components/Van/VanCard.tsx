@@ -5,7 +5,7 @@ import Image from '~/components/Image';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { VAN_CARD_IMG_SIZES } from '~/constants/constants';
-import { createSrcSet } from '~/utils/createSrcSet';
+import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 
 type VanCardProps = {
 	van: Van;
@@ -21,9 +21,19 @@ export default function VanCard({
 	linkCoversCard = true,
 }: VanCardProps) {
 	const { type, name, description, imageUrl, id: vanId } = van;
-	const srcSet = createSrcSet(VAN_CARD_IMG_SIZES, imageUrl);
+
+	// Create responsive srcSet with 1:1 aspect ratio for both mobile and desktop
+	// since the VanCard uses aspect-square
+	const srcSet = createResponsiveSrcSet(
+		imageUrl,
+		VAN_CARD_IMG_SIZES, // mobile sizes
+		VAN_CARD_IMG_SIZES, // desktop sizes (same as mobile)
+		1, // mobile aspect ratio (1:1 = square)
+		1, // desktop aspect ratio (1:1 = square)
+	);
+
 	return (
-		<div className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content contain-inline-size [content-visibility:auto]">
+		<div className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content contain-inline-size content-auto [contain-intrinsic-size:auto_300px_auto_200px] [content-visibility:auto]">
 			<Card
 				className=" relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4"
 				style={{ viewTransitionName: `card-${vanId}` }}
@@ -36,7 +46,7 @@ export default function VanCard({
 						height="200"
 						width="200"
 						srcSet={srcSet}
-						sizes="(width > 300px) 350w, 200w"
+						sizes="(width < 350px) 250w, (width > 300px) 350w, 200w"
 					/>
 				</CardHeader>
 				<CardFooter className="@min-md/card:col-span-2 @min-md/card:col-start-2 @min-md/card:row-span-2 grid-cols-subgrid grid-rows-subgrid @min-md/card:content-center">
