@@ -8,7 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '~/components/ui/card';
-import { VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
+import { HOST_VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import CustomNavLink from '../CustomNavLink';
 import Image from '../Image';
@@ -26,8 +26,8 @@ export default function VanDetailCard({
 	// since the HostVanDetailCard uses aspect-square
 	const srcSet = createResponsiveSrcSet(
 		imageUrl,
-		VAN_DETAIL_IMG_SIZES, // mobile sizes
-		VAN_DETAIL_IMG_SIZES, // desktop sizes (same as mobile)
+		HOST_VAN_DETAIL_IMG_SIZES, // mobile sizes
+		HOST_VAN_DETAIL_IMG_SIZES, // desktop sizes (same as mobile)
 		1, // mobile aspect ratio (1:1 = square)
 		1, // desktop aspect ratio (1:1 = square)
 	);
@@ -35,21 +35,23 @@ export default function VanDetailCard({
 	return (
 		<div className="@container/detail max-w-xl contain-content">
 			<Card>
-				<CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] @min-md/detail:gap-4">
+				<CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] grid-cols-1 @min-md/detail:grid-rows-[200px_1fr] @min-xl/detail:grid-rows-[300px_1fr] @min-md/detail:gap-x-4">
 					<Image
-						className="block aspect-square"
+						className="aspect-square @min-md/detail:w-auto w-full rounded-sm"
 						src={imageUrl}
 						alt={name}
 						width="300"
 						height="300"
-						// classesForContainer="@min-md/detail:col-span-1 rounded-sm"
+						// classesForContainer="@min-md/detail:col-span-1"
 						srcSet={srcSet}
-						sizes="(width < 768px) 300px, (width < 1280px) 200px, 300px"
+						sizes="(min-width: 1280px) 300px, (min-width: 768px) 200px, 400px"
 						decoding="sync"
 						loading="eager"
 					/>
 					<div className="@min-md/detail:col-span-1 @min-md/detail:col-start-2 content-center">
-						<Badge variant={type}>{type}</Badge>
+						<Badge variant={type} className="@max-md/detail:mt-4">
+							{type}
+						</Badge>
 						<CardTitle className="my-6 text-balance font-bold text-2xl">
 							{name}
 						</CardTitle>
@@ -85,7 +87,7 @@ export default function VanDetailCard({
 						</CustomNavLink>
 					</div>
 				</CardContent>
-				<CardFooter>{children}</CardFooter>
+				<CardFooter className=" contain-inline-size">{children}</CardFooter>
 			</Card>
 		</div>
 	);

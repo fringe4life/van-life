@@ -34,7 +34,7 @@ export default function VanDetail({
 	);
 	return (
 		<div className="@container/card-full contain-content">
-			<Card className="grid @min-xl/card-full:grid-cols-2 @min-xl/card-full:grid-rows-[auto_auto_1fr] @max-xl/card-full:gap-4 @min-xl/card-full:gap-6 gap-2">
+			<Card className="grid @min-xl/card-full:grid-cols-2 @min-xl/card-full:grid-rows-[auto_auto_1fr] @max-xl/card-full:gap-x-4 @min-xl/card-full:gap-x-4 gap-y-2">
 				<CardHeader className="@min-xl/card-full:col-span-1 @min-xl/card-full:row-span-3 row-span-1">
 					<Image
 						className="aspect-square rounded-md"
@@ -46,7 +46,7 @@ export default function VanDetail({
 						sizes="(min-width: 1024px) 500px, (min-width: 768px) 400px, 300px"
 					/>
 				</CardHeader>
-				<CardContent className="@min-xl/card-full:col-start-2 @max-xl/card-full:row-span-4 @min-xl/card-full:row-span-3 @max-xl/card-full:row-start-2 @min-xl/card-full:row-start-1 flex @min-xl/card-full:grid @min-xl/card-full:grid-rows-[auto_auto_1fr] flex-col @min-xl/card-full:gap-4 gap-4 @min-xl/card-full:self-center">
+				<CardContent className="@min-xl/card-full:col-start-2 @max-xl/card-full:row-span-4 @min-xl/card-full:row-span-3 @max-xl/card-full:row-start-2 @min-xl/card-full:row-start-1 flex @min-xl/card-full:grid @min-xl/card-full:grid-rows-[auto_auto_1fr] flex-col gap-x-4 gap-y-2 @min-xl/card-full:self-center">
 					{/* First row: Name and Rent button */}
 					<div className="@min-xl/card-full:row-start-1 @min-xl/card-full:flex @min-xl/card-full:items-center @min-xl/card-full:justify-between">
 						<CardTitle className="@min-xl/card-full:m-0 @min-xl/card-full:text-xl">
