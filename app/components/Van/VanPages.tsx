@@ -30,7 +30,7 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 	return (
 		<section
 			className={clsx({
-				'grid contain-content': true,
+				'grid transition-opacity duration-200 contain-content': true,
 				'opacity-75': changingPage,
 			})}
 		>

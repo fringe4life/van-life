@@ -21,10 +21,10 @@ const hostNavItems = [
 
 export default function HostLayout() {
 	return (
-		<div className="mx-auto max-w-[calc(100dvw_-_1.75rem)] sm:mx-0 sm:max-w-full">
+		<div className="mx-auto max-w-[calc(100dvw_-_1.75rem)] contain-content sm:mx-0 sm:max-w-full">
 			<GenericComponent
 				as="ul"
-				className="mask-r-from-90% sm:mask-none no-scrollbar mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-2 overflow-x-auto overscroll-x-contain py-3 sm:gap-3"
+				className="mask-r-from-90% sm:mask-none no-scrollbar mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-2 overflow-x-auto overscroll-x-contain py-3 contain-content sm:gap-3"
 				Component={CustomNavLink}
 				items={hostNavItems}
 				renderProps={(item) => ({

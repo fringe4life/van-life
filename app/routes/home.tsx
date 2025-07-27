@@ -45,7 +45,7 @@ export default function Home() {
 	return (
 		<section
 			className={clsx(
-				'relative grid aspect-[1/1.5] place-content-center self-center px-2 text-white contain-strict sm:pl-6 md:aspect-video',
+				'relative grid aspect-[1/1.5] place-content-center self-center px-2 text-white transition-opacity duration-200 contain-strict sm:pl-6 md:aspect-video',
 				{
 					'opacity-75': changingPage,
 				},

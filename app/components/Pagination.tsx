@@ -57,7 +57,7 @@ export default function Pagination({
 	const hasNextPage = page < numberOfPages;
 
 	return (
-		<div className="my-6 flex items-center gap-2 place-self-center">
+		<div className="my-6 flex items-center gap-2 place-self-center contain-content">
 			{hasPreviousPage ? (
 				<CustomLink
 					aria-label="Previous page"

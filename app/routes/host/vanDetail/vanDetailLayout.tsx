@@ -65,7 +65,7 @@ export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
 			<VanDetailCard van={van}>
 				<div
 					className={clsx({
-						'opacity-50': changingPage,
+						'opacity-50 transition-opacity duration-200': changingPage,
 					})}
 				>
 					<Outlet context={van} />

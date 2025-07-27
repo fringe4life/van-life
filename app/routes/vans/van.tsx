@@ -67,7 +67,7 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 	return (
 		<div
 			className={clsx({
-				'opacity-75': changingPage,
+				'opacity-75 transition-opacity duration-200': changingPage,
 				'grid grid-rows-[auto_1fr]': true,
 			})}
 		>

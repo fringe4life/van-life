@@ -64,7 +64,11 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 
 	const { changingPage } = useIsNavigating();
 	return (
-		<section>
+		<section
+			className={clsx({
+				'opacity-75 transition-opacity duration-200': changingPage,
+			})}
+		>
 			<div className="grid grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-3 py-6 sm:px-6.5 sm:py-9">
 				<h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 					Welcome {name ? name : 'User'}!
@@ -103,10 +107,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				emptyStateMessage="You are not currently renting any vans"
 				items={vans}
 				Component={VanCard}
-				className={clsx({
-					'grid-max mt-11': true,
-					'opacity-75': changingPage,
-				})}
+				className="grid-max mt-11"
 				renderKey={(item) => item.id}
 				renderProps={(item) => ({
 					van: item,
