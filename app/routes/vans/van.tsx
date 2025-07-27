@@ -4,7 +4,7 @@ import CustomLink from '~/components/CustomLink';
 import VanDetails from '~/components/Van/VanDetail';
 import { getVan } from '~/db/getVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
-import { tryCatch } from '~/lib/tryCatch';
+import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/van';
 
 export function meta({ data }: Route.MetaArgs) {

@@ -10,7 +10,7 @@ import { addMoney } from '~/db/addMoney';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { moneySchema } from '~/lib/schemas.server';
-import { tryCatch } from '~/lib/tryCatch';
+import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/money';
 export function meta() {
 	return [

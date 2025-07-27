@@ -5,14 +5,14 @@ import type * as React from 'react';
 import { cn } from '~/utils/utils';
 
 const badgeVariants = cva(
-	'inline-flex items-center  justify-center  rounded-md  text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-red-500/50 focus-visible:ring-[3px]  transition-[color,box-shadow] overflow-hidden',
+	'inline-flex items-center  justify-center  rounded-md  text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-red-500/50 focus-visible:ring-[3px]  transition-opacity overflow-hidden',
 	{
 		variants: {
 			variant: {
 				SIMPLE: ' bg-orange-600 text-white hover:bg-orange-600/90',
 				LUXURY: ' bg-neutral-900 text-white hover:bg-neutral-900/90',
 				RUGGED:
-					'bg-teal-800 text-white  hover:bg-teal-800/90 focus-visible:ring-teal-800/20 dark:focus-visible:ring-teal-800/40 dark:bg-teal-800/60',
+					'bg-teal-800 text-white  hover:bg-teal-800/90 focus-visible:ring-teal-800/20 ',
 				OUTLINE: 'bg-orange-100  hover:bg-orange/80 ',
 				UNAVAILABLE:
 					'bg-red-500 text-white disabled cursor-not-allowed hover:bg-red-500/90',

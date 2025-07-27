@@ -10,7 +10,7 @@ import { DEFAULT_FILTER } from '~/constants/constants';
 import { getVans } from '~/db/getVans';
 import { getVansCount } from '~/db/getVansCount';
 import { useParamsClientSide } from '~/hooks/useParamsClientSide';
-import { getPaginationParams } from '~/utils/getPaginationParams';
+import { getPaginationParams } from '~/lib/getPaginationParams.server';
 import type { Route } from './+types/vans';
 
 export function meta() {

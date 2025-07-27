@@ -8,7 +8,7 @@ import { getHostRentedVan } from '~/db/host/getHostRentedVan';
 import { rentVan } from '~/db/host/rentVan';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { rentVanSchema } from '~/lib/schemas.server';
-import { tryCatch } from '~/lib/tryCatch';
+import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/rentalDetail';
 
 export function meta({ data }: Route.MetaArgs) {

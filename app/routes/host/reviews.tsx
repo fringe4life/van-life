@@ -5,7 +5,7 @@ import Review from '~/components/Review';
 import VanPages from '~/components/Van/VanPages';
 import { getHostReviews } from '~/db/host/getHostReviews';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
-import { tryCatch } from '~/lib/tryCatch';
+import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/reviews';
 export function meta() {
 	return [

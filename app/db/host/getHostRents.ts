@@ -1,7 +1,7 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
 import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
-import getSkipAmount from '~/utils/getSkipAmount';
+import getSkipAmount from '~/utils/getSkipAmount.server';
 
 export async function getHostRents(id: string, page: number, limit: number) {
 	if (!isCUID(id)) return INVALID_ID_ERROR;

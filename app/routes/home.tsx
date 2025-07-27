@@ -36,7 +36,7 @@ export default function Home() {
 	// Create responsive srcSet with different aspect ratios:
 	// Mobile: 1:1.5 (portrait) - below md breakpoint
 	// Desktop: 16:9 (landscape) - md breakpoint and above
-	console.log({ srcSet });
+
 	// Sizes attribute optimized for the aspect ratio changes:
 	// Mobile: aspect-[1/1.5] (portrait), Desktop: aspect-video (16:9 landscape)
 	// Container max-width is 5xl (1024px), but image can be full viewport width

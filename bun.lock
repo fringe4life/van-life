@@ -1169,7 +1169,7 @@
 
     "typedarray": ["typedarray@0.0.6", "", {}, "sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA=="],
 
-    "typescript": ["typescript@5.9.0-dev.20250726", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-Oxs18dYMuT9VyLH0TDBk7lNYKyY8wVFKBut8bzkCVDEGlRWNO4EFUVQYEaySnJVNWuDL3CAbNJQ84UPqQQw4dQ=="],
+    "typescript": ["typescript@5.9.0-dev.20250727", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-21zEh2hcJuakx3expiuGYHI0lTHO80cU/FtUV89CJxrqPXk61f05X7Dc67HMavs/oAFH/03CICjH+XpMylUbfg=="],
 
     "uncrypto": ["uncrypto@0.1.3", "", {}, "sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q=="],
 
