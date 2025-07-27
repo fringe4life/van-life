@@ -1,13 +1,12 @@
-import clsx from 'clsx';
 import { data, href, useParams } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import GenericComponent from '~/components/GenericComponent';
+import PendingUI from '~/components/PendingUI';
 import RatingStars from '~/components/RatingStars';
 import VanCard from '~/components/Van/VanCard';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getAverageReviewRating } from '~/db/getAvgReviews';
 import { getHostVans } from '~/db/host/getHostVans';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/host';
@@ -62,13 +61,8 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
 	const { vans, sumIncome, avgRating, name } = loaderData;
 
-	const { changingPage } = useIsNavigating();
 	return (
-		<section
-			className={clsx({
-				'opacity-75 transition-opacity duration-200': changingPage,
-			})}
-		>
+		<PendingUI as="section">
 			<div className="grid grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-3 py-6 sm:px-6.5 sm:py-9">
 				<h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 					Welcome {name ? name : 'User'}!
@@ -115,7 +109,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					action: <p className="justify-self-end text-right">Edit</p>,
 				})}
 			/>
-		</section>
+		</PendingUI>
 	);
 }
 

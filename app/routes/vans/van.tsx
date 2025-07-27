@@ -1,27 +1,22 @@
-import clsx from 'clsx';
 import { data, href, useLocation } from 'react-router';
 import CustomLink from '~/components/CustomLink';
+import PendingUI from '~/components/PendingUI';
 import VanDetails from '~/components/Van/VanDetail';
+import {
+	DEFAULT_FILTER,
+	DEFAULT_LIMIT,
+	DEFAULT_PAGE,
+} from '~/constants/constants';
 import { getVan } from '~/db/getVan';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/van';
 
 export function meta({ data }: Route.MetaArgs) {
-	if (!data?.van) {
-		return [
-			{ title: 'Not found | Vanlife' },
-			{
-				name: 'details',
-				content: 'This van was not found',
-			},
-		];
-	}
 	return [
-		{ title: `${data.van.name} | Vanlife` },
+		{ title: `${data?.van.name ?? 'Unknown'} | Vanlife` },
 		{
 			name: 'details',
-			content: `The details about ${data.van.name}`,
+			content: `The details about ${data?.van.name ?? 'Unknown'}`,
 		},
 	];
 }
@@ -59,29 +54,36 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 
 	const location = useLocation();
 
-	const typeFilter = location.state?.type ?? '';
+	// Get state from location, with fallbacks
+	const state = location.state as {
+		page?: number;
+		limit?: number;
+		type?: string;
+	} | null;
+	const page = state?.page ?? DEFAULT_PAGE;
+	const limit = state?.limit ?? DEFAULT_LIMIT;
+	const type = state?.type ?? DEFAULT_FILTER;
 
 	const vanIsAvailable = !van.isRented;
 
-	const { changingPage } = useIsNavigating();
+	// Build the back link with search parameters
+	const backLinkSearch = type
+		? `?page=${page}&limit=${limit}&type=${type.toLowerCase()}`
+		: `?page=${page}&limit=${limit}`;
+
 	return (
-		<div
-			className={clsx({
-				'opacity-75 transition-opacity duration-200': changingPage,
-				'grid grid-rows-[auto_1fr]': true,
-			})}
-		>
+		<PendingUI className="grid grid-rows-[auto_1fr]">
 			<CustomLink
 				to={{
 					pathname: href('/vans'),
-					search: `?type=${typeFilter}`,
+					search: backLinkSearch,
 				}}
 			>
-				&larr; back to {typeFilter ? typeFilter : 'all'} vans
+				&larr; back to {type ? type : 'all'} vans
 			</CustomLink>
 			<div className="self-center">
 				<VanDetails van={van} vanIsAvailable={vanIsAvailable} />
 			</div>
-		</div>
+		</PendingUI>
 	);
 }

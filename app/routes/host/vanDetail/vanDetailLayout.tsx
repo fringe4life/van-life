@@ -1,9 +1,8 @@
-import clsx from 'clsx';
 import { data, href, Outlet } from 'react-router';
 import CustomLink from '~/components/CustomLink';
+import PendingUI from '~/components/PendingUI';
 import VanDetailCard from '~/components/Van/HostVanDetailCard';
 import { getHostVan } from '~/db/host/getHostVan';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/vanDetailLayout';
@@ -53,7 +52,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
 	const { van } = loaderData;
-	const { changingPage } = useIsNavigating();
 	return (
 		<>
 			<CustomLink
@@ -63,13 +61,9 @@ export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
 				&larr; Back to all vans
 			</CustomLink>
 			<VanDetailCard van={van}>
-				<div
-					className={clsx({
-						'opacity-50 transition-opacity duration-200': changingPage,
-					})}
-				>
+				<PendingUI pendingOpacity={0.5}>
 					<Outlet context={van} />
-				</div>
+				</PendingUI>
 			</VanDetailCard>
 		</>
 	);

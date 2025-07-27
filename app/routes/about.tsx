@@ -1,10 +1,9 @@
-import clsx from 'clsx';
 import { href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import Image from '~/components/Image';
+import PendingUI from '~/components/PendingUI';
 import { buttonVariants } from '~/components/ui/button';
 import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/constants';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import { cn } from '~/utils/utils';
 
@@ -19,8 +18,6 @@ export function meta() {
 }
 
 export default function About() {
-	const { changingPage } = useIsNavigating();
-
 	// Create responsive srcSet with 16:9 aspect ratio for both mobile and desktop
 	// since the about page only uses aspect-video
 	const srcSet = createResponsiveSrcSet(
@@ -32,11 +29,9 @@ export default function About() {
 	);
 
 	return (
-		<section
-			className={clsx({
-				'grid grid-cols-1 gap-4 transition-opacity duration-200 contain-content sm:gap-6 md:gap-10': true,
-				'opacity-75': changingPage,
-			})}
+		<PendingUI
+			as="section"
+			className="grid grid-cols-1 gap-4 contain-content sm:gap-6 md:gap-10"
 		>
 			<Image
 				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
@@ -87,6 +82,6 @@ export default function About() {
 					Explore our vans
 				</CustomLink>
 			</article>
-		</section>
+		</PendingUI>
 	);
 }

@@ -1,14 +1,13 @@
-import clsx from 'clsx';
 import { href } from 'react-router';
 import CustomLink from '~/components/CustomLink';
 import Image from '~/components/Image';
+import PendingUI from '~/components/PendingUI';
 import { buttonVariants } from '~/components/ui/button';
 import {
 	HOME_DESKTOP_IMG_SIZES,
 	HOME_IMG_URL,
 	HOME_MOBILE_IMG_SIZES,
 } from '~/constants/constants';
-import useIsNavigating from '~/hooks/useIsNavigating';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import { cn } from '~/utils/utils';
 
@@ -31,8 +30,6 @@ const srcSet = createResponsiveSrcSet(
 	0.5625, // desktop aspect ratio (16:9)
 );
 export default function Home() {
-	const { changingPage } = useIsNavigating();
-
 	// Create responsive srcSet with different aspect ratios:
 	// Mobile: 1:1.5 (portrait) - below md breakpoint
 	// Desktop: 16:9 (landscape) - md breakpoint and above
@@ -43,13 +40,9 @@ export default function Home() {
 	const sizes = '(min-width: 1024px) 100vw, calc(100vw - 1rem)';
 
 	return (
-		<section
-			className={clsx(
-				'relative grid aspect-[1/1.5] place-content-center self-center px-2 text-white transition-opacity duration-200 contain-strict sm:pl-6 md:aspect-video',
-				{
-					'opacity-75': changingPage,
-				},
-			)}
+		<PendingUI
+			as="section"
+			className="relative grid aspect-[1/1.5] place-content-center self-center px-2 text-white contain-strict sm:pl-6 md:aspect-video"
 		>
 			{/* Background Image with gradient overlay */}
 			<div className="mask-cover mask-no-repeat mask-right md:mask-[url(/app/assets/rvMask.svg)] absolute inset-0">
@@ -85,6 +78,6 @@ export default function Home() {
 					Find your van
 				</CustomLink>
 			</div>
-		</section>
+		</PendingUI>
 	);
 }
