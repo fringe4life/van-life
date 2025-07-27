@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DEFAULT_FILTER } from '~/constants/constants';
-import CustomLink from './navigation/CustomLink';
-import { Button, buttonVariants } from './ui/button';
+import CustomLink from '../navigation/CustomLink';
+import { Button, buttonVariants } from '../ui/button';
 
 type PaginationProps = {
 	itemsCount: number | string;

@@ -1,6 +1,6 @@
 import { href } from 'react-router';
+import Image from '~/components/common/Image';
 import PendingUI from '~/components/common/PendingUI';
-import Image from '~/components/Image';
 import CustomLink from '~/components/navigation/CustomLink';
 import { buttonVariants } from '~/components/ui/button';
 import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/constants';

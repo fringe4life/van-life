@@ -1,5 +1,5 @@
+import { Card, CardContent } from '~/components/ui/card';
 import { displayPrice } from '~/utils/displayPrice';
-import { Card, CardContent } from './ui/card';
 
 type IncomeProps = {
 	id: string;

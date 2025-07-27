@@ -7,8 +7,8 @@ import {
 	useState,
 } from 'react';
 import { href } from 'react-router';
+import GenericComponent from '~/components/common/GenericComponent';
 import navLinkClassName from '~/utils/navLinkClassName';
-import GenericComponent from '../GenericComponent';
 import { Button } from '../ui/button';
 import CustomLink from './CustomLink';
 import CustomNavLink from './CustomNavLink';

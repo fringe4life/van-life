@@ -1,8 +1,8 @@
 import { data, href, useParams } from 'react-router';
 import GenericComponent from '~/components/common/GenericComponent';
 import PendingUI from '~/components/common/PendingUI';
+import RatingStars from '~/components/host/review/RatingStars';
 import CustomLink from '~/components/navigation/CustomLink';
-import RatingStars from '~/components/review/RatingStars';
 import VanCard from '~/components/van/VanCard';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getAverageReviewRating } from '~/db/getAvgReviews';

@@ -1,6 +1,6 @@
 import type { Van } from '@prisma/client';
 import { href } from 'react-router';
-import Image from '~/components/Image';
+import Image from '~/components/common/Image';
 import { Badge, badgeVariants } from '~/components/ui/badge';
 import { VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';

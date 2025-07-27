@@ -1,10 +1,10 @@
 import GenericComponent, {
 	type GenericComponentProps,
-} from '~/components/GenericComponent';
+} from '~/components/common/GenericComponent';
 import Pagination, {
 	type PaginationPropsForVanPages,
-} from '~/components/Pagination';
-import PendingUI from '~/components/PendingUI';
+} from '~/components/common/Pagination';
+import PendingUI from '~/components/common/PendingUI';
 import { useParamsClientSide } from '~/hooks/useParamsClientSide';
 
 type VanPagesProps<T, P, U> = {

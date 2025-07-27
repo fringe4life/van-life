@@ -1,7 +1,7 @@
 import { VanType } from '@prisma/client';
 
 import { data, href } from 'react-router';
-import ListItems from '~/components/ListItems';
+import ListItems from '~/components/common/ListItems';
 import CustomNavLink from '~/components/navigation/CustomNavLink';
 import { badgeVariants } from '~/components/ui/badge';
 import VanCard from '~/components/van/VanCard';

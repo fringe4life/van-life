@@ -1,5 +1,5 @@
 import { data, href } from 'react-router';
-import BarChartComponent from '~/components/BarChart';
+import BarChartComponent from '~/components/host/BarChart';
 import Income from '~/components/host/Income';
 import VanPages from '~/components/van/VanPages';
 import { getAccountSummary } from '~/db/getAccountSummary';
