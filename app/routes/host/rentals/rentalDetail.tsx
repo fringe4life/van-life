@@ -1,9 +1,9 @@
 import { data, href, redirect } from 'react-router';
 import { z } from 'zod/v4';
-import CustomForm from '~/components/Form';
+import CustomForm from '~/components/common/CustomForm';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
-import VanCard from '~/components/Van/VanCard';
+import VanCard from '~/components/van/VanCard';
 import { getHostRentedVan } from '~/db/host/getHostRentedVan';
 import { rentVan } from '~/db/host/rentVan';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';

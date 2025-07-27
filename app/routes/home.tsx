@@ -1,7 +1,7 @@
 import { href } from 'react-router';
-import CustomLink from '~/components/CustomLink';
+import PendingUI from '~/components/common/PendingUI';
 import Image from '~/components/Image';
-import PendingUI from '~/components/PendingUI';
+import CustomLink from '~/components/navigation/CustomLink';
 import { buttonVariants } from '~/components/ui/button';
 import {
 	HOME_DESKTOP_IMG_SIZES,

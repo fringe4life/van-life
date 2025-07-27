@@ -6,7 +6,7 @@ import { VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import { displayPrice } from '~/utils/displayPrice';
 import { cn } from '~/utils/utils';
-import CustomLink from '../CustomLink';
+import CustomLink from '../navigation/CustomLink';
 import {
 	Card,
 	CardContent,

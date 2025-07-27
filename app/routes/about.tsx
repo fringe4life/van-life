@@ -1,7 +1,7 @@
 import { href } from 'react-router';
-import CustomLink from '~/components/CustomLink';
+import PendingUI from '~/components/common/PendingUI';
 import Image from '~/components/Image';
-import PendingUI from '~/components/PendingUI';
+import CustomLink from '~/components/navigation/CustomLink';
 import { buttonVariants } from '~/components/ui/button';
 import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/constants';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';

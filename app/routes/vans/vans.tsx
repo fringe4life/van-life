@@ -1,11 +1,11 @@
 import { VanType } from '@prisma/client';
 
 import { data, href } from 'react-router';
-import CustomNavLink from '~/components/CustomNavLink';
 import ListItems from '~/components/ListItems';
+import CustomNavLink from '~/components/navigation/CustomNavLink';
 import { badgeVariants } from '~/components/ui/badge';
-import VanCard from '~/components/Van/VanCard';
-import VanPages from '~/components/Van/VanPages';
+import VanCard from '~/components/van/VanCard';
+import VanPages from '~/components/van/VanPages';
 import { DEFAULT_FILTER } from '~/constants/constants';
 import { getVans } from '~/db/getVans';
 import { getVansCount } from '~/db/getVansCount';

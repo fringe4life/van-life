@@ -1,8 +1,8 @@
 import { data, href } from 'react-router';
 
 import BarChartComponent from '~/components/BarChart';
-import Review from '~/components/Review';
-import VanPages from '~/components/Van/VanPages';
+import Review from '~/components/review/Review';
+import VanPages from '~/components/van/VanPages';
 import { getHostReviews } from '~/db/host/getHostReviews';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { tryCatch } from '~/lib/tryCatch.server';

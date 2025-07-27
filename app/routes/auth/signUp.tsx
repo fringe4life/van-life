@@ -1,7 +1,7 @@
 import { href, redirect, replace } from 'react-router';
 import { z } from 'zod/v4';
-import CustomLink from '~/components/CustomLink';
-import CustomForm from '~/components/Form';
+import CustomForm from '~/components/common/CustomForm';
+import CustomLink from '~/components/navigation/CustomLink';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { auth } from '~/lib/auth.server';

@@ -1,7 +1,7 @@
 import { data, href } from 'react-router';
 import BarChartComponent from '~/components/BarChart';
-import Income from '~/components/Income';
-import VanPages from '~/components/Van/VanPages';
+import Income from '~/components/host/Income';
+import VanPages from '~/components/van/VanPages';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getHostTransactions } from '~/db/host/getHostTransactions';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';

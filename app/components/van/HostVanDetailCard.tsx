@@ -10,8 +10,8 @@ import {
 } from '~/components/ui/card';
 import { HOST_VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
-import CustomNavLink from '../CustomNavLink';
 import Image from '../Image';
+import CustomNavLink from '../navigation/CustomNavLink';
 
 type VanDetailCardProps = {
 	van: Van;

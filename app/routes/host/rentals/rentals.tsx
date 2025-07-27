@@ -1,7 +1,7 @@
 import { data, href } from 'react-router';
-import CustomLink from '~/components/CustomLink';
-import VanCard from '~/components/Van/VanCard';
-import VanPages from '~/components/Van/VanPages';
+import CustomLink from '~/components/navigation/CustomLink';
+import VanCard from '~/components/van/VanCard';
+import VanPages from '~/components/van/VanPages';
 import { getHostRentedVanCount } from '~/db/host/getHostRentedVanCount';
 import { getHostRentedVans } from '~/db/host/getHostRentedVans';
 import { getPaginationParams } from '~/lib/getPaginationParams.server';

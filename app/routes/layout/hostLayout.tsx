@@ -1,6 +1,6 @@
 import { href, Outlet } from 'react-router';
-import CustomNavLink from '~/components/CustomNavLink';
-import GenericComponent from '~/components/GenericComponent';
+import GenericComponent from '~/components/common/GenericComponent';
+import CustomNavLink from '~/components/navigation/CustomNavLink';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import navLinkClassName from '~/utils/navLinkClassName';
 import type { Route } from './+types/hostLayout';

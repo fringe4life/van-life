@@ -1,6 +1,6 @@
 import { href, redirect } from 'react-router';
 import { z } from 'zod/v4';
-import CustomForm from '~/components/Form';
+import CustomForm from '~/components/common/CustomForm';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';

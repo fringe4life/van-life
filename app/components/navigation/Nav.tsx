@@ -8,11 +8,11 @@ import {
 } from 'react';
 import { href } from 'react-router';
 import navLinkClassName from '~/utils/navLinkClassName';
+import GenericComponent from '../GenericComponent';
+import { Button } from '../ui/button';
 import CustomLink from './CustomLink';
 import CustomNavLink from './CustomNavLink';
-import GenericComponent from './GenericComponent';
 import NavItem from './NavItem';
-import { Button } from './ui/button';
 
 interface NavProps {
 	hasToken: boolean;

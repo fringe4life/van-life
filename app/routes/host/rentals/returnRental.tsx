@@ -1,9 +1,9 @@
 import { data, href, redirect } from 'react-router';
-import CustomLink from '~/components/CustomLink';
-import CustomForm from '~/components/Form';
-import UnsuccesfulState from '~/components/UnsuccesfulState';
+import CustomForm from '~/components/common/CustomForm';
+import UnsuccesfulState from '~/components/common/UnsuccesfulState';
+import CustomLink from '~/components/navigation/CustomLink';
 import { Button } from '~/components/ui/button';
-import VanCard from '~/components/Van/VanCard';
+import VanCard from '~/components/van/VanCard';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getHostRentedVan } from '~/db/host/getHostRentedVan';
 import { returnVan } from '~/db/host/returnVan';

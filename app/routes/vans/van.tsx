@@ -1,7 +1,7 @@
 import { data, href, useLocation } from 'react-router';
-import CustomLink from '~/components/CustomLink';
-import PendingUI from '~/components/PendingUI';
-import VanDetails from '~/components/Van/VanDetail';
+import PendingUI from '~/components/common/PendingUI';
+import CustomLink from '~/components/navigation/CustomLink';
+import VanDetails from '~/components/van/VanDetail';
 import {
 	DEFAULT_FILTER,
 	DEFAULT_LIMIT,

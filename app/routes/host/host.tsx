@@ -1,9 +1,9 @@
 import { data, href, useParams } from 'react-router';
-import CustomLink from '~/components/CustomLink';
-import GenericComponent from '~/components/GenericComponent';
-import PendingUI from '~/components/PendingUI';
-import RatingStars from '~/components/RatingStars';
-import VanCard from '~/components/Van/VanCard';
+import GenericComponent from '~/components/common/GenericComponent';
+import PendingUI from '~/components/common/PendingUI';
+import CustomLink from '~/components/navigation/CustomLink';
+import RatingStars from '~/components/review/RatingStars';
+import VanCard from '~/components/van/VanCard';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getAverageReviewRating } from '~/db/getAvgReviews';
 import { getHostVans } from '~/db/host/getHostVans';

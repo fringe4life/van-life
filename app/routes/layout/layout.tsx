@@ -1,5 +1,5 @@
 import { data, Outlet } from 'react-router';
-import Nav from '~/components/Nav';
+import Nav from '~/components/navigation/Nav';
 import { auth } from '~/lib/auth.server';
 import type { Route } from './+types/layout';
 

@@ -1,7 +1,7 @@
 import { data, href, Outlet } from 'react-router';
-import CustomLink from '~/components/CustomLink';
-import PendingUI from '~/components/PendingUI';
-import VanDetailCard from '~/components/Van/HostVanDetailCard';
+import PendingUI from '~/components/common/PendingUI';
+import CustomLink from '~/components/navigation/CustomLink';
+import VanDetailCard from '~/components/van/HostVanDetailCard';
 import { getHostVan } from '~/db/host/getHostVan';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { tryCatch } from '~/lib/tryCatch.server';
