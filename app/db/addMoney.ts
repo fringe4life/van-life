@@ -1,9 +1,13 @@
+import { INVALID_ID_ERROR } from '~/constants/constants';
 import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
-// import prisma from "~/lib/prisma";
-export async function addMoney(userId: string, amount: number) {
-	if (!isCUID(userId)) return 'Something went wrong, please try again later';
-	const updatedRecord = await prisma.userInfo.update({
+
+export function addMoney(userId: string, amount: number) {
+	if (!isCUID(userId)) {
+		throw new Error(INVALID_ID_ERROR);
+	}
+
+	return prisma.userInfo.update({
 		where: {
 			userId,
 		},
@@ -13,5 +17,4 @@ export async function addMoney(userId: string, amount: number) {
 			},
 		},
 	});
-	return updatedRecord.moneyAdded;
 }

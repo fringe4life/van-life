@@ -1,8 +1,11 @@
+import { INVALID_ID_ERROR } from '~/constants/constants';
 import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
-// import prisma from '~/lib/prisma';
+
 export async function getAccountSummary(userId: string) {
-	if (!isCUID(userId)) return 'Something went wrong, please try again later';
+	if (!isCUID(userId)) {
+		throw new Error(INVALID_ID_ERROR);
+	}
 
 	const results = await Promise.allSettled([
 		prisma.rent.aggregate({
@@ -34,7 +37,7 @@ export async function getAccountSummary(userId: string) {
 		results[1].status === 'fulfilled' ? results[1].value : null;
 
 	if (!sum || !moneyAdded) {
-		return 'Unable to retrieve account summary';
+		throw new Error('Unable to retrieve account summary');
 	}
 
 	return (sum._sum.amount ?? 0) + (moneyAdded.moneyAdded ?? 0);

@@ -10,6 +10,7 @@ import { addMoney } from '~/db/addMoney';
 import { getAccountSummary } from '~/db/getAccountSummary';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { moneySchema } from '~/lib/schemas.server';
+import { tryCatch } from '~/lib/tryCatch';
 import type { Route } from './+types/money';
 export function meta() {
 	return [
@@ -53,11 +54,13 @@ export async function action({ request }: Route.ActionArgs) {
 		};
 	}
 
-	const success = await addMoney(session.user.id, result.data.amount);
+	const result2 = await tryCatch(() =>
+		addMoney(session.user.id, result.data.amount),
+	);
 
-	if (!success) {
+	if (result2.error) {
 		return {
-			errors: "Something wen't wrong please try again later",
+			errors: 'Something went wrong please try again later',
 			formData,
 		};
 	}

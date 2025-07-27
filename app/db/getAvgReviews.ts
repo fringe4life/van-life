@@ -1,8 +1,11 @@
+import { INVALID_ID_ERROR } from '~/constants/constants';
 import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
 // import prisma from '~/lib/prisma';
 export async function getAverageReviewRating(userId: string) {
-	if (!isCUID(userId)) return 'Something went wrong, please try again later';
+	if (!isCUID(userId)) {
+		throw new Error(INVALID_ID_ERROR);
+	}
 	const avg = await prisma.review.aggregate({
 		_avg: {
 			rating: true,
@@ -14,6 +17,5 @@ export async function getAverageReviewRating(userId: string) {
 		},
 		orderBy: { createdAt: 'desc' },
 	});
-
 	return avg._avg.rating ?? 0;
 }

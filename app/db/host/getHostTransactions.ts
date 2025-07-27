@@ -1,8 +1,9 @@
+import { INVALID_ID_ERROR } from '~/constants/constants';
 import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
-// import prisma from '~/lib/prisma';
+
 export async function getHostTransactions(userId: string) {
-	if (!isCUID(userId)) return 'Something went wrong, please try again later';
+	if (!isCUID(userId)) return INVALID_ID_ERROR;
 	return prisma.rent.findMany({
 		where: {
 			hostId: userId,

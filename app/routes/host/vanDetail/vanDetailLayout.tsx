@@ -5,6 +5,7 @@ import VanDetailCard from '~/components/Van/HostVanDetailCard';
 import { getHostVan } from '~/db/host/getHostVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { tryCatch } from '~/lib/tryCatch';
 import type { Route } from './+types/vanDetailLayout';
 export function meta({ data }: Route.MetaArgs) {
 	return [
@@ -24,13 +25,22 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 	const { session, headers } = await getSessionOrRedirect(request);
 	const { vanId } = params;
 	if (!vanId) throw data('Van not found', { status: 404 });
-	const van = await getHostVan(session.user.id, vanId);
-	if (!van || typeof van === 'string')
+
+	const result = await tryCatch(() => getHostVan(session.user.id, vanId));
+
+	if (result.error) {
+		throw data('Failed to load van details. Please try again later.', {
+			status: 500,
+		});
+	}
+
+	if (!result.data || typeof result.data === 'string') {
 		throw data('Van not found', { status: 404 });
+	}
 
 	return data(
 		{
-			van,
+			van: result.data,
 		},
 		{
 			headers: {

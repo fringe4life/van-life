@@ -8,6 +8,7 @@ import { getHostRentedVan } from '~/db/host/getHostRentedVan';
 import { rentVan } from '~/db/host/rentVan';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { rentVanSchema } from '~/lib/schemas.server';
+import { tryCatch } from '~/lib/tryCatch';
 import type { Route } from './+types/rentalDetail';
 
 export function meta({ data }: Route.MetaArgs) {
@@ -28,12 +29,21 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 	const { headers } = await getSessionOrRedirect(request);
 	if (!params.vanId) throw data('Van not found', { status: 404 });
 
-	const rental = await getHostRentedVan(params.vanId);
-	if (!rental || typeof rental === 'string')
+	const result = await tryCatch(() => getHostRentedVan(params.vanId));
+
+	if (result.error) {
+		throw data('Failed to load rental details. Please try again later.', {
+			status: 500,
+		});
+	}
+
+	if (!result.data || typeof result.data === 'string') {
 		throw data('Van not found', { status: 404 });
+	}
+
 	return data(
 		{
-			rental,
+			rental: result.data,
 		},
 		{
 			headers: {
@@ -71,9 +81,11 @@ export async function action({ request, params }: Route.ActionArgs) {
 		};
 	}
 
-	const rental = await rentVan(values.vanId, values.renterId, values.hostId);
+	const result = await tryCatch(() =>
+		rentVan(values.vanId, values.renterId, values.hostId),
+	);
 
-	if (!rental) {
+	if (result.error || !result.data) {
 		return {
 			errors: 'Something went wrong try again later!',
 			formData,

@@ -1,15 +1,17 @@
+import { INVALID_ID_ERROR } from '~/constants/constants';
 import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
 // import prisma from '~/lib/prisma';
 
-export async function returnVan(
+export function returnVan(
 	rentId: string,
 	userId: string,
 	amount: number,
 	vanId: string,
 ) {
-	if (!isCUID(rentId) || !isCUID(vanId) || !isCUID(userId))
-		return 'Something went wrong, please try again later';
+	if (!isCUID(rentId) || !isCUID(vanId) || !isCUID(userId)) {
+		throw new Error(INVALID_ID_ERROR);
+	}
 	return prisma.$transaction([
 		prisma.rent.update({
 			where: {

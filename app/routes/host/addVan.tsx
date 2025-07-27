@@ -7,6 +7,7 @@ import { Textarea } from '~/components/ui/textarea';
 import { createVan } from '~/db/createVan';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { addVanSchema } from '~/lib/schemas.server';
+import { tryCatch } from '~/lib/tryCatch';
 import type { Route } from './+types/addVan';
 export function meta() {
 	return [
@@ -34,11 +35,11 @@ export async function action({ request }: Route.ActionArgs) {
 
 	const resultWithHostId = { ...result.data, hostId: session.user.id };
 
-	const success = await createVan(resultWithHostId);
+	const result2 = await tryCatch(() => createVan(resultWithHostId));
 
-	if (!success) {
+	if (result2.error || !result2.data) {
 		return {
-			errors: "Something wen't wrong please try again later",
+			errors: 'Something went wrong please try again later',
 			formData,
 		};
 	}

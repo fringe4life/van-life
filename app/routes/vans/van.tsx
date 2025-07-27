@@ -4,6 +4,7 @@ import CustomLink from '~/components/CustomLink';
 import VanDetails from '~/components/Van/VanDetail';
 import { getVan } from '~/db/getVan';
 import useIsNavigating from '~/hooks/useIsNavigating';
+import { tryCatch } from '~/lib/tryCatch';
 import type { Route } from './+types/van';
 
 export function meta({ data }: Route.MetaArgs) {
@@ -31,11 +32,20 @@ export async function loader({ params }: Route.LoaderArgs) {
 	// }
 	if (!params.vanId) throw data('No van id', { status: 404 });
 
-	const van = await getVan(params.vanId);
-	if (!van || typeof van === 'string')
+	const result = await tryCatch(() => getVan(params.vanId));
+
+	if (result.error) {
+		throw data('Failed to load van details. Please try again later.', {
+			status: 500,
+		});
+	}
+
+	if (!result.data || typeof result.data === 'string') {
 		throw data('Van not found', { status: 404 });
+	}
+
 	return data(
-		{ van },
+		{ van: result.data },
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
@@ -45,15 +55,13 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export default function VanDetail({ loaderData }: Route.ComponentProps) {
-	const {
-		van: { rent, ...van },
-	} = loaderData;
+	const { van } = loaderData;
 
 	const location = useLocation();
 
 	const typeFilter = location.state?.type ?? '';
 
-	const vanIsAvailable = rent?.every((v) => v.rentedTo !== null) ?? true;
+	const vanIsAvailable = !van.isRented;
 
 	const { changingPage } = useIsNavigating();
 	return (

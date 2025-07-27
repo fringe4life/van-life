@@ -1,8 +1,11 @@
+import { INVALID_ID_ERROR } from '~/constants/constants';
 import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
 // import prisma from "~/lib/prisma";
-export async function getHostReviews(userId: string) {
-	if (!isCUID(userId)) return 'Something went wrong, please try again later';
+export function getHostReviews(userId: string) {
+	if (!isCUID(userId)) {
+		throw new Error(INVALID_ID_ERROR);
+	}
 	return prisma.review.findMany({
 		where: {
 			rent: {

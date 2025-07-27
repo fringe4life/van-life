@@ -5,6 +5,7 @@ import Review from '~/components/Review';
 import VanPages from '~/components/Van/VanPages';
 import { getHostReviews } from '~/db/host/getHostReviews';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { tryCatch } from '~/lib/tryCatch';
 import type { Route } from './+types/reviews';
 export function meta() {
 	return [
@@ -23,11 +24,15 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
 	const { session, headers } = await getSessionOrRedirect(request);
 
-	const reviews = await getHostReviews(session.user.id);
+	const result = await tryCatch(() => getHostReviews(session.user.id));
+
+	if (result.error) {
+		throw new Error('Failed to load reviews. Please try again later.');
+	}
 
 	return data(
 		{
-			reviews,
+			reviews: result.data,
 		},
 		{
 			headers: {
@@ -41,6 +46,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Reviews({ loaderData }: Route.ComponentProps) {
 	const { reviews } = loaderData;
 
+	// Handle case where reviews might be null (though it shouldn't be due to error handling above)
 	const safeReviews = Array.isArray(reviews) ? reviews : [];
 
 	const result = safeReviews
@@ -68,7 +74,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<VanPages
-			itemsCount={reviews.length}
+			itemsCount={safeReviews.length}
 			// generic componet props start
 			Component={Review}
 			items={reviewItems}
@@ -85,7 +91,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 					<BarChartComponent mappedData={result} />
 
 					<h3 className="font-bold text-lg text-neutral-900">
-						Reviews ({reviews.length})
+						Reviews ({safeReviews.length})
 					</h3>
 				</>
 			}
