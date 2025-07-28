@@ -3,6 +3,19 @@ import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
 // import prisma from '~/lib/prisma';
 
+export function rentVan(vanId: string, renterId: string, hostId: string) {
+	if (!isCUID(vanId) || !isCUID(renterId) || !isCUID(hostId)) {
+		throw new Error(INVALID_ID_ERROR);
+	}
+	return prisma.rent.create({
+		data: {
+			vanId,
+			renterId,
+			hostId,
+		},
+	});
+}
+
 export function returnVan(
 	rentId: string,
 	userId: string,

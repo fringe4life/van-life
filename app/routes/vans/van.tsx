@@ -7,7 +7,7 @@ import {
 	DEFAULT_LIMIT,
 	DEFAULT_PAGE,
 } from '~/constants/constants';
-import { getVan } from '~/db/getVan';
+import { getVan } from '~/db/van/crud';
 import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/van';
 

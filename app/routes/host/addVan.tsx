@@ -4,7 +4,7 @@ import CustomForm from '~/components/common/CustomForm';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
-import { createVan } from '~/db/createVan';
+import { createVan } from '~/db/van/crud';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { addVanSchema } from '~/lib/schemas.server';
 import { tryCatch } from '~/lib/tryCatch.server';

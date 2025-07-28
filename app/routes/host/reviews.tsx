@@ -3,7 +3,7 @@ import { data, href } from 'react-router';
 import BarChartComponent from '~/components/host/BarChart';
 import Review from '~/components/host/review/Review';
 import VanPages from '~/components/van/VanPages';
-import { getHostReviews } from '~/db/host/getHostReviews';
+import { getHostReviews } from '~/db/review/queries';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/reviews';

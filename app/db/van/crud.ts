@@ -7,3 +7,9 @@ export function createVan(newVan: Omit<Van, 'id' | 'createdAt' | 'isRented'>) {
 		data: { ...newVan, createdAt: new Date(), isRented: false },
 	});
 }
+
+export function getVan(id: string) {
+	return prisma.van.findUnique({
+		where: { id },
+	});
+}
