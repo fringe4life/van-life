@@ -53,7 +53,7 @@ export default function Home() {
 					alt="Camper van on scenic road"
 					width={1000}
 					height={667}
-					className=" [view-transition-name:image]"
+					className="[view-transition-name:image]"
 					srcSet={srcSet}
 					sizes={sizes}
 					loading="eager"
