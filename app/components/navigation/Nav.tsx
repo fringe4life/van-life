@@ -135,7 +135,7 @@ export default function Nav({ hasToken }: NavProps) {
 		},
 	].filter((item) => item.show);
 
-	const mobileNavItems: NavItemType[] = navItems.map((item) => {
+	const createMobileNavItem = (item: NavItemType) => {
 		if (item.Component === CustomNavLink) {
 			return {
 				...item,
@@ -159,7 +159,9 @@ export default function Nav({ hasToken }: NavProps) {
 				Component: CustomLink,
 			} as NavItemType;
 		}
-	});
+	};
+
+	const mobileNavItems: NavItemType[] = navItems.map(createMobileNavItem);
 
 	return (
 		<header className="flex items-center justify-between gap-3 px-3 py-9 sm:gap-6 md:px-6">
@@ -199,12 +201,12 @@ export default function Nav({ hasToken }: NavProps) {
 						aria-label="Close menu"
 						tabIndex={0}
 						onClick={handleClick}
-						className={`mobile-overlay fixed inset-0 m-0 cursor-pointer appearance-none border-none p-0 md:hidden z-40${isAnimatingOut ? ' out' : ''}`}
+						className={`mobile-overlay fixed inset-0 z-40 m-0 cursor-pointer appearance-none border-none p-0 md:hidden ${isAnimatingOut ? 'out' : ''}`}
 						style={{ outline: 'none' }}
 					/>
 					{/* Sidebar with slide-in and slide-out animation */}
 					<nav
-						className={`fixed top-0 right-0 bottom-0 z-50 flex w-64 flex-col bg-orange-50 p-6 md:hidden mobile-sidebar${isAnimatingOut ? ' out' : ''}`}
+						className={`mobile-sidebar fixed top-0 right-0 bottom-0 z-50 flex w-64 flex-col bg-orange-50 p-6 md:hidden ${isAnimatingOut ? 'out' : ''}`}
 					>
 						<Button
 							className="mb-6 self-end"

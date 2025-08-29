@@ -14,7 +14,7 @@ export default function Review({ name, rating, text, timestamp }: ReviewProps) {
 		<Card className="max-w-full contain-content">
 			<CardHeader>
 				<RatingStars rating={rating} />
-				<CardTitle className="my-4 flex justify-between ">
+				<CardTitle className="my-4 flex justify-between">
 					{name}
 					<span className="text-neutral-600">{timestamp ?? 'unknown'}</span>
 				</CardTitle>

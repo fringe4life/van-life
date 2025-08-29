@@ -1,4 +1,6 @@
-const vans = [
+import type { Prisma } from '@prisma/client';
+
+const vans: Omit<Prisma.VanCreateInput, 'userInfo'>[] = [
 	{
 		name: 'Modest Explorer',
 		price: 60,
@@ -169,6 +171,96 @@ const vans = [
 		type: 'LUXURY' as const,
 		createdAt: new Date(2019, 9, 12),
 	},
+	{
+		name: "Nomad's Haven",
+		price: 85,
+		description:
+			"Perfect for digital nomads and remote workers, the Nomad's Haven features a built-in workspace with ergonomic seating, reliable WiFi, and plenty of power outlets. The interior is designed for productivity while maintaining the freedom of the open road.",
+		imageUrl:
+			'https://images.unsplash.com/photo-1516394399858-ae258cf724cc?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNhbXBlcnZhbnxlbnwwfHwwfHx8Mg%3D%3D',
+		type: 'LUXURY' as const,
+		createdAt: new Date(2020, 3, 15),
+	},
+	{
+		name: 'Forest Guardian',
+		price: 55,
+		description:
+			'Built for nature enthusiasts, the Forest Guardian comes equipped with all-terrain capabilities, a rooftop tent, and specialized storage for camping gear. Its earthy green exterior blends seamlessly with natural surroundings.',
+		imageUrl:
+			'https://images.unsplash.com/photo-1605410791216-3d9653a95667?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fHZhbnxlbnwwfHwwfHx8Mg%3D%3D',
+		type: 'RUGGED' as const,
+		createdAt: new Date(2019, 7, 8),
+	},
+	{
+		name: 'Urban Escape',
+		price: 45,
+		type: 'LUXURY' as const,
+		description:
+			'The Urban Escape is designed for city dwellers who want to break free on weekends. Compact yet comfortable, it features smart storage solutions and a pop-top roof for extra headroom when parked.',
+		imageUrl:
+			'https://images.unsplash.com/photo-1613750590555-5ad35bd95a99?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHZhbnxlbnwwfHwwfHx8Mg%3D%3D',
+		createdAt: new Date(2020, 1, 22),
+	},
+	{
+		name: 'Coastal Cruiser',
+		price: 90,
+		description:
+			'Inspired by beach culture, the Coastal Cruiser features a bright blue exterior, surfboard storage, and an outdoor shower. The interior is designed to handle sandy feet and salty air with easy-clean surfaces.',
+		imageUrl:
+			'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dmFufGVufDB8fDB8fHwy',
+		type: 'LUXURY' as const,
+		createdAt: new Date(2018, 6, 10),
+	},
+	{
+		name: 'Desert Wanderer',
+		price: 75,
+		description:
+			'Built for extreme conditions, the Desert Wanderer features enhanced cooling systems, solar panels, and extra water storage. Its tan exterior reflects heat while the interior stays cool and comfortable.',
+		imageUrl:
+			'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dmFufGVufDB8fDB8fHwy',
+		type: 'RUGGED' as const,
+		createdAt: new Date(2019, 11, 3),
+	},
+	{
+		name: 'Alpine Adventure',
+		price: 110,
+		description:
+			'Designed for mountain enthusiasts, the Alpine Adventure features four-wheel drive, heated floors, and specialized storage for ski and snowboard equipment. The interior is insulated for cold weather camping.',
+		imageUrl:
+			'https://images.unsplash.com/photo-1647629825421-2f7441004492?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTR8fGNhbXBlcnZhbnxlbnwwfHwwfHx8Mg%3D%3D',
+		type: 'LUXURY' as const,
+		createdAt: new Date(2020, 8, 14),
+	},
+	{
+		name: 'Retro Rambler',
+		price: 40,
+		description:
+			'A lovingly restored classic van with modern amenities hidden behind its vintage exterior. Features include a retro-inspired interior with contemporary comforts, perfect for those who appreciate both style and functionality.',
+		imageUrl:
+			'https://images.unsplash.com/photo-1639156814151-334b5327665b?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjEzfHxjYW1wZXJ2YW58ZW58MHx8MHx8fDI%3D',
+		type: 'SIMPLE' as const,
+		createdAt: new Date(2017, 9, 18),
+	},
+	{
+		name: 'Tech Nomad',
+		price: 95,
+		description:
+			'Built for the modern digital lifestyle, the Tech Nomad features integrated smart home technology, voice-controlled lighting, and a built-in projector for movie nights under the stars. Perfect for tech-savvy travelers.',
+		imageUrl:
+			'https://images.unsplash.com/photo-1515876305430-f06edab8282a?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2FtcGVyJTIwdmFufGVufDB8fDB8fHwy',
+		type: 'LUXURY' as const,
+		createdAt: new Date(2021, 2, 28),
+	},
+	{
+		name: 'Family Explorer',
+		price: 80,
+		description:
+			"Spacious and family-friendly, the Family Explorer features bunk beds, a full kitchen, and plenty of storage for everyone's gear. The interior is designed with safety and comfort in mind for family adventures.",
+		imageUrl:
+			'https://images.unsplash.com/photo-1626680114529-3f6ffa002b80?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhbXBlciUyMHZhbnxlbnwwfHwwfHx8Mg%3D%3D',
+		type: 'SIMPLE' as const,
+		createdAt: new Date(2020, 5, 12),
+	},
 ];
 
 const rents = [
@@ -231,6 +323,98 @@ const rents = [
 	{
 		amount: 200,
 		rentedAt: new Date('2025-01-12T00:00:00Z'),
+	},
+	{
+		amount: 3500,
+		rentedAt: new Date('2023-05-15T00:00:00Z'),
+	},
+	{
+		amount: 4500,
+		rentedAt: new Date('2023-08-22T00:00:00Z'),
+	},
+	{
+		amount: 2800,
+		rentedAt: new Date('2022-11-08T00:00:00Z'),
+	},
+	{
+		amount: 9200,
+		rentedAt: new Date('2024-07-03T00:00:00Z'),
+	},
+	{
+		amount: 1500,
+		rentedAt: new Date('2023-12-10T00:00:00Z'),
+	},
+	{
+		amount: 7500,
+		rentedAt: new Date('2024-01-25T00:00:00Z'),
+	},
+	{
+		amount: 3200,
+		rentedAt: new Date('2022-03-14T00:00:00Z'),
+	},
+	{
+		amount: 1800,
+		rentedAt: new Date('2023-09-30T00:00:00Z'),
+	},
+	{
+		amount: 6500,
+		rentedAt: new Date('2024-03-08T00:00:00Z'),
+	},
+	{
+		amount: 4200,
+		rentedAt: new Date('2023-06-19T00:00:00Z'),
+	},
+	{
+		amount: 1100,
+		rentedAt: new Date('2022-12-05T00:00:00Z'),
+	},
+	{
+		amount: 8900,
+		rentedAt: new Date('2024-08-12T00:00:00Z'),
+	},
+	{
+		amount: 2400,
+		rentedAt: new Date('2023-02-28T00:00:00Z'),
+	},
+	{
+		amount: 5700,
+		rentedAt: new Date('2024-05-20T00:00:00Z'),
+	},
+	{
+		amount: 3300,
+		rentedAt: new Date('2023-10-15T00:00:00Z'),
+	},
+	{
+		amount: 7800,
+		rentedAt: new Date('2024-09-03T00:00:00Z'),
+	},
+	{
+		amount: 1900,
+		rentedAt: new Date('2022-07-25T00:00:00Z'),
+	},
+	{
+		amount: 6800,
+		rentedAt: new Date('2024-06-14T00:00:00Z'),
+	},
+	{
+		amount: 4100,
+		rentedAt: new Date('2023-04-11T00:00:00Z'),
+	},
+	{
+		amount: 2600,
+		rentedAt: new Date('2022-09-18T00:00:00Z'),
+	},
+	{
+		amount: 9400,
+		rentedAt: new Date('2024-10-07T00:00:00Z'),
+	},
+	{
+		amount: 1400,
+		rentedAt: new Date('2023-11-22T00:00:00Z'),
+	},
+	{
+		amount: 7200,
+		rentedAt: new Date('2024-11-30T00:00:00Z'),
 	},
 ];
 
@@ -352,6 +536,126 @@ const reviews = [
 		text: 'The trip we took in this van was an amazing experience and makes recommending this van very easy!',
 		createdAt: new Date('2024-11-01T00:00:00Z'),
 		updatedAt: new Date('2024-11-01T00:00:00Z'),
+	},
+	{
+		rating: 1,
+		text: 'Absolutely terrible experience. The van broke down three times during our trip and the owner was completely unhelpful.',
+		createdAt: new Date('2023-08-15T00:00:00Z'),
+		updatedAt: new Date('2023-08-15T00:00:00Z'),
+	},
+	{
+		rating: 2,
+		text: "The van was dirty and smelled like mold. The air conditioning didn't work properly, making our summer trip miserable.",
+		createdAt: new Date('2024-06-22T00:00:00Z'),
+		updatedAt: new Date('2024-06-22T00:00:00Z'),
+	},
+	{
+		rating: 3,
+		text: 'Decent van for the price, but the interior was smaller than advertised. Good for short trips but not ideal for longer journeys.',
+		createdAt: new Date('2023-11-08T00:00:00Z'),
+		updatedAt: new Date('2023-11-08T00:00:00Z'),
+	},
+	{
+		rating: 4,
+		text: 'Great van with excellent fuel efficiency! The only minor issue was a squeaky door that was easily fixed with some WD-40.',
+		createdAt: new Date('2024-03-14T00:00:00Z'),
+		updatedAt: new Date('2024-03-14T00:00:00Z'),
+	},
+	{
+		rating: 5,
+		text: 'Exceptional van experience! Everything was perfect from the comfortable sleeping arrangements to the well-equipped kitchen.',
+		createdAt: new Date('2023-12-20T00:00:00Z'),
+		updatedAt: new Date('2023-12-20T00:00:00Z'),
+	},
+	{
+		rating: 1,
+		text: 'Worst rental experience ever. The van had electrical issues, the brakes felt unsafe, and the owner refused to provide a refund.',
+		createdAt: new Date('2024-07-30T00:00:00Z'),
+		updatedAt: new Date('2024-07-30T00:00:00Z'),
+	},
+	{
+		rating: 2,
+		text: 'The van was functional but very basic. The mattress was uncomfortable and the heating system was inadequate for cold weather.',
+		createdAt: new Date('2023-02-12T00:00:00Z'),
+		updatedAt: new Date('2023-02-12T00:00:00Z'),
+	},
+	{
+		rating: 3,
+		text: "Average van with some wear and tear. It got us where we needed to go, but don't expect luxury amenities.",
+		createdAt: new Date('2024-01-05T00:00:00Z'),
+		updatedAt: new Date('2024-01-05T00:00:00Z'),
+	},
+	{
+		rating: 4,
+		text: 'Very good van with modern features. The solar panels worked great and the interior was well-designed for comfort.',
+		createdAt: new Date('2023-09-18T00:00:00Z'),
+		updatedAt: new Date('2023-09-18T00:00:00Z'),
+	},
+	{
+		rating: 5,
+		text: 'Outstanding van that exceeded all expectations! The panoramic windows provided incredible views and the amenities were top-notch.',
+		createdAt: new Date('2024-04-25T00:00:00Z'),
+		updatedAt: new Date('2024-04-25T00:00:00Z'),
+	},
+	{
+		rating: 1,
+		text: "Complete disaster. The van wouldn't start on the second day, and we had to cut our trip short. No compensation offered.",
+		createdAt: new Date('2023-07-03T00:00:00Z'),
+		updatedAt: new Date('2023-07-03T00:00:00Z'),
+	},
+	{
+		rating: 2,
+		text: 'The van was outdated and cramped. The bathroom facilities were barely functional and the kitchen setup was impractical.',
+		createdAt: new Date('2024-08-11T00:00:00Z'),
+		updatedAt: new Date('2024-08-11T00:00:00Z'),
+	},
+	{
+		rating: 3,
+		text: 'It was okay for what we paid. The van was clean but showing its age. Good for budget-conscious travelers.',
+		createdAt: new Date('2023-10-29T00:00:00Z'),
+		updatedAt: new Date('2023-10-29T00:00:00Z'),
+	},
+	{
+		rating: 4,
+		text: 'Excellent van with great fuel economy and comfortable sleeping arrangements. Would definitely rent again!',
+		createdAt: new Date('2024-02-08T00:00:00Z'),
+		updatedAt: new Date('2024-02-08T00:00:00Z'),
+	},
+	{
+		rating: 5,
+		text: 'Perfect van for our family vacation! Spacious, well-maintained, and equipped with everything we needed for a comfortable trip.',
+		createdAt: new Date('2023-12-03T00:00:00Z'),
+		updatedAt: new Date('2023-12-03T00:00:00Z'),
+	},
+	{
+		rating: 1,
+		text: 'Terrible experience. The van had multiple mechanical issues and the owner was completely unresponsive to our concerns.',
+		createdAt: new Date('2024-05-17T00:00:00Z'),
+		updatedAt: new Date('2024-05-17T00:00:00Z'),
+	},
+	{
+		rating: 2,
+		text: 'The van was functional but very basic. The interior was smaller than expected and the amenities were minimal.',
+		createdAt: new Date('2023-04-06T00:00:00Z'),
+		updatedAt: new Date('2023-04-06T00:00:00Z'),
+	},
+	{
+		rating: 3,
+		text: 'Decent van for short trips. The bed was comfortable but the kitchen area was cramped and difficult to use.',
+		createdAt: new Date('2024-09-28T00:00:00Z'),
+		updatedAt: new Date('2024-09-28T00:00:00Z'),
+	},
+	{
+		rating: 4,
+		text: 'Great van with excellent features! The solar setup was impressive and the interior design was thoughtful and practical.',
+		createdAt: new Date('2023-11-15T00:00:00Z'),
+		updatedAt: new Date('2023-11-15T00:00:00Z'),
+	},
+	{
+		rating: 5,
+		text: 'Amazing van experience! The luxury amenities made our trip unforgettable. Highly recommend for anyone looking for comfort and style.',
+		createdAt: new Date('2024-06-08T00:00:00Z'),
+		updatedAt: new Date('2024-06-08T00:00:00Z'),
 	},
 ];
 

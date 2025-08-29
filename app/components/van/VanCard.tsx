@@ -37,12 +37,12 @@ export default function VanCard({
 	return (
 		<div className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content contain-inline-size [contain-intrinsic-size:auto_300px_auto_200px] [content-visibility:auto]">
 			<Card
-				className=" relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4"
+				className="relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4"
 				style={{ viewTransitionName: `card-${vanId}` }}
 			>
 				<CardHeader className="@min-md/card:col-start-1 @min-md/card:row-span-2">
 					<Image
-						className="aspect-square w-full rounded-md "
+						className="aspect-square w-full rounded-md"
 						src={imageUrl}
 						alt={description}
 						height="200"
@@ -64,7 +64,7 @@ export default function VanCard({
 						</CustomLink>
 					</CardTitle>
 					{action}
-					<Badge className="@min-md/card:-row-end-1 " variant={type}>
+					<Badge className="@min-md/card:-row-end-1" variant={type}>
 						{type}
 					</Badge>
 				</CardFooter>

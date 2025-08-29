@@ -80,7 +80,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					Details
 				</CustomLink>
 			</div>
-			<div className="flex items-center justify-between bg-orange-200 px-3 py-6 sm:px-6.5 sm:py-9 ">
+			<div className="flex items-center justify-between bg-orange-200 px-3 py-6 sm:px-6.5 sm:py-9">
 				<p className="font-bold text-lg text-shadow-text sm:text-2xl">
 					{typeof avgRating === 'number' ? (
 						<span>

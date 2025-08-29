@@ -87,7 +87,7 @@ export default function VanDetailCard({
 						</CustomNavLink>
 					</div>
 				</CardContent>
-				<CardFooter className=" contain-inline-size">{children}</CardFooter>
+				<CardFooter className="contain-inline-size">{children}</CardFooter>
 			</Card>
 		</div>
 	);

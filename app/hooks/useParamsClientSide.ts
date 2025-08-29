@@ -12,9 +12,11 @@ export function useParamsClientSide(
 	const [searchParams] = useSearchParams();
 	const page = Number.parseInt(
 		searchParams.get('page') ?? defaultPage.toString(),
+		10,
 	);
 	const limit = Number.parseInt(
 		searchParams.get('limit') ?? defaultLimit.toString(),
+		10,
 	);
 
 	const type = searchParams.get('type')?.toUpperCase() ?? DEFAULT_FILTER;
