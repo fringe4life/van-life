@@ -10,6 +10,7 @@ import { DEFAULT_FILTER } from '~/constants/constants';
 import { getVans, getVansCount } from '~/db/van/queries';
 import { useParamsClientSide } from '~/hooks/useParamsClientSide';
 import { getPaginationParams } from '~/lib/getPaginationParams.server';
+import { cn } from '~/utils/utils';
 import type { Route } from './+types/vans';
 
 export function meta() {
@@ -24,8 +25,6 @@ export function meta() {
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const badges = Object.values(VanType);
-
-	// const { cursor, limit, type } = getCursorPagination(request.url);
 	const { page, limit, type } = getPaginationParams(request.url);
 
 	const results = await Promise.allSettled([
@@ -84,16 +83,19 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			pathname={href('/vans')}
 			title="Explore our van options"
 			optionalElement={
-				<p className="mb-6 flex flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-4 md:justify-start">
+				<div className="mb-6 grid grid-cols-2 items-center gap-2 sm:grid-cols-[min-content_min-content_min-content_max-content] sm:gap-4">
 					{
 						<ListItems
 							items={badges}
 							getKey={(t) => t}
 							getRow={(t) => (
 								<CustomNavLink
-									className={badgeVariants({
-										variant: t === params.type ? t : 'OUTLINE',
-									})}
+									className={cn(
+										badgeVariants({
+											variant: t === params.type ? t : 'OUTLINE',
+										}),
+										'w-full sm:w-fit',
+									)}
 									to={{ search: `?type=${t.toLowerCase()}` }}
 								>
 									{t}
@@ -103,11 +105,16 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 					}
 					<CustomNavLink
 						to={href('/vans')}
-						className={(isActive) => isActive && 'underline'}
+						className={(isActive) =>
+							cn(
+								'w-full text-center sm:w-fit sm:text-left',
+								isActive && 'underline',
+							)
+						}
 					>
 						Clear filters
 					</CustomNavLink>
-				</p>
+				</div>
 			}
 		/>
 	);

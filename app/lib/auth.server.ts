@@ -40,9 +40,5 @@ export const auth = betterAuth({
 		updateAge: 60 * 60 * 24 * 3, // 1 day (every 1 day the session expiration is updated)
 		preserveSessionInDatabase: true,
 	},
-	// advanced: {
-	// 	database: {
-	// 		generateId: false,
-	// 	},
-	// },
+	telemetry: { enabled: false },
 });
