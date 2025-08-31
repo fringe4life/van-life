@@ -1,23 +1,20 @@
+import { neonConfig } from '@neondatabase/serverless';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { PrismaClient } from '@prisma/client';
+import ws from 'ws';
 import { env } from './env.server';
 
+neonConfig.webSocketConstructor = ws;
+
+// To work in edge environments (Cloudflare Workers, Vercel Edge, etc.), enable querying over fetch
+// neonConfig.poolQueryViaFetch = true
+
 declare global {
-	var __prisma: PrismaClient | undefined;
+	var prisma: PrismaClient | undefined;
 }
 
 const adapter = new PrismaNeon({ connectionString: env.DATABASE_URL });
 
-export const prisma =
-	globalThis.__prisma ||
-	new PrismaClient({
-		adapter,
-		log:
-			process.env.NODE_ENV === 'development'
-				? ['query', 'warn', 'error']
-				: ['error'],
-	});
-
-if (process.env.NODE_ENV !== 'production') {
-	globalThis.__prisma = prisma;
-}
+const db = global.prisma || new PrismaClient({ adapter });
+if (process.env.NODE_ENV === 'development') global.prisma = db;
+export { db as prisma };
