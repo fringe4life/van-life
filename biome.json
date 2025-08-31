@@ -25,6 +25,9 @@
 						"functions": ["cn", "clsx", "twMerge"]
 					}
 				}
+			},
+			"suspicious": {
+				"noUnknownAtRules": "off"
 			}
 		}
 	},

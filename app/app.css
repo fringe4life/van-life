@@ -202,6 +202,9 @@ html {
 	--color-orange-600: oklch(68.11% 0.142 38.3);
 	--color-neutral-600: oklch(42.02% 0 0);
 	--color-neutral-900: oklch(20.02% 0 0);
+
+	/* Dynamic CSS variables set from loader data */
+	--van-count: 0; /* Default value, will be overridden by entry.client.tsx */
 }
 
 .grid-max {

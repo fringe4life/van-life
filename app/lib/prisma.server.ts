@@ -1,26 +1,23 @@
-// import { PrismaPg } from '@prisma/adapter-pg';
-// import type { SqlDriverAdapterFactory } from '@prisma/client/runtime/library';
-
-// import { PrismaClient } from '~/generated/prisma/client';
-// // import { env } from '~/utils/env.server';
-
-// export type GetDbParams = {
-// 	connectionString: string;
-// };
-
-// export function getDb({ connectionString }: GetDbParams) {
-// 	const pool = new PrismaPg({ connectionString }) as SqlDriverAdapterFactory;
-// 	const prisma = new PrismaClient({ adapter: pool });
-// 	return prisma;
-// }
-// const prisma = getDb({ connectionString: process.env.DIRECT_URL! });
-// export default prisma;
-
+import { PrismaNeon } from '@prisma/adapter-neon';
 import { PrismaClient } from '@prisma/client';
+import { env } from './env.server';
 
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+declare global {
+	var __prisma: PrismaClient | undefined;
+}
 
-export const prisma = globalForPrisma.prisma || new PrismaClient();
+const adapter = new PrismaNeon({ connectionString: env.DATABASE_URL });
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
-//
+export const prisma =
+	globalThis.__prisma ||
+	new PrismaClient({
+		adapter,
+		log:
+			process.env.NODE_ENV === 'development'
+				? ['query', 'warn', 'error']
+				: ['error'],
+	});
+
+if (process.env.NODE_ENV !== 'production') {
+	globalThis.__prisma = prisma;
+}
