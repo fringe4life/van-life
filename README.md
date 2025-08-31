@@ -14,6 +14,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - [Scripts](#scripts)
 - [Styling](#styling)
 - [Code Quality](#code-quality)
+- [Deployment](#deployment)
 - [Contributing](#contributing)
 
 ---
@@ -31,10 +32,12 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **Zod** for runtime schema validation
 - 🎨 **TailwindCSS 4** with modern CSS features
-- 📦 **Prisma ORM** with PostgreSQL and relation joins
+- 📦 **Prisma ORM** with Neon PostgreSQL and relation joins
 - 🔧 **Generic Components** for reusability and maintainability
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with React 19 and modern tooling
+- 🔗 **URL State Management** with nuqs for type-safe search parameters
+- 🌐 **View Transitions** for smooth navigation experiences
 
 ---
 
@@ -48,19 +51,22 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **Radix UI** for accessible components
 - **Lucide React** for icons
 - **Recharts** for data visualization
+- **nuqs** for type-safe URL state management
 
 ### Backend & Database
 - **Node.js** with React Router server
-- **Prisma 6.15** ORM with PostgreSQL
+- **Prisma 6.15** ORM with Neon PostgreSQL
 - **better-auth** for authentication
 - **Zod** for schema validation
 - **CUID2** for unique identifiers
+- **@prisma/adapter-neon** for Neon database integration
 
 ### Development Tools
 - **Vite 7** with React Router plugin
 - **Biome** for linting and formatting
 - **TypeScript** with native preview
 - **Babel** with React Compiler plugin
+- **Bun** for fast package management and runtime
 
 ---
 
@@ -82,6 +88,8 @@ app/
 │   └── van/            # Van CRUD operations and queries
 ├── hooks/              # Custom React hooks
 ├── lib/                # Server-side utilities
+│   ├── parsers.ts      # nuqs search parameter parsers
+│   └── searchParams.server.ts  # Server-side search param caching
 ├── routes/             # Route modules (pages, API, layouts)
 │   ├── api/            # API routes
 │   ├── auth/           # Authentication routes
@@ -93,36 +101,43 @@ app/
 
 prisma/
 ├── models/             # Modular Prisma model definitions
-│   ├── betterAuth.prisma
-│   ├── enums.prisma
-│   ├── rent.prisma
-│   ├── review.prisma
-│   ├── userInfo.prisma
-│   └── van.prisma
+│   ├── betterAuth/     # Authentication models (User, Session, Account, Verification)
+│   ├── van/            # Van-related models (Van, Rent, Review, UserInfo)
+│   ├── enums.prisma    # Shared enums
+│   └── schema.prisma   # Main schema file
 ├── schema.prisma       # Prisma schema entrypoint
-└── seed.ts            # Database seeding script
+├── seed.ts            # Database seeding script
+└── seedInfo.ts        # Enhanced seed data with varied content
 ```
 
 ---
 
 ## Database
 
-- **PostgreSQL** with Prisma ORM
-- **Modular schema** with separate model files for better organization
+- **Neon PostgreSQL** with Prisma ORM
+- **Modular schema** with organized model files in subdirectories
 - **Main models:**
-  - `User` & `UserInfo` - User accounts and profiles
+  - `User`, `Session`, `Account`, `Verification` - Authentication system
   - `Van` - Van listings with types (SIMPLE, LUXURY, RUGGED)
   - `Rent` - Rental transactions and history
   - `Review` - User reviews and ratings
+  - `UserInfo` - Extended user profile information
 - **Advanced features:**
   - Relation joins for optimized queries
   - CUID2 for unique identifiers
   - Proper indexing and constraints
+  - Enhanced seed data with varied van names and descriptions
 
 ### Setup Database
 ```bash
-npx prisma migrate dev
-npm run seed
+# Generate Prisma client
+bunx prisma generate
+
+# Push schema to database
+bunx prisma db push
+
+# Seed with enhanced data
+bun run seed
 ```
 
 ---
@@ -134,6 +149,37 @@ npm run seed
 - **Protected routes** with automatic redirects
 - **Zod validation** for all auth forms
 - **Server-side session handling** in loaders
+- **Modular model organization** for better maintainability
+
+---
+
+## URL State Management with nuqs
+
+The application uses **nuqs v2.5+** for type-safe URL state management:
+
+### Features
+- **Type-safe search parameters** with shared parsers between server and client
+- **Server-side caching** with `createSearchParamsCache`
+- **Client-side state management** with `useQueryStates`
+- **Automatic URL synchronization** with proper type handling
+- **View transitions support** for smooth navigation
+
+### Implementation
+```typescript
+// Shared parsers (app/lib/parsers.ts)
+export const paginationParsers = {
+  page: parseAsInteger.withDefault(DEFAULT_PAGE),
+  limit: parseAsInteger.withDefault(DEFAULT_LIMIT),
+  type: parseAsStringEnum([...Object.values(VanType), DEFAULT_FILTER])
+    .withDefault(DEFAULT_FILTER),
+};
+
+// Server-side caching (app/lib/searchParams.server.ts)
+export const searchParamsCache = createSearchParamsCache(paginationParsers);
+
+// Client-side usage
+const [{ page, limit, type }, setSearchParams] = useQueryStates(paginationParsers);
+```
 
 ---
 
@@ -141,7 +187,7 @@ npm run seed
 
 ### Prerequisites
 - Node.js 18+ 
-- PostgreSQL database
+- Neon PostgreSQL database
 - Bun (recommended) or npm
 
 ### Installation
@@ -158,14 +204,15 @@ npm install
 
 # Set up environment variables
 cp .env.example .env
-# Edit .env with your database credentials
+# Edit .env with your Neon database credentials
 
 # Set up database
-npx prisma migrate dev
-npm run seed
+bunx prisma generate
+bunx prisma db push
+bun run seed
 
 # Start development server
-npm run dev
+bun run dev
 ```
 
 The app will be available at [http://localhost:5173](http://localhost:5173).
@@ -173,8 +220,8 @@ The app will be available at [http://localhost:5173](http://localhost:5173).
 ### Production Build
 
 ```bash
-npm run build
-npm run start
+bun run build
+bun run start
 ```
 
 ---
@@ -184,22 +231,32 @@ npm run start
 Create a `.env` file in the root directory:
 
 ```env
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/vanlife
-DIRECT_URL=postgresql://user:password@localhost:5432/vanlife
+# Database (Neon PostgreSQL)
+DATABASE_URL=postgresql://user:password@ep-xxx-xxx-xxx.region.aws.neon.tech/neondb
 
-# Authentication (if using better-auth)
-AUTH_SECRET=your-secret-key-here
+# Authentication
+BETTER_AUTH_SECRET=your-secret-key-here
+BETTER_AUTH_URL=http://localhost:5173
+
+# Optional: Google OAuth (if configured)
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
 
 ---
 
 ## Scripts
 
-- `npm run dev` – Start development server with HMR
-- `npm run build` – Build for production
-- `npm run typecheck` – TypeScript checking and route type generation
-- `npm run seed` – Seed the database with sample data
+- `bun run dev` – Start development server with HMR
+- `bun run build` – Build for production
+- `bun run typecheck` – TypeScript checking and route type generation
+- `bun run seed` – Seed the database with enhanced sample data
+- `bun run lint` – Run Biome linting
+- `bun run lint:fix` – Fix linting issues automatically
+- `bun run format` – Check code formatting
+- `bun run format:fix` – Fix formatting issues automatically
+- `bun run check` – Run all checks (lint + format)
+- `bun run check:fix` – Fix all issues automatically
 
 ---
 
@@ -216,6 +273,7 @@ AUTH_SECRET=your-secret-key-here
   - CSS Grid layouts
 - **Component variants** using class-variance-authority
 - **Utility-first approach** with custom utilities
+- **Biome configuration** for CSS at-rules support
 
 ---
 
@@ -230,6 +288,38 @@ AUTH_SECRET=your-secret-key-here
   - Organized imports
 - **Type safety** throughout the application
 - **Error handling** with proper error boundaries
+- **nuqs** for type-safe URL state management
+- **Prisma** with proper type generation
+
+### Biome Configuration
+- **CSS at-rules support** for TailwindCSS 4 features
+- **Sorted CSS classes** for consistency
+- **TypeScript strict mode** enabled
+- **Import organization** and sorting
+
+---
+
+## Deployment
+
+### Vercel Deployment
+The application is configured for Vercel deployment with:
+
+- **Prisma client generation** via `postinstall` script
+- **Neon database integration** with `@prisma/adapter-neon`
+- **Edge runtime compatibility** with proper WASM handling
+- **Environment variable configuration** for production
+
+### Build Process
+```bash
+# Production build
+bun run build
+
+# Type checking
+bun run typecheck
+
+# Linting and formatting
+bun run check
+```
 
 ---
 
@@ -247,6 +337,8 @@ AUTH_SECRET=your-secret-key-here
 - Follow TypeScript best practices
 - Write meaningful commit messages
 - Add tests for new features
+- Use nuqs for URL state management
+- Follow the established project structure
 
 ---
 
@@ -256,5 +348,5 @@ This project is for educational/portfolio purposes and demonstrates modern full-
 
 ---
 
-*Built with ❤️ using React Router 7, TypeScript, and modern web technologies.*
+*Built with ❤️ using React Router 7, TypeScript, nuqs, and modern web technologies.*
 

@@ -1,13 +1,10 @@
-import { data, href, useLocation } from 'react-router';
+import { useQueryStates } from 'nuqs';
+import { data, href } from 'react-router';
 import PendingUI from '~/components/common/PendingUI';
 import CustomLink from '~/components/navigation/CustomLink';
 import VanDetails from '~/components/van/VanDetail';
-import {
-	DEFAULT_FILTER,
-	DEFAULT_LIMIT,
-	DEFAULT_PAGE,
-} from '~/constants/constants';
 import { getVan } from '~/db/van/crud';
+import { paginationParsers } from '~/lib/parsers';
 import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/van';
 
@@ -52,23 +49,14 @@ export async function loader({ params }: Route.LoaderArgs) {
 export default function VanDetail({ loaderData }: Route.ComponentProps) {
 	const { van } = loaderData;
 
-	const location = useLocation();
-
-	// Get state from location, with fallbacks
-	const state = location.state as {
-		page?: number;
-		limit?: number;
-		type?: string;
-	} | null;
-	const page = state?.page ?? DEFAULT_PAGE;
-	const limit = state?.limit ?? DEFAULT_LIMIT;
-	const type = state?.type ?? DEFAULT_FILTER;
+	// Use nuqs for client-side state management
+	const [{ page, limit, type }] = useQueryStates(paginationParsers);
 
 	const vanIsAvailable = !van.isRented;
 
 	// Build the back link with search parameters
 	const backLinkSearch = type
-		? `?page=${page}&limit=${limit}&type=${type.toLowerCase()}`
+		? `?page=${page}&limit=${limit}&type=${type}`
 		: `?page=${page}&limit=${limit}`;
 
 	return (

@@ -9,12 +9,12 @@ const badgeVariants = cva(
 	{
 		variants: {
 			variant: {
-				SIMPLE: ' bg-orange-600 text-white hover:bg-orange-600/90',
-				LUXURY: ' bg-neutral-900 text-white hover:bg-neutral-900/90',
-				RUGGED:
+				simple: ' bg-orange-600 text-white hover:bg-orange-600/90',
+				luxury: ' bg-neutral-900 text-white hover:bg-neutral-900/90',
+				rugged:
 					'bg-teal-800 text-white  hover:bg-teal-800/90 focus-visible:ring-teal-800/20 ',
-				OUTLINE: 'bg-orange-100  hover:bg-orange/80 ',
-				UNAVAILABLE:
+				outline: 'bg-orange-100  hover:bg-orange/80 ',
+				unavailable:
 					'bg-red-500 text-white disabled cursor-not-allowed hover:bg-red-500/90',
 			},
 			size: {
@@ -23,7 +23,7 @@ const badgeVariants = cva(
 			},
 		},
 		defaultVariants: {
-			variant: 'OUTLINE',
+			variant: 'outline',
 			size: 'default',
 		},
 	},

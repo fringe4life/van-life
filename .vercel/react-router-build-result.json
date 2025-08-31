@@ -3,7 +3,7 @@
     "serverBundles": {
       "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0": {
         "id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-        "file": "build/server/nodejs_eyJydW50aW1lIjoibm9kZWpzIn0/server.js",
+        "file": "build/server/nodejs_eyJydW50aW1lIjoibm9kZWpzIn0/index.js",
         "config": {
           "runtime": "nodejs"
         }
@@ -35,9 +35,9 @@
     },
     "routes": {
       "root": {
-        "path": "",
         "id": "root",
         "file": "app/root.tsx",
+        "path": "",
         "config": {
           "runtime": "nodejs"
         }
@@ -227,9 +227,9 @@
     },
     "routes": {
       "root": {
-        "path": "",
         "id": "root",
-        "file": "root.tsx"
+        "file": "root.tsx",
+        "path": ""
       },
       "routes/layout/layout": {
         "id": "routes/layout/layout",
@@ -382,9 +382,122 @@
       "mode": "lazy",
       "manifestPath": "/__manifest"
     },
-    "serverBuildFile": "server.js",
+    "serverBuildFile": "index.js",
     "serverModuleFormat": "esm",
-    "ssr": true
+    "ssr": true,
+    "unstable_routeConfig": [
+      {
+        "id": "root",
+        "path": "",
+        "file": "root.tsx",
+        "children": [
+          {
+            "file": "./routes/layout/layout.tsx",
+            "children": [
+              {
+                "file": "./routes/home.tsx",
+                "index": true
+              },
+              {
+                "file": "./routes/about.tsx",
+                "path": "about"
+              },
+              {
+                "file": "./routes/vans/vans.tsx",
+                "index": true,
+                "path": "vans"
+              },
+              {
+                "file": "./routes/vans/van.tsx",
+                "path": "vans/:vanId"
+              },
+              {
+                "file": "./routes/auth/login.tsx",
+                "path": "login"
+              },
+              {
+                "file": "./routes/auth/signUp.tsx",
+                "path": "signup"
+              },
+              {
+                "file": "./routes/auth/signOut.tsx",
+                "path": "signout"
+              },
+              {
+                "file": "./routes/layout/hostLayout.tsx",
+                "children": [
+                  {
+                    "file": "./routes/host/host.tsx",
+                    "index": true,
+                    "path": "host"
+                  },
+                  {
+                    "file": "./routes/host/income.tsx",
+                    "path": "host/income"
+                  },
+                  {
+                    "file": "./routes/host/reviews.tsx",
+                    "path": "host/review"
+                  },
+                  {
+                    "file": "./routes/host/addVan.tsx",
+                    "path": "host/add"
+                  },
+                  {
+                    "file": "./routes/host/money.tsx",
+                    "path": "host/money"
+                  },
+                  {
+                    "file": "./routes/host/rentals/rentals.tsx",
+                    "index": true,
+                    "path": "host/rentals"
+                  },
+                  {
+                    "file": "./routes/host/rentals/rentalDetail.tsx",
+                    "path": "host/rentals/rent/:vanId"
+                  },
+                  {
+                    "file": "./routes/host/rentals/returnRental.tsx",
+                    "path": "host/rentals/returnRental/:rentId"
+                  },
+                  {
+                    "file": "./routes/host/hostVans.tsx",
+                    "index": true,
+                    "path": "host/vans"
+                  },
+                  {
+                    "file": "./routes/host/vanDetail/vanDetailLayout.tsx",
+                    "children": [
+                      {
+                        "file": "./routes/host/vanDetail/vanDetail.tsx",
+                        "index": true
+                      },
+                      {
+                        "file": "./routes/host/vanDetail/vanDetailPricing.tsx",
+                        "path": "pricing"
+                      },
+                      {
+                        "file": "./routes/host/vanDetail/vanDetailPhotos.tsx",
+                        "path": "photos"
+                      }
+                    ],
+                    "path": "host/vans/:vanId"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "file": "./routes/api/auth.ts",
+            "path": "/api/auth/*"
+          },
+          {
+            "file": "./routes/404.tsx",
+            "path": "*"
+          }
+        ]
+      }
+    ]
   },
   "viteConfig": {
     "build": {

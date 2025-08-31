@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { href, redirect } from 'react-router';
 import { z } from 'zod/v4';
 import CustomForm from '~/components/common/CustomForm';
@@ -47,6 +48,7 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function AddVan({ actionData }: Route.ComponentProps) {
+	const id = useId();
 	return (
 		<section>
 			<h2 className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
@@ -81,12 +83,12 @@ export default function AddVan({ actionData }: Route.ComponentProps) {
 					name="type"
 					placeholder="simple or luxury or rugged"
 					defaultValue={(actionData?.formData?.type as string) ?? ''}
-					list="vanTypeList"
+					list={id}
 				/>
-				<datalist id="vanTypeList">
-					<option value="LUXURY" />
-					<option value="SIMPLE" />
-					<option value="RUGGED" />
+				<datalist id={id}>
+					<option value="luxury" />
+					<option value="simple" />
+					<option value="rugged" />
 				</datalist>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
 				<Button type="submit">Add your van</Button>

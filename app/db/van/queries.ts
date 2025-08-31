@@ -5,12 +5,12 @@ import { prisma } from '~/lib/prisma.server';
 export function getVans(
 	page: number,
 	limit: number,
-	typeFilter: VanType | null,
+	typeFilter: VanType | undefined,
 ) {
 	const skip = (page - 1) * limit;
 	return prisma.van.findMany({
 		where: {
-			type: typeFilter ? typeFilter : undefined,
+			type: typeFilter,
 		},
 		orderBy: typeFilter ? [{ type: 'desc' }, { id: 'desc' }] : { id: 'desc' },
 		skip,
@@ -18,10 +18,10 @@ export function getVans(
 	});
 }
 
-export function getVansCount(typeFilter: VanType | null) {
+export function getVansCount(typeFilter: VanType | undefined) {
 	return prisma.van.count({
 		where: {
-			type: typeFilter ? typeFilter : undefined,
+			type: typeFilter,
 		},
 		orderBy: typeFilter ? [{ type: 'desc' }, { id: 'desc' }] : { id: 'desc' },
 	});

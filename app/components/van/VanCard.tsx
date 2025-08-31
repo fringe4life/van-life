@@ -5,6 +5,7 @@ import CustomLink from '~/components/navigation/CustomLink';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { VAN_CARD_IMG_SIZES } from '~/constants/constants';
+import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 
 type VanCardProps = {
@@ -64,7 +65,10 @@ export default function VanCard({
 						</CustomLink>
 					</CardTitle>
 					{action}
-					<Badge className="@min-md/card:-row-end-1" variant={type}>
+					<Badge
+						className="@min-md/card:-row-end-1"
+						variant={type.toLowerCase() as LowercaseVanType}
+					>
 						{type}
 					</Badge>
 				</CardFooter>

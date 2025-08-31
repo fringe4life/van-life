@@ -1,15 +1,17 @@
-import { VanType } from '@prisma/client';
-
+import type { VanType } from '@prisma/client';
+import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
 import ListItems from '~/components/common/ListItems';
 import CustomNavLink from '~/components/navigation/CustomNavLink';
 import { badgeVariants } from '~/components/ui/badge';
+import { Button } from '~/components/ui/button';
 import VanCard from '~/components/van/VanCard';
 import VanPages from '~/components/van/VanPages';
-import { DEFAULT_FILTER } from '~/constants/constants';
 import { getVans, getVansCount } from '~/db/van/queries';
-import { useParamsClientSide } from '~/hooks/useParamsClientSide';
-import { getPaginationParams } from '~/lib/getPaginationParams.server';
+import { paginationParsers } from '~/lib/parsers';
+import { searchParamsCache } from '~/lib/searchParams.server';
+import { VAN_TYPE_LOWERCASE } from '~/types/types';
+import { getSearchParams } from '~/utils/getSearchParams.server';
 import { cn } from '~/utils/utils';
 import type { Route } from './+types/vans';
 
@@ -24,12 +26,26 @@ export function meta() {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const badges = Object.values(VanType);
-	const { page, limit, type } = getPaginationParams(request.url);
+	// Get badges from the centralized types
+	const badges = VAN_TYPE_LOWERCASE;
+
+	// Parse search parameters using nuqs server cache
+	const searchParams = getSearchParams(request.url);
+
+	console.log('[nuqs debug] Raw search params:', searchParams);
+
+	const { page, limit, type } = searchParamsCache.parse(searchParams);
+
+	console.log('[nuqs debug] Parsed search params:', { page, limit, type });
+
+	// Convert empty string to undefined for proper type handling
+	const typeFilter = type === '' ? undefined : (type?.toUpperCase() as VanType);
+
+	console.log('[nuqs debug] Type filter after conversion:', typeFilter);
 
 	const results = await Promise.allSettled([
-		getVans(page, limit, type as VanType),
-		getVansCount(type as VanType),
+		getVans(page, limit, typeFilter),
+		getVansCount(typeFilter),
 	]);
 
 	const [vans, vansCount] = results.map((result) =>
@@ -53,7 +69,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Vans({ loaderData }: Route.ComponentProps) {
 	const { vans, badges, vansCount } = loaderData;
 
-	const params = useParamsClientSide();
+	// Use nuqs for client-side state management
+	const [{ page, limit, type }, setSearchParams] =
+		useQueryStates(paginationParsers);
+
+	console.log('[nuqs debug] Client-side state:', { page, limit, type });
 
 	return (
 		<VanPages
@@ -63,7 +83,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			renderKey={(van) => van.id}
 			renderProps={(van) => ({
 				van,
-				filter: params.type ? params.type : DEFAULT_FILTER,
+				filter: type,
 				action: (
 					<p className="text-right text-lg">
 						${van.price}
@@ -72,8 +92,11 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 						</span>
 					</p>
 				),
-				link: href('/vans/:vanId', { vanId: van.id }),
-				state: params,
+				link:
+					href('/vans/:vanId', { vanId: van.id }) +
+					(type
+						? `?page=${page}&limit=${limit}&type=${type}`
+						: `?page=${page}&limit=${limit}`),
 			})}
 			items={vans}
 			itemsCount={vansCount}
@@ -82,6 +105,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			// props for all use cases
 			pathname={href('/vans')}
 			title="Explore our van options"
+			searchParams={{ page, limit, type }}
 			optionalElement={
 				<div className="mb-6 grid grid-cols-2 items-center gap-2 sm:grid-cols-[min-content_min-content_min-content_max-content] sm:gap-4">
 					{
@@ -89,17 +113,21 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 							items={badges}
 							getKey={(t) => t}
 							getRow={(t) => (
-								<CustomNavLink
+								<Button
+									variant="ghost"
 									className={cn(
 										badgeVariants({
-											variant: t === params.type ? t : 'OUTLINE',
+											variant: t === type ? t : 'outline',
 										}),
-										'w-full sm:w-fit',
+										'w-full uppercase sm:w-fit',
 									)}
-									to={{ search: `?type=${t.toLowerCase()}` }}
+									onClick={() => {
+										console.log('[nuqs debug] Setting type to:', t);
+										setSearchParams({ type: t });
+									}}
 								>
 									{t}
-								</CustomNavLink>
+								</Button>
 							)}
 						/>
 					}

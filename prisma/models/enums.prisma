@@ -1,5 +1,5 @@
 enum VanType {
-  SIMPLE
-  LUXURY
-  RUGGED
+  SIMPLE @map("simple")
+  LUXURY @map("luxury")
+  RUGGED @map("rugged")
 }

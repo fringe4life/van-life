@@ -9,6 +9,7 @@ import {
 	CardTitle,
 } from '~/components/ui/card';
 import { HOST_VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
+import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import Image from '../common/Image';
 import CustomNavLink from '../navigation/CustomNavLink';
@@ -49,7 +50,10 @@ export default function VanDetailCard({
 						loading="eager"
 					/>
 					<div className="@min-md/detail:col-span-1 @min-md/detail:col-start-2 content-center">
-						<Badge variant={type} className="@max-md/detail:mt-4">
+						<Badge
+							variant={type.toLowerCase() as LowercaseVanType}
+							className="@max-md/detail:mt-4"
+						>
 							{type}
 						</Badge>
 						<CardTitle className="my-6 text-balance font-bold text-2xl">

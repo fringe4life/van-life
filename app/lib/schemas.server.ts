@@ -109,7 +109,7 @@ export const searchParamsSchema = z.object({
 		.toUpperCase()
 		.optional()
 		.default(DEFAULT_FILTER)
-		.pipe(vanTypeSchema.or(z.literal(DEFAULT_FILTER)))
+		.transform((val) => (val ? vanTypeSchema.parse(val) : undefined))
 		.describe('Van type filter'),
 });
 
@@ -145,6 +145,6 @@ export const cursorPaginationSchema = z.object({
 		.toUpperCase()
 		.optional()
 		.default(DEFAULT_FILTER)
-		.pipe(vanTypeSchema.or(z.literal(DEFAULT_FILTER)))
+		.transform((val) => (val ? vanTypeSchema.parse(val) : undefined))
 		.describe('Van type filter'),
 });

@@ -1,10 +1,13 @@
+import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
 import CustomLink from '~/components/navigation/CustomLink';
 import VanCard from '~/components/van/VanCard';
 import VanPages from '~/components/van/VanPages';
 import { getHostVanCount, getHostVans } from '~/db/van/host';
-import { getPaginationParams } from '~/lib/getPaginationParams.server';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { hostPaginationParsers } from '~/lib/parsers';
+import { hostSearchParamsCache } from '~/lib/searchParams.server';
+import { getSearchParams } from '~/utils/getSearchParams.server';
 import type { Route } from './+types/hostVans';
 
 export function meta() {
@@ -24,7 +27,9 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
 	const { session, headers } = await getSessionOrRedirect(request);
 
-	const { page, limit } = getPaginationParams(request.url);
+	// Parse search parameters using nuqs server cache
+	const searchParams = getSearchParams(request.url);
+	const { page, limit } = hostSearchParamsCache.parse(searchParams);
 
 	const results = await Promise.allSettled([
 		getHostVans(session.user.id, page, limit),
@@ -54,6 +59,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
 	const { vans, vansCount } = loaderData;
 
+	// Use nuqs for client-side state management
+	const [{ page, limit }] = useQueryStates(hostPaginationParsers);
+
 	return (
 		<VanPages
 			// generic component props start
@@ -79,6 +87,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			// props for all use cases
 			pathname={href('/host/vans')}
 			title="Your listed vans"
+			searchParams={{ page, limit }}
 		/>
 	);
 }

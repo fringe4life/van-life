@@ -3,6 +3,7 @@ import { href } from 'react-router';
 import Image from '~/components/common/Image';
 import { Badge, badgeVariants } from '~/components/ui/badge';
 import { VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
+import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import { displayPrice } from '~/utils/displayPrice';
 import { cn } from '~/utils/utils';
@@ -60,7 +61,9 @@ export default function VanDetail({
 							}
 							className={cn(
 								badgeVariants({
-									variant: vanIsAvailable ? type : 'UNAVAILABLE',
+									variant: vanIsAvailable
+										? (type.toLowerCase() as LowercaseVanType)
+										: 'unavailable',
 								}),
 								'@max-xl/card-full:hidden @min-xl/card-full:flex-shrink-0',
 							)}
@@ -73,7 +76,7 @@ export default function VanDetail({
 					<div className="@min-xl/card-full:row-start-2 flex items-center @min-xl/card-full:justify-between gap-4">
 						<Badge
 							className="@min-xl/card-full:m-0"
-							variant={type}
+							variant={type.toLowerCase() as LowercaseVanType}
 							size="small"
 						>
 							{type}
@@ -98,7 +101,11 @@ export default function VanDetail({
 								: href('/vans/:vanId', { vanId })
 						}
 						className={cn(
-							badgeVariants({ variant: vanIsAvailable ? type : 'UNAVAILABLE' }),
+							badgeVariants({
+								variant: vanIsAvailable
+									? (type.toLowerCase() as 'simple' | 'luxury' | 'rugged')
+									: 'unavailable',
+							}),
 							'@max-lg/card-full:w-full',
 						)}
 					>
