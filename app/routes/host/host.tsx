@@ -138,7 +138,7 @@ export function ErrorBoundary() {
 			<p>{details}</p>
 			{Object.entries(params).length >= 1 && (
 				<p>
-					Your Van could not be found. Add i{' '}
+					Your Van could not be found. Add it{' '}
 					<CustomLink to={href('/host/add')}>Add a new Van</CustomLink>
 				</p>
 			)}
