@@ -5,8 +5,9 @@ import RatingStars from '~/components/host/review/RatingStars';
 import CustomLink from '~/components/navigation/CustomLink';
 import VanCard from '~/components/van/VanCard';
 import { getAverageReviewRating } from '~/db/review/analytics';
-import { getAccountSummary } from '~/db/user/analytics';
+import { getHostTransactions } from '~/db/user/analytics';
 import { getHostVans } from '~/db/van/host';
+import { calculateTotalIncome, getElapsedTime } from '~/lib/getElapsedTime';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/host';
@@ -30,11 +31,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	const results = await Promise.allSettled([
 		getHostVans(session.user.id, 1, 3),
-		getAccountSummary(session.user.id),
+		getHostTransactions(session.user.id),
 		getAverageReviewRating(session.user.id),
 	]);
 
-	const [vans, sumIncome, avgRating] = results.map((result) =>
+	const [vans, transactions, avgRating] = results.map((result) =>
 		result.status === 'fulfilled'
 			? result.value
 			: 'There was an error getting this data.',
@@ -43,11 +44,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 	return data(
 		{
 			vans: vans as Awaited<ReturnType<typeof getHostVans>>,
-			sumIncome: sumIncome as Awaited<ReturnType<typeof getAccountSummary>>,
 			avgRating: avgRating as Awaited<
 				ReturnType<typeof getAverageReviewRating>
 			>,
 			name: session.user.name,
+			transactions: transactions as Awaited<
+				ReturnType<typeof getHostTransactions>
+			>,
 		},
 		{
 			headers: {
@@ -59,7 +62,15 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Host({ loaderData }: Route.ComponentProps) {
-	const { vans, sumIncome, avgRating, name } = loaderData;
+	const { vans, avgRating, name, transactions } = loaderData;
+
+	// Calculate income and elapsed time client-side
+	const sumIncome = Array.isArray(transactions)
+		? calculateTotalIncome(transactions)
+		: 0;
+	const elapsedTime = Array.isArray(transactions)
+		? getElapsedTime(transactions)
+		: { elapsedDays: 0, description: 'No data' };
 
 	return (
 		<PendingUI as="section">
@@ -68,7 +79,10 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					Welcome {name ? name : 'User'}!
 				</h2>
 				<p className="col-start-1 my-4 font-light text-base text-neutral-600 sm:my-6 md:my-8">
-					Income last <span className="font-medium underline">30 days</span>
+					Income last{' '}
+					<span className="font-medium underline">
+						{elapsedTime.elapsedDays} days
+					</span>
 				</p>
 				<p className="col-start-1 font-extrabold text-2xl text-neutral-900 xs:text-3xl sm:text-4xl md:text-5xl">
 					{displayPrice(sumIncome)}
@@ -81,7 +95,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				</CustomLink>
 			</div>
 			<div className="flex items-center justify-between bg-orange-200 px-3 py-6 sm:px-6.5 sm:py-9">
-				<p className="font-bold text-lg text-shadow-text sm:text-2xl">
+				<div className="font-bold text-lg text-shadow-text sm:text-2xl">
 					{typeof avgRating === 'number' ? (
 						<span>
 							Your Avg Review <RatingStars rating={avgRating} />
@@ -89,7 +103,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					) : (
 						<span>something went wrong</span>
 					)}
-				</p>
+				</div>
 				<CustomLink
 					to={href('/host/review')}
 					className="font-medium text-base text-shadow-text"

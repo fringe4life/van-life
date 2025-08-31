@@ -23,6 +23,5 @@ export function getVansCount(typeFilter: VanType | undefined) {
 		where: {
 			type: typeFilter,
 		},
-		orderBy: typeFilter ? [{ type: 'desc' }, { id: 'desc' }] : { id: 'desc' },
 	});
 }

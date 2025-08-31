@@ -41,18 +41,4 @@ export const auth = betterAuth({
 		preserveSessionInDatabase: true,
 	},
 	telemetry: { enabled: false },
-	onAPIError: {
-		throw: false, // Don't throw errors, handle them gracefully
-		onError: (error, ctx) => {
-			console.error('[Better Auth Error]:', {
-				message: error instanceof Error ? error.message : 'Unknown error',
-				status:
-					error instanceof Error && 'status' in error
-						? error?.status
-						: 'Unknown',
-				context: ctx,
-			});
-		},
-		errorURL: '/auth/error', // Redirect to error page
-	},
 });

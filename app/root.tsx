@@ -45,7 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
 	return (
-		<NuqsAdapter defaultOptions={{ clearOnDefault: true }}>
+		<NuqsAdapter defaultOptions={{ clearOnDefault: true, shallow: false }}>
 			<Outlet />
 		</NuqsAdapter>
 	);

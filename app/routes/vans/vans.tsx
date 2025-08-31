@@ -30,12 +30,8 @@ export async function loader({ request }: Route.LoaderArgs) {
 	// Parse search parameters using nuqs loadSearchParams
 	const { page, limit, type } = loadSearchParams(request);
 
-	console.log('[nuqs debug] Parsed search params:', { page, limit, type });
-
 	// Convert empty string to undefined for proper type handling
 	const typeFilter = type === '' ? undefined : (type?.toUpperCase() as VanType);
-
-	console.log('[nuqs debug] Type filter after conversion:', typeFilter);
 
 	const results = await Promise.allSettled([
 		getVans(page, limit, typeFilter),
@@ -66,8 +62,6 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 	// Use nuqs for client-side state management
 	const [{ page, limit, type }, setSearchParams] =
 		useQueryStates(paginationParsers);
-
-	console.log('[nuqs debug] Client-side state:', { page, limit, type });
 
 	return (
 		<VanPages
@@ -116,7 +110,6 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 										'w-full uppercase sm:w-fit',
 									)}
 									onClick={() => {
-										console.log('[nuqs debug] Setting type to:', t);
 										setSearchParams({ type: t });
 									}}
 								>
@@ -129,7 +122,6 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 						variant="ghost"
 						className="w-full text-center sm:w-fit sm:text-left"
 						onClick={() => {
-							console.log('[nuqs debug] Clearing filters');
 							setSearchParams({ type: undefined, page: 1 });
 						}}
 					>

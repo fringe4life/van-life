@@ -5,11 +5,9 @@ import ws from 'ws';
 import { env } from './env.server';
 
 // Only configure WebSocket constructor in production
-if (process.env.NODE_ENV === 'production') {
-	neonConfig.webSocketConstructor = ws;
-	// Enable fetch-based queries for better reliability in edge environments
-	neonConfig.poolQueryViaFetch = true;
-}
+neonConfig.webSocketConstructor = ws;
+// Enable fetch-based queries for better reliability in edge environments
+neonConfig.poolQueryViaFetch = true;
 
 declare global {
 	var prisma: PrismaClient | undefined;
