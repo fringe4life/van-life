@@ -5,12 +5,13 @@ import {
 	DEFAULT_PAGE,
 } from '~/constants/constants';
 import type { VanTypeOrEmpty } from '~/types/types';
-import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
+
+// Hardcoded van types for client-side safety
+const VAN_TYPE_LOWERCASE: VanTypeOrEmpty[] = ['simple', 'rugged', 'luxury'];
 
 // Custom parser for type that handles lowercase values
-const parseAsVanType = parseAsStringEnum(
-	VAN_TYPE_LOWERCASE as VanTypeOrEmpty[],
-).withDefault(DEFAULT_FILTER);
+const parseAsVanType =
+	parseAsStringEnum(VAN_TYPE_LOWERCASE).withDefault(DEFAULT_FILTER);
 
 // Host routes only need page and limit (no type filter)
 export const hostPaginationParsers = {
