@@ -10,7 +10,7 @@ import VanPages from '~/components/van/VanPages';
 import { getVans, getVansCount } from '~/db/van/queries';
 import { paginationParsers } from '~/lib/parsers';
 import { searchParamsCache } from '~/lib/searchParams.server';
-import { VAN_TYPE_LOWERCASE } from '~/types/types';
+import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
 import { getSearchParams } from '~/utils/getSearchParams.server';
 import { cn } from '~/utils/utils';
 import type { Route } from './+types/vans';

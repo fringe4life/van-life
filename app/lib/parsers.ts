@@ -5,7 +5,7 @@ import {
 	DEFAULT_PAGE,
 } from '~/constants/constants';
 import type { VanTypeOrEmpty } from '~/types/types';
-import { VAN_TYPE_LOWERCASE } from '~/types/types';
+import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
 
 // Custom parser for type that handles lowercase values
 const parseAsVanType = parseAsStringEnum(
@@ -18,9 +18,10 @@ export const hostPaginationParsers = {
 	limit: parseAsInteger.withDefault(DEFAULT_LIMIT),
 };
 
-// Shared parsers for both server and client components
+// Main routes need page, limit, and type filter
 export const paginationParsers = {
-	...hostPaginationParsers,
+	page: parseAsInteger.withDefault(DEFAULT_PAGE),
+	limit: parseAsInteger.withDefault(DEFAULT_LIMIT),
 	type: parseAsVanType,
 };
 
