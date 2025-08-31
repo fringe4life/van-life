@@ -6,17 +6,13 @@ import VanPages from '~/components/van/VanPages';
 import { getHostRentedVanCount, getHostRentedVans } from '~/db/rental/queries';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { hostPaginationParsers } from '~/lib/parsers';
-import { hostSearchParamsCache } from '~/lib/searchParams.server';
-import { getSearchParams } from '~/utils/getSearchParams.server';
+import { loadHostSearchParams } from '~/lib/searchParams.server';
 import type { Route } from './+types/rentals';
 
 export function meta() {
 	return [
-		{ title: 'Rented Vans | Vanlife' },
-		{
-			name: 'description',
-			content: 'The vans you are currently renting',
-		},
+		{ title: 'Rentals | Van Life' },
+		{ name: 'description', content: 'Your van rentals' },
 	];
 }
 
@@ -27,9 +23,8 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
 	const { session, headers } = await getSessionOrRedirect(request);
 
-	// Parse search parameters using nuqs server cache
-	const searchParams = getSearchParams(request.url);
-	const { page, limit } = hostSearchParamsCache.parse(searchParams);
+	// Parse search parameters using nuqs loadHostSearchParams
+	const { page, limit } = loadHostSearchParams(request);
 
 	const results = await Promise.allSettled([
 		getHostRentedVans(session.user.id, page, limit),

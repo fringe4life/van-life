@@ -1,10 +1,31 @@
-import { createSearchParamsCache } from 'nuqs/server';
-import { hostPaginationParsers, paginationParsers } from './parsers';
+import { createLoader, parseAsInteger, parseAsStringEnum } from 'nuqs/server';
+import {
+	DEFAULT_FILTER,
+	DEFAULT_LIMIT,
+	DEFAULT_PAGE,
+} from '~/constants/constants';
+import type { VanTypeOrEmpty } from '~/types/types';
 
-// Create a server-side cache for search parameters
-export const searchParamsCache = createSearchParamsCache(paginationParsers);
+// Hardcoded van types for server-side safety
+const VAN_TYPE_LOWERCASE: VanTypeOrEmpty[] = ['simple', 'rugged', 'luxury'];
 
-// Create a server-side cache for host routes (page and limit only)
-export const hostSearchParamsCache = createSearchParamsCache(
-	hostPaginationParsers,
-);
+// Custom parser for type that handles lowercase values
+const parseAsVanType =
+	parseAsStringEnum(VAN_TYPE_LOWERCASE).withDefault(DEFAULT_FILTER);
+
+// Host routes only need page and limit (no type filter)
+export const hostPaginationParsers = {
+	page: parseAsInteger.withDefault(DEFAULT_PAGE),
+	limit: parseAsInteger.withDefault(DEFAULT_LIMIT),
+};
+
+// Main routes need page, limit, and type filter
+export const paginationParsers = {
+	page: parseAsInteger.withDefault(DEFAULT_PAGE),
+	limit: parseAsInteger.withDefault(DEFAULT_LIMIT),
+	type: parseAsVanType,
+};
+
+// Create loaders for React Router v7
+export const loadSearchParams = createLoader(paginationParsers);
+export const loadHostSearchParams = createLoader(hostPaginationParsers);

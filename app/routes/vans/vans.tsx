@@ -2,16 +2,14 @@ import type { VanType } from '@prisma/client';
 import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
 import ListItems from '~/components/common/ListItems';
-import CustomNavLink from '~/components/navigation/CustomNavLink';
 import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import VanCard from '~/components/van/VanCard';
 import VanPages from '~/components/van/VanPages';
 import { getVans, getVansCount } from '~/db/van/queries';
 import { paginationParsers } from '~/lib/parsers';
-import { searchParamsCache } from '~/lib/searchParams.server';
+import { loadSearchParams } from '~/lib/searchParams.server';
 import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
-import { getSearchParams } from '~/utils/getSearchParams.server';
 import { cn } from '~/utils/utils';
 import type { Route } from './+types/vans';
 
@@ -29,12 +27,8 @@ export async function loader({ request }: Route.LoaderArgs) {
 	// Get badges from the centralized types
 	const badges = VAN_TYPE_LOWERCASE;
 
-	// Parse search parameters using nuqs server cache
-	const searchParams = getSearchParams(request.url);
-
-	console.log('[nuqs debug] Raw search params:', searchParams);
-
-	const { page, limit, type } = searchParamsCache.parse(searchParams);
+	// Parse search parameters using nuqs loadSearchParams
+	const { page, limit, type } = loadSearchParams(request);
 
 	console.log('[nuqs debug] Parsed search params:', { page, limit, type });
 
@@ -131,17 +125,16 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 							)}
 						/>
 					}
-					<CustomNavLink
-						to={href('/vans')}
-						className={(isActive) =>
-							cn(
-								'w-full text-center sm:w-fit sm:text-left',
-								isActive && 'underline',
-							)
-						}
+					<Button
+						variant="ghost"
+						className="w-full text-center sm:w-fit sm:text-left"
+						onClick={() => {
+							console.log('[nuqs debug] Clearing filters');
+							setSearchParams({ type: undefined, page: 1 });
+						}}
 					>
 						Clear filters
-					</CustomNavLink>
+					</Button>
 				</div>
 			}
 		/>

@@ -6,8 +6,7 @@ import VanPages from '~/components/van/VanPages';
 import { getHostVanCount, getHostVans } from '~/db/van/host';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { hostPaginationParsers } from '~/lib/parsers';
-import { hostSearchParamsCache } from '~/lib/searchParams.server';
-import { getSearchParams } from '~/utils/getSearchParams.server';
+import { loadHostSearchParams } from '~/lib/searchParams.server';
 import type { Route } from './+types/hostVans';
 
 export function meta() {
@@ -15,7 +14,7 @@ export function meta() {
 		{ title: 'Host Vans | Vanlife' },
 		{
 			name: 'description',
-			content: 'the dashboard page whe you are logged in',
+			content: 'Your dashboard page.',
 		},
 	];
 }
@@ -27,9 +26,8 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
 	const { session, headers } = await getSessionOrRedirect(request);
 
-	// Parse search parameters using nuqs server cache
-	const searchParams = getSearchParams(request.url);
-	const { page, limit } = hostSearchParamsCache.parse(searchParams);
+	// Parse search parameters using nuqs loadHostSearchParams
+	const { page, limit } = loadHostSearchParams(request);
 
 	const results = await Promise.allSettled([
 		getHostVans(session.user.id, page, limit),

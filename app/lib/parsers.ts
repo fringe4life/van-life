@@ -25,6 +25,3 @@ export const paginationParsers = {
 	limit: parseAsInteger.withDefault(DEFAULT_LIMIT),
 	type: parseAsVanType,
 };
-
-// Legacy export for backward compatibility
-export const PaginationParams = paginationParsers;

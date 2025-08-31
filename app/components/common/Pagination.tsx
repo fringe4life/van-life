@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { DEFAULT_FILTER } from '~/constants/constants';
-import CustomLink from '../navigation/CustomLink';
-import { Button, buttonVariants } from '../ui/button';
+import { useQueryStates } from 'nuqs';
+import { paginationParsers } from '~/lib/parsers';
+import { Button } from '../ui/button';
 
 type PaginationProps = {
 	itemsCount: number | string;
@@ -17,11 +17,11 @@ export type PaginationPropsForVanPages = Pick<
 >;
 export default function Pagination({
 	itemsCount,
-	type = DEFAULT_FILTER,
 	limit,
 	page,
-	pathname,
 }: PaginationProps) {
+	const [, setSearchParams] = useQueryStates(paginationParsers);
+
 	if (typeof itemsCount === 'string') {
 		return <p>Something Went wrong try again later</p>;
 	}
@@ -32,21 +32,16 @@ export default function Pagination({
 		const pageNumber = i + 1;
 		const isPage = pageNumber === page;
 		listOfLinks.push(
-			<CustomLink
+			<Button
 				aria-label={`page ${pageNumber}`}
 				aria-selected={isPage}
 				key={i}
-				aria-disabled={isPage}
-				className={buttonVariants({
-					variant: isPage ? 'link' : 'outline',
-				})}
-				to={{
-					pathname,
-					search: `?page=${pageNumber}&limit=${limit}&filter=${type}`,
-				}}
+				disabled={isPage}
+				variant={isPage ? 'ghost' : 'outline'}
+				onClick={() => setSearchParams({ page: pageNumber })}
 			>
 				{pageNumber}
-			</CustomLink>,
+			</Button>,
 		);
 	}
 	if (listOfLinks.length === 1) {
@@ -59,19 +54,14 @@ export default function Pagination({
 	return (
 		<div className="my-6 flex items-center gap-2 place-self-center contain-content">
 			{hasPreviousPage ? (
-				<CustomLink
+				<Button
 					aria-label="Previous page"
-					className={buttonVariants({
-						variant: 'outline',
-						size: 'icon',
-					})}
-					to={{
-						pathname,
-						search: `?page=${page - 1}&limit=${limit}&filter=${type}`,
-					}}
+					variant="outline"
+					size="icon"
+					onClick={() => setSearchParams({ page: page - 1 })}
 				>
 					<ChevronLeft className="h-4 w-4" />
-				</CustomLink>
+				</Button>
 			) : (
 				<Button
 					variant="outline"
@@ -86,22 +76,17 @@ export default function Pagination({
 			<div className="flex gap-2">{listOfLinks}</div>
 
 			{hasNextPage ? (
-				<CustomLink
+				<Button
 					aria-label="Next page"
-					className={buttonVariants({
-						variant: 'outline',
-						size: 'icon',
-					})}
-					to={{
-						pathname,
-						search: `?page=${page + 1}&limit=${limit}&filter=${type}`,
-					}}
+					variant="outline"
+					size="icon"
+					onClick={() => setSearchParams({ page: page + 1 })}
 				>
-					<ChevronRight className="h-4 w-4" />
-				</CustomLink>
+					<ChevronRight className="aspect-square w-4" />
+				</Button>
 			) : (
 				<Button variant="outline" size="icon" disabled aria-label="Next page">
-					<ChevronRight className="h-4 w-4" />
+					<ChevronRight className="aspect-square w-4" />
 				</Button>
 			)}
 		</div>
