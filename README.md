@@ -35,7 +35,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 📦 **Prisma ORM** with Neon PostgreSQL and relation joins
 - 🔧 **Generic Components** for reusability and maintainability
 - 📱 **Responsive Design** with mobile-first approach
-- ⚡ **Performance Optimized** with React 19 and modern tooling
+- ⚡ **Performance Optimized** with React 19 and React Compiler
 - 🔗 **URL State Management** with nuqs for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
 
@@ -44,26 +44,26 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ## Tech Stack
 
 ### Frontend
-- **React 19** with React Compiler
-- **React Router 7** (file-based routing, SSR)
-- **TypeScript 5.9** with strict configuration
-- **TailwindCSS 4** with modern CSS features
+- **React 19.1.1** with React Compiler for performance optimization
+- **React Router 7.8.2** (file-based routing, SSR)
+- **TypeScript 5.9.2** with strict configuration
+- **TailwindCSS 4.1.12** with modern CSS features
 - **Radix UI** for accessible components
 - **Lucide React** for icons
 - **Recharts** for data visualization
-- **nuqs** for type-safe URL state management
+- **nuqs 2.5.2** for type-safe URL state management
 
 ### Backend & Database
 - **Node.js** with React Router server
-- **Prisma 6.15** ORM with Neon PostgreSQL
-- **better-auth** for authentication
-- **Zod** for schema validation
+- **Prisma 6.15.0** ORM with Neon PostgreSQL
+- **better-auth 1.3.7** for authentication
+- **Zod 4.1.5** for schema validation
 - **CUID2** for unique identifiers
 - **@prisma/adapter-neon** for Neon database integration
 
 ### Development Tools
-- **Vite 7** with React Router plugin
-- **Biome** for linting and formatting
+- **Vite 7.1.4** with React Router plugin
+- **Biome 2.2.2** for linting and formatting
 - **TypeScript** with native preview
 - **Babel** with React Compiler plugin
 - **Bun** for fast package management and runtime
@@ -97,7 +97,9 @@ app/
 │   ├── layout/         # Layout components
 │   └── vans/           # Van listing and detail routes
 ├── utils/              # Utility functions
-└── assets/             # Static assets (SVGs, images)
+├── assets/             # Static assets (SVGs, images)
+├── root.tsx            # Root component
+└── routes.ts           # Route configuration
 
 prisma/
 ├── models/             # Modular Prisma model definitions
@@ -155,7 +157,7 @@ bun run seed
 
 ## URL State Management with nuqs
 
-The application uses **nuqs v2.5+** for type-safe URL state management:
+The application uses **nuqs v2.5.2** for type-safe URL state management:
 
 ### Features
 - **Type-safe search parameters** with shared parsers between server and client
@@ -257,12 +259,13 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 - `bun run format:fix` – Fix formatting issues automatically
 - `bun run check` – Run all checks (lint + format)
 - `bun run check:fix` – Fix all issues automatically
+- `bun run ci` – Run CI checks
 
 ---
 
 ## Styling
 
-- **TailwindCSS 4** with modern CSS features
+- **TailwindCSS 4.1.12** with modern CSS features
 - **Custom design system** with consistent components
 - **Responsive design** with mobile-first approach
 - **Modern CSS features:**
@@ -279,8 +282,8 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 
 ## Code Quality
 
-- **Biome** for linting and formatting
-- **TypeScript** with strict configuration
+- **Biome 2.2.2** for linting and formatting
+- **TypeScript 5.9.2** with strict configuration
 - **Consistent code style:**
   - Tab indentation
   - Single quotes
@@ -290,12 +293,14 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 - **Error handling** with proper error boundaries
 - **nuqs** for type-safe URL state management
 - **Prisma** with proper type generation
+- **React Compiler** for performance optimization
 
 ### Biome Configuration
 - **CSS at-rules support** for TailwindCSS 4 features
 - **Sorted CSS classes** for consistency
 - **TypeScript strict mode** enabled
 - **Import organization** and sorting
+- **Custom rules** for class sorting and organization
 
 ---
 
@@ -308,6 +313,7 @@ The application is configured for Vercel deployment with:
 - **Neon database integration** with `@prisma/adapter-neon`
 - **Edge runtime compatibility** with proper WASM handling
 - **Environment variable configuration** for production
+- **React Compiler** optimization for production builds
 
 ### Build Process
 ```bash
@@ -339,6 +345,7 @@ bun run check
 - Add tests for new features
 - Use nuqs for URL state management
 - Follow the established project structure
+- Use React Compiler for performance optimization
 
 ---
 
