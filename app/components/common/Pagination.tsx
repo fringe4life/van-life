@@ -1,14 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
-import { useId } from 'react';
 import { Button } from '~/components/ui/button';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '~/components/ui/select';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
@@ -37,7 +29,6 @@ export default function Pagination<T extends { id: string }>({
 	hasPreviousPage,
 }: PaginationProps<T>) {
 	const [, setSearchParams] = useQueryStates(paginationParsers);
-	const limitSelectId = useId();
 
 	// Don't show pagination if there are no items or only one page worth
 	if (
@@ -58,20 +49,19 @@ export default function Pagination<T extends { id: string }>({
 	return (
 		<div className="my-6 flex items-center justify-between gap-4 place-self-center">
 			{/* Limit selector */}
-
-			<Select value={String(limit)} onValueChange={handleLimitChange}>
-				<SelectTrigger id={limitSelectId} className="w-20">
-					<SelectValue />
-				</SelectTrigger>
-				<SelectContent>
+			<div>
+				<select
+					value={limit.toString()}
+					onChange={(e) => handleLimitChange(e.target.value)}
+					className="w-20 rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
+				>
 					{LIMITS.map((limitOption) => (
-						<SelectItem key={limitOption} value={String(limitOption)}>
+						<option key={limitOption} value={limitOption.toString()}>
 							{limitOption}
-						</SelectItem>
+						</option>
 					))}
-				</SelectContent>
-			</Select>
-
+				</select>
+			</div>
 			{/* Navigation buttons */}
 			<div className="flex items-center gap-2">
 				{hasPreviousPage ? (

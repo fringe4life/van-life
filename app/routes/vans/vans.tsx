@@ -51,18 +51,17 @@ export async function loader({ request }: Route.LoaderArgs) {
 	// Process pagination logic
 	const pagination = hasPagination(vans, limit, cursor, direction);
 
-	return data(
-		{
-			badges,
-			vansCount: vansCount as Awaited<ReturnType<typeof getVansCount>>,
-			...pagination,
+	const loaderData = {
+		badges,
+		vansCount: vansCount as Awaited<ReturnType<typeof getVansCount>>,
+		...pagination,
+	};
+
+	return data(loaderData, {
+		headers: {
+			'Cache-Control': 'max-age=259200',
 		},
-		{
-			headers: {
-				'Cache-Control': 'max-age=259200',
-			},
-		},
-	);
+	});
 }
 
 export default function Vans({ loaderData }: Route.ComponentProps) {
