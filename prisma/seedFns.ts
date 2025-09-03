@@ -48,8 +48,24 @@ function generateUniqueIds<T extends { id: string }>(
 
 import { prisma } from '~/lib/prisma.server';
 
+function getRandomTransactionType(): 'DEPOSIT' | 'WITHDRAW' {
+	return Math.random() > 0.5 ? 'DEPOSIT' : 'WITHDRAW';
+}
+
+function getRandomAmount(min = 100, max = 5000): number {
+	return Math.round((Math.random() * (max - min) + min) * 100) / 100;
+}
+
+function getRandomTransactionDate(startDate = new Date('2024-01-01'), endDate = new Date()): Date {
+	const start = startDate.getTime();
+	const end = endDate.getTime();
+	const randomTime = start + Math.random() * (end - start);
+	return new Date(randomTime);
+}
+
 async function clearTables() {
 	try {
+		await prisma.transaction.deleteMany();
 		await prisma.review.deleteMany();
 		await prisma.rent.deleteMany();
 		await prisma.van.deleteMany();
@@ -66,4 +82,7 @@ export {
 	generateUniqueIds,
 	getRandomId,
 	getRandomIdWithConstraint,
+	getRandomTransactionType,
+	getRandomAmount,
+	getRandomTransactionDate,
 };

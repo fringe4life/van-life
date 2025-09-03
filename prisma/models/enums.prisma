@@ -3,3 +3,8 @@ enum VanType {
   LUXURY @map("luxury")
   RUGGED @map("rugged")
 }
+
+enum TransactionType {
+  DEPOSIT  @map("deposit")
+  WITHDRAW @map("withdraw")
+}

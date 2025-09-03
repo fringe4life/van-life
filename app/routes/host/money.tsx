@@ -1,3 +1,4 @@
+import type { TransactionType } from '@prisma/client';
 import { type ChangeEventHandler, useState } from 'react';
 import { data, href, redirect } from 'react-router';
 import { z } from 'zod/v4';
@@ -55,7 +56,11 @@ export async function action({ request }: Route.ActionArgs) {
 	}
 
 	const result2 = await tryCatch(() =>
-		addMoney(session.user.id, result.data.amount),
+		addMoney(
+			session.user.id,
+			result.data.amount,
+			result.data.type as TransactionType,
+		),
 	);
 
 	if (result2.error) {
@@ -89,7 +94,7 @@ export default function MoneyTransaction({
 							type="radio"
 							name="type"
 							required
-							value="deposit"
+							value="DEPOSIT"
 							defaultChecked={
 								(actionData?.formData?.type as string) === 'deposit' || true
 							}
@@ -101,7 +106,7 @@ export default function MoneyTransaction({
 							onChange={handleChange}
 							type="radio"
 							name="type"
-							value="withdraw"
+							value="WITHDRAW"
 							defaultChecked={
 								(actionData?.formData?.type as string) === 'withdraw'
 							}

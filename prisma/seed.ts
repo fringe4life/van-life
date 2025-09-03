@@ -7,7 +7,7 @@ import {
 	getRandomId,
 	randomTrueOrFalse,
 } from './seedFns';
-import { rents, reviews, vans } from './seedInfo';
+import { rents, reviews, vans, transactions } from './seed-data';
 
 const main = async () => {
 	// clear tables
@@ -37,8 +37,8 @@ const main = async () => {
 		}
 		// biome-ignore lint/style/noNonNullAssertion: guaranteed to be found
 		const van = vanIds.find((van) => van.id === vanId)!;
-		const rentedTo = randomTrueOrFalse() ? getEndDate(rent.rentedAt) : null;
-		const amount = rentedTo ? getCost(rent.rentedAt, rentedTo, van.price) : 0;
+		const rentedTo = randomTrueOrFalse() ? getEndDate(rent.rentedAt as Date) : null;
+		const amount = rentedTo ? getCost(rent.rentedAt as Date, rentedTo, van.price) : 0;
 		if (!rentedTo) {
 			vansRented.push(vanId);
 		} else {
@@ -82,6 +82,16 @@ const main = async () => {
 
 	await prisma.review.createMany({
 		data: reviewsWithIds,
+	});
+
+	// Create transactions for users
+	const transactionsWithIds = transactions.map((transaction) => ({
+		...transaction,
+		userId: getRandomId(data),
+	}));
+
+	await prisma.transaction.createMany({
+		data: transactionsWithIds,
 	});
 
 	await prisma.$disconnect();

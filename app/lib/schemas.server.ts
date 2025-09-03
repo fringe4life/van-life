@@ -1,11 +1,6 @@
-import { VanType } from '@prisma/client';
+import { TransactionType, VanType } from '@prisma/client';
 import { z } from 'zod/v4';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
-import {
-	DEFAULT_CURSOR,
-	DEFAULT_FILTER,
-	DEFAULT_LIMIT,
-} from '~/constants/paginationConstants';
 
 /**
  * Schema for validating user passwords.
@@ -92,19 +87,46 @@ export const cuidSchema = z
 	.describe('CUID or CUID2 string');
 
 /**
- * Schema for pagination parameters (limit).
- */
-const paginationSchema = z.coerce.number().positive().optional();
-
-// Zod schema moved to ~/lib/paginationZodSchema.ts for client compatibility
-
-/**
  * Schema for money operations (withdraw, deposit) and amount.
+ * Amount calculation is adjusted based on transaction type.
  */
-export const moneySchema = z.object({
-	type: z.enum(['withdraw', 'deposit']).describe('Money operation type'),
-	amount: z.coerce.number().min(MIN_ADD).max(MAX_ADD).describe('Amount'),
-});
+export const moneySchema = z
+	.object({
+		type: z
+			.enum(Object.values(TransactionType))
+			.describe('Money operation type'),
+		amount: z.coerce.number().describe('Amount'),
+	})
+	.refine(
+		(data) => {
+			// Different validation rules based on transaction type
+			if (data.type === 'WITHDRAW') {
+				// For withdrawals, amount should be negative (or we'll make it negative)
+				return (
+					Math.abs(data.amount) >= MIN_ADD && Math.abs(data.amount) <= MAX_ADD
+				);
+			} else {
+				// For deposits, amount should be positive
+				return data.amount >= MIN_ADD && data.amount <= MAX_ADD;
+			}
+		},
+		{
+			message: 'Amount must be within valid range for transaction type',
+			path: ['amount'],
+		},
+	)
+	.transform((data) => {
+		// Adjust amount based on transaction type
+		const adjustedAmount =
+			data.type === 'WITHDRAW'
+				? -Math.abs(data.amount) // Withdrawals are negative
+				: Math.abs(data.amount); // Deposits are positive
+
+		return {
+			...data,
+			amount: adjustedAmount,
+		};
+	});
 
 /**
  * Schema for renting a van (vanId, hostId, renterId as CUIDs).
@@ -113,24 +135,4 @@ export const rentVanSchema = z.object({
 	vanId: cuidSchema.describe('Van CUID'),
 	hostId: cuidSchema.describe('Host CUID'),
 	renterId: cuidSchema.describe('Renter CUID'),
-});
-
-/**
- * Schema for cursor-based pagination in van listings.
- */
-// Legacy schema - use cursorPaginationZodSchema instead
-export const cursorPaginationSchema = z.object({
-	limit: paginationSchema.default(DEFAULT_LIMIT).describe('Items per page'),
-	cursor: z
-		.cuid()
-		.optional()
-		.default(DEFAULT_CURSOR)
-		.describe('Pagination cursor'),
-	type: z
-		.string()
-		.toUpperCase()
-		.optional()
-		.default(DEFAULT_FILTER)
-		.transform((val) => (val ? vanTypeSchema.parse(val) : DEFAULT_FILTER))
-		.describe('Van type filter'),
 });

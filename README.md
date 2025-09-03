@@ -27,7 +27,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals with analytics)
 - 📈 **Host Dashboard** (income tracking, bar charts, rental analytics)
-- 💰 **Financial Management** (deposit/withdraw funds, payment tracking)
+- 💰 **Financial Management** (deposit/withdraw funds, transaction tracking)
 - 🎨 **Modern UI/UX** with responsive design and smooth animations
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **Zod** for runtime schema validation
@@ -109,12 +109,18 @@ app/
 prisma/
 ├── models/             # Modular Prisma model definitions
 │   ├── betterAuth/     # Authentication models (User, Session, Account, Verification)
-│   ├── van/            # Van-related models (Van, Rent, Review, UserInfo)
+│   ├── van/            # Van-related models (Van, Rent, Review, UserInfo, Transaction)
 │   ├── enums.prisma    # Shared enums
 │   └── schema.prisma   # Main schema file
+├── seed-data/          # Modular seed data files
+│   ├── vans.ts         # Van seed data
+│   ├── rents.ts        # Rental seed data
+│   ├── reviews.ts      # Review seed data
+│   ├── transactions.ts # Transaction seed data
+│   └── index.ts        # Seed data exports
 ├── schema.prisma       # Prisma schema entrypoint
 ├── seed.ts            # Database seeding script
-└── seedInfo.ts        # Enhanced seed data with varied content
+└── seedFns.ts         # Seed helper functions
 ```
 
 ---
@@ -129,10 +135,12 @@ prisma/
   - `Rent` - Rental transactions and history
   - `Review` - User reviews and ratings
   - `UserInfo` - Extended user profile information
+  - `Transaction` - Financial transactions (deposits/withdrawals)
 - **Advanced features:**
   - Relation joins for optimized queries
   - CUID2 for unique identifiers
   - Proper indexing and constraints
+  - Modular seed data organization with separate files for each model
   - Enhanced seed data with varied van names and descriptions
 
 ### Setup Database
