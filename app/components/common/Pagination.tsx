@@ -13,11 +13,11 @@ import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
 	LIMITS,
-} from '~/constants/constants';
+} from '~/constants/paginationConstants';
 import { paginationParsers } from '~/lib/parsers';
 
-type PaginationProps = {
-	items: unknown[];
+type PaginationProps<T = unknown> = {
+	items: T[];
 	limit: number;
 	cursor: string | undefined;
 	hasNextPage: boolean;
@@ -25,17 +25,17 @@ type PaginationProps = {
 	pathname: string;
 };
 
-export type PaginationPropsForVanPages = Pick<
-	PaginationProps,
+export type PaginationPropsForVanPages<T = unknown> = Pick<
+	PaginationProps<T>,
 	'items' | 'pathname'
 >;
 
-export default function Pagination({
+export default function Pagination<T extends { id: string }>({
 	items,
 	limit,
 	hasNextPage,
 	hasPreviousPage,
-}: PaginationProps) {
+}: PaginationProps<T>) {
 	const [, setSearchParams] = useQueryStates(paginationParsers);
 	const limitSelectId = useId();
 
@@ -56,7 +56,7 @@ export default function Pagination({
 	};
 
 	return (
-		<div className="my-6 flex items-center justify-between gap-4 place-self-center contain-content">
+		<div className="my-6 flex items-center justify-between gap-4 place-self-center">
 			{/* Limit selector */}
 
 			<Select value={String(limit)} onValueChange={handleLimitChange}>
@@ -81,7 +81,7 @@ export default function Pagination({
 						size="icon"
 						onClick={() => {
 							// For backward pagination, use the first item's ID as cursor
-							const firstItem = items[0] as { id: string };
+							const firstItem = items[0];
 							setSearchParams({ cursor: firstItem.id, direction: 'backward' });
 						}}
 					>
@@ -105,7 +105,7 @@ export default function Pagination({
 						size="icon"
 						onClick={() => {
 							// Get the last item's ID as the next cursor
-							const lastItem = items[items.length - 1] as { id: string };
+							const lastItem = items[items.length - 1];
 							setSearchParams({
 								cursor: lastItem.id,
 								direction: DEFAULT_DIRECTION,

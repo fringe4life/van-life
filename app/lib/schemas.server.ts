@@ -1,12 +1,11 @@
 import { VanType } from '@prisma/client';
 import { z } from 'zod/v4';
+import { MAX_ADD, MIN_ADD } from '~/constants/constants';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_FILTER,
 	DEFAULT_LIMIT,
-	MAX_ADD,
-	MIN_ADD,
-} from '~/constants/constants';
+} from '~/constants/paginationConstants';
 
 /**
  * Schema for validating user passwords.
@@ -97,6 +96,8 @@ export const cuidSchema = z
  */
 const paginationSchema = z.coerce.number().positive().optional();
 
+// Zod schema moved to ~/lib/paginationZodSchema.ts for client compatibility
+
 /**
  * Schema for money operations (withdraw, deposit) and amount.
  */
@@ -117,6 +118,7 @@ export const rentVanSchema = z.object({
 /**
  * Schema for cursor-based pagination in van listings.
  */
+// Legacy schema - use cursorPaginationZodSchema instead
 export const cursorPaginationSchema = z.object({
 	limit: paginationSchema.default(DEFAULT_LIMIT).describe('Items per page'),
 	cursor: z
@@ -129,6 +131,6 @@ export const cursorPaginationSchema = z.object({
 		.toUpperCase()
 		.optional()
 		.default(DEFAULT_FILTER)
-		.transform((val) => (val ? vanTypeSchema.parse(val) : undefined))
+		.transform((val) => (val ? vanTypeSchema.parse(val) : DEFAULT_FILTER))
 		.describe('Van type filter'),
 });

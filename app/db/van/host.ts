@@ -4,8 +4,6 @@ import { getCursorPaginationInformation } from '~/lib/getCursorPaginationInforma
 import { prisma } from '~/lib/prisma.server';
 import type { Direction } from '~/types/types';
 
-// import prisma from '~/lib/prisma';
-
 export async function getHostVan(userId: string, vanId: string) {
 	if (!isCUID(userId) || !isCUID(vanId)) return INVALID_ID_ERROR;
 	return prisma.van.findUnique({

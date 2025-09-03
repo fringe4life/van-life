@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { href, redirect, replace } from 'react-router';
 import { z } from 'zod/v4';
 import CustomForm from '~/components/common/CustomForm';
@@ -47,6 +48,9 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function Login({ actionData }: Route.ComponentProps) {
+	const emailId = useId();
+	const passwordId = useId();
+
 	return (
 		<div className="grid items-center justify-center gap-4 sm:gap-6 md:gap-12">
 			<h2 className="font-bold text-2xl text-shadow-text sm:text-3xl">
@@ -55,7 +59,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
 			<CustomForm method="POST" className="grid items-center gap-4">
 				<Input
 					name="email"
-					id="email"
+					id={emailId}
 					type="email"
 					placeholder="john.doe@email.com"
 					defaultValue={actionData?.email ?? ''}
@@ -63,7 +67,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
 				/>
 				<Input
 					name="password"
-					id="password"
+					id={passwordId}
 					type="password"
 					placeholder="password"
 					defaultValue=""

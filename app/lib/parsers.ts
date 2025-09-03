@@ -1,4 +1,9 @@
-import { parseAsNumberLiteral, parseAsString, parseAsStringEnum } from 'nuqs';
+import {
+	parseAsJson,
+	parseAsNumberLiteral,
+	parseAsString,
+	parseAsStringEnum,
+} from 'nuqs';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
@@ -6,7 +11,8 @@ import {
 	DEFAULT_LIMIT,
 	DIRECTIONS,
 	LIMITS,
-} from '~/constants/constants';
+} from '~/constants/paginationConstants';
+import { cursorPaginationZodSchema } from '~/lib/paginationZodSchema.client';
 import type { Direction, VanTypeOrEmpty } from '~/types/types';
 
 // Hardcoded van types for client-side safety
@@ -18,6 +24,9 @@ const parseAsVanType =
 
 // Custom parser for limit that validates against allowed numeric values
 const parseAsLimit = parseAsNumberLiteral(LIMITS).withDefault(DEFAULT_LIMIT);
+
+// Zod-based parser for complete pagination state
+export const paginationZodParser = parseAsJson(cursorPaginationZodSchema);
 
 // Host routes only need cursor and limit (no type filter)
 export const hostPaginationParsers = {

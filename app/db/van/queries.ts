@@ -2,7 +2,6 @@ import type { VanType } from '@prisma/client';
 import { getCursorPaginationInformation } from '~/lib/getCursorPaginationInformation.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Direction } from '~/types/types';
-// import prisma from '~/lib/prisma';
 
 export function getVans(
 	cursor: string | undefined,
@@ -17,9 +16,8 @@ export function getVans(
 		where: {
 			type: typeFilter,
 		},
-		orderBy: typeFilter
-			? [{ type: 'desc' }, { id: sortOrder }]
-			: { id: sortOrder },
+		// Cursor pagination requires ordering by a unique, sequential field
+		orderBy: { id: sortOrder },
 		cursor: actualCursor ? { id: actualCursor } : undefined,
 		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
 		take: takeAmount,

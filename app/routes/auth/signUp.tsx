@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { href, redirect, replace } from 'react-router';
 import { z } from 'zod/v4';
 import CustomForm from '~/components/common/CustomForm';
@@ -45,6 +46,11 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function SignUp({ actionData }: Route.ComponentProps) {
+	const emailId = useId();
+	const nameId = useId();
+	const passwordId = useId();
+	const confirmPasswordId = useId();
+
 	return (
 		<div className="grid items-center justify-center gap-4 sm:gap-6 md:gap-12">
 			<h2 className="justify-center font-bold text-2xl text-shadow-text sm:text-3xl">
@@ -53,7 +59,7 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 			<CustomForm method="POST" className="grid items-center gap-4">
 				<Input
 					name="email"
-					id="email"
+					id={emailId}
 					type="email"
 					placeholder="your.email@email.com"
 					defaultValue={actionData?.email ?? ''}
@@ -61,19 +67,19 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 				<Input
 					type="text"
 					name="name"
-					id="name"
+					id={nameId}
 					placeholder="John Doe"
 					defaultValue={actionData?.name ?? ''}
 				/>
 				<Input
 					name="password"
-					id="password"
+					id={passwordId}
 					type="password"
 					placeholder="password"
 				/>
 				<Input
 					name="confirmPassword"
-					id="confirmPassword"
+					id={confirmPasswordId}
 					type="password"
 					placeholder="confirm password"
 				/>

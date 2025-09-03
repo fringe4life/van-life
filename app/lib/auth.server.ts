@@ -1,7 +1,7 @@
 import { createId } from '@paralleldrive/cuid2';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-// import prisma from '~/lib/prisma';
+
 import { env } from '~/lib/env.server';
 import { prisma } from '~/lib/prisma.server';
 export const auth = betterAuth({

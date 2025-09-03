@@ -5,7 +5,7 @@ import Pagination, {
 	type PaginationPropsForVanPages,
 } from '~/components/common/Pagination';
 import PendingUI from '~/components/common/PendingUI';
-import { DEFAULT_LIMIT } from '~/constants/constants';
+import { DEFAULT_LIMIT } from '~/constants/paginationConstants';
 
 type VanPagesProps<T, P, U> = {
 	title: string;
@@ -20,7 +20,9 @@ type VanPagesProps<T, P, U> = {
 } & GenericComponentProps<T, P> &
 	PaginationPropsForVanPages;
 
-export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
+export default function VanPages<P, T extends { id: string }, U>(
+	props: VanPagesProps<T, P, U>,
+) {
 	const {
 		pathname,
 		items,
@@ -40,9 +42,9 @@ export default function VanPages<P, T, U>(props: VanPagesProps<T, P, U>) {
 			<h2 className="mb-6 font-bold text-3xl">{title}</h2>
 			{optionalElement}
 			<GenericComponent className="grid-max mt-6" items={items} {...rest} />
-			<Pagination
+			<Pagination<T>
 				pathname={pathname}
-				items={items}
+				items={Array.isArray(items) ? (items as T[]) : []}
 				cursor={cursor}
 				limit={limit}
 				hasNextPage={hasNextPage}

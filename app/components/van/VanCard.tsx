@@ -4,7 +4,7 @@ import Image from '~/components/common/Image';
 import CustomLink from '~/components/navigation/CustomLink';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
-import { VAN_CARD_IMG_SIZES } from '~/constants/constants';
+import { VAN_CARD_IMG_SIZES } from '~/constants/imgConstants';
 import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 

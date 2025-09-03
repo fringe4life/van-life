@@ -7,7 +7,7 @@ import {
 	HOME_DESKTOP_IMG_SIZES,
 	HOME_IMG_URL,
 	HOME_MOBILE_IMG_SIZES,
-} from '~/constants/constants';
+} from '~/constants/imgConstants';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import { cn } from '~/utils/utils';
 

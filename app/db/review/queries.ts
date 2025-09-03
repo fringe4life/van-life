@@ -1,7 +1,6 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
 import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
-// import prisma from '~/lib/prisma';
 
 export async function getHostReviews(userId: string) {
 	if (!isCUID(userId)) return INVALID_ID_ERROR;

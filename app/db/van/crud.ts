@@ -1,6 +1,6 @@
 import type { Van } from '@prisma/client';
 import { prisma } from '~/lib/prisma.server';
-// import prisma from '~/lib/prisma';
+
 
 export function createVan(newVan: Omit<Van, 'id' | 'createdAt' | 'isRented'>) {
 	return prisma.van.create({

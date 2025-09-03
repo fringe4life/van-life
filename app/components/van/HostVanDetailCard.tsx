@@ -8,7 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '~/components/ui/card';
-import { HOST_VAN_DETAIL_IMG_SIZES } from '~/constants/constants';
+import { HOST_VAN_DETAIL_IMG_SIZES } from '~/constants/imgConstants';
 import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import Image from '../common/Image';

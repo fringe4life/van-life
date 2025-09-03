@@ -31,6 +31,10 @@ export function hasPagination<T>(
 
 	// Check if there are more results (cursor pagination)
 	const hasMoreResults = Array.isArray(items) && items.length > limit;
+
+	// FIXED: Correct pagination logic based on Prisma documentation
+	// For forward pagination: hasNextPage = hasMoreResults, hasPreviousPage = has cursor
+	// For backward pagination: hasNextPage = has cursor, hasPreviousPage = hasMoreResults
 	const hasNextPage =
 		direction === 'forward' ? hasMoreResults : Boolean(cursor);
 	const hasPreviousPage =

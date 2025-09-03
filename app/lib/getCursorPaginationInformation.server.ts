@@ -25,8 +25,8 @@ export function getCursorPaginationInformation(
 	// Determine sort order based on direction
 	const sortOrder: Prisma.SortOrder = direction === 'backward' ? 'asc' : 'desc';
 
-	// Determine take amount (negative for backward pagination)
-	const takeAmount = direction === 'backward' ? -(limit + 1) : limit + 1;
+	// Determine take amount (always positive for Prisma)
+	const takeAmount = limit + 1;
 
 	return {
 		actualCursor,

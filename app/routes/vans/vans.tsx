@@ -6,7 +6,11 @@ import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import VanCard from '~/components/van/VanCard';
 import VanPages from '~/components/van/VanPages';
-import { DEFAULT_CURSOR } from '~/constants/constants';
+import {
+	DEFAULT_CURSOR,
+	DEFAULT_DIRECTION,
+	DEFAULT_FILTER,
+} from '~/constants/paginationConstants';
 import { getVans, getVansCount } from '~/db/van/queries';
 import { hasPagination } from '~/lib/hasPagination.server';
 import { paginationParsers } from '~/lib/parsers';
@@ -124,7 +128,11 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 										'w-full uppercase sm:w-fit',
 									)}
 									onClick={() => {
-										setSearchParams({ type: t, cursor: DEFAULT_CURSOR });
+										setSearchParams({
+											type: t,
+											cursor: DEFAULT_CURSOR,
+											direction: DEFAULT_DIRECTION,
+										});
 									}}
 								>
 									{t}
@@ -136,7 +144,11 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 						variant="ghost"
 						className="w-full text-center sm:w-fit sm:text-left"
 						onClick={() => {
-							setSearchParams({ type: undefined, cursor: DEFAULT_CURSOR });
+							setSearchParams({
+								type: DEFAULT_FILTER,
+								cursor: DEFAULT_CURSOR,
+								direction: DEFAULT_DIRECTION,
+							});
 						}}
 					>
 						Clear filters

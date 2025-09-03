@@ -3,7 +3,7 @@ import Image from '~/components/common/Image';
 import PendingUI from '~/components/common/PendingUI';
 import CustomLink from '~/components/navigation/CustomLink';
 import { buttonVariants } from '~/components/ui/button';
-import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/constants';
+import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/imgConstants';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import { cn } from '~/utils/utils';
 

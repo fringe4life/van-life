@@ -11,13 +11,13 @@
 		"dev": " react-router dev",
 		"typecheck": "react-router typegen && tsgo",
 		"postinstall": "prisma generate ",
-		"lint": "biome lint",
-		"lint:fix": "biome lint --write",
-		"format": "biome format",
-		"format:fix": "biome format --write",
-		"check": "biome check",
-		"check:fix": "biome check --write",
-		"ci": "biome ci"
+		"lint": "biome lint app/",
+		"lint:fix": "biome lint --write app/",
+		"format": "biome format app/",
+		"format:fix": "biome format --write app/",
+		"check": "biome check app/",
+		"check:fix": "biome check --write app/",
+		"ci": "biome ci app/"
 	},
 	"dependencies": {
 		"@neondatabase/serverless": "^1.0.1",
@@ -47,7 +47,7 @@
 		"recharts": "^3.1.2",
 		"tailwind-merge": "^3.3.1",
 		"tsx": "^4.20.5",
-		"tw-animate-css": "^1.3.7",
+		"tw-animate-css": "^1.3.8",
 		"utf-8-validate": "^6.0.5",
 		"ws": "^8.18.3",
 		"zod": "^4.1.5"
@@ -60,7 +60,7 @@
 		"@types/react": "^19.1.12",
 		"@types/react-dom": "^19.1.9",
 		"@types/ws": "^8.18.1",
-		"@typescript/native-preview": "^7.0.0-dev.20250902.1",
+		"@typescript/native-preview": "^7.0.0-dev.20250903.1",
 		"babel-plugin-react-compiler": "^19.1.0-rc.1-rc-af1b7da-20250421",
 		"react-router-devtools": "^5.1.3",
 		"tailwindcss": "^4.1.12",
