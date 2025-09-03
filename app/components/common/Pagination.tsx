@@ -1,94 +1,125 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
+import { useId } from 'react';
+import { Button } from '~/components/ui/button';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '~/components/ui/select';
+import {
+	DEFAULT_CURSOR,
+	DEFAULT_DIRECTION,
+	LIMITS,
+} from '~/constants/constants';
 import { paginationParsers } from '~/lib/parsers';
-import { Button } from '../ui/button';
 
 type PaginationProps = {
-	itemsCount: number | string;
+	items: unknown[];
 	limit: number;
-	page: number;
-	type: string | undefined;
+	cursor: string | undefined;
+	hasNextPage: boolean;
+	hasPreviousPage: boolean;
 	pathname: string;
 };
 
 export type PaginationPropsForVanPages = Pick<
 	PaginationProps,
-	'itemsCount' | 'pathname'
+	'items' | 'pathname'
 >;
+
 export default function Pagination({
-	itemsCount,
+	items,
 	limit,
-	page,
+	hasNextPage,
+	hasPreviousPage,
 }: PaginationProps) {
 	const [, setSearchParams] = useQueryStates(paginationParsers);
+	const limitSelectId = useId();
 
-	if (typeof itemsCount === 'string') {
-		return <p>Something Went wrong try again later</p>;
-	}
-	const numberOfPages = Math.ceil(itemsCount / limit);
-	const listOfLinks = [];
-
-	for (let i = 0; i < numberOfPages; i++) {
-		const pageNumber = i + 1;
-		const isPage = pageNumber === page;
-		listOfLinks.push(
-			<Button
-				aria-label={`page ${pageNumber}`}
-				aria-selected={isPage}
-				key={i}
-				disabled={isPage}
-				variant={isPage ? 'ghost' : 'outline'}
-				onClick={() => setSearchParams({ page: pageNumber })}
-			>
-				{pageNumber}
-			</Button>,
-		);
-	}
-	if (listOfLinks.length === 1) {
+	// Don't show pagination if there are no items or only one page worth
+	if (
+		items.length === 0 ||
+		(items.length <= limit && !hasNextPage && !hasPreviousPage)
+	) {
 		return null;
 	}
 
-	const hasPreviousPage = page > 1;
-	const hasNextPage = page < numberOfPages;
+	const handleLimitChange = (newLimit: string) => {
+		// Reset cursor when changing limit
+		setSearchParams({
+			limit: Number(newLimit) as (typeof LIMITS)[number],
+			cursor: DEFAULT_CURSOR,
+		});
+	};
 
 	return (
-		<div className="my-6 flex items-center gap-2 place-self-center contain-content">
-			{hasPreviousPage ? (
-				<Button
-					aria-label="Previous page"
-					variant="outline"
-					size="icon"
-					onClick={() => setSearchParams({ page: page - 1 })}
-				>
-					<ChevronLeft className="h-4 w-4" />
-				</Button>
-			) : (
-				<Button
-					variant="outline"
-					size="icon"
-					disabled
-					aria-label="Previous page"
-				>
-					<ChevronLeft className="h-4 w-4" />
-				</Button>
-			)}
+		<div className="my-6 flex items-center justify-between gap-4 place-self-center contain-content">
+			{/* Limit selector */}
 
-			<div className="flex gap-2">{listOfLinks}</div>
+			<Select value={String(limit)} onValueChange={handleLimitChange}>
+				<SelectTrigger id={limitSelectId} className="w-20">
+					<SelectValue />
+				</SelectTrigger>
+				<SelectContent>
+					{LIMITS.map((limitOption) => (
+						<SelectItem key={limitOption} value={String(limitOption)}>
+							{limitOption}
+						</SelectItem>
+					))}
+				</SelectContent>
+			</Select>
 
-			{hasNextPage ? (
-				<Button
-					aria-label="Next page"
-					variant="outline"
-					size="icon"
-					onClick={() => setSearchParams({ page: page + 1 })}
-				>
-					<ChevronRight className="aspect-square w-4" />
-				</Button>
-			) : (
-				<Button variant="outline" size="icon" disabled aria-label="Next page">
-					<ChevronRight className="aspect-square w-4" />
-				</Button>
-			)}
+			{/* Navigation buttons */}
+			<div className="flex items-center gap-2">
+				{hasPreviousPage ? (
+					<Button
+						aria-label="Previous page"
+						variant="outline"
+						size="icon"
+						onClick={() => {
+							// For backward pagination, use the first item's ID as cursor
+							const firstItem = items[0] as { id: string };
+							setSearchParams({ cursor: firstItem.id, direction: 'backward' });
+						}}
+					>
+						<ChevronLeft className="aspect-square w-4" />
+					</Button>
+				) : (
+					<Button
+						variant="outline"
+						size="icon"
+						disabled
+						aria-label="Previous page"
+					>
+						<ChevronLeft className="aspect-square w-4" />
+					</Button>
+				)}
+
+				{hasNextPage ? (
+					<Button
+						aria-label="Next page"
+						variant="outline"
+						size="icon"
+						onClick={() => {
+							// Get the last item's ID as the next cursor
+							const lastItem = items[items.length - 1] as { id: string };
+							setSearchParams({
+								cursor: lastItem.id,
+								direction: DEFAULT_DIRECTION,
+							});
+						}}
+					>
+						<ChevronRight className="aspect-square w-4" />
+					</Button>
+				) : (
+					<Button variant="outline" size="icon" disabled aria-label="Next page">
+						<ChevronRight className="aspect-square w-4" />
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 }

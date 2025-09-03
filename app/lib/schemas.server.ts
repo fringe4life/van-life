@@ -4,7 +4,6 @@ import {
 	DEFAULT_CURSOR,
 	DEFAULT_FILTER,
 	DEFAULT_LIMIT,
-	DEFAULT_PAGE,
 	MAX_ADD,
 	MIN_ADD,
 } from '~/constants/constants';
@@ -94,24 +93,9 @@ export const cuidSchema = z
 	.describe('CUID or CUID2 string');
 
 /**
- * Schema for pagination parameters (page, limit, type).
+ * Schema for pagination parameters (limit).
  */
 const paginationSchema = z.coerce.number().positive().optional();
-
-/**
- * Schema for validating search parameters in van listings.
- */
-export const searchParamsSchema = z.object({
-	page: paginationSchema.default(DEFAULT_PAGE).describe('Page number'),
-	limit: paginationSchema.default(DEFAULT_LIMIT).describe('Items per page'),
-	type: z
-		.string()
-		.toUpperCase()
-		.optional()
-		.default(DEFAULT_FILTER)
-		.transform((val) => (val ? vanTypeSchema.parse(val) : undefined))
-		.describe('Van type filter'),
-});
 
 /**
  * Schema for money operations (withdraw, deposit) and amount.

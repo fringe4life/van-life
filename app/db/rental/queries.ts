@@ -1,7 +1,8 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
 import { isCUID } from '~/lib/checkIsCUID.server';
+import { getCursorPaginationInformation } from '~/lib/getCursorPaginationInformation.server';
 import { prisma } from '~/lib/prisma.server';
-import getSkipAmount from '~/utils/getSkipAmount.server';
+import type { Direction } from '~/types/types';
 
 export async function getHostRentedVan(rentId: string) {
 	if (!isCUID(rentId)) return INVALID_ID_ERROR;
@@ -11,9 +12,16 @@ export async function getHostRentedVan(rentId: string) {
 	});
 }
 
-export function getHostRentedVans(hostId: string, page: number, limit: number) {
+export function getHostRentedVans(
+	hostId: string,
+	cursor: string | undefined,
+	limit: number,
+	direction: Direction = 'forward',
+) {
 	if (!isCUID(hostId)) return INVALID_ID_ERROR;
-	const skip = getSkipAmount(page, limit);
+	const { actualCursor, sortOrder, takeAmount } =
+		getCursorPaginationInformation(cursor, limit, direction);
+
 	return prisma.rent.findMany({
 		where: {
 			hostId,
@@ -22,9 +30,10 @@ export function getHostRentedVans(hostId: string, page: number, limit: number) {
 			},
 		},
 		include: { van: true },
-		orderBy: { id: 'desc' },
-		take: limit,
-		skip,
+		orderBy: { id: sortOrder },
+		cursor: actualCursor ? { id: actualCursor } : undefined,
+		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
+		take: takeAmount,
 	});
 }
 
@@ -40,9 +49,15 @@ export function getHostRentedVanCount(hostId: string) {
 	});
 }
 
-export function getHostRents(id: string, page: number, limit: number) {
+export function getHostRents(
+	id: string,
+	cursor: string | undefined,
+	limit: number,
+	direction: Direction = 'forward',
+) {
 	if (!isCUID(id)) return INVALID_ID_ERROR;
-	const skip = getSkipAmount(page, limit);
+	const { actualCursor, sortOrder, takeAmount } =
+		getCursorPaginationInformation(cursor, limit, direction);
 
 	return prisma.rent.findMany({
 		where: {
@@ -51,7 +66,9 @@ export function getHostRents(id: string, page: number, limit: number) {
 				rentedTo: null,
 			},
 		},
-		take: limit,
-		skip,
+		orderBy: { id: sortOrder },
+		cursor: actualCursor ? { id: actualCursor } : undefined,
+		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
+		take: takeAmount,
 	});
 }

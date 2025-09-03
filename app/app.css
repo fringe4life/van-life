@@ -208,7 +208,6 @@ html {
 	--_gap: 32px;
 	--_max-columns: 2;
 	--_min-column-size: 300px;
-	--actual-columns: 1;
 	display: grid;
 	gap: var(--_gap);
 	grid-template-columns: repeat(

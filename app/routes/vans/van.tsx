@@ -50,14 +50,14 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 	const { van } = loaderData;
 
 	// Use nuqs for client-side state management
-	const [{ page, limit, type }] = useQueryStates(paginationParsers);
+	const [{ cursor, limit, type }] = useQueryStates(paginationParsers);
 
 	const vanIsAvailable = !van.isRented;
 
 	// Build the back link with search parameters
 	const backLinkSearch = type
-		? `?page=${page}&limit=${limit}&type=${type}`
-		: `?page=${page}&limit=${limit}`;
+		? `?cursor=${cursor}&limit=${limit}&type=${type}`
+		: `?cursor=${cursor}&limit=${limit}`;
 
 	return (
 		<PendingUI className="grid grid-rows-[auto_1fr]">

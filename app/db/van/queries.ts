@@ -1,20 +1,28 @@
 import type { VanType } from '@prisma/client';
+import { getCursorPaginationInformation } from '~/lib/getCursorPaginationInformation.server';
 import { prisma } from '~/lib/prisma.server';
+import type { Direction } from '~/types/types';
 // import prisma from '~/lib/prisma';
 
 export function getVans(
-	page: number,
+	cursor: string | undefined,
 	limit: number,
 	typeFilter: VanType | undefined,
+	direction: Direction = 'forward',
 ) {
-	const skip = (page - 1) * limit;
+	const { actualCursor, sortOrder, takeAmount } =
+		getCursorPaginationInformation(cursor, limit, direction);
+
 	return prisma.van.findMany({
 		where: {
 			type: typeFilter,
 		},
-		orderBy: typeFilter ? [{ type: 'desc' }, { id: 'desc' }] : { id: 'desc' },
-		skip,
-		take: limit,
+		orderBy: typeFilter
+			? [{ type: 'desc' }, { id: sortOrder }]
+			: { id: sortOrder },
+		cursor: actualCursor ? { id: actualCursor } : undefined,
+		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
+		take: takeAmount,
 	});
 }
 

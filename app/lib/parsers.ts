@@ -1,10 +1,13 @@
-import { parseAsInteger, parseAsStringEnum } from 'nuqs';
+import { parseAsNumberLiteral, parseAsString, parseAsStringEnum } from 'nuqs';
 import {
+	DEFAULT_CURSOR,
+	DEFAULT_DIRECTION,
 	DEFAULT_FILTER,
 	DEFAULT_LIMIT,
-	DEFAULT_PAGE,
+	DIRECTIONS,
+	LIMITS,
 } from '~/constants/constants';
-import type { VanTypeOrEmpty } from '~/types/types';
+import type { Direction, VanTypeOrEmpty } from '~/types/types';
 
 // Hardcoded van types for client-side safety
 const VAN_TYPE_LOWERCASE: VanTypeOrEmpty[] = ['simple', 'rugged', 'luxury'];
@@ -13,15 +16,19 @@ const VAN_TYPE_LOWERCASE: VanTypeOrEmpty[] = ['simple', 'rugged', 'luxury'];
 const parseAsVanType =
 	parseAsStringEnum(VAN_TYPE_LOWERCASE).withDefault(DEFAULT_FILTER);
 
-// Host routes only need page and limit (no type filter)
+// Custom parser for limit that validates against allowed numeric values
+const parseAsLimit = parseAsNumberLiteral(LIMITS).withDefault(DEFAULT_LIMIT);
+
+// Host routes only need cursor and limit (no type filter)
 export const hostPaginationParsers = {
-	page: parseAsInteger.withDefault(DEFAULT_PAGE),
-	limit: parseAsInteger.withDefault(DEFAULT_LIMIT),
+	cursor: parseAsString.withDefault(DEFAULT_CURSOR),
+	limit: parseAsLimit,
+	direction:
+		parseAsStringEnum<Direction>(DIRECTIONS).withDefault(DEFAULT_DIRECTION),
 };
 
-// Main routes need page, limit, and type filter
+// Main routes need cursor, limit, and type filter
 export const paginationParsers = {
-	page: parseAsInteger.withDefault(DEFAULT_PAGE),
-	limit: parseAsInteger.withDefault(DEFAULT_LIMIT),
+	...hostPaginationParsers,
 	type: parseAsVanType,
 };

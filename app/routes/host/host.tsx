@@ -30,7 +30,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const { session, headers } = await getSessionOrRedirect(request);
 
 	const results = await Promise.allSettled([
-		getHostVans(session.user.id, 1, 3),
+		getHostVans(session.user.id, undefined, 3),
 		getHostTransactions(session.user.id),
 		getAverageReviewRating(session.user.id),
 	]);

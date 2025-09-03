@@ -44,6 +44,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ## Tech Stack
 
 ### Frontend
+
 - **React 19.1.1** with React Compiler for performance optimization
 - **React Router 7.8.2** (file-based routing, SSR)
 - **TypeScript 5.9.2** with strict configuration
@@ -54,6 +55,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **nuqs 2.5.2** for type-safe URL state management
 
 ### Backend & Database
+
 - **Node.js** with React Router server
 - **Prisma 6.15.0** ORM with Neon PostgreSQL
 - **better-auth 1.3.7** for authentication
@@ -62,6 +64,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **@prisma/adapter-neon** for Neon database integration
 
 ### Development Tools
+
 - **Vite 7.1.4** with React Router plugin
 - **Biome 2.2.2** for linting and formatting
 - **TypeScript** with native preview
@@ -89,7 +92,9 @@ app/
 ├── hooks/              # Custom React hooks
 ├── lib/                # Server-side utilities
 │   ├── parsers.ts      # nuqs search parameter parsers
-│   └── searchParams.server.ts  # Server-side search param caching
+│   ├── searchParams.server.ts  # Server-side search param loaders
+│   ├── getCursorPaginationInformation.server.ts  # Cursor pagination utilities
+│   └── hasPagination.server.ts  # Generic pagination logic
 ├── routes/             # Route modules (pages, API, layouts)
 │   ├── api/            # API routes
 │   ├── auth/           # Authentication routes
@@ -131,6 +136,7 @@ prisma/
   - Enhanced seed data with varied van names and descriptions
 
 ### Setup Database
+
 ```bash
 # Generate Prisma client
 bunx prisma generate
@@ -139,7 +145,7 @@ bunx prisma generate
 bunx prisma db push
 
 # Seed with enhanced data
-bun run seed
+bunx prisma db seed
 ```
 
 ---
@@ -160,27 +166,31 @@ bun run seed
 The application uses **nuqs v2.5.2** for type-safe URL state management:
 
 ### Features
+
 - **Type-safe search parameters** with shared parsers between server and client
-- **Server-side caching** with `createSearchParamsCache`
+- **Server-side loaders** with `createLoader` for efficient data fetching
 - **Client-side state management** with `useQueryStates`
+- **Bidirectional cursor pagination** with forward/backward navigation
 - **Automatic URL synchronization** with proper type handling
 - **View transitions support** for smooth navigation
 
 ### Implementation
+
 ```typescript
 // Shared parsers (app/lib/parsers.ts)
 export const paginationParsers = {
-  page: parseAsInteger.withDefault(DEFAULT_PAGE),
-  limit: parseAsInteger.withDefault(DEFAULT_LIMIT),
-  type: parseAsStringEnum([...Object.values(VanType), DEFAULT_FILTER])
-    .withDefault(DEFAULT_FILTER),
+  cursor: parseAsString.withDefault(DEFAULT_CURSOR),
+  limit: parseAsNumberLiteral(LIMITS).withDefault(DEFAULT_LIMIT),
+  direction: parseAsStringEnum(DIRECTIONS).withDefault(DEFAULT_DIRECTION),
+  type: parseAsVanType,
 };
 
-// Server-side caching (app/lib/searchParams.server.ts)
-export const searchParamsCache = createSearchParamsCache(paginationParsers);
+// Server-side loaders (app/lib/searchParams.server.ts)
+export const loadSearchParams = createLoader(paginationParsers);
 
 // Client-side usage
-const [{ page, limit, type }, setSearchParams] = useQueryStates(paginationParsers);
+const [{ cursor, limit, direction, type }, setSearchParams] =
+  useQueryStates(paginationParsers);
 ```
 
 ---
@@ -188,7 +198,8 @@ const [{ page, limit, type }, setSearchParams] = useQueryStates(paginationParser
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - Neon PostgreSQL database
 - Bun (recommended) or npm
 
@@ -211,7 +222,7 @@ cp .env.example .env
 # Set up database
 bunx prisma generate
 bunx prisma db push
-bun run seed
+bunx prisma db seed
 
 # Start development server
 bun run dev
@@ -241,8 +252,8 @@ BETTER_AUTH_SECRET=your-secret-key-here
 BETTER_AUTH_URL=http://localhost:5173
 
 # Optional: Google OAuth (if configured)
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
+# GOOGLE_CLIENT_ID=your-google-client-id
+# GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
 
 ---
@@ -252,7 +263,6 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 - `bun run dev` – Start development server with HMR
 - `bun run build` – Build for production
 - `bun run typecheck` – TypeScript checking and route type generation
-- `bun run seed` – Seed the database with enhanced sample data
 - `bun run lint` – Run Biome linting
 - `bun run lint:fix` – Fix linting issues automatically
 - `bun run format` – Check code formatting
@@ -296,6 +306,7 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 - **React Compiler** for performance optimization
 
 ### Biome Configuration
+
 - **CSS at-rules support** for TailwindCSS 4 features
 - **Sorted CSS classes** for consistency
 - **TypeScript strict mode** enabled
@@ -307,6 +318,7 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 ## Deployment
 
 ### Vercel Deployment
+
 The application is configured for Vercel deployment with:
 
 - **Prisma client generation** via `postinstall` script
@@ -316,6 +328,7 @@ The application is configured for Vercel deployment with:
 - **React Compiler** optimization for production builds
 
 ### Build Process
+
 ```bash
 # Production build
 bun run build
@@ -339,6 +352,7 @@ bun run check
 6. Open a Pull Request
 
 ### Code Style
+
 - Use Biome for formatting and linting
 - Follow TypeScript best practices
 - Write meaningful commit messages
@@ -355,5 +369,4 @@ This project is for educational/portfolio purposes and demonstrates modern full-
 
 ---
 
-*Built with ❤️ using React Router 7, TypeScript, nuqs, and modern web technologies.*
-
+_Built with ❤️ using React Router 7, TypeScript, nuqs, and modern web technologies._

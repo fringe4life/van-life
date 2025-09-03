@@ -6,8 +6,9 @@ import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import VanCard from '~/components/van/VanCard';
 import VanPages from '~/components/van/VanPages';
-import { DEFAULT_PAGE } from '~/constants/constants';
+import { DEFAULT_CURSOR } from '~/constants/constants';
 import { getVans, getVansCount } from '~/db/van/queries';
+import { hasPagination } from '~/lib/hasPagination.server';
 import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/searchParams.server';
 import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
@@ -29,13 +30,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const badges = VAN_TYPE_LOWERCASE;
 
 	// Parse search parameters using nuqs loadSearchParams
-	const { page, limit, type } = loadSearchParams(request);
+	const { cursor, limit, type, direction } = loadSearchParams(request);
 
 	// Convert empty string to undefined for proper type handling
 	const typeFilter = type === '' ? undefined : (type?.toUpperCase() as VanType);
 
 	const results = await Promise.allSettled([
-		getVans(page, limit, typeFilter),
+		getVans(cursor, limit, typeFilter, direction),
 		getVansCount(typeFilter),
 	]);
 
@@ -43,11 +44,14 @@ export async function loader({ request }: Route.LoaderArgs) {
 		result.status === 'fulfilled' ? result.value : 'Error fetching data',
 	);
 
+	// Process pagination logic
+	const pagination = hasPagination(vans, limit, cursor, direction);
+
 	return data(
 		{
-			vans: vans as Awaited<ReturnType<typeof getVans>>,
 			badges,
 			vansCount: vansCount as Awaited<ReturnType<typeof getVansCount>>,
+			...pagination,
 		},
 		{
 			headers: {
@@ -58,11 +62,19 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Vans({ loaderData }: Route.ComponentProps) {
-	const { vans, badges, vansCount } = loaderData;
+	const {
+		actualItems: vans,
+		badges,
+		hasNextPage,
+		hasPreviousPage,
+	} = loaderData;
 
 	// Use nuqs for client-side state management
-	const [{ page, limit, type }, setSearchParams] =
+	const [{ cursor, limit, type }, setSearchParams] =
 		useQueryStates(paginationParsers);
+
+	// Ensure vans is an array
+	const vansArray = Array.isArray(vans) ? vans : [];
 
 	return (
 		<VanPages
@@ -84,17 +96,18 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 				link:
 					href('/vans/:vanId', { vanId: van.id }) +
 					(type
-						? `?page=${page}&limit=${limit}&type=${type}`
-						: `?page=${page}&limit=${limit}`),
+						? `?cursor=${cursor}&limit=${limit}&type=${type}`
+						: `?cursor=${cursor}&limit=${limit}`),
 			})}
-			items={vans}
-			itemsCount={vansCount}
+			items={vansArray}
 			// generic component props end
 
 			// props for all use cases
 			pathname={href('/vans')}
 			title="Explore our van options"
-			searchParams={{ page, limit, type }}
+			searchParams={{ cursor, limit, type }}
+			hasNextPage={hasNextPage}
+			hasPreviousPage={hasPreviousPage}
 			optionalElement={
 				<div className="mb-6 grid grid-cols-2 items-center gap-2 sm:grid-cols-[min-content_min-content_min-content_max-content] sm:gap-4">
 					{
@@ -111,7 +124,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 										'w-full uppercase sm:w-fit',
 									)}
 									onClick={() => {
-										setSearchParams({ type: t, page: DEFAULT_PAGE });
+										setSearchParams({ type: t, cursor: DEFAULT_CURSOR });
 									}}
 								>
 									{t}
@@ -123,7 +136,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 						variant="ghost"
 						className="w-full text-center sm:w-fit sm:text-left"
 						onClick={() => {
-							setSearchParams({ type: undefined, page: DEFAULT_PAGE });
+							setSearchParams({ type: undefined, cursor: DEFAULT_CURSOR });
 						}}
 					>
 						Clear filters

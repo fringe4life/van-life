@@ -69,7 +69,6 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			renderKey={(item) => item.id}
 			renderProps={(item) => item}
 			Component={Income}
-			itemsCount={filteredHostIncomes.length}
 			optionalElement={
 				<>
 					<p>

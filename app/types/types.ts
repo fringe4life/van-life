@@ -6,3 +6,6 @@ export type BadgeVariant = LowercaseVanType | 'outline' | 'unavailable';
 
 // Type for nuqs parser that includes empty string
 export type VanTypeOrEmpty = LowercaseVanType | '';
+
+// Type for pagination direction
+export type Direction = 'forward' | 'backward';

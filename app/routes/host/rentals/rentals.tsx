@@ -5,6 +5,7 @@ import VanCard from '~/components/van/VanCard';
 import VanPages from '~/components/van/VanPages';
 import { getHostRentedVanCount, getHostRentedVans } from '~/db/rental/queries';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { hasPagination } from '~/lib/hasPagination.server';
 import { hostPaginationParsers } from '~/lib/parsers';
 import { loadHostSearchParams } from '~/lib/searchParams.server';
 import type { Route } from './+types/rentals';
@@ -24,10 +25,10 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const { session, headers } = await getSessionOrRedirect(request);
 
 	// Parse search parameters using nuqs loadHostSearchParams
-	const { page, limit } = loadHostSearchParams(request);
+	const { cursor, limit, direction } = loadHostSearchParams(request);
 
 	const results = await Promise.allSettled([
-		getHostRentedVans(session.user.id, page, limit),
+		getHostRentedVans(session.user.id, cursor, limit, direction),
 		getHostRentedVanCount(session.user.id),
 	]);
 
@@ -35,10 +36,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 		result.status === 'fulfilled' ? result.value : 'Error fetching data',
 	);
 
+	// Process pagination logic
+	const pagination = hasPagination(vans, limit, cursor, direction);
+
 	return data(
 		{
-			vans: vans as Awaited<ReturnType<typeof getHostRentedVans>>,
 			vansCount: vansCount as Awaited<ReturnType<typeof getHostRentedVanCount>>,
+			...pagination,
 		},
 		{
 			headers: {
@@ -50,10 +54,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Host({ loaderData }: Route.ComponentProps) {
-	const { vans, vansCount } = loaderData;
+	const { actualItems: vans, hasNextPage, hasPreviousPage } = loaderData;
 
 	// Use nuqs for client-side state management
-	const [{ page, limit }] = useQueryStates(hostPaginationParsers);
+	const [{ cursor, limit }] = useQueryStates(hostPaginationParsers);
+
+	// Ensure vans is an array
+	const vansArray = Array.isArray(vans) ? vans : [];
 
 	return (
 		<VanPages
@@ -79,15 +86,16 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					</div>
 				),
 			})}
-			items={vans}
-			itemsCount={vansCount}
+			items={vansArray}
 			emptyStateMessage="You are currently not renting any vans."
 			// generic component props end
 
 			// props for all use cases
 			pathname={href('/host/rentals')}
 			title="Vans you are renting"
-			searchParams={{ page, limit }}
+			searchParams={{ cursor, limit }}
+			hasNextPage={hasNextPage}
+			hasPreviousPage={hasPreviousPage}
 		/>
 	);
 }

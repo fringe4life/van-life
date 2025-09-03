@@ -1,7 +1,9 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
 import { isCUID } from '~/lib/checkIsCUID.server';
+import { getCursorPaginationInformation } from '~/lib/getCursorPaginationInformation.server';
 import { prisma } from '~/lib/prisma.server';
-import getSkipAmount from '~/utils/getSkipAmount.server';
+import type { Direction } from '~/types/types';
+
 // import prisma from '~/lib/prisma';
 
 export async function getHostVan(userId: string, vanId: string) {
@@ -14,14 +16,24 @@ export async function getHostVan(userId: string, vanId: string) {
 	});
 }
 
-export function getHostVans(hostId: string, page: number, limit: number) {
+export function getHostVans(
+	hostId: string,
+	cursor: string | undefined,
+	limit: number,
+	direction: Direction = 'forward',
+) {
 	if (!isCUID(hostId)) return INVALID_ID_ERROR;
-	const skip = getSkipAmount(page, limit);
+	const { actualCursor, sortOrder, takeAmount } =
+		getCursorPaginationInformation(cursor, limit, direction);
+
 	return prisma.van.findMany({
-		where: { hostId },
-		orderBy: { id: 'desc' },
-		take: limit,
-		skip,
+		where: {
+			hostId,
+		},
+		orderBy: { id: sortOrder },
+		cursor: actualCursor ? { id: actualCursor } : undefined,
+		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
+		take: takeAmount,
 	});
 }
 

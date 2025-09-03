@@ -74,7 +74,6 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<VanPages
-			itemsCount={safeReviews.length}
 			// generic componet props start
 			Component={Review}
 			items={reviewItems}
