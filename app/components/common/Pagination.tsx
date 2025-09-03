@@ -30,14 +30,6 @@ export default function Pagination<T extends { id: string }>({
 }: PaginationProps<T>) {
 	const [, setSearchParams] = useQueryStates(paginationParsers);
 
-	// Don't show pagination if there are no items or only one page worth
-	if (
-		items.length === 0 ||
-		(items.length <= limit && !hasNextPage && !hasPreviousPage)
-	) {
-		return null;
-	}
-
 	const handleLimitChange = (newLimit: string) => {
 		// Reset cursor when changing limit
 		setSearchParams({
@@ -47,21 +39,18 @@ export default function Pagination<T extends { id: string }>({
 	};
 
 	return (
-		<div className="my-6 flex items-center justify-between gap-4 place-self-center">
-			{/* Limit selector */}
-			<div>
-				<select
-					value={limit.toString()}
-					onChange={(e) => handleLimitChange(e.target.value)}
-					className="w-20 rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
-				>
-					{LIMITS.map((limitOption) => (
-						<option key={limitOption} value={limitOption.toString()}>
-							{limitOption}
-						</option>
-					))}
-				</select>
-			</div>
+		<div className="my-6 flex items-center justify-between gap-4">
+			<select
+				value={limit.toString()}
+				onChange={(e) => handleLimitChange(e.target.value)}
+				className="w-20 rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
+			>
+				{LIMITS.map((limitOption) => (
+					<option key={limitOption} value={limitOption.toString()}>
+						{limitOption}
+					</option>
+				))}
+			</select>
 			{/* Navigation buttons */}
 			<div className="flex items-center gap-2">
 				{hasPreviousPage ? (
