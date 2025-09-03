@@ -1,11 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
 import { Button } from '~/components/ui/button';
-import {
-	DEFAULT_CURSOR,
-	DEFAULT_DIRECTION,
-	LIMITS,
-} from '~/constants/paginationConstants';
+import { DEFAULT_DIRECTION, LIMITS } from '~/constants/paginationConstants';
 import { paginationParsers } from '~/lib/parsers';
 
 type PaginationProps<T = unknown> = {
@@ -31,10 +27,9 @@ export default function Pagination<T extends { id: string }>({
 	const [, setSearchParams] = useQueryStates(paginationParsers);
 
 	const handleLimitChange = (newLimit: string) => {
-		// Reset cursor when changing limit
+		// Keep cursor unchanged when changing limit - cursor represents position in dataset
 		setSearchParams({
 			limit: Number(newLimit) as (typeof LIMITS)[number],
-			cursor: DEFAULT_CURSOR,
 		});
 	};
 
