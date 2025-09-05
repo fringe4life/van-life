@@ -16,7 +16,9 @@ import { hasPagination } from '~/lib/hasPagination.server';
 import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/searchParams.server';
 import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
+import type { QueryType } from '~/types/types.server';
 import { cn } from '~/utils/utils';
+import { clsx } from 'clsx';
 import type { Route } from './+types/vans';
 
 export function meta() {
@@ -53,7 +55,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	const loaderData = {
 		badges,
-		vansCount: vansCount as Awaited<ReturnType<typeof getVansCount>>,
+		vansCount: vansCount as QueryType<typeof getVansCount>,
 		...pagination,
 	};
 
@@ -75,6 +77,9 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 	// Use nuqs for client-side state management
 	const [{ cursor, limit, type }, setSearchParams] =
 		useQueryStates(paginationParsers);
+
+	// Derive state to check if type filter is active
+	const hasActiveTypeFilter = type !== DEFAULT_FILTER;
 
 	// Ensure vans is an array
 	const vansArray = Array.isArray(vans) ? vans : [];
@@ -141,7 +146,10 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 					}
 					<Button
 						variant="ghost"
-						className="w-full text-center sm:w-fit sm:text-left"
+						className={clsx(
+							"w-full text-center sm:w-fit sm:text-left",
+							hasActiveTypeFilter && "underline"
+						)}
 						onClick={() => {
 							setSearchParams({
 								type: DEFAULT_FILTER,

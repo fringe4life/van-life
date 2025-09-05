@@ -9,6 +9,7 @@ import { getHostTransactions } from '~/db/user/analytics';
 import { getHostVans } from '~/db/van/host';
 import { calculateTotalIncome, getElapsedTime } from '~/lib/getElapsedTime';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import type { QueryType } from '~/types/types.server';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/host';
 
@@ -43,14 +44,10 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	return data(
 		{
-			vans: vans as Awaited<ReturnType<typeof getHostVans>>,
-			avgRating: avgRating as Awaited<
-				ReturnType<typeof getAverageReviewRating>
-			>,
+			vans: vans as QueryType<typeof getHostVans>,
+			avgRating: avgRating as QueryType<typeof getAverageReviewRating>,
 			name: session.user.name,
-			transactions: transactions as Awaited<
-				ReturnType<typeof getHostTransactions>
-			>,
+			transactions: transactions as QueryType<typeof getHostTransactions>,
 		},
 		{
 			headers: {

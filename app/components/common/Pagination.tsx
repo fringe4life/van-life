@@ -1,8 +1,9 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
-import { Button } from '~/components/ui/button';
+import { Button, buttonVariants } from '~/components/ui/button';
 import { DEFAULT_DIRECTION, LIMITS } from '~/constants/paginationConstants';
 import { paginationParsers } from '~/lib/parsers';
+import { cn } from '~/utils/utils';
 
 type PaginationProps<T = unknown> = {
 	items: T[];
@@ -26,6 +27,9 @@ export default function Pagination<T extends { id: string }>({
 }: PaginationProps<T>) {
 	const [, setSearchParams] = useQueryStates(paginationParsers);
 
+	// Ensure items is a valid array
+	const safeItems = Array.isArray(items) ? items : [];
+
 	const handleLimitChange = (newLimit: string) => {
 		// Keep cursor unchanged when changing limit - cursor represents position in dataset
 		setSearchParams({
@@ -38,7 +42,10 @@ export default function Pagination<T extends { id: string }>({
 			<select
 				value={limit.toString()}
 				onChange={(e) => handleLimitChange(e.target.value)}
-				className="w-20 rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
+				className={cn(
+					buttonVariants({ variant: 'outline', size: 'icon' }),
+					'w-20',
+				)}
 			>
 				{LIMITS.map((limitOption) => (
 					<option key={limitOption} value={limitOption.toString()}>
@@ -48,15 +55,20 @@ export default function Pagination<T extends { id: string }>({
 			</select>
 			{/* Navigation buttons */}
 			<div className="flex items-center gap-2">
-				{hasPreviousPage ? (
+				{hasPreviousPage && safeItems.length > 0 ? (
 					<Button
 						aria-label="Previous page"
 						variant="outline"
 						size="icon"
 						onClick={() => {
 							// For backward pagination, use the first item's ID as cursor
-							const firstItem = items[0];
-							setSearchParams({ cursor: firstItem.id, direction: 'backward' });
+							const firstItem = safeItems[0];
+							if (firstItem) {
+								setSearchParams({
+									cursor: firstItem.id,
+									direction: 'backward',
+								});
+							}
 						}}
 					>
 						<ChevronLeft className="aspect-square w-4" />
@@ -72,18 +84,20 @@ export default function Pagination<T extends { id: string }>({
 					</Button>
 				)}
 
-				{hasNextPage ? (
+				{hasNextPage && safeItems.length > 0 ? (
 					<Button
 						aria-label="Next page"
 						variant="outline"
 						size="icon"
 						onClick={() => {
 							// Get the last item's ID as the next cursor
-							const lastItem = items[items.length - 1];
-							setSearchParams({
-								cursor: lastItem.id,
-								direction: DEFAULT_DIRECTION,
-							});
+							const lastItem = safeItems[safeItems.length - 1];
+							if (lastItem) {
+								setSearchParams({
+									cursor: lastItem.id,
+									direction: DEFAULT_DIRECTION,
+								});
+							}
 						}}
 					>
 						<ChevronRight className="aspect-square w-4" />

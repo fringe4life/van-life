@@ -8,6 +8,7 @@ import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { hasPagination } from '~/lib/hasPagination.server';
 import { hostPaginationParsers } from '~/lib/parsers';
 import { loadHostSearchParams } from '~/lib/searchParams.server';
+import type { QueryType } from '~/types/types.server';
 import type { Route } from './+types/rentals';
 
 export function meta() {
@@ -41,7 +42,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	return data(
 		{
-			vansCount: vansCount as Awaited<ReturnType<typeof getHostRentedVanCount>>,
+			vansCount: vansCount as QueryType<typeof getHostRentedVanCount>,
 			...pagination,
 		},
 		{

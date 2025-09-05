@@ -8,6 +8,7 @@ import { getHostRentedVan } from '~/db/rental/queries';
 import { returnVan } from '~/db/rental/transactions';
 import { getAccountSummary } from '~/db/user/analytics';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import type { QueryType } from '~/types/types.server';
 import { getCost } from '~/utils/getCost';
 import type { Route } from './+types/returnRental';
 
@@ -49,8 +50,8 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 	return data(
 		{
-			rent: rent as Awaited<ReturnType<typeof getHostRentedVan>> | string,
-			money: money as Awaited<ReturnType<typeof getAccountSummary>> | string,
+			rent: rent as QueryType<typeof getHostRentedVan> | string,
+			money: money as QueryType<typeof getAccountSummary> | string,
 		},
 		{
 			headers: {
