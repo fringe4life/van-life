@@ -48,28 +48,35 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **React 19.1.1** with React Compiler for performance optimization
 - **React Router 7.8.2** (file-based routing, SSR)
 - **TypeScript 5.9.2** with strict configuration
-- **TailwindCSS 4.1.12** with modern CSS features
+- **TailwindCSS 4.1.13** with modern CSS features
 - **Radix UI** for accessible components
 - **Lucide React** for icons
 - **Recharts** for data visualization
-- **nuqs 2.5.2** for type-safe URL state management
+- **nuqs 2.6.0** for type-safe URL state management
 
 ### Backend & Database
 
 - **Node.js** with React Router server
 - **Prisma 6.15.0** ORM with Neon PostgreSQL
-- **better-auth 1.3.7** for authentication
+- **better-auth 1.3.9** for authentication
 - **Zod 4.1.5** for schema validation
 - **CUID2** for unique identifiers
 - **@prisma/adapter-neon** for Neon database integration
 
 ### Development Tools
 
-- **Vite 7.1.4** with React Router plugin
+- **rolldown-vite** (latest) - Next-generation Vite with Rolldown bundler
 - **Biome 2.2.2** for linting and formatting
-- **TypeScript** with native preview
-- **Babel** with React Compiler plugin
+- **TypeScript 5.9.2** with native preview
 - **Bun** for fast package management and runtime
+
+### Build System
+
+- **rolldown-vite** replaces traditional Vite with Rust-based Rolldown bundler
+- **Enhanced performance** with faster builds and reduced memory usage
+- **Oxc integration** for improved code transformation
+- **Native plugin support** with `experimental.enableNativePlugin: true`
+- **Optimized dependency handling** with `rollupOptions` instead of deprecated `esbuildOptions`
 
 ---
 
@@ -171,7 +178,7 @@ bunx prisma db seed
 
 ## URL State Management with nuqs
 
-The application uses **nuqs v2.5.2** for type-safe URL state management:
+The application uses **nuqs v2.6.0** for type-safe URL state management:
 
 ### Features
 
@@ -283,7 +290,7 @@ BETTER_AUTH_URL=http://localhost:5173
 
 ## Styling
 
-- **TailwindCSS 4.1.12** with modern CSS features
+- **TailwindCSS 4.1.13** with modern CSS features
 - **Custom design system** with consistent components
 - **Responsive design** with mobile-first approach
 - **Modern CSS features:**

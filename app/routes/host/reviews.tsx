@@ -3,9 +3,14 @@ import { data, href } from 'react-router';
 import BarChartComponent from '~/components/host/BarChart';
 import Review from '~/components/host/review/Review';
 import VanPages from '~/components/van/VanPages';
-import { getHostReviews } from '~/db/review/queries';
+import {
+	getHostReviewsChartData,
+	getHostReviewsPaginated,
+} from '~/db/review/queries';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
-import { tryCatch } from '~/lib/tryCatch.server';
+import { hasPagination } from '~/lib/hasPagination.server';
+import { loadHostSearchParams } from '~/lib/searchParams.server';
+import type { QueryType } from '~/types/types.server';
 import type { Route } from './+types/reviews';
 export function meta() {
 	return [
@@ -24,15 +29,34 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
 	const { session, headers } = await getSessionOrRedirect(request);
 
-	const result = await tryCatch(() => getHostReviews(session.user.id));
+	// Parse search parameters for pagination
+	const { cursor, limit, direction } = loadHostSearchParams(request);
 
-	if (result.error) {
-		throw new Error('Failed to load reviews. Please try again later.');
-	}
+	// Load chart data and paginated reviews
+	const results = await Promise.allSettled([
+		getHostReviewsChartData(session.user.id),
+		getHostReviewsPaginated(session.user.id, cursor, limit, direction),
+	]);
+
+	const [chartData, paginatedReviews] = results.map((result) =>
+		result.status === 'fulfilled' ? result.value : 'Error fetching data',
+	);
+
+	// Process pagination logic
+	const pagination = hasPagination(
+		paginatedReviews as QueryType<typeof getHostReviewsPaginated>,
+		limit,
+		cursor,
+		direction,
+	);
 
 	return data(
 		{
-			reviews: result.data,
+			chartData: chartData as
+				| QueryType<typeof getHostReviewsChartData>
+				| string, // For chart data (only ratings)
+
+			...pagination,
 		},
 		{
 			headers: {
@@ -44,12 +68,18 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Reviews({ loaderData }: Route.ComponentProps) {
-	const { reviews } = loaderData;
+	const {
+		chartData,
+		actualItems: paginatedReviews,
+		hasNextPage,
+		hasPreviousPage,
+	} = loaderData;
 
-	// Handle case where reviews might be null (though it shouldn't be due to error handling above)
-	const safeReviews = Array.isArray(reviews) ? reviews : [];
+	// Handle case where data might be an error string or null
+	const safeChartData = Array.isArray(chartData) ? chartData : [];
 
-	const result = safeReviews
+	// For the chart, use chart data to show complete statistics
+	const result = safeChartData
 		.reduce(
 			(acc, cur) => {
 				acc[cur.rating - 1] += 1;
@@ -62,15 +92,18 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			amount: res,
 		}));
 
-	const reviewItems = safeReviews.map((review) => ({
-		name: review.user.user.name,
-		text: review.text,
-		rating: review.rating,
-		timestamp:
-			review.updatedAt?.toLocaleDateString() ??
-			review.createdAt.toLocaleDateString(),
-		id: review.id,
-	}));
+	// Use paginated reviews for the list display
+	const reviewItems = Array.isArray(paginatedReviews)
+		? paginatedReviews.map((review) => ({
+				name: review.user.user.name,
+				text: review.text,
+				rating: review.rating,
+				timestamp:
+					review.updatedAt?.toLocaleDateString() ??
+					review.createdAt.toLocaleDateString(),
+				id: review.id,
+			}))
+		: []; // Pass error string directly to GenericComponent
 
 	return (
 		<VanPages
@@ -84,13 +117,16 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			// props that are common
 			title="Your Reviews"
 			pathname={href('/host/review')}
+			// pagination props
+			hasNextPage={hasNextPage}
+			hasPreviousPage={hasPreviousPage}
 			// optional
 			optionalElement={
 				<>
 					<BarChartComponent mappedData={result} />
 
 					<h3 className="font-bold text-lg text-neutral-900">
-						Reviews ({safeReviews.length})
+						Reviews ({safeChartData.length})
 					</h3>
 				</>
 			}

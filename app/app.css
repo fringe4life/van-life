@@ -204,8 +204,6 @@ html {
 	--color-neutral-900: oklch(20.02% 0 0);
 }
 
-
-
 .grid-max {
 	--_gap: 32px;
 	--_max-columns: 2;

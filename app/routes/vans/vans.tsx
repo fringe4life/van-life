@@ -147,8 +147,8 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 					<Button
 						variant="ghost"
 						className={clsx(
-							"w-full text-center sm:w-fit sm:text-left",
-							hasActiveTypeFilter && "underline"
+							'w-full text-center sm:w-fit sm:text-left',
+							hasActiveTypeFilter && 'underline',
 						)}
 						onClick={() => {
 							setSearchParams({
