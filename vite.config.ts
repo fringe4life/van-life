@@ -2,6 +2,7 @@ import { reactRouter } from '@react-router/dev/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import path from 'node:path';
 
 
 export default defineConfig({
@@ -20,7 +21,7 @@ export default defineConfig({
 	// Configure resolve to handle ~/ paths properly
 	resolve: {
 		alias: {
-			'~': '/home/cc/Programming/Scrimba-FrontendPath/van-life/app',
+			'~': path.resolve(__dirname, 'app'),
 		},
 		// Ensure proper symlink handling
 		preserveSymlinks: false,
