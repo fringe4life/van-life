@@ -270,7 +270,7 @@ DATABASE_URL=postgresql://user:password@ep-xxx-xxx-xxx.region.aws.neon.tech/neon
 BETTER_AUTH_SECRET=your-secret-key-here
 BETTER_AUTH_URL=http://localhost:5173
 
-# Optional: Google OAuth (if configured)
+# Optional: Google OAuth (commented out in env.server.ts)
 # GOOGLE_CLIENT_ID=your-google-client-id
 # GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```

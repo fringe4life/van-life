@@ -22,38 +22,38 @@ const hostNavItems = [
 	{
 		to: href('/host'),
 		title: 'Dashboard',
-		children: <LayoutDashboard className="aspect-square w-6" />,
+		children: <LayoutDashboard className="aspect-square w-10" />,
 		end: true,
 	},
 	{
 		to: href('/host/income'),
 		title: 'Income',
-		children: <Wallet className="aspect-square w-6" />,
+		children: <Wallet className="aspect-square w-10" />,
 	},
 	{
 		to: href('/host/vans'),
 		title: 'Vans',
-		children: <Car className="aspect-square w-6" />,
+		children: <Car className="aspect-square w-10" />,
 	},
 	{
 		to: href('/host/review'),
 		title: 'Reviews',
-		children: <Star className="aspect-square w-6" />,
+		children: <Star className="aspect-square w-10" />,
 	},
 	{
 		to: href('/host/add'),
 		title: 'Add Van',
-		children: <SquarePlus className="aspect-square w-6" />,
+		children: <SquarePlus className="aspect-square w-10" />,
 	},
 	{
 		to: href('/host/money'),
 		title: 'Add Money',
-		children: <BanknoteArrowUp className="aspect-square w-6" />,
+		children: <BanknoteArrowUp className="aspect-square w-10" />,
 	},
 	{
 		to: href('/host/rentals'),
 		title: 'Rentals',
-		children: <KeySquare className="aspect-square w-6" />,
+		children: <KeySquare className="aspect-square w-10" />,
 	},
 ];
 
