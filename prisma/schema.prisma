@@ -2,6 +2,7 @@ generator client {
   provider        = "prisma-client"
   previewFeatures = ["relationJoins"]
   output          = "../app/generated/prisma"
+  runtime         = "vercel-edge"
 }
 
 datasource db {
