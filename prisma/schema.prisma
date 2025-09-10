@@ -3,6 +3,7 @@ generator client {
   previewFeatures = ["relationJoins"]
   output          = "../app/generated/prisma"
   runtime         = "vercel-edge"
+  engineType      = "client"
 }
 
 datasource db {
