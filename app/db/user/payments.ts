@@ -1,5 +1,5 @@
-import type { TransactionType } from '@prisma/client';
 import { INVALID_ID_ERROR } from '~/constants/constants';
+import type { TransactionType } from '~/generated/prisma/enums';
 import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
 

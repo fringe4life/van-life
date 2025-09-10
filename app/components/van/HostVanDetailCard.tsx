@@ -1,4 +1,3 @@
-import type { Van } from '@prisma/client';
 import { href } from 'react-router';
 import { Badge } from '~/components/ui/badge';
 import {
@@ -9,13 +8,14 @@ import {
 	CardTitle,
 } from '~/components/ui/card';
 import { HOST_VAN_DETAIL_IMG_SIZES } from '~/constants/imgConstants';
+import type { VanModel } from '~/generated/prisma/models';
 import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import Image from '../common/Image';
 import CustomNavLink from '../navigation/CustomNavLink';
 
 type VanDetailCardProps = {
-	van: Van;
+	van: VanModel;
 	children: React.ReactElement;
 };
 

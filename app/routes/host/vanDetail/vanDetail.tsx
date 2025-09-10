@@ -1,9 +1,9 @@
-import type { Van } from '@prisma/client';
 import { useOutletContext } from 'react-router';
+import type { VanModel } from '~/generated/prisma/models';
 import { capitalize } from '~/utils/utils';
 
 export default function VanDetail() {
-	const van = useOutletContext<Van>();
+	const van = useOutletContext<VanModel>();
 	return (
 		<article>
 			<p className="font-bold">

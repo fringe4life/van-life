@@ -1,6 +1,6 @@
-import { TransactionType, VanType } from '@prisma/client';
 import { z } from 'zod/v4';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
+import { TransactionType, VanType } from '~/generated/prisma/enums';
 
 /**
  * Schema for validating user passwords.

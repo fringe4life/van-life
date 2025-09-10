@@ -1,15 +1,15 @@
-import type { Van } from '@prisma/client';
 import clsx from 'clsx';
 import Image from '~/components/common/Image';
 import CustomLink from '~/components/navigation/CustomLink';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { VAN_CARD_IMG_SIZES } from '~/constants/imgConstants';
+import type { VanModel } from '~/generated/prisma/models';
 import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 
 type VanCardProps = {
-	van: Van;
+	van: VanModel;
 	link: string;
 	action: React.ReactElement;
 	linkCoversCard?: boolean;

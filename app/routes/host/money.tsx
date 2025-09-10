@@ -1,4 +1,3 @@
-import type { TransactionType } from '@prisma/client';
 import { type ChangeEventHandler, useState } from 'react';
 import { data, href, redirect } from 'react-router';
 import { z } from 'zod/v4';
@@ -9,6 +8,7 @@ import { Label } from '~/components/ui/label';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
 import { getAccountSummary } from '~/db/user/analytics';
 import { addMoney } from '~/db/user/payments';
+import type { TransactionType } from '~/generated/prisma/enums';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { moneySchema } from '~/lib/schemas.server';
 import { tryCatch } from '~/lib/tryCatch.server';

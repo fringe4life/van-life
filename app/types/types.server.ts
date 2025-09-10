@@ -1,4 +1,4 @@
-import { VanType } from '@prisma/client';
+import { VanType } from '~/generated/prisma/enums';
 
 // Type helper to convert VanType values to lowercase
 export type LowercaseVanType = Lowercase<VanType>;

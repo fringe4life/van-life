@@ -1,4 +1,3 @@
-import type { VanType } from '@prisma/client';
 import { clsx } from 'clsx';
 import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
@@ -13,6 +12,7 @@ import {
 	DEFAULT_FILTER,
 } from '~/constants/paginationConstants';
 import { getVans, getVansCount } from '~/db/van/queries';
+import type { VanType } from '~/generated/prisma/enums';
 import { hasPagination } from '~/lib/hasPagination.server';
 import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/searchParams.server';

@@ -1,4 +1,4 @@
-import type { VanType } from '@prisma/client';
+import type { VanType } from '~/generated/prisma/enums';
 import { getCursorPaginationInformation } from '~/lib/getCursorPaginationInformation.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Direction } from '~/types/types';
