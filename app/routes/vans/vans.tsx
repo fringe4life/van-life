@@ -1,4 +1,5 @@
 import type { VanType } from '@prisma/client';
+import { clsx } from 'clsx';
 import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
 import ListItems from '~/components/common/ListItems';
@@ -15,10 +16,9 @@ import { getVans, getVansCount } from '~/db/van/queries';
 import { hasPagination } from '~/lib/hasPagination.server';
 import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/searchParams.server';
-import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
 import type { QueryType } from '~/types/types.server';
+import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
 import { cn } from '~/utils/utils';
-import { clsx } from 'clsx';
 import type { Route } from './+types/vans';
 
 export function meta() {

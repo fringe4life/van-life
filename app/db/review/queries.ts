@@ -1,8 +1,13 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
+import type { Prisma } from '~/generated/prisma/client';
 import { isCUID } from '~/lib/checkIsCUID.server';
+import {
+	COMMON_SORT_CONFIGS,
+	createGenericOrderBy,
+} from '~/lib/genericSorting.server';
 import { getCursorPaginationInformation } from '~/lib/getCursorPaginationInformation.server';
 import { prisma } from '~/lib/prisma.server';
-import type { Direction } from '~/types/types';
+import type { Direction, SortOption } from '~/types/types';
 
 export async function getHostReviews(userId: string) {
 	if (!isCUID(userId)) return INVALID_ID_ERROR;
@@ -27,18 +32,67 @@ export async function getHostReviews(userId: string) {
 	});
 }
 
+// Use generic sorting utility for reviews
+const getOrderBy = (sort?: SortOption) =>
+	createGenericOrderBy<Prisma.ReviewOrderByWithRelationInput>(
+		sort || 'newest',
+		COMMON_SORT_CONFIGS.review,
+	);
 export function getHostReviewsPaginated(
 	userId: string,
 	cursor: string | undefined,
 	limit: number,
 	direction: Direction = 'forward',
+	sort: SortOption = 'newest',
 ) {
 	if (!isCUID(userId)) return INVALID_ID_ERROR;
 
-	const { actualCursor, sortOrder, takeAmount } =
-		getCursorPaginationInformation(cursor, limit, direction);
+	const { actualCursor, takeAmount } = getCursorPaginationInformation(
+		cursor,
+		limit,
+		direction,
+	);
 
-	return prisma.review.findMany({
+	// For rating-based sorting, we need to use a different cursor approach
+	const isRatingSort = sort === 'highest' || sort === 'lowest';
+
+	if (isRatingSort) {
+		const orderByClause = getOrderBy(sort);
+
+		// For rating sorts, we need to handle cursor differently
+		// We'll use a combination of rating and id for cursor pagination
+		const query = {
+			where: {
+				rent: {
+					hostId: userId,
+				},
+			},
+			include: {
+				user: {
+					select: {
+						user: {
+							select: {
+								name: true,
+							},
+						},
+					},
+				},
+			},
+			orderBy: orderByClause,
+			take: takeAmount,
+			...(actualCursor && {
+				cursor: { id: actualCursor },
+				skip: 1,
+			}),
+		};
+
+		return prisma.review.findMany(query);
+	}
+
+	const orderByClause = getOrderBy(sort);
+
+	// For date-based sorting, use standard cursor pagination
+	const query = {
 		where: {
 			rent: {
 				hostId: userId,
@@ -55,12 +109,13 @@ export function getHostReviewsPaginated(
 				},
 			},
 		},
-		// Cursor pagination requires ordering by a unique, sequential field
-		orderBy: { id: sortOrder },
+		orderBy: orderByClause,
 		cursor: actualCursor ? { id: actualCursor } : undefined,
 		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
 		take: takeAmount,
-	});
+	};
+
+	return prisma.review.findMany(query);
 }
 
 export function getHostReviewsByRating(userId: string) {

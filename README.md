@@ -36,6 +36,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🎨 **TailwindCSS 4** with modern CSS features
 - 📦 **Prisma ORM** with Neon PostgreSQL and relation joins
 - 🔧 **Generic Components** for reusability and maintainability
+- 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with React 19
 - 🔗 **URL State Management** with nuqs for type-safe search parameters
@@ -181,6 +182,7 @@ generator client {
 ```
 
 **Key Benefits:**
+
 - **No Rust binary dependencies** - eliminates native binary requirements
 - **Smaller bundle sizes** - ideal for serverless and edge deployments
 - **Native JavaScript drivers** - uses `@prisma/adapter-neon` for connection pooling
@@ -232,6 +234,50 @@ export const loadSearchParams = createLoader(paginationParsers);
 const [{ cursor, limit, direction, type }, setSearchParams] =
   useQueryStates(paginationParsers);
 ```
+
+---
+
+## Generic Sorting System
+
+The application features a **reusable sorting system** with type-safe generic utilities:
+
+### Features
+
+- **Generic sorting utility** (`app/lib/genericSorting.server.ts`) for any Prisma model
+- **Reusable Sortable component** (`app/components/common/Sortable.tsx`) for consistent UI
+- **Type-safe orderBy clauses** with full TypeScript support
+- **URL state integration** with nuqs for persistent sorting preferences
+- **Four sort options**: newest, oldest, highest, lowest
+
+### Implementation
+
+```typescript
+// Generic sorting utility
+export function createGenericOrderBy<T>(
+  sort: SortOption,
+  config: SortConfig<T>
+): T {
+  // Returns type-safe Prisma orderBy clause
+}
+
+// Reusable component
+<Sortable
+  title="Reviews"
+  itemCount={reviews.length}
+/>
+
+// Database integration
+const orderBy = createGenericOrderBy(sort, {
+  dateField: 'createdAt',
+  valueField: 'rating'
+});
+```
+
+### Usage
+
+- **Reviews page**: Sort by newest/oldest date or highest/lowest rating
+- **Income page**: Sort by newest/oldest date or highest/lowest amount
+- **Extensible**: Easy to add sorting to any new data table
 
 ---
 

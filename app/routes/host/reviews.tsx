@@ -1,5 +1,5 @@
 import { data, href } from 'react-router';
-
+import Sortable from '~/components/common/Sortable';
 import BarChartComponent from '~/components/host/BarChart';
 import Review from '~/components/host/review/Review';
 import VanPages from '~/components/van/VanPages';
@@ -29,13 +29,13 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
 	const { session, headers } = await getSessionOrRedirect(request);
 
-	// Parse search parameters for pagination
-	const { cursor, limit, direction } = loadHostSearchParams(request);
+	// Parse search parameters for pagination and sorting
+	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
 
 	// Load chart data and paginated reviews
 	const results = await Promise.allSettled([
 		getHostReviewsChartData(session.user.id),
-		getHostReviewsPaginated(session.user.id, cursor, limit, direction),
+		getHostReviewsPaginated(session.user.id, cursor, limit, direction, sort),
 	]);
 
 	const [chartData, paginatedReviews] = results.map((result) =>
@@ -107,7 +107,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<VanPages
-			// generic componet props start
+			// generic component props start
 			Component={Review}
 			items={reviewItems}
 			renderProps={(item) => item}
@@ -124,10 +124,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			optionalElement={
 				<>
 					<BarChartComponent mappedData={result} />
-
-					<h3 className="font-bold text-lg text-neutral-900">
-						Reviews ({safeChartData.length})
-					</h3>
+					<Sortable title="Reviews" itemCount={safeChartData.length} />
 				</>
 			}
 		/>

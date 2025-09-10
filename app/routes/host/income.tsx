@@ -1,10 +1,12 @@
 import { data, href } from 'react-router';
+import Sortable from '~/components/common/Sortable';
 import BarChartComponent from '~/components/host/BarChart';
 import Income from '~/components/host/Income';
 import VanPages from '~/components/van/VanPages';
 import { getHostTransactions } from '~/db/user/analytics';
 import { calculateTotalIncome, getElapsedTime } from '~/lib/getElapsedTime';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { loadHostSearchParams } from '~/lib/searchParams.server';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/income';
 
@@ -25,7 +27,10 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
 	const { session, headers } = await getSessionOrRedirect(request);
 
-	const hostIncomes = await getHostTransactions(session.user.id);
+	// Parse search parameters for sorting
+	const { sort } = loadHostSearchParams(request);
+
+	const hostIncomes = await getHostTransactions(session.user.id, sort);
 
 	return data(
 		{
@@ -81,6 +86,10 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 						{displayPrice(sumIncome)}
 					</p>
 					<BarChartComponent mappedData={mappedData} />
+					<Sortable
+						title="Income Transactions"
+						itemCount={filteredHostIncomes.length}
+					/>
 				</>
 			}
 			title="Income"
