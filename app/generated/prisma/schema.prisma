@@ -1,0 +1,174 @@
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime?
+  updatedAt             DateTime?
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Session {
+  id             String    @id
+  expiresAt      DateTime
+  token          String    @unique
+  createdAt      DateTime?
+  updatedAt      DateTime?
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  impersonatedBy String?
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime?
+  updatedAt     DateTime?
+  role          String?
+  banned        Boolean?
+  banReason     String?
+  banExpires    DateTime?
+  firstName     String?
+  lastName      String?
+  phone         String?
+  userInfo      UserInfo?
+  Account       Account[]
+  Session       Session[]
+
+  @@map("user")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+enum VanType {
+  SIMPLE @map("simple")
+  LUXURY @map("luxury")
+  RUGGED @map("rugged")
+}
+
+enum TransactionType {
+  DEPOSIT  @map("deposit")
+  WITHDRAW @map("withdraw")
+}
+
+model Rent {
+  id       String    @id @default(cuid())
+  amount   Float     @default(0)
+  renterId String
+  hostId   String
+  rentedAt DateTime  @default(now()) @db.Date
+  rentedTo DateTime? @db.Date
+  vanId    String
+  host     UserInfo  @relation("host", fields: [hostId], references: [userId])
+  renter   UserInfo  @relation("renter", fields: [renterId], references: [userId])
+  van      Van       @relation(fields: [vanId], references: [id])
+  reviews  Review[]
+
+  @@unique([rentedTo, vanId])
+  @@index([rentedTo])
+  @@index([vanId])
+  @@index([renterId])
+  @@index([hostId])
+  @@index([renterId, rentedTo])
+  @@index([hostId, rentedTo])
+}
+
+model Review {
+  createdAt DateTime @default(now()) @db.Date
+  updatedAt DateTime @updatedAt @db.Date
+  text      String   @db.VarChar(512)
+  userId    String
+  rating    Int      @db.SmallInt
+  rentId    String
+  id        String   @id @default(cuid())
+  rent      Rent     @relation(fields: [rentId], references: [id])
+  user      UserInfo @relation(fields: [userId], references: [userId])
+
+  @@index([rentId, userId])
+  @@index([userId(sort: Desc)])
+  @@index([rentId(sort: Desc)])
+  @@index([rating(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@index([updatedAt(sort: Desc)])
+}
+
+model Transaction {
+  id        String          @id @default(cuid())
+  createdAt DateTime        @default(now())
+  type      TransactionType
+  amount    Float
+  userId    String
+  userInfo  UserInfo        @relation(fields: [userId], references: [userId])
+}
+
+model UserInfo {
+  userId       String        @id
+  moneyAdded   Float         @default(0)
+  rented       Rent[]        @relation("host")
+  renter       Rent[]        @relation("renter")
+  review       Review[]
+  user         User          @relation(fields: [userId], references: [id])
+  vans         Van[]
+  transactions Transaction[]
+
+  @@index([userId])
+}
+
+model Van {
+  id          String   @id @default(cuid())
+  name        String   @unique @db.VarChar(60)
+  price       Int      @db.SmallInt
+  description String   @db.VarChar(1024)
+  imageUrl    String
+  type        VanType
+  hostId      String
+  isRented    Boolean  @default(false)
+  rent        Rent[]
+  userInfo    UserInfo @relation(fields: [hostId], references: [userId])
+  createdAt   DateTime @default(now()) @db.Date
+
+  @@unique([createdAt(sort: Desc), id(sort: Desc)])
+  @@index([hostId])
+  @@index([type])
+  @@index([id(sort: Desc), hostId])
+  @@index([isRented])
+  @@index([type(sort: Desc), id(sort: Desc)])
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+  output          = "../app/generated/prisma"
+  runtime         = "vercel-edge"
+  engineType      = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
