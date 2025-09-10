@@ -2,8 +2,8 @@ generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["relationJoins"]
   output          = "../app/generated/prisma"
-  runtime         = "vercel-edge"
   engineType      = "client"
+  moduleFormat    = "esm"
 }
 
 datasource db {
