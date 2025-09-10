@@ -1,5 +1,7 @@
 # Van Life
 
+[![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
+
 A modern full-stack van rental platform built with React Router 7, showcasing advanced web development techniques including server-side rendering, authentication, and responsive design.
 
 ## Table of Contents
@@ -35,7 +37,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 📦 **Prisma ORM** with Neon PostgreSQL and relation joins
 - 🔧 **Generic Components** for reusability and maintainability
 - 📱 **Responsive Design** with mobile-first approach
-- ⚡ **Performance Optimized** with React 19 and React Compiler
+- ⚡ **Performance Optimized** with React 19
 - 🔗 **URL State Management** with nuqs for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
 
@@ -45,7 +47,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Frontend
 
-- **React 19.1.1** with React Compiler for performance optimization
+- **React 19.1.1** for performance optimization
 - **React Router 7.8.2** (file-based routing, SSR)
 - **TypeScript 5.9.2** with strict configuration
 - **TailwindCSS 4.1.13** with modern CSS features
@@ -57,7 +59,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Backend & Database
 
 - **Node.js** with React Router server
-- **Prisma 6.16.0** ORM with Neon PostgreSQL
+- **Prisma 6.16.0** ORM with Neon PostgreSQL (Rust-free client)
 - **better-auth 1.3.9** for authentication
 - **Zod 4.1.5** for schema validation
 - **CUID2** for unique identifiers
@@ -134,7 +136,7 @@ prisma/
 
 ## Database
 
-- **Neon PostgreSQL** with Prisma ORM
+- **Neon PostgreSQL** with Prisma ORM (Rust-free client)
 - **Modular schema** with organized model files in subdirectories
 - **Main models:**
   - `User`, `Session`, `Account`, `Verification` - Authentication system
@@ -144,16 +146,18 @@ prisma/
   - `UserInfo` - Extended user profile information
   - `Transaction` - Financial transactions (deposits/withdrawals)
 - **Advanced features:**
+  - **Rust-free Prisma Client** with `queryCompiler` and `driverAdapters`
   - Relation joins for optimized queries
   - CUID2 for unique identifiers
   - Proper indexing and constraints
   - Modular seed data organization with separate files for each model
   - Enhanced seed data with varied van names and descriptions
+  - Native JavaScript database drivers for better edge/serverless compatibility
 
 ### Setup Database
 
 ```bash
-# Generate Prisma client
+# Generate Prisma client (Rust-free with queryCompiler)
 bunx prisma generate
 
 # Push schema to database
@@ -162,6 +166,26 @@ bunx prisma db push
 # Seed with enhanced data
 bunx prisma db seed
 ```
+
+### Prisma Client Migration
+
+This project uses the **Rust-free Prisma Client** with the following configuration:
+
+```prisma
+generator client {
+  provider        = "prisma-client"
+  previewFeatures = ["queryCompiler", "driverAdapters"]
+  output          = "../app/generated/prisma"
+  engineType      = "client"
+}
+```
+
+**Key Benefits:**
+- **No Rust binary dependencies** - eliminates native binary requirements
+- **Smaller bundle sizes** - ideal for serverless and edge deployments
+- **Native JavaScript drivers** - uses `@prisma/adapter-neon` for connection pooling
+- **Better edge compatibility** - works seamlessly in Vercel Edge Runtime
+- **Simplified deployments** - no need to handle platform-specific binaries
 
 ---
 
@@ -344,7 +368,7 @@ The application is configured for Vercel deployment with:
 - **Neon database integration** with `@prisma/adapter-neon`
 - **Edge runtime compatibility** with proper WASM handling
 - **Environment variable configuration** for production
-- **React Compiler** optimization for production builds
+- **Rust-free Prisma Client** for optimized serverless deployments
 
 ### Build Process
 
