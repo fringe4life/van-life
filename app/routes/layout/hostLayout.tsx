@@ -1,3 +1,12 @@
+import {
+	BanknoteArrowUp,
+	Car,
+	KeySquare,
+	LayoutDashboard,
+	SquarePlus,
+	Star,
+	Wallet,
+} from 'lucide-react';
 import { href, Outlet } from 'react-router';
 import GenericComponent from '~/components/common/GenericComponent';
 import CustomNavLink from '~/components/navigation/CustomNavLink';
@@ -10,13 +19,42 @@ export const loader = async ({ request }: Route.ClientLoaderArgs) => {
 };
 
 const hostNavItems = [
-	{ to: href('/host'), children: 'Dashboard', end: true },
-	{ to: href('/host/income'), children: 'Income' },
-	{ to: href('/host/vans'), children: 'Vans' },
-	{ to: href('/host/review'), children: 'Reviews' },
-	{ to: href('/host/add'), children: 'Add Van' },
-	{ to: href('/host/money'), children: 'Add Money' },
-	{ to: href('/host/rentals'), children: 'Rentals' },
+	{
+		to: href('/host'),
+		title: 'Dashboard',
+		children: <LayoutDashboard className="aspect-square w-6" />,
+		end: true,
+	},
+	{
+		to: href('/host/income'),
+		title: 'Income',
+		children: <Wallet className="aspect-square w-6" />,
+	},
+	{
+		to: href('/host/vans'),
+		title: 'Vans',
+		children: <Car className="aspect-square w-6" />,
+	},
+	{
+		to: href('/host/review'),
+		title: 'Reviews',
+		children: <Star className="aspect-square w-6" />,
+	},
+	{
+		to: href('/host/add'),
+		title: 'Add Van',
+		children: <SquarePlus className="aspect-square w-6" />,
+	},
+	{
+		to: href('/host/money'),
+		title: 'Add Money',
+		children: <BanknoteArrowUp className="aspect-square w-6" />,
+	},
+	{
+		to: href('/host/rentals'),
+		title: 'Rentals',
+		children: <KeySquare className="aspect-square w-6" />,
+	},
 ];
 
 export default function HostLayout() {
@@ -29,6 +67,7 @@ export default function HostLayout() {
 				items={hostNavItems}
 				renderProps={(item) => ({
 					to: item.to,
+					title: item.title,
 					...(item.end ? { end: true } : {}),
 					className: navLinkClassName,
 					children: item.children,

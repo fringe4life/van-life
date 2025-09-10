@@ -57,7 +57,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Backend & Database
 
 - **Node.js** with React Router server
-- **Prisma 6.15.0** ORM with Neon PostgreSQL
+- **Prisma 6.16.0** ORM with Neon PostgreSQL
 - **better-auth 1.3.9** for authentication
 - **Zod 4.1.5** for schema validation
 - **CUID2** for unique identifiers
@@ -66,7 +66,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Development Tools
 
 - **rolldown-vite** (latest) - Next-generation Vite with Rolldown bundler
-- **Biome 2.2.2** for linting and formatting
+- **Biome 2.2.4** for linting and formatting
 - **TypeScript 5.9.2** with native preview
 - **Bun** for fast package management and runtime
 
@@ -173,6 +173,7 @@ bunx prisma db seed
 - **Zod validation** for all auth forms
 - **Server-side session handling** in loaders
 - **Modular model organization** for better maintainability
+- **Centralized auth types/config** in `app/lib/auth.server.ts`
 
 ---
 
@@ -248,8 +249,11 @@ The app will be available at [http://localhost:5173](http://localhost:5173).
 ### Production Build
 
 ```bash
+# Build
 bun run build
-bun run start
+
+# Serve the production build
+bunx @react-router/serve
 ```
 
 ---
@@ -307,7 +311,7 @@ BETTER_AUTH_URL=http://localhost:5173
 
 ## Code Quality
 
-- **Biome 2.2.2** for linting and formatting
+- **Biome 2.2.4** for linting and formatting
 - **TypeScript 5.9.2** with strict configuration
 - **Consistent code style:**
   - Tab indentation
