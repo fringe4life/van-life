@@ -7,6 +7,7 @@ import { VAN_CARD_IMG_SIZES } from '~/constants/imgConstants';
 import type { VanModel } from '~/generated/prisma/models';
 import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
+import VanBadge from './VanBadge';
 
 type VanCardProps = {
 	van: VanModel;
@@ -41,7 +42,8 @@ export default function VanCard({
 				className="relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4"
 				style={{ viewTransitionName: `card-${vanId}` }}
 			>
-				<CardHeader className="@min-md/card:col-start-1 @min-md/card:row-span-2">
+				<CardHeader className="relative @min-md/card:col-start-1 @min-md/card:row-span-2">
+					<VanBadge van={van} />
 					<Image
 						className="aspect-square w-full rounded-md"
 						src={imageUrl}

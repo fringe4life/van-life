@@ -10,7 +10,6 @@ enum TransactionType {
 }
 
 enum VanState {
-  NEW       @map("new")
   IN_REPAIR @map("in_repair")
   ON_SALE   @map("on_sale")
   AVAILABLE @map("available")

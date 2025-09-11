@@ -1,16 +1,17 @@
 model Van {
-  id          String   @id @default(cuid())
-  name        String   @unique @db.VarChar(60)
-  price       Int      @db.SmallInt
-  description String   @db.VarChar(1024)
+  id          String    @id @default(cuid())
+  name        String    @unique @db.VarChar(60)
+  price       Int       @db.SmallInt
+  description String    @db.VarChar(1024)
   imageUrl    String
   type        VanType
-  state       VanState @default(NEW)
   hostId      String
-  isRented    Boolean  @default(false)
+  isRented    Boolean   @default(false)
+  createdAt   DateTime  @default(now()) @db.Date
+  state       VanState? @default(AVAILABLE)
+  discount    Int?      @default(0) @db.SmallInt
   rent        Rent[]
-  userInfo    UserInfo @relation(fields: [hostId], references: [userId])
-  createdAt   DateTime @default(now()) @db.Date
+  userInfo    UserInfo  @relation(fields: [hostId], references: [userId])
 
   @@unique([createdAt(sort: Desc), id(sort: Desc)])
   @@index([hostId])

@@ -16,6 +16,9 @@ const badgeVariants = cva(
 				outline: 'bg-orange-100  hover:bg-orange/80 ',
 				unavailable:
 					'bg-red-500 text-white disabled cursor-not-allowed hover:bg-red-500/90',
+				new: 'bg-gray-500 text-white hover:bg-gray-500/90',
+				sale: 'bg-green-500 text-white hover:bg-green-500/90',
+				repair: 'bg-yellow-500 text-black hover:bg-yellow-500/90',
 			},
 			size: {
 				default: 'px-4 py-2',

@@ -1,11 +1,9 @@
-import { clsx } from 'clsx';
 import { useQueryStates } from 'nuqs';
+import GenericComponent from '~/components/common/GenericComponent';
 import { Button } from '~/components/ui/button';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
-	DEFAULT_SORT,
-	SORT_OPTIONS,
 } from '~/constants/paginationConstants';
 import { hostPaginationParsers } from '~/lib/parsers';
 import type { SortOption } from '~/types/types';
@@ -32,6 +30,13 @@ interface SortableProps {
  * />
  * ```
  */
+const sortOptions = [
+	{ value: 'newest' as SortOption, label: 'Newest' },
+	{ value: 'oldest' as SortOption, label: 'Oldest' },
+	{ value: 'highest' as SortOption, label: 'Highest' },
+	{ value: 'lowest' as SortOption, label: 'Lowest' },
+];
+
 export default function Sortable({
 	title,
 	itemCount,
@@ -41,7 +46,7 @@ export default function Sortable({
 	const [{ sort }, setSearchParams] = useQueryStates(hostPaginationParsers);
 
 	// Derive state to check if sort filter is active (not default)
-	const hasActiveSortFilter = sort !== DEFAULT_SORT;
+	// const hasActiveSortFilter = sort !== DEFAULT_SORT;
 
 	const handleSortChange = (sortOption: SortOption) => {
 		setSearchParams({
@@ -51,18 +56,18 @@ export default function Sortable({
 		});
 	};
 
-	const handleClearFilters = () => {
-		setSearchParams({
-			sort: DEFAULT_SORT,
-			cursor: DEFAULT_CURSOR,
-			direction: DEFAULT_DIRECTION,
-		});
-	};
+	// const handleClearFilters = () => {
+	// 	setSearchParams({
+	// 		sort: DEFAULT_SORT,
+	// 		cursor: DEFAULT_CURSOR,
+	// 		direction: DEFAULT_DIRECTION,
+	// 	});
+	// };
 
 	return (
 		<div
 			className={cn(
-				'mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between',
+				'mb-6 flex max-w-dvw flex-col gap-4 sm:flex-row sm:items-center sm:justify-between',
 				className,
 			)}
 		>
@@ -70,24 +75,23 @@ export default function Sortable({
 				{title} ({itemCount})
 			</h3>
 
-			<div className="flex flex-wrap items-center gap-2">
-				{SORT_OPTIONS.map((sortOption) => (
-					<Button
-						key={sortOption}
-						variant="ghost"
-						className={cn(
-							'w-full text-center sm:w-fit sm:text-left',
-							sort === sortOption && 'bg-green-500 font-semibold text-white',
-						)}
-						onClick={() => handleSortChange(sortOption)}
-					>
-						{sortOption === 'newest' && 'Newest to Oldest'}
-						{sortOption === 'oldest' && 'Oldest to Newest'}
-						{sortOption === 'highest' && 'Highest to Lowest'}
-						{sortOption === 'lowest' && 'Lowest to Highest'}
-					</Button>
-				))}
-
+			<GenericComponent
+				className="grid grid-cols-2 items-center gap-2 overflow-x-auto sm:grid-flow-col sm:grid-cols-4 sm:gap-4"
+				Component={Button}
+				items={sortOptions}
+				renderKey={(item) => item.value}
+				renderProps={(item) => ({
+					variant: 'ghost' as const,
+					className: cn(
+						'w-full text-center sm:w-fit sm:text-left',
+						sort === item.value && 'bg-green-500 font-semibold text-white',
+					),
+					onClick: () => handleSortChange(item.value),
+					children: item.label,
+				})}
+				emptyStateMessage=""
+			/>
+			{/* 
 				<Button
 					variant="ghost"
 					className={clsx(
@@ -97,8 +101,7 @@ export default function Sortable({
 					onClick={handleClearFilters}
 				>
 					Clear filters
-				</Button>
-			</div>
+				</Button> */}
 		</div>
 	);
 }

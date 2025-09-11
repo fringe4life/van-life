@@ -5,7 +5,6 @@ import { VAN_DETAIL_IMG_SIZES } from '~/constants/imgConstants';
 import type { VanModel } from '~/generated/prisma/models';
 import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
-import { displayPrice } from '~/utils/displayPrice';
 import { cn } from '~/utils/utils';
 import CustomLink from '../navigation/CustomLink';
 import {
@@ -16,6 +15,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from '../ui/card';
+import VanBadge from './VanBadge';
+import VanPrice from './VanPrice';
 
 type VanDetailProps = {
 	van: VanModel;
@@ -23,8 +24,9 @@ type VanDetailProps = {
 };
 
 export default function VanDetail({
-	van: { imageUrl, description, type, name, price, id: vanId },
+	van: { imageUrl, description, type, name, id: vanId },
 	vanIsAvailable,
+	van,
 }: VanDetailProps) {
 	const srcSet = createResponsiveSrcSet(
 		imageUrl,
@@ -36,7 +38,8 @@ export default function VanDetail({
 	return (
 		<div className="@container/card-full contain-content">
 			<Card className="grid @min-xl/card-full:grid-cols-2 @min-xl/card-full:grid-rows-[auto_auto_1fr] @max-xl/card-full:gap-x-4 @min-xl/card-full:gap-x-4 gap-y-2">
-				<CardHeader className="@min-xl/card-full:col-span-1 @min-xl/card-full:row-span-3 row-span-1">
+				<CardHeader className="relative @min-xl/card-full:col-span-1 @min-xl/card-full:row-span-3 row-span-1">
+					<VanBadge van={van} />
 					<Image
 						className="aspect-square rounded-md"
 						src={imageUrl}
@@ -81,9 +84,9 @@ export default function VanDetail({
 						>
 							{type}
 						</Badge>
-						<p className="@min-xl/card-full:m-0 @min-xl/card-full:text-xl">
-							{displayPrice(price)}/per day
-						</p>
+						<div className="@min-xl/card-full:m-0 @min-xl/card-full:text-xl">
+							<VanPrice van={van} />
+						</div>
 					</div>
 
 					{/* Third row: Description */}

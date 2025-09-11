@@ -25,11 +25,13 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - 🚀 **Modern React Router 7** with server-side rendering and file-based routing
 - 🔒 **Authentication** with better-auth (sign up, login, session management)
-- 🚌 **Van Management** (CRUD operations, van types, image handling)
+- 🚌 **Van Management** (CRUD operations, van types, image handling, state management)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals with analytics)
 - 📈 **Host Dashboard** (income tracking, bar charts, rental analytics)
 - 💰 **Financial Management** (deposit/withdraw funds, transaction tracking)
+- 🏷️ **Van State System** (NEW, IN_REPAIR, ON_SALE, AVAILABLE with discount pricing)
+- 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
 - 🎨 **Modern UI/UX** with responsive design and smooth animations
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **Zod** for runtime schema validation
@@ -142,7 +144,7 @@ prisma/
 - **Config via prisma.config.ts** (schema folder + seed command)
 - **Main models:**
   - `User`, `Session`, `Account`, `Verification` - Authentication system
-  - `Van` - Van listings with types (SIMPLE, LUXURY, RUGGED)
+  - `Van` - Van listings with types (SIMPLE, LUXURY, RUGGED) and states (NEW, IN_REPAIR, ON_SALE, AVAILABLE)
   - `Rent` - Rental transactions and history
   - `Review` - User reviews and ratings
   - `UserInfo` - Extended user profile information
@@ -153,7 +155,9 @@ prisma/
   - CUID2 for unique identifiers
   - Proper indexing and constraints
   - Modular seed data organization with separate files for each model
-  - Enhanced seed data with varied van names and descriptions
+  - Enhanced seed data with varied van names, descriptions, and state management
+  - Van state system with NEW (client-derived), IN_REPAIR, ON_SALE, AVAILABLE states
+  - Discount pricing for ON_SALE vans with random discount percentages
   - Native JavaScript database drivers for better edge/serverless compatibility
 
 ### Setup Database
@@ -256,6 +260,48 @@ export const loadSearchParams = createLoader(paginationParsers);
 const [{ cursor, limit, direction, type }, setSearchParams] =
   useQueryStates(paginationParsers);
 ```
+
+---
+
+## Van State System & Dynamic Pricing
+
+The application features a comprehensive **van state management system** with dynamic pricing:
+
+### Van States
+
+- **NEW** - Client-derived state for vans created within the last 6 months
+- **IN_REPAIR** - Vans currently under maintenance (not rentable)
+- **ON_SALE** - Vans with discount pricing applied
+- **AVAILABLE** - Standard rentable vans
+
+### Dynamic Pricing Features
+
+- **Discount System** - ON_SALE vans can have 5-100% discounts
+- **Price Display** - Original price with strikethrough, discounted price highlighted
+- **VanPrice Component** - Reusable component for consistent pricing display
+- **Smart Badges** - VanBadge component shows relevant state information
+- **Client-side Derivation** - NEW state computed from createdAt timestamp
+
+### Implementation
+
+```typescript
+// Van state with optional discount
+model Van {
+  state       VanState? @default(AVAILABLE)
+  discount    Int?      @default(0) @db.SmallInt
+  // ... other fields
+}
+
+// Dynamic pricing component
+<VanPrice van={{ price, discount, state }} />
+```
+
+### Benefits
+
+- **Flexible pricing** - Easy to manage sales and promotions
+- **State consistency** - Prevents renting of unavailable vans
+- **User experience** - Clear visual indicators for van status
+- **Maintainable** - Centralized pricing logic in reusable components
 
 ---
 

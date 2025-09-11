@@ -1,6 +1,6 @@
 import { z } from 'zod/v4';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
-import { TransactionType, VanType } from '~/generated/prisma/enums';
+import { TransactionType, VanState, VanType } from '~/generated/prisma/enums';
 
 /**
  * Schema for validating user passwords.
@@ -43,10 +43,11 @@ export const signUpScheme = loginSchema
  * Zod enum schema for van types, allowing a default filter value.
  */
 const vanTypeSchema = z.enum(Object.values(VanType));
+const vanStateSchema = z.enum(Object.values(VanState));
 
 /**
  * Schema for adding a new van.
- * - Validates name, description, type, imageUrl, and price fields.
+ * - Validates name, description, type, imageUrl, price, and optional state.
  */
 export const addVanSchema = z.object({
 	name: z
@@ -76,6 +77,20 @@ export const addVanSchema = z.object({
 			error: 'Your van cannot be more expensive then $32,767 dollars',
 		})
 		.describe('Van price (max $32,767)'),
+	discount: z.coerce
+		.number()
+		.min(0)
+		.max(100)
+		.optional()
+		.transform((v) => v ?? 0)
+		.describe('Optional discount percentage (0-100), defaults to 0'),
+	state: z
+		.string()
+		.optional()
+		.transform((v) => (v ? v.toUpperCase() : undefined))
+		.pipe(vanStateSchema.optional())
+		.transform((v) => v ?? 'AVAILABLE')
+		.describe('Van state (enum, defaults to AVAILABLE)'),
 });
 
 /**

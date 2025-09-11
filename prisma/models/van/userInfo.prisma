@@ -4,9 +4,9 @@ model UserInfo {
   rented       Rent[]        @relation("host")
   renter       Rent[]        @relation("renter")
   review       Review[]
+  transactions Transaction[]
   user         User          @relation(fields: [userId], references: [id])
   vans         Van[]
-  transactions Transaction[]
 
   @@index([userId])
 }

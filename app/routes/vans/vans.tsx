@@ -6,6 +6,7 @@ import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import VanCard from '~/components/van/VanCard';
 import VanPages from '~/components/van/VanPages';
+import VanPrice from '~/components/van/VanPrice';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
@@ -94,11 +95,8 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 				van,
 				filter: type,
 				action: (
-					<p className="text-right text-lg">
-						${van.price}
-						<span className="@max-md/card:inline @md/card:text-right text-base">
-							/day
-						</span>
+					<p className="justify-self-end text-right">
+						<VanPrice van={van} />
 					</p>
 				),
 				link:

@@ -85,18 +85,18 @@ async function clearTables() {
 	}
 }
 
-// Determine VanState based on createdAt; NEW if < 6 months from now, else random of other states
-function getVanState(createdAt: Date): VanState {
-	const now = new Date();
-	const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate());
-	if (createdAt > sixMonthsAgo) return 'NEW' as VanState;
-	const otherStates: VanState[] = ['IN_REPAIR', 'ON_SALE', 'AVAILABLE'];
-	return otherStates[Math.floor(Math.random() * otherStates.length)];
+// Baseline VanState (do not derive NEW here)
+function getVanState(): VanState {
+	const states: VanState[] = ['IN_REPAIR', 'ON_SALE', 'AVAILABLE'];
+	return states[Math.floor(Math.random() * states.length)];
 }
 
-// Rental guard: vans in IN_REPAIR cannot be rented
-function isVanRentable(state: VanState): boolean {
+function isVanRentable(state: VanState | null): boolean {
 	return state !== 'IN_REPAIR';
+}
+
+function getRandomDiscount(min = 5, max = 100): number {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 export {
@@ -113,4 +113,5 @@ export {
 	getVanState,
 	isVanRentable,
 	getRecentDate,
+	getRandomDiscount,
 };

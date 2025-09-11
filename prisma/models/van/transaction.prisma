@@ -1,8 +1,8 @@
 model Transaction {
-    id        String          @id @default(cuid())
-    createdAt DateTime        @default(now())
-    type      TransactionType
-    amount    Float
-    userId    String
-    userInfo  UserInfo        @relation(fields: [userId], references: [userId])
+  id        String          @id @default(cuid())
+  createdAt DateTime        @default(now())
+  type      TransactionType
+  amount    Float
+  userId    String
+  userInfo  UserInfo        @relation(fields: [userId], references: [userId])
 }
