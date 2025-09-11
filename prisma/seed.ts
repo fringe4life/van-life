@@ -6,6 +6,8 @@ import {
 	getEndDate,
 	getRandomId,
 	randomTrueOrFalse,
+	getVanState,
+	isVanRentable,
 } from './seedFns';
 import { rents, reviews, vans, transactions } from './seed-data';
 
@@ -18,6 +20,7 @@ const main = async () => {
 	const vansWithHosts = vans.map((van) => ({
 		...van,
 		hostId: getRandomId(data),
+		state: getVanState(van.createdAt as Date),
 	}));
 
 	await prisma.van.createMany({
@@ -36,7 +39,23 @@ const main = async () => {
 			vanId = getRandomId(vanIds);
 		}
 		// biome-ignore lint/style/noNonNullAssertion: guaranteed to be found
-		const van = vanIds.find((van) => van.id === vanId)!;
+		let van = vanIds.find((van) => van.id === vanId)!;
+		if (!isVanRentable(van.state as unknown as 'NEW' | 'IN_REPAIR' | 'ON_SALE' | 'AVAILABLE')) {
+			let candidateId = getRandomId(vanIds);
+			let safety = 0;
+			while (
+				((vanIds.find((v) => v.id === candidateId)!
+					.state as unknown as 'NEW' | 'IN_REPAIR' | 'ON_SALE' | 'AVAILABLE') === 'IN_REPAIR' ||
+					vansRented.includes(candidateId)) &&
+				safety < 100
+			) {
+				candidateId = getRandomId(vanIds);
+				safety++;
+			}
+			vanId = candidateId;
+			// biome-ignore lint/style/noNonNullAssertion: guaranteed to be found
+			van = vanIds.find((v) => v.id === vanId)!;
+		}
 		const rentedTo = randomTrueOrFalse() ? getEndDate(rent.rentedAt as Date) : null;
 		const amount = rentedTo ? getCost(rent.rentedAt as Date, rentedTo, van.price) : 0;
 		if (!rentedTo) {

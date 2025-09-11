@@ -1,6 +1,7 @@
-import type { Prisma } from '@prisma/client';
 
-export const transactions: Omit<Prisma.TransactionCreateInput, 'userInfo'>[] = [
+import type { TransactionCreateInput } from '~/generated/prisma/models/Transaction';
+
+export const transactions: Omit<TransactionCreateInput, 'userInfo'>[] = [
 	{
 		type: 'DEPOSIT',
 		amount: 2500.00,

@@ -1,6 +1,6 @@
-import type { Prisma } from '@prisma/client';
+import type { ReviewCreateInput } from '~/generated/prisma/models/Review';
 
-export const reviews: Omit< Prisma.ReviewCreateInput, 'user' | 'rent'>[] = [
+export const reviews: Omit<ReviewCreateInput, 'user' | 'rent'>[] = [
 	{
 		rating: 1,
 		text: 'The van was not a good experience. It was not roadworthy',

@@ -1,6 +1,6 @@
-import type { Prisma } from '@prisma/client';
+import type { RentCreateInput } from '~/generated/prisma/models/Rent';
 
-export const rents: Omit<Prisma.RentCreateInput, 'host' | 'renter' | 'van'>[] = [
+export const rents: Omit<RentCreateInput, 'host' | 'renter' | 'van'>[] = [
 	{
 		amount: 8000,
 		rentedAt: new Date('2024-12-16T00:00:00Z'),

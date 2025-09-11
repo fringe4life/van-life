@@ -3,8 +3,9 @@ model Van {
   name        String   @unique @db.VarChar(60)
   price       Int      @db.SmallInt
   description String   @db.VarChar(1024)
-  imageUrl    String  
+  imageUrl    String
   type        VanType
+  state       VanState @default(NEW)
   hostId      String
   isRented    Boolean  @default(false)
   rent        Rent[]
@@ -14,6 +15,7 @@ model Van {
   @@unique([createdAt(sort: Desc), id(sort: Desc)])
   @@index([hostId])
   @@index([type])
+  @@index([state])
   @@index([id(sort: Desc), hostId])
   @@index([isRented])
   @@index([type(sort: Desc), id(sort: Desc)])

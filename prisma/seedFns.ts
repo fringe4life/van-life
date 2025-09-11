@@ -47,6 +47,7 @@ function generateUniqueIds<T extends { id: string }>(
 }
 
 import { prisma } from '~/lib/prisma.server';
+import type { VanState } from '~/generated/prisma/enums';
 
 function getRandomTransactionType(): 'DEPOSIT' | 'WITHDRAW' {
 	return Math.random() > 0.5 ? 'DEPOSIT' : 'WITHDRAW';
@@ -63,6 +64,16 @@ function getRandomTransactionDate(startDate = new Date('2024-01-01'), endDate = 
 	return new Date(randomTime);
 }
 
+// Returns a random Date between now - `monthsBack` and now (defaults to 1 month)
+function getRecentDate(monthsBack = 1): Date {
+	const now = new Date();
+	const start = new Date(now.getFullYear(), now.getMonth() - monthsBack, now.getDate());
+	const startMs = start.getTime();
+	const endMs = now.getTime();
+	const randomTime = startMs + Math.random() * (endMs - startMs);
+	return new Date(randomTime);
+}
+
 async function clearTables() {
 	try {
 		await prisma.transaction.deleteMany();
@@ -72,6 +83,20 @@ async function clearTables() {
 	} catch (error) {
 		console.error(error);
 	}
+}
+
+// Determine VanState based on createdAt; NEW if < 6 months from now, else random of other states
+function getVanState(createdAt: Date): VanState {
+	const now = new Date();
+	const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate());
+	if (createdAt > sixMonthsAgo) return 'NEW' as VanState;
+	const otherStates: VanState[] = ['IN_REPAIR', 'ON_SALE', 'AVAILABLE'];
+	return otherStates[Math.floor(Math.random() * otherStates.length)];
+}
+
+// Rental guard: vans in IN_REPAIR cannot be rented
+function isVanRentable(state: VanState): boolean {
+	return state !== 'IN_REPAIR';
 }
 
 export {
@@ -85,4 +110,7 @@ export {
 	getRandomTransactionType,
 	getRandomAmount,
 	getRandomTransactionDate,
+	getVanState,
+	isVanRentable,
+	getRecentDate,
 };
