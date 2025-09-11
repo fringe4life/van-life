@@ -2,10 +2,6 @@
 	"name": "van-life",
 	"private": true,
 	"type": "module",
-	"prisma": {
-		"schema": "./prisma",
-		"seed": "tsx prisma/seed.ts"
-	},
 	"scripts": {
 		"build": "react-router build",
 		"dev": " react-router dev",
