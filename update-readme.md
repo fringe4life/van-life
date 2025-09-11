@@ -4,7 +4,7 @@ Provide ONLY this file in future sessions to have the AI re-scan and update `REA
 
 ## What the AI will do
 
-- Re-scan these sources: `package.json`, `vite.config.ts`, `react-router.config.ts`, `prisma/schema.prisma`, `prisma/seed.ts`, `app/lib/env.server.ts`, `app/lib/prisma.server.ts`, `app/routes/**/*.tsx`, `app/components/**/*.tsx`.
+- Re-scan these sources: `package.json`, `prisma.config.ts`, `vite.config.ts`, `react-router.config.ts`, `prisma/schema.prisma`, `prisma/seed.ts`, `app/lib/env.server.ts`, `app/lib/prisma.server.ts`, `app/routes/**/*.tsx`, `app/components/**/*.tsx`.
 - Update sections in `README.md`:
   - Prerequisites and Getting Started
   - Environment variables block (keep in sync with any `.env` files and `app/lib/env.server.ts`)
@@ -17,6 +17,7 @@ Provide ONLY this file in future sessions to have the AI re-scan and update `REA
 ## Rules
 
 - Use Bun commands where possible; prefer `bunx prisma` for CLI tasks.
+- If `prisma.config.ts` exists, reflect its usage (schema path, seed) and note that the deprecated `package.json#prisma` block has been removed.
 - Reflect the CSS and linting standards from `biome.json` and Tailwind v4.
 - Mention `nuqs` for type-safe search params via Context7.
 - Mention centralized auth types in `app/lib/auth.server.ts`.

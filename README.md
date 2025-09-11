@@ -139,6 +139,7 @@ prisma/
 
 - **Neon PostgreSQL** with Prisma ORM (Rust-free client)
 - **Modular schema** with organized model files in subdirectories
+- **Config via prisma.config.ts** (schema folder + seed command)
 - **Main models:**
   - `User`, `Session`, `Account`, `Verification` - Authentication system
   - `Van` - Van listings with types (SIMPLE, LUXURY, RUGGED)
@@ -167,6 +168,27 @@ bunx prisma db push
 # Seed with enhanced data
 bunx prisma db seed
 ```
+
+### Prisma Configuration
+
+This project uses `prisma.config.ts` for Prisma CLI configuration (GA in Prisma 6.x):
+
+```
+import 'dotenv/config';
+import { defineConfig } from 'prisma/config';
+
+export default defineConfig({
+	schema: 'prisma',
+	migrations: {
+		seed: 'tsx prisma/seed.ts',
+	},
+});
+```
+
+Notes:
+
+- The deprecated `package.json#prisma` block has been removed.
+- Environment variables load via `dotenv/config` in `prisma.config.ts`.
 
 ### Prisma Client Migration
 
