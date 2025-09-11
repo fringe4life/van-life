@@ -46,7 +46,7 @@
 		"tw-animate-css": "^1.3.8",
 		"utf-8-validate": "^6.0.5",
 		"ws": "^8.18.3",
-		"zod": "^4.1.7"
+		"zod": "^4.1.8"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.2.4",
