@@ -12,6 +12,7 @@ Provide ONLY this file in future sessions to have the AI re-scan and update `REA
   - Available scripts from `package.json`
   - Tech stack and configuration notes (React Router 7, Vite, React Compiler, Neon, better-auth)
   - Project structure overview
+  - **Badge version numbers** (sync with package.json versions)
 - Keep wording concise, match existing style, do not over-explain.
 
 ## Rules
@@ -21,6 +22,15 @@ Provide ONLY this file in future sessions to have the AI re-scan and update `REA
 - Reflect the CSS and linting standards from `biome.jsonc` (with Ultracite integration) and Tailwind v4.
 - Mention `nuqs` for type-safe search params via Context7.
 - Mention centralized auth types in `app/lib/auth.server.ts`.
+- **Badge version sync**: Always check `package.json` for current versions and update README badges accordingly:
+  - React Router: `react-router` version
+  - TypeScript: `typescript` version
+  - TailwindCSS: `tailwindcss` version
+  - Prisma: `prisma` version
+  - Better Auth: `better-auth` version
+  - nuqs: `nuqs` version
+  - Biome: `@biomejs/biome` version
+  - React: `react` version
 - Preserve existing README headings and tone, only patch relevant sections.
 - Do not change license wording.
 
@@ -29,7 +39,7 @@ Provide ONLY this file in future sessions to have the AI re-scan and update `REA
 Copy this into the chat with this file attached:
 
 ```
-Please update README.md based on the codebase. Keep sections accurate and concise, sync env vars with any .env files and app/lib/env.server.ts, prefer Bun commands (bunx prisma ...), include Neon adapter and better-auth notes, and ensure scripts from package.json are reflected. Keep headings and tone.
+Please update README.md based on the codebase. Keep sections accurate and concise, sync env vars with any .env files and app/lib/env.server.ts, prefer Bun commands (bunx prisma ...), include Neon adapter and better-auth notes, ensure scripts from package.json are reflected, and sync badge version numbers with package.json. Keep headings and tone.
 ```
 
 ## Post-update
