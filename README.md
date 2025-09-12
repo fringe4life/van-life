@@ -1,6 +1,14 @@
 # Van Life
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
+[![React Router](https://img.shields.io/badge/React%20Router-7.8.2-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.13-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-6.16.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.9-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.6.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![Biome](https://img.shields.io/badge/Biome-2.2.2-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Bun](https://img.shields.io/badge/Bun-1.1.0-000000?logo=bun&logoColor=white)](https://bun.sh/)
 
 A modern full-stack van rental platform built with React Router 7, showcasing advanced web development techniques including server-side rendering, authentication, and responsive design.
 

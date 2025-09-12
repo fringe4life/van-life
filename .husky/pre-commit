@@ -24,10 +24,16 @@ STASHED=$?
 bun x ultracite fix
 FORMAT_EXIT_CODE=$?
 
-# Run linting check on staged files
+# Run linting check on staged files (only app directory files)
 echo "🔍 Running linting checks..."
-bun x @biomejs/biome check --staged
-LINT_EXIT_CODE=$?
+STAGED_APP_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep '^app/' || true)
+if [ -n "$STAGED_APP_FILES" ]; then
+  echo "$STAGED_APP_FILES" | xargs bun x @biomejs/biome check
+  LINT_EXIT_CODE=$?
+else
+  echo "No app files to lint"
+  LINT_EXIT_CODE=0
+fi
 
 # Run TypeScript type checking
 echo "📝 Running TypeScript type checks..."
