@@ -74,7 +74,7 @@ export default function VanDetail({
 					</div>
 
 					{/* Second row: Badge and Price */}
-					<div className="@min-xl/card-full:row-start-2 flex items-center @min-xl/card-full:justify-between gap-4">
+					<div className="@min-xl/card-full:row-start-2 flex items-center justify-between gap-4">
 						<Badge
 							className="@min-xl/card-full:m-0"
 							size="small"

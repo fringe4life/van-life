@@ -19,6 +19,7 @@ import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/searchParams.server';
 import type { QueryType } from '~/types/types.server';
 import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
+import { buildVanSearchParams } from '~/utils/buildSearchParams';
 import { cn } from '~/utils/utils';
 import type { Route } from './+types/vans';
 
@@ -154,9 +155,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 				),
 				link:
 					href('/vans/:vanId', { vanId: van.id }) +
-					(type
-						? `?cursor=${cursor}&limit=${limit}&type=${type}`
-						: `?cursor=${cursor}&limit=${limit}`),
+					buildVanSearchParams({ cursor, limit, type }),
 			})}
 			searchParams={{ cursor, limit, type }}
 			title="Explore our van options"

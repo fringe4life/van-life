@@ -6,6 +6,7 @@ import VanDetails from '~/components/van/VanDetail';
 import { getVan } from '~/db/van/crud';
 import { paginationParsers } from '~/lib/parsers';
 import { tryCatch } from '~/lib/tryCatch.server';
+import { buildVanSearchParams } from '~/utils/buildSearchParams';
 import type { Route } from './+types/van';
 
 export function meta({ loaderData }: Route.MetaArgs) {
@@ -57,9 +58,7 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 	const vanIsAvailable = !van.isRented;
 
 	// Build the back link with search parameters
-	const backLinkSearch = type
-		? `?cursor=${cursor}&limit=${limit}&type=${type}`
-		: `?cursor=${cursor}&limit=${limit}`;
+	const backLinkSearch = buildVanSearchParams({ cursor, limit, type });
 
 	return (
 		<PendingUI className="grid grid-rows-[auto_1fr]">
