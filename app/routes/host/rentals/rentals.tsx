@@ -81,7 +81,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				van: van.van,
 				linkCoversCard: false,
 				action: (
-					<div className="justify-self-end">
+					<div className="justify-self-end text-right">
 						<CustomLink
 							state={{
 								van,

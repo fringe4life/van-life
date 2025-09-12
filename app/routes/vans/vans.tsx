@@ -148,7 +148,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 				van,
 				filter: type,
 				action: (
-					<div className="justify-self-end text-right">
+					<div className="grid justify-end text-right">
 						<VanPrice van={van} />
 					</div>
 				),
