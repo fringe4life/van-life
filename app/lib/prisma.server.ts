@@ -5,18 +5,43 @@ import ws from 'ws';
 import { PrismaClient } from '~/generated/prisma/client';
 import { env } from './env.server';
 
-// Only configure WebSocket constructor in production
+// Configure Neon for optimal performance
 neonConfig.webSocketConstructor = ws;
-// Enable fetch-based queries for better reliability in edge environments
 neonConfig.poolQueryViaFetch = true;
+neonConfig.pipelineConnect = false; // Disabled because using SSL authentication
+neonConfig.coalesceWrites = true; // Reduce network overhead
 
 declare global {
 	var prisma: PrismaClient | undefined;
+	var neonAdapter: PrismaNeon | undefined;
 }
 
-const adapter = new PrismaNeon({ connectionString: env.DATABASE_URL });
+// Create a singleton adapter with connection pooling
+const createAdapter = () => {
+	if (global.neonAdapter) {
+		return global.neonAdapter;
+	}
 
-const db = global.prisma || new PrismaClient({ adapter });
+	global.neonAdapter = new PrismaNeon({
+		connectionString: env.DATABASE_URL,
+	});
+
+	return global.neonAdapter;
+};
+
+const adapter = createAdapter();
+
+const db =
+	global.prisma ||
+	new PrismaClient({
+		adapter,
+		// Additional Prisma optimizations
+		log:
+			process.env.NODE_ENV === 'development'
+				? ['query', 'error', 'warn']
+				: ['error'],
+	});
+
 if (process.env.NODE_ENV === 'development') {
 	global.prisma = db;
 }

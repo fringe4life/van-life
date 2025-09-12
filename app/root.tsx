@@ -11,6 +11,11 @@ import type { Route } from './+types/root';
 import { HTTP_MESSAGES, HTTP_STATUS } from './constants/httpConstants';
 import './app.css';
 
+// Import keep-alive utility for production
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+	import('./lib/keepAlive.client');
+}
+
 export const links: Route.LinksFunction = () => [
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
 	{
