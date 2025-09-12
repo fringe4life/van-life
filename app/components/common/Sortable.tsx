@@ -84,7 +84,7 @@ export default function Sortable({
 				renderProps={(item) => ({
 					variant: 'ghost' as const,
 					className: cn(
-						'w-full text-center sm:w-fit sm:text-left',
+						'w-full cursor-pointer text-center sm:w-fit sm:text-left',
 						sort === item.value && 'bg-green-500 font-semibold text-white'
 					),
 					onClick: () => handleSortChange(item.value),

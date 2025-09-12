@@ -1,7 +1,16 @@
-import { Menu, SidebarClose } from 'lucide-react';
+import {
+	Info,
+	LogIn,
+	LogOut,
+	Menu,
+	SidebarClose,
+	Truck,
+	User,
+} from 'lucide-react';
 import {
 	type ComponentProps,
 	type MouseEventHandler,
+	type ReactElement,
 	useEffect,
 	useRef,
 	useState,
@@ -21,7 +30,7 @@ type NavProps = {
 const linkClassName: NonNullable<
 	ComponentProps<typeof CustomLink>['className']
 > =
-	'transition-colors duration-250 px-2 py-1 rounded hover:bg-orange-400 hover:text-white';
+	'flex items-center gap-2 transition-colors duration-250 px-2 py-1 rounded hover:bg-orange-400 hover:text-white';
 
 type NavLinkLikeProps = ComponentProps<typeof CustomNavLink>;
 type LinkLikeProps = ComponentProps<typeof CustomLink>;
@@ -29,14 +38,14 @@ type NavItemType =
 	| {
 			Component: typeof CustomNavLink;
 			props: NavLinkLikeProps;
-			children: string;
+			children: ReactElement;
 			key: string;
 			show: boolean;
 	  }
 	| {
 			Component: typeof CustomLink;
 			props: LinkLikeProps;
-			children: string;
+			children: ReactElement;
 			key: string;
 			show: boolean;
 	  };
@@ -104,35 +113,60 @@ export default function Nav({ hasToken }: NavProps) {
 		{
 			Component: CustomNavLink,
 			props: { to: href('/about'), className: navLinkClassName },
-			children: 'About',
+			children: (
+				<>
+					<Info className="aspect-square w-10" />
+					<span>About</span>
+				</>
+			),
 			key: 'about',
 			show: true,
 		},
 		{
 			Component: CustomNavLink,
 			props: { to: href('/host'), className: navLinkClassName },
-			children: 'Host',
+			children: (
+				<>
+					<User className="aspect-square w-10" />
+					<span>Host</span>
+				</>
+			),
 			key: 'host',
 			show: hasToken,
 		},
 		{
 			Component: CustomNavLink,
 			props: { to: href('/vans'), className: navLinkClassName },
-			children: 'Vans',
+			children: (
+				<>
+					<Truck className="aspect-square w-10" />
+					<span>Vans</span>
+				</>
+			),
 			key: 'vans',
 			show: true,
 		},
 		{
 			Component: CustomNavLink,
 			props: { to: href('/login'), className: navLinkClassName },
-			children: 'Login',
+			children: (
+				<>
+					<LogIn className="aspect-square w-10" />
+					<span>Login</span>
+				</>
+			),
 			key: 'login',
 			show: !hasToken,
 		},
 		{
 			Component: CustomLink,
 			props: { to: href('/signout'), className: linkClassName },
-			children: 'Sign out',
+			children: (
+				<>
+					<LogOut className="aspect-square w-10" />
+					<span>Sign out</span>
+				</>
+			),
 			key: 'signout',
 			show: !!hasToken,
 		},
@@ -173,7 +207,7 @@ export default function Nav({ hasToken }: NavProps) {
 			{/* Hamburger button: only visible below md */}
 			<Button
 				aria-label="Open menu"
-				className="cursor-pointer md:hidden"
+				className="cursor-pointer text-orange-200 md:hidden"
 				onClick={handleClick}
 			>
 				<Menu />
@@ -208,7 +242,7 @@ export default function Nav({ hasToken }: NavProps) {
 					/>
 					{/* Sidebar with slide-in and slide-out animation */}
 					<nav
-						className={`mobile-sidebar fixed top-0 right-0 bottom-0 z-50 flex w-64 flex-col bg-orange-50 p-6 md:hidden ${isAnimatingOut ? 'out' : ''}`}
+						className={`mobile-sidebar fixed top-0 right-0 bottom-0 z-50 flex w-4/5 flex-col bg-orange-50 p-6 md:hidden ${isAnimatingOut ? 'out' : ''}`}
 					>
 						<Button
 							aria-label="Close menu"
@@ -220,7 +254,7 @@ export default function Nav({ hasToken }: NavProps) {
 						<GenericComponent<NavItemType, ComponentProps<typeof NavItem>, 'ul'>
 							as="ul"
 							Component={NavItem}
-							className="flex flex-col gap-4"
+							className="flex h-full flex-col justify-center gap-4 text-2xl"
 							emptyStateMessage="No nav items"
 							items={mobileNavItems}
 							renderKey={(item) => item.key}

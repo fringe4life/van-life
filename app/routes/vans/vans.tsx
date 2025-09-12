@@ -109,7 +109,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 										badgeVariants({
 											variant: t === type ? t : 'outline',
 										}),
-										'w-full uppercase sm:w-fit'
+										'w-full cursor-pointer uppercase sm:w-fit'
 									)}
 									onClick={() => {
 										setSearchParams({
@@ -128,7 +128,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 					}
 					<Button
 						className={clsx(
-							'w-full text-center sm:w-fit sm:text-left',
+							'w-full cursor-pointer text-center sm:w-fit sm:text-left',
 							hasActiveTypeFilter && 'underline'
 						)}
 						onClick={() => {
