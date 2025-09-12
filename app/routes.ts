@@ -21,6 +21,7 @@ export default [
 			...prefix('host', [
 				index('./routes/host/host.tsx'),
 				route('income', './routes/host/income.tsx'),
+				route('transfers', './routes/host/transfers.tsx'),
 				route('review', './routes/host/reviews.tsx'),
 				route('add', './routes/host/addVan.tsx'),
 				route('money', './routes/host/money.tsx'),

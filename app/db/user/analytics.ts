@@ -15,7 +15,7 @@ export async function getAccountSummary(userId: string) {
 	return result?.moneyAdded ?? 0;
 }
 
-export function getHostTransactions(
+export async function getHostTransactions(
 	userId: string,
 	sort: SortOption = 'newest'
 ) {
@@ -29,7 +29,7 @@ export function getHostTransactions(
 		valueField: 'amount',
 	});
 
-	return prisma.rent.findMany({
+	return await prisma.rent.findMany({
 		where: {
 			hostId: userId,
 			amount: {
@@ -40,6 +40,34 @@ export function getHostTransactions(
 			amount: true,
 			rentedAt: true,
 			id: true,
+		},
+		orderBy,
+	});
+}
+
+export async function getUserTransactions(
+	userId: string,
+	sort: SortOption = 'newest'
+) {
+	if (!isCUID(userId)) {
+		return INVALID_ID_ERROR;
+	}
+
+	// Create orderBy clause using generic sorting utility
+	const orderBy = createGenericOrderBy(sort, {
+		dateField: 'createdAt',
+		valueField: 'amount',
+	});
+
+	return await prisma.transaction.findMany({
+		where: {
+			userId,
+		},
+		select: {
+			id: true,
+			amount: true,
+			type: true,
+			createdAt: true,
 		},
 		orderBy,
 	});

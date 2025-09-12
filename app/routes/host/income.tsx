@@ -7,6 +7,8 @@ import { getHostTransactions } from '~/db/user/analytics';
 import { calculateTotalIncome, getElapsedTime } from '~/lib/getElapsedTime';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { loadHostSearchParams } from '~/lib/searchParams.server';
+import { tryCatch } from '~/lib/tryCatch.server';
+import type { QueryType } from '~/types/types.server';
 import { displayPrice } from '~/utils/displayPrice';
 import type { Route } from './+types/income';
 
@@ -30,13 +32,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 	// Parse search parameters for sorting
 	const { sort } = loadHostSearchParams(request);
 
-	const hostIncomes = await getHostTransactions(session.user.id, sort);
+	const result = await tryCatch(() =>
+		getHostTransactions(session.user.id, sort)
+	);
 
 	return data(
 		{
-			hostIncomes: hostIncomes as Awaited<
-				ReturnType<typeof getHostTransactions>
-			>,
+			hostIncomes: result.data as QueryType<typeof getHostTransactions>,
 		},
 		{
 			headers: {

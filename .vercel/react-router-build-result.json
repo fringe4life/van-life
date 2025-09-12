@@ -20,6 +20,7 @@
       "routes/auth/signOut": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/host": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/income": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/host/transfers": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/reviews": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/addVan": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/money": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
@@ -117,6 +118,13 @@
         "parentId": "routes/layout/hostLayout",
         "file": "app/routes/host/income.tsx",
         "path": "host/income",
+        "config": {}
+      },
+      "routes/host/transfers": {
+        "id": "routes/host/transfers",
+        "parentId": "routes/layout/hostLayout",
+        "file": "app/routes/host/transfers.tsx",
+        "path": "host/transfers",
         "config": {}
       },
       "routes/host/reviews": {
@@ -297,6 +305,12 @@
         "file": "./routes/host/income.tsx",
         "path": "host/income"
       },
+      "routes/host/transfers": {
+        "id": "routes/host/transfers",
+        "parentId": "routes/layout/hostLayout",
+        "file": "./routes/host/transfers.tsx",
+        "path": "host/transfers"
+      },
       "routes/host/reviews": {
         "id": "routes/host/reviews",
         "parentId": "routes/layout/hostLayout",
@@ -434,6 +448,10 @@
                   {
                     "file": "./routes/host/income.tsx",
                     "path": "host/income"
+                  },
+                  {
+                    "file": "./routes/host/transfers.tsx",
+                    "path": "host/transfers"
                   },
                   {
                     "file": "./routes/host/reviews.tsx",

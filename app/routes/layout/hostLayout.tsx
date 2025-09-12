@@ -1,4 +1,5 @@
 import {
+	ArrowRightLeft,
 	BanknoteArrowUp,
 	Car,
 	KeySquare,
@@ -37,6 +38,16 @@ const hostNavItems = [
 			<>
 				<Wallet className="aspect-square w-10" />
 				<span>Income</span>
+			</>
+		),
+	},
+	{
+		to: href('/host/transfers'),
+		title: 'Transfers',
+		children: (
+			<>
+				<ArrowRightLeft className="aspect-square w-10" />
+				<span>Transfers</span>
 			</>
 		),
 	},
