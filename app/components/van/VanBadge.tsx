@@ -4,6 +4,7 @@ import { SIX_MONTHS } from '~/constants/timeConstants';
 import type { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
 import { formatEnumLabel } from '~/utils/formatEnum';
+import { validateVanState } from '~/utils/validators';
 
 type Props = { van: VanModel };
 
@@ -45,7 +46,7 @@ export default function VanBadge({ van }: Props) {
 	}
 
 	const variant = computeBadgeVariant(
-		van.state as VanState,
+		validateVanState(van.state),
 		van.type,
 		van.createdAt
 	);

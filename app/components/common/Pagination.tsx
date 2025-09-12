@@ -4,6 +4,7 @@ import { Button, buttonVariants } from '~/components/ui/button';
 import { DEFAULT_DIRECTION, LIMITS } from '~/constants/paginationConstants';
 import { paginationParsers } from '~/lib/parsers';
 import { cn } from '~/utils/utils';
+import { validateLimit } from '~/utils/validators';
 
 type PaginationProps<T = unknown> = {
 	items: T[];
@@ -33,7 +34,7 @@ export default function Pagination<T extends { id: string }>({
 	const handleLimitChange = (newLimit: string) => {
 		// Keep cursor unchanged when changing limit - cursor represents position in dataset
 		setSearchParams({
-			limit: Number(newLimit) as (typeof LIMITS)[number],
+			limit: validateLimit(Number(newLimit)),
 		});
 	};
 

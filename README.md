@@ -152,8 +152,8 @@ prisma/
   - `UserInfo` - Extended user profile information
   - `Transaction` - Financial transactions (deposits/withdrawals)
 - **Advanced features:**
-  - **Rust-free Prisma Client** with `queryCompiler` and `driverAdapters`
-  - Relation joins for optimized queries
+  - **Rust-free Prisma Client** with `queryCompiler` and `driverAdapters` (now GA)
+  - **Relation joins** for optimized queries (preview feature)
   - CUID2 for unique identifiers
   - Proper indexing and constraints
   - Modular seed data organization with separate files for each model
@@ -165,7 +165,7 @@ prisma/
 ### Setup Database
 
 ```bash
-# Generate Prisma client (Rust-free with queryCompiler)
+# Generate Prisma client (Rust-free with relationJoins)
 bunx prisma generate
 
 # Push schema to database
@@ -203,8 +203,8 @@ This project uses the **Rust-free Prisma Client** with the following configurati
 ```prisma
 generator client {
   provider        = "prisma-client"
-  previewFeatures = ["queryCompiler", "driverAdapters"]
   output          = "../app/generated/prisma"
+  previewFeatures = ["relationJoins"]
   engineType      = "client"
 }
 ```

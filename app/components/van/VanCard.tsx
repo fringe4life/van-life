@@ -5,8 +5,8 @@ import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { VAN_CARD_IMG_SIZES } from '~/constants/imgConstants';
 import type { VanModel } from '~/generated/prisma/models';
-import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
+import { validateLowercaseVanType } from '~/utils/validators';
 import VanBadge from './VanBadge';
 
 type VanCardProps = {
@@ -67,7 +67,7 @@ export default function VanCard({
 					{action}
 					<Badge
 						className="@min-md/card:-row-end-1"
-						variant={type.toLowerCase() as LowercaseVanType}
+						variant={validateLowercaseVanType(type.toLowerCase())}
 					>
 						{type}
 					</Badge>

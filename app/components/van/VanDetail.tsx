@@ -3,9 +3,9 @@ import Image from '~/components/common/Image';
 import { Badge, badgeVariants } from '~/components/ui/badge';
 import { VAN_DETAIL_IMG_SIZES } from '~/constants/imgConstants';
 import type { VanModel } from '~/generated/prisma/models';
-import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import { cn } from '~/utils/utils';
+import { validateLowercaseVanType } from '~/utils/validators';
 import CustomLink from '../navigation/CustomLink';
 import {
 	Card,
@@ -58,7 +58,7 @@ export default function VanDetail({
 							className={cn(
 								badgeVariants({
 									variant: vanIsAvailable
-										? (type.toLowerCase() as LowercaseVanType)
+										? validateLowercaseVanType(type.toLowerCase())
 										: 'unavailable',
 								}),
 								'@max-xl/card-full:hidden @min-xl/card-full:flex-shrink-0'
@@ -78,7 +78,7 @@ export default function VanDetail({
 						<Badge
 							className="@min-xl/card-full:m-0"
 							size="small"
-							variant={type.toLowerCase() as LowercaseVanType}
+							variant={validateLowercaseVanType(type.toLowerCase())}
 						>
 							{type}
 						</Badge>

@@ -1,32 +1,10 @@
 import { createSerializer } from 'nuqs/server';
-import {
-	DEFAULT_FILTER,
-	DEFAULT_LIMIT,
-	LIMITS,
-} from '~/constants/paginationConstants';
 import { hostPaginationParsers, paginationParsers } from '~/lib/parsers';
+import { validateLimit, validateVanTypeOrEmpty } from './validators';
 
 // Create serializers for different use cases
 const serializePaginationParams = createSerializer(paginationParsers);
 const serializeHostPaginationParams = createSerializer(hostPaginationParsers);
-
-/**
- * Type guard to check if a number is a valid limit value
- * @param value - The value to check
- * @returns True if the value is in the LIMITS array, false otherwise
- */
-export function isValidLimit(value: number): value is (typeof LIMITS)[number] {
-	return LIMITS.includes(value as (typeof LIMITS)[number]);
-}
-
-/**
- * Validates and returns a valid limit value, defaulting to DEFAULT_LIMIT if invalid
- * @param limit - The limit value to validate
- * @returns A valid limit value from the LIMITS array
- */
-export function validateLimit(limit: number): (typeof LIMITS)[number] {
-	return isValidLimit(limit) ? limit : DEFAULT_LIMIT;
-}
 
 /**
  * Builds search parameters string for van routes with optional type filter
@@ -47,8 +25,9 @@ export function buildVanSearchParams(params: {
 	};
 
 	// Only add type if it's a valid van type, otherwise let nuqs handle the default
-	if (type && type !== '' && type !== DEFAULT_FILTER) {
-		searchParams.type = type;
+	const validatedType = validateVanTypeOrEmpty(type || '');
+	if (validatedType !== '') {
+		searchParams.type = validatedType;
 	}
 
 	const queryString = serializePaginationParams(searchParams);
@@ -104,13 +83,11 @@ export function buildSearchParams(
 	}
 
 	// Add type if includeType is true and it's a valid van type
-	if (
-		includeType &&
-		params.type &&
-		params.type !== '' &&
-		params.type !== DEFAULT_FILTER
-	) {
-		searchParams.type = params.type;
+	if (includeType) {
+		const validatedType = validateVanTypeOrEmpty(params.type || '');
+		if (validatedType !== '') {
+			searchParams.type = validatedType;
+		}
 	}
 
 	// Add direction if provided

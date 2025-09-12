@@ -12,8 +12,8 @@ import {
 } from '~/components/ui/card';
 import { HOST_VAN_DETAIL_IMG_SIZES } from '~/constants/imgConstants';
 import type { VanModel } from '~/generated/prisma/models';
-import type { LowercaseVanType } from '~/types/types';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
+import { validateLowercaseVanType } from '~/utils/validators';
 import VanBadge from './VanBadge';
 import VanPrice from './VanPrice';
 
@@ -70,7 +70,7 @@ export default function VanDetailCard({ van, children }: VanDetailCardProps) {
 					<div className="@min-md/detail:col-span-1 @min-md/detail:col-start-2 content-center">
 						<Badge
 							className="@max-md/detail:mt-4"
-							variant={type.toLowerCase() as LowercaseVanType}
+							variant={validateLowercaseVanType(type.toLowerCase())}
 						>
 							{type}
 						</Badge>

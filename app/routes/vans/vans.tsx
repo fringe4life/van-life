@@ -13,7 +13,6 @@ import {
 	DEFAULT_FILTER,
 } from '~/constants/paginationConstants';
 import { getVans, getVansCount } from '~/db/van/queries';
-import type { VanType } from '~/generated/prisma/enums';
 import { hasPagination } from '~/lib/hasPagination.server';
 import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/searchParams.server';
@@ -21,6 +20,7 @@ import type { QueryType } from '~/types/types.server';
 import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
 import { buildVanSearchParams } from '~/utils/buildSearchParams';
 import { cn } from '~/utils/utils';
+import { validateVanType } from '~/utils/validators';
 import type { Route } from './+types/vans';
 
 export function meta() {
@@ -41,7 +41,8 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const { cursor, limit, type, direction } = loadSearchParams(request);
 
 	// Convert empty string to undefined for proper type handling
-	const typeFilter = type === '' ? undefined : (type?.toUpperCase() as VanType);
+	const typeFilter =
+		type === '' ? undefined : validateVanType(type?.toUpperCase());
 
 	const results = await Promise.allSettled([
 		getVans(cursor, limit, typeFilter, direction),

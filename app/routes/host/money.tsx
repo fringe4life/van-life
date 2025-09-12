@@ -8,10 +8,10 @@ import { Label } from '~/components/ui/label';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
 import { getAccountSummary } from '~/db/user/analytics';
 import { addMoney } from '~/db/user/payments';
-import type { TransactionType } from '~/generated/prisma/enums';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { moneySchema } from '~/lib/schemas.server';
 import { tryCatch } from '~/lib/tryCatch.server';
+import { validateTransactionType } from '~/utils/validators';
 import type { Route } from './+types/money';
 export function meta() {
 	return [
@@ -59,7 +59,7 @@ export async function action({ request }: Route.ActionArgs) {
 		addMoney(
 			session.user.id,
 			result.data.amount,
-			result.data.type as TransactionType
+			validateTransactionType(result.data.type)
 		)
 	);
 
