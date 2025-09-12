@@ -30,10 +30,8 @@ export default function VanDetail({
 }: VanDetailProps) {
 	const srcSet = createResponsiveSrcSet(
 		imageUrl,
-		VAN_DETAIL_IMG_SIZES, // mobile sizes
-		VAN_DETAIL_IMG_SIZES, // desktop sizes (same as mobile)
-		1, // mobile aspect ratio (1:1 = square)
-		1, // desktop aspect ratio (1:1 = square)
+		{ sizes: VAN_DETAIL_IMG_SIZES, aspectRatio: 1 }, // mobile sizes and aspect ratio (1:1 = square)
+		{ sizes: VAN_DETAIL_IMG_SIZES, aspectRatio: 1 } // desktop sizes and aspect ratio (1:1 = square)
 	);
 	return (
 		<div className="@container/card-full contain-content">
@@ -41,13 +39,13 @@ export default function VanDetail({
 				<CardHeader className="relative @min-xl/card-full:col-span-1 @min-xl/card-full:row-span-3 row-span-1">
 					<VanBadge van={van} />
 					<Image
-						className="aspect-square rounded-md"
-						src={imageUrl}
 						alt={description}
-						width="600"
+						className="aspect-square rounded-md"
 						height="600"
-						srcSet={srcSet}
 						sizes="(min-width: 1024px) 500px, (min-width: 768px) 400px, 300px"
+						src={imageUrl}
+						srcSet={srcSet}
+						width="600"
 					/>
 				</CardHeader>
 				<CardContent className="@min-xl/card-full:col-start-2 @max-xl/card-full:row-span-4 @min-xl/card-full:row-span-3 @max-xl/card-full:row-start-2 @min-xl/card-full:row-start-1 flex @min-xl/card-full:grid @min-xl/card-full:grid-rows-[auto_auto_1fr] flex-col gap-x-4 gap-y-2 @min-xl/card-full:self-center">
@@ -57,19 +55,19 @@ export default function VanDetail({
 							{name}
 						</CardTitle>
 						<CustomLink
-							to={
-								vanIsAvailable
-									? href('/host/rentals/rent/:vanId', { vanId })
-									: href('/vans/:vanId', { vanId })
-							}
 							className={cn(
 								badgeVariants({
 									variant: vanIsAvailable
 										? (type.toLowerCase() as LowercaseVanType)
 										: 'unavailable',
 								}),
-								'@max-xl/card-full:hidden @min-xl/card-full:flex-shrink-0',
+								'@max-xl/card-full:hidden @min-xl/card-full:flex-shrink-0'
 							)}
+							to={
+								vanIsAvailable
+									? href('/host/rentals/rent/:vanId', { vanId })
+									: href('/vans/:vanId', { vanId })
+							}
 						>
 							{vanIsAvailable ? 'Rent this van' : 'Van not available'}
 						</CustomLink>
@@ -79,8 +77,8 @@ export default function VanDetail({
 					<div className="@min-xl/card-full:row-start-2 flex items-center @min-xl/card-full:justify-between gap-4">
 						<Badge
 							className="@min-xl/card-full:m-0"
-							variant={type.toLowerCase() as LowercaseVanType}
 							size="small"
+							variant={type.toLowerCase() as LowercaseVanType}
 						>
 							{type}
 						</Badge>
@@ -98,19 +96,19 @@ export default function VanDetail({
 				{/* Mobile/Tablet Footer - hidden on desktop */}
 				<CardFooter className="@max-lg/card-full:row-span-1 @min-xl/card-full:hidden">
 					<CustomLink
-						to={
-							vanIsAvailable
-								? href('/host/rentals/rent/:vanId', { vanId })
-								: href('/vans/:vanId', { vanId })
-						}
 						className={cn(
 							badgeVariants({
 								variant: vanIsAvailable
 									? (type.toLowerCase() as 'simple' | 'luxury' | 'rugged')
 									: 'unavailable',
 							}),
-							'@max-lg/card-full:w-full',
+							'@max-lg/card-full:w-full'
 						)}
+						to={
+							vanIsAvailable
+								? href('/host/rentals/rent/:vanId', { vanId })
+								: href('/vans/:vanId', { vanId })
+						}
 					>
 						{vanIsAvailable ? 'Rent this van' : 'Van not available'}
 					</CustomLink>

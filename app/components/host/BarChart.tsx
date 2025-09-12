@@ -20,7 +20,7 @@ export default function BarChartComponent({
 	mappedData,
 }: BarChartComponentProps) {
 	return (
-		<ResponsiveContainer width="100%" height={350}>
+		<ResponsiveContainer height={350} width="100%">
 			<BarChart data={mappedData}>
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis dataKey="name" />

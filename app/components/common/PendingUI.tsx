@@ -73,15 +73,16 @@ export default function PendingUI<T extends ElementType = 'div'>({
 	const Component = as || 'div';
 
 	// Calculate opacity class based on pending state
+	const OPACITY_PERCENTAGE_MULTIPLIER = 100;
 	const opacityClass = isCurrentlyPending
-		? `opacity-${Math.round(pendingOpacity * 100)}`
+		? `opacity-${Math.round(pendingOpacity * OPACITY_PERCENTAGE_MULTIPLIER)}`
 		: '';
 
 	// Merge all classes using cn utility
 	const mergedClassName = cn(
 		'transition-opacity duration-200',
 		opacityClass,
-		className,
+		className
 	);
 
 	return (

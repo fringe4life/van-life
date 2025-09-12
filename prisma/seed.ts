@@ -1,16 +1,17 @@
 import { prisma } from '~/lib/prisma.server';
+import { rents, reviews, transactions, vans } from './seed-data';
 import {
 	clearTables,
+	findRentableVan,
 	generateUniqueIds,
 	getCost,
 	getEndDate,
-	getRandomId,
-	randomTrueOrFalse,
-	isVanRentable,
-	getVanState,
 	getRandomDiscount,
+	getRandomId,
+	getVanState,
+	isVanRentable,
+	randomTrueOrFalse,
 } from './seedFns';
-import { rents, reviews, vans, transactions } from './seed-data';
 
 const main = async () => {
 	// clear tables
@@ -40,32 +41,29 @@ const main = async () => {
 	const rentsWithIds = rents.map((rent) => {
 		const { id1, id2 } = generateUniqueIds(data);
 		let vanId = getRandomId(vanIds);
+
+		// Find a van that's not already rented
 		while (vansRented.includes(vanId)) {
 			vanId = getRandomId(vanIds);
 		}
+
 		// biome-ignore lint/style/noNonNullAssertion: guaranteed to be found
-		let van = vanIds.find((van) => van.id === vanId)!;
-		if (!isVanRentable(van.state)) {
-			let candidateId = getRandomId(vanIds);
-			let safety = 0;
-			while (
-				((vanIds.find((v) => v.id === candidateId)!.state) === 'IN_REPAIR' ||
-					vansRented.includes(candidateId)) &&
-				safety < 100
-			) {
-				candidateId = getRandomId(vanIds);
-				safety++;
-			}
-			vanId = candidateId;
+		let selectedVan = vanIds.find((vanItem) => vanItem.id === vanId)!;
+		if (!isVanRentable(selectedVan.state)) {
+			vanId = findRentableVan(vanIds, vansRented);
 			// biome-ignore lint/style/noNonNullAssertion: guaranteed to be found
-			van = vanIds.find((v) => v.id === vanId)!;
+			selectedVan = vanIds.find((v) => v.id === vanId)!;
 		}
-		const rentedTo = randomTrueOrFalse() ? getEndDate(rent.rentedAt as Date) : null;
-		const amount = rentedTo ? getCost(rent.rentedAt as Date, rentedTo, van.price) : 0;
-		if (!rentedTo) {
-			vansRented.push(vanId);
-		} else {
+		const rentedTo = randomTrueOrFalse()
+			? getEndDate(rent.rentedAt as Date)
+			: null;
+		const amount = rentedTo
+			? getCost(rent.rentedAt as Date, rentedTo, selectedVan.price)
+			: 0;
+		if (rentedTo) {
 			vansReturned.push(vanId);
+		} else {
+			vansRented.push(vanId);
 		}
 		return {
 			...rent,

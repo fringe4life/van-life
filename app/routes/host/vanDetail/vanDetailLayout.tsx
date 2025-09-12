@@ -6,12 +6,12 @@ import { getHostVan } from '~/db/van/host';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/vanDetailLayout';
-export function meta({ data }: Route.MetaArgs) {
+export function meta({ loaderData }: Route.MetaArgs) {
 	return [
-		{ title: `${data?.van?.name ?? 'unknown'} | Vanlife` },
+		{ title: `${loaderData?.van?.name ?? 'unknown'} | Vanlife` },
 		{
 			name: 'details',
-			content: `The details about ${data?.van?.name ?? 'unknown'} van`,
+			content: `The details about ${loaderData?.van?.name ?? 'unknown'} van`,
 		},
 	];
 }
@@ -21,9 +21,11 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ request, params }: Route.LoaderArgs) {
-	const { session, headers } = await getSessionOrRedirect(request);
+	const { session, headers: cookies } = await getSessionOrRedirect(request);
 	const { vanId } = params;
-	if (!vanId) throw data('Van not found', { status: 404 });
+	if (!vanId) {
+		throw data('Van not found', { status: 404 });
+	}
 
 	const result = await tryCatch(() => getHostVan(session.user.id, vanId));
 
@@ -44,9 +46,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...headers,
+				...cookies,
 			},
-		},
+		}
 	);
 }
 
@@ -55,8 +57,8 @@ export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
 	return (
 		<>
 			<CustomLink
-				to={href('/host/vans')}
 				className="mt-4 mb-2 sm:mt-8 sm:mb-4 md:mt-15 md:mb-8"
+				to={href('/host/vans')}
 			>
 				&larr; Back to all vans
 			</CustomLink>

@@ -22,10 +22,8 @@ export default function About() {
 	// since the about page only uses aspect-video
 	const srcSet = createResponsiveSrcSet(
 		ABOUT_IMG,
-		ABOUT_IMG_SIZES, // mobile sizes
-		ABOUT_IMG_SIZES, // desktop sizes (same as mobile)
-		0.5625, // mobile aspect ratio (16:9 = 9/16 = 0.5625)
-		0.5625, // desktop aspect ratio (16:9 = 9/16 = 0.5625)
+		{ sizes: ABOUT_IMG_SIZES, aspectRatio: 0.5625 }, // mobile sizes and aspect ratio (16:9)
+		{ sizes: ABOUT_IMG_SIZES, aspectRatio: 0.5625 } // desktop sizes and aspect ratio (16:9)
 	);
 
 	return (
@@ -34,16 +32,16 @@ export default function About() {
 			className="grid grid-cols-1 gap-4 contain-content sm:gap-6 md:gap-10"
 		>
 			<Image
-				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
-				src={ABOUT_IMG}
 				alt="a couple enjoying their adventure"
-				height="900"
-				width="1600"
-				srcSet={srcSet}
-				// sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-				loading="eager"
+				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
 				decoding="sync"
 				fetchPriority="high"
+				height="900"
+				loading="eager"
+				// sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+				src={ABOUT_IMG}
+				srcSet={srcSet}
+				width="1600"
 			/>
 
 			<h2 className="mx-2 font-bold text-2xl starting:opacity-50 duration-1000 sm:mx-4 sm:text-3xl/normal md:text-4xl lg:max-w-3/4">
@@ -76,8 +74,8 @@ export default function About() {
 					<span className="block">Your van is ready.</span>
 				</h3>
 				<CustomLink
-					to={href('/vans')}
 					className={cn(buttonVariants({ variant: 'secondary' }), 'w-full')}
+					to={href('/vans')}
 				>
 					Explore our vans
 				</CustomLink>

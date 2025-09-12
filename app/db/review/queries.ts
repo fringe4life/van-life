@@ -9,8 +9,11 @@ import { getCursorPaginationInformation } from '~/lib/getCursorPaginationInforma
 import { prisma } from '~/lib/prisma.server';
 import type { Direction, SortOption } from '~/types/types';
 
+// biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostReviews(userId: string) {
-	if (!isCUID(userId)) return INVALID_ID_ERROR;
+	if (!isCUID(userId)) {
+		return INVALID_ID_ERROR;
+	}
 	return prisma.review.findMany({
 		where: {
 			rent: {
@@ -33,24 +36,35 @@ export async function getHostReviews(userId: string) {
 }
 
 // Use generic sorting utility for reviews
-const getOrderBy = (sort?: SortOption) =>
+const getOrderBy = (sort: SortOption) =>
 	createGenericOrderBy<Prisma.ReviewOrderByWithRelationInput>(
-		sort || 'newest',
-		COMMON_SORT_CONFIGS.review,
+		sort,
+		COMMON_SORT_CONFIGS.review
 	);
-export function getHostReviewsPaginated(
-	userId: string,
-	cursor: string | undefined,
-	limit: number,
-	direction: Direction = 'forward',
-	sort: SortOption = 'newest',
-) {
-	if (!isCUID(userId)) return INVALID_ID_ERROR;
+
+type GetHostReviewsPaginatedParams = {
+	userId: string;
+	cursor: string | undefined;
+	limit: number;
+	direction?: Direction;
+	sort?: SortOption;
+};
+
+export function getHostReviewsPaginated({
+	userId,
+	cursor,
+	limit,
+	direction = 'forward',
+	sort = 'newest',
+}: GetHostReviewsPaginatedParams) {
+	if (!isCUID(userId)) {
+		return INVALID_ID_ERROR;
+	}
 
 	const { actualCursor, takeAmount } = getCursorPaginationInformation(
 		cursor,
 		limit,
-		direction,
+		direction
 	);
 
 	// For rating-based sorting, we need to use a different cursor approach
@@ -119,7 +133,9 @@ export function getHostReviewsPaginated(
 }
 
 export function getHostReviewsByRating(userId: string) {
-	if (!isCUID(userId)) return INVALID_ID_ERROR;
+	if (!isCUID(userId)) {
+		return INVALID_ID_ERROR;
+	}
 	return prisma.review.groupBy({
 		where: {
 			rent: {
@@ -132,7 +148,9 @@ export function getHostReviewsByRating(userId: string) {
 }
 
 export function getHostReviewsChartData(userId: string) {
-	if (!isCUID(userId)) return INVALID_ID_ERROR;
+	if (!isCUID(userId)) {
+		return INVALID_ID_ERROR;
+	}
 	return prisma.review.findMany({
 		where: {
 			rent: {
@@ -147,7 +165,9 @@ export function getHostReviewsChartData(userId: string) {
 }
 
 export async function getAverageReviewRating(userId: string) {
-	if (!isCUID(userId)) return INVALID_ID_ERROR;
+	if (!isCUID(userId)) {
+		return INVALID_ID_ERROR;
+	}
 	const avg = await prisma.review.aggregate({
 		_avg: {
 			rating: true,

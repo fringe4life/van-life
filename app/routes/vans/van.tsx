@@ -8,12 +8,12 @@ import { paginationParsers } from '~/lib/parsers';
 import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/van';
 
-export function meta({ data }: Route.MetaArgs) {
+export function meta({ loaderData }: Route.MetaArgs) {
 	return [
-		{ title: `${data?.van.name ?? 'Unknown'} | Vanlife` },
+		{ title: `${loaderData?.van.name ?? 'Unknown'} | Vanlife` },
 		{
 			name: 'details',
-			content: `The details about ${data?.van.name ?? 'Unknown'}`,
+			content: `The details about ${loaderData?.van.name ?? 'Unknown'}`,
 		},
 	];
 }
@@ -22,7 +22,9 @@ export async function loader({ params }: Route.LoaderArgs) {
 	// if (request.headers.get('referer') === href('/vans')) {
 	// 	return
 	// }
-	if (!params.vanId) throw data('No van id', { status: 404 });
+	if (!params.vanId) {
+		throw data('No van id', { status: 404 });
+	}
 
 	const result = await tryCatch(() => getVan(params.vanId));
 
@@ -42,7 +44,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 			headers: {
 				'Cache-Control': 'max-age=259200',
 			},
-		},
+		}
 	);
 }
 

@@ -62,9 +62,11 @@ export default function HostLayout() {
 		<div className="mx-auto max-w-[calc(100dvw_-_1.75rem)] contain-content sm:mx-0 sm:max-w-full">
 			<GenericComponent
 				as="ul"
-				className="mask-r-from-90% sm:mask-none no-scrollbar mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-2 overflow-x-auto overscroll-x-contain py-3 contain-content sm:gap-3"
 				Component={CustomNavLink}
+				className="mask-r-from-90% sm:mask-none no-scrollbar mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-2 overflow-x-auto overscroll-x-contain py-3 contain-content sm:gap-3"
+				emptyStateMessage="No nav links"
 				items={hostNavItems}
+				renderKey={(item) => item.to}
 				renderProps={(item) => ({
 					to: item.to,
 					title: item.title,
@@ -72,8 +74,6 @@ export default function HostLayout() {
 					className: navLinkClassName,
 					children: item.children,
 				})}
-				renderKey={(item) => item.to}
-				emptyStateMessage="No nav links"
 				wrapperProps={{}}
 			/>
 			<Outlet />

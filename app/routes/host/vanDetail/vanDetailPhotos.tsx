@@ -6,12 +6,12 @@ export default function VanDetailPhotos() {
 	const van = useOutletContext<VanModel>();
 	return (
 		<Image
-			src={van.imageUrl}
 			alt={van.name}
-			width="100"
-			height="100"
-			srcSet=""
 			className="aspect-square rounded-md"
+			height="100"
+			src={van.imageUrl}
+			srcSet=""
+			width="100"
 		/>
 	);
 }

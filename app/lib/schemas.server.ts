@@ -32,6 +32,7 @@ export type loginSchemaType = z.infer<typeof loginSchema>;
 export const signUpScheme = loginSchema
 	.extend({
 		confirmPassword: passwordSchema.describe('Password confirmation'),
+		// biome-ignore lint/style/noMagicNumbers: just a number
 		name: z.string().min(2).max(124).describe('User display name'),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
@@ -56,6 +57,7 @@ export const addVanSchema = z.object({
 		.describe('Van name (max 60 chars)'),
 	description: z
 		.string()
+		// biome-ignore lint/style/noMagicNumbers: just a number
 		.max(1024, {
 			error: 'Description is too long. Max length is 1024 characters',
 		})
@@ -73,13 +75,15 @@ export const addVanSchema = z.object({
 	price: z.coerce
 		.number()
 		.positive()
-		.max(32767, {
+		// biome-ignore lint/style/noMagicNumbers: just a number
+		.max(32_767, {
 			error: 'Your van cannot be more expensive then $32,767 dollars',
 		})
 		.describe('Van price (max $32,767)'),
 	discount: z.coerce
 		.number()
 		.min(0)
+		// biome-ignore lint/style/noMagicNumbers: just a number
 		.max(100)
 		.optional()
 		.transform((v) => v ?? 0)
@@ -120,15 +124,14 @@ export const moneySchema = z
 				return (
 					Math.abs(data.amount) >= MIN_ADD && Math.abs(data.amount) <= MAX_ADD
 				);
-			} else {
-				// For deposits, amount should be positive
-				return data.amount >= MIN_ADD && data.amount <= MAX_ADD;
 			}
+			// For deposits, amount should be positive
+			return data.amount >= MIN_ADD && data.amount <= MAX_ADD;
 		},
 		{
 			message: 'Amount must be within valid range for transaction type',
 			path: ['amount'],
-		},
+		}
 	)
 	.transform((data) => {
 		// Adjust amount based on transaction type

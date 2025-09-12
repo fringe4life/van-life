@@ -5,14 +5,14 @@ import type { SortOption } from '~/types/types';
  * Generic sorting configuration for different Prisma models
  * Maps sort options to Prisma orderBy configurations
  */
-export interface SortConfig<T extends Record<string, unknown>> {
+export type SortConfig<T extends Record<string, unknown>> = {
 	/** Field to sort by for newest/oldest (usually createdAt) */
 	dateField: keyof T;
 	/** Field to sort by for highest/lowest (usually amount, rating, etc.) */
 	valueField: keyof T;
 	/** Optional secondary field for stable sorting */
 	secondaryField?: keyof T;
-}
+};
 
 /**
  * Creates a generic orderBy clause for any Prisma model based on sort option
@@ -38,13 +38,12 @@ export interface SortConfig<T extends Record<string, unknown>> {
  */
 export function createGenericOrderBy<T extends Record<string, unknown>>(
 	sort: SortOption,
-	config: SortConfig<T>,
+	config: SortConfig<T>
 ): T {
 	const { dateField, valueField } = config;
 
+	// biome-ignore lint/nursery/noUnnecessaryConditions: simply related to switch statement
 	switch (sort) {
-		case 'newest':
-			return { [dateField]: 'desc' } as T;
 		case 'oldest':
 			return { [dateField]: 'asc' } as T;
 		case 'highest':
@@ -60,7 +59,7 @@ export function createGenericOrderBy<T extends Record<string, unknown>>(
  * Type-safe helper to create sort configurations for common model patterns
  */
 export const createSortConfig = <T extends Record<string, unknown>>(
-	config: SortConfig<T>,
+	config: SortConfig<T>
 ) => config;
 
 /**

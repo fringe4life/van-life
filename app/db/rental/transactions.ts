@@ -3,7 +3,7 @@ import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
 
 export function rentVan(vanId: string, renterId: string, hostId: string) {
-	if (!isCUID(vanId) || !isCUID(renterId) || !isCUID(hostId)) {
+	if (!(isCUID(vanId) && isCUID(renterId) && isCUID(hostId))) {
 		throw new Error(INVALID_ID_ERROR);
 	}
 	return prisma.rent.create({
@@ -19,9 +19,9 @@ export function returnVan(
 	rentId: string,
 	userId: string,
 	amount: number,
-	vanId: string,
+	vanId: string
 ) {
-	if (!isCUID(rentId) || !isCUID(vanId) || !isCUID(userId)) {
+	if (!(isCUID(rentId) && isCUID(vanId) && isCUID(userId))) {
 		throw new Error(INVALID_ID_ERROR);
 	}
 	return prisma.$transaction([

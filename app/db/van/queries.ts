@@ -7,7 +7,7 @@ export function getVans(
 	cursor: string | undefined,
 	limit: number,
 	typeFilter: VanType | undefined,
-	direction: Direction = 'forward',
+	direction: Direction = 'forward'
 ) {
 	const { actualCursor, sortOrder, takeAmount } =
 		getCursorPaginationInformation(cursor, limit, direction);

@@ -58,8 +58,10 @@ export default function Image({
 	classesForContainer = '',
 	...rest
 }: ImgProps) {
+	/** Low-resolution placeholder image width constant */
+	const LOW_RES_IMAGE_WIDTH = 20;
 	/** Low-resolution placeholder image (20px width) */
-	const lowRes = createNewImageSize(src, 20);
+	const lowRes = createNewImageSize(src, LOW_RES_IMAGE_WIDTH);
 	/** State to track if the full-resolution image has loaded */
 	const [loaded, setLoaded] = useState(false);
 	/** State to store the full-resolution image source */
@@ -70,7 +72,9 @@ export default function Image({
 	 * Only runs on the client side to avoid SSR issues
 	 */
 	useEffect(() => {
-		if (!canUseDOM) return;
+		if (!canUseDOM) {
+			return;
+		}
 
 		let isCancelled = false;
 		const img = new window.Image();
@@ -91,14 +95,16 @@ export default function Image({
 	// Always render the lowRes image initially, swap to fullSrc after load
 	return (
 		<div className={cn('m-0 p-0', classesForContainer)}>
+			{/** biome-ignore lint/nursery/useImageSize: these are provided as props */}
+			{/** biome-ignore lint/performance/noImgElement: this is not a nextjs project */}
 			<img
 				className={cn(
 					'h-full max-w-full bg-cover bg-no-repeat object-cover object-center align-middle text-none italic leading-0 decoration-0 transition-opacity duration-200 ease-in-out contain-strict',
 					!loaded && 'animate-pulse blur-sm',
-					className,
+					className
 				)}
-				loading="lazy"
 				decoding="async"
+				loading="lazy"
 				{...rest}
 				alt={alt}
 				src={fullSrc || lowRes}

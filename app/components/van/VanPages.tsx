@@ -21,7 +21,7 @@ type VanPagesProps<T, P, U> = {
 	PaginationPropsForVanPages;
 
 export default function VanPages<P, T extends { id: string }, U>(
-	props: VanPagesProps<T, P, U>,
+	props: VanPagesProps<T, P, U>
 ) {
 	const {
 		pathname,
@@ -43,12 +43,12 @@ export default function VanPages<P, T extends { id: string }, U>(
 			{optionalElement}
 			<GenericComponent className="grid-max mt-6" items={items} {...rest} />
 			<Pagination<T>
-				pathname={pathname}
-				items={Array.isArray(items) ? (items as T[]) : []}
 				cursor={cursor}
-				limit={limit}
 				hasNextPage={hasNextPage}
 				hasPreviousPage={hasPreviousPage}
+				items={Array.isArray(items) ? (items as T[]) : []}
+				limit={limit}
+				pathname={pathname}
 			/>
 		</PendingUI>
 	);

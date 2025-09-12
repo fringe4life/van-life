@@ -3,12 +3,13 @@ function getEndDate(rentedAt: Date) {
 		rentedAt.getFullYear(),
 		rentedAt.getMonth(),
 		rentedAt.getDate() + getRandomNumber(),
-		rentedAt.getHours(),
+		rentedAt.getHours()
 	);
 }
 
 function randomTrueOrFalse() {
-	return getRandomNumber(0, 1) > 0.5;
+	const HALF_PROBABILITY = 0.5;
+	return getRandomNumber(0, 1) > HALF_PROBABILITY;
 }
 
 function getRandomNumber(min = 3, max = 21) {
@@ -16,15 +17,44 @@ function getRandomNumber(min = 3, max = 21) {
 }
 
 function getCost(rentedAt: Date, rentedTo: Date, price: number) {
+	const MILLISECONDS_PER_SECOND = 1000;
+	const SECONDS_PER_MINUTE = 60;
+	const MINUTES_PER_HOUR = 60;
+	const HOURS_PER_DAY = 24;
+	const MILLISECONDS_PER_DAY =
+		MILLISECONDS_PER_SECOND *
+		SECONDS_PER_MINUTE *
+		MINUTES_PER_HOUR *
+		HOURS_PER_DAY;
+
 	const daysDifferent = Math.ceil(
-		(rentedTo.getTime() - rentedAt.getTime()) / (1000 * 3600 * 24),
+		(rentedTo.getTime() - rentedAt.getTime()) / MILLISECONDS_PER_DAY
 	);
 	return price * daysDifferent;
 }
 
 function getRandomId<T extends { id: string }>(ids: T[]) {
-	if (ids.length === 0) throw new Error('No ids to get');
+	if (ids.length === 0) {
+		throw new Error('No ids to get');
+	}
 	return ids[Math.floor(Math.random() * ids.length)].id;
+}
+
+function findRentableVan(vanIds: VanModel[], excludedIds: string[]): string {
+	const MAX_ATTEMPTS = 100;
+	let candidateId = getRandomId(vanIds);
+	let attempts = 0;
+
+	while (
+		(vanIds.find((v) => v.id === candidateId)?.state === 'IN_REPAIR' ||
+			excludedIds.includes(candidateId)) &&
+		attempts < MAX_ATTEMPTS
+	) {
+		candidateId = getRandomId(vanIds);
+		attempts++;
+	}
+
+	return candidateId;
 }
 
 function getRandomIdWithConstraint(id: string, constraints: string[]) {
@@ -32,7 +62,7 @@ function getRandomIdWithConstraint(id: string, constraints: string[]) {
 }
 
 function generateUniqueIds<T extends { id: string }>(
-	ids: T[],
+	ids: T[]
 ): { id1: string; id2: string } {
 	if (ids.length < 2) {
 		throw new Error('length of ids is too short for this function');
@@ -46,18 +76,27 @@ function generateUniqueIds<T extends { id: string }>(
 	return { id1, id2 };
 }
 
-import { prisma } from '~/lib/prisma.server';
 import type { VanState } from '~/generated/prisma/enums';
+import type { VanModel } from '~/generated/prisma/models';
+import { prisma } from '~/lib/prisma.server';
 
 function getRandomTransactionType(): 'DEPOSIT' | 'WITHDRAW' {
-	return Math.random() > 0.5 ? 'DEPOSIT' : 'WITHDRAW';
+	const HALF_PROBABILITY = 0.5;
+	return Math.random() > HALF_PROBABILITY ? 'DEPOSIT' : 'WITHDRAW';
 }
 
 function getRandomAmount(min = 100, max = 5000): number {
-	return Math.round((Math.random() * (max - min) + min) * 100) / 100;
+	const CENTS_MULTIPLIER = 100;
+	return (
+		Math.round((Math.random() * (max - min) + min) * CENTS_MULTIPLIER) /
+		CENTS_MULTIPLIER
+	);
 }
 
-function getRandomTransactionDate(startDate = new Date('2024-01-01'), endDate = new Date()): Date {
+function getRandomTransactionDate(
+	startDate = new Date('2024-01-01'),
+	endDate = new Date()
+): Date {
 	const start = startDate.getTime();
 	const end = endDate.getTime();
 	const randomTime = start + Math.random() * (end - start);
@@ -67,7 +106,11 @@ function getRandomTransactionDate(startDate = new Date('2024-01-01'), endDate = 
 // Returns a random Date between now - `monthsBack` and now (defaults to 1 month)
 function getRecentDate(monthsBack = 1): Date {
 	const now = new Date();
-	const start = new Date(now.getFullYear(), now.getMonth() - monthsBack, now.getDate());
+	const start = new Date(
+		now.getFullYear(),
+		now.getMonth() - monthsBack,
+		now.getDate()
+	);
 	const startMs = start.getTime();
 	const endMs = now.getTime();
 	const randomTime = startMs + Math.random() * (endMs - startMs);
@@ -80,8 +123,8 @@ async function clearTables() {
 		await prisma.review.deleteMany();
 		await prisma.rent.deleteMany();
 		await prisma.van.deleteMany();
-	} catch (error) {
-		console.error(error);
+	} catch (_error) {
+		// Ignore errors during cleanup - this is intentional
 	}
 }
 
@@ -102,6 +145,7 @@ function getRandomDiscount(min = 5, max = 100): number {
 export {
 	randomTrueOrFalse,
 	clearTables,
+	findRentableVan,
 	getCost,
 	getEndDate,
 	generateUniqueIds,

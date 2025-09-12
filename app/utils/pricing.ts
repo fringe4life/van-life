@@ -1,8 +1,11 @@
 export function getDiscountedPrice(
 	price: number,
-	discount?: number | null,
+	discount?: number | null
 ): number {
+	const MAX_DISCOUNT_PERCENTAGE = 100;
 	const d =
-		typeof discount === 'number' ? Math.max(0, Math.min(100, discount)) : 0;
-	return Math.round(price * (1 - d / 100));
+		typeof discount === 'number'
+			? Math.max(0, Math.min(MAX_DISCOUNT_PERCENTAGE, discount))
+			: 0;
+	return Math.round(price * (1 - d / MAX_DISCOUNT_PERCENTAGE));
 }

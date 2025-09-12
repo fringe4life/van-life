@@ -8,5 +8,5 @@ export const loadHostSearchParams = createLoader(hostPaginationParsers);
 // Create Standard Schema validators for external validation (e.g., tRPC)
 export const validateSearchParams = createStandardSchemaV1(paginationParsers);
 export const validateHostSearchParams = createStandardSchemaV1(
-	hostPaginationParsers,
+	hostPaginationParsers
 );

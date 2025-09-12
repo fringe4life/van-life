@@ -17,6 +17,8 @@ declare global {
 const adapter = new PrismaNeon({ connectionString: env.DATABASE_URL });
 
 const db = global.prisma || new PrismaClient({ adapter });
-if (process.env.NODE_ENV === 'development') global.prisma = db;
+if (process.env.NODE_ENV === 'development') {
+	global.prisma = db;
+}
 
 export { db as prisma };

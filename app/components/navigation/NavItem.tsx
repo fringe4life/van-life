@@ -8,14 +8,14 @@ export type NavItemComponentProps =
 	| React.ComponentProps<typeof CustomLink>
 	| React.ComponentProps<typeof CustomNavLink>;
 
-export interface NavItemProps {
+export type NavItemProps = {
 	Component: NavItemComponent;
 	props: NavItemComponentProps;
 	children?: ReactNode;
-}
+};
 
 function isCustomNavLink(
-	component: NavItemComponent,
+	component: NavItemComponent
 ): component is typeof CustomNavLink {
 	return component.name === 'CustomNavLink';
 }
@@ -31,16 +31,15 @@ function NavItem({ Component, props, children }: NavItemProps) {
 				</Component>
 			</li>
 		);
-	} else {
-		// className must be string
-		return (
-			<li>
-				<Component {...(props as React.ComponentProps<typeof CustomLink>)}>
-					{children}
-				</Component>
-			</li>
-		);
 	}
+	// className must be string
+	return (
+		<li>
+			<Component {...(props as React.ComponentProps<typeof CustomLink>)}>
+				{children}
+			</Component>
+		</li>
+	);
 }
 
 export default NavItem;

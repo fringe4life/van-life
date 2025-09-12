@@ -44,10 +44,8 @@ export default function VanDetailCard({ van, children }: VanDetailCardProps) {
 	// since the HostVanDetailCard uses aspect-square
 	const srcSet = createResponsiveSrcSet(
 		imageUrl,
-		HOST_VAN_DETAIL_IMG_SIZES, // mobile sizes
-		HOST_VAN_DETAIL_IMG_SIZES, // desktop sizes (same as mobile)
-		1, // mobile aspect ratio (1:1 = square)
-		1, // desktop aspect ratio (1:1 = square)
+		{ sizes: HOST_VAN_DETAIL_IMG_SIZES, aspectRatio: 1 }, // mobile sizes and aspect ratio (1:1 = square)
+		{ sizes: HOST_VAN_DETAIL_IMG_SIZES, aspectRatio: 1 } // desktop sizes and aspect ratio (1:1 = square)
 	);
 
 	return (
@@ -57,22 +55,22 @@ export default function VanDetailCard({ van, children }: VanDetailCardProps) {
 					<div className="relative">
 						<VanBadge van={van} />
 						<Image
-							className="aspect-square @min-md/detail:w-auto w-full rounded-sm"
-							src={imageUrl}
 							alt={name}
-							width="300"
-							height="300"
-							// classesForContainer="@min-md/detail:col-span-1"
-							srcSet={srcSet}
-							sizes="(min-width: 1280px) 300px, (min-width: 768px) 200px, 400px"
+							className="aspect-square @min-md/detail:w-auto w-full rounded-sm"
 							decoding="sync"
+							height="300"
 							loading="eager"
+							// classesForContainer="@min-md/detail:col-span-1"
+							sizes="(min-width: 1280px) 300px, (min-width: 768px) 200px, 400px"
+							src={imageUrl}
+							srcSet={srcSet}
+							width="300"
 						/>
 					</div>
 					<div className="@min-md/detail:col-span-1 @min-md/detail:col-start-2 content-center">
 						<Badge
-							variant={type.toLowerCase() as LowercaseVanType}
 							className="@max-md/detail:mt-4"
+							variant={type.toLowerCase() as LowercaseVanType}
 						>
 							{type}
 						</Badge>
@@ -86,6 +84,7 @@ export default function VanDetailCard({ van, children }: VanDetailCardProps) {
 					<div className="my-6 flex gap-6">
 						<GenericComponent
 							Component={CustomNavLink}
+							emptyStateMessage=""
 							items={navLinks}
 							renderKey={(item) => item.label}
 							renderProps={(item) => ({
@@ -96,12 +95,12 @@ export default function VanDetailCard({ van, children }: VanDetailCardProps) {
 									isActive: boolean;
 									isPending: boolean;
 								}) =>
+									// biome-ignore lint/style/noNestedTernary: simply related to react routers nav links
 									isPending ? 'text-green-500' : isActive ? 'underline' : '',
 								to: item.to,
 								end: item.end,
 								children: item.label,
 							})}
-							emptyStateMessage=""
 						/>
 					</div>
 				</CardContent>

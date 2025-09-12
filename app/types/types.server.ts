@@ -5,7 +5,7 @@ export type LowercaseVanType = Lowercase<VanType>;
 
 // Create lowercase versions of VanType for URL compatibility
 export const VAN_TYPE_LOWERCASE: LowercaseVanType[] = Object.values(
-	VanType,
+	VanType
 ).map((type) => type.toLowerCase() as LowercaseVanType);
 
 // Type helper to extract the return type from async functions

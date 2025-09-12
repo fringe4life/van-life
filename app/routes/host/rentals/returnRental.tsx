@@ -12,10 +12,12 @@ import type { QueryType } from '~/types/types.server';
 import { getCost } from '~/utils/getCost';
 import type { Route } from './+types/returnRental';
 
-export function meta({ data }: Route.MetaArgs) {
+export function meta({ loaderData }: Route.MetaArgs) {
 	const vanName =
-		typeof data?.rent === 'object' && data?.rent !== null && 'van' in data.rent
-			? data.rent.van.name
+		typeof loaderData?.rent === 'object' &&
+		loaderData?.rent !== null &&
+		'van' in loaderData.rent
+			? loaderData.rent.van.name
 			: 'Van';
 	return [
 		{ title: `Return ${vanName} | Vanlife` },
@@ -31,11 +33,13 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ request, params }: Route.LoaderArgs) {
-	const { session, headers } = await getSessionOrRedirect(request);
+	const { session, headers: cookies } = await getSessionOrRedirect(request);
 
 	const { rentId } = params;
 
-	if (!rentId) throw data('Rental not found', { status: 404 });
+	if (!rentId) {
+		throw data('Rental not found', { status: 404 });
+	}
 
 	const results = await Promise.allSettled([
 		getHostRentedVan(rentId),
@@ -43,10 +47,12 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 	]);
 
 	const [rent, money] = results.map((result) =>
-		result.status === 'fulfilled' ? result.value : 'Error fetching data',
+		result.status === 'fulfilled' ? result.value : 'Error fetching data'
 	);
 
-	if (!rent) throw data('Rented van not found', { status: 404 });
+	if (!rent) {
+		throw data('Rented van not found', { status: 404 });
+	}
 
 	return data(
 		{
@@ -56,9 +62,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...headers,
+				...cookies,
 			},
-		},
+		}
 	);
 }
 
@@ -67,34 +73,36 @@ export async function action({ request, params }: Route.ActionArgs) {
 
 	const { rentId } = params;
 
-	if (!rentId) throw data('Rental not found', { status: 404 });
+	if (!rentId) {
+		throw data('Rental not found', { status: 404 });
+	}
 
-	const results = await Promise.allSettled([
+	const initialResults = await Promise.allSettled([
 		getHostRentedVan(rentId),
 		getAccountSummary(session.user.id),
 	]);
-	const [rent, money] = results.map((result) =>
-		result.status === 'fulfilled' ? result.value : 'Error fetching data',
+	const [rent, money] = initialResults.map((result) =>
+		result.status === 'fulfilled' ? result.value : 'Error fetching data'
 	);
-	if (!rent || typeof rent !== 'object' || !('van' in rent))
+	if (!rent || typeof rent !== 'object' || !('van' in rent)) {
 		throw data('Rented van not found', { status: 404 });
+	}
 	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van.price);
 	const isUnableToPay = typeof money === 'number' ? money < amountToPay : false;
 
 	if (isUnableToPay) {
 		return { errors: 'Cannot afford to return this rental' };
-	} else {
-		const results = await Promise.allSettled([
-			returnVan(rentId, session.user.id, amountToPay, rent.van.id),
-		]);
-		const [returned] = results.map((result) =>
-			result.status === 'fulfilled' ? result.value : null,
-		);
-		if (!returned) {
-			return { errors: 'Something went wrong try again later' };
-		}
-		throw redirect(href('/host'));
 	}
+	const returnResults = await Promise.allSettled([
+		returnVan(rentId, session.user.id, amountToPay, rent.van.id),
+	]);
+	const [returned] = returnResults.map((result) =>
+		result.status === 'fulfilled' ? result.value : null
+	);
+	if (!returned) {
+		return { errors: 'Something went wrong try again later' };
+	}
+	throw redirect(href('/host'));
 }
 
 export default function ReturnRental({
@@ -107,8 +115,8 @@ export default function ReturnRental({
 	if (!rent || typeof rent === 'string' || typeof money === 'string') {
 		return (
 			<UnsuccesfulState
-				message={typeof rent === 'string' ? rent : 'Rental not found'}
 				isError
+				message={typeof rent === 'string' ? rent : 'Rental not found'}
 			/>
 		);
 	}
@@ -120,11 +128,11 @@ export default function ReturnRental({
 			<h2>Return this van:</h2>
 			<div className="max-w-lg">
 				<VanCard
-					van={rent.van}
+					action={<p />}
 					link={href('/host/rentals/returnRental/:rentId', {
 						rentId: params.rentId,
 					})}
-					action={<p></p>}
+					van={rent.van}
 				/>
 			</div>
 			{isUnableToPay && (
@@ -138,7 +146,7 @@ export default function ReturnRental({
 				</article>
 			)}
 			<CustomForm method="POST">
-				<Button type="submit" disabled={isUnableToPay}>
+				<Button disabled={isUnableToPay} type="submit">
 					Return
 				</Button>
 				{actionData?.errors && <p>{actionData.errors}</p>}

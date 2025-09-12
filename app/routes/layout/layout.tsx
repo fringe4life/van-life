@@ -25,9 +25,9 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 					&copy;{new Date().getFullYear()} #vanlife
 				</p>
 				<a
+					className="inline-block w-full break-words text-center text-[.5rem] text-gray-400 xs:text-xs"
 					href="https://www.flaticon.com/free-icons/camper-van"
 					title="camper van icons"
-					className="inline-block w-full break-words text-center text-[.5rem] text-gray-400 xs:text-xs"
 				>
 					Camper van icons created by Iconfromus - Flaticon
 				</a>

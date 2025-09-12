@@ -48,7 +48,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 	]);
 
 	const [vans, vansCount] = results.map((result) =>
-		result.status === 'fulfilled' ? result.value : 'Error fetching data',
+		result.status === 'fulfilled' ? result.value : 'Error fetching data'
 	);
 
 	// Process pagination logic
@@ -90,44 +90,24 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			// generic component props
 			Component={VanCard}
 			emptyStateMessage="There are no vans in our site."
-			renderKey={(van) => van.id}
-			renderProps={(van) => ({
-				van,
-				filter: type,
-				action: (
-					<p className="justify-self-end text-right">
-						<VanPrice van={van} />
-					</p>
-				),
-				link:
-					href('/vans/:vanId', { vanId: van.id }) +
-					(type
-						? `?cursor=${cursor}&limit=${limit}&type=${type}`
-						: `?cursor=${cursor}&limit=${limit}`),
-			})}
+			hasNextPage={hasNextPage}
+			hasPreviousPage={hasPreviousPage}
 			items={vansArray}
 			// generic component props end
 
 			// props for all use cases
-			pathname={href('/vans')}
-			title="Explore our van options"
-			searchParams={{ cursor, limit, type }}
-			hasNextPage={hasNextPage}
-			hasPreviousPage={hasPreviousPage}
 			optionalElement={
 				<div className="mb-6 grid grid-cols-2 items-center gap-2 sm:grid-cols-[min-content_min-content_min-content_max-content] sm:gap-4">
 					{
 						<ListItems
-							items={badges}
 							getKey={(t) => t}
 							getRow={(t) => (
 								<Button
-									variant="ghost"
 									className={cn(
 										badgeVariants({
 											variant: t === type ? t : 'outline',
 										}),
-										'w-full uppercase sm:w-fit',
+										'w-full uppercase sm:w-fit'
 									)}
 									onClick={() => {
 										setSearchParams({
@@ -136,17 +116,18 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 											direction: DEFAULT_DIRECTION,
 										});
 									}}
+									variant="ghost"
 								>
 									{t}
 								</Button>
 							)}
+							items={badges}
 						/>
 					}
 					<Button
-						variant="ghost"
 						className={clsx(
 							'w-full text-center sm:w-fit sm:text-left',
-							hasActiveTypeFilter && 'underline',
+							hasActiveTypeFilter && 'underline'
 						)}
 						onClick={() => {
 							setSearchParams({
@@ -155,11 +136,30 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 								direction: DEFAULT_DIRECTION,
 							});
 						}}
+						variant="ghost"
 					>
 						Clear filters
 					</Button>
 				</div>
 			}
+			pathname={href('/vans')}
+			renderKey={(van) => van.id}
+			renderProps={(van) => ({
+				van,
+				filter: type,
+				action: (
+					<div className="justify-self-end text-right">
+						<VanPrice van={van} />
+					</div>
+				),
+				link:
+					href('/vans/:vanId', { vanId: van.id }) +
+					(type
+						? `?cursor=${cursor}&limit=${limit}&type=${type}`
+						: `?cursor=${cursor}&limit=${limit}`),
+			})}
+			searchParams={{ cursor, limit, type }}
+			title="Explore our van options"
 		/>
 	);
 }

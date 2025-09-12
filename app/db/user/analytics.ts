@@ -5,7 +5,9 @@ import { prisma } from '~/lib/prisma.server';
 import type { SortOption } from '~/types/types';
 
 export async function getAccountSummary(userId: string) {
-	if (!isCUID(userId)) return INVALID_ID_ERROR;
+	if (!isCUID(userId)) {
+		return INVALID_ID_ERROR;
+	}
 	const result = await prisma.userInfo.findUnique({
 		where: { userId },
 		select: { moneyAdded: true },
@@ -15,9 +17,11 @@ export async function getAccountSummary(userId: string) {
 
 export function getHostTransactions(
 	userId: string,
-	sort: SortOption = 'newest',
+	sort: SortOption = 'newest'
 ) {
-	if (!isCUID(userId)) return INVALID_ID_ERROR;
+	if (!isCUID(userId)) {
+		return INVALID_ID_ERROR;
+	}
 
 	// Create orderBy clause using generic sorting utility
 	const orderBy = createGenericOrderBy(sort, {

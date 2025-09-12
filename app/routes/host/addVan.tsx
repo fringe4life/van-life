@@ -54,36 +54,36 @@ export default function AddVan({ actionData }: Route.ComponentProps) {
 			<h2 className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 				Add Van
 			</h2>
-			<CustomForm method="POST" className="mt-6 grid max-w-102 gap-4">
+			<CustomForm className="mt-6 grid max-w-102 gap-4" method="POST">
 				<Input
-					type="text"
+					defaultValue={(actionData?.formData?.name as string) ?? ''}
 					name="name"
 					placeholder="Silver Bullet"
-					defaultValue={(actionData?.formData?.name as string) ?? ''}
+					type="text"
 				/>
 				<Input
-					type="number"
+					defaultValue={(actionData?.formData?.price as string) ?? ''}
 					name="price"
 					placeholder="100"
-					defaultValue={(actionData?.formData?.price as string) ?? ''}
+					type="number"
 				/>
 				<Textarea
-					name="description"
 					defaultValue={(actionData?.formData?.description as string) ?? ''}
+					name="description"
 					placeholder="The silver bullet can take you on an amazing adventure..."
 				/>
 				<Input
-					type="url"
+					defaultValue={(actionData?.formData?.imageUrl as string) ?? ''}
 					name="imageUrl"
 					placeholder="https://images.unsplash.com/"
-					defaultValue={(actionData?.formData?.imageUrl as string) ?? ''}
+					type="url"
 				/>
 				<Input
-					type="text"
-					name="type"
-					placeholder="simple or luxury or rugged"
 					defaultValue={(actionData?.formData?.type as string) ?? ''}
 					list={id}
+					name="type"
+					placeholder="simple or luxury or rugged"
+					type="text"
 				/>
 				<datalist id={id}>
 					<option value="luxury" />

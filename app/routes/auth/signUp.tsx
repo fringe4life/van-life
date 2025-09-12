@@ -56,41 +56,41 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 			<h2 className="justify-center font-bold text-2xl text-shadow-text sm:text-3xl">
 				Create your account
 			</h2>
-			<CustomForm method="POST" className="grid items-center gap-4">
+			<CustomForm className="grid items-center gap-4" method="POST">
 				<Input
-					name="email"
-					id={emailId}
-					type="email"
-					placeholder="your.email@email.com"
 					defaultValue={actionData?.email ?? ''}
+					id={emailId}
+					name="email"
+					placeholder="your.email@email.com"
+					type="email"
 				/>
 				<Input
-					type="text"
-					name="name"
-					id={nameId}
-					placeholder="John Doe"
 					defaultValue={actionData?.name ?? ''}
+					id={nameId}
+					name="name"
+					placeholder="John Doe"
+					type="text"
 				/>
 				<Input
-					name="password"
 					id={passwordId}
-					type="password"
+					name="password"
 					placeholder="password"
+					type="password"
 				/>
 				<Input
-					name="confirmPassword"
 					id={confirmPasswordId}
-					type="password"
+					name="confirmPassword"
 					placeholder="confirm password"
+					type="password"
 				/>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
-				<Button variant="default" type="submit">
+				<Button type="submit" variant="default">
 					Sign up
 				</Button>
 			</CustomForm>
 			<p>
 				<span>Already have an account?</span>{' '}
-				<CustomLink to={href('/login')} className="text-orange-400">
+				<CustomLink className="text-orange-400" to={href('/login')}>
 					Sign in now
 				</CustomLink>
 			</p>

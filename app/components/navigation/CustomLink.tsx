@@ -10,14 +10,14 @@ export default function CustomLink({
 	const { isPage } = useIsPage({ to });
 	return (
 		<Link
-			to={to}
 			className={`hover:underline ${className}`}
+			to={to}
 			{...rest}
-			viewTransition
+			prefetch="intent"
 			style={{
 				pointerEvents: isPage ? 'none' : 'auto',
 			}}
-			prefetch="intent"
+			viewTransition
 		>
 			{children}
 		</Link>

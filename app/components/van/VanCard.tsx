@@ -30,10 +30,8 @@ export default function VanCard({
 	// since the VanCard uses aspect-square
 	const srcSet = createResponsiveSrcSet(
 		imageUrl,
-		VAN_CARD_IMG_SIZES, // mobile sizes
-		VAN_CARD_IMG_SIZES, // desktop sizes (same as mobile)
-		1, // mobile aspect ratio (1:1 = square)
-		1, // desktop aspect ratio (1:1 = square)
+		{ sizes: VAN_CARD_IMG_SIZES, aspectRatio: 1 }, // mobile sizes and aspect ratio (1:1 = square)
+		{ sizes: VAN_CARD_IMG_SIZES, aspectRatio: 1 } // desktop sizes and aspect ratio (1:1 = square)
 	);
 
 	return (
@@ -45,25 +43,25 @@ export default function VanCard({
 				<CardHeader className="relative @min-md/card:col-start-1 @min-md/card:row-span-2">
 					<VanBadge van={van} />
 					<Image
-						className="aspect-square w-full rounded-md"
-						src={imageUrl}
 						alt={description}
+						className="aspect-square w-full rounded-md"
 						height="200"
-						width="200"
-						srcSet={srcSet}
 						sizes="(width < 350px) 250w, (width > 300px) 350w, 200w"
+						src={imageUrl}
+						srcSet={srcSet}
+						width="200"
 					/>
 				</CardHeader>
 				<CardFooter className="@min-md/card:col-span-2 @min-md/card:col-start-2 @min-md/card:row-span-2 grid-cols-subgrid grid-rows-subgrid @min-md/card:content-center">
 					<CardTitle className="@min-md/card:col-start-2 @min-md/card:row-end-2 @min-md/card:self-start text-2xl">
-						<CustomLink to={link} state={state} title={name}>
+						<CustomLink state={state} title={name} to={link}>
 							{name}
 							<span
 								className={clsx(
 									linkCoversCard &&
-										'absolute inset-0 h-full w-full overflow-hidden',
+										'absolute inset-0 h-full w-full overflow-hidden'
 								)}
-							></span>
+							/>
 						</CustomLink>
 					</CardTitle>
 					{action}

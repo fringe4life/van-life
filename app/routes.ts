@@ -29,7 +29,7 @@ export default [
 					route('rent/:vanId', './routes/host/rentals/rentalDetail.tsx'),
 					route(
 						'returnRental/:rentId',
-						'./routes/host/rentals/returnRental.tsx',
+						'./routes/host/rentals/returnRental.tsx'
 					),
 				]),
 				...prefix('vans', [

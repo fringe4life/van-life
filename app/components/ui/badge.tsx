@@ -29,7 +29,7 @@ const badgeVariants = cva(
 			variant: 'outline',
 			size: 'default',
 		},
-	},
+	}
 );
 
 function Badge({
@@ -43,8 +43,8 @@ function Badge({
 
 	return (
 		<Comp
-			data-slot="badge"
 			className={cn(badgeVariants({ variant }), className)}
+			data-slot="badge"
 			{...props}
 		/>
 	);

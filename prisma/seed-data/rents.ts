@@ -18,7 +18,7 @@ export const rents: Omit<RentCreateInput, 'host' | 'renter' | 'van'>[] = [
 		rentedAt: new Date('2024-02-19T00:00:00Z'),
 	},
 	{
-		amount: 12000,
+		amount: 12_000,
 		rentedAt: new Date('2020-08-16T00:00:00Z'),
 	},
 	{

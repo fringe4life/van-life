@@ -3,11 +3,7 @@ import { isEmptyList } from '~/utils/utils';
 
 import UnsuccesfulState from './UnsuccesfulState';
 
-export interface GenericComponentProps<
-	T,
-	P,
-	E extends React.ElementType = 'div',
-> {
+export type GenericComponentProps<T, P, E extends React.ElementType = 'div'> = {
 	Component: React.ComponentType<P>;
 	items: T[] | string;
 	renderProps: (item: T, index: number) => P;
@@ -16,7 +12,7 @@ export interface GenericComponentProps<
 	emptyStateMessage: string;
 	as?: E;
 	wrapperProps?: React.ComponentPropsWithoutRef<E>;
-}
+};
 
 const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	Component,
@@ -31,7 +27,7 @@ const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	const isEmpty = isEmptyList(items);
 	const isError = typeof items === 'string';
 	if (isEmpty || isError) {
-		return <UnsuccesfulState message={emptyStateMessage} isError />;
+		return <UnsuccesfulState isError message={emptyStateMessage} />;
 	}
 	const Wrapper = as || 'div';
 	return (

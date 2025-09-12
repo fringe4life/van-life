@@ -28,9 +28,10 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const { session, headers } = await getSessionOrRedirect(request);
+	const { session, headers: cookies } = await getSessionOrRedirect(request);
 
 	const results = await Promise.allSettled([
+		// biome-ignore lint/style/noMagicNumbers: just getting the first three vans
 		getHostVans(session.user.id, undefined, 3),
 		getHostTransactions(session.user.id),
 		getAverageReviewRating(session.user.id),
@@ -39,7 +40,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const [vans, transactions, avgRating] = results.map((result) =>
 		result.status === 'fulfilled'
 			? result.value
-			: 'There was an error getting this data.',
+			: 'There was an error getting this data.'
 	);
 
 	return data(
@@ -52,9 +53,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...headers,
+				...cookies,
 			},
-		},
+		}
 	);
 }
 
@@ -85,8 +86,8 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					{displayPrice(sumIncome)}
 				</p>
 				<CustomLink
-					to={href('/host/income')}
 					className="col-start-2 row-start-2"
+					to={href('/host/income')}
 				>
 					Details
 				</CustomLink>
@@ -102,17 +103,17 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					)}
 				</div>
 				<CustomLink
-					to={href('/host/review')}
 					className="font-medium text-base text-shadow-text"
+					to={href('/host/review')}
 				>
 					Details
 				</CustomLink>
 			</div>
 			<GenericComponent
-				emptyStateMessage="You are not currently renting any vans"
-				items={vans}
 				Component={VanCard}
 				className="grid-max mt-11"
+				emptyStateMessage="You are not currently renting any vans"
+				items={vans}
 				renderKey={(item) => item.id}
 				renderProps={(item) => ({
 					van: item,

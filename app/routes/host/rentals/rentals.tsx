@@ -23,7 +23,7 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const { session, headers } = await getSessionOrRedirect(request);
+	const { session, headers: cookies } = await getSessionOrRedirect(request);
 
 	// Parse search parameters using nuqs loadHostSearchParams
 	const { cursor, limit, direction } = loadHostSearchParams(request);
@@ -34,7 +34,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 	]);
 
 	const [vans, vansCount] = results.map((result) =>
-		result.status === 'fulfilled' ? result.value : 'Error fetching data',
+		result.status === 'fulfilled' ? result.value : 'Error fetching data'
 	);
 
 	// Process pagination logic
@@ -48,9 +48,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...headers,
+				...cookies,
 			},
-		},
+		}
 	);
 }
 
@@ -67,6 +67,14 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 		<VanPages
 			// generic component props start
 			Component={VanCard}
+			emptyStateMessage="You are currently not renting any vans."
+			hasNextPage={hasNextPage}
+			hasPreviousPage={hasPreviousPage}
+			items={vansArray}
+			// generic component props end
+
+			// props for all use cases
+			pathname={href('/host/rentals')}
 			renderKey={(van) => van.van.id}
 			renderProps={(van) => ({
 				link: href('/host/vans/:vanId', { vanId: van.van.id }),
@@ -87,16 +95,8 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					</div>
 				),
 			})}
-			items={vansArray}
-			emptyStateMessage="You are currently not renting any vans."
-			// generic component props end
-
-			// props for all use cases
-			pathname={href('/host/rentals')}
-			title="Vans you are renting"
 			searchParams={{ cursor, limit }}
-			hasNextPage={hasNextPage}
-			hasPreviousPage={hasPreviousPage}
+			title="Vans you are renting"
 		/>
 	);
 }

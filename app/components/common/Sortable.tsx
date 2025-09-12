@@ -9,14 +9,14 @@ import { hostPaginationParsers } from '~/lib/parsers';
 import type { SortOption } from '~/types/types';
 import { cn } from '~/utils/utils';
 
-interface SortableProps {
+type SortableProps = {
 	/** Title to display above the sort buttons */
 	title: string;
 	/** Number of items being sorted (for display) */
 	itemCount: number;
 	/** Optional className for the container */
 	className?: string;
-}
+};
 
 /**
  * Reusable sorting component that provides sort buttons and clear filters functionality
@@ -68,7 +68,7 @@ export default function Sortable({
 		<div
 			className={cn(
 				'mb-6 flex max-w-dvw flex-col gap-4 sm:flex-row sm:items-center sm:justify-between',
-				className,
+				className
 			)}
 		>
 			<h3 className="font-bold text-lg text-neutral-900">
@@ -76,20 +76,20 @@ export default function Sortable({
 			</h3>
 
 			<GenericComponent
-				className="grid grid-cols-2 items-center gap-2 overflow-x-auto sm:grid-flow-col sm:grid-cols-4 sm:gap-4"
 				Component={Button}
+				className="grid grid-cols-2 items-center gap-2 overflow-x-auto sm:grid-flow-col sm:grid-cols-4 sm:gap-4"
+				emptyStateMessage=""
 				items={sortOptions}
 				renderKey={(item) => item.value}
 				renderProps={(item) => ({
 					variant: 'ghost' as const,
 					className: cn(
 						'w-full text-center sm:w-fit sm:text-left',
-						sort === item.value && 'bg-green-500 font-semibold text-white',
+						sort === item.value && 'bg-green-500 font-semibold text-white'
 					),
 					onClick: () => handleSortChange(item.value),
 					children: item.label,
 				})}
-				emptyStateMessage=""
 			/>
 			{/* 
 				<Button

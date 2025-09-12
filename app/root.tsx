@@ -8,6 +8,7 @@ import {
 	ScrollRestoration,
 } from 'react-router';
 import type { Route } from './+types/root';
+import { HTTP_MESSAGES, HTTP_STATUS } from './constants/httpConstants';
 import './app.css';
 
 export const links: Route.LinksFunction = () => [
@@ -26,11 +27,11 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" className="max-w-dvw bg-neutral-50">
+		<html className="max-w-dvw bg-neutral-50" lang="en">
 			<head>
 				<meta charSet="utf-8" />
-				<link rel="icon" type="image/png" href="/camper-van.png" />
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<link href="/camper-van.png" rel="icon" type="image/png" />
+				<meta content="width=device-width, initial-scale=1" name="viewport" />
 				<Meta />
 				<Links />
 			</head>
@@ -57,10 +58,13 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	let stack: string | undefined;
 
 	if (isRouteErrorResponse(error)) {
-		message = error.status === 404 ? '404' : 'Error';
+		message =
+			error.status === HTTP_STATUS.NOT_FOUND
+				? HTTP_MESSAGES.NOT_FOUND
+				: HTTP_MESSAGES.ERROR;
 		details =
-			error.status === 404
-				? 'The requested page could not be found.'
+			error.status === HTTP_STATUS.NOT_FOUND
+				? HTTP_MESSAGES.NOT_FOUND_DETAILS
 				: error.statusText || details;
 	} else if (import.meta.env.DEV && error && error instanceof Error) {
 		details = error.message;

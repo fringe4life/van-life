@@ -27,7 +27,7 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const { session, headers } = await getSessionOrRedirect(request);
+	const { session, headers: cookies } = await getSessionOrRedirect(request);
 
 	// Parse search parameters for pagination and sorting
 	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
@@ -35,11 +35,17 @@ export async function loader({ request }: Route.LoaderArgs) {
 	// Load chart data and paginated reviews
 	const results = await Promise.allSettled([
 		getHostReviewsChartData(session.user.id),
-		getHostReviewsPaginated(session.user.id, cursor, limit, direction, sort),
+		getHostReviewsPaginated({
+			userId: session.user.id,
+			cursor,
+			limit,
+			direction,
+			sort,
+		}),
 	]);
 
 	const [chartData, paginatedReviews] = results.map((result) =>
-		result.status === 'fulfilled' ? result.value : 'Error fetching data',
+		result.status === 'fulfilled' ? result.value : 'Error fetching data'
 	);
 
 	// Process pagination logic
@@ -47,7 +53,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 		paginatedReviews as QueryType<typeof getHostReviewsPaginated>,
 		limit,
 		cursor,
-		direction,
+		direction
 	);
 
 	return data(
@@ -61,9 +67,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...headers,
+				...cookies,
 			},
-		},
+		}
 	);
 }
 
@@ -85,7 +91,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 				acc[cur.rating - 1] += 1;
 				return acc;
 			},
-			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0]
 		)
 		.map((res, index) => ({
 			name: `${index + 1}`,
@@ -109,24 +115,24 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 		<VanPages
 			// generic component props start
 			Component={Review}
-			items={reviewItems}
-			renderProps={(item) => item}
-			renderKey={(item) => item.id}
-			// props to handle errors
 			emptyStateMessage="You have received no reviews"
-			// props that are common
-			title="Your Reviews"
-			pathname={href('/host/review')}
-			// pagination props
 			hasNextPage={hasNextPage}
 			hasPreviousPage={hasPreviousPage}
-			// optional
+			// props to handle errors
+			items={reviewItems}
+			// props that are common
 			optionalElement={
 				<>
 					<BarChartComponent mappedData={result} />
-					<Sortable title="Reviews" itemCount={safeChartData.length} />
+					<Sortable itemCount={safeChartData.length} title="Reviews" />
 				</>
 			}
+			pathname={href('/host/review')}
+			// pagination props
+			renderKey={(item) => item.id}
+			renderProps={(item) => item}
+			// optional
+			title="Your Reviews"
 		/>
 	);
 }

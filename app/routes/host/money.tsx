@@ -28,7 +28,7 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const { session, headers } = await getSessionOrRedirect(request);
+	const { session, headers: cookies } = await getSessionOrRedirect(request);
 	const maxWithrawalAmount = await getAccountSummary(session.user.id);
 
 	return data(
@@ -36,9 +36,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...headers,
+				...cookies,
 			},
-		},
+		}
 	);
 }
 
@@ -59,8 +59,8 @@ export async function action({ request }: Route.ActionArgs) {
 		addMoney(
 			session.user.id,
 			result.data.amount,
-			result.data.type as TransactionType,
-		),
+			result.data.type as TransactionType
+		)
 	);
 
 	if (result2.error) {
@@ -86,42 +86,40 @@ export default function MoneyTransaction({
 			<h2 className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 				Add or withdraw money
 			</h2>
-			<CustomForm method="POST" className="mt-6 grid max-w-102 gap-4">
+			<CustomForm className="mt-6 grid max-w-102 gap-4" method="POST">
 				<div className="flex gap-4">
 					<Label>
 						Deposit
 						<Input
-							type="radio"
+							defaultChecked={true}
 							name="type"
 							required
+							type="radio"
 							value="DEPOSIT"
-							defaultChecked={
-								(actionData?.formData?.type as string) === 'deposit' || true
-							}
 						/>
 					</Label>
 					<Label>
 						Withdraw
 						<Input
-							onChange={handleChange}
-							type="radio"
-							name="type"
-							value="WITHDRAW"
 							defaultChecked={
 								(actionData?.formData?.type as string) === 'withdraw'
 							}
+							name="type"
+							onChange={handleChange}
+							type="radio"
+							value="WITHDRAW"
 						/>
 					</Label>
 				</div>
 
 				<Input
-					type="number"
-					name="amount"
-					placeholder="2000"
 					defaultValue={(actionData?.formData?.money as string) ?? ''}
 					list="vanTypeList"
-					min={MIN_ADD}
 					max={isDepositing ? loaderData?.maxWithrawalAmount : MAX_ADD}
+					min={MIN_ADD}
+					name="amount"
+					placeholder="2000"
+					type="number"
 				/>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
 				<Button type="submit">Complete transaction</Button>

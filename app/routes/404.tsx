@@ -9,8 +9,8 @@ export default function NotFound() {
 				Sorry, the page you were looking for was not found.
 			</h2>
 			<CustomLink
-				to={href('/')}
 				className={buttonVariants({ variant: 'secondary' })}
+				to={href('/')}
 			>
 				Return to home
 			</CustomLink>

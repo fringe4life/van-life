@@ -11,9 +11,9 @@ export default function CustomNavLink({
 		<NavLink
 			to={to}
 			{...rest}
+			prefetch="intent"
 			style={{ pointerEvents: isPage ? 'none' : 'auto' }}
 			viewTransition
-			prefetch="intent"
 		>
 			{children}
 		</NavLink>

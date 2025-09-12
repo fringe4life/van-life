@@ -15,11 +15,20 @@ export function getElapsedTime(rentals: Array<{ rentedAt: Date }>) {
 
 	// Sort rentals by date to get first and last
 	const sortedRentals = [...rentals].sort(
-		(a, b) => a.rentedAt.getTime() - b.rentedAt.getTime(),
+		(a, b) => a.rentedAt.getTime() - b.rentedAt.getTime()
 	);
 
 	const firstRental = sortedRentals[0];
-	const lastRental = sortedRentals[sortedRentals.length - 1];
+	const lastRental = sortedRentals.at(-1);
+
+	if (!lastRental) {
+		return {
+			elapsedDays: 0,
+			description: 'No rentals yet',
+			firstRental: firstRental.rentedAt,
+			lastRental: firstRental.rentedAt,
+		};
+	}
 
 	// Calculate days between first and last rental
 	const elapsedDays =
@@ -50,6 +59,6 @@ export function calculateTotalIncome(transactions: Array<{ amount: number }>) {
 
 	return transactions.reduce(
 		(total, transaction) => total + transaction.amount,
-		0,
+		0
 	);
 }

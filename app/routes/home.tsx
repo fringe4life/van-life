@@ -24,10 +24,8 @@ export function meta() {
 
 const srcSet = createResponsiveSrcSet(
 	HOME_IMG_URL,
-	HOME_MOBILE_IMG_SIZES,
-	HOME_DESKTOP_IMG_SIZES,
-	1.5, // mobile aspect ratio (1:1.5)
-	0.5625, // desktop aspect ratio (16:9)
+	{ sizes: HOME_MOBILE_IMG_SIZES, aspectRatio: 1.5 }, // mobile aspect ratio (1:1.5)
+	{ sizes: HOME_DESKTOP_IMG_SIZES, aspectRatio: 0.5625 } // desktop aspect ratio (16:9)
 );
 export default function Home() {
 	// Create responsive srcSet with different aspect ratios:
@@ -48,17 +46,17 @@ export default function Home() {
 			<div className="mask-cover mask-no-repeat mask-right md:mask-[url(/app/assets/rvMask.svg)] absolute inset-0">
 				<div className="absolute inset-0 z-10 bg-linear-45 from-0% from-indigo-300/40 via-33% via-green-300/40 to-66% to-yellow-200/40 bg-blend-darken" />
 				<Image
-					src={HOME_IMG_URL}
-					classesForContainer="absolute inset-0 w-full h-full"
 					alt="Camper van on scenic road"
-					width={1000}
-					height={667}
+					classesForContainer="absolute inset-0 w-full h-full"
 					className="[view-transition-name:image]"
-					srcSet={srcSet}
-					sizes={sizes}
-					loading="eager"
 					decoding="sync"
 					fetchPriority="high"
+					height={667}
+					loading="eager"
+					sizes={sizes}
+					src={HOME_IMG_URL}
+					srcSet={srcSet}
+					width={1000}
 				/>
 			</div>
 
@@ -72,8 +70,8 @@ export default function Home() {
 					perfect van to make your perfect road trip.
 				</p>
 				<CustomLink
-					to={href('/vans')}
 					className={cn(buttonVariants({ size: 'lg' }), 'max-w-[42.5ch]')}
+					to={href('/vans')}
 				>
 					Find your van
 				</CustomLink>

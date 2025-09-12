@@ -11,9 +11,9 @@ import { rentVanSchema } from '~/lib/schemas.server';
 import { tryCatch } from '~/lib/tryCatch.server';
 import type { Route } from './+types/rentalDetail';
 
-export function meta({ data }: Route.MetaArgs) {
+export function meta({ loaderData }: Route.MetaArgs) {
 	return [
-		{ title: `Rent ${data?.rental.van.name} | Vanlife` },
+		{ title: `Rent ${loaderData?.rental.van.name} | Vanlife` },
 		{
 			name: 'description',
 			content: 'The van you might rent',
@@ -26,8 +26,10 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ params, request }: Route.LoaderArgs) {
-	const { headers } = await getSessionOrRedirect(request);
-	if (!params.vanId) throw data('Van not found', { status: 404 });
+	const { headers: cookies } = await getSessionOrRedirect(request);
+	if (!params.vanId) {
+		throw data('Van not found', { status: 404 });
+	}
 
 	const result = await tryCatch(() => getHostRentedVan(params.vanId));
 
@@ -48,9 +50,9 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...headers,
+				...cookies,
 			},
-		},
+		}
 	);
 }
 
@@ -62,7 +64,9 @@ export async function action({ request, params }: Route.ActionArgs) {
 	const hostId = formData.hostId as string;
 
 	const { vanId } = params;
-	if (!vanId) throw data('Rental not found', { status: 404 });
+	if (!vanId) {
+		throw data('Rental not found', { status: 404 });
+	}
 
 	const {
 		success,
@@ -82,7 +86,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 	}
 
 	const result = await tryCatch(() =>
-		rentVan(values.vanId, values.renterId, values.hostId),
+		rentVan(values.vanId, values.renterId, values.hostId)
 	);
 
 	if (result.error || !result.data) {
@@ -103,17 +107,17 @@ export default function AddVan({
 	return (
 		<section>
 			<VanCard
-				van={rental.van}
-				link={href('/host/rentals/rent/:vanId', { vanId: rental.van.id })}
 				action={<p />}
+				link={href('/host/rentals/rent/:vanId', { vanId: rental.van.id })}
+				van={rental.van}
 			/>
 			<h2 className="font-bold text-4xl text-neutral-900">Return Van</h2>
-			<CustomForm method="POST" className="mt-6 grid max-w-102 gap-4">
+			<CustomForm className="mt-6 grid max-w-102 gap-4" method="POST">
 				<Input
-					type="text"
-					defaultValue={rental.hostId}
-					className="hidden"
 					aria-hidden="true"
+					className="hidden"
+					defaultValue={rental.hostId}
+					type="text"
 				/>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
 				<Button type="submit">Rent {rental.van.name}</Button>

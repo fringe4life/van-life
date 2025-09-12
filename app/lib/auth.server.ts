@@ -2,6 +2,11 @@ import { createId } from '@paralleldrive/cuid2';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 
+import {
+	FIVE_MINUTES_IN_SECONDS,
+	ONE_DAY_IN_SECONDS,
+	ONE_MONTH_IN_SECONDS,
+} from '~/constants/timeConstants';
 import { env } from '~/lib/env.server';
 import { prisma } from '~/lib/prisma.server';
 export const auth = betterAuth({
@@ -15,6 +20,7 @@ export const auth = betterAuth({
 	databaseHooks: {
 		user: {
 			create: {
+				// biome-ignore lint/suspicious/useAwait: better-auth requires async function signature
 				before: async (user) => {
 					return {
 						data: {
@@ -35,9 +41,9 @@ export const auth = betterAuth({
 	},
 	secret: env.BETTER_AUTH_SECRET,
 	session: {
-		cookieCache: { enabled: true, maxAge: 5 * 60 },
-		expiresIn: 60 * 60 * 24 * 30, // 30 days
-		updateAge: 60 * 60 * 24 * 3, // 1 day (every 1 day the session expiration is updated)
+		cookieCache: { enabled: true, maxAge: FIVE_MINUTES_IN_SECONDS },
+		expiresIn: ONE_MONTH_IN_SECONDS, // 30 days
+		updateAge: ONE_DAY_IN_SECONDS, // 1 day (every 1 day the session expiration is updated)
 		preserveSessionInDatabase: true,
 	},
 	telemetry: { enabled: false },

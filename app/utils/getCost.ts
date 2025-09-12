@@ -1,3 +1,5 @@
+import { MILLISECONDS_PER_DAY } from '~/constants/timeConstants';
+
 /**
  * @abstract calculates the cost of the rental
  * @param rentedAt the date the rental began
@@ -7,7 +9,7 @@
  */
 export function getCost(rentedAt: Date, rentedTo: Date, price: number): number {
 	const daysDifferent = Math.ceil(
-		(rentedTo.getTime() - rentedAt.getTime()) / (1000 * 3600 * 24),
+		(rentedTo.getTime() - rentedAt.getTime()) / MILLISECONDS_PER_DAY
 	);
 	return price * daysDifferent;
 }

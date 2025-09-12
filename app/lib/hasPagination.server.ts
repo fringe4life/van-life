@@ -14,7 +14,7 @@ export function hasPagination<T>(
 	items: T[] | string | number,
 	limit: number,
 	cursor: string | undefined,
-	direction: Direction = 'forward',
+	direction: Direction = 'forward'
 ): {
 	actualItems: T[] | string;
 	hasNextPage: boolean;

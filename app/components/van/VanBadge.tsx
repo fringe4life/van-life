@@ -1,5 +1,6 @@
 import type { VariantProps } from 'class-variance-authority';
 import { Badge, type badgeVariants } from '~/components/ui/badge';
+import { SIX_MONTHS } from '~/constants/timeConstants';
 import type { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
 import { formatEnumLabel } from '~/utils/formatEnum';
@@ -10,8 +11,8 @@ function isNew(createdAt: VanModel['createdAt']): boolean {
 	const now = new Date();
 	const sixMonthsAgo = new Date(
 		now.getFullYear(),
-		now.getMonth() - 6,
-		now.getDate(),
+		now.getMonth() - SIX_MONTHS,
+		now.getDate()
 	);
 	return new Date(createdAt) > sixMonthsAgo;
 }
@@ -19,9 +20,11 @@ function isNew(createdAt: VanModel['createdAt']): boolean {
 function computeBadgeVariant(
 	state: VanState,
 	vanType: VanModel['type'],
-	createdAt: VanModel['createdAt'],
+	createdAt: VanModel['createdAt']
 ): VariantProps<typeof badgeVariants>['variant'] {
-	if (isNew(createdAt)) return 'new';
+	if (isNew(createdAt)) {
+		return 'new';
+	}
 	switch (state) {
 		case 'ON_SALE':
 			return 'sale';
@@ -44,21 +47,23 @@ export default function VanBadge({ van }: Props) {
 	const variant = computeBadgeVariant(
 		van.state as VanState,
 		van.type,
-		van.createdAt,
+		van.createdAt
 	);
-	const labelRaw: string =
-		variant === 'new'
-			? 'NEW'
-			: van.state === 'AVAILABLE'
-				? van.type
-				: ((van.state as unknown as string) ?? 'AVAILABLE');
+	let labelRaw: string;
+	if (variant === 'new') {
+		labelRaw = 'NEW';
+	} else if (van.state === 'AVAILABLE') {
+		labelRaw = van.type;
+	} else {
+		labelRaw = (van.state as unknown as string) ?? 'AVAILABLE';
+	}
 	const label = formatEnumLabel(labelRaw);
 
 	return (
 		<Badge
 			className="absolute top-4 right-4 z-10"
-			variant={variant}
 			title={label}
+			variant={variant}
 		>
 			{label}
 		</Badge>

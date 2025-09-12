@@ -13,7 +13,7 @@ import type { Direction } from '~/types/types';
 export function getCursorPaginationInformation(
 	cursor: string | undefined,
 	limit: number,
-	direction: Direction = 'forward',
+	direction: Direction = 'forward'
 ): {
 	actualCursor: string | undefined;
 	sortOrder: Prisma.SortOrder;

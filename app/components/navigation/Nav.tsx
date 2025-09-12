@@ -14,9 +14,9 @@ import CustomLink from './CustomLink';
 import CustomNavLink from './CustomNavLink';
 import NavItem from './NavItem';
 
-interface NavProps {
+type NavProps = {
 	hasToken: boolean;
-}
+};
 
 const linkClassName: NonNullable<
 	ComponentProps<typeof CustomLink>['className']
@@ -47,9 +47,12 @@ export default function Nav({ hasToken }: NavProps) {
 	const animationTimeout = useRef<NodeJS.Timeout | null>(null);
 
 	// Auto-close mobile nav on resize to desktop
+	const ANIMATION_DURATION_MS = 300;
+
 	useEffect(() => {
+		const TABLET_BREAKPOINT = 768;
 		const handleResize = () => {
-			if (window.innerWidth >= 768) {
+			if (window.innerWidth >= TABLET_BREAKPOINT) {
 				setIsNavOpen(false);
 				setIsAnimatingOut(false);
 				if (animationTimeout.current) {
@@ -78,7 +81,7 @@ export default function Nav({ hasToken }: NavProps) {
 			animationTimeout.current = setTimeout(() => {
 				setIsNavOpen(false);
 				setIsAnimatingOut(false);
-			}, 300);
+			}, ANIMATION_DURATION_MS);
 		} else if (!isNavOpen) {
 			setIsNavOpen(true);
 		}
@@ -90,7 +93,7 @@ export default function Nav({ hasToken }: NavProps) {
 			animationTimeout.current = setTimeout(() => {
 				setIsNavOpen(false);
 				setIsAnimatingOut(false);
-			}, 300);
+			}, ANIMATION_DURATION_MS);
 		}
 	};
 
@@ -144,21 +147,20 @@ export default function Nav({ hasToken }: NavProps) {
 					onClick: handleNavLinkClick,
 				},
 			} as NavItemType;
-		} else {
-			// For CustomLink, ensure className is a string
-			const { className, ...rest } = item.props;
-			return {
-				...item,
-				props: {
-					...rest,
-					onClick: handleNavLinkClick,
-					...(typeof className === 'string'
-						? { className }
-						: { className: linkClassName }),
-				},
-				Component: CustomLink,
-			} as NavItemType;
 		}
+		// For CustomLink, ensure className is a string
+		const { className, ...rest } = item.props;
+		return {
+			...item,
+			props: {
+				...rest,
+				onClick: handleNavLinkClick,
+				...(typeof className === 'string'
+					? { className }
+					: { className: linkClassName }),
+			},
+			Component: CustomLink,
+		} as NavItemType;
 	};
 
 	const mobileNavItems: NavItemType[] = navItems.map(createMobileNavItem);
@@ -170,9 +172,9 @@ export default function Nav({ hasToken }: NavProps) {
 			</h1>
 			{/* Hamburger button: only visible below md */}
 			<Button
+				aria-label="Open menu"
 				className="cursor-pointer md:hidden"
 				onClick={handleClick}
-				aria-label="Open menu"
 			>
 				<Menu />
 			</Button>
@@ -180,16 +182,16 @@ export default function Nav({ hasToken }: NavProps) {
 			<nav className="hidden md:block">
 				<GenericComponent<NavItemType, ComponentProps<typeof NavItem>, 'ul'>
 					as="ul"
-					className="flex justify-end gap-3"
 					Component={NavItem}
+					className="flex justify-end gap-3"
+					emptyStateMessage="No nav items"
 					items={navItems}
+					renderKey={(item) => item.key}
 					renderProps={(item) => ({
 						Component: item.Component,
 						props: item.props,
 						children: item.children,
 					})}
-					renderKey={(item) => item.key}
-					emptyStateMessage="No nav items"
 				/>
 			</nav>
 			{/* Mobile nav: only visible when open or animating out and below md */}
@@ -197,36 +199,36 @@ export default function Nav({ hasToken }: NavProps) {
 				<>
 					{/* Overlay with fade-in and fade-out animation */}
 					<button
-						type="button"
 						aria-label="Close menu"
-						tabIndex={0}
-						onClick={handleClick}
 						className={`mobile-overlay fixed inset-0 z-40 m-0 cursor-pointer appearance-none border-none p-0 md:hidden ${isAnimatingOut ? 'out' : ''}`}
+						onClick={handleClick}
 						style={{ outline: 'none' }}
+						tabIndex={0}
+						type="button"
 					/>
 					{/* Sidebar with slide-in and slide-out animation */}
 					<nav
 						className={`mobile-sidebar fixed top-0 right-0 bottom-0 z-50 flex w-64 flex-col bg-orange-50 p-6 md:hidden ${isAnimatingOut ? 'out' : ''}`}
 					>
 						<Button
+							aria-label="Close menu"
 							className="mb-6 self-end"
 							onClick={handleClick}
-							aria-label="Close menu"
 						>
 							<SidebarClose />
 						</Button>
 						<GenericComponent<NavItemType, ComponentProps<typeof NavItem>, 'ul'>
 							as="ul"
-							className="flex flex-col gap-4"
 							Component={NavItem}
+							className="flex flex-col gap-4"
+							emptyStateMessage="No nav items"
 							items={mobileNavItems}
+							renderKey={(item) => item.key}
 							renderProps={(item) => ({
 								Component: item.Component,
 								props: item.props,
 								children: item.children,
 							})}
-							renderKey={(item) => item.key}
-							emptyStateMessage="No nav items"
 						/>
 					</nav>
 				</>

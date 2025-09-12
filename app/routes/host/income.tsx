@@ -25,7 +25,7 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const { session, headers } = await getSessionOrRedirect(request);
+	const { session, headers: cookies } = await getSessionOrRedirect(request);
 
 	// Parse search parameters for sorting
 	const { sort } = loadHostSearchParams(request);
@@ -41,9 +41,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...headers,
+				...cookies,
 			},
-		},
+		}
 	);
 }
 
@@ -68,12 +68,10 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<VanPages
-			emptyStateMessage="Rent some vans and your income will appear here."
-			className="grid-max"
-			items={filteredHostIncomes}
-			renderKey={(item) => item.id}
-			renderProps={(item) => item}
 			Component={Income}
+			className="grid-max"
+			emptyStateMessage="Rent some vans and your income will appear here."
+			items={filteredHostIncomes}
 			optionalElement={
 				<>
 					<p>
@@ -87,13 +85,15 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					</p>
 					<BarChartComponent mappedData={mappedData} />
 					<Sortable
-						title="Income Transactions"
 						itemCount={filteredHostIncomes.length}
+						title="Income Transactions"
 					/>
 				</>
 			}
-			title="Income"
 			pathname={href('/host/income')}
+			renderKey={(item) => item.id}
+			renderProps={(item) => item}
+			title="Income"
 		/>
 	);
 }

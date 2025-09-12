@@ -6,7 +6,7 @@ import { prisma } from '~/lib/prisma.server';
 export function addMoney(
 	userId: string,
 	amount: number,
-	transactionType: TransactionType,
+	transactionType: TransactionType
 ) {
 	if (!isCUID(userId)) {
 		throw new Error(INVALID_ID_ERROR);

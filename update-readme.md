@@ -18,7 +18,7 @@ Provide ONLY this file in future sessions to have the AI re-scan and update `REA
 
 - Use Bun commands where possible; prefer `bunx prisma` for CLI tasks.
 - If `prisma.config.ts` exists, reflect its usage (schema path, seed) and note that the deprecated `package.json#prisma` block has been removed.
-- Reflect the CSS and linting standards from `biome.json` and Tailwind v4.
+- Reflect the CSS and linting standards from `biome.jsonc` (with Ultracite integration) and Tailwind v4.
 - Mention `nuqs` for type-safe search params via Context7.
 - Mention centralized auth types in `app/lib/auth.server.ts`.
 - Preserve existing README headings and tone, only patch relevant sections.

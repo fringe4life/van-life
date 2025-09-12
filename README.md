@@ -71,7 +71,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Development Tools
 
 - **rolldown-vite** (latest) - Next-generation Vite with Rolldown bundler
-- **Biome 2.2.4** for linting and formatting
+- **Biome 2.2.2** for linting and formatting with Ultracite integration
+- **Ultracite 5.3.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.2** with native preview
 - **Bun** for fast package management and runtime
 
@@ -428,6 +429,12 @@ BETTER_AUTH_URL=http://localhost:5173
 - `bun run check:fix` – Fix all issues automatically
 - `bun run ci` – Run CI checks
 
+### Ultracite Commands
+
+- `bunx ultracite init` – Initialize Ultracite in your project
+- `bunx ultracite fix` – Format and fix code automatically
+- `bunx ultracite check` – Check for issues without fixing
+
 ---
 
 ## Styling
@@ -449,7 +456,8 @@ BETTER_AUTH_URL=http://localhost:5173
 
 ## Code Quality
 
-- **Biome 2.2.4** for linting and formatting
+- **Biome 2.2.2** for linting and formatting with Ultracite integration
+- **Ultracite 5.3.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.2** with strict configuration
 - **Consistent code style:**
   - Tab indentation
@@ -462,8 +470,20 @@ BETTER_AUTH_URL=http://localhost:5173
 - **Prisma** with proper type generation
 - **React Compiler** for performance optimization
 
+### Ultracite Integration
+
+This project uses **Ultracite** for enhanced code quality and AI-friendly development:
+
+- **Zero configuration required** - Works out of the box with sensible defaults
+- **Subsecond performance** - Lightning-fast linting and formatting
+- **Maximum type safety** - Strict TypeScript rules and accessibility standards
+- **AI-friendly code generation** - Optimized for modern AI development workflows
+- **Accessibility enforcement** - Built-in a11y rules and best practices
+- **React/Next.js specific rules** - Tailored for modern React development
+
 ### Biome Configuration
 
+- **Ultracite integration** via `"extends": ["ultracite"]` in biome.jsonc
 - **CSS at-rules support** for TailwindCSS 4 features
 - **Sorted CSS classes** for consistency
 - **TypeScript strict mode** enabled
@@ -510,13 +530,14 @@ bun run check
 
 ### Code Style
 
-- Use Biome for formatting and linting
-- Follow TypeScript best practices
+- Use Biome with Ultracite for formatting and linting
+- Follow TypeScript best practices with Ultracite's strict rules
 - Write meaningful commit messages
 - Add tests for new features
 - Use nuqs for URL state management
 - Follow the established project structure
 - Use React Compiler for performance optimization
+- Follow Ultracite's accessibility and code quality standards
 
 ---
 
