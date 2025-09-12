@@ -1,5 +1,8 @@
 import { prisma } from '~/lib/prisma.server';
-import { rents, reviews, transactions, vans } from './seed-data';
+import { rents } from './seed-data/rents';
+import { reviews } from './seed-data/reviews';
+import { transactions } from './seed-data/transactions';
+import { vans } from './seed-data/vans';
 import {
 	clearTables,
 	findRentableVan,
