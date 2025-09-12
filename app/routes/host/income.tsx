@@ -1,7 +1,7 @@
 import { data, href } from 'react-router';
 import Sortable from '~/components/common/Sortable';
-import BarChartComponent from '~/components/host/BarChart';
 import Income from '~/components/host/Income';
+import LazyBarChart from '~/components/host/LazyBarChart';
 import VanPages from '~/components/van/VanPages';
 import { getHostTransactions } from '~/db/user/analytics';
 import { calculateTotalIncome, getElapsedTime } from '~/lib/getElapsedTime';
@@ -83,7 +83,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					<p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
 						{displayPrice(sumIncome)}
 					</p>
-					<BarChartComponent mappedData={mappedData} />
+					<LazyBarChart mappedData={mappedData} />
 					<Sortable
 						itemCount={filteredHostIncomes.length}
 						title="Income Transactions"

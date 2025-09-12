@@ -219,7 +219,7 @@
     "basename": "/",
     "buildDirectory": "/home/cc/Programming/Scrimba-FrontendPath/van-life/build",
     "future": {
-      "unstable_middleware": false,
+      "v8_middleware": false,
       "unstable_optimizeDeps": false,
       "unstable_splitRouteModules": false,
       "unstable_subResourceIntegrity": false,

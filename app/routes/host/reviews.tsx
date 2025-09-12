@@ -1,6 +1,6 @@
 import { data, href } from 'react-router';
 import Sortable from '~/components/common/Sortable';
-import BarChartComponent from '~/components/host/BarChart';
+import LazyBarChart from '~/components/host/LazyBarChart';
 import Review from '~/components/host/review/Review';
 import VanPages from '~/components/van/VanPages';
 import {
@@ -123,7 +123,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			// props that are common
 			optionalElement={
 				<>
-					<BarChartComponent mappedData={result} />
+					<LazyBarChart mappedData={result} />
 					<Sortable itemCount={safeChartData.length} title="Reviews" />
 				</>
 			}
