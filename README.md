@@ -73,6 +73,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **rolldown-vite** (latest) - Next-generation Vite with Rolldown bundler
 - **Biome 2.2.2** for linting and formatting with Ultracite integration
 - **Ultracite 5.3.3** - AI-friendly linting rules for maximum type safety and accessibility
+- **Husky 9.1.7** for Git hooks and pre-commit automation
 - **TypeScript 5.9.2** with native preview
 - **Bun** for fast package management and runtime
 
@@ -435,6 +436,23 @@ BETTER_AUTH_URL=http://localhost:5173
 - `bunx ultracite fix` – Format and fix code automatically
 - `bunx ultracite check` – Check for issues without fixing
 
+### Git Hooks (Husky)
+
+This project uses **Husky** for automated pre-commit checks:
+
+- **Pre-commit hook** runs automatically before each commit
+- **Automatic formatting** with Ultracite on staged files
+- **Linting checks** with Biome on staged files
+- **Type checking** with TypeScript before commit
+- **Commit blocking** if any checks fail
+
+The pre-commit hook ensures code quality by:
+
+1. Running `bun x ultracite fix` on staged files
+2. Running `bun x @biomejs/biome check --staged` for linting
+3. Running `bun x tsc --noEmit` for type checking
+4. Blocking the commit if any step fails
+
 ---
 
 ## Styling
@@ -538,6 +556,7 @@ bun run check
 - Follow the established project structure
 - Use React Compiler for performance optimization
 - Follow Ultracite's accessibility and code quality standards
+- **Pre-commit hooks** automatically ensure code quality before commits
 
 ---
 
