@@ -11,6 +11,7 @@ import {
 	getEndDate,
 	getRandomDiscount,
 	getRandomId,
+	getRecentRentalDate,
 	getVanState,
 	isVanRentable,
 	randomTrueOrFalse,
@@ -57,11 +58,12 @@ const main = async () => {
 			// biome-ignore lint/style/noNonNullAssertion: guaranteed to be found
 			selectedVan = vanIds.find((v) => v.id === vanId)!;
 		}
-		const rentedTo = randomTrueOrFalse()
-			? getEndDate(rent.rentedAt as Date)
-			: null;
+
+		// Generate a recent rental date within the last 6 weeks
+		const recentRentalDate = getRecentRentalDate();
+		const rentedTo = randomTrueOrFalse() ? getEndDate(recentRentalDate) : null;
 		const amount = rentedTo
-			? getCost(rent.rentedAt as Date, rentedTo, selectedVan.price)
+			? getCost(recentRentalDate, rentedTo, selectedVan.price)
 			: 0;
 		if (rentedTo) {
 			vansReturned.push(vanId);
@@ -70,6 +72,7 @@ const main = async () => {
 		}
 		return {
 			...rent,
+			rentedAt: recentRentalDate,
 			hostId: id1,
 			renterId: id2,
 			vanId,

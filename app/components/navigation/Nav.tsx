@@ -207,7 +207,7 @@ export default function Nav({ hasToken }: NavProps) {
 			{/* Hamburger button: only visible below md */}
 			<Button
 				aria-label="Open menu"
-				className="cursor-pointer text-orange-200 md:hidden"
+				className="cursor-pointer bg-orange-400/50 md:hidden"
 				onClick={handleClick}
 			>
 				<Menu />

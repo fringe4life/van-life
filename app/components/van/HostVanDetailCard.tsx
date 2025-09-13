@@ -13,6 +13,7 @@ import {
 import { HOST_VAN_DETAIL_IMG_SIZES } from '~/constants/imgConstants';
 import type { VanModel } from '~/generated/prisma/models';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
+import { cn } from '~/utils/utils';
 import { validateLowercaseVanType } from '~/utils/validators';
 import { getVanStateDataAttributes } from '~/utils/vanStateHelpers';
 import VanBadge from './VanBadge';
@@ -21,9 +22,14 @@ import VanPrice from './VanPrice';
 type VanDetailCardProps = {
 	van: VanModel;
 	children: React.ReactElement;
+	className?: string;
 };
 
-export default function VanDetailCard({ van, children }: VanDetailCardProps) {
+export default function VanDetailCard({
+	van,
+	children,
+	className,
+}: VanDetailCardProps) {
 	const { imageUrl, id: vanId, name, type } = van;
 	const navLinks = [
 		{
@@ -54,7 +60,7 @@ export default function VanDetailCard({ van, children }: VanDetailCardProps) {
 
 	return (
 		<div
-			className="@container/detail max-w-xl contain-content"
+			className={cn('@container/detail max-w-xl contain-content', className)}
 			{...stateAttributes}
 		>
 			<Card className="data-new:!border-4 data-new:!border-van-new data-repair:!border-4 data-repair:!border-van-repair data-sale:!border-4 data-sale:!border-van-sale">
@@ -88,28 +94,27 @@ export default function VanDetailCard({ van, children }: VanDetailCardProps) {
 					</div>
 				</CardHeader>
 				<CardContent>
-					<div className="my-6 flex gap-6">
-						<GenericComponent
-							Component={CustomNavLink}
-							emptyStateMessage=""
-							items={navLinks}
-							renderKey={(item) => item.label}
-							renderProps={(item) => ({
-								className: ({
-									isActive,
-									isPending,
-								}: {
-									isActive: boolean;
-									isPending: boolean;
-								}) =>
-									// biome-ignore lint/style/noNestedTernary: simply related to react routers nav links
-									isPending ? 'text-green-500' : isActive ? 'underline' : '',
-								to: item.to,
-								end: item.end,
-								children: item.label,
-							})}
-						/>
-					</div>
+					<GenericComponent
+						Component={CustomNavLink}
+						className="my-6 flex gap-6"
+						emptyStateMessage=""
+						items={navLinks}
+						renderKey={(item) => item.label}
+						renderProps={(item) => ({
+							className: ({
+								isActive,
+								isPending,
+							}: {
+								isActive: boolean;
+								isPending: boolean;
+							}) =>
+								// biome-ignore lint/style/noNestedTernary: simply related to react routers nav links
+								isPending ? 'text-green-500' : isActive ? 'underline' : '',
+							to: item.to,
+							end: item.end,
+							children: item.label,
+						})}
+					/>
 				</CardContent>
 				<CardFooter className="contain-inline-size">{children}</CardFooter>
 			</Card>

@@ -62,7 +62,7 @@ export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
 			>
 				&larr; Back to all vans
 			</CustomLink>
-			<VanDetailCard van={van}>
+			<VanDetailCard className="mx-auto" van={van}>
 				<PendingUI pendingOpacity={0.5}>
 					<Outlet context={van} />
 				</PendingUI>

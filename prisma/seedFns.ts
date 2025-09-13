@@ -142,6 +142,21 @@ function getRandomDiscount(min = 5, max = 100): number {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// Returns a random Date within the last 6 weeks for rented vans
+function getRecentRentalDate(): Date {
+	const DAYS_IN_SIX_WEEKS = 42;
+	const now = new Date();
+	const sixWeeksAgo = new Date(
+		now.getFullYear(),
+		now.getMonth(),
+		now.getDate() - DAYS_IN_SIX_WEEKS
+	);
+	const startMs = sixWeeksAgo.getTime();
+	const endMs = now.getTime();
+	const randomTime = startMs + Math.random() * (endMs - startMs);
+	return new Date(randomTime);
+}
+
 export {
 	randomTrueOrFalse,
 	clearTables,
@@ -158,4 +173,5 @@ export {
 	isVanRentable,
 	getRecentDate,
 	getRandomDiscount,
+	getRecentRentalDate,
 };
