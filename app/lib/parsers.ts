@@ -49,3 +49,8 @@ export const paginationParsers = {
 	...hostPaginationParsers,
 	type: parseAsVanType,
 };
+
+// Money page needs returnTo parameter for redirect after transaction
+export const moneyParsers = {
+	returnTo: parseAsString.withDefault(''),
+};

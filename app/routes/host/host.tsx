@@ -71,7 +71,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 		: { elapsedDays: 0, description: 'No data' };
 
 	return (
-		<PendingUI as="section">
+		<PendingUI as="section" className="mx-auto">
 			<div className="grid grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-3 py-6 sm:px-6.5 sm:py-9">
 				<h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 					Welcome {name ? name : 'User'}!

@@ -69,7 +69,14 @@ export async function action({ request }: Route.ActionArgs) {
 			formData,
 		};
 	}
-	throw redirect(href('/host'));
+
+	// Get returnTo parameter from URL
+	const url = new URL(request.url);
+	const returnTo = url.searchParams.get('returnTo');
+
+	// Redirect to returnTo URL if provided, otherwise default to /host
+	const redirectUrl = returnTo?.startsWith('/') ? returnTo : href('/host');
+	throw redirect(redirectUrl);
 }
 
 export default function MoneyTransaction({

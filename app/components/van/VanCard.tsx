@@ -7,6 +7,7 @@ import { VAN_CARD_IMG_SIZES } from '~/constants/imgConstants';
 import type { VanModel } from '~/generated/prisma/models';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import { validateLowercaseVanType } from '~/utils/validators';
+import { getVanStateDataAttributes } from '~/utils/vanStateHelpers';
 import VanBadge from './VanBadge';
 
 type VanCardProps = {
@@ -34,10 +35,16 @@ export default function VanCard({
 		{ sizes: VAN_CARD_IMG_SIZES, aspectRatio: 1 } // desktop sizes and aspect ratio (1:1 = square)
 	);
 
+	// Get van state data attributes for styling
+	const stateAttributes = getVanStateDataAttributes(van);
+
 	return (
-		<div className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content contain-inline-size [contain-intrinsic-size:auto_300px_auto_200px] [content-visibility:auto]">
+		<div
+			className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content contain-inline-size [contain-intrinsic-size:auto_300px_auto_200px] [content-visibility:auto]"
+			{...stateAttributes}
+		>
 			<Card
-				className="relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4"
+				className="data-new:!border-4 data-new:!border-van-new data-repair:!border-4 data-repair:!border-van-repair data-sale:!border-4 data-sale:!border-van-sale relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4"
 				style={{ viewTransitionName: `card-${vanId}` }}
 			>
 				<CardHeader className="relative @min-md/card:col-start-1 @min-md/card:row-span-2">

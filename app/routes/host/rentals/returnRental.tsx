@@ -8,6 +8,7 @@ import { getHostRentedVan } from '~/db/rental/queries';
 import { returnVan } from '~/db/rental/transactions';
 import { getAccountSummary } from '~/db/user/analytics';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { tryCatch } from '~/lib/tryCatch.server';
 import type { QueryType } from '~/types/types.server';
 import { getCost } from '~/utils/getCost';
 import type { Route } from './+types/returnRental';
@@ -87,19 +88,17 @@ export async function action({ request, params }: Route.ActionArgs) {
 	if (!rent || typeof rent !== 'object' || !('van' in rent)) {
 		throw data('Rented van not found', { status: 404 });
 	}
-	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van.price);
+	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
 	const isUnableToPay = typeof money === 'number' ? money < amountToPay : false;
 
 	if (isUnableToPay) {
 		return { errors: 'Cannot afford to return this rental' };
 	}
-	const returnResults = await Promise.allSettled([
-		returnVan(rentId, session.user.id, amountToPay, rent.van.id),
-	]);
-	const [returned] = returnResults.map((result) =>
-		result.status === 'fulfilled' ? result.value : null
+	const returnResult = await tryCatch(() =>
+		returnVan(rentId, session.user.id, amountToPay, rent.van.id)
 	);
-	if (!returned) {
+
+	if (returnResult.error || !returnResult.data) {
 		return { errors: 'Something went wrong try again later' };
 	}
 	throw redirect(href('/host'));
@@ -121,7 +120,7 @@ export default function ReturnRental({
 		);
 	}
 
-	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van.price);
+	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
 	const isUnableToPay = money < amountToPay;
 	return (
 		<section className="flex flex-col gap-4">
@@ -140,7 +139,9 @@ export default function ReturnRental({
 					<p className="text-lg text-red-400">
 						You cannot afford to return this van.
 					</p>
-					<CustomLink to={href('/host/money')}>
+					<CustomLink
+						to={`${href('/host/money')}?returnTo=${encodeURIComponent(href('/host/rentals/returnRental/:rentId', { rentId: params.rentId }))}`}
+					>
 						Top up your account <span className="underline">here</span>
 					</CustomLink>
 				</article>

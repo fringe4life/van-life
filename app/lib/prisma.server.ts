@@ -36,10 +36,7 @@ const db =
 	new PrismaClient({
 		adapter,
 		// Additional Prisma optimizations
-		log:
-			process.env.NODE_ENV === 'development'
-				? ['query', 'error', 'warn']
-				: ['error'],
+		log: ['error'], // Only log errors to reduce terminal clutter
 	});
 
 if (process.env.NODE_ENV === 'development') {

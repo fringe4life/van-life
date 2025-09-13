@@ -40,7 +40,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Meta />
 				<Links />
 			</head>
-			<body className="mx-auto grid min-h-dvh w-full max-w-5xl grid-rows-[104px_1fr_100px] bg-orange-50">
+			<body className="mx-auto grid min-h-dvh w-full max-w-[var(--container-layout)] grid-cols-1 grid-rows-[104px_1fr_100px] bg-orange-50">
 				{children}
 				<ScrollRestoration />
 				<Scripts />

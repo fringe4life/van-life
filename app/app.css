@@ -1,6 +1,9 @@
 /** biome-ignore-all lint/correctness/noUnknownTypeSelector: is for a view transition name and perfectly legit */
 /** biome-ignore-all lint/correctness/noUnknownProperty: the property exists */
 @import "tailwindcss";
+@custom-variant data-new (&[data-state="new"]);
+@custom-variant data-sale (&[data-state="sale"]);
+@custom-variant data-repair (&[data-state="repair"]);
 html {
 	scrollbar-gutter: stable;
 	scrollbar-width: thin;
@@ -202,7 +205,16 @@ html {
 	--color-orange-600: oklch(68.11% 0.142 38.3);
 	--color-neutral-600: oklch(42.02% 0 0);
 	--color-neutral-900: oklch(20.02% 0 0);
+
+	/* Van state colors extracted from badge component - made more prominent */
+	--color-van-new: oklch(30% 0 0); /* even darker gray for better visibility */
+	--color-van-sale: oklch(40% 0.3 142); /* more saturated green */
+	--color-van-repair: oklch(60% 0.3 85); /* more saturated yellow */
+
+	--container-layout: min(var(--container-5xl), 100dvw);
 }
+
+/* Custom variants for van state styling */
 
 .grid-max {
 	--_gap: 32px;

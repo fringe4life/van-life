@@ -105,7 +105,7 @@ const hostNavItems = [
 
 export default function HostLayout() {
 	return (
-		<div className="mx-auto max-w-[calc(100dvw_-_1.75rem)] contain-content sm:mx-0">
+		<div className="mx-auto max-w-[calc(var(--container-layout)_-_1.75rem)] contain-content sm:mx-0 md:max-w-[calc(var(--container-layout)_-_3rem)]">
 			<GenericComponent
 				as="ul"
 				Component={CustomNavLink}
