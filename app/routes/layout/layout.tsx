@@ -17,7 +17,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 	return (
 		<>
 			<Nav hasToken={hasToken} />
-			<main className="mb-6 grid grid-rows-subgrid contain-content">
+			<main className="mb-6 grid grid-rows-subgrid px-[var(--padding-inline)] contain-content">
 				<Outlet />
 			</main>
 			<footer className="grid place-content-center bg-neutral-800 py-6.25 contain-strict">
