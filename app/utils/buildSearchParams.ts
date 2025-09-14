@@ -7,16 +7,17 @@ const serializePaginationParams = createSerializer(paginationParsers);
 const serializeHostPaginationParams = createSerializer(hostPaginationParsers);
 
 /**
- * Builds search parameters string for van routes with optional type filter
- * @param params - Object containing cursor, limit, and optional type
+ * Builds search parameters string for van routes with optional type and van filters
+ * @param params - Object containing cursor, limit, optional type, and optional vanFilter
  * @returns Query string starting with '?' or empty string if no params
  */
 export function buildVanSearchParams(params: {
 	cursor: string;
 	limit: number;
 	type?: string | null;
+	vanFilter?: string | null;
 }): string {
-	const { cursor, limit, type } = params;
+	const { cursor, limit, type, vanFilter } = params;
 
 	// Build search params with validated limit and type (nuqs will clear on default)
 	const searchParams: Record<string, string | number> = {
@@ -28,6 +29,11 @@ export function buildVanSearchParams(params: {
 	const validatedType = validateVanTypeOrEmpty(type || '');
 	if (validatedType !== '') {
 		searchParams.type = validatedType;
+	}
+
+	// Add vanFilter if it's a valid filter
+	if (vanFilter && (vanFilter === 'sale' || vanFilter === 'new')) {
+		searchParams.vanFilter = vanFilter;
 	}
 
 	const queryString = serializePaginationParams(searchParams);

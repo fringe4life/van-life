@@ -44,10 +44,16 @@ export const hostPaginationParsers = {
 	sort: parseAsSortOption,
 };
 
-// Main routes need cursor, limit, and type filter
+// Van filters for the main vans page (sale, new)
+const VAN_FILTERS = ['sale', 'new', ''] as const;
+
+const parseAsVanFilter = parseAsStringEnum([...VAN_FILTERS]).withDefault('');
+
+// Main routes need cursor, limit, type filter, and van filter
 export const paginationParsers = {
 	...hostPaginationParsers,
 	type: parseAsVanType,
+	vanFilter: parseAsVanFilter,
 };
 
 // Money page needs returnTo parameter for redirect after transaction
