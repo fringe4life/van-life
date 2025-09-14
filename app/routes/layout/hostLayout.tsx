@@ -105,11 +105,11 @@ const hostNavItems = [
 
 export default function HostLayout() {
 	return (
-		<div className="mx-auto max-w-[calc(var(--container-layout)_-_1.75rem)] contain-content sm:mx-0 md:max-w-[calc(var(--container-layout)_-_3rem)]">
+		<div className="max-w-[var(--host-layout-max-width)] justify-self-center contain-content">
 			<GenericComponent
 				as="ul"
 				Component={CustomNavLink}
-				className="mask-r-from-90% sm:mask-none no-scrollbar mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-3 overflow-x-auto overscroll-x-contain py-3 contain-content sm:gap-3"
+				className="mask-r-from-95% no-scrollbar mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-3 overflow-x-auto overscroll-x-contain py-3 contain-content"
 				emptyStateMessage="No nav links"
 				items={hostNavItems}
 				renderKey={(item) => item.to}
@@ -120,7 +120,6 @@ export default function HostLayout() {
 					className: navLinkClassName,
 					children: item.children,
 				})}
-				wrapperProps={{}}
 			/>
 			<Outlet />
 		</div>

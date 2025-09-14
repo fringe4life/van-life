@@ -200,7 +200,7 @@ export default function Nav({ hasToken }: NavProps) {
 	const mobileNavItems: NavItemType[] = navItems.map(createMobileNavItem);
 
 	return (
-		<header className="flex items-center justify-between gap-3 px-3 py-9 sm:gap-6 md:px-6">
+		<header className="flex items-center justify-between gap-3 px-[var(--padding-inline)] py-9 sm:gap-6">
 			<h1 className="font-black text-xl xs:text-2xl uppercase">
 				<CustomLink to={href('/')}>#vanlife</CustomLink>
 			</h1>
