@@ -1,5 +1,7 @@
 # Van Life
 
+<div align="center">
+
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
 [![React Router](https://img.shields.io/badge/React%20Router-7.9.1-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -9,6 +11,8 @@
 [![Biome](https://img.shields.io/badge/Biome-2.2.2-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-6.16.1-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![React](https://img.shields.io/badge/React-19.1.1-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+
+</div>
 
 A modern full-stack van rental platform built with React Router 7, showcasing advanced web development techniques including server-side rendering, authentication, and responsive design.
 
