@@ -3,8 +3,12 @@ import Image from '~/components/common/Image';
 import PendingUI from '~/components/common/PendingUI';
 import CustomLink from '~/components/navigation/CustomLink';
 import { buttonVariants } from '~/components/ui/button';
-import { ABOUT_IMG, ABOUT_IMG_SIZES } from '~/constants/imgConstants';
-import { createResponsiveSrcSet } from '~/utils/createSrcSet';
+import {
+	ABOUT_IMG,
+	ABOUT_IMG_SIZES,
+	HIGH_QUALITY_IMAGE_QUALITY,
+} from '~/constants/imgConstants';
+import { createWebPSrcSet } from '~/utils/createOptimizedSrcSet';
 import { cn } from '~/utils/utils';
 
 export function meta() {
@@ -18,12 +22,20 @@ export function meta() {
 }
 
 export default function About() {
-	// Create responsive srcSet with 16:9 aspect ratio for both mobile and desktop
+	// Create optimized WebP srcSet with 16:9 aspect ratio for both mobile and desktop
 	// since the about page only uses aspect-video
-	const srcSet = createResponsiveSrcSet(
+	const srcSet = createWebPSrcSet(
 		ABOUT_IMG,
-		{ sizes: ABOUT_IMG_SIZES, aspectRatio: 0.5625 }, // mobile sizes and aspect ratio (16:9)
-		{ sizes: ABOUT_IMG_SIZES, aspectRatio: 0.5625 } // desktop sizes and aspect ratio (16:9)
+		{
+			sizes: ABOUT_IMG_SIZES,
+			aspectRatio: 0.5625,
+			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
+		}, // mobile sizes and aspect ratio (16:9)
+		{
+			sizes: ABOUT_IMG_SIZES,
+			aspectRatio: 0.5625,
+			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
+		} // desktop sizes and aspect ratio (16:9)
 	);
 
 	return (

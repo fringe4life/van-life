@@ -1,4 +1,6 @@
-export const VAN_CARD_IMG_SIZES = [200, 250, 300, 350, 500] as const;
+// Optimized sizes based on actual display dimensions (max 350px)
+// Using 50px increments for better performance and cleaner sizing
+export const VAN_CARD_IMG_SIZES = [200, 250, 300, 350] as const;
 
 export const VAN_DETAIL_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
 
@@ -21,3 +23,8 @@ export const HOME_IMG_URL =
 	'https://images.unsplash.com/photo-1671783181591-55f8e18fbb21?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2FtcGVydmFuJTIwc2l0ZXxlbnwwfDB8MHx8fDI%3D';
 
 export const HOST_VAN_DETAIL_IMG_SIZES = [200, 250, 300, 400] as const;
+
+// Image quality constants for better compression and performance
+export const DEFAULT_IMAGE_QUALITY = 50; // Optimized for better compression
+export const HIGH_QUALITY_IMAGE_QUALITY = 75; // For cases where higher quality is needed
+export const AVIF_QUALITY_BOOST = 10; // AVIF can handle higher quality

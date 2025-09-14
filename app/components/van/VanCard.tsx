@@ -5,7 +5,7 @@ import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { VAN_CARD_IMG_SIZES } from '~/constants/imgConstants';
 import type { VanModel } from '~/generated/prisma/models';
-import { createResponsiveSrcSet } from '~/utils/createSrcSet';
+import { createWebPSrcSet } from '~/utils/createOptimizedSrcSet';
 import { validateLowercaseVanType } from '~/utils/validators';
 import { getVanStateStyles } from '~/utils/vanStateStyles';
 import VanBadge from './VanBadge';
@@ -27,12 +27,20 @@ export default function VanCard({
 }: VanCardProps) {
 	const { type, name, description, imageUrl, id: vanId } = van;
 
-	// Create responsive srcSet with 1:1 aspect ratio for both mobile and desktop
+	// Create optimized WebP srcSet with 1:1 aspect ratio for both mobile and desktop
 	// since the VanCard uses aspect-square
-	const srcSet = createResponsiveSrcSet(
+	const srcSet = createWebPSrcSet(
 		imageUrl,
-		{ sizes: VAN_CARD_IMG_SIZES, aspectRatio: 1 }, // mobile sizes and aspect ratio (1:1 = square)
-		{ sizes: VAN_CARD_IMG_SIZES, aspectRatio: 1 } // desktop sizes and aspect ratio (1:1 = square)
+		{
+			sizes: VAN_CARD_IMG_SIZES,
+			aspectRatio: 1,
+			// quality defaults to DEFAULT_IMAGE_QUALITY (50) for better compression
+		}, // mobile sizes and aspect ratio (1:1 = square)
+		{
+			sizes: VAN_CARD_IMG_SIZES,
+			aspectRatio: 1,
+			// quality defaults to DEFAULT_IMAGE_QUALITY (50) for better compression
+		} // desktop sizes and aspect ratio (1:1 = square)
 	);
 
 	// Get van state styling
@@ -51,7 +59,7 @@ export default function VanCard({
 						alt={description}
 						className="aspect-square w-full rounded-md"
 						height="200"
-						sizes="(width < 350px) 250w, (width > 300px) 350w, 200w"
+						sizes="(max-width: 300px) 250px, (max-width: 400px) 300px, 350px"
 						src={imageUrl}
 						srcSet={srcSet}
 						width="200"

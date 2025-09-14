@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import { DEFAULT_IMAGE_QUALITY } from '~/constants/imgConstants';
 import canUseDOM from '~/utils/canUseDOM';
-import { createNewImageSize } from '~/utils/createNewImageSize';
+import { createNewImageSizeWithHeight } from '~/utils/createNewImageSize';
 import { cn } from '~/utils/utils';
 
 /**
@@ -60,8 +61,13 @@ export default function Image({
 }: ImgProps) {
 	/** Low-resolution placeholder image width constant */
 	const LOW_RES_IMAGE_WIDTH = 20;
-	/** Low-resolution placeholder image (20px width) */
-	const lowRes = createNewImageSize(src, LOW_RES_IMAGE_WIDTH);
+	/** Low-resolution placeholder image (20px width) with WebP format and optimized quality */
+	const lowRes = createNewImageSizeWithHeight(
+		src,
+		LOW_RES_IMAGE_WIDTH,
+		LOW_RES_IMAGE_WIDTH,
+		DEFAULT_IMAGE_QUALITY
+	);
 	/** State to track if the full-resolution image has loaded */
 	const [loaded, setLoaded] = useState(false);
 	/** State to store the full-resolution image source */

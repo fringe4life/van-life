@@ -10,9 +10,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from '~/components/ui/card';
-import { HOST_VAN_DETAIL_IMG_SIZES } from '~/constants/imgConstants';
+import {
+	HIGH_QUALITY_IMAGE_QUALITY,
+	HOST_VAN_DETAIL_IMG_SIZES,
+} from '~/constants/imgConstants';
 import type { VanModel } from '~/generated/prisma/models';
-import { createResponsiveSrcSet } from '~/utils/createSrcSet';
+import { createWebPSrcSet } from '~/utils/createOptimizedSrcSet';
 import { cn } from '~/utils/utils';
 import { validateLowercaseVanType } from '~/utils/validators';
 import { getVanStateStyles } from '~/utils/vanStateStyles';
@@ -47,12 +50,20 @@ export default function VanDetailCard({
 		},
 	];
 
-	// Create responsive srcSet with 1:1 aspect ratio for both mobile and desktop
+	// Create optimized WebP srcSet with 1:1 aspect ratio for both mobile and desktop
 	// since the HostVanDetailCard uses aspect-square
-	const srcSet = createResponsiveSrcSet(
+	const srcSet = createWebPSrcSet(
 		imageUrl,
-		{ sizes: HOST_VAN_DETAIL_IMG_SIZES, aspectRatio: 1 }, // mobile sizes and aspect ratio (1:1 = square)
-		{ sizes: HOST_VAN_DETAIL_IMG_SIZES, aspectRatio: 1 } // desktop sizes and aspect ratio (1:1 = square)
+		{
+			sizes: HOST_VAN_DETAIL_IMG_SIZES,
+			aspectRatio: 1,
+			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
+		}, // mobile sizes and aspect ratio (1:1 = square)
+		{
+			sizes: HOST_VAN_DETAIL_IMG_SIZES,
+			aspectRatio: 1,
+			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
+		} // desktop sizes and aspect ratio (1:1 = square)
 	);
 
 	// Get van state styling

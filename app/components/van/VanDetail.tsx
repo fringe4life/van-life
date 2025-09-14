@@ -1,9 +1,12 @@
 import { href } from 'react-router';
 import Image from '~/components/common/Image';
 import { Badge, badgeVariants } from '~/components/ui/badge';
-import { VAN_DETAIL_IMG_SIZES } from '~/constants/imgConstants';
+import {
+	HIGH_QUALITY_IMAGE_QUALITY,
+	VAN_DETAIL_IMG_SIZES,
+} from '~/constants/imgConstants';
 import type { VanModel } from '~/generated/prisma/models';
-import { createResponsiveSrcSet } from '~/utils/createSrcSet';
+import { createWebPSrcSet } from '~/utils/createOptimizedSrcSet';
 import { cn } from '~/utils/utils';
 import { validateLowercaseVanType } from '~/utils/validators';
 import { getVanStateStyles } from '~/utils/vanStateStyles';
@@ -29,10 +32,18 @@ export default function VanDetail({
 	vanIsAvailable,
 	van,
 }: VanDetailProps) {
-	const srcSet = createResponsiveSrcSet(
+	const srcSet = createWebPSrcSet(
 		imageUrl,
-		{ sizes: VAN_DETAIL_IMG_SIZES, aspectRatio: 1 }, // mobile sizes and aspect ratio (1:1 = square)
-		{ sizes: VAN_DETAIL_IMG_SIZES, aspectRatio: 1 } // desktop sizes and aspect ratio (1:1 = square)
+		{
+			sizes: VAN_DETAIL_IMG_SIZES,
+			aspectRatio: 1,
+			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
+		}, // mobile sizes and aspect ratio (1:1 = square)
+		{
+			sizes: VAN_DETAIL_IMG_SIZES,
+			aspectRatio: 1,
+			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
+		} // desktop sizes and aspect ratio (1:1 = square)
 	);
 
 	// Get van state styling

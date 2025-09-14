@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import GenericComponent, {
 	type GenericComponentProps,
 } from '~/components/common/GenericComponent';
@@ -38,7 +39,15 @@ export default function VanPages<P, T extends { id: string }, U>(
 	const { cursor, limit = DEFAULT_LIMIT } = searchParams;
 
 	return (
-		<PendingUI as="section" className="grid contain-content">
+		<PendingUI
+			as="section"
+			className={clsx(
+				'grid contain-content',
+				optionalElement &&
+					'grid-rows-[min-content_min-content_1fr_min-content]',
+				!optionalElement && 'grid-rows-[min-content_1fr_min-content]'
+			)}
+		>
 			<h2 className="mb-6 font-bold text-3xl">{title}</h2>
 			{optionalElement}
 			<GenericComponent className="grid-max mt-6" items={items} {...rest} />

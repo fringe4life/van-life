@@ -4,11 +4,12 @@ import PendingUI from '~/components/common/PendingUI';
 import CustomLink from '~/components/navigation/CustomLink';
 import { buttonVariants } from '~/components/ui/button';
 import {
+	HIGH_QUALITY_IMAGE_QUALITY,
 	HOME_DESKTOP_IMG_SIZES,
 	HOME_IMG_URL,
 	HOME_MOBILE_IMG_SIZES,
 } from '~/constants/imgConstants';
-import { createResponsiveSrcSet } from '~/utils/createSrcSet';
+import { createWebPSrcSet } from '~/utils/createOptimizedSrcSet';
 import { cn } from '~/utils/utils';
 
 export function meta() {
@@ -22,10 +23,18 @@ export function meta() {
 	];
 }
 
-const srcSet = createResponsiveSrcSet(
+const srcSet = createWebPSrcSet(
 	HOME_IMG_URL,
-	{ sizes: HOME_MOBILE_IMG_SIZES, aspectRatio: 1.5 }, // mobile aspect ratio (1:1.5)
-	{ sizes: HOME_DESKTOP_IMG_SIZES, aspectRatio: 0.5625 } // desktop aspect ratio (16:9)
+	{
+		sizes: HOME_MOBILE_IMG_SIZES,
+		aspectRatio: 1.5,
+		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for home page
+	}, // mobile aspect ratio (1:1.5)
+	{
+		sizes: HOME_DESKTOP_IMG_SIZES,
+		aspectRatio: 0.5625,
+		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for home page
+	} // desktop aspect ratio (16:9)
 );
 export default function Home() {
 	// Create responsive srcSet with different aspect ratios:
