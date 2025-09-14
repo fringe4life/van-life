@@ -19,51 +19,36 @@ export function isVanNew(createdAt: VanModel['createdAt']): boolean {
 }
 
 /**
- * Generates data-slot attribute for van state styling using shadcn data-slot system
+ * Gets the lowercase van state
  * @param van - The van model
- * @returns The data-slot value for CSS targeting
+ * @returns The lowercase state string
  */
-export function getVanStateDataSlot(van: VanModel): string {
+export function lowercaseVanState(van: VanModel): string {
 	const isNew = isVanNew(van.createdAt);
 
-	// Determine the state for data-slot attribute
-	let state: string;
+	// Determine the state
 	if (isNew) {
-		state = 'new';
-	} else if (van.state === 'IN_REPAIR') {
-		state = 'repair';
-	} else if (van.state === 'ON_SALE') {
-		state = 'sale';
-	} else {
-		state = 'available';
+		return 'new';
 	}
-
-	const dataSlot = `van-card-${state}`;
-
-	return dataSlot;
+	if (van.state === 'IN_REPAIR') {
+		return 'repair';
+	}
+	if (van.state === 'ON_SALE') {
+		return 'sale';
+	}
+	return 'available';
 }
 
 /**
- * @deprecated Use getVanStateDataSlot instead. This function is kept for backward compatibility.
- * Generates data attributes for van state styling using Tailwind v4 custom variants
+ * Gets the lowercase van state with processing callback
  * @param van - The van model
- * @returns Object with data attributes for styling
+ * @param processor - Callback to process the state (e.g., add data-* prefix)
+ * @returns The processed state
  */
-export function getVanStateDataAttributes(
-	van: VanModel
-): Record<string, string | boolean> {
-	const isNew = isVanNew(van.createdAt);
-	const attributes: Record<string, string | boolean> = {};
-
-	// Build data attributes using Tailwind v4 format: data-[attribute=value]
-	// Use a single data-state attribute with different values
-	if (isNew) {
-		attributes['data-state'] = 'new';
-	} else if (van.state === 'IN_REPAIR') {
-		attributes['data-state'] = 'repair';
-	} else if (van.state === 'ON_SALE') {
-		attributes['data-state'] = 'sale';
-	}
-
-	return attributes;
+export function lowercaseVanStateWithProcessor<T>(
+	van: VanModel,
+	processor: (state: string) => T
+): T {
+	const state = lowercaseVanState(van);
+	return processor(state);
 }

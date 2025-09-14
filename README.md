@@ -38,13 +38,14 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🚀 **Modern React Router 7** with server-side rendering and file-based routing
 - 🔒 **Authentication** with better-auth (sign up, login, session management)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management)
+- 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals with analytics)
 - 📈 **Host Dashboard** (income tracking, bar charts, rental analytics)
 - 💰 **Financial Management** (deposit/withdraw funds, transaction tracking)
 - 🏷️ **Van State System** (NEW, IN_REPAIR, ON_SALE, AVAILABLE with discount pricing)
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
-- 🎨 **DRY Van State Styling** (centralized utility with custom Tailwind variants)
+- 🎨 **DRY Van State Styling** (centralized utility with processor pattern and custom Tailwind variants)
 - 🎨 **Modern UI/UX** with responsive design and smooth animations
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **Zod** for runtime schema validation
@@ -469,7 +470,7 @@ export default function LazyBarChart({ mappedData }: LazyBarChartProps) {
 
 ### Benefits
 
-- **Faster initial loads** - Pages load ~150x faster
+- **Faster initial loads** - Pages load faster
 - **Better user experience** - Immediate content with progressive enhancement
 - **Improved caching** - Chart chunks cached separately
 - **Reduced memory usage** - Components load only when needed
