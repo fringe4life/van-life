@@ -40,6 +40,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 💰 **Financial Management** (deposit/withdraw funds, transaction tracking)
 - 🏷️ **Van State System** (NEW, IN_REPAIR, ON_SALE, AVAILABLE with discount pricing)
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
+- 🎨 **DRY Van State Styling** (centralized utility with custom Tailwind variants)
 - 🎨 **Modern UI/UX** with responsive design and smooth animations
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **Zod** for runtime schema validation
@@ -314,6 +315,63 @@ model Van {
 - **State consistency** - Prevents renting of unavailable vans
 - **User experience** - Clear visual indicators for van status
 - **Maintainable** - Centralized pricing logic in reusable components
+
+---
+
+## DRY Van State Styling System
+
+The application features a **centralized van state styling system** that eliminates code duplication across components:
+
+### Features
+
+- **Single utility function** (`getVanStateStyles()`) for all van card components
+- **Custom Tailwind variants** for clean, readable class names
+- **Consistent styling** across VanCard, VanDetail, and HostVanDetailCard
+- **Type-safe implementation** with proper TypeScript support
+- **Easy maintenance** - change styling in one place, affects all components
+
+### Implementation
+
+```typescript
+// Centralized utility (app/utils/vanStateStyles.ts)
+export function getVanStateStyles(van: VanModel) {
+  const dataSlot = getVanStateDataSlot(van);
+  const vanStateClasses = [
+    'van-new:border-2',
+    'van-new:border-van-new',
+    'van-new:bg-van-new/10',
+    // ... other states
+  ].join(' ');
+
+  return { dataSlot, className: vanStateClasses };
+}
+
+// Custom variants (app/app.css)
+@custom-variant van-new (&[data-slot*="van-card-new"]);
+@custom-variant van-sale (&[data-slot*="van-card-sale"]);
+@custom-variant van-repair (&[data-slot*="van-card-repair"]);
+@custom-variant van-available (&[data-slot*="van-card-available"]);
+```
+
+### Usage
+
+```typescript
+// In any van component
+const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);
+
+<Card
+  className={`base-classes ${vanStateClasses}`}
+  data-slot={dataSlot}
+>
+```
+
+### Benefits
+
+- **DRY Principle** - No more copy-pasting CSS classes
+- **Single Source of Truth** - All styling logic centralized
+- **Clean Code** - `van-new:border-2` vs `data-[slot*=van-card-new]:border-2`
+- **Easy Maintenance** - Update styling in one place
+- **Type Safety** - Full TypeScript support with proper return types
 
 ---
 

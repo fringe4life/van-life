@@ -20,9 +20,6 @@ export function meta({ loaderData }: Route.MetaArgs) {
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-	// if (request.headers.get('referer') === href('/vans')) {
-	// 	return
-	// }
 	if (!params.vanId) {
 		throw data('No van id', { status: 404 });
 	}
@@ -55,7 +52,7 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 	// Use nuqs for client-side state management
 	const [{ cursor, limit, type }] = useQueryStates(paginationParsers);
 
-	const vanIsAvailable = !van.isRented;
+	const vanIsAvailable = !van.isRented && van?.state !== 'IN_REPAIR';
 
 	// Build the back link with search parameters
 	const backLinkSearch = buildVanSearchParams({ cursor, limit, type });

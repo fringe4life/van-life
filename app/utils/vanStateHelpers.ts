@@ -1,19 +1,6 @@
 import { SIX_MONTHS } from '~/constants/timeConstants';
 import type { VanModel } from '~/generated/prisma/models';
 
-// Constants for time calculations
-const SECONDS_PER_MINUTE = 60;
-const MINUTES_PER_HOUR = 60;
-const HOURS_PER_DAY = 24;
-const MILLISECONDS_PER_SECOND = 1000;
-const DAYS_PER_MONTH = 30;
-
-const MILLISECONDS_PER_DAY =
-	MILLISECONDS_PER_SECOND *
-	SECONDS_PER_MINUTE *
-	MINUTES_PER_HOUR *
-	HOURS_PER_DAY;
-
 /**
  * Determines if a van is considered "new" based on its creation date
  * @param createdAt - The van's creation date
@@ -28,22 +15,36 @@ export function isVanNew(createdAt: VanModel['createdAt']): boolean {
 	);
 	const isNew = new Date(createdAt) > sixMonthsAgo;
 
-	// Debug logging for van state determination
-	// biome-ignore lint/suspicious/noConsole: Debug logging for development
-	console.log('🔍 [vanStateHelpers] isVanNew check:', {
-		createdAt: createdAt.toISOString(),
-		sixMonthsAgo: sixMonthsAgo.toISOString(),
-		isNew,
-		monthsSinceCreation: Math.floor(
-			(now.getTime() - new Date(createdAt).getTime()) /
-				(MILLISECONDS_PER_DAY * DAYS_PER_MONTH)
-		),
-	});
-
 	return isNew;
 }
 
 /**
+ * Generates data-slot attribute for van state styling using shadcn data-slot system
+ * @param van - The van model
+ * @returns The data-slot value for CSS targeting
+ */
+export function getVanStateDataSlot(van: VanModel): string {
+	const isNew = isVanNew(van.createdAt);
+
+	// Determine the state for data-slot attribute
+	let state: string;
+	if (isNew) {
+		state = 'new';
+	} else if (van.state === 'IN_REPAIR') {
+		state = 'repair';
+	} else if (van.state === 'ON_SALE') {
+		state = 'sale';
+	} else {
+		state = 'available';
+	}
+
+	const dataSlot = `van-card-${state}`;
+
+	return dataSlot;
+}
+
+/**
+ * @deprecated Use getVanStateDataSlot instead. This function is kept for backward compatibility.
  * Generates data attributes for van state styling using Tailwind v4 custom variants
  * @param van - The van model
  * @returns Object with data attributes for styling
@@ -63,16 +64,6 @@ export function getVanStateDataAttributes(
 	} else if (van.state === 'ON_SALE') {
 		attributes['data-state'] = 'sale';
 	}
-
-	// Debug logging for data attribute generation
-	// biome-ignore lint/suspicious/noConsole: Debug logging for development
-	console.log('🎨 [vanStateHelpers] getVanStateDataAttributes:', {
-		vanId: van.id,
-		vanName: van.name,
-		vanState: van.state,
-		isNew,
-		dataAttributes: attributes,
-	});
 
 	return attributes;
 }

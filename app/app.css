@@ -1,9 +1,13 @@
 /** biome-ignore-all lint/correctness/noUnknownTypeSelector: is for a view transition name and perfectly legit */
 /** biome-ignore-all lint/correctness/noUnknownProperty: the property exists */
 @import "tailwindcss";
-@custom-variant data-new (&[data-state="new"]);
-@custom-variant data-sale (&[data-state="sale"]);
-@custom-variant data-repair (&[data-state="repair"]);
+
+/* Van state custom variants for cleaner component styling */
+@custom-variant van-new (&[data-slot*="van-card-new"]);
+@custom-variant van-sale (&[data-slot*="van-card-sale"]);
+@custom-variant van-repair (&[data-slot*="van-card-repair"]);
+@custom-variant van-available (&[data-slot*="van-card-available"]);
+
 html {
 	scrollbar-gutter: stable;
 	scrollbar-width: thin;

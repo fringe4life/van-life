@@ -15,7 +15,7 @@ import type { VanModel } from '~/generated/prisma/models';
 import { createResponsiveSrcSet } from '~/utils/createSrcSet';
 import { cn } from '~/utils/utils';
 import { validateLowercaseVanType } from '~/utils/validators';
-import { getVanStateDataAttributes } from '~/utils/vanStateHelpers';
+import { getVanStateStyles } from '~/utils/vanStateStyles';
 import VanBadge from './VanBadge';
 import VanPrice from './VanPrice';
 
@@ -55,15 +55,14 @@ export default function VanDetailCard({
 		{ sizes: HOST_VAN_DETAIL_IMG_SIZES, aspectRatio: 1 } // desktop sizes and aspect ratio (1:1 = square)
 	);
 
-	// Get van state data attributes for styling
-	const stateAttributes = getVanStateDataAttributes(van);
+	// Get van state styling
+	const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);
 
 	return (
 		<div
 			className={cn('@container/detail max-w-xl contain-content', className)}
-			{...stateAttributes}
 		>
-			<Card className="data-new:!border-4 data-new:!border-van-new data-repair:!border-4 data-repair:!border-van-repair data-sale:!border-4 data-sale:!border-van-sale">
+			<Card className={vanStateClasses} data-slot={dataSlot}>
 				<CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] grid-cols-1 @min-md/detail:grid-rows-[200px_1fr] @min-xl/detail:grid-rows-[300px_1fr] @min-md/detail:gap-x-4">
 					<div className="relative">
 						<VanBadge van={van} />
