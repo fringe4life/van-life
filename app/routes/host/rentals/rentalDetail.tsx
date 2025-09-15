@@ -1,14 +1,14 @@
 import { data, href, redirect } from 'react-router';
 import { z } from 'zod/v4';
-import CustomForm from '~/components/common/CustomForm';
+import CustomForm from '~/components/CustomForm';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
-import VanCard from '~/components/van/VanCard';
 import { getHostRentedVan } from '~/db/rental/queries';
 import { rentVan } from '~/db/rental/transactions';
+import VanCard from '~/features/vans/components/VanCard';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { rentVanSchema } from '~/lib/schemas.server';
-import { tryCatch } from '~/lib/tryCatch.server';
+import { tryCatch } from '~/utils/tryCatch.server';
 import type { Route } from './+types/rentalDetail';
 
 export function meta({ loaderData }: Route.MetaArgs) {

@@ -16,9 +16,9 @@ import {
 	useState,
 } from 'react';
 import { href } from 'react-router';
-import GenericComponent from '~/components/common/GenericComponent';
-import navLinkClassName from '~/utils/navLinkClassName';
-import { Button } from '../ui/button';
+import GenericComponent from '~/components/GenericComponent';
+import navLinkClassName from '~/features/navigation/utils/navLinkClassName';
+import { Button } from '../../../components/ui/button';
 import CustomLink from './CustomLink';
 import CustomNavLink from './CustomNavLink';
 import NavItem from './NavItem';
@@ -115,7 +115,7 @@ export default function Nav({ hasToken }: NavProps) {
 			props: { to: href('/about'), className: navLinkClassName },
 			children: (
 				<>
-					<Info className="aspect-square w-10" />
+					<Info className="aspect-square" />
 					<span>About</span>
 				</>
 			),
@@ -127,7 +127,7 @@ export default function Nav({ hasToken }: NavProps) {
 			props: { to: href('/host'), className: navLinkClassName },
 			children: (
 				<>
-					<User className="aspect-square w-10" />
+					<User className="aspect-square" />
 					<span>Host</span>
 				</>
 			),
@@ -139,7 +139,7 @@ export default function Nav({ hasToken }: NavProps) {
 			props: { to: href('/vans'), className: navLinkClassName },
 			children: (
 				<>
-					<Truck className="aspect-square w-10" />
+					<Truck className="aspect-square" />
 					<span>Vans</span>
 				</>
 			),
@@ -151,7 +151,7 @@ export default function Nav({ hasToken }: NavProps) {
 			props: { to: href('/login'), className: navLinkClassName },
 			children: (
 				<>
-					<LogIn className="aspect-square w-10" />
+					<LogIn className="aspect-square" />
 					<span>Login</span>
 				</>
 			),
@@ -163,7 +163,7 @@ export default function Nav({ hasToken }: NavProps) {
 			props: { to: href('/signout'), className: linkClassName },
 			children: (
 				<>
-					<LogOut className="aspect-square w-10" />
+					<LogOut className="aspect-square" />
 					<span>Sign out</span>
 				</>
 			),

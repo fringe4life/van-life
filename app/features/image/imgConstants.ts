@@ -1,4 +1,5 @@
 // Optimized sizes based on actual display dimensions (max 350px)
+/** biome-ignore-all lint/style/noMagicNumbers: possible image sizes*/
 // Using 50px increments for better performance and cleaner sizing
 export const VAN_CARD_IMG_SIZES = [200, 250, 300, 350] as const;
 

@@ -1,6 +1,5 @@
 import { useOutletContext } from 'react-router';
 import type { VanModel } from '~/generated/prisma/models';
-import { capitalize } from '~/utils/utils';
 
 export default function VanDetail() {
 	const van = useOutletContext<VanModel>();
@@ -10,7 +9,7 @@ export default function VanDetail() {
 				Name: <span className="font-normal">{van.name}</span>
 			</p>
 			<p className="my-4 font-bold">
-				Category: <span className="font-normal">{capitalize(van.type)}</span>
+				Category: <span className="font-normal capitalize">{van.type}</span>
 			</p>
 			<p className="min-w-full max-w-3xs font-bold">
 				Description: <span className="font-normal">{van.description}</span>

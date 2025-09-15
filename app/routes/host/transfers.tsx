@@ -1,15 +1,15 @@
 import { data, href } from 'react-router';
-import Sortable from '~/components/common/Sortable';
-import Income from '~/components/host/Income';
-import LazyBarChart from '~/components/host/LazyBarChart';
-import VanPages from '~/components/van/VanPages';
+import Sortable from '~/components/Sortable';
 import { getUserTransactions } from '~/db/user/analytics';
-import { getElapsedTime } from '~/lib/getElapsedTime';
+import Income from '~/features/host/components/Income';
+import LazyBarChart from '~/features/host/components/LazyBarChart';
+import VanPages from '~/features/vans/components/VanPages';
+import { displayPrice } from '~/features/vans/utils/displayPrice';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
 import { loadHostSearchParams } from '~/lib/searchParams.server';
-import { tryCatch } from '~/lib/tryCatch.server';
 import type { QueryType } from '~/types/types.server';
-import { displayPrice } from '~/utils/displayPrice';
+import { getElapsedTime } from '~/utils/getElapsedTime';
+import { tryCatch } from '~/utils/tryCatch.server';
 import type { Route } from './+types/transfers';
 
 export function meta() {

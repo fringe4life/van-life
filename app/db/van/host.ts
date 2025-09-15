@@ -1,8 +1,8 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
-import { isCUID } from '~/lib/checkIsCUID.server';
-import { getCursorPaginationInformation } from '~/lib/getCursorPaginationInformation.server';
+import { getCursorPaginationInformation } from '~/features/pagination/utils/getCursorPaginationInformation.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Direction } from '~/types/types';
+import { isCUID } from '~/utils/checkIsCUID.server';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostVan(userId: string, vanId: string) {

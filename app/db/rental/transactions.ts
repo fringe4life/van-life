@@ -1,6 +1,6 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
-import { isCUID } from '~/lib/checkIsCUID.server';
 import { prisma } from '~/lib/prisma.server';
+import { isCUID } from '~/utils/checkIsCUID.server';
 
 export function rentVan(vanId: string, renterId: string, hostId: string) {
 	if (!(isCUID(vanId) && isCUID(renterId) && isCUID(hostId))) {

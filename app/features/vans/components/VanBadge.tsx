@@ -1,11 +1,11 @@
 import type { VariantProps } from 'class-variance-authority';
 import { Badge, type badgeVariants } from '~/components/ui/badge';
-import type { VanModel } from '~/generated/prisma/models';
-import { formatEnumLabel } from '~/utils/formatEnum';
+import { formatEnumLabel } from '~/features/vans/utils/formatEnum';
 import {
 	isVanNew,
 	lowercaseVanStateWithProcessor,
-} from '~/utils/vanStateHelpers';
+} from '~/features/vans/utils/vanStateHelpers';
+import type { VanModel } from '~/generated/prisma/models';
 
 type Props = { van: VanModel };
 

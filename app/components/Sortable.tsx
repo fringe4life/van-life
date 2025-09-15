@@ -1,10 +1,10 @@
 import { useQueryStates } from 'nuqs';
-import GenericComponent from '~/components/common/GenericComponent';
+import GenericComponent from '~/components/GenericComponent';
 import { Button } from '~/components/ui/button';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
-} from '~/constants/paginationConstants';
+} from '~/features/pagination/paginationConstants';
 import { hostPaginationParsers } from '~/lib/parsers';
 import type { SortOption } from '~/types/types';
 import { cn } from '~/utils/utils';

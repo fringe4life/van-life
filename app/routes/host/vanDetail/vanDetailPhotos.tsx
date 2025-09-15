@@ -1,5 +1,5 @@
 import { useOutletContext } from 'react-router';
-import Image from '~/components/common/Image';
+import Image from '~/features/image/component/Image';
 import type { VanModel } from '~/generated/prisma/models';
 
 export default function VanDetailPhotos() {

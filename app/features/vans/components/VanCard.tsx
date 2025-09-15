@@ -1,13 +1,13 @@
 import clsx from 'clsx';
-import Image from '~/components/common/Image';
-import CustomLink from '~/components/navigation/CustomLink';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
-import { VAN_CARD_IMG_SIZES } from '~/constants/imgConstants';
+import Image from '~/features/image/component/Image';
+import { VAN_CARD_IMG_SIZES } from '~/features/image/imgConstants';
+import { createWebPSrcSet } from '~/features/image/utils/createOptimizedSrcSet';
+import CustomLink from '~/features/navigation/components/CustomLink';
+import { getVanStateStyles } from '~/features/vans/utils/vanStateStyles';
 import type { VanModel } from '~/generated/prisma/models';
-import { createWebPSrcSet } from '~/utils/createOptimizedSrcSet';
 import { validateLowercaseVanType } from '~/utils/validators';
-import { getVanStateStyles } from '~/utils/vanStateStyles';
 import VanBadge from './VanBadge';
 
 type VanCardProps = {

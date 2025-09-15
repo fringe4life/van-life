@@ -1,7 +1,7 @@
 import {
 	AVIF_QUALITY_BOOST,
 	DEFAULT_IMAGE_QUALITY,
-} from '~/constants/imgConstants';
+} from '~/features/image/imgConstants';
 import { createNewImageSizeWithHeight } from './createNewImageSize';
 
 type ResponsiveConfig = {

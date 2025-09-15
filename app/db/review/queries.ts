@@ -1,13 +1,13 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
+import { getCursorPaginationInformation } from '~/features/pagination/utils/getCursorPaginationInformation.server';
 import type { Prisma } from '~/generated/prisma/client';
-import { isCUID } from '~/lib/checkIsCUID.server';
 import {
 	COMMON_SORT_CONFIGS,
 	createGenericOrderBy,
 } from '~/lib/genericSorting.server';
-import { getCursorPaginationInformation } from '~/lib/getCursorPaginationInformation.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Direction, SortOption } from '~/types/types';
+import { isCUID } from '~/utils/checkIsCUID.server';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostReviews(userId: string) {

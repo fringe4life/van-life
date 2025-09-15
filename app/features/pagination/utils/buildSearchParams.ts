@@ -1,6 +1,6 @@
 import { createSerializer } from 'nuqs/server';
 import { hostPaginationParsers, paginationParsers } from '~/lib/parsers';
-import { validateLimit, validateVanTypeOrEmpty } from './validators';
+import { validateLimit, validateVanTypeOrEmpty } from '~/utils/validators';
 
 // Create serializers for different use cases
 const serializePaginationParams = createSerializer(paginationParsers);

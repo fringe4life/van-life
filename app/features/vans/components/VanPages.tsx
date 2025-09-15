@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import GenericComponent, {
 	type GenericComponentProps,
-} from '~/components/common/GenericComponent';
+} from '~/components/GenericComponent';
+import PendingUI from '~/components/PendingUI';
 import Pagination, {
 	type PaginationPropsForVanPages,
-} from '~/components/common/Pagination';
-import PendingUI from '~/components/common/PendingUI';
-import { DEFAULT_LIMIT } from '~/constants/paginationConstants';
+} from '~/features/pagination/components/Pagination';
+import { DEFAULT_LIMIT } from '~/features/pagination/paginationConstants';
 
 type VanPagesProps<T, P, U> = {
 	title: string;
@@ -51,7 +51,7 @@ export default function VanPages<P, T extends { id: string }, U>(
 			<h2 className="mb-6 font-bold text-3xl">{title}</h2>
 			{optionalElement}
 			<GenericComponent className="grid-max mt-6" items={items} {...rest} />
-			<Pagination<T>
+			<Pagination
 				cursor={cursor}
 				hasNextPage={hasNextPage}
 				hasPreviousPage={hasPreviousPage}

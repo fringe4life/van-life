@@ -1,6 +1,6 @@
 import { href } from 'react-router';
-import CustomLink from '~/components/navigation/CustomLink';
 import { buttonVariants } from '~/components/ui/button';
+import CustomLink from '~/features/navigation/components/CustomLink';
 
 export default function NotFound() {
 	return (

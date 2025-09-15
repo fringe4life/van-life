@@ -1,11 +1,11 @@
 import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
-import CustomLink from '~/components/navigation/CustomLink';
-import VanCard from '~/components/van/VanCard';
-import VanPages from '~/components/van/VanPages';
 import { getHostVanCount, getHostVans } from '~/db/van/host';
+import CustomLink from '~/features/navigation/components/CustomLink';
+import { hasPagination } from '~/features/pagination/utils/hasPagination.server';
+import VanCard from '~/features/vans/components/VanCard';
+import VanPages from '~/features/vans/components/VanPages';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
-import { hasPagination } from '~/lib/hasPagination.server';
 import { hostPaginationParsers } from '~/lib/parsers';
 import { loadHostSearchParams } from '~/lib/searchParams.server';
 import type { QueryType } from '~/types/types.server';

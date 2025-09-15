@@ -2,7 +2,7 @@ export function getDiscountedPrice(
 	price: number,
 	discount?: number | null
 ): number {
-	const MAX_DISCOUNT_PERCENTAGE = 100;
+	const MAX_DISCOUNT_PERCENTAGE = 50;
 	const d =
 		typeof discount === 'number'
 			? Math.max(0, Math.min(MAX_DISCOUNT_PERCENTAGE, discount))

@@ -1,17 +1,5 @@
 import { href } from 'react-router';
-import Image from '~/components/common/Image';
 import { Badge, badgeVariants } from '~/components/ui/badge';
-import {
-	HIGH_QUALITY_IMAGE_QUALITY,
-	VAN_DETAIL_IMG_SIZES,
-} from '~/constants/imgConstants';
-import type { VanModel } from '~/generated/prisma/models';
-import { createWebPSrcSet } from '~/utils/createOptimizedSrcSet';
-import { cn } from '~/utils/utils';
-import { validateLowercaseVanType } from '~/utils/validators';
-import { isVanAvailable } from '~/utils/vanStateHelpers';
-import { getVanStateStyles } from '~/utils/vanStateStyles';
-import CustomLink from '../navigation/CustomLink';
 import {
 	Card,
 	CardContent,
@@ -19,7 +7,19 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from '../ui/card';
+} from '~/components/ui/card';
+import Image from '~/features/image/component/Image';
+import {
+	HIGH_QUALITY_IMAGE_QUALITY,
+	VAN_DETAIL_IMG_SIZES,
+} from '~/features/image/imgConstants';
+import { createWebPSrcSet } from '~/features/image/utils/createOptimizedSrcSet';
+import CustomLink from '~/features/navigation/components/CustomLink';
+import { isVanAvailable } from '~/features/vans/utils/vanStateHelpers';
+import { getVanStateStyles } from '~/features/vans/utils/vanStateStyles';
+import type { VanModel } from '~/generated/prisma/models';
+import { cn } from '~/utils/utils';
+import { validateLowercaseVanType } from '~/utils/validators';
 import VanBadge from './VanBadge';
 import VanPrice from './VanPrice';
 

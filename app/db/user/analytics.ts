@@ -1,8 +1,8 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
-import { isCUID } from '~/lib/checkIsCUID.server';
 import { createGenericOrderBy } from '~/lib/genericSorting.server';
 import { prisma } from '~/lib/prisma.server';
 import type { SortOption } from '~/types/types';
+import { isCUID } from '~/utils/checkIsCUID.server';
 
 export async function getAccountSummary(userId: string) {
 	if (!isCUID(userId)) {

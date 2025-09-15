@@ -122,9 +122,19 @@ app/
 ├── hooks/              # Custom React hooks
 ├── lib/                # Server-side utilities
 │   ├── parsers.ts      # nuqs search parameter parsers
-│   ├── searchParams.server.ts  # Server-side search param loaders
-│   ├── getCursorPaginationInformation.server.ts  # Cursor pagination utilities
-│   └── hasPagination.server.ts  # Generic pagination logic
+│   └── searchParams.server.ts  # Server-side search param loaders
+├── features/
+│   ├── pagination/
+│   │   ├── utils/
+│   │   │   ├── buildSearchParams.ts
+│   │   │   ├── getCursorPaginationInformation.server.ts
+│   │   │   ├── getSearchParams.server.ts
+│   │   │   └── hasPagination.server.ts
+│   │   └── components/
+│   │       └── Pagination.tsx
+│   ├── vans/
+│   │   ├── components/   # Van UI (VanCard, VanDetail, HostVanDetailCard, etc.)
+│   │   └── utils/        # Van helpers (e.g., displayPrice)
 ├── routes/             # Route modules (pages, API, layouts)
 │   ├── api/            # API routes
 │   ├── auth/           # Authentication routes

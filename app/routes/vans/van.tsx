@@ -1,12 +1,12 @@
 import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
-import PendingUI from '~/components/common/PendingUI';
-import CustomLink from '~/components/navigation/CustomLink';
-import VanDetails from '~/components/van/VanDetail';
+import PendingUI from '~/components/PendingUI';
 import { getVan } from '~/db/van/crud';
+import CustomLink from '~/features/navigation/components/CustomLink';
+import { buildVanSearchParams } from '~/features/pagination/utils/buildSearchParams';
+import VanDetails from '~/features/vans/components/VanDetail';
 import { paginationParsers } from '~/lib/parsers';
-import { tryCatch } from '~/lib/tryCatch.server';
-import { buildVanSearchParams } from '~/utils/buildSearchParams';
+import { tryCatch } from '~/utils/tryCatch.server';
 import type { Route } from './+types/van';
 
 export function meta({ loaderData }: Route.MetaArgs) {

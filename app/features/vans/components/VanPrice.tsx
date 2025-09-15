@@ -1,5 +1,5 @@
+import { displayPrice } from '~/features/vans/utils/displayPrice';
 import type { VanModel } from '~/generated/prisma/models';
-import { displayPrice } from '~/utils/displayPrice';
 import { getDiscountedPrice } from '~/utils/pricing';
 
 type Props = { van: Pick<VanModel, 'price' | 'discount' | 'state'> };

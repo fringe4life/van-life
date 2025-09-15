@@ -1,5 +1,5 @@
 import { useOutletContext } from 'react-router';
-import VanPrice from '~/components/van/VanPrice';
+import VanPrice from '~/features/vans/components/VanPrice';
 import type { VanModel } from '~/generated/prisma/models';
 
 export default function VanDetailPricing() {

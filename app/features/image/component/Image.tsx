@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { DEFAULT_IMAGE_QUALITY } from '~/constants/imgConstants';
+import { DEFAULT_IMAGE_QUALITY } from '~/features/image/imgConstants';
+import { createNewImageSizeWithHeight } from '~/features/image/utils/createNewImageSize';
 import canUseDOM from '~/utils/canUseDOM';
-import { createNewImageSizeWithHeight } from '~/utils/createNewImageSize';
 import { cn } from '~/utils/utils';
 
 /**

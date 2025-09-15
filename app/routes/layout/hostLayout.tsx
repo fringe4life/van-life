@@ -9,10 +9,10 @@ import {
 	Wallet,
 } from 'lucide-react';
 import { href, Outlet } from 'react-router';
-import GenericComponent from '~/components/common/GenericComponent';
-import CustomNavLink from '~/components/navigation/CustomNavLink';
+import GenericComponent from '~/components/GenericComponent';
+import CustomNavLink from '~/features/navigation/components/CustomNavLink';
+import navLinkClassName from '~/features/navigation/utils/navLinkClassName';
 import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
-import navLinkClassName from '~/utils/navLinkClassName';
 import type { Route } from './+types/hostLayout';
 
 export const loader = async ({ request }: Route.ClientLoaderArgs) => {
@@ -25,7 +25,7 @@ const hostNavItems = [
 		title: 'Dashboard',
 		children: (
 			<>
-				<LayoutDashboard className="aspect-square w-10" />
+				<LayoutDashboard className="aspect-square" />
 				<span>Dashboard</span>
 			</>
 		),
@@ -36,7 +36,7 @@ const hostNavItems = [
 		title: 'Income',
 		children: (
 			<>
-				<Wallet className="aspect-square w-10" />
+				<Wallet className="aspect-square" />
 				<span>Income</span>
 			</>
 		),
@@ -46,7 +46,7 @@ const hostNavItems = [
 		title: 'Transfers',
 		children: (
 			<>
-				<ArrowRightLeft className="aspect-square w-10" />
+				<ArrowRightLeft className="aspect-square" />
 				<span>Transfers</span>
 			</>
 		),
@@ -56,7 +56,7 @@ const hostNavItems = [
 		title: 'Vans',
 		children: (
 			<>
-				<Car className="aspect-square w-10" />
+				<Car className="aspect-square" />
 				<span>Vans</span>
 			</>
 		),
@@ -66,7 +66,7 @@ const hostNavItems = [
 		title: 'Reviews',
 		children: (
 			<>
-				<Star className="aspect-square w-10" />
+				<Star className="aspect-square" />
 				<span>Reviews</span>
 			</>
 		),
@@ -76,7 +76,7 @@ const hostNavItems = [
 		title: 'Add Van',
 		children: (
 			<>
-				<SquarePlus className="aspect-square w-10" />
+				<SquarePlus className="aspect-square" />
 				<span>Add Van</span>
 			</>
 		),
@@ -86,7 +86,7 @@ const hostNavItems = [
 		title: 'Add Money',
 		children: (
 			<>
-				<BanknoteArrowUp className="aspect-square w-10" />
+				<BanknoteArrowUp className="aspect-square" />
 				<span>Add Money</span>
 			</>
 		),
@@ -96,7 +96,7 @@ const hostNavItems = [
 		title: 'Rentals',
 		children: (
 			<>
-				<KeySquare className="aspect-square w-10" />
+				<KeySquare className="aspect-square" />
 				<span>Rentals</span>
 			</>
 		),
@@ -105,7 +105,7 @@ const hostNavItems = [
 
 export default function HostLayout() {
 	return (
-		<div className="max-w-[var(--host-layout-max-width)] contain-content">
+		<div className="max-w-[var(--host-layout-max-width)] pr-[var(--padding-inline)] contain-content">
 			<GenericComponent
 				as="ul"
 				Component={CustomNavLink}

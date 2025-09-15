@@ -1,7 +1,5 @@
 import { href } from 'react-router';
-import GenericComponent from '~/components/common/GenericComponent';
-import Image from '~/components/common/Image';
-import CustomNavLink from '~/components/navigation/CustomNavLink';
+import GenericComponent from '~/components/GenericComponent';
 import { Badge } from '~/components/ui/badge';
 import {
 	Card,
@@ -10,23 +8,23 @@ import {
 	CardHeader,
 	CardTitle,
 } from '~/components/ui/card';
+import Image from '~/features/image/component/Image';
 import {
 	HIGH_QUALITY_IMAGE_QUALITY,
 	HOST_VAN_DETAIL_IMG_SIZES,
-} from '~/constants/imgConstants';
+} from '~/features/image/imgConstants';
+import { createWebPSrcSet } from '~/features/image/utils/createOptimizedSrcSet';
+import CustomNavLink from '~/features/navigation/components/CustomNavLink';
+import { getVanStateStyles } from '~/features/vans/utils/vanStateStyles';
 import type { VanModel } from '~/generated/prisma/models';
-import { createWebPSrcSet } from '~/utils/createOptimizedSrcSet';
 import { cn } from '~/utils/utils';
 import { validateLowercaseVanType } from '~/utils/validators';
-import { getVanStateStyles } from '~/utils/vanStateStyles';
 import VanBadge from './VanBadge';
 import VanPrice from './VanPrice';
 
 type VanDetailCardProps = {
 	van: VanModel;
-	children: React.ReactElement;
-	className?: string;
-};
+} & React.ComponentProps<'div'>;
 
 export default function VanDetailCard({
 	van,

@@ -1,24 +1,24 @@
 import { clsx } from 'clsx';
 import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
-import ListItems from '~/components/common/ListItems';
+import ListItems from '~/components/ListItems';
 import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
-import VanCard from '~/components/van/VanCard';
-import VanPages from '~/components/van/VanPages';
-import VanPrice from '~/components/van/VanPrice';
+import { getVans, getVansCount } from '~/db/van/queries';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
 	DEFAULT_FILTER,
-} from '~/constants/paginationConstants';
-import { getVans, getVansCount } from '~/db/van/queries';
-import { hasPagination } from '~/lib/hasPagination.server';
+} from '~/features/pagination/paginationConstants';
+import { buildVanSearchParams } from '~/features/pagination/utils/buildSearchParams';
+import { hasPagination } from '~/features/pagination/utils/hasPagination.server';
+import VanCard from '~/features/vans/components/VanCard';
+import VanPages from '~/features/vans/components/VanPages';
+import VanPrice from '~/features/vans/components/VanPrice';
 import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/searchParams.server';
 import type { QueryType } from '~/types/types.server';
 import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
-import { buildVanSearchParams } from '~/utils/buildSearchParams';
 import { cn } from '~/utils/utils';
 import { validateVanType } from '~/utils/validators';
 import type { Route } from './+types/vans';
