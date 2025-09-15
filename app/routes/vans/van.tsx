@@ -65,7 +65,8 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 					search: backLinkSearch,
 				}}
 			>
-				&larr; back to {type ? type : 'all'} vans
+				&larr; back to <span className="uppercase">{type ? type : 'all'}</span>{' '}
+				vans
 			</CustomLink>
 			<div className="self-center">
 				<VanDetails van={van} vanIsAvailable={vanIsAvailable} />

@@ -9,7 +9,7 @@ const serializeHostPaginationParams = createSerializer(hostPaginationParsers);
 /**
  * Builds search parameters string for van routes with optional type and van filters
  * @param params - Object containing cursor, limit, optional type, and optional vanFilter
- * @returns Query string starting with '?' or empty string if no params
+ * @returns Query string (without '?' prefix) or empty string if no params
  */
 export function buildVanSearchParams(params: {
 	cursor: string;
@@ -36,14 +36,15 @@ export function buildVanSearchParams(params: {
 		searchParams.vanFilter = vanFilter;
 	}
 
+	// Serialize and normalize: strip leading '?' if present
 	const queryString = serializePaginationParams(searchParams);
-	return queryString ? `?${queryString}` : '';
+	return queryString.startsWith('?') ? queryString.slice(1) : queryString;
 }
 
 /**
  * Builds search parameters string for host routes (no type filter)
  * @param params - Object containing cursor and limit
- * @returns Query string starting with '?' or empty string if no params
+ * @returns Query string (without '?' prefix) or empty string if no params
  */
 export function buildHostSearchParams(params: {
 	cursor: string;
@@ -56,15 +57,16 @@ export function buildHostSearchParams(params: {
 		limit: validateLimit(limit),
 	};
 
+	// Serialize and normalize: strip leading '?' if present
 	const queryString = serializeHostPaginationParams(searchParams);
-	return queryString ? `?${queryString}` : '';
+	return queryString.startsWith('?') ? queryString.slice(1) : queryString;
 }
 
 /**
  * Generic function to build search parameters with any subset of pagination params
  * @param params - Object containing any combination of cursor, limit, type, direction, sort
  * @param includeType - Whether to include type parameter (default: true)
- * @returns Query string starting with '?' or empty string if no params
+ * @returns Query string (without '?' prefix) or empty string if no params
  */
 export function buildSearchParams(
 	params: {
@@ -110,7 +112,7 @@ export function buildSearchParams(
 	const serializer = includeType
 		? serializePaginationParams
 		: serializeHostPaginationParams;
+	// Serialize and normalize: strip leading '?' if present
 	const queryString = serializer(searchParams);
-
-	return queryString ? `?${queryString}` : '';
+	return queryString.startsWith('?') ? queryString.slice(1) : queryString;
 }

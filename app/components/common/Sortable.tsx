@@ -85,7 +85,7 @@ export default function Sortable({
 					variant: 'ghost' as const,
 					className: cn(
 						'w-full cursor-pointer text-center sm:w-fit sm:text-left',
-						sort === item.value && 'bg-green-500 font-semibold text-white'
+						sort === item.value && 'bg-orange-400 font-semibold text-white'
 					),
 					onClick: () => handleSortChange(item.value),
 					children: item.label,

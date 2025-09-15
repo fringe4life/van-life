@@ -154,9 +154,15 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 						<VanPrice van={van} />
 					</div>
 				),
-				link:
-					href('/vans/:vanId', { vanId: van.id }) +
-					buildVanSearchParams({ cursor, limit, type }),
+				link: (() => {
+					const baseUrl = href('/vans/:vanId', { vanId: van.id });
+					const search = buildVanSearchParams({
+						cursor: cursor ?? '',
+						limit,
+						type,
+					});
+					return search ? `${baseUrl}?${search}` : baseUrl;
+				})(),
 			})}
 			searchParams={{ cursor, limit, type }}
 			title="Explore our van options"
