@@ -17,8 +17,8 @@ import {
 } from 'react';
 import { href } from 'react-router';
 import GenericComponent from '~/components/GenericComponent';
+import { Button } from '~/components/ui/button';
 import navLinkClassName from '~/features/navigation/utils/navLinkClassName';
-import { Button } from '../../../components/ui/button';
 import CustomLink from './CustomLink';
 import CustomNavLink from './CustomNavLink';
 import NavItem from './NavItem';
@@ -214,7 +214,7 @@ export default function Nav({ hasToken }: NavProps) {
 			</Button>
 			{/* Desktop nav */}
 			<nav className="hidden md:block">
-				<GenericComponent<NavItemType, ComponentProps<typeof NavItem>, 'ul'>
+				<GenericComponent
 					as="ul"
 					Component={NavItem}
 					className="flex justify-end gap-3"
@@ -246,12 +246,12 @@ export default function Nav({ hasToken }: NavProps) {
 					>
 						<Button
 							aria-label="Close menu"
-							className="mb-6 self-end"
+							className="self-end"
 							onClick={handleClick}
 						>
 							<SidebarClose />
 						</Button>
-						<GenericComponent<NavItemType, ComponentProps<typeof NavItem>, 'ul'>
+						<GenericComponent
 							as="ul"
 							Component={NavItem}
 							className="flex h-full flex-col justify-center gap-4 text-2xl"
