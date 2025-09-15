@@ -52,8 +52,6 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 	// Use nuqs for client-side state management
 	const [{ cursor, limit, type }] = useQueryStates(paginationParsers);
 
-	const vanIsAvailable = !van.isRented && van?.state !== 'IN_REPAIR';
-
 	// Build the back link with search parameters
 	const backLinkSearch = buildVanSearchParams({ cursor, limit, type });
 
@@ -69,7 +67,7 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 				vans
 			</CustomLink>
 			<div className="self-center">
-				<VanDetails van={van} vanIsAvailable={vanIsAvailable} />
+				<VanDetails van={van} />
 			</div>
 		</PendingUI>
 	);

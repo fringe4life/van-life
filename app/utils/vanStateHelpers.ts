@@ -52,3 +52,11 @@ export function lowercaseVanStateWithProcessor<T>(
 	const state = lowercaseVanState(van);
 	return processor(state);
 }
+
+/**
+ * Determines whether a van is currently available for rent.
+ * A van is available when it's not rented and not in repair.
+ */
+export function isVanAvailable(van: VanModel): boolean {
+	return !van.isRented && van.state !== 'IN_REPAIR';
+}

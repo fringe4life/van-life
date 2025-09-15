@@ -36,16 +36,9 @@ const srcSet = createWebPSrcSet(
 		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for home page
 	} // desktop aspect ratio (16:9)
 );
+const sizes = '(min-width: 1024px) 100vw, calc(100vw - 1rem)';
+
 export default function Home() {
-	// Create responsive srcSet with different aspect ratios:
-	// Mobile: 1:1.5 (portrait) - below md breakpoint
-	// Desktop: 16:9 (landscape) - md breakpoint and above
-
-	// Sizes attribute optimized for the aspect ratio changes:
-	// Mobile: aspect-[1/1.5] (portrait), Desktop: aspect-video (16:9 landscape)
-	// Container max-width is 5xl (1024px), but image can be full viewport width
-	const sizes = '(min-width: 1024px) 100vw, calc(100vw - 1rem)';
-
 	return (
 		<PendingUI
 			as="section"

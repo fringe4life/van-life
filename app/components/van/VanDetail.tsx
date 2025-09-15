@@ -9,6 +9,7 @@ import type { VanModel } from '~/generated/prisma/models';
 import { createWebPSrcSet } from '~/utils/createOptimizedSrcSet';
 import { cn } from '~/utils/utils';
 import { validateLowercaseVanType } from '~/utils/validators';
+import { isVanAvailable } from '~/utils/vanStateHelpers';
 import { getVanStateStyles } from '~/utils/vanStateStyles';
 import CustomLink from '../navigation/CustomLink';
 import {
@@ -24,14 +25,13 @@ import VanPrice from './VanPrice';
 
 type VanDetailProps = {
 	van: VanModel;
-	vanIsAvailable: boolean;
 };
 
 export default function VanDetail({
 	van: { imageUrl, description, type, name, id: vanId },
-	vanIsAvailable,
 	van,
 }: VanDetailProps) {
+	const vanIsAvailable = isVanAvailable(van);
 	const srcSet = createWebPSrcSet(
 		imageUrl,
 		{

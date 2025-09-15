@@ -21,23 +21,23 @@ export function meta() {
 	];
 }
 
-export default function About() {
-	// Create optimized WebP srcSet with 16:9 aspect ratio for both mobile and desktop
-	// since the about page only uses aspect-video
-	const srcSet = createWebPSrcSet(
-		ABOUT_IMG,
-		{
-			sizes: ABOUT_IMG_SIZES,
-			aspectRatio: 0.5625,
-			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
-		}, // mobile sizes and aspect ratio (16:9)
-		{
-			sizes: ABOUT_IMG_SIZES,
-			aspectRatio: 0.5625,
-			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
-		} // desktop sizes and aspect ratio (16:9)
-	);
+// Create optimized WebP srcSet with 16:9 aspect ratio for both mobile and desktop
+// since the about page only uses aspect-video
+const srcSet = createWebPSrcSet(
+	ABOUT_IMG,
+	{
+		sizes: ABOUT_IMG_SIZES,
+		aspectRatio: 0.5625,
+		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
+	}, // mobile sizes and aspect ratio (16:9)
+	{
+		sizes: ABOUT_IMG_SIZES,
+		aspectRatio: 0.5625,
+		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
+	} // desktop sizes and aspect ratio (16:9)
+);
 
+export default function About() {
 	return (
 		<PendingUI
 			as="section"
