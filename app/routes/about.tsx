@@ -41,11 +41,11 @@ export default function About() {
 	return (
 		<PendingUI
 			as="section"
-			className="grid grid-cols-1 gap-4 contain-content sm:gap-6 md:gap-10"
+			className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-10"
 		>
 			<Image
 				alt="a couple enjoying their adventure"
-				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
+				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center mx-[var(--full-width)] aspect-video [view-transition-name:aboutImage]"
 				decoding="sync"
 				fetchPriority="high"
 				height="900"

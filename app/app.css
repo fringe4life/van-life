@@ -222,6 +222,8 @@ html {
 
 	/* Host layout max-width calculation - eliminates redundancy */
 	--host-layout-max-width: calc(var(--container-layout) - var(--padding-inline));
+
+	--full-width: calc(var(--padding-inline) * -1);
 }
 
 /* Responsive padding updates */

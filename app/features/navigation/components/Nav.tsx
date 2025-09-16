@@ -1,7 +1,5 @@
 import { Menu, X } from 'lucide-react';
-import { type RefObject, useRef } from 'react';
 import { href } from 'react-router';
-import { useDebounceCallback, useResizeObserver } from 'usehooks-ts';
 import GenericComponent from '~/components/GenericComponent';
 import { Button } from '~/components/ui/button';
 import { useSheetDialog } from '~/features/navigation/hooks/useSheetDialog';
@@ -17,24 +15,7 @@ type NavProps = {
 	hasToken: boolean;
 };
 
-const DEBOUNCE_MS = 150;
-const TABLET_BREAKPOINT = 768;
 export default function Nav({ hasToken }: NavProps) {
-	const headerRef = useRef<HTMLElement>(null);
-
-	// Auto-close mobile nav on resize to desktop
-	const handleResizeDebounced = useDebounceCallback(() => {
-		if (window.innerWidth >= TABLET_BREAKPOINT) {
-			// The dialog will be closed automatically by the useSheetDialog hook
-		}
-	}, DEBOUNCE_MS);
-
-	useResizeObserver({
-		ref: headerRef as RefObject<HTMLElement>,
-		onResize: handleResizeDebounced,
-		box: 'border-box',
-	});
-
 	const navItems = getNavItems(hasToken);
 
 	const [getTrigger, mobileDialog] = useSheetDialog({
@@ -71,10 +52,7 @@ export default function Nav({ hasToken }: NavProps) {
 	});
 
 	return (
-		<header
-			className="flex items-center justify-between gap-3 px-[var(--padding-inline)] py-9 sm:gap-6"
-			ref={headerRef}
-		>
+		<header className="flex items-center justify-between gap-3 px-[var(--padding-inline)] py-9 sm:gap-6">
 			<h1 className="font-black text-xl xs:text-2xl uppercase">
 				<CustomLink to={href('/')}>#vanlife</CustomLink>
 			</h1>

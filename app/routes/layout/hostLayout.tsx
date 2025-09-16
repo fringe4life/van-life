@@ -105,23 +105,25 @@ const hostNavItems = [
 
 export default function HostLayout() {
 	return (
-		<div className="max-w-[var(--host-layout-max-width)] contain-content">
-			<GenericComponent
-				as="ul"
-				Component={CustomNavLink}
-				className="mask-r-from-95% no-scrollbar mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-3 overflow-x-auto overscroll-x-contain py-3 contain-content"
-				emptyStateMessage="No nav links"
-				items={hostNavItems}
-				renderKey={(item) => item.to}
-				renderProps={(item) => ({
-					to: item.to,
-					title: item.title,
-					...(item.end ? { end: true } : {}),
-					className: navLinkClassName,
-					children: item.children,
-				})}
-			/>
+		<>
+			<div className="max-w-[var(--host-layout-max-width)] contain-content">
+				<GenericComponent
+					as="ul"
+					Component={CustomNavLink}
+					className="mask-r-from-95% no-scrollbar mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-3 overflow-x-auto overscroll-x-contain py-3 contain-content"
+					emptyStateMessage="No nav links"
+					items={hostNavItems}
+					renderKey={(item) => item.to}
+					renderProps={(item) => ({
+						to: item.to,
+						title: item.title,
+						...(item.end ? { end: true } : {}),
+						className: navLinkClassName,
+						children: item.children,
+					})}
+				/>
+			</div>
 			<Outlet />
-		</div>
+		</>
 	);
 }
