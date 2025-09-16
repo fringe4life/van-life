@@ -54,6 +54,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
 	const { van } = loaderData;
+
 	return (
 		<>
 			<CustomLink

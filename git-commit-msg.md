@@ -36,6 +36,7 @@ The AI should:
 - `refactor: remove duplicate metadata titles, update deps`
 - `feat: add user authentication, implement password reset`
 - `fix: resolve type errors, update component props`
+- `fix: host van detail route css, correct container width and image sizing`
 
 ### Large Changes (up to 300 chars)
 

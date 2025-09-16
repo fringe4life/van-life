@@ -32,6 +32,7 @@ export default function VanDetailCard({
 	className,
 }: VanDetailCardProps) {
 	const { imageUrl, id: vanId, name, type } = van;
+
 	const navLinks = [
 		{
 			label: 'Details',
@@ -48,8 +49,6 @@ export default function VanDetailCard({
 		},
 	];
 
-	// Create optimized WebP srcSet with 1:1 aspect ratio for both mobile and desktop
-	// since the HostVanDetailCard uses aspect-square
 	const srcSet = createWebPSrcSet(
 		imageUrl,
 		{
@@ -63,13 +62,18 @@ export default function VanDetailCard({
 			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
 		} // desktop sizes and aspect ratio (1:1 = square)
 	);
+	// Create optimized WebP srcSet with 1:1 aspect ratio for both mobile and desktop
+	// since the HostVanDetailCard uses aspect-square
 
 	// Get van state styling
 	const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);
 
 	return (
 		<div
-			className={cn('@container/detail max-w-xl contain-content', className)}
+			className={cn(
+				'@container/detail w-full max-w-xl contain-content',
+				className
+			)}
 		>
 			<Card className={vanStateClasses} data-slot={dataSlot}>
 				<CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] grid-cols-1 @min-md/detail:grid-rows-[200px_1fr] @min-xl/detail:grid-rows-[300px_1fr] @min-md/detail:gap-x-4">
@@ -77,11 +81,11 @@ export default function VanDetailCard({
 						<VanBadge van={van} />
 						<Image
 							alt={name}
+							classesForContainer="aspect-square"
 							className="aspect-square @min-md/detail:w-auto w-full rounded-sm"
 							decoding="sync"
 							height="300"
 							loading="eager"
-							// classesForContainer="@min-md/detail:col-span-1"
 							sizes="(min-width: 1280px) 300px, (min-width: 768px) 200px, 400px"
 							src={imageUrl}
 							srcSet={srcSet}

@@ -631,6 +631,17 @@ The pre-commit hook ensures code quality by:
 - **nuqs** for type-safe URL state management
 - **Prisma** with proper type generation
 
+### GitHub Actions (CodeQL)
+
+This project uses GitHub Actions for automated code scanning via CodeQL.
+
+- Location: `.github/workflows/codeql.yml`
+- Triggered on: push and pull requests to `master`, plus a weekly schedule
+- Language matrix: JavaScript/TypeScript
+- Purpose: statically analyze the codebase for security vulnerabilities and quality issues
+- Implementation: `github/codeql-action` (`init` and `analyze`) with `build-mode: none` (no manual build required)
+- Permissions: writes security events; reads packages, actions, and contents as needed
+
 ### Ultracite Integration
 
 This project uses **Ultracite** for enhanced code quality and AI-friendly development:
