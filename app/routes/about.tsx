@@ -45,12 +45,13 @@ export default function About() {
 		>
 			<Image
 				alt="a couple enjoying their adventure"
-				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center mx-[var(--full-width)] aspect-[16/8.9] w-[var(--container-layout)] [view-transition-name:aboutImage]"
+				classesForContainer="mx-[var(--full-width)] w-[var(--container-layout)]"
+				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-[16/8.9] [view-transition-name:aboutImage]"
 				decoding="sync"
 				fetchPriority="high"
-				height="900"
-				loading="eager"
+				height="890"
 				// sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+				loading="eager"
 				src={ABOUT_IMG}
 				srcSet={srcSet}
 				width="1600"
@@ -80,7 +81,7 @@ export default function About() {
 					and make your own magic in the great outdoors 🌳!
 				</p>
 			</div>
-			<article className="mx-4 grid max-w-max content-between gap-y-5 rounded-md bg-orange-200 px-4 py-3 sm:px-8 md:px-12 md:py-6">
+			<article className="grid max-w-full content-between gap-y-5 rounded-md bg-orange-200 px-4 py-3 sm:px-8 md:max-w-max md:px-12 md:py-6">
 				<h3 className="font-bold text-xl xs:text-2xl">
 					Your destination is waiting.{' '}
 					<span className="block">Your van is ready.</span>
