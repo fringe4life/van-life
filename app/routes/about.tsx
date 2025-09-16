@@ -45,7 +45,7 @@ export default function About() {
 		>
 			<Image
 				alt="a couple enjoying their adventure"
-				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center mx-[var(--full-width)] aspect-video [view-transition-name:aboutImage]"
+				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center mx-[var(--full-width)] aspect-[16/8.9] w-[var(--container-layout)] [view-transition-name:aboutImage]"
 				decoding="sync"
 				fetchPriority="high"
 				height="900"
