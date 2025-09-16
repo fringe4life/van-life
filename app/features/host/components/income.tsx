@@ -1,5 +1,5 @@
 import { Card, CardContent } from '~/components/ui/card';
-import { displayPrice } from '~/features/vans/utils/displayPrice';
+import { displayPrice } from '~/features/vans/utils/display-price';
 
 type IncomeProps = {
 	id: string;

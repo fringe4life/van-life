@@ -1,5 +1,5 @@
 import type { ComponentProps, ElementType } from 'react';
-import useIsNavigating from '~/hooks/useIsNavigating';
+import useIsNavigating from '~/hooks/use-is-navigating';
 import { cn } from '~/utils/utils';
 
 type PendingUIProps<T extends ElementType = 'div'> = {

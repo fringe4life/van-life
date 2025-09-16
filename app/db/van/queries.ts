@@ -1,4 +1,4 @@
-import { getCursorPaginationInformation } from '~/features/pagination/utils/getCursorPaginationInformation.server';
+import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
 import type { VanType } from '~/generated/prisma/enums';
 import { prisma } from '~/lib/prisma.server';
 import type { Direction } from '~/types/types';

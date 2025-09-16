@@ -1,15 +1,15 @@
 import { data, href } from 'react-router';
-import Sortable from '~/components/Sortable';
+import Sortable from '~/components/sortable';
 import { getHostTransactions } from '~/db/user/analytics';
-import Income from '~/features/host/components/Income';
-import LazyBarChart from '~/features/host/components/LazyBarChart';
-import VanPages from '~/features/vans/components/VanPages';
-import { displayPrice } from '~/features/vans/utils/displayPrice';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
-import { loadHostSearchParams } from '~/lib/searchParams.server';
+import Income from '~/features/host/components/income';
+import LazyBarChart from '~/features/host/components/lazy-bar-chart';
+import VanPages from '~/features/vans/components/van-pages';
+import { displayPrice } from '~/features/vans/utils/display-price';
+import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
+import { loadHostSearchParams } from '~/lib/search-params.server';
 import type { QueryType } from '~/types/types.server';
-import { calculateTotalIncome, getElapsedTime } from '~/utils/getElapsedTime';
-import { tryCatch } from '~/utils/tryCatch.server';
+import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
+import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/income';
 
 export function meta() {

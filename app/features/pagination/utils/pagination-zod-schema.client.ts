@@ -5,7 +5,7 @@ import {
 	DEFAULT_FILTER,
 	DEFAULT_LIMIT,
 	DIRECTIONS,
-} from '~/features/pagination/paginationConstants';
+} from '~/features/pagination/pagination-constants';
 
 /**
  * Zod Mini schema for cursor-based pagination parameters

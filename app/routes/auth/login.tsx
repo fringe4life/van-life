@@ -1,10 +1,10 @@
 import { useId } from 'react';
 import { href, redirect, replace } from 'react-router';
 import { z } from 'zod/v4';
-import CustomForm from '~/components/CustomForm';
+import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
-import CustomLink from '~/features/navigation/components/CustomLink';
+import CustomLink from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
 import { loginSchema } from '~/lib/schemas.server';
 import type { Route } from './+types/login';

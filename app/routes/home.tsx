@@ -1,15 +1,15 @@
 import { href } from 'react-router';
-import PendingUI from '~/components/PendingUI';
+import PendingUI from '~/components/pending-ui';
 import { buttonVariants } from '~/components/ui/button';
-import Image from '~/features/image/component/Image';
+import Image from '~/features/image/component/image';
 import {
 	HIGH_QUALITY_IMAGE_QUALITY,
 	HOME_DESKTOP_IMG_SIZES,
 	HOME_IMG_URL,
 	HOME_MOBILE_IMG_SIZES,
-} from '~/features/image/imgConstants';
-import { createWebPSrcSet } from '~/features/image/utils/createOptimizedSrcSet';
-import CustomLink from '~/features/navigation/components/CustomLink';
+} from '~/features/image/img-constants';
+import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
+import CustomLink from '~/features/navigation/components/custom-link';
 import { cn } from '~/utils/utils';
 
 export function meta() {
@@ -63,7 +63,7 @@ export default function Home() {
 			</div>
 
 			{/* Content overlay */}
-			<div className="relative z-20 grid content-center justify-center gap-6">
+			<div className="relative z-20 grid content-center justify-center gap-6 px-2">
 				<h2 className="max-w-[20ch] p-0.5 font-extrabold text-2xl text-shadow-lg xs:text-3xl backdrop-blur-sm md:text-4xl">
 					You got the travel plans, we got the travel vans.
 				</h2>

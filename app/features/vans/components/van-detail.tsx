@@ -8,20 +8,20 @@ import {
 	CardHeader,
 	CardTitle,
 } from '~/components/ui/card';
-import Image from '~/features/image/component/Image';
+import Image from '~/features/image/component/image';
 import {
 	HIGH_QUALITY_IMAGE_QUALITY,
 	VAN_DETAIL_IMG_SIZES,
-} from '~/features/image/imgConstants';
-import { createWebPSrcSet } from '~/features/image/utils/createOptimizedSrcSet';
-import CustomLink from '~/features/navigation/components/CustomLink';
-import { isVanAvailable } from '~/features/vans/utils/vanStateHelpers';
-import { getVanStateStyles } from '~/features/vans/utils/vanStateStyles';
+} from '~/features/image/img-constants';
+import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
+import CustomLink from '~/features/navigation/components/custom-link';
+import { isVanAvailable } from '~/features/vans/utils/van-state-helpers';
+import { getVanStateStyles } from '~/features/vans/utils/van-state-styles';
 import type { VanModel } from '~/generated/prisma/models';
 import { cn } from '~/utils/utils';
 import { validateLowercaseVanType } from '~/utils/validators';
-import VanBadge from './VanBadge';
-import VanPrice from './VanPrice';
+import VanBadge from './van-badge';
+import VanPrice from './van-price';
 
 type VanDetailProps = {
 	van: VanModel;

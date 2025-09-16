@@ -1,8 +1,8 @@
 import {
 	AVIF_QUALITY_BOOST,
 	DEFAULT_IMAGE_QUALITY,
-} from '~/features/image/imgConstants';
-import { createNewImageSizeWithHeight } from './createNewImageSize';
+} from '~/features/image/img-constants';
+import { createNewImageSizeWithHeight } from './create-new-image-size';
 
 type ResponsiveConfig = {
 	sizes: readonly number[] | number[];

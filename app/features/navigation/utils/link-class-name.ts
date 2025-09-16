@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import type CustomLink from '../components/CustomLink';
+import type CustomLink from '../components/custom-link';
 
 export const linkClassName: NonNullable<
 	ComponentProps<typeof CustomLink>['className']

@@ -1,6 +1,6 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
 import { prisma } from '~/lib/prisma.server';
-import { isCUID } from '~/utils/checkIsCUID.server';
+import { isCUID } from '~/utils/check-is-cuid.server';
 
 export async function getAverageReviewRating(userId: string) {
 	if (!isCUID(userId)) {

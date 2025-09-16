@@ -1,7 +1,7 @@
 import type React from 'react';
 import { isEmptyList } from '~/utils/utils';
 
-import UnsuccesfulState from './UnsuccesfulState';
+import UnsuccesfulState from './unsuccesful-state';
 
 export type GenericComponentProps<T, P, E extends React.ElementType = 'div'> = {
 	Component: React.ComponentType<P>;

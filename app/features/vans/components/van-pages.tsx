@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import GenericComponent, {
 	type GenericComponentProps,
-} from '~/components/GenericComponent';
-import PendingUI from '~/components/PendingUI';
+} from '~/components/generic-component';
+import PendingUI from '~/components/pending-ui';
 import Pagination, {
 	type PaginationPropsForVanPages,
-} from '~/features/pagination/components/Pagination';
-import { DEFAULT_LIMIT } from '~/features/pagination/paginationConstants';
+} from '~/features/pagination/components/pagination';
+import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
 
 type VanPagesProps<T, P, U> = {
 	title: string;

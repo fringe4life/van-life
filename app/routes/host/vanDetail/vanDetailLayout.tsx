@@ -1,10 +1,10 @@
 import { data, href, Outlet } from 'react-router';
-import PendingUI from '~/components/PendingUI';
+import PendingUI from '~/components/pending-ui';
 import { getHostVan } from '~/db/van/host';
-import CustomLink from '~/features/navigation/components/CustomLink';
-import VanDetailCard from '~/features/vans/components/HostVanDetailCard';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
-import { tryCatch } from '~/utils/tryCatch.server';
+import CustomLink from '~/features/navigation/components/custom-link';
+import VanDetailCard from '~/features/vans/components/host-van-detail-card';
+import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
+import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/vanDetailLayout';
 export function meta({ loaderData }: Route.MetaArgs) {
 	return [

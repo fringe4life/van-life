@@ -1,15 +1,15 @@
 import { data, href } from 'react-router';
-import Sortable from '~/components/Sortable';
+import Sortable from '~/components/sortable';
 import {
 	getHostReviewsChartData,
 	getHostReviewsPaginated,
 } from '~/db/review/queries';
-import LazyBarChart from '~/features/host/components/LazyBarChart';
-import Review from '~/features/host/components/review/Review';
-import { hasPagination } from '~/features/pagination/utils/hasPagination.server';
-import VanPages from '~/features/vans/components/VanPages';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
-import { loadHostSearchParams } from '~/lib/searchParams.server';
+import LazyBarChart from '~/features/host/components/lazy-bar-chart';
+import Review from '~/features/host/components/review/review';
+import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
+import VanPages from '~/features/vans/components/van-pages';
+import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
+import { loadHostSearchParams } from '~/lib/search-params.server';
 import type { QueryType } from '~/types/types.server';
 import type { Route } from './+types/reviews';
 export function meta() {

@@ -1,5 +1,5 @@
 import { NavLink, type NavLinkProps } from 'react-router';
-import useIsPage from '~/hooks/useIsPage';
+import useIsPage from '~/hooks/use-is-page';
 
 export default function CustomNavLink({
 	children,

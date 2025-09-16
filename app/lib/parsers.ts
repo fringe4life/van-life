@@ -13,8 +13,8 @@ import {
 	DIRECTIONS,
 	LIMITS,
 	SORT_OPTIONS,
-} from '~/features/pagination/paginationConstants';
-import { cursorPaginationZodSchema } from '~/features/pagination/utils/paginationZodSchema.client';
+} from '~/features/pagination/pagination-constants';
+import { cursorPaginationZodSchema } from '~/features/pagination/utils/pagination-zod-schema.client';
 import type { Direction, SortOption, VanTypeOrEmpty } from '~/types/types';
 
 // Hardcoded van types for client-side safety

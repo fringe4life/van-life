@@ -1,4 +1,4 @@
-import { displayPrice } from '~/features/vans/utils/displayPrice';
+import { displayPrice } from '~/features/vans/utils/display-price';
 import type { VanModel } from '~/generated/prisma/models';
 import { getDiscountedPrice } from '~/utils/pricing';
 

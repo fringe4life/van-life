@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import RatingStars from './RatingStars';
+import RatingStars from './rating-stars';
 
 type ReviewProps = {
 	name: string;

@@ -1,5 +1,5 @@
 import { href } from 'react-router';
-import GenericComponent from '~/components/GenericComponent';
+import GenericComponent from '~/components/generic-component';
 import { Badge } from '~/components/ui/badge';
 import {
 	Card,
@@ -8,19 +8,19 @@ import {
 	CardHeader,
 	CardTitle,
 } from '~/components/ui/card';
-import Image from '~/features/image/component/Image';
+import Image from '~/features/image/component/image';
 import {
 	HIGH_QUALITY_IMAGE_QUALITY,
 	HOST_VAN_DETAIL_IMG_SIZES,
-} from '~/features/image/imgConstants';
-import { createWebPSrcSet } from '~/features/image/utils/createOptimizedSrcSet';
-import CustomNavLink from '~/features/navigation/components/CustomNavLink';
-import { getVanStateStyles } from '~/features/vans/utils/vanStateStyles';
+} from '~/features/image/img-constants';
+import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
+import CustomNavLink from '~/features/navigation/components/custom-nav-link';
+import { getVanStateStyles } from '~/features/vans/utils/van-state-styles';
 import type { VanModel } from '~/generated/prisma/models';
 import { cn } from '~/utils/utils';
 import { validateLowercaseVanType } from '~/utils/validators';
-import VanBadge from './VanBadge';
-import VanPrice from './VanPrice';
+import VanBadge from './van-badge';
+import VanPrice from './van-price';
 
 type VanDetailCardProps = {
 	van: VanModel;

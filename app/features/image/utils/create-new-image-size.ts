@@ -1,4 +1,4 @@
-import { DEFAULT_IMAGE_QUALITY } from '~/features/image/imgConstants';
+import { DEFAULT_IMAGE_QUALITY } from '~/features/image/img-constants';
 
 const WIDTH_REGEX = /w=\d+/g;
 const HEIGHT_REGEX = /h=\d+/g;

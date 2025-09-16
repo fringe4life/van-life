@@ -8,7 +8,7 @@ import {
 	ScrollRestoration,
 } from 'react-router';
 import type { Route } from './+types/root';
-import { HTTP_MESSAGES, HTTP_STATUS } from './constants/httpConstants';
+import { HTTP_MESSAGES, HTTP_STATUS } from './constants/http-constants';
 import './app.css';
 
 export const links: Route.LinksFunction = () => [

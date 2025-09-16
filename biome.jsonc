@@ -50,9 +50,6 @@
       },
       "suspicious": {
         "noUnknownAtRules": "off"
-      },
-      "style": {
-        "useFilenamingConvention": "off"
       }
     }
   },

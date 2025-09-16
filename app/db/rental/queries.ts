@@ -1,8 +1,8 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
-import { getCursorPaginationInformation } from '~/features/pagination/utils/getCursorPaginationInformation.server';
+import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Direction } from '~/types/types';
-import { isCUID } from '~/utils/checkIsCUID.server';
+import { isCUID } from '~/utils/check-is-cuid.server';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostRentedVan(rentId: string) {

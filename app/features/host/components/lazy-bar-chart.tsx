@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
-import BarChartSkeleton from './BarChartSkeleton';
+import BarChartSkeleton from './bar-chart-skeleton';
 
-const BarChartComponent = lazy(() => import('./BarChart'));
+const BarChartComponent = lazy(() => import('./bar-chart'));
 
 type LazyBarChartProps = {
 	mappedData: {

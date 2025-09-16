@@ -1,16 +1,16 @@
 import { type ChangeEventHandler, useState } from 'react';
 import { data, href, redirect } from 'react-router';
 import { z } from 'zod/v4';
-import CustomForm from '~/components/CustomForm';
+import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
 import { getAccountSummary } from '~/db/user/analytics';
 import { addMoney } from '~/db/user/payments';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
 import { moneySchema } from '~/lib/schemas.server';
-import { tryCatch } from '~/utils/tryCatch.server';
+import { tryCatch } from '~/utils/try-catch.server';
 import { validateTransactionType } from '~/utils/validators';
 import type { Route } from './+types/money';
 export function meta() {

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import type React from 'react';
 import { Form } from 'react-router';
-import useIsNavigating from '~/hooks/useIsNavigating';
+import useIsNavigating from '~/hooks/use-is-navigating';
 
 export default function CustomForm({
 	children,

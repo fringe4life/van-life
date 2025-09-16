@@ -1,17 +1,17 @@
 import { data, href, useParams } from 'react-router';
-import GenericComponent from '~/components/GenericComponent';
-import PendingUI from '~/components/PendingUI';
+import GenericComponent from '~/components/generic-component';
+import PendingUI from '~/components/pending-ui';
 import { getAverageReviewRating } from '~/db/review/analytics';
 import { getHostTransactions } from '~/db/user/analytics';
 import { getHostVans } from '~/db/van/host';
-import RatingStars from '~/features/host/components/review/RatingStars';
-import CustomLink from '~/features/navigation/components/CustomLink';
-import VanCard from '~/features/vans/components/VanCard';
-import { displayPrice } from '~/features/vans/utils/displayPrice';
+import RatingStars from '~/features/host/components/review/rating-stars';
+import CustomLink from '~/features/navigation/components/custom-link';
+import VanCard from '~/features/vans/components/van-card';
+import { displayPrice } from '~/features/vans/utils/display-price';
 
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
 import type { QueryType } from '~/types/types.server';
-import { calculateTotalIncome, getElapsedTime } from '~/utils/getElapsedTime';
+import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
 import type { Route } from './+types/host';
 
 export function meta() {

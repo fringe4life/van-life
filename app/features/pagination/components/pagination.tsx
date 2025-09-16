@@ -4,7 +4,7 @@ import { Button, buttonVariants } from '~/components/ui/button';
 import {
 	DEFAULT_DIRECTION,
 	LIMITS,
-} from '~/features/pagination/paginationConstants';
+} from '~/features/pagination/pagination-constants';
 import { paginationParsers } from '~/lib/parsers';
 import { cn } from '~/utils/utils';
 import { validateLimit } from '~/utils/validators';

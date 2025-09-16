@@ -1,14 +1,14 @@
 import { href } from 'react-router';
-import PendingUI from '~/components/PendingUI';
+import PendingUI from '~/components/pending-ui';
 import { buttonVariants } from '~/components/ui/button';
-import Image from '~/features/image/component/Image';
+import Image from '~/features/image/component/image';
 import {
 	ABOUT_IMG,
 	ABOUT_IMG_SIZES,
 	HIGH_QUALITY_IMAGE_QUALITY,
-} from '~/features/image/imgConstants';
-import { createWebPSrcSet } from '~/features/image/utils/createOptimizedSrcSet';
-import CustomLink from '~/features/navigation/components/CustomLink';
+} from '~/features/image/img-constants';
+import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
+import CustomLink from '~/features/navigation/components/custom-link';
 import { cn } from '~/utils/utils';
 
 export function meta() {

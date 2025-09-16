@@ -1,4 +1,4 @@
-import { SIX_MONTHS } from '~/constants/timeConstants';
+import { SIX_MONTHS } from '~/constants/time-constants';
 import type { VanModel } from '~/generated/prisma/models';
 
 /**

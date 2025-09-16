@@ -1,4 +1,4 @@
-import { MILLISECONDS_PER_DAY } from '~/constants/timeConstants';
+import { MILLISECONDS_PER_DAY } from '~/constants/time-constants';
 import type { VanModel } from '~/generated/prisma/models';
 
 /**

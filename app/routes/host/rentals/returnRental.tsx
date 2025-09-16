@@ -1,16 +1,16 @@
 import { data, href, redirect } from 'react-router';
-import CustomForm from '~/components/CustomForm';
-import UnsuccesfulState from '~/components/UnsuccesfulState';
+import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
+import UnsuccesfulState from '~/components/unsuccesful-state';
 import { getHostRentedVan } from '~/db/rental/queries';
 import { returnVan } from '~/db/rental/transactions';
 import { getAccountSummary } from '~/db/user/analytics';
-import CustomLink from '~/features/navigation/components/CustomLink';
-import VanCard from '~/features/vans/components/VanCard';
-import { getCost } from '~/features/vans/utils/getCost';
-import { getSessionOrRedirect } from '~/lib/getSessionOrRedirect.server';
+import CustomLink from '~/features/navigation/components/custom-link';
+import VanCard from '~/features/vans/components/van-card';
+import { getCost } from '~/features/vans/utils/get-cost';
+import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
 import type { QueryType } from '~/types/types.server';
-import { tryCatch } from '~/utils/tryCatch.server';
+import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/returnRental';
 
 export function meta({ loaderData }: Route.MetaArgs) {

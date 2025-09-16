@@ -7,7 +7,7 @@ import {
 	DIRECTIONS,
 	LIMITS,
 	SORT_OPTIONS,
-} from '~/features/pagination/paginationConstants';
+} from '~/features/pagination/pagination-constants';
 import { TransactionType, VanState, VanType } from '~/generated/prisma/enums';
 import type {
 	Direction,

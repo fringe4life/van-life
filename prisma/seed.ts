@@ -15,7 +15,7 @@ import {
 	getVanState,
 	isVanRentable,
 	randomTrueOrFalse,
-} from './seedFns';
+} from './seed-fns';
 
 const main = async () => {
 	// clear tables

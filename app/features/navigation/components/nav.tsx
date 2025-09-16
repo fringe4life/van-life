@@ -1,15 +1,15 @@
 import { Menu, X } from 'lucide-react';
 import { href } from 'react-router';
-import GenericComponent from '~/components/GenericComponent';
+import GenericComponent from '~/components/generic-component';
 import { Button } from '~/components/ui/button';
-import { useSheetDialog } from '~/features/navigation/hooks/useSheetDialog';
+import { useSheetDialog } from '~/features/navigation/hooks/use-sheet-dialog';
 import {
 	type NavItemType,
 	toMobileNavItems,
-} from '../utils/createMobileNavItems';
-import { getNavItems } from '../utils/getNavItems';
-import CustomLink from './CustomLink';
-import NavItem from './NavItem';
+} from '../utils/create-mobile-nav-items';
+import { getNavItems } from '../utils/get-nav-items';
+import CustomLink from './custom-link';
+import NavItem from './nav-item';
 
 type NavProps = {
 	hasToken: boolean;

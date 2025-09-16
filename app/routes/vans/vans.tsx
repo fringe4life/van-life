@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
-import ListItems from '~/components/ListItems';
+import ListItems from '~/components/list-items';
 import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { getVans, getVansCount } from '~/db/van/queries';
@@ -9,14 +9,14 @@ import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
 	DEFAULT_FILTER,
-} from '~/features/pagination/paginationConstants';
-import { buildVanSearchParams } from '~/features/pagination/utils/buildSearchParams';
-import { hasPagination } from '~/features/pagination/utils/hasPagination.server';
-import VanCard from '~/features/vans/components/VanCard';
-import VanPages from '~/features/vans/components/VanPages';
-import VanPrice from '~/features/vans/components/VanPrice';
+} from '~/features/pagination/pagination-constants';
+import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
+import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
+import VanCard from '~/features/vans/components/van-card';
+import VanPages from '~/features/vans/components/van-pages';
+import VanPrice from '~/features/vans/components/van-price';
 import { paginationParsers } from '~/lib/parsers';
-import { loadSearchParams } from '~/lib/searchParams.server';
+import { loadSearchParams } from '~/lib/search-params.server';
 import type { QueryType } from '~/types/types.server';
 import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
 import { cn } from '~/utils/utils';

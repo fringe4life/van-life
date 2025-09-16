@@ -1,9 +1,9 @@
 import { Info, LogIn, LogOut, Truck, User } from 'lucide-react';
 import { href } from 'react-router';
-import CustomLink from '../components/CustomLink';
-import CustomNavLink from '../components/CustomNavLink';
-import { linkClassName } from './linkClassName';
-import navLinkClassName from './navLinkClassName';
+import CustomLink from '../components/custom-link';
+import CustomNavLink from '../components/custom-nav-link';
+import { linkClassName } from './link-class-name';
+import navLinkClassName from './nav-link-class-name';
 
 export function getNavItems(hasToken: boolean) {
 	return [

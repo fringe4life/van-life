@@ -1,6 +1,6 @@
 import type { VanType } from '~/generated/prisma/enums';
 import type { VanCreateInput } from '~/generated/prisma/models/Van';
-import { getRecentDate } from '../seedFns';
+import { getRecentDate } from '../seed-fns';
 
 export const vans: Omit<VanCreateInput, 'userInfo'>[] = [
 	{
