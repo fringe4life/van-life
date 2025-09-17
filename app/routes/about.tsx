@@ -45,7 +45,7 @@ export default function About() {
 		>
 			<Image
 				alt="a couple enjoying their adventure"
-				classesForContainer="mx-[var(--full-width)] w-[var(--container-layout)]"
+				classesForContainer="-mx-[var(--padding-inline)] w-[var(--container-layout)]"
 				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-[16/8.9] [view-transition-name:aboutImage]"
 				decoding="sync"
 				fetchPriority="high"

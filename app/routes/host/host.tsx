@@ -73,7 +73,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<PendingUI as="section">
-			<div className="mx-[var(--full-width)] grid w-[var(--container-layout)] grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-3 py-6 sm:px-6.5 sm:py-9">
+			<div className="-mx-[var(--padding-inline)] grid w-[var(--container-layout)] grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-3 py-6 sm:px-6.5 sm:py-9">
 				<h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 					Welcome {name ? name : 'User'}!
 				</h2>

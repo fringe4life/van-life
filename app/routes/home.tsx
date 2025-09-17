@@ -42,7 +42,7 @@ export default function Home() {
 	return (
 		<PendingUI
 			as="section"
-			className="relative mx-[var(--full-width)] grid aspect-[1/1.5] place-content-center self-center text-white contain-strict sm:pl-6 md:aspect-video"
+			className="-mx-[var(--padding-inline)] relative grid aspect-[1/1.5] place-content-center self-center text-white contain-strict sm:pl-6 md:aspect-video"
 		>
 			{/* Background Image with gradient overlay */}
 			<div className="mask-cover mask-no-repeat mask-right md:mask-[url(/app/assets/rvMask.svg)] absolute inset-0">

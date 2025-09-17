@@ -48,7 +48,7 @@ export default function Nav({ hasToken }: NavProps) {
 			);
 		},
 		className:
-			'fixed top-0 right-0 z-50 flex h-[100dvh] w-[80vw] flex-col bg-orange-50 p-6 shadow-lg md:hidden',
+			'fixed top-0 right-0 z-50 flex h-dvh w-[var(--mobile-menu-width)] flex-col bg-orange-50 p-6 shadow-lg md:hidden',
 	});
 
 	return (
