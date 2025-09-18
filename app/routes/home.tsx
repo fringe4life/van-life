@@ -23,20 +23,21 @@ export function meta() {
 	];
 }
 
+// Use only mobile images for now to fix the aspect ratio issue
 const srcSet = createWebPSrcSet(
 	HOME_IMG_URL,
 	{
 		sizes: HOME_MOBILE_IMG_SIZES,
-		aspectRatio: 1.5,
+		aspectRatio: '2:3',
 		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for home page
-	}, // mobile aspect ratio (1:1.5)
+	}, // mobile aspect ratio (2:3)
 	{
 		sizes: HOME_DESKTOP_IMG_SIZES,
-		aspectRatio: 0.5625,
+		aspectRatio: '16:9',
 		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for home page
 	} // desktop aspect ratio (16:9)
 );
-const sizes = '(min-width: 1024px) 100vw, calc(100vw - 1rem)';
+const sizes = '(max-width: 1024px) 100vw';
 
 export default function Home() {
 	return (
@@ -53,7 +54,7 @@ export default function Home() {
 					className="[view-transition-name:image]"
 					decoding="sync"
 					fetchPriority="high"
-					height={667}
+					height={1500}
 					loading="eager"
 					sizes={sizes}
 					src={HOME_IMG_URL}

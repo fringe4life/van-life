@@ -32,19 +32,11 @@ export default function VanDetail({
 	van,
 }: VanDetailProps) {
 	const vanIsAvailable = isVanAvailable(van);
-	const srcSet = createWebPSrcSet(
-		imageUrl,
-		{
-			sizes: VAN_DETAIL_IMG_SIZES,
-			aspectRatio: 1,
-			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
-		}, // mobile sizes and aspect ratio (1:1 = square)
-		{
-			sizes: VAN_DETAIL_IMG_SIZES,
-			aspectRatio: 1,
-			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
-		} // desktop sizes and aspect ratio (1:1 = square)
-	);
+	const srcSet = createWebPSrcSet(imageUrl, {
+		sizes: VAN_DETAIL_IMG_SIZES,
+		aspectRatio: '1:1',
+		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
+	});
 
 	// Get van state styling
 	const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);

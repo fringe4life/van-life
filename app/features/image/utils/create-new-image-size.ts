@@ -1,32 +1,50 @@
 import { DEFAULT_IMAGE_QUALITY } from '~/features/image/img-constants';
 
 const WIDTH_REGEX = /w=\d+/g;
-const HEIGHT_REGEX = /h=\d+/g;
 const QUALITY_REGEX = /q=\d+/g;
+const ASPECT_RATIO_REGEX = /ar=[^&]+/g;
 
 /**
- * @abstract takes a url from unsplash and makes it the desired width and height with optimized compression
+ * Valid Unsplash aspect ratios with auto-complete support
+ */
+export type UnsplashAspectRatio =
+	| '1:1' // Square
+	| '4:3' // Traditional photo
+	| '3:2' // Classic photo
+	| '16:9' // Widescreen
+	| '3:4' // Portrait
+	| '2:3'; // Portrait
+
+/**
+ * Creates a new Unsplash image URL with specified width and aspect ratio
+ * Uses Unsplash's `ar` parameter for better cropping control
  * @param imgSrc the url string from unsplash
  * @param width the new width for the image
- * @param height the new height for the image
+ * @param aspectRatio the aspect ratio with auto-complete support
  * @param quality the compression quality (default: 50 for better performance)
- * @returns {string} the url to the img with the new width and height
+ * @returns {string} the url to the img with the new width and aspect ratio
  */
-export function createNewImageSizeWithHeight(
+export function createNewImageSizeWithAspectRatio(
 	imgSrc: string,
 	width: number,
-	height: number,
+	aspectRatio: UnsplashAspectRatio,
 	quality = DEFAULT_IMAGE_QUALITY
 ): string {
 	let result = imgSrc.replace(WIDTH_REGEX, `w=${width}`);
 
-	// Check if height parameter already exists in the URL
+	// Remove any existing height parameter since we're using aspect ratio
 	if (result.includes('h=')) {
-		// Replace existing height parameter
-		result = result.replace(HEIGHT_REGEX, `h=${height}`);
+		result = result.replace(/h=\d+/g, '');
+		// Clean up any double ampersands
+		result = result.replace(/&&/g, '&');
+	}
+
+	// Add or update aspect ratio parameter
+	if (result.includes('ar=')) {
+		result = result.replace(ASPECT_RATIO_REGEX, `ar=${aspectRatio}`);
 	} else {
-		// Add height parameter to the URL
-		result = result.replace(WIDTH_REGEX, `w=${width}&h=${height}`);
+		// Add aspect ratio parameter
+		result += `&ar=${aspectRatio}`;
 	}
 
 	// Optimize quality for better compression

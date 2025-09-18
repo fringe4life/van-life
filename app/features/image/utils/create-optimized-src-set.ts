@@ -2,11 +2,14 @@ import {
 	AVIF_QUALITY_BOOST,
 	DEFAULT_IMAGE_QUALITY,
 } from '~/features/image/img-constants';
-import { createNewImageSizeWithHeight } from './create-new-image-size';
+import {
+	createNewImageSizeWithAspectRatio,
+	type UnsplashAspectRatio,
+} from './create-new-image-size';
 
 type ResponsiveConfig = {
 	sizes: readonly number[] | number[];
-	aspectRatio: number;
+	aspectRatio: UnsplashAspectRatio;
 	quality?: number;
 };
 
@@ -45,11 +48,10 @@ export function createOptimizedSrcSet(
 	) => {
 		return config.sizes
 			.map((width) => {
-				const height = Math.round(width * config.aspectRatio);
-				const url = createNewImageSizeWithHeight(
+				const url = createNewImageSizeWithAspectRatio(
 					imgUrl,
 					width,
-					height,
+					config.aspectRatio,
 					format.quality
 				);
 				// Replace or add format parameter
@@ -93,9 +95,13 @@ export function createWebPSrcSet(
 	// Calculate mobile srcSet once
 	const mobileSrcSet = mobile.sizes
 		.map((width) => {
-			const height = Math.round(width * mobile.aspectRatio);
 			const quality = mobile.quality ?? DEFAULT_IMAGE_QUALITY;
-			const url = createNewImageSizeWithHeight(imgUrl, width, height, quality);
+			const url = createNewImageSizeWithAspectRatio(
+				imgUrl,
+				width,
+				mobile.aspectRatio,
+				quality
+			);
 			// Ensure WebP format
 			const webpUrl = url.includes('fm=')
 				? url.replace(FORMAT_REGEX, 'fm=webp')
@@ -115,9 +121,13 @@ export function createWebPSrcSet(
 	// Create desktop srcSet and combine with mobile
 	const desktopSrcSet = actualDesktop.sizes
 		.map((width) => {
-			const height = Math.round(width * actualDesktop.aspectRatio);
 			const quality = actualDesktop.quality ?? DEFAULT_IMAGE_QUALITY;
-			const url = createNewImageSizeWithHeight(imgUrl, width, height, quality);
+			const url = createNewImageSizeWithAspectRatio(
+				imgUrl,
+				width,
+				actualDesktop.aspectRatio,
+				quality
+			);
 			// Ensure WebP format
 			const webpUrl = url.includes('fm=')
 				? url.replace(FORMAT_REGEX, 'fm=webp')

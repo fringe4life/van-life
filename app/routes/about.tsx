@@ -23,19 +23,11 @@ export function meta() {
 
 // Create optimized WebP srcSet with 16:9 aspect ratio for both mobile and desktop
 // since the about page only uses aspect-video
-const srcSet = createWebPSrcSet(
-	ABOUT_IMG,
-	{
-		sizes: ABOUT_IMG_SIZES,
-		aspectRatio: 0.5625,
-		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
-	}, // mobile sizes and aspect ratio (16:9)
-	{
-		sizes: ABOUT_IMG_SIZES,
-		aspectRatio: 0.5625,
-		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
-	} // desktop sizes and aspect ratio (16:9)
-);
+const srcSet = createWebPSrcSet(ABOUT_IMG, {
+	sizes: ABOUT_IMG_SIZES,
+	aspectRatio: '16:9',
+	quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
+});
 
 export default function About() {
 	return (
@@ -46,7 +38,7 @@ export default function About() {
 			<Image
 				alt="a couple enjoying their adventure"
 				classesForContainer="-mx-[var(--padding-inline)] w-[var(--container-layout)]"
-				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-[16/8.9] [view-transition-name:aboutImage]"
+				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
 				decoding="sync"
 				fetchPriority="high"
 				height="890"

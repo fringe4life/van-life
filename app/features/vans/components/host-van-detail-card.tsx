@@ -49,19 +49,11 @@ export default function VanDetailCard({
 		},
 	];
 
-	const srcSet = createWebPSrcSet(
-		imageUrl,
-		{
-			sizes: HOST_VAN_DETAIL_IMG_SIZES,
-			aspectRatio: 1,
-			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
-		}, // mobile sizes and aspect ratio (1:1 = square)
-		{
-			sizes: HOST_VAN_DETAIL_IMG_SIZES,
-			aspectRatio: 1,
-			quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
-		} // desktop sizes and aspect ratio (1:1 = square)
-	);
+	const srcSet = createWebPSrcSet(imageUrl, {
+		sizes: HOST_VAN_DETAIL_IMG_SIZES,
+		aspectRatio: '1:1',
+		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
+	});
 	// Create optimized WebP srcSet with 1:1 aspect ratio for both mobile and desktop
 	// since the HostVanDetailCard uses aspect-square
 
