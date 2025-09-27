@@ -36,14 +36,8 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ request, params }: Route.LoaderArgs) {
 	const { session, headers: cookies } = await getSessionOrRedirect(request);
 
-	const { rentId } = params;
-
-	if (!rentId) {
-		throw data('Rental not found', { status: 404 });
-	}
-
 	const results = await Promise.allSettled([
-		getHostRentedVan(rentId),
+		getHostRentedVan(params.rentId),
 		getAccountSummary(session.user.id),
 	]);
 
@@ -73,10 +67,6 @@ export async function action({ request, params }: Route.ActionArgs) {
 	const { session } = await getSessionOrRedirect(request);
 
 	const { rentId } = params;
-
-	if (!rentId) {
-		throw data('Rental not found', { status: 404 });
-	}
 
 	const initialResults = await Promise.allSettled([
 		getHostRentedVan(rentId),

@@ -20,10 +20,6 @@ export function meta({ loaderData }: Route.MetaArgs) {
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-	if (!params.vanId) {
-		throw data('No van id', { status: 404 });
-	}
-
 	const result = await tryCatch(() => getVan(params.vanId));
 
 	if (result.error) {

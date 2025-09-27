@@ -27,9 +27,6 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 
 export async function loader({ params, request }: Route.LoaderArgs) {
 	const { headers: cookies } = await getSessionOrRedirect(request);
-	if (!params.vanId) {
-		throw data('Van not found', { status: 404 });
-	}
 
 	const result = await tryCatch(() => getHostRentedVan(params.vanId));
 

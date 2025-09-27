@@ -22,12 +22,10 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 
 export async function loader({ request, params }: Route.LoaderArgs) {
 	const { session, headers: cookies } = await getSessionOrRedirect(request);
-	const { vanId } = params;
-	if (!vanId) {
-		throw data('Van not found', { status: 404 });
-	}
 
-	const result = await tryCatch(() => getHostVan(session.user.id, vanId));
+	const result = await tryCatch(() =>
+		getHostVan(session.user.id, params.vanId)
+	);
 
 	if (result.error) {
 		throw data('Failed to load van details. Please try again later.', {
