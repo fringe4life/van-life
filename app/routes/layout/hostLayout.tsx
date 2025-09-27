@@ -10,14 +10,12 @@ import {
 } from 'lucide-react';
 import { href, Outlet } from 'react-router';
 import GenericComponent from '~/components/generic-component';
+import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomNavLink from '~/features/navigation/components/custom-nav-link';
 import navLinkClassName from '~/features/navigation/utils/nav-link-class-name';
-import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
 import type { Route } from './+types/hostLayout';
 
-export const loader = async ({ request }: Route.ClientLoaderArgs) => {
-	await getSessionOrRedirect(request);
-};
+export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 const hostNavItems = [
 	{
