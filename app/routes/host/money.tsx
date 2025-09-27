@@ -8,7 +8,8 @@ import { Label } from '~/components/ui/label';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
 import { getAccountSummary } from '~/db/user/analytics';
 import { addMoney } from '~/db/user/payments';
-import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
+import { authContext } from '~/features/middleware/contexts/auth';
+import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { moneySchema } from '~/lib/schemas.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import { validateTransactionType } from '~/utils/validators';
@@ -23,12 +24,14 @@ export function meta() {
 	];
 }
 
+export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
+
 export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 	return actionHeaders ? actionHeaders : loaderHeaders;
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-	const { session, headers: cookies } = await getSessionOrRedirect(request);
+export async function loader({ context }: Route.LoaderArgs) {
+	const session = context.get(authContext);
 	const maxWithrawalAmount = await getAccountSummary(session.user.id);
 
 	return data(
@@ -36,14 +39,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...cookies,
 			},
 		}
 	);
 }
 
-export async function action({ request }: Route.ActionArgs) {
-	const { session } = await getSessionOrRedirect(request);
+export async function action({ request, context }: Route.ActionArgs) {
+	const session = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
 	const result = moneySchema.safeParse(formData);

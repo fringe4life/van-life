@@ -5,10 +5,11 @@ import UnsuccesfulState from '~/components/unsuccesful-state';
 import { getHostRentedVan } from '~/db/rental/queries';
 import { returnVan } from '~/db/rental/transactions';
 import { getAccountSummary } from '~/db/user/analytics';
+import { authContext } from '~/features/middleware/contexts/auth';
+import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
 import VanCard from '~/features/vans/components/van-card';
 import { getCost } from '~/features/vans/utils/get-cost';
-import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
 import type { QueryType } from '~/types/types.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/returnRental';
@@ -29,12 +30,14 @@ export function meta({ loaderData }: Route.MetaArgs) {
 	];
 }
 
+export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
+
 export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 	return actionHeaders ? actionHeaders : loaderHeaders;
 }
 
-export async function loader({ request, params }: Route.LoaderArgs) {
-	const { session, headers: cookies } = await getSessionOrRedirect(request);
+export async function loader({ params, context }: Route.LoaderArgs) {
+	const session = context.get(authContext);
 
 	const results = await Promise.allSettled([
 		getHostRentedVan(params.rentId),
@@ -57,14 +60,13 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...cookies,
 			},
 		}
 	);
 }
 
-export async function action({ request, params }: Route.ActionArgs) {
-	const { session } = await getSessionOrRedirect(request);
+export async function action({ params, context }: Route.ActionArgs) {
+	const session = context.get(authContext);
 
 	const { rentId } = params;
 

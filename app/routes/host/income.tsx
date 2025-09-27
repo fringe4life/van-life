@@ -3,9 +3,10 @@ import Sortable from '~/components/sortable';
 import { getHostTransactions } from '~/db/user/analytics';
 import Income from '~/features/host/components/income';
 import LazyBarChart from '~/features/host/components/lazy-bar-chart';
+import { authContext } from '~/features/middleware/contexts/auth';
+import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import VanPages from '~/features/vans/components/van-pages';
 import { displayPrice } from '~/features/vans/utils/display-price';
-import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import type { QueryType } from '~/types/types.server';
 import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
@@ -22,12 +23,14 @@ export function meta() {
 	];
 }
 
+export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
+
 export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 	return actionHeaders ? actionHeaders : loaderHeaders;
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-	const { session, headers: cookies } = await getSessionOrRedirect(request);
+export async function loader({ request, context }: Route.LoaderArgs) {
+	const session = context.get(authContext);
 
 	// Parse search parameters for sorting
 	const { sort } = loadHostSearchParams(request);
@@ -43,7 +46,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...cookies,
 			},
 		}
 	);

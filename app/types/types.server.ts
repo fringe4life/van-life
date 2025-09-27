@@ -1,4 +1,5 @@
 import { VanType } from '~/generated/prisma/enums';
+import type { auth } from '~/lib/auth.server';
 
 // Type helper to convert VanType values to lowercase
 export type LowercaseVanType = Lowercase<VanType>;
@@ -13,3 +14,5 @@ export const VAN_TYPE_LOWERCASE: LowercaseVanType[] = Object.values(
 export type QueryType<T extends (...args: any[]) => any> = Awaited<
 	ReturnType<T>
 >;
+
+export type Session = typeof auth.$Infer.Session;

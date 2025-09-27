@@ -5,8 +5,9 @@ import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { getHostRentedVan } from '~/db/rental/queries';
 import { rentVan } from '~/db/rental/transactions';
+import { authContext } from '~/features/middleware/contexts/auth';
+import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import VanCard from '~/features/vans/components/van-card';
-import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
 import { rentVanSchema } from '~/lib/schemas.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/rentalDetail';
@@ -21,12 +22,14 @@ export function meta({ loaderData }: Route.MetaArgs) {
 	];
 }
 
+export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
+
 export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 	return actionHeaders ? actionHeaders : loaderHeaders;
 }
 
-export async function loader({ params, request }: Route.LoaderArgs) {
-	const { headers: cookies } = await getSessionOrRedirect(request);
+export async function loader({ params }: Route.LoaderArgs) {
+	// No session needed for this loader, but middleware ensures auth
 
 	const result = await tryCatch(() => getHostRentedVan(params.vanId));
 
@@ -47,14 +50,13 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...cookies,
 			},
 		}
 	);
 }
 
-export async function action({ request, params }: Route.ActionArgs) {
-	const { session } = await getSessionOrRedirect(request);
+export async function action({ request, params, context }: Route.ActionArgs) {
+	const session = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
 

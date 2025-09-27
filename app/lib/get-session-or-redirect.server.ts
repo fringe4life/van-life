@@ -1,7 +1,6 @@
 import { href, redirect } from 'react-router';
+import type { Session } from '~/types/types.server';
 import { auth } from './auth.server';
-
-type Session = typeof auth.$Infer.Session;
 
 export async function getSessionOrRedirect(
 	request: Request,

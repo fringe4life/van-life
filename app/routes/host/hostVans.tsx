@@ -1,11 +1,12 @@
 import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
 import { getHostVanCount, getHostVans } from '~/db/van/host';
+import { authContext } from '~/features/middleware/contexts/auth';
+import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
 import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
 import VanCard from '~/features/vans/components/van-card';
 import VanPages from '~/features/vans/components/van-pages';
-import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
 import { hostPaginationParsers } from '~/lib/parsers';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import type { QueryType } from '~/types/types.server';
@@ -21,12 +22,14 @@ export function meta() {
 	];
 }
 
+export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
+
 export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 	return actionHeaders ? actionHeaders : loaderHeaders;
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-	const { session, headers: cookies } = await getSessionOrRedirect(request);
+export async function loader({ request, context }: Route.LoaderArgs) {
+	const session = context.get(authContext);
 
 	// Parse search parameters using nuqs loadHostSearchParams
 	const { cursor, limit, direction } = loadHostSearchParams(request);
@@ -53,7 +56,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...cookies,
 			},
 		}
 	);

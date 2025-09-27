@@ -6,7 +6,8 @@ import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
 import { createVan } from '~/db/van/crud';
-import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
+import { authContext } from '~/features/middleware/contexts/auth';
+import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { addVanSchema } from '~/lib/schemas.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/addVan';
@@ -20,8 +21,10 @@ export function meta() {
 	];
 }
 
-export async function action({ request }: Route.ActionArgs) {
-	const { session } = await getSessionOrRedirect(request);
+export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
+
+export async function action({ request, context }: Route.ActionArgs) {
+	const session = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
 

@@ -1,9 +1,10 @@
 import { data, href, Outlet } from 'react-router';
 import PendingUI from '~/components/pending-ui';
 import { getHostVan } from '~/db/van/host';
+import { authContext } from '~/features/middleware/contexts/auth';
+import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
 import VanDetailCard from '~/features/vans/components/host-van-detail-card';
-import { getSessionOrRedirect } from '~/lib/get-session-or-redirect.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/vanDetailLayout';
 export function meta({ loaderData }: Route.MetaArgs) {
@@ -16,12 +17,14 @@ export function meta({ loaderData }: Route.MetaArgs) {
 	];
 }
 
+export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
+
 export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 	return actionHeaders ? actionHeaders : loaderHeaders;
 }
 
-export async function loader({ request, params }: Route.LoaderArgs) {
-	const { session, headers: cookies } = await getSessionOrRedirect(request);
+export async function loader({ params, context }: Route.LoaderArgs) {
+	const session = context.get(authContext);
 
 	const result = await tryCatch(() =>
 		getHostVan(session.user.id, params.vanId)
@@ -44,7 +47,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 		{
 			headers: {
 				'Cache-Control': 'max-age=259200',
-				...cookies,
 			},
 		}
 	);
