@@ -2,7 +2,7 @@ model Account {
   id                    String    @id
   accountId             String
   providerId            String
-  userId                String
+  userId                String    @db.VarChar(25)
   accessToken           String?
   refreshToken          String?
   idToken               String?

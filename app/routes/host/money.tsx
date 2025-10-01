@@ -1,6 +1,6 @@
+import { type } from 'arktype';
 import { type ChangeEventHandler, useState } from 'react';
 import { data, href, redirect } from 'react-router';
-import { z } from 'zod/v4';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -10,6 +10,7 @@ import { getAccountSummary } from '~/db/user/analytics';
 import { addMoney } from '~/db/user/payments';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
+import { DEPOSIT, WITHDRAW } from '~/features/vans/constants/vans-constants';
 import { moneySchema } from '~/lib/schemas.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import { validateTransactionType } from '~/utils/validators';
@@ -48,20 +49,44 @@ export async function action({ request, context }: Route.ActionArgs) {
 	const session = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
-	const result = moneySchema.safeParse(formData);
+	const result = moneySchema(formData);
 
-	if (!result.success) {
+	if (result instanceof type.errors) {
 		return {
-			errors: z.prettifyError(result.error),
+			errors: result.summary,
 			formData,
 		};
 	}
 
+	// Additional validation for money operations
+	let isValid = false;
+	if (result.type === WITHDRAW) {
+		// For withdrawals, amount should be negative (or we'll make it negative)
+		isValid =
+			Math.abs(result.amount) >= MIN_ADD && Math.abs(result.amount) <= MAX_ADD;
+	} else {
+		// For deposits, amount should be positive
+		isValid = result.amount >= MIN_ADD && result.amount <= MAX_ADD;
+	}
+
+	if (!isValid) {
+		return {
+			errors: 'Amount must be within valid range for transaction type',
+			formData,
+		};
+	}
+
+	// Adjust amount based on transaction type
+	const adjustedAmount =
+		result.type === WITHDRAW
+			? -Math.abs(result.amount) // Withdrawals are negative
+			: Math.abs(result.amount); // Deposits are positive
+
 	const result2 = await tryCatch(() =>
 		addMoney(
 			session.user.id,
-			result.data.amount,
-			validateTransactionType(result.data.type)
+			adjustedAmount,
+			validateTransactionType(result.type)
 		)
 	);
 
@@ -104,7 +129,7 @@ export default function MoneyTransaction({
 							name="type"
 							required
 							type="radio"
-							value="DEPOSIT"
+							value={DEPOSIT}
 						/>
 					</Label>
 					<Label>
@@ -116,7 +141,7 @@ export default function MoneyTransaction({
 							name="type"
 							onChange={handleChange}
 							type="radio"
-							value="WITHDRAW"
+							value={WITHDRAW}
 						/>
 					</Label>
 				</div>

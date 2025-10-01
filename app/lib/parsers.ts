@@ -14,7 +14,7 @@ import {
 	LIMITS,
 	SORT_OPTIONS,
 } from '~/features/pagination/pagination-constants';
-import { cursorPaginationZodSchema } from '~/features/pagination/utils/pagination-zod-schema.client';
+import { cursorPaginationSchema } from '~/features/pagination/utils/pagination-zod-schema.client';
 import type { Direction, SortOption, VanTypeOrEmpty } from '~/types/types';
 
 // Hardcoded van types for client-side safety
@@ -32,8 +32,8 @@ const parseAsSortOption = parseAsStringEnum<SortOption>([
 	...SORT_OPTIONS,
 ]).withDefault(DEFAULT_SORT);
 
-// Zod-based parser for complete pagination state
-export const paginationZodParser = parseAsJson(cursorPaginationZodSchema);
+// ArkType-based parser for complete pagination state
+export const paginationParser = parseAsJson(cursorPaginationSchema);
 
 // Host routes need cursor, limit, direction, and sort (no type filter)
 export const hostPaginationParsers = {

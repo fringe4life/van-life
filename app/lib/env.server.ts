@@ -1,14 +1,18 @@
-import { z } from 'zod/v4';
+import { type } from 'arktype';
 
-const envSchema = z.object({
-	DATABASE_URL: z.url(),
-	// DIRECT_URL: z.url(),
+const envSchema = type({
+	DATABASE_URL: 'string.url',
+	// DIRECT_URL: "string.url",
 
-	BETTER_AUTH_SECRET: z.string(),
-	BETTER_AUTH_URL: z.url(),
+	BETTER_AUTH_SECRET: 'string',
+	BETTER_AUTH_URL: 'string.url',
 
-	// GOOGLE_CLIENT_ID: z.string(),
-	// GOOGLE_CLIENT_SECRET: z.string(),
+	// GOOGLE_CLIENT_ID: "string",
+	// GOOGLE_CLIENT_SECRET: "string",
 });
 
-export const env = envSchema.parse(process.env);
+const envResult = envSchema(process.env);
+if (envResult instanceof type.errors) {
+	throw new Error(`Environment validation failed: ${envResult.summary}`);
+}
+export const env = envResult;

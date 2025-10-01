@@ -3,14 +3,15 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-7.9.2-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React Router](https://img.shields.io/badge/React%20Router-7.9.3-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.13-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.18-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.6.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.24-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.7.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.2.2-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Prisma](https://img.shields.io/badge/Prisma-6.16.2-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
+[![Prisma](https://img.shields.io/badge/Prisma-6.16.3-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![React](https://img.shields.io/badge/React-19.1.1-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![ArkType](https://img.shields.io/badge/ArkType-2.1.22-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
 </div>
 
@@ -48,7 +49,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🎨 **DRY Van State Styling** (centralized utility with processor pattern and custom Tailwind variants)
 - 🎨 **Modern UI/UX** with responsive design and smooth animations
 - 🧑‍💻 **TypeScript** throughout with strict type checking
-- 🧪 **Zod** for runtime schema validation
+- 🧪 **ArkType** for runtime schema validation and type-safe narrowing
+- 🗄️ **Optimized Database IDs** with 25-character CUID v2 and VARCHAR(25) constraints
 - 🎨 **TailwindCSS 4** with modern CSS features
 - 📦 **Prisma ORM** with Neon PostgreSQL and relation joins
 - 🔧 **Generic Components** for reusability and maintainability
@@ -66,22 +68,22 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Frontend
 
 - **React 19.1.1** for performance optimization
-- **React Router 7.9.2** (file-based routing, SSR)
-- **TypeScript 5.9.2** with strict configuration
+- **React Router 7.9.3** (file-based routing, SSR)
+- **TypeScript 5.9.3** with strict configuration
 - **TailwindCSS 4.1.13** with modern CSS features
 - **Radix UI** for accessible components
 - **Lucide React 0.501.0** for icons
 - **Recharts 3.2.0** for data visualization (lazy-loaded)
-- **nuqs 2.6.0** for type-safe URL state management
+- **nuqs 2.7.0** for type-safe URL state management
 
 ### Backend & Database
 
 - **Node.js** with React Router server
-- **Prisma 6.16.2** ORM with Neon PostgreSQL (Rust-free client)
-- **better-auth 1.3.18** for authentication
-- **Zod 4.1.8** for schema validation
-- **CUID2 2.2.2** for unique identifiers
-- **@prisma/adapter-neon 6.16.2** for Neon database integration
+- **Prisma 6.16.3** ORM with Neon PostgreSQL (Rust-free client)
+- **better-auth 1.3.24** for authentication
+- **ArkType 2.1.22** for schema validation and type narrowing
+- **CUID2 2.2.2** for unique identifiers (configured for 25-character IDs)
+- **@prisma/adapter-neon 6.16.3** for Neon database integration
 
 ### Development Tools
 
@@ -89,7 +91,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **Biome 2.2.2** for linting and formatting with Ultracite integration
 - **Ultracite 5.3.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **Husky 9.1.7** for Git hooks and pre-commit automation
-- **TypeScript 5.9.2** with native preview
+- **TypeScript 5.9.3** with native preview
 - **Bun** for fast package management and runtime
 
 ### Build System
@@ -180,8 +182,8 @@ prisma/
 - **Advanced features:**
   - **Rust-free Prisma Client** with `queryCompiler` and `driverAdapters` (now GA)
   - **Relation joins** for optimized queries (preview feature)
-  - CUID2 for unique identifiers
-  - Proper indexing and constraints
+  - **Optimized CUID2** with 25-character IDs and VARCHAR(25) constraints for better performance
+  - Proper indexing and constraints with explicit column lengths
   - Modular seed data organization with separate files for each model
   - Enhanced seed data with varied van names, descriptions, and state management
   - Van state system with NEW (client-derived), IN_REPAIR, ON_SALE, AVAILABLE states
@@ -250,10 +252,11 @@ generator client {
 - **better-auth** for secure email/password authentication
 - **Session management** with proper security headers
 - **Protected routes** with automatic redirects
-- **Zod validation** for all auth forms
+- **ArkType validation** for all auth forms with custom narrow() validators
 - **Server-side session handling** in loaders
 - **Modular model organization** for better maintainability
 - **Centralized auth types/config** in `app/lib/auth.server.ts`
+- **Custom CUID v2 generator** for 25-character user IDs optimized for database storage
 
 ---
 
@@ -620,7 +623,8 @@ The pre-commit hook ensures code quality by:
 
 - **Biome 2.2.2** for linting and formatting with Ultracite integration
 - **Ultracite 5.3.3** - AI-friendly linting rules for maximum type safety and accessibility
-- **TypeScript 5.9.2** with strict configuration
+- **TypeScript 5.9.3** with strict configuration
+- **ArkType 2.1.22** for runtime validation and type-safe narrowing
 - **Consistent code style:**
   - Tab indentation
   - Single quotes
@@ -629,7 +633,7 @@ The pre-commit hook ensures code quality by:
 - **Type safety** throughout the application
 - **Error handling** with proper error boundaries
 - **nuqs** for type-safe URL state management
-- **Prisma** with proper type generation
+- **Prisma** with proper type generation and optimized ID constraints
 
 ### GitHub Actions (CodeQL)
 

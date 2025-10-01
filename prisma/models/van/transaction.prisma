@@ -1,8 +1,8 @@
 model Transaction {
-  id        String          @id @default(cuid())
+  id        String          @id @default(cuid()) @db.VarChar(25)
   createdAt DateTime        @default(now())
   type      TransactionType
   amount    Float
-  userId    String
+  userId    String          @db.VarChar(25)
   userInfo  UserInfo        @relation(fields: [userId], references: [userId])
 }

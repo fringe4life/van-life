@@ -6,7 +6,7 @@ model Session {
   updatedAt      DateTime?
   ipAddress      String?
   userAgent      String?
-  userId         String
+  userId         String    @db.VarChar(25)
   impersonatedBy String?
   user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 

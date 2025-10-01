@@ -46,6 +46,7 @@ export default function VanDetail({
 			<Card
 				className={`grid @min-xl/card-full:grid-cols-2 @min-xl/card-full:grid-rows-[auto_auto_1fr] @max-xl/card-full:gap-x-4 @min-xl/card-full:gap-x-4 gap-y-2 ${vanStateClasses}`}
 				data-slot={dataSlot}
+				style={{ viewTransitionName: `card-${vanId}` }}
 			>
 				<CardHeader className="relative @min-xl/card-full:col-span-1 @min-xl/card-full:row-span-3 row-span-1">
 					<VanBadge van={van} />

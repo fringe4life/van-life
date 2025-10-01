@@ -1,11 +1,11 @@
 model Van {
-  id          String    @id @default(cuid())
+  id          String    @id @default(cuid()) @db.VarChar(25)
   name        String    @unique @db.VarChar(60)
   price       Int       @db.SmallInt
   description String    @db.VarChar(1024)
   imageUrl    String
   type        VanType
-  hostId      String
+  hostId      String    @db.VarChar(25)
   isRented    Boolean   @default(false)
   createdAt   DateTime  @default(now()) @db.Date
   state       VanState? @default(AVAILABLE)

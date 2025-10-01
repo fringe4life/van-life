@@ -1,6 +1,6 @@
+import { type } from 'arktype';
 import { useId } from 'react';
 import { href, redirect, replace } from 'react-router';
-import { z } from 'zod/v4';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -20,20 +20,20 @@ export async function loader({ request }: Route.LoaderArgs) {
 export async function action({ request }: Route.ActionArgs) {
 	const formData = Object.fromEntries(await request.formData());
 
-	const result = signUpScheme.safeParse(formData);
+	const result = signUpScheme(formData);
 
 	const name = (formData.name as string) ?? '';
 	const email = (formData.email as string) ?? '';
 
-	if (!result.success) {
+	if (result instanceof type.errors) {
 		return {
-			errors: z.prettifyError(result.error),
+			errors: result.summary,
 			name,
 			email,
 		};
 	}
 	const signUp = await auth.api.signUpEmail({
-		body: result.data,
+		body: result,
 		asResponse: true,
 	});
 

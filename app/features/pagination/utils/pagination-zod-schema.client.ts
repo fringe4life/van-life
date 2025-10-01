@@ -1,4 +1,4 @@
-import { z } from 'zod/mini';
+import { type } from 'arktype';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
@@ -8,13 +8,21 @@ import {
 } from '~/features/pagination/pagination-constants';
 
 /**
- * Zod Mini schema for cursor-based pagination parameters
+ * ArkType schema for cursor-based pagination parameters
  * This is client-safe and can be used with nuqs parseAsJson
- * Using Zod Mini for ~64% smaller bundle size
+ * Using ArkType for better performance and smaller bundle size
  */
-export const cursorPaginationZodSchema = z.object({
-	limit: z._default(z.number().check(z.positive()), DEFAULT_LIMIT),
-	cursor: z._default(z.optional(z.string()), DEFAULT_CURSOR),
-	direction: z._default(z.enum(DIRECTIONS), DEFAULT_DIRECTION),
-	type: z._default(z.optional(z.string()), DEFAULT_FILTER),
+export const cursorPaginationSchema = type({
+	limit: 'number > 0',
+	'cursor?': 'string',
+	direction: `"${DIRECTIONS.join('" | "')}"`,
+	'type?': 'string',
+}).pipe((data) => {
+	// Apply defaults
+	return {
+		limit: data.limit ?? DEFAULT_LIMIT,
+		cursor: data.cursor ?? DEFAULT_CURSOR,
+		direction: data.direction ?? DEFAULT_DIRECTION,
+		type: data.type ?? DEFAULT_FILTER,
+	};
 });

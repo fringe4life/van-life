@@ -1,5 +1,5 @@
 model UserInfo {
-  userId       String        @id
+  userId       String        @id @db.VarChar(25)
   moneyAdded   Float         @default(0)
   rented       Rent[]        @relation("host")
   renter       Rent[]        @relation("renter")

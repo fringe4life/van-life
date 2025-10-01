@@ -1,3 +1,4 @@
+import { type } from 'arktype';
 import { cuidSchema } from '~/lib/schemas.server';
 
 /**
@@ -6,7 +7,7 @@ import { cuidSchema } from '~/lib/schemas.server';
  * @returns {boolean} true if CUID. else false
  */
 export function isCUID(possibleCUID: string): boolean {
-	const result = cuidSchema.safeParse(possibleCUID);
+	const result = cuidSchema(possibleCUID);
 
-	return result.success;
+	return !(result instanceof type.errors);
 }

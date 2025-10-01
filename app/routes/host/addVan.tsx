@@ -1,6 +1,6 @@
+import { type } from 'arktype';
 import { useId } from 'react';
 import { href, redirect } from 'react-router';
-import { z } from 'zod/v4';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -28,16 +28,21 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 	const formData = Object.fromEntries(await request.formData());
 
-	const result = addVanSchema.safeParse(formData);
+	const result = addVanSchema(formData);
 
-	if (!result.success) {
+	if (result instanceof type.errors) {
 		return {
-			errors: z.prettifyError(result.error),
+			errors: result.summary,
 			formData,
 		};
 	}
 
-	const resultWithHostId = { ...result.data, hostId: session.user.id };
+	const resultWithHostId = {
+		...result,
+		discount: result.discount ?? 0,
+		hostId: session.user.id,
+		state: result.state ?? null,
+	};
 
 	const result2 = await tryCatch(() => createVan(resultWithHostId));
 

@@ -1,5 +1,5 @@
+import { type } from 'arktype';
 import { data, href, redirect } from 'react-router';
-import { z } from 'zod/v4';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -67,28 +67,24 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 		throw data('Rental not found', { status: 404 });
 	}
 
-	const {
-		success,
-		data: values,
-		error,
-	} = rentVanSchema.safeParse({
+	const result = rentVanSchema({
 		vanId,
 		renterId: session.user.id,
 		hostId,
 	});
 
-	if (!success) {
+	if (result instanceof type.errors) {
 		return {
-			errors: z.prettifyError(error),
+			errors: result.summary,
 			formData,
 		};
 	}
 
-	const result = await tryCatch(() =>
-		rentVan(values.vanId, values.renterId, values.hostId)
+	const result2 = await tryCatch(() =>
+		rentVan(result.vanId, result.renterId, result.hostId)
 	);
 
-	if (result.error || !result.data) {
+	if (result2.error || !result2.data) {
 		return {
 			errors: 'Something went wrong try again later!',
 			formData,
