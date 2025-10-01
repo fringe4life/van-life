@@ -13,11 +13,9 @@ model Van {
   rent        Rent[]
   userInfo    UserInfo  @relation(fields: [hostId], references: [userId])
 
-  @@unique([createdAt(sort: Desc), id(sort: Desc)])
-  @@index([hostId])
-  @@index([type])
-  @@index([state])
-  @@index([id(sort: Desc), hostId])
-  @@index([isRented])
-  @@index([type(sort: Desc), id(sort: Desc)])
+  // Indexes optimized for actual query patterns
+  @@index([hostId]) // Used in: getHostVan, getHostVans, getHostVanCount
+  @@index([type]) // Used in: getVans, getVansCount
+  @@index([hostId, id(sort: Desc)]) // Optimized for: getHostVans pagination (where hostId + orderBy id)
+  @@index([type, id]) // Optimized for: getVans pagination (where type + orderBy id, direction is dynamic)
 }

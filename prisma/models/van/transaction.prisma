@@ -5,4 +5,8 @@ model Transaction {
   amount    Float
   userId    String          @db.VarChar(25)
   userInfo  UserInfo        @relation(fields: [userId], references: [userId])
+
+  // Indexes for getUserTransactions query
+  @@index([userId]) // Used in: getUserTransactions (where userId)
+  @@index([createdAt(sort: Desc)]) // Used in: getUserTransactions (orderBy createdAt)
 }
