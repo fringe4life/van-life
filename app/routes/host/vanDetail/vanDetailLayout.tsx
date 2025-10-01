@@ -1,5 +1,5 @@
 import { data, href, Outlet } from 'react-router';
-import PendingUI from '~/components/pending-ui';
+import PendingUi from '~/components/pending-ui';
 import { getHostVan } from '~/db/van/host';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
@@ -64,9 +64,9 @@ export default function VanDetailLayout({ loaderData }: Route.ComponentProps) {
 				&larr; Back to all vans
 			</CustomLink>
 			<VanDetailCard className="mx-auto" van={van}>
-				<PendingUI pendingOpacity={0.5}>
+				<PendingUi pendingOpacity={0.5}>
 					<Outlet context={van} />
-				</PendingUI>
+				</PendingUi>
 			</VanDetailCard>
 		</>
 	);

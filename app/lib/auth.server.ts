@@ -19,15 +19,12 @@ export const auth = betterAuth({
 	databaseHooks: {
 		user: {
 			create: {
-				// biome-ignore lint/suspicious/useAwait: better-auth requires async function signature
-				before: async (user) => {
-					return {
-						data: {
-							...user,
-							id: createId(),
-						},
-					};
-				},
+				before: async (user) => ({
+					data: {
+						...user,
+						id: createId(),
+					},
+				}),
 				after: async (user) => {
 					const { id: userId } = user;
 					// TODO: add error handling...

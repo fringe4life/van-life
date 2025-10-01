@@ -1,5 +1,5 @@
 import { href } from 'react-router';
-import PendingUI from '~/components/pending-ui';
+import PendingUi from '~/components/pending-ui';
 import { buttonVariants } from '~/components/ui/button';
 import Image from '~/features/image/component/image';
 import {
@@ -41,7 +41,7 @@ const sizes = '(max-width: 1024px) 100vw';
 
 export default function Home() {
 	return (
-		<PendingUI
+		<PendingUi
 			as="section"
 			className="-mx-[var(--padding-inline)] relative grid aspect-[1/1.5] text-white contain-strict sm:pl-6 md:aspect-video md:place-content-center md:self-center"
 		>
@@ -79,6 +79,6 @@ export default function Home() {
 					Find your van
 				</CustomLink>
 			</div>
-		</PendingUI>
+		</PendingUi>
 	);
 }

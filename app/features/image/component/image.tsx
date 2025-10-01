@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DEFAULT_IMAGE_QUALITY } from '~/features/image/img-constants';
 import { createNewImageSizeWithAspectRatio } from '~/features/image/utils/create-new-image-size';
-import canUseDOM from '~/utils/can-use-dom';
+import canUseDom from '~/utils/can-use-dom';
 import { cn } from '~/utils/utils';
 
 /**
@@ -60,11 +60,11 @@ export default function Image({
 	...rest
 }: ImgProps) {
 	/** Low-resolution placeholder image width constant */
-	const LOW_RES_IMAGE_WIDTH = 20;
+	const LowResImageWidth = 20;
 	/** Low-resolution placeholder image (20px width, square aspect ratio) with WebP format and optimized quality */
 	const lowRes = createNewImageSizeWithAspectRatio(
 		src,
-		LOW_RES_IMAGE_WIDTH,
+		LowResImageWidth,
 		'1:1',
 		DEFAULT_IMAGE_QUALITY
 	);
@@ -78,7 +78,7 @@ export default function Image({
 	 * Only runs on the client side to avoid SSR issues
 	 */
 	useEffect(() => {
-		if (!canUseDOM) {
+		if (!canUseDom) {
 			return;
 		}
 

@@ -1,6 +1,6 @@
 import { data, href, useParams } from 'react-router';
 import GenericComponent from '~/components/generic-component';
-import PendingUI from '~/components/pending-ui';
+import PendingUi from '~/components/pending-ui';
 import { getAverageReviewRating } from '~/db/review/analytics';
 import { getHostTransactions } from '~/db/user/analytics';
 import { getHostVans } from '~/db/van/host';
@@ -73,7 +73,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 		: { elapsedDays: 0, description: 'No data' };
 
 	return (
-		<PendingUI as="section">
+		<PendingUi as="section">
 			<div className="-mx-[var(--padding-inline)] grid w-[var(--container-layout)] grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-[var(--padding-inline)] py-6 sm:py-9">
 				<h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 					Welcome {name ? name : 'User'}!
@@ -123,7 +123,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					action: <p className="justify-self-end text-right">Edit</p>,
 				})}
 			/>
-		</PendingUI>
+		</PendingUi>
 	);
 }
 

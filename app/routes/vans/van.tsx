@@ -1,6 +1,6 @@
 import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
-import PendingUI from '~/components/pending-ui';
+import PendingUi from '~/components/pending-ui';
 import { getVan } from '~/db/van/crud';
 import CustomLink from '~/features/navigation/components/custom-link';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
@@ -52,7 +52,7 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 	const backLinkSearch = buildVanSearchParams({ cursor, limit, type });
 
 	return (
-		<PendingUI className="grid grid-rows-[auto_1fr]">
+		<PendingUi className="grid grid-rows-[auto_1fr]">
 			<CustomLink
 				to={{
 					pathname: href('/vans'),
@@ -65,6 +65,6 @@ export default function VanDetail({ loaderData }: Route.ComponentProps) {
 			<div className="self-center">
 				<VanDetails van={van} />
 			</div>
-		</PendingUI>
+		</PendingUi>
 	);
 }

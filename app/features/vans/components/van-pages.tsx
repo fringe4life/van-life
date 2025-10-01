@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import GenericComponent, {
 	type GenericComponentProps,
 } from '~/components/generic-component';
-import PendingUI from '~/components/pending-ui';
+import PendingUi from '~/components/pending-ui';
 import Pagination, {
 	type PaginationPropsForVanPages,
 } from '~/features/pagination/components/pagination';
@@ -39,7 +39,7 @@ export default function VanPages<P, T extends { id: string }, U>(
 	const { cursor, limit = DEFAULT_LIMIT } = searchParams;
 
 	return (
-		<PendingUI
+		<PendingUi
 			as="section"
 			className={clsx(
 				'grid contain-content',
@@ -59,6 +59,6 @@ export default function VanPages<P, T extends { id: string }, U>(
 				limit={limit}
 				pathname={pathname}
 			/>
-		</PendingUI>
+		</PendingUi>
 	);
 }

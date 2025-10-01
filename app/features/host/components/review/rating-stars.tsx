@@ -6,11 +6,11 @@ type RatingStarsProps = {
 };
 
 export default function RatingStars({ rating }: RatingStarsProps) {
-	const MAX_RATING = 5;
-	const PERCENTAGE_MULTIPLIER = 100;
+	const MaxRating = 5;
+	const PercentageMultiplier = 100;
 	const stars: JSX.Element[] = [];
 
-	for (let i = 1; i <= MAX_RATING; i++) {
+	for (let i = 1; i <= MaxRating; i++) {
 		if (i <= Math.floor(rating)) {
 			// Fully filled star
 			stars.push(
@@ -21,7 +21,7 @@ export default function RatingStars({ rating }: RatingStarsProps) {
 			);
 		} else if (i === Math.floor(rating) + 1 && rating % 1 !== 0) {
 			// Partially filled star using SVG gradient
-			const percent = Math.round((rating % 1) * PERCENTAGE_MULTIPLIER);
+			const percent = Math.round((rating % 1) * PercentageMultiplier);
 			const gradientId = `star-gradient-${i}`;
 			stars.push(
 				<svg

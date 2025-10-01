@@ -8,8 +8,8 @@ function getEndDate(rentedAt: Date) {
 }
 
 function randomTrueOrFalse() {
-	const HALF_PROBABILITY = 0.5;
-	return getRandomNumber(0, 1) > HALF_PROBABILITY;
+	const HalfProbability = 0.5;
+	return getRandomNumber(0, 1) > HalfProbability;
 }
 
 function getRandomNumber(min = 3, max = 21) {
@@ -17,18 +17,15 @@ function getRandomNumber(min = 3, max = 21) {
 }
 
 function getCost(rentedAt: Date, rentedTo: Date, price: number) {
-	const MILLISECONDS_PER_SECOND = 1000;
-	const SECONDS_PER_MINUTE = 60;
-	const MINUTES_PER_HOUR = 60;
-	const HOURS_PER_DAY = 24;
-	const MILLISECONDS_PER_DAY =
-		MILLISECONDS_PER_SECOND *
-		SECONDS_PER_MINUTE *
-		MINUTES_PER_HOUR *
-		HOURS_PER_DAY;
+	const MillisecondsPerSecond = 1000;
+	const SecondsPerMinute = 60;
+	const MinutesPerHour = 60;
+	const HoursPerDay = 24;
+	const MillisecondsPerDay =
+		MillisecondsPerSecond * SecondsPerMinute * MinutesPerHour * HoursPerDay;
 
 	const daysDifferent = Math.ceil(
-		(rentedTo.getTime() - rentedAt.getTime()) / MILLISECONDS_PER_DAY
+		(rentedTo.getTime() - rentedAt.getTime()) / MillisecondsPerDay
 	);
 	return price * daysDifferent;
 }
@@ -41,14 +38,14 @@ function getRandomId<T extends { id: string }>(ids: T[]) {
 }
 
 function findRentableVan(vanIds: VanModel[], excludedIds: string[]): string {
-	const MAX_ATTEMPTS = 100;
+	const MaxAttempts = 100;
 	let candidateId = getRandomId(vanIds);
 	let attempts = 0;
 
 	while (
 		(vanIds.find((v) => v.id === candidateId)?.state === 'IN_REPAIR' ||
 			excludedIds.includes(candidateId)) &&
-		attempts < MAX_ATTEMPTS
+		attempts < MaxAttempts
 	) {
 		candidateId = getRandomId(vanIds);
 		attempts++;
@@ -81,15 +78,15 @@ import type { VanModel } from '~/generated/prisma/models';
 import { prisma } from '~/lib/prisma.server';
 
 function getRandomTransactionType(): 'DEPOSIT' | 'WITHDRAW' {
-	const HALF_PROBABILITY = 0.5;
-	return Math.random() > HALF_PROBABILITY ? 'DEPOSIT' : 'WITHDRAW';
+	const HalfProbability = 0.5;
+	return Math.random() > HalfProbability ? 'DEPOSIT' : 'WITHDRAW';
 }
 
 function getRandomAmount(min = 100, max = 5000): number {
-	const CENTS_MULTIPLIER = 100;
+	const CentsMultiplier = 100;
 	return (
-		Math.round((Math.random() * (max - min) + min) * CENTS_MULTIPLIER) /
-		CENTS_MULTIPLIER
+		Math.round((Math.random() * (max - min) + min) * CentsMultiplier) /
+		CentsMultiplier
 	);
 }
 
@@ -144,12 +141,12 @@ function getRandomDiscount(min = 5, max = 100): number {
 
 // Returns a random Date within the last 6 weeks for rented vans
 function getRecentRentalDate(): Date {
-	const DAYS_IN_SIX_WEEKS = 42;
+	const DaysInSixWeeks = 42;
 	const now = new Date();
 	const sixWeeksAgo = new Date(
 		now.getFullYear(),
 		now.getMonth(),
-		now.getDate() - DAYS_IN_SIX_WEEKS
+		now.getDate() - DaysInSixWeeks
 	);
 	const startMs = sixWeeksAgo.getTime();
 	const endMs = now.getTime();

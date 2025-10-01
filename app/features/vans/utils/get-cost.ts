@@ -28,8 +28,8 @@ export function getCost(
 
 	// Apply discount if van is on sale
 	if (van.state === 'ON_SALE' && van.discount && van.discount > 0) {
-		const PERCENTAGE_DIVISOR = 100;
-		const discountAmount = (basePrice * van.discount) / PERCENTAGE_DIVISOR;
+		const PercentageDivisor = 100;
+		const discountAmount = (basePrice * van.discount) / PercentageDivisor;
 		const discountedPrice = basePrice - discountAmount;
 		return discountedPrice * daysDifferent;
 	}

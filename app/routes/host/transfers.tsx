@@ -56,11 +56,13 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 
 	// Calculate total amount and elapsed time client-side
 	const sumAmount = Array.isArray(userTransactions)
-		? userTransactions.reduce((total, transaction) => {
-				return transaction.type === 'DEPOSIT'
-					? total + transaction.amount
-					: total - transaction.amount;
-			}, 0)
+		? userTransactions.reduce(
+				(total, transaction) =>
+					transaction.type === 'DEPOSIT'
+						? total + transaction.amount
+						: total - transaction.amount,
+				0
+			)
 		: 0;
 
 	const elapsedTime = Array.isArray(userTransactions)

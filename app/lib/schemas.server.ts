@@ -23,7 +23,7 @@ export const loginSchema = type({
 /**
  * TypeScript type inferred from loginSchema.
  */
-export type loginSchemaType = typeof loginSchema.infer;
+export type LoginSchemaType = typeof loginSchema.infer;
 
 /**
  * Schema for user sign-up form.

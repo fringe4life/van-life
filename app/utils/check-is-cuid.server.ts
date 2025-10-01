@@ -6,8 +6,8 @@ import { cuidSchema } from '~/lib/schemas.server';
  * @param {string} possibleCUID a possible CUID
  * @returns {boolean} true if CUID. else false
  */
-export function isCUID(possibleCUID: string): boolean {
-	const result = cuidSchema(possibleCUID);
+export function isCUID(possibleCuid: string): boolean {
+	const result = cuidSchema(possibleCuid);
 
 	return !(result instanceof type.errors);
 }

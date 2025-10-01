@@ -221,7 +221,10 @@ html {
 	--padding-inline: 1rem; /* Mobile default */
 
 	/* Host layout max-width calculation - eliminates redundancy */
-	--host-layout-max-width: calc(var(--container-layout) - var(--padding-inline));
+	--host-layout-max-width: calc(
+		var(--container-layout) -
+		var(--padding-inline)
+	);
 
 	--mobile-menu-width: min(100dvw, 25rem);
 }

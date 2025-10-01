@@ -2,7 +2,7 @@ import type { ComponentProps, ElementType } from 'react';
 import useIsNavigating from '~/hooks/use-is-navigating';
 import { cn } from '~/utils/utils';
 
-type PendingUIProps<T extends ElementType = 'div'> = {
+type PendingUiProps<T extends ElementType = 'div'> = {
 	/** The HTML element to render (default: 'div') */
 	as?: T;
 	/** Additional CSS classes to merge with pending UI classes */
@@ -65,7 +65,7 @@ export default function PendingUI<T extends ElementType = 'div'>({
 	pendingOpacity = 0.75,
 	children,
 	...rest
-}: PendingUIProps<T>) {
+}: PendingUiProps<T>) {
 	const { changingPage } = useIsNavigating();
 	const isCurrentlyPending = isPending ?? changingPage;
 
@@ -73,9 +73,9 @@ export default function PendingUI<T extends ElementType = 'div'>({
 	const Component = as || 'div';
 
 	// Calculate opacity class based on pending state
-	const OPACITY_PERCENTAGE_MULTIPLIER = 100;
+	const OpacityPercentageMultiplier = 100;
 	const opacityClass = isCurrentlyPending
-		? `opacity-${Math.round(pendingOpacity * OPACITY_PERCENTAGE_MULTIPLIER)}`
+		? `opacity-${Math.round(pendingOpacity * OpacityPercentageMultiplier)}`
 		: '';
 
 	// Merge all classes using cn utility

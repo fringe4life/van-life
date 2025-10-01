@@ -42,7 +42,6 @@ export function createGenericOrderBy<T extends Record<string, unknown>>(
 ): T {
 	const { dateField, valueField } = config;
 
-	// biome-ignore lint/nursery/noUnnecessaryConditions: simply related to switch statement
 	switch (sort) {
 		case 'oldest':
 			return { [dateField]: 'asc' } as T;

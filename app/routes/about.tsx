@@ -1,5 +1,5 @@
 import { href } from 'react-router';
-import PendingUI from '~/components/pending-ui';
+import PendingUi from '~/components/pending-ui';
 import { buttonVariants } from '~/components/ui/button';
 import Image from '~/features/image/component/image';
 import {
@@ -31,7 +31,7 @@ const srcSet = createWebPSrcSet(ABOUT_IMG, {
 
 export default function About() {
 	return (
-		<PendingUI
+		<PendingUi
 			as="section"
 			className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-10"
 		>
@@ -85,6 +85,6 @@ export default function About() {
 					Explore our vans
 				</CustomLink>
 			</article>
-		</PendingUI>
+		</PendingUi>
 	);
 }
