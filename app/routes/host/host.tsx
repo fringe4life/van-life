@@ -10,8 +10,8 @@ import { authMiddleware } from '~/features/middleware/functions/auth-middleware'
 import CustomLink from '~/features/navigation/components/custom-link';
 import VanCard from '~/features/vans/components/van-card';
 import { displayPrice } from '~/features/vans/utils/display-price';
-import type { QueryType } from '~/types/types.server';
 import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
+import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host';
 
 export function meta() {
@@ -33,25 +33,23 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ context }: Route.LoaderArgs) {
 	const session = context.get(authContext);
 
-	const results = await Promise.allSettled([
+	const [vansResult, transactionsResult, avgRatingResult] = await Promise.all([
 		// biome-ignore lint/style/noMagicNumbers: just getting the first three vans
-		getHostVans(session?.user.id, undefined, 3),
-		getHostTransactions(session.user.id),
-		getAverageReviewRating(session.user.id),
+		tryCatch(async () => await getHostVans(session.user.id, undefined, 3)),
+		tryCatch(async () => await getHostTransactions(session.user.id)),
+		tryCatch(async () => await getAverageReviewRating(session.user.id)),
 	]);
 
-	const [vans, transactions, avgRating] = results.map((result) =>
-		result.status === 'fulfilled'
-			? result.value
-			: 'There was an error getting this data.'
-	);
+	const vans = vansResult.data ?? [];
+	const transactions = transactionsResult.data ?? [];
+	const avgRating = avgRatingResult.data ?? 0;
 
 	return data(
 		{
-			vans: vans as QueryType<typeof getHostVans>,
-			avgRating: avgRating as QueryType<typeof getAverageReviewRating>,
+			vans,
+			avgRating,
 			name: session.user.name,
-			transactions: transactions as QueryType<typeof getHostTransactions>,
+			transactions,
 		},
 		{
 			headers: {

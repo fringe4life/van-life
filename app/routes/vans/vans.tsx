@@ -17,8 +17,8 @@ import VanPages from '~/features/vans/components/van-pages';
 import VanPrice from '~/features/vans/components/van-price';
 import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/search-params.server';
-import type { QueryType } from '~/types/types.server';
 import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
+import { tryCatch } from '~/utils/try-catch.server';
 import { cn } from '~/utils/utils';
 import { validateVanType } from '~/utils/validators';
 import type { Route } from './+types/vans';
@@ -44,21 +44,21 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const typeFilter =
 		type === '' ? undefined : validateVanType(type?.toUpperCase());
 
-	const results = await Promise.allSettled([
-		getVans(cursor, limit, typeFilter, direction),
-		getVansCount(typeFilter),
+	const [vansResult, countResult] = await Promise.all([
+		tryCatch(() => getVans(cursor, limit, typeFilter, direction)),
+		tryCatch(() => getVansCount(typeFilter)),
 	]);
 
-	const [vans, vansCount] = results.map((result) =>
-		result.status === 'fulfilled' ? result.value : 'Error fetching data'
-	);
+	// Handle errors with proper type inference
+	const vans = vansResult.data ?? [];
+	const vansCount = countResult.data ?? 0;
 
 	// Process pagination logic
 	const pagination = hasPagination(vans, limit, cursor, direction);
 
 	const loaderData = {
 		badges,
-		vansCount: vansCount as QueryType<typeof getVansCount>,
+		vansCount,
 		...pagination,
 	};
 

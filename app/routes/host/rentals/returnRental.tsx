@@ -1,7 +1,6 @@
 import { data, href, redirect } from 'react-router';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
-import UnsuccesfulState from '~/components/unsuccesful-state';
 import { getHostRentedVan } from '~/db/rental/queries';
 import { returnVan } from '~/db/rental/transactions';
 import { getAccountSummary } from '~/db/user/analytics';
@@ -10,7 +9,6 @@ import { authMiddleware } from '~/features/middleware/functions/auth-middleware'
 import CustomLink from '~/features/navigation/components/custom-link';
 import VanCard from '~/features/vans/components/van-card';
 import { getCost } from '~/features/vans/utils/get-cost';
-import type { QueryType } from '~/types/types.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/returnRental';
 
@@ -39,23 +37,22 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ params, context }: Route.LoaderArgs) {
 	const session = context.get(authContext);
 
-	const results = await Promise.allSettled([
-		getHostRentedVan(params.rentId),
-		getAccountSummary(session.user.id),
+	const [rentResult, moneyResult] = await Promise.all([
+		tryCatch(async () => await getHostRentedVan(params.rentId)),
+		tryCatch(async () => await getAccountSummary(session.user.id)),
 	]);
 
-	const [rent, money] = results.map((result) =>
-		result.status === 'fulfilled' ? result.value : 'Error fetching data'
-	);
+	const rent = rentResult.data;
+	const money = typeof moneyResult.data === 'number' ? moneyResult.data : 0;
 
-	if (!rent) {
+	if (!rent || typeof rent !== 'object' || !('van' in rent)) {
 		throw data('Rented van not found', { status: 404 });
 	}
 
 	return data(
 		{
-			rent: rent as QueryType<typeof getHostRentedVan> | string,
-			money: money as QueryType<typeof getAccountSummary> | string,
+			rent,
+			money,
 		},
 		{
 			headers: {
@@ -70,18 +67,19 @@ export async function action({ params, context }: Route.ActionArgs) {
 
 	const { rentId } = params;
 
-	const initialResults = await Promise.allSettled([
-		getHostRentedVan(rentId),
-		getAccountSummary(session.user.id),
+	const [rentResult, moneyResult] = await Promise.all([
+		tryCatch(async () => await getHostRentedVan(rentId)),
+		tryCatch(async () => await getAccountSummary(session.user.id)),
 	]);
-	const [rent, money] = initialResults.map((result) =>
-		result.status === 'fulfilled' ? result.value : 'Error fetching data'
-	);
+
+	const rent = rentResult.data;
+	const money = typeof moneyResult.data === 'number' ? moneyResult.data : 0;
+
 	if (!rent || typeof rent !== 'object' || !('van' in rent)) {
 		throw data('Rented van not found', { status: 404 });
 	}
 	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
-	const isUnableToPay = typeof money === 'number' ? money < amountToPay : false;
+	const isUnableToPay = money < amountToPay;
 
 	if (isUnableToPay) {
 		return { errors: 'Cannot afford to return this rental' };
@@ -102,15 +100,6 @@ export default function ReturnRental({
 	params,
 }: Route.ComponentProps) {
 	const { rent, money } = loaderData;
-
-	if (!rent || typeof rent === 'string' || typeof money === 'string') {
-		return (
-			<UnsuccesfulState
-				isError
-				message={typeof rent === 'string' ? rent : 'Rental not found'}
-			/>
-		);
-	}
 
 	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
 	const isUnableToPay = money < amountToPay;

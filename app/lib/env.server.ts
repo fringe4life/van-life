@@ -2,13 +2,9 @@ import { type } from 'arktype';
 
 const envSchema = type({
 	DATABASE_URL: 'string.url',
-	// DIRECT_URL: "string.url",
 
 	BETTER_AUTH_SECRET: 'string',
 	BETTER_AUTH_URL: 'string.url',
-
-	// GOOGLE_CLIENT_ID: "string",
-	// GOOGLE_CLIENT_SECRET: "string",
 });
 
 const envResult = envSchema(process.env);

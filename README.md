@@ -5,12 +5,12 @@
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
 [![React Router](https://img.shields.io/badge/React%20Router-7.9.3-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.13-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.14-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.24-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.7.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.2.2-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Biome](https://img.shields.io/badge/Biome-2.2.4-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-6.16.3-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
-[![React](https://img.shields.io/badge/React-19.1.1-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.1.22-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
 </div>
@@ -67,10 +67,10 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Frontend
 
-- **React 19.1.1** for performance optimization
+- **React 19.2.0** for performance optimization
 - **React Router 7.9.3** (file-based routing, SSR)
 - **TypeScript 5.9.3** with strict configuration
-- **TailwindCSS 4.1.13** with modern CSS features
+- **TailwindCSS 4.1.14** with modern CSS features
 - **Radix UI** for accessible components
 - **Lucide React 0.501.0** for icons
 - **Recharts 3.2.0** for data visualization (lazy-loaded)
@@ -88,8 +88,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Development Tools
 
 - **rolldown-vite** (latest) - Next-generation Vite with Rolldown bundler
-- **Biome 2.2.2** for linting and formatting with Ultracite integration
-- **Ultracite 5.3.3** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.2.4** for linting and formatting with Ultracite integration
+- **Ultracite 5.4.5** - AI-friendly linting rules for maximum type safety and accessibility
 - **Husky 9.1.7** for Git hooks and pre-commit automation
 - **TypeScript 5.9.3** with native preview
 - **Bun** for fast package management and runtime
@@ -604,7 +604,7 @@ The pre-commit hook ensures code quality by:
 
 ## Styling
 
-- **TailwindCSS 4.1.13** with modern CSS features
+- **TailwindCSS 4.1.14** with modern CSS features
 - **Custom design system** with consistent components
 - **Responsive design** with mobile-first approach
 - **Modern CSS features:**
@@ -621,8 +621,8 @@ The pre-commit hook ensures code quality by:
 
 ## Code Quality
 
-- **Biome 2.2.2** for linting and formatting with Ultracite integration
-- **Ultracite 5.3.3** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.2.4** for linting and formatting with Ultracite integration
+- **Ultracite 5.4.5** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.3** with strict configuration
 - **ArkType 2.1.22** for runtime validation and type-safe narrowing
 - **Consistent code style:**

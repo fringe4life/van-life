@@ -11,7 +11,7 @@ import { authMiddleware } from '~/features/middleware/functions/auth-middleware'
 import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
 import VanPages from '~/features/vans/components/van-pages';
 import { loadHostSearchParams } from '~/lib/search-params.server';
-import type { QueryType } from '~/types/types.server';
+import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/reviews';
 export function meta() {
 	return [
@@ -36,35 +36,29 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
 
 	// Load chart data and paginated reviews
-	const results = await Promise.allSettled([
-		getHostReviewsChartData(session.user.id),
-		getHostReviewsPaginated({
-			userId: session.user.id,
-			cursor,
-			limit,
-			direction,
-			sort,
-		}),
+	const [chartDataResult, paginatedReviewsResult] = await Promise.all([
+		tryCatch(async () => await getHostReviewsChartData(session.user.id)),
+		tryCatch(
+			async () =>
+				await getHostReviewsPaginated({
+					userId: session.user.id,
+					cursor,
+					limit,
+					direction,
+					sort,
+				})
+		),
 	]);
 
-	const [chartData, paginatedReviews] = results.map((result) =>
-		result.status === 'fulfilled' ? result.value : 'Error fetching data'
-	);
+	const chartData = chartDataResult.data ?? [];
+	const paginatedReviews = paginatedReviewsResult.data ?? [];
 
 	// Process pagination logic
-	const pagination = hasPagination(
-		paginatedReviews as QueryType<typeof getHostReviewsPaginated>,
-		limit,
-		cursor,
-		direction
-	);
+	const pagination = hasPagination(paginatedReviews, limit, cursor, direction);
 
 	return data(
 		{
-			chartData: chartData as
-				| QueryType<typeof getHostReviewsChartData>
-				| string, // For chart data (only ratings)
-
+			chartData,
 			...pagination,
 		},
 		{

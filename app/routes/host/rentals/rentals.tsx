@@ -9,7 +9,7 @@ import VanCard from '~/features/vans/components/van-card';
 import VanPages from '~/features/vans/components/van-pages';
 import { hostPaginationParsers } from '~/lib/parsers';
 import { loadHostSearchParams } from '~/lib/search-params.server';
-import type { QueryType } from '~/types/types.server';
+import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/rentals';
 
 export function meta() {
@@ -31,21 +31,23 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	// Parse search parameters using nuqs loadHostSearchParams
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
-	const results = await Promise.allSettled([
-		getHostRentedVans(session.user.id, cursor, limit, direction),
-		getHostRentedVanCount(session.user.id),
+	const [vansResult, countResult] = await Promise.all([
+		tryCatch(
+			async () =>
+				await getHostRentedVans(session.user.id, cursor, limit, direction)
+		),
+		tryCatch(async () => await getHostRentedVanCount(session.user.id)),
 	]);
 
-	const [vans, vansCount] = results.map((result) =>
-		result.status === 'fulfilled' ? result.value : 'Error fetching data'
-	);
+	const vans = vansResult.data ?? [];
+	const vansCount = countResult.data ?? 0;
 
 	// Process pagination logic
 	const pagination = hasPagination(vans, limit, cursor, direction);
 
 	return data(
 		{
-			vansCount: vansCount as QueryType<typeof getHostRentedVanCount>,
+			vansCount,
 			...pagination,
 		},
 		{
