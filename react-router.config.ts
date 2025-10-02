@@ -8,4 +8,9 @@ export default {
 		// biome-ignore lint/style/useNamingConvention: a react router v7 flag
 		v8_middleware: true,
 	},
+
+	// biome-ignore lint/suspicious/useAwait: is a react router v7 flag
+	async prerender() {
+		return ['/', '/about'];
+	},
 } satisfies Config;
