@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from 'react';
-import { cloneElement, useState } from 'react';
+import { Activity, cloneElement, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '~/components/ui/dialog';
 
 type UseSheetDialogParams = {
@@ -33,12 +33,14 @@ export function useSheetDialog({
 	};
 
 	const dialog = (
-		<Dialog modal={modal} onOpenChange={setIsOpen} open={isOpen}>
-			<DialogTitle className="sr-only">{title}</DialogTitle>
-			<DialogContent className={className} showCloseButton={false} unstyled>
-				{renderContent(() => setIsOpen(false))}
-			</DialogContent>
-		</Dialog>
+		<Activity mode={isOpen ? 'visible' : 'hidden'}>
+			<Dialog modal={modal} onOpenChange={setIsOpen} open={isOpen}>
+				<DialogTitle className="sr-only">{title}</DialogTitle>
+				<DialogContent className={className} showCloseButton={false} unstyled>
+					{renderContent(() => setIsOpen(false))}
+				</DialogContent>
+			</Dialog>
+		</Activity>
 	);
 
 	return [getTriggerElement, dialog, isOpen, setIsOpen] as const;

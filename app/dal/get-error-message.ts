@@ -1,6 +1,10 @@
 import type { DalError } from './types';
 
-export function getErrorMessage(error: DalError): string {
+export function getErrorMessage(error: DalError | null): string {
+	if (!error) {
+		return 'An unknown error occurred';
+	}
+
 	switch (error.type) {
 		case 'no-user':
 			return 'User not found';
