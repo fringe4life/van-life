@@ -8,7 +8,14 @@ import {
 	useState,
 	useTransition,
 } from 'react';
-import { Await, data, href, useFetcher, useParams } from 'react-router';
+import {
+	Await,
+	data,
+	href,
+	redirect,
+	useFetcher,
+	useParams,
+} from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import { Button } from '~/components/ui/button';
@@ -138,6 +145,14 @@ export async function action({ request, context }: Route.ActionArgs) {
 			errors: 'Something went wrong please try again later',
 			formData,
 		};
+	}
+
+	// Check for returnTo query parameter
+	const url = new URL(request.url);
+	const returnTo = url.searchParams.get('returnTo');
+
+	if (returnTo) {
+		throw redirect(returnTo);
 	}
 }
 

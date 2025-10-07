@@ -1,17 +1,16 @@
 model Rent {
-  id       String    @id @default(cuid()) @db.VarChar(25)
-  amount   Float     @default(0)
-  renterId String    @db.VarChar(25)
-  hostId   String    @db.VarChar(25)
-  rentedAt DateTime  @default(now()) @db.Date
-  rentedTo DateTime? @db.Date
-  vanId    String    @db.VarChar(25)
-  host     UserInfo  @relation("host", fields: [hostId], references: [userId])
-  renter   UserInfo  @relation("renter", fields: [renterId], references: [userId])
-  van      Van       @relation(fields: [vanId], references: [id])
-  reviews  Review[]
+  id           String        @id @default(cuid()) @db.VarChar(25)
+  renterId     String        @db.VarChar(25)
+  hostId       String        @db.VarChar(25)
+  rentedAt     DateTime      @default(now()) @db.Date
+  rentedTo     DateTime?     @db.Date
+  vanId        String        @db.VarChar(25)
+  host         UserInfo      @relation("host", fields: [hostId], references: [userId])
+  renter       UserInfo      @relation("renter", fields: [renterId], references: [userId])
+  van          Van           @relation(fields: [vanId], references: [id])
+  reviews      Review[]
+  transactions Transaction[] // Track all transactions related to this rental
 
-  @@unique([rentedTo, vanId])
   @@index([rentedTo])
   @@index([vanId])
   @@index([renterId])

@@ -1,49 +1,58 @@
 import { differenceInDays, formatDistanceToNow } from 'date-fns';
 
 /**
- * Calculates the elapsed time between the first and last rental
- * @param rentals Array of rental objects with rentedAt dates
+ * Calculates the elapsed time between the first and last rental/transaction
+ * @param items Array of objects with either rentedAt or createdAt dates
  * @returns Object with elapsed days and human-readable description
  */
-export function getElapsedTime(rentals: Array<{ rentedAt: Date }>) {
-	if (!rentals || rentals.length === 0) {
+export function getElapsedTime(
+	items: Array<{ rentedAt?: Date; createdAt?: Date }>
+) {
+	if (!items || items.length === 0) {
 		return {
 			elapsedDays: 0,
-			description: 'No rentals yet',
+			description: 'No data yet',
 		};
 	}
 
-	// Sort rentals by date to get first and last
-	const sortedRentals = [...rentals].sort(
-		(a, b) => a.rentedAt.getTime() - b.rentedAt.getTime()
-	);
+	// Sort items by date to get first and last
+	const sortedItems = [...items].sort((a, b) => {
+		const dateA = a.rentedAt ?? a.createdAt;
+		const dateB = b.rentedAt ?? b.createdAt;
+		if (!(dateA && dateB)) {
+			return 0;
+		}
+		return dateA.getTime() - dateB.getTime();
+	});
 
-	const firstRental = sortedRentals[0];
-	const lastRental = sortedRentals.at(-1);
+	const firstItem = sortedItems[0];
+	const lastItem = sortedItems.at(-1);
 
-	if (!lastRental) {
+	const firstDate = firstItem?.rentedAt ?? firstItem?.createdAt;
+	const lastDate = lastItem?.rentedAt ?? lastItem?.createdAt;
+
+	if (!(lastDate && firstDate)) {
 		return {
 			elapsedDays: 0,
-			description: 'No rentals yet',
-			firstRental: firstRental.rentedAt,
-			lastRental: firstRental.rentedAt,
+			description: 'No data yet',
+			firstRental: firstDate,
+			lastRental: firstDate,
 		};
 	}
 
-	// Calculate days between first and last rental
-	const elapsedDays =
-		differenceInDays(lastRental.rentedAt, firstRental.rentedAt) + 1;
+	// Calculate days between first and last
+	const elapsedDays = differenceInDays(lastDate, firstDate) + 1;
 
 	// Get human-readable description
-	const description = formatDistanceToNow(firstRental.rentedAt, {
+	const description = formatDistanceToNow(firstDate, {
 		addSuffix: true,
 	});
 
 	return {
 		elapsedDays,
 		description,
-		firstRental: firstRental.rentedAt,
-		lastRental: lastRental.rentedAt,
+		firstRental: firstDate,
+		lastRental: lastDate,
 	};
 }
 

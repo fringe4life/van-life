@@ -5,8 +5,10 @@ enum VanType {
 }
 
 enum TransactionType {
-  DEPOSIT  @map("deposit")
-  WITHDRAW @map("withdraw")
+  DEPOSIT        @map("deposit")
+  WITHDRAW       @map("withdraw")
+  RENTAL_PAYMENT @map("rental_payment") // Renter pays host
+  RENTAL_RETURN  @map("rental_return") // Host pays renter when van is returned
 }
 
 enum VanState {

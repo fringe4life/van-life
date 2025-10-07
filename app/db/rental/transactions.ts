@@ -15,7 +15,8 @@ export function rentVan(vanId: string, renterId: string, hostId: string) {
 	});
 }
 
-export function returnVan(
+// biome-ignore lint/suspicious/useAwait: needed for tryCatch
+export async function returnVan(
 	rentId: string,
 	userId: string,
 	amount: number,
@@ -24,29 +25,44 @@ export function returnVan(
 	if (!(isCUID(rentId) && isCUID(vanId) && isCUID(userId))) {
 		throw new Error(INVALID_ID_ERROR);
 	}
-	return prisma.$transaction([
-		prisma.rent.update({
-			where: {
-				id: rentId,
-			},
+
+	return prisma.$transaction(async (tx) => {
+		// 1. Update rental record (mark as returned)
+		const updatedRent = await tx.rent.update({
+			where: { id: rentId },
 			data: {
 				rentedTo: new Date(),
-				amount,
 			},
-		}),
-		prisma.userInfo.update({
-			where: {
-				userId,
-			},
-			data: { moneyAdded: { decrement: amount } },
-		}),
-		prisma.van.update({
-			where: {
-				id: vanId,
-			},
+		});
+
+		// 2. Create transaction for renter (debit - negative amount)
+		await tx.transaction.create({
 			data: {
-				isRented: false,
+				userId,
+				amount: -amount,
+				type: 'RENTAL_RETURN',
+				rentId,
+				description: `Payment for van rental ${vanId}`,
 			},
-		}),
-	]);
+		});
+
+		// 3. Create transaction for host (credit - positive amount)
+		await tx.transaction.create({
+			data: {
+				userId: updatedRent.hostId,
+				amount,
+				type: 'RENTAL_PAYMENT',
+				rentId,
+				description: `Received payment for van ${vanId}`,
+			},
+		});
+
+		// 4. Update van status
+		await tx.van.update({
+			where: { id: vanId },
+			data: { isRented: false },
+		});
+
+		return updatedRent;
+	});
 }

@@ -66,7 +66,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 		? hostIncomes.filter((income) => income.amount > 0)
 		: [];
 	const mappedData = filteredHostIncomes.map((income) => ({
-		name: income.rentedAt.toDateString(),
+		name: income.createdAt.toDateString(),
 		amount: Math.round(income.amount),
 	}));
 

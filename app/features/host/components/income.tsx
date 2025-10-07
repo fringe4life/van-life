@@ -4,18 +4,18 @@ import { displayPrice } from '~/features/vans/utils/display-price';
 type IncomeProps = {
 	id: string;
 	amount: number;
-	rentedAt: Date;
+	createdAt: Date;
 };
 
-export default function Income({ amount, rentedAt }: IncomeProps) {
+export default function Income({ amount, createdAt }: IncomeProps) {
 	return (
 		<Card className="contain-content">
 			<CardContent>
 				<p className="flex justify-between">
 					<span>{displayPrice(amount)} </span>
 					<span>
-						{rentedAt && !Number.isNaN(rentedAt)
-							? rentedAt.toDateString()
+						{createdAt && !Number.isNaN(createdAt)
+							? createdAt.toDateString()
 							: 'unknown'}
 					</span>
 				</p>

@@ -8,11 +8,13 @@ export async function getAccountSummary(userId: string) {
 	if (!isCUID(userId)) {
 		return INVALID_ID_ERROR;
 	}
-	const result = await prisma.userInfo.findUnique({
+	const result = await prisma.transaction.aggregate({
 		where: { userId },
-		select: { moneyAdded: true },
+		_sum: {
+			amount: true,
+		},
 	});
-	return result?.moneyAdded ?? 0;
+	return result._sum.amount ?? 0;
 }
 
 export async function getTransactionSummary(userId: string) {
@@ -41,21 +43,21 @@ export async function getHostTransactions(
 
 	// Create orderBy clause using generic sorting utility
 	const orderBy = createGenericOrderBy(sort, {
-		dateField: 'rentedAt',
+		dateField: 'createdAt',
 		valueField: 'amount',
 	});
 
-	return await prisma.rent.findMany({
+	// Get rental payment transactions for host
+	return await prisma.transaction.findMany({
 		where: {
-			hostId: userId,
-			amount: {
-				gt: 0,
-			},
+			userId,
+			type: 'RENTAL_PAYMENT',
 		},
 		select: {
 			amount: true,
-			rentedAt: true,
+			createdAt: true,
 			id: true,
+			rentId: true,
 		},
 		orderBy,
 	});

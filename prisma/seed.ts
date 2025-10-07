@@ -62,9 +62,6 @@ const main = async () => {
 		// Generate a recent rental date within the last 6 weeks
 		const recentRentalDate = getRecentRentalDate();
 		const rentedTo = randomTrueOrFalse() ? getEndDate(recentRentalDate) : null;
-		const amount = rentedTo
-			? getCost(recentRentalDate, rentedTo, selectedVan.price)
-			: 0;
 		if (rentedTo) {
 			vansReturned.push(vanId);
 		} else {
@@ -77,12 +74,13 @@ const main = async () => {
 			renterId: id2,
 			vanId,
 			rentedTo,
-			amount,
 		};
 	});
-	await prisma.rent.createMany({
-		data: rentsWithIds,
-	});
+
+	// Create rents individually to get their IDs for transactions
+	const createdRents = await Promise.all(
+		rentsWithIds.map((rent) => prisma.rent.create({ data: rent }))
+	);
 
 	await prisma.van.updateMany({
 		where: {
@@ -93,25 +91,52 @@ const main = async () => {
 		},
 	});
 
-	const rentIds = await prisma.rent.findMany({
-		where: {
-			NOT: {
-				rentedTo: null,
-			},
-		},
+	// Create rental transactions for returned vans
+	const rentalTransactions = createdRents
+		.filter((rent) => rent.rentedTo !== null)
+		.flatMap((rent) => {
+			// biome-ignore lint/style/noNonNullAssertion: filtered out null values
+			const van = vanIds.find((v) => v.id === rent.vanId)!;
+			const rentedTo = rent.rentedTo as Date;
+			const amount = getCost(rent.rentedAt, rentedTo, van.price);
+
+			return [
+				// Renter payment (debit - negative amount)
+				{
+					userId: rent.renterId,
+					amount: -amount,
+					type: 'RENTAL_RETURN' as const,
+					rentId: rent.id,
+					description: `Payment for van rental ${rent.vanId}`,
+					createdAt: rentedTo,
+				},
+				// Host receiving payment (credit - positive amount)
+				{
+					userId: rent.hostId,
+					amount,
+					type: 'RENTAL_PAYMENT' as const,
+					rentId: rent.id,
+					description: `Received payment for van ${rent.vanId}`,
+					createdAt: rentedTo,
+				},
+			];
+		});
+
+	await prisma.transaction.createMany({
+		data: rentalTransactions,
 	});
 
 	const reviewsWithIds = reviews.map((review) => ({
 		...review,
 		userId: getRandomId(data),
-		rentId: getRandomId(rentIds),
+		rentId: getRandomId(createdRents.filter((r) => r.rentedTo !== null)),
 	}));
 
 	await prisma.review.createMany({
 		data: reviewsWithIds,
 	});
 
-	// Create transactions for users
+	// Create user transactions (deposits/withdrawals)
 	const transactionsWithIds = transactions.map((transaction) => ({
 		...transaction,
 		userId: getRandomId(data),
