@@ -1,4 +1,5 @@
 import { prisma } from '~/lib/prisma.server';
+import { getSlug } from '~/utils/get-slug';
 import { rents } from './seed-data/rents';
 import { reviews } from './seed-data/reviews';
 import { transactions } from './seed-data/transactions';
@@ -27,6 +28,7 @@ const main = async () => {
 		const state = getVanState();
 		return {
 			...van,
+			slug: getSlug(van.name),
 			hostId: getRandomId(data),
 			state,
 			discount: state === 'ON_SALE' ? getRandomDiscount() : 0,

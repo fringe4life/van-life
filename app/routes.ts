@@ -12,7 +12,7 @@ export default [
 		route('about', './routes/about.tsx'),
 		...prefix('vans', [
 			index('./routes/vans/vans.tsx'),
-			route(':vanId', './routes/vans/van.tsx'),
+			route(':vanSlug', './routes/vans/van.tsx'),
 		]),
 		route('login', './routes/auth/login.tsx'),
 		route('signup', './routes/auth/signUp.tsx'),
@@ -26,7 +26,7 @@ export default [
 				route('add', './routes/host/addVan.tsx'),
 				...prefix('rentals', [
 					index('./routes/host/rentals/rentals.tsx'),
-					route('rent/:vanId', './routes/host/rentals/rentalDetail.tsx'),
+					route('rent/:vanSlug', './routes/host/rentals/rentalDetail.tsx'),
 					route(
 						'returnRental/:rentId',
 						'./routes/host/rentals/returnRental.tsx'
@@ -34,7 +34,7 @@ export default [
 				]),
 				...prefix('vans', [
 					index('./routes/host/hostVans.tsx'),
-					route(':vanId', './routes/host/vanDetail/vanDetailLayout.tsx', [
+					route(':vanSlug', './routes/host/vanDetail/vanDetailLayout.tsx', [
 						index('./routes/host/vanDetail/vanDetail.tsx'),
 						route('pricing', './routes/host/vanDetail/vanDetailPricing.tsx'),
 						route('photos', './routes/host/vanDetail/vanDetailPhotos.tsx'),

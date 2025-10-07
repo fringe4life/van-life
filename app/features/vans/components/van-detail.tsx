@@ -28,7 +28,7 @@ type VanDetailProps = {
 };
 
 export default function VanDetail({
-	van: { imageUrl, description, type, name, id: vanId },
+	van: { imageUrl, description, type, name, slug: vanSlug, id: vanId },
 	van,
 }: VanDetailProps) {
 	const vanIsAvailable = isVanAvailable(van);
@@ -77,8 +77,8 @@ export default function VanDetail({
 							)}
 							to={
 								vanIsAvailable
-									? href('/host/rentals/rent/:vanId', { vanId })
-									: href('/vans/:vanId', { vanId })
+									? href('/host/rentals/rent/:vanSlug', { vanSlug })
+									: href('/vans/:vanSlug', { vanSlug })
 							}
 						>
 							{vanIsAvailable ? 'Rent this van' : 'Van not available'}
@@ -118,8 +118,8 @@ export default function VanDetail({
 						)}
 						to={
 							vanIsAvailable
-								? href('/host/rentals/rent/:vanId', { vanId })
-								: href('/vans/:vanId', { vanId })
+								? href('/host/rentals/rent/:vanSlug', { vanSlug })
+								: href('/vans/:vanSlug', { vanSlug })
 						}
 					>
 						{vanIsAvailable ? 'Rent this van' : 'Van not available'}

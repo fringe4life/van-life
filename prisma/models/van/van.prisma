@@ -1,6 +1,7 @@
 model Van {
   id          String    @id @default(cuid()) @db.VarChar(25)
   name        String    @unique @db.VarChar(60)
+  slug        String    @unique @db.VarChar(70)
   price       Int       @db.SmallInt
   description String    @db.VarChar(1024)
   imageUrl    String
@@ -14,6 +15,7 @@ model Van {
   userInfo    UserInfo  @relation(fields: [hostId], references: [userId])
 
   // Indexes optimized for actual query patterns
+  @@index([slug]) // Used in: getVanBySlug (public-facing URLs)
   @@index([hostId]) // Used in: getHostVan, getHostVans, getHostVanCount
   @@index([type]) // Used in: getVans, getVansCount
   @@index([hostId, id(sort: Desc)]) // Optimized for: getHostVans pagination (where hostId + orderBy id)

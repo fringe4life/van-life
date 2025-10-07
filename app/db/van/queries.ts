@@ -31,3 +31,11 @@ export function getVansCount(typeFilter: VanType | undefined) {
 		},
 	});
 }
+
+export function getVanBySlug(slug: string) {
+	return prisma.van.findUnique({
+		where: {
+			slug,
+		},
+	});
+}

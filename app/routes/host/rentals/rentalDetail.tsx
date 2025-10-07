@@ -3,8 +3,8 @@ import { data, href, redirect } from 'react-router';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
-import { getHostRentedVan } from '~/db/rental/queries';
 import { rentVan } from '~/db/rental/transactions';
+import { getVanBySlug } from '~/db/van/queries';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import VanCard from '~/features/vans/components/van-card';
@@ -14,7 +14,7 @@ import type { Route } from './+types/rentalDetail';
 
 export function meta({ loaderData }: Route.MetaArgs) {
 	return [
-		{ title: `Rent ${loaderData?.rental.van.name} | Vanlife` },
+		{ title: `Rent ${loaderData?.rental.name} | Vanlife` },
 		{
 			name: 'description',
 			content: 'The van you might rent',
@@ -31,7 +31,7 @@ export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
 export async function loader({ params }: Route.LoaderArgs) {
 	// No session needed for this loader, but middleware ensures auth
 
-	const result = await tryCatch(() => getHostRentedVan(params.vanId));
+	const result = await tryCatch(() => getVanBySlug(params.vanSlug));
 
 	if (result.error) {
 		throw data('Failed to load rental details. Please try again later.', {
@@ -62,13 +62,8 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 
 	const hostId = formData.hostId as string;
 
-	const { vanId } = params;
-	if (!vanId) {
-		throw data('Rental not found', { status: 404 });
-	}
-
 	const result = rentVanSchema({
-		vanId,
+		vanSlug: params.vanSlug,
 		renterId: session.user.id,
 		hostId,
 	});
@@ -81,7 +76,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 	}
 
 	const result2 = await tryCatch(() =>
-		rentVan(result.vanId, result.renterId, result.hostId)
+		rentVan(result.vanSlug, result.renterId, result.hostId)
 	);
 
 	if (result2.error || !result2.data) {
@@ -96,6 +91,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 export default function AddVan({
 	actionData,
 	loaderData,
+	params,
 }: Route.ComponentProps) {
 	const { rental } = loaderData;
 
@@ -103,8 +99,8 @@ export default function AddVan({
 		<section>
 			<VanCard
 				action={<p />}
-				link={href('/host/rentals/rent/:vanId', { vanId: rental.van.id })}
-				van={rental.van}
+				link={href('/host/rentals/rent/:vanSlug', { vanSlug: params.vanSlug })}
+				van={rental}
 			/>
 			<h2 className="font-bold text-4xl text-neutral-900">Return Van</h2>
 			<CustomForm className="mt-6 grid max-w-102 gap-4" method="POST">
@@ -115,7 +111,7 @@ export default function AddVan({
 					type="text"
 				/>
 				{actionData?.errors ? <p>{actionData.errors}</p> : null}
-				<Button type="submit">Rent {rental.van.name}</Button>
+				<Button type="submit">Rent {rental.name}</Button>
 			</CustomForm>
 		</section>
 	);

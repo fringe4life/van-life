@@ -342,7 +342,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 							renderKey={(item) => item.id}
 							renderProps={(item) => ({
 								van: item,
-								link: href('/host/vans/:vanId', { vanId: item.id }),
+								link: href('/host/vans/:vanSlug', { vanSlug: item.slug }),
 								action: <p className="justify-self-end text-right">Edit</p>,
 							})}
 						/>

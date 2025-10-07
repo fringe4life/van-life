@@ -155,7 +155,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 					</div>
 				),
 				link: (() => {
-					const baseUrl = href('/vans/:vanId', { vanId: van.id });
+					const baseUrl = href('/vans/:vanSlug', { vanSlug: van.slug });
 					const search = buildVanSearchParams({
 						cursor,
 						limit,

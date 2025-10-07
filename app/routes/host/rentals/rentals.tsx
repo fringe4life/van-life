@@ -81,7 +81,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			pathname={href('/host/rentals')}
 			renderKey={(van) => van.van.id}
 			renderProps={(van) => ({
-				link: href('/host/vans/:vanId', { vanId: van.van.id }),
+				link: href('/host/vans/:vanSlug', { vanSlug: van.van.slug }),
 				van: van.van,
 				linkCoversCard: false,
 				action: (

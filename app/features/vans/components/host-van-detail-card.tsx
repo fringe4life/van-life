@@ -31,21 +31,21 @@ export default function VanDetailCard({
 	children,
 	className,
 }: VanDetailCardProps) {
-	const { imageUrl, id: vanId, name, type } = van;
+	const { imageUrl, slug: vanSlug, name, type } = van;
 
 	const navLinks = [
 		{
 			label: 'Details',
-			to: href('/host/vans/:vanId', { vanId }),
+			to: href('/host/vans/:vanSlug', { vanSlug }),
 			end: true,
 		},
 		{
 			label: 'Pricing',
-			to: href('/host/vans/:vanId/pricing', { vanId }),
+			to: href('/host/vans/:vanSlug/pricing', { vanSlug }),
 		},
 		{
 			label: 'Photos',
-			to: href('/host/vans/:vanId/photos', { vanId }),
+			to: href('/host/vans/:vanSlug/photos', { vanSlug }),
 		},
 	];
 

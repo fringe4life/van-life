@@ -84,11 +84,11 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			pathname={href('/host/vans')}
 			renderKey={(van) => van.id}
 			renderProps={(van) => ({
-				link: href('/host/vans/:vanId', { vanId: van.id }),
+				link: href('/host/vans/:vanSlug', { vanSlug: van.slug }),
 				van,
 				action: (
 					<p className="text-right">
-						<CustomLink to={href('/host/vans/:vanId', { vanId: van.id })}>
+						<CustomLink to={href('/host/vans/:vanSlug', { vanSlug: van.slug })}>
 							Edit
 						</CustomLink>
 					</p>

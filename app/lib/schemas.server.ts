@@ -129,10 +129,18 @@ export const moneySchema = type({
 });
 
 /**
- * Schema for renting a van (vanId, hostId, renterId as CUIDs).
+ * Schema for validating URL slugs.
+ * - Must be lowercase alphanumeric with hyphens
+ * - Must be 1-70 characters
+ * - Cannot start or end with hyphen
+ */
+export const slugSchema = type('/^[a-z0-9](?:[a-z0-9-]{0,68}[a-z0-9])?$/');
+
+/**
+ * Schema for renting a van (vanSlug, hostId, renterId).
  */
 export const rentVanSchema = type({
-	vanId: cuidSchema,
+	vanSlug: slugSchema,
 	hostId: cuidSchema,
 	renterId: cuidSchema,
 });

@@ -5,13 +5,13 @@ import type { Direction } from '~/types/types';
 import { isCUID } from '~/utils/check-is-cuid.server';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
-export async function getHostVan(userId: string, vanId: string) {
-	if (!(isCUID(userId) && isCUID(vanId))) {
+export async function getHostVanBySlug(userId: string, vanSlug: string) {
+	if (!isCUID(userId)) {
 		return INVALID_ID_ERROR;
 	}
-	return prisma.van.findUnique({
+	return prisma.van.findFirst({
 		where: {
-			id: vanId,
+			slug: vanSlug,
 			hostId: userId,
 		},
 	});

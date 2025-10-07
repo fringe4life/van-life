@@ -2,13 +2,28 @@ import { INVALID_ID_ERROR } from '~/constants/constants';
 import { prisma } from '~/lib/prisma.server';
 import { isCUID } from '~/utils/check-is-cuid.server';
 
-export function rentVan(vanId: string, renterId: string, hostId: string) {
-	if (!(isCUID(vanId) && isCUID(renterId) && isCUID(hostId))) {
+export async function rentVan(
+	vanSlug: string,
+	renterId: string,
+	hostId: string
+) {
+	if (!(isCUID(renterId) && isCUID(hostId))) {
 		throw new Error(INVALID_ID_ERROR);
 	}
+
+	// Look up van by slug to get its ID
+	const van = await prisma.van.findUnique({
+		where: { slug: vanSlug },
+		select: { id: true },
+	});
+
+	if (!van) {
+		throw new Error('Van not found');
+	}
+
 	return prisma.rent.create({
 		data: {
-			vanId,
+			vanId: van.id,
 			renterId,
 			hostId,
 		},

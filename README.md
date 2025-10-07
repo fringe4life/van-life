@@ -9,6 +9,7 @@
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.27-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.7.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.2.5-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-5.6.1-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-6.16.3-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.1.22-000000?logo=arktype&logoColor=white)](https://arktype.io/)
@@ -38,7 +39,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - 🚀 **Modern React Router 7** with server-side rendering and file-based routing
 - 🔒 **Authentication** with better-auth (sign up, login, session management)
-- 🚌 **Van Management** (CRUD operations, van types, image handling, state management)
+- 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals with analytics)
@@ -174,7 +175,7 @@ prisma/
 - **Config via prisma.config.ts** (schema folder + seed command)
 - **Main models:**
   - `User`, `Session`, `Account`, `Verification` - Authentication system
-  - `Van` - Van listings with types (SIMPLE, LUXURY, RUGGED) and states (NEW, IN_REPAIR, ON_SALE, AVAILABLE)
+  - `Van` - Van listings with types (SIMPLE, LUXURY, RUGGED), states (NEW, IN_REPAIR, ON_SALE, AVAILABLE), and **SEO-friendly slugs** for human-readable URLs
   - `Rent` - Rental records and history (links to transactions)
   - `Review` - User reviews and ratings
   - `UserInfo` - Extended user profile information
@@ -188,6 +189,8 @@ prisma/
   - Enhanced seed data with varied van names, descriptions, and state management
   - Van state system with NEW (client-derived), IN_REPAIR, ON_SALE, AVAILABLE states
   - Discount pricing for ON_SALE vans with random discount percentages
+  - **Slug-based routing** with unique, SEO-friendly URLs (e.g., `/vans/modest-explorer`)
+  - **ArkType regex validation** for slugs with built-in length constraints
   - Native JavaScript database drivers for better edge/serverless compatibility
 
 ### Setup Database
@@ -291,6 +294,50 @@ export const loadSearchParams = createLoader(paginationParsers);
 const [{ cursor, limit, direction, type }, setSearchParams] =
   useQueryStates(paginationParsers);
 ```
+
+---
+
+## SEO-Friendly Slug-Based Routing
+
+The application uses **human-readable slugs** for van URLs instead of database IDs:
+
+### Features
+
+- **SEO-friendly URLs** - `/vans/modest-explorer` instead of `/vans/cmgg0wp450001zrijvbpx2uo0`
+- **User-friendly** - Shareable, memorable URLs for better user experience
+- **Type-safe validation** - ArkType schema with regex validation
+- **Automatic generation** - Slugs auto-generated from van names using `getSlug()` utility
+- **Unique constraint** - Database-enforced uniqueness with indexed lookups
+- **Internal ID usage** - Database operations still use CUIDs for security and referential integrity
+
+### Implementation
+
+```typescript
+// Slug schema with built-in regex validation (1-70 chars, no leading/trailing hyphens)
+export const slugSchema = type("/^[a-z0-9](?:[a-z0-9-]{0,68}[a-z0-9])?$/");
+
+// Database lookup by slug
+export async function rentVan(
+  vanSlug: string,
+  renterId: string,
+  hostId: string
+) {
+  const van = await prisma.van.findUnique({
+    where: { slug: vanSlug },
+    select: { id: true },
+  });
+  // ... use van.id for database operations
+}
+
+// Routes use slugs
+route(":vanSlug", "./routes/vans/van.tsx");
+```
+
+### URL Examples
+
+- Public van detail: `/vans/modest-explorer`
+- Host van detail: `/host/vans/beach-bum`
+- Rent van: `/host/rentals/rent/the-cruiser`
 
 ---
 
@@ -654,9 +701,9 @@ The pre-commit hook ensures code quality by:
 ## Code Quality
 
 - **Biome 2.2.5** for linting and formatting with Ultracite integration
-- **Ultracite 5.5.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 5.6.1** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.3** with strict configuration
-- **ArkType 2.1.22** for runtime validation and type-safe narrowing
+- **ArkType 2.1.22** for runtime validation with regex support for slug validation
 - **Consistent code style:**
   - Tab indentation
   - Single quotes

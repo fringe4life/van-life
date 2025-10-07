@@ -9,6 +9,7 @@ import { createVan } from '~/db/van/crud';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { addVanSchema } from '~/lib/schemas.server';
+import { getSlug } from '~/utils/get-slug';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/addVan';
 export function meta() {
@@ -39,6 +40,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 	const resultWithHostId = {
 		...result,
+		slug: getSlug(result.name),
 		discount: result.discount ?? 0,
 		hostId: session.user.id,
 		state: result.state ?? null,

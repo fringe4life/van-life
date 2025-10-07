@@ -1,6 +1,6 @@
 import { data, href, Outlet } from 'react-router';
 import PendingUi from '~/components/pending-ui';
-import { getHostVan } from '~/db/van/host';
+import { getHostVanBySlug } from '~/db/van/host';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
@@ -27,7 +27,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 	const session = context.get(authContext);
 
 	const result = await tryCatch(() =>
-		getHostVan(session.user.id, params.vanId)
+		getHostVanBySlug(session.user.id, params.vanSlug)
 	);
 
 	if (result.error) {

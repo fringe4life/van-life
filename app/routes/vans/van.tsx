@@ -1,7 +1,7 @@
 import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
 import PendingUi from '~/components/pending-ui';
-import { getVan } from '~/db/van/crud';
+import { getVanBySlug } from '~/db/van/queries';
 import CustomLink from '~/features/navigation/components/custom-link';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
 import VanDetails from '~/features/vans/components/van-detail';
@@ -20,7 +20,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-	const result = await tryCatch(() => getVan(params.vanId));
+	const result = await tryCatch(() => getVanBySlug(params.vanSlug));
 
 	if (result.error) {
 		throw data('Failed to load van details. Please try again later.', {
