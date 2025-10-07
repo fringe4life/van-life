@@ -125,7 +125,7 @@ export const cuidSchema = type('string')
  */
 export const moneySchema = type({
 	type: transactionTypeSchema,
-	amount: 'number',
+	amount: 'string.numeric.parse',
 });
 
 /**

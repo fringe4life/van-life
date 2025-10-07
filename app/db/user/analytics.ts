@@ -15,6 +15,22 @@ export async function getAccountSummary(userId: string) {
 	return result?.moneyAdded ?? 0;
 }
 
+export async function getTransactionSummary(userId: string) {
+	if (!isCUID(userId)) {
+		return INVALID_ID_ERROR;
+	}
+	const result = await prisma.transaction.aggregate({
+		where: { userId },
+		_sum: {
+			amount: true,
+		},
+		orderBy: {
+			createdAt: 'desc',
+		},
+	});
+	return result._sum.amount ?? 0;
+}
+
 export async function getHostTransactions(
 	userId: string,
 	sort: SortOption = 'newest'
