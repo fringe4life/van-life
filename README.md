@@ -474,12 +474,44 @@ export default function LazyBarChart({ mappedData }: LazyBarChartProps) {
 }
 ```
 
-#### Skeleton Component
+#### Skeleton Component with SSR-Safe Pseudo-Random Heights
 
-- **Matching dimensions**: 350px height to prevent layout shift
-- **Animated loading**: Tailwind's `animate-pulse` for smooth UX
-- **Visual consistency**: Same color scheme as actual chart
-- **Responsive design**: Adapts to container width
+- **CSS-based heights**: Uses pure CSS trigonometric functions instead of JavaScript
+- **SSR-compatible**: No hydration mismatches from `Math.random()`
+- **Single source of truth**: CSS variables (`--chart-height`, `--chart-content-height`) shared between chart and skeleton
+- **DRY principle**: Custom `bar-height` utility with `clamp()` and golden ratio
+- **Pseudo-random variation**: Uses `sin(π/2 * var(--bar-index))` for natural-looking heights
+- **Performance**: Browser CSS engine handles calculations, zero JavaScript overhead
+- **Maintainable**: Change chart height in one place, affects all components
+
+```css
+/* CSS variables in @theme */
+--chart-height: 350px;
+--chart-content-height: calc(var(--chart-height) - 52px);
+
+/* Custom utility for pseudo-random bar heights */
+@utility bar-height {
+  height: clamp(
+    50px,
+    calc(150px + 100px * sin((pi / 2) * var(--bar-index))),
+    var(--chart-content-height)
+  );
+}
+```
+
+```tsx
+/* BarChartSkeleton uses CSS variables and nth-child for variation */
+<div className="h-[var(--chart-height)]">
+  <div
+    className="h-[var(--chart-content-height)] [&>div]:bar-height
+    [&>div:nth-child(1)]:[--bar-index:1]
+    [&>div:nth-child(2)]:[--bar-index:2]
+    ..."
+  >
+    {/* Bars with pseudo-random heights */}
+  </div>
+</div>
+```
 
 ### Benefits
 
