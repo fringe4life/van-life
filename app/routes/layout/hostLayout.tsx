@@ -1,6 +1,5 @@
 import {
 	ArrowRightLeft,
-	BanknoteArrowUp,
 	Car,
 	KeySquare,
 	LayoutDashboard,
@@ -76,16 +75,6 @@ const hostNavItems = [
 			<>
 				<SquarePlus className="aspect-square" />
 				<span>Add Van</span>
-			</>
-		),
-	},
-	{
-		to: href('/host/money'),
-		title: 'Add Money',
-		children: (
-			<>
-				<BanknoteArrowUp className="aspect-square" />
-				<span>Add Money</span>
 			</>
 		),
 	},

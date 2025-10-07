@@ -23,7 +23,6 @@
       "routes/host/transfers": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/reviews": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/addVan": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/host/money": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/rentals/rentals": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/rentals/rentalDetail": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/rentals/returnRental": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
@@ -139,13 +138,6 @@
         "parentId": "routes/layout/hostLayout",
         "file": "app/routes/host/addVan.tsx",
         "path": "host/add",
-        "config": {}
-      },
-      "routes/host/money": {
-        "id": "routes/host/money",
-        "parentId": "routes/layout/hostLayout",
-        "file": "app/routes/host/money.tsx",
-        "path": "host/money",
         "config": {}
       },
       "routes/host/rentals/rentals": {
@@ -323,12 +315,6 @@
         "file": "./routes/host/addVan.tsx",
         "path": "host/add"
       },
-      "routes/host/money": {
-        "id": "routes/host/money",
-        "parentId": "routes/layout/hostLayout",
-        "file": "./routes/host/money.tsx",
-        "path": "host/money"
-      },
       "routes/host/rentals/rentals": {
         "id": "routes/host/rentals/rentals",
         "parentId": "routes/layout/hostLayout",
@@ -460,10 +446,6 @@
                   {
                     "file": "./routes/host/addVan.tsx",
                     "path": "host/add"
-                  },
-                  {
-                    "file": "./routes/host/money.tsx",
-                    "path": "host/money"
                   },
                   {
                     "file": "./routes/host/rentals/rentals.tsx",

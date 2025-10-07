@@ -121,7 +121,7 @@ export default function ReturnRental({
 						You cannot afford to return this van.
 					</p>
 					<CustomLink
-						to={`${href('/host/money')}?returnTo=${encodeURIComponent(href('/host/rentals/returnRental/:rentId', { rentId: params.rentId }))}`}
+						to={`${href('/host')}?returnTo=${encodeURIComponent(href('/host/rentals/returnRental/:rentId', { rentId: params.rentId }))}`}
 					>
 						Top up your account <span className="underline">here</span>
 					</CustomLink>
