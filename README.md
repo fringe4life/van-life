@@ -57,7 +57,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🔧 **Generic Components** for reusability and maintainability
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
-- ⚡ **Performance Optimized** with React 19 and lazy loading
+- ⚡ **Performance Optimized** with React 19.2 and lazy loading
+- 🚀 **Prerendering with Activity Component** (React 19.2 stable) for instant navigation
 - 🔗 **URL State Management** with nuqs for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
 - 📊 **Lazy Loading** for heavy components (BarChart with Recharts)
@@ -68,8 +69,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Frontend
 
-- **React 19.2.0** for performance optimization
-- **React Router 7.9.3** (file-based routing, SSR)
+- **React 19.2.0** with stable Activity component for prerendering
+- **React Router 7.9.3** (file-based routing, SSR, optional route parameters)
 - **TypeScript 5.9.3** with strict configuration
 - **TailwindCSS 4.1.14** with modern CSS features
 - **Radix UI** for accessible components
@@ -574,6 +575,64 @@ Lazy loading is automatically applied to:
 
 - **Income page** (`/host/income`) - Income analytics charts
 - **Reviews page** (`/host/review`) - Review distribution charts
+
+---
+
+## React 19.2 Activity Component for Prerendering
+
+The application leverages **React 19.2's stable Activity component** to prerender views for instant navigation:
+
+### Implementation
+
+The vans route (`/vans/:vanSlug?`) uses Activity to maintain both list and detail views simultaneously:
+
+```tsx
+import { Activity } from "react";
+
+export default function Vans({ loaderData, params }: Route.ComponentProps) {
+  const isVanDetailPage = params.vanSlug !== undefined;
+  const selectedVan = isVanDetailPage
+    ? vans.find((van) => van.slug === params.vanSlug)
+    : null;
+
+  return (
+    <>
+      {/* Van detail view - prerendered for fast navigation */}
+      <Activity mode={isVanDetailPage ? "visible" : "hidden"}>
+        <VanDetail van={selectedVan} />
+      </Activity>
+
+      {/* Van list view - prerendered for fast navigation back */}
+      <Activity mode={isVanDetailPage ? "hidden" : "visible"}>
+        <VanList vans={vans} />
+      </Activity>
+    </>
+  );
+}
+```
+
+### Features
+
+- **Instant Navigation** - No loading states when switching between list and detail views
+- **State Preservation** - Hidden components maintain their state (scroll position, filters)
+- **Effect Pausing** - Effects in hidden components are paused, not unmounted
+- **Single Route** - Both list (`/vans`) and detail (`/vans/modest-explorer`) handled by one route
+- **Conditional Rendering** - Uses optional route parameter (`:vanSlug?`) for clean URLs
+
+### Benefits
+
+- **⚡ Zero perceived latency** when navigating between views
+- **🎯 Filter state preserved** when returning from detail to list view
+- **💾 Memory efficient** - Components stay mounted but paused when hidden
+- **📱 Better mobile UX** - Smooth back/forward navigation without reloading
+
+### URL Structure
+
+```
+/vans                    → List view (vanSlug is undefined)
+/vans/modest-explorer    → Detail view (vanSlug = "modest-explorer")
+/vans/beach-bum          → Detail view (vanSlug = "beach-bum")
+```
 
 ---
 

@@ -80,7 +80,7 @@ export default function About() {
 				</h3>
 				<CustomLink
 					className={cn(buttonVariants({ variant: 'secondary' }), 'w-full')}
-					to={href('/vans')}
+					to={href('/vans/:vanSlug?')}
 				>
 					Explore our vans
 				</CustomLink>

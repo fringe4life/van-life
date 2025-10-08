@@ -78,7 +78,7 @@ export default function VanDetail({
 							to={
 								vanIsAvailable
 									? href('/host/rentals/rent/:vanSlug', { vanSlug })
-									: href('/vans/:vanSlug', { vanSlug })
+									: href('/vans/:vanSlug?', { vanSlug })
 							}
 						>
 							{vanIsAvailable ? 'Rent this van' : 'Van not available'}
@@ -119,7 +119,7 @@ export default function VanDetail({
 						to={
 							vanIsAvailable
 								? href('/host/rentals/rent/:vanSlug', { vanSlug })
-								: href('/vans/:vanSlug', { vanSlug })
+								: href('/vans/:vanSlug?', { vanSlug })
 						}
 					>
 						{vanIsAvailable ? 'Rent this van' : 'Van not available'}

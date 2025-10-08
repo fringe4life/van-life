@@ -10,10 +10,7 @@ export default [
 	layout('./routes/layout/layout.tsx', [
 		index('./routes/home.tsx'),
 		route('about', './routes/about.tsx'),
-		...prefix('vans', [
-			index('./routes/vans/vans.tsx'),
-			route(':vanSlug', './routes/vans/van.tsx'),
-		]),
+		route('vans/:vanSlug?', './routes/vans/vans.tsx'),
 		route('login', './routes/auth/login.tsx'),
 		route('signup', './routes/auth/signUp.tsx'),
 		route('signout', './routes/auth/signOut.tsx'),

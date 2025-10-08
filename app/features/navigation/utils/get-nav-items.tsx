@@ -33,7 +33,7 @@ export function getNavItems(hasToken: boolean) {
 		},
 		{
 			Component: CustomNavLink,
-			props: { to: href('/vans'), className: navLinkClassName },
+			props: { to: href('/vans/:vanSlug?'), className: navLinkClassName },
 			children: (
 				<>
 					<Truck className="aspect-square" />
