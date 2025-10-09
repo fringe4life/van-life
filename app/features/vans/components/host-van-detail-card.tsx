@@ -36,16 +36,16 @@ export default function VanDetailCard({
 	const navLinks = [
 		{
 			label: 'Details',
-			to: href('/host/vans/:vanSlug', { vanSlug }),
+			to: href('/host/vans/:vanSlug?/:action?', { vanSlug }),
 			end: true,
 		},
 		{
 			label: 'Pricing',
-			to: href('/host/vans/:vanSlug/pricing', { vanSlug }),
+			to: href('/host/vans/:vanSlug?/:action?', { vanSlug, action: 'pricing' }),
 		},
 		{
 			label: 'Photos',
-			to: href('/host/vans/:vanSlug/photos', { vanSlug }),
+			to: href('/host/vans/:vanSlug?/:action?', { vanSlug, action: 'photos' }),
 		},
 	];
 

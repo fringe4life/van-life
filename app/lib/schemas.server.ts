@@ -1,5 +1,5 @@
 import { isCuid } from '@paralleldrive/cuid2';
-import { type } from 'arktype';
+import { scope, type } from 'arktype';
 import { MAX_ADD } from '~/constants/constants';
 import { TransactionType, VanState, VanType } from '~/generated/prisma/enums';
 
@@ -106,18 +106,20 @@ export const addVanSchema = type({
  */
 const cuid1Regex = /^c[0-9a-z]{24}$/;
 
+const isCUID = scope({
+	isCuid: type('string').narrow((s, ctx) => {
+		if (isCuid(s) || cuid1Regex.test(s)) {
+			return true;
+		}
+		return ctx.mustBe('a valid CUID');
+	}),
+});
+
 /**
  * Schema for validating CUID v1 or CUID v2 identifiers.
  * Accepts both Prisma's `@default(cuid())` format and our configured 25-char CUID v2.
  */
-export const cuidSchema = type('string')
-	.narrow((s, ctx) => {
-		if (cuid1Regex.test(s) || isCuid(s)) {
-			return true;
-		}
-		return ctx.mustBe('a valid CUID or CUID2');
-	})
-	.describe('valid CUID or CUID2');
+export const cuidSchema = isCUID.type('isCuid');
 
 /**
  * Schema for money operations (withdraw, deposit) and amount.

@@ -10,7 +10,7 @@ export default [
 	layout('./routes/layout/layout.tsx', [
 		index('./routes/home.tsx'),
 		route('about', './routes/about.tsx'),
-		route('vans/:vanSlug?', './routes/vans/vans.tsx'),
+		route('vans/:vanSlug?', './routes/vans.tsx'),
 		route('login', './routes/auth/login.tsx'),
 		route('signup', './routes/auth/signUp.tsx'),
 		route('signout', './routes/auth/signOut.tsx'),
@@ -29,14 +29,15 @@ export default [
 						'./routes/host/rentals/returnRental.tsx'
 					),
 				]),
-				...prefix('vans', [
-					index('./routes/host/hostVans.tsx'),
-					route(':vanSlug', './routes/host/vanDetail/vanDetailLayout.tsx', [
-						index('./routes/host/vanDetail/vanDetail.tsx'),
-						route('pricing', './routes/host/vanDetail/vanDetailPricing.tsx'),
-						route('photos', './routes/host/vanDetail/vanDetailPhotos.tsx'),
-					]),
-				]),
+				// ...prefix('vans', [
+				// 	index('./routes/host/hostVans.tsx'),
+				// 	route(':vanSlug', './routes/host/vanDetail/vanDetailLayout.tsx', [
+				// 		index('./routes/host/vanDetail/vanDetail.tsx'),
+				// 		route('pricing', './routes/host/vanDetail/vanDetailPricing.tsx'),
+				// 		route('photos', './routes/host/vanDetail/vanDetailPhotos.tsx'),
+				// 	]),
+				// ]),
+				route('vans/:vanSlug?/:action?', './routes/host/hostVans.tsx'),
 			]),
 		]),
 	]),

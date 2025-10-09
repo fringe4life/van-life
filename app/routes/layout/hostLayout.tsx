@@ -49,7 +49,7 @@ const hostNavItems = [
 		),
 	},
 	{
-		to: href('/host/vans'),
+		to: href('/host/vans/:vanSlug?/:action?'),
 		title: 'Vans',
 		children: (
 			<>

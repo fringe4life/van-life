@@ -54,7 +54,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 			formData,
 		};
 	}
-	throw redirect(href('/host/vans'));
+	throw redirect(href('/host/vans/:vanSlug?/:action?'));
 }
 
 export default function AddVan({ actionData }: Route.ComponentProps) {

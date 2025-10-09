@@ -1,10 +1,13 @@
 import { useQueryStates } from 'nuqs';
+import { Activity } from 'react';
 import { data, href } from 'react-router';
+import UnsuccesfulState from '~/components/unsuccesful-state';
 import { getHostVanCount, getHostVans } from '~/db/van/host';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
 import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
+import VanDetailCard from '~/features/vans/components/host-van-detail-card';
 import VanCard from '~/features/vans/components/van-card';
 import VanPages from '~/features/vans/components/van-pages';
 import { hostPaginationParsers } from '~/lib/parsers';
@@ -60,7 +63,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	);
 }
 
-export default function Host({ loaderData }: Route.ComponentProps) {
+export default function Host({ loaderData, params }: Route.ComponentProps) {
 	const { actualItems: vans, hasNextPage, hasPreviousPage } = loaderData;
 
 	// Use nuqs for client-side state management
@@ -69,33 +72,63 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	// Ensure vans is an array
 	const vansArray = Array.isArray(vans) ? vans : [];
 
-	return (
-		<VanPages
-			// generic component props start
-			Component={VanCard}
-			className="grid-max"
-			emptyStateMessage="You are currently not renting any vans."
-			hasNextPage={hasNextPage}
-			hasPreviousPage={hasPreviousPage}
-			items={vansArray}
-			// generic component props end
+	const hasSlug = Boolean(
+		params?.vanSlug && typeof params.vanSlug === 'string'
+	);
+	const hasAction = Boolean(
+		params?.action && typeof params.action === 'string'
+	);
 
-			// props for all use cases
-			pathname={href('/host/vans')}
-			renderKey={(van) => van.id}
-			renderProps={(van) => ({
-				link: href('/host/vans/:vanSlug', { vanSlug: van.slug }),
-				van,
-				action: (
-					<p className="text-right">
-						<CustomLink to={href('/host/vans/:vanSlug', { vanSlug: van.slug })}>
-							Edit
-						</CustomLink>
-					</p>
-				),
-			})}
-			searchParams={{ cursor, limit }}
-			title="Your listed vans"
-		/>
+	const isMainPage = Boolean(!(hasAction || hasSlug));
+
+	const _isEditPage = Boolean(params?.action === 'edit' && hasSlug);
+	const isDetailPage = Boolean(params?.action !== 'edit' && hasSlug);
+
+	const selectedVan =
+		isDetailPage && vansArray.find((van) => van.slug === params?.vanSlug);
+	return (
+		<>
+			<Activity mode={isDetailPage ? 'visible' : 'hidden'}>
+				{selectedVan ? (
+					<VanDetailCard van={selectedVan} />
+				) : (
+					<UnsuccesfulState message="Could not find selected van" />
+				)}
+			</Activity>
+			<Activity mode={isMainPage ? 'visible' : 'hidden'}>
+				<VanPages
+					// generic component props start
+					Component={VanCard}
+					className="grid-max"
+					emptyStateMessage="You are currently not renting any vans."
+					hasNextPage={hasNextPage}
+					hasPreviousPage={hasPreviousPage}
+					items={vansArray}
+					// generic component props end
+
+					// props for all use cases
+					pathname={href('/host/vans/:vanSlug?/:action?')}
+					renderKey={(van) => van.id}
+					renderProps={(van) => ({
+						link: href('/host/vans/:vanSlug?/:action?', { vanSlug: van.slug }),
+						van,
+						action: (
+							<p className="text-right">
+								<CustomLink
+									to={href('/host/vans/:vanSlug?/:action?', {
+										vanSlug: van.slug,
+										action: 'edit',
+									})}
+								>
+									Edit
+								</CustomLink>
+							</p>
+						),
+					})}
+					searchParams={{ cursor, limit }}
+					title="Your listed vans"
+				/>
+			</Activity>
+		</>
 	);
 }

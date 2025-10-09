@@ -3,14 +3,14 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-7.9.3-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-7.9.4-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.14-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.27-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.7.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.2.5-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-5.6.1-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
-[![Prisma](https://img.shields.io/badge/Prisma-6.16.3-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
+[![Prisma](https://img.shields.io/badge/Prisma-6.17.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.1.22-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
@@ -70,7 +70,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Frontend
 
 - **React 19.2.0** with stable Activity component for prerendering
-- **React Router 7.9.3** (file-based routing, SSR, optional route parameters)
+- **React Router 7.9.4** (file-based routing, SSR, optional route parameters)
 - **TypeScript 5.9.3** with strict configuration
 - **TailwindCSS 4.1.14** with modern CSS features
 - **Radix UI** for accessible components
@@ -81,17 +81,17 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Backend & Database
 
 - **Node.js** with React Router server
-- **Prisma 6.16.3** ORM with Neon PostgreSQL (Rust-free client)
+- **Prisma 6.17.0** ORM with Neon PostgreSQL (Rust-free client)
 - **better-auth 1.3.27** for authentication
 - **ArkType 2.1.22** for schema validation and type narrowing
 - **CUID2 2.2.2** for unique identifiers (configured for 25-character IDs)
-- **@prisma/adapter-neon 6.16.3** for Neon database integration
+- **@prisma/adapter-neon 6.17.0** for Neon database integration
 
 ### Development Tools
 
 - **rolldown-vite** (latest) - Next-generation Vite with Rolldown bundler
 - **Biome 2.2.5** for linting and formatting with Ultracite integration
-- **Ultracite 5.5.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 5.6.1** - AI-friendly linting rules for maximum type safety and accessibility
 - **Husky 9.1.7** for Git hooks and pre-commit automation
 - **TypeScript 5.9.3** with native preview
 - **Bun** for fast package management and runtime
