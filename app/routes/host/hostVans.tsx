@@ -3,11 +3,15 @@ import { Activity } from 'react';
 import { data, href } from 'react-router';
 import UnsuccesfulState from '~/components/unsuccesful-state';
 import { getHostVanCount, getHostVans } from '~/db/van/host';
+import { determineHostVansRoute } from '~/features/host/utils/determine-host-vans-route';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
 import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
 import VanDetailCard from '~/features/vans/components/host-van-detail-card';
+import HostVanDetailInitial from '~/features/vans/components/host-van-detail-initial';
+import HostVanDetailPhotos from '~/features/vans/components/host-van-detail-photos';
+import HostVanDetailPricing from '~/features/vans/components/host-van-detail-pricing';
 import VanCard from '~/features/vans/components/van-card';
 import VanPages from '~/features/vans/components/van-pages';
 import { hostPaginationParsers } from '~/lib/parsers';
@@ -58,20 +62,15 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 	// Ensure vans is an array
 	const vansArray = Array.isArray(vans) ? vans : [];
 
-	const hasSlug = Boolean(
-		params?.vanSlug && typeof params.vanSlug === 'string'
-	);
-	const hasAction = Boolean(
-		params?.action && typeof params.action === 'string'
-	);
-
-	const isMainPage = Boolean(!(hasAction || hasSlug));
-
-	const _isEditPage = Boolean(params?.action === 'edit' && hasSlug);
-	const isDetailPage = Boolean(params?.action !== 'edit' && hasSlug);
-
-	const selectedVan =
-		isDetailPage && vansArray.find((van) => van.slug === params?.vanSlug);
+	// Determine route state using utility helper
+	const {
+		isMainPage,
+		isDetailPage,
+		isInitialDetailPage,
+		isPhotosPage,
+		isPricingPage,
+		selectedVan,
+	} = determineHostVansRoute(params, vansArray);
 	return (
 		<>
 			<title>Your Vans | Van Life</title>
@@ -81,7 +80,17 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 			/>
 			<Activity mode={isDetailPage ? 'visible' : 'hidden'}>
 				{selectedVan ? (
-					<VanDetailCard van={selectedVan} />
+					<VanDetailCard van={selectedVan}>
+						<Activity mode={isInitialDetailPage ? 'visible' : 'hidden'}>
+							<HostVanDetailInitial van={selectedVan} />
+						</Activity>
+						<Activity mode={isPhotosPage ? 'visible' : 'hidden'}>
+							<HostVanDetailPhotos van={selectedVan} />
+						</Activity>
+						<Activity mode={isPricingPage ? 'visible' : 'hidden'}>
+							<HostVanDetailPricing van={selectedVan} />
+						</Activity>
+					</VanDetailCard>
 				) : (
 					<UnsuccesfulState message="Could not find selected van" />
 				)}

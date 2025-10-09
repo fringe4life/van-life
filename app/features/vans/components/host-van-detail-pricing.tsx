@@ -1,9 +1,13 @@
-import { useOutletContext } from 'react-router';
-import VanPrice from '~/features/vans/components/van-price';
 import type { VanModel } from '~/generated/prisma/models';
+import VanPrice from './van-price';
 
-export default function VanDetailPricing() {
-	const van = useOutletContext<VanModel>();
+type HostVanDetailPricingProps = {
+	van: VanModel;
+};
+
+export default function HostVanDetailPricing({
+	van,
+}: HostVanDetailPricingProps) {
 	return (
 		<div className="my-4 sm:my-6">
 			<VanPrice

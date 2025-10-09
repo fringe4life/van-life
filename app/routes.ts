@@ -29,14 +29,6 @@ export default [
 						'./routes/host/rentals/returnRental.tsx'
 					),
 				]),
-				// ...prefix('vans', [
-				// 	index('./routes/host/hostVans.tsx'),
-				// 	route(':vanSlug', './routes/host/vanDetail/vanDetailLayout.tsx', [
-				// 		index('./routes/host/vanDetail/vanDetail.tsx'),
-				// 		route('pricing', './routes/host/vanDetail/vanDetailPricing.tsx'),
-				// 		route('photos', './routes/host/vanDetail/vanDetailPhotos.tsx'),
-				// 	]),
-				// ]),
 				route('vans/:vanSlug?/:action?', './routes/host/hostVans.tsx'),
 			]),
 		]),

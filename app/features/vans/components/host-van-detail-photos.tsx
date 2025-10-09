@@ -1,9 +1,11 @@
-import { useOutletContext } from 'react-router';
 import Image from '~/features/image/component/image';
 import type { VanModel } from '~/generated/prisma/models';
 
-export default function VanDetailPhotos() {
-	const van = useOutletContext<VanModel>();
+type HostVanDetailPhotosProps = {
+	van: VanModel;
+};
+
+export default function HostVanDetailPhotos({ van }: HostVanDetailPhotosProps) {
 	return (
 		<Image
 			alt={van.name}
