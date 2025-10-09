@@ -27,16 +27,6 @@ import { cn } from '~/utils/utils';
 import { validateVanType } from '~/utils/validators';
 import type { Route } from './+types/vans';
 
-export function meta() {
-	return [
-		{ title: 'Vans | Vanlife' },
-		{
-			name: 'description',
-			content: 'Browse our vans for rent',
-		},
-	];
-}
-
 export async function loader({ request }: Route.LoaderArgs) {
 	// Get badges from the centralized types
 	const badges = VAN_TYPE_LOWERCASE;
@@ -99,6 +89,11 @@ export default function Vans({ loaderData, params }: Route.ComponentProps) {
 
 	return (
 		<>
+			<title>Vans | Van Life</title>
+			<meta
+				content="Browse our vans for rent and find the perfect van for your adventure"
+				name="description"
+			/>
 			{/* Van detail view - prerendered for fast navigation */}
 			<Activity mode={isVanDetailPage ? 'visible' : 'hidden'}>
 				<div className="grid grid-rows-[min-content_1fr]">

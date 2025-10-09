@@ -11,5 +11,11 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 export default function Signout() {
-	return <p>Signing out</p>;
+	return (
+		<>
+			<title>Sign Out | Van Life</title>
+			<meta content="Signing out of your Van Life account" name="description" />
+			<p>Signing out</p>
+		</>
+	);
 }

@@ -25,6 +25,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - [Project Structure](#project-structure)
 - [Database](#database)
 - [Authentication](#authentication)
+- [React 19 Native Meta Elements](#react-19-native-meta-elements)
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [Scripts](#scripts)
@@ -39,6 +40,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - 🚀 **Modern React Router 7** with server-side rendering and file-based routing
 - 🔒 **Authentication** with better-auth (sign up, login, session management)
+- 📄 **React 19 Native Meta Elements** (SEO-optimized with built-in `<title>` and `<meta>` elements)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
@@ -62,6 +64,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🔗 **URL State Management** with nuqs for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
 - 📊 **Lazy Loading** for heavy components (BarChart with Recharts)
+- 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
 
 ---
 
@@ -633,6 +636,77 @@ export default function Vans({ loaderData, params }: Route.ComponentProps) {
 /vans/modest-explorer    → Detail view (vanSlug = "modest-explorer")
 /vans/beach-bum          → Detail view (vanSlug = "beach-bum")
 ```
+
+---
+
+## React 19 Native Meta Elements
+
+The application uses **React 19's built-in `<title>` and `<meta>` elements** for SEO optimization, replacing the deprecated `meta` export pattern:
+
+### Implementation
+
+Instead of using React Router's `meta` export, meta tags are now defined directly within components:
+
+```tsx
+// ❌ Old pattern (deprecated)
+export function meta() {
+  return [
+    { title: "Home | Van Life" },
+    { name: "description", content: "Welcome to Van Life..." },
+  ];
+}
+
+// ✅ New pattern (React 19)
+export default function Home() {
+  return (
+    <section>
+      <title>Home | Van Life</title>
+      <meta name="description" content="Welcome to Van Life..." />
+      {/* rest of component */}
+    </section>
+  );
+}
+```
+
+### Features
+
+- **Native React 19 Support** - Uses built-in elements instead of framework-specific exports
+- **Component-Level SEO** - Meta tags defined where they're used for better maintainability
+- **No `<Meta />` Component** - Removed from `root.tsx` as it's no longer needed
+- **Full SEO Coverage** - All 15 routes have proper titles and descriptions
+
+### Routes with Meta Tags
+
+**Public Routes:**
+
+- `/` - Home page
+- `/about` - About page
+- `/vans` - Van listings
+
+**Auth Routes:**
+
+- `/login` - Sign in page
+- `/signup` - Sign up page
+- `/signout` - Sign out page
+
+**Host Routes:**
+
+- `/host` - Host dashboard
+- `/host/vans` - Your vans
+- `/host/income` - Income tracking
+- `/host/reviews` - Reviews
+- `/host/transfers` - Transaction history
+- `/host/rentals` - Rental management
+- `/host/rentals/rent/:vanSlug` - Rent van
+- `/host/rentals/returnRental/:rentId` - Return van
+- `/host/addVan` - Add new van
+
+### Benefits
+
+- **🎯 Better SEO** - Search engines index proper meta tags
+- **📱 Social Sharing** - Meta descriptions improve link previews
+- **♻️ Simpler Code** - No need for separate meta export functions
+- **🔄 Consistent** - Meta tags stay with component logic
 
 ---
 

@@ -24,10 +24,6 @@ export function meta({ loaderData }: Route.MetaArgs) {
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
-export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
-	return actionHeaders ? actionHeaders : loaderHeaders;
-}
-
 export async function loader({ params }: Route.LoaderArgs) {
 	// No session needed for this loader, but middleware ensures auth
 
@@ -97,6 +93,8 @@ export default function AddVan({
 
 	return (
 		<section>
+			<title>Rent Van | Van Life</title>
+			<meta content="Rent a van for your next adventure" name="description" />
 			<VanCard
 				action={<p />}
 				link={href('/host/rentals/rent/:vanSlug', { vanSlug: params.vanSlug })}

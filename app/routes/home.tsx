@@ -12,17 +12,6 @@ import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-se
 import CustomLink from '~/features/navigation/components/custom-link';
 import { cn } from '~/utils/utils';
 
-export function meta() {
-	return [
-		{ title: 'Home | Van life' },
-		{
-			name: 'description',
-			content:
-				'Welcome to Van life, a site to help you find your next Camper Van!',
-		},
-	];
-}
-
 // Use only mobile images for now to fix the aspect ratio issue
 const srcSet = createWebPSrcSet(
 	HOME_IMG_URL,
@@ -45,6 +34,11 @@ export default function Home() {
 			as="section"
 			className="-mx-[var(--padding-inline)] relative grid aspect-[1/1.5] text-white contain-strict sm:pl-6 md:aspect-video md:place-content-center md:self-center"
 		>
+			<title>Home | Van Life</title>
+			<meta
+				content="Welcome to Van Life, a site to help you find your next Camper Van!"
+				name="description"
+			/>
 			{/* Background Image with gradient overlay */}
 			<div className="mask-cover mask-no-repeat mask-right md:mask-[url(/app/assets/rvMask.svg)] absolute inset-0">
 				<div className="absolute inset-0 z-10 bg-linear-45 from-0% from-indigo-300/40 via-33% via-green-300/40 to-66% to-yellow-200/40 bg-blend-darken" />

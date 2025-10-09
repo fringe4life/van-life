@@ -13,21 +13,7 @@ import VanPages from '~/features/vans/components/van-pages';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/reviews';
-export function meta() {
-	return [
-		{ title: 'Reviews | Vanlife' },
-		{
-			name: 'description',
-			content: 'The Reviews you have received',
-		},
-	];
-}
-
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
-
-export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
-	return actionHeaders ? actionHeaders : loaderHeaders;
-}
 
 export async function loader({ request, context }: Route.LoaderArgs) {
 	const session = context.get(authContext);
@@ -119,6 +105,11 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			// props that are common
 			optionalElement={
 				<>
+					<title>Reviews | Van Life</title>
+					<meta
+						content="View reviews and ratings from your van rentals"
+						name="description"
+					/>
 					<LazyBarChart mappedData={result} />
 					<Sortable itemCount={safeChartData.length} title="Reviews" />
 				</>

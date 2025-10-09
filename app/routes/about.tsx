@@ -11,16 +11,6 @@ import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-se
 import CustomLink from '~/features/navigation/components/custom-link';
 import { cn } from '~/utils/utils';
 
-export function meta() {
-	return [
-		{ title: 'Available Vans' },
-		{
-			name: 'description',
-			content: 'Browse the Vans available for hire',
-		},
-	];
-}
-
 // Create optimized WebP srcSet with 16:9 aspect ratio for both mobile and desktop
 // since the about page only uses aspect-video
 const srcSet = createWebPSrcSet(ABOUT_IMG, {
@@ -35,6 +25,11 @@ export default function About() {
 			as="section"
 			className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-10"
 		>
+			<title>About | Van Life</title>
+			<meta
+				content="Learn about Van Life and our mission to provide the perfect van rental for your road trip adventure"
+				name="description"
+			/>
 			<Image
 				alt="a couple enjoying their adventure"
 				classesForContainer="-mx-[var(--padding-inline)] w-[var(--container-layout)]"

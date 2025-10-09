@@ -12,18 +12,7 @@ import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/rentals';
 
-export function meta() {
-	return [
-		{ title: 'Rentals | Van Life' },
-		{ name: 'description', content: 'Your van rentals' },
-	];
-}
-
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
-
-export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
-	return actionHeaders ? actionHeaders : loaderHeaders;
-}
 
 export async function loader({ request, context }: Route.LoaderArgs) {
 	const session = context.get(authContext);
@@ -75,6 +64,12 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			hasNextPage={hasNextPage}
 			hasPreviousPage={hasPreviousPage}
 			items={vansArray}
+			optionalElement={
+				<>
+					<title>Rentals | Van Life</title>
+					<meta content="View and manage your van rentals" name="description" />
+				</>
+			}
 			// generic component props end
 
 			// props for all use cases

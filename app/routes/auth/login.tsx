@@ -9,10 +9,6 @@ import { auth } from '~/lib/auth.server';
 import { loginSchema } from '~/lib/schemas.server';
 import type { Route } from './+types/login';
 
-export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
-	return actionHeaders ? actionHeaders : loaderHeaders;
-}
-
 export async function loader({ request }: Route.LoaderArgs) {
 	const result = await auth.api.getSession({ headers: request.headers });
 	if (result) {
@@ -53,6 +49,11 @@ export default function Login({ actionData }: Route.ComponentProps) {
 
 	return (
 		<div className="grid items-center justify-center gap-4 sm:gap-6 md:gap-12">
+			<title>Sign In | Van Life</title>
+			<meta
+				content="Sign in to your Van Life account to manage your van rentals and bookings"
+				name="description"
+			/>
 			<h2 className="font-bold text-2xl text-shadow-text sm:text-3xl">
 				Sign into your account
 			</h2>

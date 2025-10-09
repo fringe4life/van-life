@@ -13,21 +13,7 @@ import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/income';
 
-export function meta() {
-	return [
-		{ title: 'Your Income | Vanlife' },
-		{
-			name: 'income',
-			content: 'Income from vans rented to others',
-		},
-	];
-}
-
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
-
-export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
-	return actionHeaders ? actionHeaders : loaderHeaders;
-}
 
 export async function loader({ request, context }: Route.LoaderArgs) {
 	const session = context.get(authContext);
@@ -91,6 +77,11 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 					<Sortable
 						itemCount={filteredHostIncomes.length}
 						title="Income Transactions"
+					/>
+					<title>Your Income | Van Life</title>
+					<meta
+						content="View your income from van rentals and track earnings"
+						name="description"
 					/>
 				</>
 			}

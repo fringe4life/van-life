@@ -2,7 +2,6 @@ import { NuqsAdapter } from 'nuqs/adapters/react-router/v7';
 import {
 	isRouteErrorResponse,
 	Links,
-	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
@@ -33,7 +32,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<meta charSet="utf-8" />
 				<link href="/camper-van.png" rel="icon" type="image/png" />
 				<meta content="width=device-width, initial-scale=1" name="viewport" />
-				<Meta />
 				<Links />
 			</head>
 			<body className="mx-auto grid min-h-dvh w-full max-w-[var(--container-layout)] grid-cols-1 grid-rows-[104px_1fr_100px] bg-orange-50">

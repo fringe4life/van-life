@@ -30,10 +30,6 @@ export function meta({ loaderData }: Route.MetaArgs) {
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
-export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
-	return actionHeaders ? actionHeaders : loaderHeaders;
-}
-
 export async function loader({ params, context }: Route.LoaderArgs) {
 	const session = context.get(authContext);
 
@@ -105,6 +101,11 @@ export default function ReturnRental({
 	const isUnableToPay = money < amountToPay;
 	return (
 		<section className="flex flex-col gap-4">
+			<title>Return Van | Van Life</title>
+			<meta
+				content="Return your rented van and complete your rental"
+				name="description"
+			/>
 			<h2>Return this van:</h2>
 			<div className="max-w-lg">
 				<VanCard

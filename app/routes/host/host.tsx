@@ -44,21 +44,7 @@ import { tryCatch } from '~/utils/try-catch.server';
 import { validateTransactionType } from '~/utils/validators';
 import type { Route } from './+types/host';
 
-export function meta() {
-	return [
-		{ title: 'Host | Vanlife' },
-		{
-			name: 'description',
-			content: 'the dashboard page when you are logged in',
-		},
-	];
-}
-
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
-
-export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
-	return actionHeaders ? actionHeaders : loaderHeaders;
-}
 
 export async function loader({ context }: Route.LoaderArgs) {
 	const session = context.get(authContext);
@@ -211,6 +197,11 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 
 	return (
 		<PendingUi as="section">
+			<title>Host Dashboard | Van Life</title>
+			<meta
+				content="Your Van Life host dashboard - manage your vans, view income, and track rentals"
+				name="description"
+			/>
 			{/* Income Section */}
 			<div className="-mx-[var(--padding-inline)] grid w-[var(--container-layout)] grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-[var(--padding-inline)] py-6 sm:py-9">
 				<h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">

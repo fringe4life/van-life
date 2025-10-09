@@ -53,6 +53,11 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 
 	return (
 		<div className="grid items-center justify-center gap-4 sm:gap-6 md:gap-12">
+			<title>Sign Up | Van Life</title>
+			<meta
+				content="Create a Van Life account to start renting vans and managing your bookings"
+				name="description"
+			/>
 			<h2 className="justify-center font-bold text-2xl text-shadow-text sm:text-3xl">
 				Create your account
 			</h2>

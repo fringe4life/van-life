@@ -12,16 +12,6 @@ import { addVanSchema } from '~/lib/schemas.server';
 import { getSlug } from '~/utils/get-slug';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/addVan';
-export function meta() {
-	return [
-		{ title: 'Add Van | Vanlife' },
-		{
-			name: 'description',
-			content: 'the page where you can add a van',
-		},
-	];
-}
-
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function action({ request, context }: Route.ActionArgs) {
@@ -61,6 +51,11 @@ export default function AddVan({ actionData }: Route.ComponentProps) {
 	const id = useId();
 	return (
 		<section>
+			<title>Add Van | Van Life</title>
+			<meta
+				content="Add a new van to your Van Life listings"
+				name="description"
+			/>
 			<h2 className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 				Add Van
 			</h2>

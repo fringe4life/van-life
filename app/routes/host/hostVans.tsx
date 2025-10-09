@@ -15,21 +15,7 @@ import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/hostVans';
 
-export function meta() {
-	return [
-		{ title: 'Host Vans | Vanlife' },
-		{
-			name: 'description',
-			content: 'Your dashboard page.',
-		},
-	];
-}
-
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
-
-export function headers({ actionHeaders, loaderHeaders }: Route.HeadersArgs) {
-	return actionHeaders ? actionHeaders : loaderHeaders;
-}
 
 export async function loader({ request, context }: Route.LoaderArgs) {
 	const session = context.get(authContext);
@@ -88,6 +74,11 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 		isDetailPage && vansArray.find((van) => van.slug === params?.vanSlug);
 	return (
 		<>
+			<title>Your Vans | Van Life</title>
+			<meta
+				content="View and manage your listed vans on Van Life"
+				name="description"
+			/>
 			<Activity mode={isDetailPage ? 'visible' : 'hidden'}>
 				{selectedVan ? (
 					<VanDetailCard van={selectedVan} />

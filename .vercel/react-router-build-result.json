@@ -26,9 +26,6 @@
       "routes/host/rentals/rentalDetail": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/rentals/returnRental": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/hostVans": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/host/vanDetail/vanDetail": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/host/vanDetail/vanDetailPricing": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/host/vanDetail/vanDetailPhotos": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/api/auth": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/404": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
     },
@@ -157,36 +154,7 @@
         "id": "routes/host/hostVans",
         "parentId": "routes/layout/hostLayout",
         "file": "app/routes/host/hostVans.tsx",
-        "path": "host/vans",
-        "index": true,
-        "config": {}
-      },
-      "routes/host/vanDetail/vanDetailLayout": {
-        "id": "routes/host/vanDetail/vanDetailLayout",
-        "parentId": "routes/layout/hostLayout",
-        "file": "app/routes/host/vanDetail/vanDetailLayout.tsx",
-        "path": "host/vans/:vanSlug",
-        "config": {}
-      },
-      "routes/host/vanDetail/vanDetail": {
-        "id": "routes/host/vanDetail/vanDetail",
-        "parentId": "routes/host/vanDetail/vanDetailLayout",
-        "file": "app/routes/host/vanDetail/vanDetail.tsx",
-        "index": true,
-        "config": {}
-      },
-      "routes/host/vanDetail/vanDetailPricing": {
-        "id": "routes/host/vanDetail/vanDetailPricing",
-        "parentId": "routes/host/vanDetail/vanDetailLayout",
-        "file": "app/routes/host/vanDetail/vanDetailPricing.tsx",
-        "path": "pricing",
-        "config": {}
-      },
-      "routes/host/vanDetail/vanDetailPhotos": {
-        "id": "routes/host/vanDetail/vanDetailPhotos",
-        "parentId": "routes/host/vanDetail/vanDetailLayout",
-        "file": "app/routes/host/vanDetail/vanDetailPhotos.tsx",
-        "path": "photos",
+        "path": "host/vans/:vanSlug?/:action?",
         "config": {}
       },
       "routes/api/auth": {
@@ -322,32 +290,7 @@
         "id": "routes/host/hostVans",
         "parentId": "routes/layout/hostLayout",
         "file": "./routes/host/hostVans.tsx",
-        "path": "host/vans",
-        "index": true
-      },
-      "routes/host/vanDetail/vanDetailLayout": {
-        "id": "routes/host/vanDetail/vanDetailLayout",
-        "parentId": "routes/layout/hostLayout",
-        "file": "./routes/host/vanDetail/vanDetailLayout.tsx",
-        "path": "host/vans/:vanSlug"
-      },
-      "routes/host/vanDetail/vanDetail": {
-        "id": "routes/host/vanDetail/vanDetail",
-        "parentId": "routes/host/vanDetail/vanDetailLayout",
-        "file": "./routes/host/vanDetail/vanDetail.tsx",
-        "index": true
-      },
-      "routes/host/vanDetail/vanDetailPricing": {
-        "id": "routes/host/vanDetail/vanDetailPricing",
-        "parentId": "routes/host/vanDetail/vanDetailLayout",
-        "file": "./routes/host/vanDetail/vanDetailPricing.tsx",
-        "path": "pricing"
-      },
-      "routes/host/vanDetail/vanDetailPhotos": {
-        "id": "routes/host/vanDetail/vanDetailPhotos",
-        "parentId": "routes/host/vanDetail/vanDetailLayout",
-        "file": "./routes/host/vanDetail/vanDetailPhotos.tsx",
-        "path": "photos"
+        "path": "host/vans/:vanSlug?/:action?"
       },
       "routes/api/auth": {
         "id": "routes/api/auth",
@@ -441,26 +384,7 @@
                   },
                   {
                     "file": "./routes/host/hostVans.tsx",
-                    "index": true,
-                    "path": "host/vans"
-                  },
-                  {
-                    "file": "./routes/host/vanDetail/vanDetailLayout.tsx",
-                    "children": [
-                      {
-                        "file": "./routes/host/vanDetail/vanDetail.tsx",
-                        "index": true
-                      },
-                      {
-                        "file": "./routes/host/vanDetail/vanDetailPricing.tsx",
-                        "path": "pricing"
-                      },
-                      {
-                        "file": "./routes/host/vanDetail/vanDetailPhotos.tsx",
-                        "path": "photos"
-                      }
-                    ],
-                    "path": "host/vans/:vanSlug"
+                    "path": "host/vans/:vanSlug?/:action?"
                   }
                 ]
               }
