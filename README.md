@@ -28,7 +28,6 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - [URL State Management](#url-state-management-with-nuqs)
 - [SEO & Routing](#seo-friendly-slug-based-routing)
 - [React 19 Features](#react-19-features)
-- [Performance Optimizations](#performance-optimizations--lazy-loading)
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [Scripts](#scripts)
