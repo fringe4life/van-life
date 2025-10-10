@@ -25,7 +25,10 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - [Project Structure](#project-structure)
 - [Database](#database)
 - [Authentication](#authentication)
-- [React 19 Native Meta Elements](#react-19-native-meta-elements)
+- [URL State Management](#url-state-management-with-nuqs)
+- [SEO & Routing](#seo-friendly-slug-based-routing)
+- [React 19 Features](#react-19-features)
+- [Performance Optimizations](#performance-optimizations--lazy-loading)
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [Scripts](#scripts)
@@ -40,7 +43,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - 🚀 **Modern React Router 7** with server-side rendering and file-based routing
 - 🔒 **Authentication** with better-auth (sign up, login, session management)
-- 📄 **React 19 Native Meta Elements** (SEO-optimized with built-in `<title>` and `<meta>` elements)
+- ⚛️ **React 19 Features** (Activity component for prerendering, native meta elements, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
@@ -49,8 +52,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 💰 **Financial Management** (deposit/withdraw funds, transaction tracking)
 - 🏷️ **Van State System** (NEW, IN_REPAIR, ON_SALE, AVAILABLE with discount pricing)
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
-- 🎨 **DRY Van State Styling** (centralized utility with processor pattern and custom Tailwind variants)
-- 🎨 **Modern UI/UX** with responsive design and smooth animations
+- 🎨 **Modern UI/UX** with responsive design, custom Tailwind variants, and smooth animations
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **ArkType** for runtime schema validation and type-safe narrowing
 - 🗄️ **Optimized Database IDs** with 25-character CUID v2 and VARCHAR(25) constraints
@@ -59,11 +61,9 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🔧 **Generic Components** for reusability and maintainability
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
-- ⚡ **Performance Optimized** with React 19.2 and lazy loading
-- 🚀 **Prerendering with Activity Component** (React 19.2 stable) for instant navigation
+- ⚡ **Performance Optimized** with lazy loading and code splitting
 - 🔗 **URL State Management** with nuqs for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
-- 📊 **Lazy Loading** for heavy components (BarChart with Recharts)
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
 
 ---
@@ -115,39 +115,44 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ```
 app/
 ├── components/          # Reusable UI components
-│   ├── common/         # Generic components (forms, lists, etc.)
-│   ├── host/           # Host-specific components (charts, reviews, lazy loading)
-│   ├── navigation/     # Navigation components
-│   ├── ui/             # Base UI components (buttons, inputs, etc.)
-│   └── van/            # Van-related components
+│   ├── ui/             # Shadcn UI components (buttons, inputs, cards, etc.)
+│   └── [common]        # Generic components (forms, lists, sortable, etc.)
 ├── constants/          # App-wide constants and enums
 ├── db/                 # Database layer
 │   ├── rental/         # Rental-related queries and transactions
 │   ├── review/         # Review analytics and queries
 │   ├── user/           # User analytics and payments
 │   └── van/            # Van CRUD operations and queries
+├── features/
+│   ├── host/
+│   │   ├── components/ # Host-specific components (charts, income, reviews)
+│   │   └── utils/      # Route determination helpers
+│   ├── image/          # Image optimization utilities
+│   ├── middleware/     # Auth middleware and contexts
+│   ├── navigation/     # Navigation components and hooks
+│   ├── pagination/     # Pagination utilities and components
+│   └── vans/
+│       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, etc.)
+│       ├── constants/  # Van-related constants
+│       └── utils/      # Van helpers (pricing, styling, display)
 ├── hooks/              # Custom React hooks
 ├── lib/                # Server-side utilities
-│   ├── parsers.ts      # nuqs search parameter parsers
-│   └── searchParams.server.ts  # Server-side search param loaders
-├── features/
-│   ├── pagination/
-│   │   ├── utils/
-│   │   │   ├── buildSearchParams.ts
-│   │   │   ├── getCursorPaginationInformation.server.ts
-│   │   │   ├── getSearchParams.server.ts
-│   │   │   └── hasPagination.server.ts
-│   │   └── components/
-│   │       └── Pagination.tsx
-│   ├── vans/
-│   │   ├── components/   # Van UI (VanCard, VanDetail, HostVanDetailCard, etc.)
-│   │   └── utils/        # Van helpers (e.g., displayPrice)
-├── routes/             # Route modules (pages, API, layouts)
+│   ├── auth.server.ts      # Better-auth configuration
+│   ├── parsers.ts          # nuqs search parameter parsers
+│   ├── schemas.server.ts   # ArkType validation schemas
+│   └── search-params.server.ts  # Server-side search param loaders
+├── routes/             # Route modules (Activity-based single routes)
 │   ├── api/            # API routes
-│   ├── auth/           # Authentication routes
-│   ├── host/           # Host dashboard routes
+│   ├── auth/           # Authentication routes (login, signup, signout)
+│   ├── host/           # Host dashboard routes (consolidated with Activity)
+│   │   └── rentals/    # Rental management routes
 │   ├── layout/         # Layout components
-│   └── vans/           # Van listing and detail routes
+│   └── public/         # Public routes
+│       ├── vans.tsx    # Van listing/detail (Activity-based single route)
+│       ├── home.tsx    # Home page
+│       ├── about.tsx   # About page
+│       └── 404.tsx     # Not found page
+├── types/              # TypeScript type definitions
 ├── utils/              # Utility functions
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
@@ -156,18 +161,10 @@ app/
 prisma/
 ├── models/             # Modular Prisma model definitions
 │   ├── betterAuth/     # Authentication models (User, Session, Account, Verification)
-│   ├── van/            # Van-related models (Van, Rent, Review, UserInfo, Transaction)
-│   ├── enums.prisma    # Shared enums
-│   └── schema.prisma   # Main schema file
+│   └── van/            # Van-related models (Van, Rent, Review, UserInfo, Transaction)
 ├── seed-data/          # Modular seed data files
-│   ├── vans.ts         # Van seed data
-│   ├── rents.ts        # Rental seed data
-│   ├── reviews.ts      # Review seed data
-│   ├── transactions.ts # Transaction seed data
-│   └── index.ts        # Seed data exports
 ├── schema.prisma       # Prisma schema entrypoint
-├── seed.ts            # Database seeding script
-└── seedFns.ts         # Seed helper functions
+└── seed.ts             # Database seeding script
 ```
 
 ---
@@ -387,63 +384,6 @@ model Van {
 
 ---
 
-## DRY Van State Styling System
-
-The application features a **centralized van state styling system** that eliminates code duplication across components:
-
-### Features
-
-- **Single utility function** (`getVanStateStyles()`) for all van card components
-- **Custom Tailwind variants** for clean, readable class names
-- **Consistent styling** across VanCard, VanDetail, and HostVanDetailCard
-- **Type-safe implementation** with proper TypeScript support
-- **Easy maintenance** - change styling in one place, affects all components
-
-### Implementation
-
-```typescript
-// Centralized utility (app/utils/vanStateStyles.ts)
-export function getVanStateStyles(van: VanModel) {
-  const dataSlot = getVanStateDataSlot(van);
-  const vanStateClasses = [
-    'van-new:border-2',
-    'van-new:border-van-new',
-    'van-new:bg-van-new/10',
-    // ... other states
-  ].join(' ');
-
-  return { dataSlot, className: vanStateClasses };
-}
-
-// Custom variants (app/app.css)
-@custom-variant van-new (&[data-slot*="van-card-new"]);
-@custom-variant van-sale (&[data-slot*="van-card-sale"]);
-@custom-variant van-repair (&[data-slot*="van-card-repair"]);
-@custom-variant van-available (&[data-slot*="van-card-available"]);
-```
-
-### Usage
-
-```typescript
-// In any van component
-const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);
-
-<Card
-  className={`base-classes ${vanStateClasses}`}
-  data-slot={dataSlot}
->
-```
-
-### Benefits
-
-- **DRY Principle** - No more copy-pasting CSS classes
-- **Single Source of Truth** - All styling logic centralized
-- **Clean Code** - `van-new:border-2` vs `data-[slot*=van-card-new]:border-2`
-- **Easy Maintenance** - Update styling in one place
-- **Type Safety** - Full TypeScript support with proper return types
-
----
-
 ## Generic Sorting System
 
 The application features a **reusable sorting system** with type-safe generic utilities:
@@ -490,33 +430,23 @@ const orderBy = createGenericOrderBy(sort, {
 
 ## Performance Optimizations & Lazy Loading
 
-The application implements **strategic lazy loading** to optimize initial page load performance:
+The application implements **strategic lazy loading** and code splitting to optimize performance:
 
-### Lazy Loading Implementation
+### Implementation
 
 - **React.lazy()** for component-level code splitting
 - **Suspense boundaries** with skeleton loaders to prevent layout shift
-- **Route-level lazy loading** via React Router 7's automatic code splitting
-- **Heavy component isolation** (BarChart with Recharts library)
+- **Route-level code splitting** via React Router 7's automatic bundling
+- **Heavy component isolation** - BarChart component (Recharts library) lazy-loaded
 
 ### BarChart Lazy Loading
 
-The **BarChart component** (using Recharts) is lazy-loaded to improve performance:
-
-#### Performance Impact
-
-- **99.3% reduction** in initial bundle size for income/reviews pages
-- **~308 kB** removed from initial page load
-- **Separate chunk**: `BarChart-C0VFlGPC.js` (307.89 kB, 91.24 kB gzipped)
-- **Skeleton loader**: Prevents layout shift during chart loading
-
-#### Implementation
+The BarChart component is lazy-loaded, reducing initial bundle size by **~308 kB** (91 kB gzipped):
 
 ```typescript
-// LazyBarChart.tsx
 const BarChartComponent = lazy(() => import('./BarChart'));
 
-export default function LazyBarChart({ mappedData }: LazyBarChartProps) {
+export default function LazyBarChart({ mappedData }) {
   return (
     <Suspense fallback={<BarChartSkeleton />}>
       <BarChartComponent mappedData={mappedData} />
@@ -525,138 +455,51 @@ export default function LazyBarChart({ mappedData }: LazyBarChartProps) {
 }
 ```
 
-#### Skeleton Component with SSR-Safe Pseudo-Random Heights
-
-- **CSS-based heights**: Uses pure CSS trigonometric functions instead of JavaScript
-- **SSR-compatible**: No hydration mismatches from `Math.random()`
-- **Single source of truth**: CSS variables (`--chart-height`, `--chart-content-height`) shared between chart and skeleton
-- **DRY principle**: Custom `bar-height` utility with `clamp()` and golden ratio
-- **Pseudo-random variation**: Uses `sin(π/2 * var(--bar-index))` for natural-looking heights
-- **Performance**: Browser CSS engine handles calculations, zero JavaScript overhead
-- **Maintainable**: Change chart height in one place, affects all components
-
-```css
-/* CSS variables in @theme */
---chart-height: 350px;
---chart-content-height: calc(var(--chart-height) - 52px);
-
-/* Custom utility for pseudo-random bar heights */
-@utility bar-height {
-  height: clamp(
-    50px,
-    calc(150px + 100px * sin((pi / 2) * var(--bar-index))),
-    var(--chart-content-height)
-  );
-}
-```
-
-```tsx
-/* BarChartSkeleton uses CSS variables and nth-child for variation */
-<div className="h-[var(--chart-height)]">
-  <div
-    className="h-[var(--chart-content-height)] [&>div]:bar-height
-    [&>div:nth-child(1)]:[--bar-index:1]
-    [&>div:nth-child(2)]:[--bar-index:2]
-    ..."
-  >
-    {/* Bars with pseudo-random heights */}
-  </div>
-</div>
-```
+The skeleton loader uses CSS-based pseudo-random heights for SSR compatibility, avoiding hydration mismatches.
 
 ### Benefits
 
-- **Faster initial loads** - Pages load faster
-- **Better user experience** - Immediate content with progressive enhancement
-- **Improved caching** - Chart chunks cached separately
-- **Reduced memory usage** - Components load only when needed
-- **SEO friendly** - Critical content loads first
-
-### Usage
-
-Lazy loading is automatically applied to:
-
-- **Income page** (`/host/income`) - Income analytics charts
-- **Reviews page** (`/host/review`) - Review distribution charts
+- **Faster initial page loads** with progressive enhancement
+- **Better caching** - chart chunks cached separately
+- **Reduced memory usage** - components load only when needed
+- **SEO friendly** - critical content loads first
 
 ---
 
-## React 19.2 Activity Component for Prerendering
+## React 19 Features
 
-The application leverages **React 19.2's stable Activity component** to prerender views for instant navigation:
+The application leverages **React 19's modern features** for better performance and developer experience:
 
-### Implementation
+### Activity Component for Prerendering
 
-The vans route (`/vans/:vanSlug?`) uses Activity to maintain both list and detail views simultaneously:
+React 19's stable Activity component enables instant navigation by prerendering multiple views:
 
 ```tsx
 import { Activity } from "react";
 
-export default function Vans({ loaderData, params }: Route.ComponentProps) {
-  const isVanDetailPage = params.vanSlug !== undefined;
-  const selectedVan = isVanDetailPage
-    ? vans.find((van) => van.slug === params.vanSlug)
-    : null;
+export default function Vans({ params }) {
+  const isDetailPage = params.vanSlug !== undefined;
 
   return (
     <>
-      {/* Van detail view - prerendered for fast navigation */}
-      <Activity mode={isVanDetailPage ? "visible" : "hidden"}>
-        <VanDetail van={selectedVan} />
+      <Activity mode={isDetailPage ? "visible" : "hidden"}>
+        <VanDetail />
       </Activity>
-
-      {/* Van list view - prerendered for fast navigation back */}
-      <Activity mode={isVanDetailPage ? "hidden" : "visible"}>
-        <VanList vans={vans} />
+      <Activity mode={isDetailPage ? "hidden" : "visible"}>
+        <VanList />
       </Activity>
     </>
   );
 }
 ```
 
-### Features
+**Benefits:** Zero perceived latency between views, state preservation (scroll position, filters), memory efficient with paused effects.
 
-- **Instant Navigation** - No loading states when switching between list and detail views
-- **State Preservation** - Hidden components maintain their state (scroll position, filters)
-- **Effect Pausing** - Effects in hidden components are paused, not unmounted
-- **Single Route** - Both list (`/vans`) and detail (`/vans/modest-explorer`) handled by one route
-- **Conditional Rendering** - Uses optional route parameter (`:vanSlug?`) for clean URLs
+### Native Meta Elements
 
-### Benefits
-
-- **⚡ Zero perceived latency** when navigating between views
-- **🎯 Filter state preserved** when returning from detail to list view
-- **💾 Memory efficient** - Components stay mounted but paused when hidden
-- **📱 Better mobile UX** - Smooth back/forward navigation without reloading
-
-### URL Structure
-
-```
-/vans                    → List view (vanSlug is undefined)
-/vans/modest-explorer    → Detail view (vanSlug = "modest-explorer")
-/vans/beach-bum          → Detail view (vanSlug = "beach-bum")
-```
-
----
-
-## React 19 Native Meta Elements
-
-The application uses **React 19's built-in `<title>` and `<meta>` elements** for SEO optimization, replacing the deprecated `meta` export pattern:
-
-### Implementation
-
-Instead of using React Router's `meta` export, meta tags are now defined directly within components:
+Meta tags are defined directly within components using React 19's built-in elements:
 
 ```tsx
-// ❌ Old pattern (deprecated)
-export function meta() {
-  return [
-    { title: "Home | Van Life" },
-    { name: "description", content: "Welcome to Van Life..." },
-  ];
-}
-
-// ✅ New pattern (React 19)
 export default function Home() {
   return (
     <section>
@@ -668,45 +511,26 @@ export default function Home() {
 }
 ```
 
-### Features
+This replaces the deprecated `meta` export pattern and removes the need for the `<Meta />` component in `root.tsx`.
 
-- **Native React 19 Support** - Uses built-in elements instead of framework-specific exports
-- **Component-Level SEO** - Meta tags defined where they're used for better maintainability
-- **No `<Meta />` Component** - Removed from `root.tsx` as it's no longer needed
-- **Full SEO Coverage** - All 15 routes have proper titles and descriptions
+### Lazy Loading with React.lazy()
 
-### Routes with Meta Tags
+Heavy components like charts are code-split using `React.lazy()` and `Suspense`:
 
-**Public Routes:**
+```tsx
+const BarChart = lazy(() => import("./BarChart"));
 
-- `/` - Home page
-- `/about` - About page
-- `/vans` - Van listings
-
-**Auth Routes:**
-
-- `/login` - Sign in page
-- `/signup` - Sign up page
-- `/signout` - Sign out page
-
-**Host Routes:**
-
-- `/host` - Host dashboard
-- `/host/vans` - Your vans
-- `/host/income` - Income tracking
-- `/host/reviews` - Reviews
-- `/host/transfers` - Transaction history
-- `/host/rentals` - Rental management
-- `/host/rentals/rent/:vanSlug` - Rent van
-- `/host/rentals/returnRental/:rentId` - Return van
-- `/host/addVan` - Add new van
+<Suspense fallback={<Skeleton />}>
+  <BarChart data={chartData} />
+</Suspense>;
+```
 
 ### Benefits
 
-- **🎯 Better SEO** - Search engines index proper meta tags
-- **📱 Social Sharing** - Meta descriptions improve link previews
-- **♻️ Simpler Code** - No need for separate meta export functions
-- **🔄 Consistent** - Meta tags stay with component logic
+- **Better Performance** - Instant navigation, smaller initial bundles
+- **Improved SEO** - Proper meta tags, social sharing support
+- **Simpler Code** - Native elements, no framework-specific patterns
+- **Enhanced UX** - Smooth transitions, progressive enhancement
 
 ---
 
@@ -816,18 +640,24 @@ The pre-commit hook ensures code quality by:
 
 ## Styling
 
-- **TailwindCSS 4.1.14** with modern CSS features
-- **Custom design system** with consistent components
-- **Responsive design** with mobile-first approach
-- **Modern CSS features:**
-  - Container queries
-  - View transitions
-  - Scroll-driven animations
-  - CSS containment
-  - CSS Grid layouts
-- **Component variants** using class-variance-authority
-- **Utility-first approach** with custom utilities
+### TailwindCSS 4 & Modern CSS
+
+- **TailwindCSS 4.1.14** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
+- **Responsive design** with mobile-first approach and CSS Grid layouts
 - **Biome configuration** for CSS at-rules support
+
+### Custom Design System
+
+- **Component variants** using `class-variance-authority` for consistent UI
+- **Custom Tailwind variants** for van states (`van-new`, `van-sale`, `van-repair`, `van-available`)
+- **Centralized styling utilities** - `getVanStateStyles()` function provides consistent styling across all van components
+- **Type-safe styling** with TypeScript support throughout
+
+### Custom Utilities
+
+- **Utility-first approach** with custom CSS utilities for specific needs
+- **CSS custom properties** for dynamic theming and reusable values
+- **Pseudo-random heights** using CSS trigonometric functions for skeleton loaders
 
 ---
 

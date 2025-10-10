@@ -8,9 +8,9 @@ import {
 
 export default [
 	layout('./routes/layout/layout.tsx', [
-		index('./routes/home.tsx'),
-		route('about', './routes/about.tsx'),
-		route('vans/:vanSlug?', './routes/vans.tsx'),
+		index('./routes/public/home.tsx'),
+		route('about', './routes/public/about.tsx'),
+		route('vans/:vanSlug?', './routes/public/vans.tsx'),
 		route('login', './routes/auth/login.tsx'),
 		route('signup', './routes/auth/signUp.tsx'),
 		route('signout', './routes/auth/signOut.tsx'),
@@ -34,5 +34,5 @@ export default [
 		]),
 	]),
 	route('/api/auth/*', './routes/api/auth.ts'),
-	route('*', './routes/404.tsx'),
+	route('*', './routes/public/404.tsx'),
 ] satisfies RouteConfig;
