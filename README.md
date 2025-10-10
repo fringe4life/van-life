@@ -428,44 +428,6 @@ const orderBy = createGenericOrderBy(sort, {
 
 ---
 
-## Performance Optimizations & Lazy Loading
-
-The application implements **strategic lazy loading** and code splitting to optimize performance:
-
-### Implementation
-
-- **React.lazy()** for component-level code splitting
-- **Suspense boundaries** with skeleton loaders to prevent layout shift
-- **Route-level code splitting** via React Router 7's automatic bundling
-- **Heavy component isolation** - BarChart component (Recharts library) lazy-loaded
-
-### BarChart Lazy Loading
-
-The BarChart component is lazy-loaded, reducing initial bundle size by **~308 kB** (91 kB gzipped):
-
-```typescript
-const BarChartComponent = lazy(() => import('./BarChart'));
-
-export default function LazyBarChart({ mappedData }) {
-  return (
-    <Suspense fallback={<BarChartSkeleton />}>
-      <BarChartComponent mappedData={mappedData} />
-    </Suspense>
-  );
-}
-```
-
-The skeleton loader uses CSS-based pseudo-random heights for SSR compatibility, avoiding hydration mismatches.
-
-### Benefits
-
-- **Faster initial page loads** with progressive enhancement
-- **Better caching** - chart chunks cached separately
-- **Reduced memory usage** - components load only when needed
-- **SEO friendly** - critical content loads first
-
----
-
 ## React 19 Features
 
 The application leverages **React 19's modern features** for better performance and developer experience:
