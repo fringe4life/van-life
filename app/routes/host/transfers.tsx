@@ -99,7 +99,6 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 				</>
 			}
 			pathname={href('/host/transfers')}
-			renderKey={(item) => item.id}
 			renderProps={(item) => ({
 				...item,
 				// Map transaction data to match Income component expectations

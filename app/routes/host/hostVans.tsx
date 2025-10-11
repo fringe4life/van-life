@@ -108,7 +108,6 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 
 					// props for all use cases
 					pathname={href('/host/vans/:vanSlug?/:action?')}
-					renderKey={(van) => van.id}
 					renderProps={(van) => ({
 						link: href('/host/vans/:vanSlug?/:action?', { vanSlug: van.slug }),
 						van,

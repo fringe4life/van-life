@@ -11,9 +11,9 @@
     },
     "routeIdToServerBundleId": {
       "root": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/home": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/about": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/vans": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/public/home": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/public/about": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/public/vans": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/login": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/signUp": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/signOut": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
@@ -27,7 +27,7 @@
       "routes/host/rentals/returnRental": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/hostVans": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/api/auth": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/404": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
+      "routes/public/404": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
     },
     "routes": {
       "root": {
@@ -44,24 +44,24 @@
         "file": "app/routes/layout/layout.tsx",
         "config": {}
       },
-      "routes/home": {
-        "id": "routes/home",
+      "routes/public/home": {
+        "id": "routes/public/home",
         "parentId": "routes/layout/layout",
-        "file": "app/routes/home.tsx",
+        "file": "app/routes/public/home.tsx",
         "index": true,
         "config": {}
       },
-      "routes/about": {
-        "id": "routes/about",
+      "routes/public/about": {
+        "id": "routes/public/about",
         "parentId": "routes/layout/layout",
-        "file": "app/routes/about.tsx",
+        "file": "app/routes/public/about.tsx",
         "path": "about",
         "config": {}
       },
-      "routes/vans": {
-        "id": "routes/vans",
+      "routes/public/vans": {
+        "id": "routes/public/vans",
         "parentId": "routes/layout/layout",
-        "file": "app/routes/vans.tsx",
+        "file": "app/routes/public/vans.tsx",
         "path": "vans/:vanSlug?",
         "config": {}
       },
@@ -164,10 +164,10 @@
         "path": "/api/auth/*",
         "config": {}
       },
-      "routes/404": {
-        "id": "routes/404",
+      "routes/public/404": {
+        "id": "routes/public/404",
         "parentId": "root",
-        "file": "app/routes/404.tsx",
+        "file": "app/routes/public/404.tsx",
         "path": "*",
         "config": {}
       }
@@ -195,22 +195,22 @@
         "parentId": "root",
         "file": "./routes/layout/layout.tsx"
       },
-      "routes/home": {
-        "id": "routes/home",
+      "routes/public/home": {
+        "id": "routes/public/home",
         "parentId": "routes/layout/layout",
-        "file": "./routes/home.tsx",
+        "file": "./routes/public/home.tsx",
         "index": true
       },
-      "routes/about": {
-        "id": "routes/about",
+      "routes/public/about": {
+        "id": "routes/public/about",
         "parentId": "routes/layout/layout",
-        "file": "./routes/about.tsx",
+        "file": "./routes/public/about.tsx",
         "path": "about"
       },
-      "routes/vans": {
-        "id": "routes/vans",
+      "routes/public/vans": {
+        "id": "routes/public/vans",
         "parentId": "routes/layout/layout",
-        "file": "./routes/vans.tsx",
+        "file": "./routes/public/vans.tsx",
         "path": "vans/:vanSlug?"
       },
       "routes/auth/login": {
@@ -298,10 +298,10 @@
         "file": "./routes/api/auth.ts",
         "path": "/api/auth/*"
       },
-      "routes/404": {
-        "id": "routes/404",
+      "routes/public/404": {
+        "id": "routes/public/404",
         "parentId": "root",
-        "file": "./routes/404.tsx",
+        "file": "./routes/public/404.tsx",
         "path": "*"
       }
     },
@@ -322,15 +322,15 @@
             "file": "./routes/layout/layout.tsx",
             "children": [
               {
-                "file": "./routes/home.tsx",
+                "file": "./routes/public/home.tsx",
                 "index": true
               },
               {
-                "file": "./routes/about.tsx",
+                "file": "./routes/public/about.tsx",
                 "path": "about"
               },
               {
-                "file": "./routes/vans.tsx",
+                "file": "./routes/public/vans.tsx",
                 "path": "vans/:vanSlug?"
               },
               {
@@ -395,7 +395,7 @@
             "path": "/api/auth/*"
           },
           {
-            "file": "./routes/404.tsx",
+            "file": "./routes/public/404.tsx",
             "path": "*"
           }
         ]

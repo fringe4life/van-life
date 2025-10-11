@@ -10,7 +10,8 @@
 [![nuqs](https://img.shields.io/badge/nuqs-2.7.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.2.5-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-5.6.1-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
-[![Prisma](https://img.shields.io/badge/Prisma-6.17.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
+[![Prisma](https://img.shields.io/badge/Prisma-6.17.1-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
+[![Vite](https://img.shields.io/badge/Vite-7.1.5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.1.22-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
@@ -42,7 +43,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - 🚀 **Modern React Router 7** with server-side rendering and file-based routing
 - 🔒 **Authentication** with better-auth (sign up, login, session management)
-- ⚛️ **React 19 Features** (Activity component for prerendering, native meta elements, lazy loading)
+- ⚛️ **React 19 & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
@@ -83,15 +84,16 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Backend & Database
 
 - **Node.js** with React Router server
-- **Prisma 6.17.0** ORM with Neon PostgreSQL (Rust-free client)
+- **Prisma 6.17.1** ORM with Neon PostgreSQL (Rust-free client)
 - **better-auth 1.3.27** for authentication
 - **ArkType 2.1.22** for schema validation and type narrowing
 - **CUID2 2.2.2** for unique identifiers (configured for 25-character IDs)
-- **@prisma/adapter-neon 6.17.0** for Neon database integration
+- **@prisma/adapter-neon 6.17.1** for Neon database integration
 
 ### Development Tools
 
-- **rolldown-vite** (latest) - Next-generation Vite with Rolldown bundler
+- **Vite 7** - Next-generation frontend tooling with optimized builds
+- **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
 - **Biome 2.2.5** for linting and formatting with Ultracite integration
 - **Ultracite 5.6.1** - AI-friendly linting rules for maximum type safety and accessibility
 - **Husky 9.1.7** for Git hooks and pre-commit automation
@@ -100,12 +102,11 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Build System
 
-- **rolldown-vite** replaces traditional Vite with Rust-based Rolldown bundler
-- **Enhanced performance** with faster builds and reduced memory usage
-- **Oxc integration** for improved code transformation
-- **Native plugin support** with `experimental.enableNativePlugin: true`
-- **Optimized dependency handling** with `rollupOptions` instead of deprecated `esbuildOptions`
-- **React Compiler removed** - Waiting for SWC-compatible version to avoid Babel warnings
+- **Vite 7** - Fast builds with native ES modules and optimized bundling
+- **React Compiler** - Configured via `@vitejs/plugin-react` with Babel plugin
+- **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
+- **Enhanced performance** - Faster builds and reduced memory usage
+- **Type-safe configuration** - Full TypeScript support in Vite config
 
 ---
 
@@ -474,6 +475,22 @@ export default function Home() {
 
 This replaces the deprecated `meta` export pattern and removes the need for the `<Meta />` component in `root.tsx`.
 
+### React Compiler (Stable)
+
+The application uses **React Compiler 1.0** for automatic performance optimizations:
+
+```tsx
+// React Compiler automatically optimizes components
+export default function MyComponent({ items }) {
+  // No manual useMemo/useCallback needed
+  const filtered = items.filter((item) => item.active);
+
+  return <List items={filtered} />;
+}
+```
+
+**Benefits:** Automatic memoization, reduced boilerplate, better performance without manual optimization.
+
 ### Lazy Loading with React.lazy()
 
 Heavy components like charts are code-split using `React.lazy()` and `Suspense`:
@@ -488,9 +505,9 @@ const BarChart = lazy(() => import("./BarChart"));
 
 ### Benefits
 
-- **Better Performance** - Instant navigation, smaller initial bundles
+- **Better Performance** - Instant navigation, smaller bundles, automatic optimizations
 - **Improved SEO** - Proper meta tags, social sharing support
-- **Simpler Code** - Native elements, no framework-specific patterns
+- **Simpler Code** - Native elements, automatic memoization, no manual optimization
 - **Enhanced UX** - Smooth transitions, progressive enhancement
 
 ---

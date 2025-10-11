@@ -116,7 +116,6 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			}
 			pathname={href('/host/review')}
 			// pagination props
-			renderKey={(item) => item.id}
 			renderProps={(item) => item}
 			// optional
 			title="Your Reviews"

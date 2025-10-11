@@ -86,7 +86,6 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				</>
 			}
 			pathname={href('/host/income')}
-			renderKey={(item) => item.id}
 			renderProps={(item) => item}
 			title="Income"
 		/>

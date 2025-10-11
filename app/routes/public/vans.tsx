@@ -171,7 +171,6 @@ export default function Vans({ loaderData, params }: Route.ComponentProps) {
 						</div>
 					}
 					pathname={href('/vans/:vanSlug?')}
-					renderKey={(van) => van.id}
 					renderProps={(van) => ({
 						van,
 						filter: type,
