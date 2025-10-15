@@ -8,12 +8,12 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.14-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.27-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.7.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.2.5-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-5.6.1-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Biome](https://img.shields.io/badge/Biome-2.2.6-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-5.6.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-6.17.1-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
-[![Vite](https://img.shields.io/badge/Vite-7.1.5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7.1.10-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![ArkType](https://img.shields.io/badge/ArkType-2.1.22-000000?logo=arktype&logoColor=white)](https://arktype.io/)
+[![ArkType](https://img.shields.io/badge/ArkType-2.1.23-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
 </div>
 
@@ -86,24 +86,24 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **Node.js** with React Router server
 - **Prisma 6.17.1** ORM with Neon PostgreSQL (Rust-free client)
 - **better-auth 1.3.27** for authentication
-- **ArkType 2.1.22** for schema validation and type narrowing
+- **ArkType 2.1.23** for schema validation and type narrowing
 - **CUID2 2.2.2** for unique identifiers (configured for 25-character IDs)
 - **@prisma/adapter-neon 6.17.1** for Neon database integration
 
 ### Development Tools
 
-- **Vite 7** - Next-generation frontend tooling with optimized builds
+- **Vite 7.1.10** - Next-generation frontend tooling with optimized builds
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
-- **Biome 2.2.5** for linting and formatting with Ultracite integration
-- **Ultracite 5.6.1** - AI-friendly linting rules for maximum type safety and accessibility
-- **Husky 9.1.7** for Git hooks and pre-commit automation
+- **Biome 2.2.6** for linting and formatting with Ultracite integration
+- **Ultracite 5.6.4** - AI-friendly linting rules for maximum type safety and accessibility
+- **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 5.9.3** with native preview
 - **Bun** for fast package management and runtime
 
 ### Build System
 
-- **Vite 7** - Fast builds with native ES modules and optimized bundling
-- **React Compiler** - Configured via `@vitejs/plugin-react` with Babel plugin
+- **Vite 7.1.10** - Fast builds with native ES modules and optimized bundling
+- **React Compiler** - Configured via `vite-plugin-babel` for optimal integration
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Enhanced performance** - Faster builds and reduced memory usage
 - **Type-safe configuration** - Full TypeScript support in Vite config
@@ -597,22 +597,29 @@ BETTER_AUTH_URL=http://localhost:5173
 - `bunx ultracite fix` – Format and fix code automatically
 - `bunx ultracite check` – Check for issues without fixing
 
-### Git Hooks (Husky)
+### Git Hooks (Husky + lint-staged)
 
-This project uses **Husky** for automated pre-commit checks:
+This project uses **Husky** with **lint-staged** for automated pre-commit checks:
 
 - **Pre-commit hook** runs automatically before each commit
+- **lint-staged** runs Ultracite only on staged files for efficiency
 - **Automatic formatting** with Ultracite on staged files
-- **Linting checks** with Biome on staged files
-- **Type checking** with TypeScript before commit
 - **Commit blocking** if any checks fail
 
 The pre-commit hook ensures code quality by:
 
-1. Running `bun x ultracite fix` on staged files
-2. Running `bun x @biomejs/biome check --staged` for linting
-3. Running `bun x tsc --noEmit` for type checking
-4. Blocking the commit if any step fails
+1. Running `bun x ultracite fix` on staged files via lint-staged
+2. Blocking the commit if any step fails
+
+Configuration in `package.json`:
+
+```json
+"lint-staged": {
+  "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
+    "bun x ultracite fix"
+  ]
+}
+```
 
 ---
 
@@ -641,10 +648,10 @@ The pre-commit hook ensures code quality by:
 
 ## Code Quality
 
-- **Biome 2.2.5** for linting and formatting with Ultracite integration
-- **Ultracite 5.6.1** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.2.6** for linting and formatting with Ultracite integration
+- **Ultracite 5.6.4** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.3** with strict configuration
-- **ArkType 2.1.22** for runtime validation with regex support for slug validation
+- **ArkType 2.1.23** for runtime validation with regex support for slug validation
 - **Consistent code style:**
   - Tab indentation
   - Single quotes
