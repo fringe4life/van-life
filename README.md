@@ -605,21 +605,26 @@ This project uses **Husky** with **lint-staged** for automated pre-commit checks
 - **lint-staged** runs Ultracite only on staged files for efficiency
 - **Automatic formatting** with Ultracite on staged files
 - **Commit blocking** if any checks fail
+- **TypeScript configuration** for type-safe setup
 
 The pre-commit hook ensures code quality by:
 
 1. Running `bun x ultracite fix` on staged files via lint-staged
 2. Blocking the commit if any step fails
 
-Configuration in `package.json`:
+Configuration in `lint-staged.config.ts`:
 
-```json
-"lint-staged": {
-  "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
-    "bun x ultracite fix"
-  ]
-}
+```typescript
+import type { Configuration } from 'lint-staged';
+
+const config: Configuration = {
+  '*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}': ['bun x ultracite fix'],
+};
+
+export default config;
 ```
+
+**Note:** TypeScript config files work seamlessly with Bun's first-class TypeScript support. For Node.js, requires version 22.6.0+ or the `--experimental-strip-types` flag.
 
 ---
 

@@ -3,7 +3,6 @@ import {
 	BarChart,
 	CartesianGrid,
 	Legend,
-	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
@@ -21,16 +20,14 @@ export default function BarChartComponent({
 }: BarChartComponentProps) {
 	return (
 		<div className="h-[var(--chart-height)] w-full">
-			<ResponsiveContainer height="100%" width="100%">
-				<BarChart data={mappedData}>
-					<CartesianGrid strokeDasharray="3 3" />
-					<XAxis dataKey="name" />
-					<YAxis />
-					<Tooltip />
-					<Legend />
-					<Bar dataKey="amount" fill="oklch(75.27% 0.167 52.58)" />
-				</BarChart>
-			</ResponsiveContainer>
+			<BarChart data={mappedData} height="100%" responsive width="100%">
+				<CartesianGrid strokeDasharray="3 3" />
+				<XAxis dataKey="name" />
+				<YAxis />
+				<Tooltip />
+				<Legend />
+				<Bar dataKey="amount" fill="oklch(75.27% 0.167 52.58)" />
+			</BarChart>
 		</div>
 	);
 }

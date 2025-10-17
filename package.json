@@ -38,12 +38,12 @@
     "date-fns": "^4.1.0",
     "isbot": "^5.1.31",
     "lucide-react": "^0.501.0",
-    "nuqs": "^2.7.1",
+    "nuqs": "^2.7.2",
     "prisma": "^6.17.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router": "^7.9.4",
-    "recharts": "^3.2.1",
+    "recharts": "^3.3.0",
     "tailwind-merge": "^3.3.1",
     "tsx": "^4.20.6",
     "utf-8-validate": "^6.0.5",
@@ -54,11 +54,11 @@
     "@biomejs/biome": "2.2.6",
     "@react-router/dev": "^7.9.4",
     "@tailwindcss/vite": "^4.1.14",
-    "@types/node": "^24.7.2",
+    "@types/node": "^24.8.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/ws": "^8.18.1",
-    "@typescript/native-preview": "^7.0.0-dev.20251014.1",
+    "@typescript/native-preview": "^7.0.0-dev.20251016.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.4",
@@ -75,10 +75,5 @@
     "@tailwindcss/oxide",
     "esbuild",
     "prisma"
-  ],
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
-      "bun x ultracite fix"
-    ]
-  }
+  ]
 }
