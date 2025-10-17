@@ -230,10 +230,22 @@ html {
 
 	/* Chart dimensions */
 	--chart-height: 350px;
-	--chart-content-height: calc(
-		var(--chart-height) -
-		52px
-	); /* 350px - 52px gap/padding */
+
+	/* Chart text area components - aliases for Tailwind spacing scale */
+	--chart-text-top-margin: var(--spacing-4); /* mt-4 = 1rem = 16px */
+	--chart-text-first-height: var(--spacing-4); /* h-4 = 1rem = 16px */
+	--chart-text-gap: var(--spacing-2); /* mb-2 = 0.5rem = 8px */
+	--chart-text-second-height: var(--spacing-3); /* h-3 = 0.75rem = 12px */
+
+	/* Total text area height (16 + 16 + 8 + 12 = 52px) */
+	--chart-text-height: calc(
+		var(--chart-text-top-margin) +
+		var(--chart-text-first-height) +
+		var(--chart-text-gap) +
+		var(--chart-text-second-height)
+	);
+
+	--chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
 }
 
 /* Responsive padding updates */

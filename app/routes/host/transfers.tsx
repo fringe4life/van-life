@@ -1,8 +1,8 @@
 import { data, href } from 'react-router';
 import Sortable from '~/components/sortable';
 import { getUserTransactions } from '~/db/user/analytics';
+import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Income from '~/features/host/components/income';
-import LazyBarChart from '~/features/host/components/lazy-bar-chart';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import VanPages from '~/features/vans/components/van-pages';

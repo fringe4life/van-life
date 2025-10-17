@@ -4,7 +4,7 @@ import {
 	getHostReviewsChartData,
 	getHostReviewsPaginated,
 } from '~/db/review/queries';
-import LazyBarChart from '~/features/host/components/lazy-bar-chart';
+import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Review from '~/features/host/components/review/review';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
