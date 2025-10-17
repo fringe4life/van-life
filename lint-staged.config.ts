@@ -1,7 +1,6 @@
 import type { Configuration } from 'lint-staged';
-
-const config: Configuration = {
-	'*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}': ['bun x ultracite fix'],
-};
-
-export default config;
+export default {
+	'*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}':
+		'bun x ultracite fix --unsafe true',
+	'**/*.{ts,tsx}': () => 'bun run typecheck',
+} satisfies Configuration;
