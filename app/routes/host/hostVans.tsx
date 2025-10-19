@@ -1,6 +1,6 @@
 import { useQueryStates } from 'nuqs';
 import { Activity } from 'react';
-import { data, href } from 'react-router';
+import { data, href, type ShouldRevalidateFunctionArgs } from 'react-router';
 import UnsuccesfulState from '~/components/unsuccesful-state';
 import { getHostVanCount, getHostVans } from '~/db/van/host';
 import { determineHostVansRoute } from '~/features/host/utils/determine-host-vans-route';
@@ -48,6 +48,47 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 			},
 		}
 	);
+}
+
+/**
+ * Prevent loader revalidation when navigating between sub-routes of the same van.
+ * E.g., /vans/silver-bullet/pricing → /vans/silver-bullet/photos
+ * Only revalidate if vanSlug changes, pagination changes, or it's a form submission.
+ */
+export function shouldRevalidate({
+	currentParams,
+	nextParams,
+	currentUrl,
+	nextUrl,
+	formMethod,
+	defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) {
+	// Always revalidate on form submissions
+	if (formMethod && formMethod !== 'GET') {
+		return true;
+	}
+
+	// If vanSlug changed, revalidate to fetch new van data
+	if (currentParams.vanSlug !== nextParams.vanSlug) {
+		return true;
+	}
+
+	// If pagination params changed, revalidate
+	if (currentUrl.searchParams.toString() !== nextUrl.searchParams.toString()) {
+		return true;
+	}
+
+	// Same van, same pagination, just changing action (pricing/photos/details)
+	// No need to revalidate - we already have the van data
+	if (
+		currentParams.vanSlug === nextParams.vanSlug &&
+		currentParams.action !== nextParams.action
+	) {
+		return false;
+	}
+
+	// Default behavior for all other cases
+	return defaultShouldRevalidate;
 }
 
 export default function Host({ loaderData, params }: Route.ComponentProps) {

@@ -63,9 +63,10 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🧩 **Compound Components** with React 19's modern context API (no `.Provider`, uses `use()`)
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
-- ⚡ **Performance Optimized** with lazy loading and code splitting
+- ⚡ **Performance Optimized** with lazy loading, code splitting, and smart loader revalidation
 - 🔗 **URL State Management** with nuqs for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
+- 🚫 **Smart Revalidation** with `shouldRevalidate` to prevent unnecessary data fetching
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
 
@@ -354,6 +355,71 @@ export async function action({ context }: Route.ActionArgs) {
 ```
 
 **Note:** Loaders can be synchronous when only retrieving data from context (no `await` needed).
+
+---
+
+## Smart Loader Revalidation
+
+React Router 7's `shouldRevalidate` prevents unnecessary data fetching during navigation:
+
+### Optimization Strategy
+
+**Problem**: In SSR mode, loaders revalidate on every navigation by default, even when data hasn't changed.
+
+**Solution**: Export `shouldRevalidate` to skip revalidation for specific scenarios.
+
+### Implementation
+
+```typescript
+export function shouldRevalidate({
+  currentParams,
+  nextParams,
+  currentUrl,
+  nextUrl,
+  formMethod,
+}: ShouldRevalidateFunctionArgs) {
+  // Always revalidate on form submissions
+  if (formMethod && formMethod !== 'GET') {
+    return true;
+  }
+
+  // If vanSlug changed, revalidate to fetch new van data
+  if (currentParams.vanSlug !== nextParams.vanSlug) {
+    return true;
+  }
+
+  // If pagination params changed, revalidate
+  if (currentUrl.searchParams.toString() !== nextUrl.searchParams.toString()) {
+    return true;
+  }
+
+  // Same van, same pagination, just changing action (pricing → photos → details)
+  // Skip revalidation - we already have the van data
+  if (
+    currentParams.vanSlug === nextParams.vanSlug &&
+    currentParams.action !== nextParams.action
+  ) {
+    return false;
+  }
+
+  return false;
+}
+```
+
+### Benefits
+
+- **Reduced database queries** - Skip fetching when navigating between sub-routes
+- **Faster navigation** - No loading states when data is already available
+- **Better UX** - Instant transitions between pricing/photos/details
+- **Bandwidth savings** - Less data transferred over the network
+
+### Example Scenarios
+
+- ✅ **Skip**: `/vans/silver-bullet` → `/vans/silver-bullet` (same page)
+- ✅ **Skip**: `/host/vans/beach-bum/pricing` → `/host/vans/beach-bum/photos` (same van, different action)
+- ❌ **Revalidate**: `/vans/silver-bullet` → `/vans/beach-bum` (different van)
+- ❌ **Revalidate**: `/vans?type=luxury` → `/vans?type=simple` (filter change)
+- ❌ **Revalidate**: Form submission (POST/PUT/DELETE)
 
 ---
 

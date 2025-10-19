@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { useQueryStates } from 'nuqs';
 import { Activity } from 'react';
-import { data, href } from 'react-router';
+import { data, href, type ShouldRevalidateFunctionArgs } from 'react-router';
 import ListItems from '~/components/list-items';
 import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -61,6 +61,37 @@ export async function loader({ request }: Route.LoaderArgs) {
 			'Cache-Control': 'max-age=259200',
 		},
 	});
+}
+
+/**
+ * Prevent loader revalidation when navigating from list to detail or vice versa
+ * with the same filters/pagination. Only revalidate when filters or pagination change.
+ */
+export function shouldRevalidate({
+	currentParams,
+	nextParams,
+	currentUrl,
+	nextUrl,
+	formMethod,
+}: ShouldRevalidateFunctionArgs) {
+	// Always revalidate on form submissions
+	if (formMethod && formMethod !== 'GET') {
+		return true;
+	}
+
+	// If vanSlug changed (list → detail or detail → different detail), revalidate
+	if (currentParams.vanSlug !== nextParams.vanSlug) {
+		return true;
+	}
+
+	// If search params changed (filters, pagination), revalidate
+	if (currentUrl.searchParams.toString() !== nextUrl.searchParams.toString()) {
+		return true;
+	}
+
+	// Same filters/pagination, just toggling between list and detail view
+	// No need to revalidate - we already have the data
+	return false;
 }
 
 export default function Vans({ loaderData, params }: Route.ComponentProps) {
