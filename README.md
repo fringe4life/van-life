@@ -60,6 +60,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 📦 **Prisma ORM** with Neon PostgreSQL and relation joins
 - 🔧 **Generic Components** for reusability and maintainability
 - 🎭 **Higher-Order Components** (HOCs) for component enhancement and DRY principles
+- 🧩 **Compound Components** with React 19's modern context API (no `.Provider`, uses `use()`)
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with lazy loading and code splitting
@@ -507,7 +508,8 @@ const StyledCard = withVanCardStyles(Card);
 **Features:**
 - Automatic van state styling (NEW, ON_SALE, IN_REPAIR, AVAILABLE)
 - View transition names for smooth animations
-- Data attributes for CSS targeting
+- Data attributes for CSS-driven child visibility (e.g., VanBadge)
+- Group class for Tailwind parent selectors
 - Type-safe with full TypeScript support
 
 **Benefits:**
@@ -517,6 +519,31 @@ const StyledCard = withVanCardStyles(Card);
 - **Type-safe**: Proper TypeScript generics and constraints
 
 **Used in:** `VanCard`, `VanDetail`, `HostVanDetailCard`
+
+### Compound Components
+
+`VanDetailCard` uses the compound component pattern with React 19's modern context API:
+
+```typescript
+// Usage with sub-components
+<VanDetailCard van={van}>
+  <Activity mode={isDetailsPage ? 'visible' : 'hidden'}>
+    <VanDetailCard.Details />
+  </Activity>
+  <Activity mode={isPhotosPage ? 'visible' : 'hidden'}>
+    <VanDetailCard.Photos />
+  </Activity>
+  <Activity mode={isPricingPage ? 'visible' : 'hidden'}>
+    <VanDetailCard.Pricing />
+  </Activity>
+</VanDetailCard>
+```
+
+**Benefits:**
+- **Cleaner API**: No prop drilling, van data shared via context
+- **Modern React 19**: Uses `use()` hook and context without `.Provider`
+- **Composable**: Mix and match sub-components as needed
+- **Type-safe**: Full TypeScript support with proper error boundaries
 
 ---
 

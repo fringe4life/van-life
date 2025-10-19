@@ -9,9 +9,6 @@ import { authMiddleware } from '~/features/middleware/functions/auth-middleware'
 import CustomLink from '~/features/navigation/components/custom-link';
 import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
 import VanDetailCard from '~/features/vans/components/host-van-detail-card';
-import HostVanDetailInitial from '~/features/vans/components/host-van-detail-initial';
-import HostVanDetailPhotos from '~/features/vans/components/host-van-detail-photos';
-import HostVanDetailPricing from '~/features/vans/components/host-van-detail-pricing';
 import VanCard from '~/features/vans/components/van-card';
 import VanPages from '~/features/vans/components/van-pages';
 import { hostPaginationParsers } from '~/lib/parsers';
@@ -82,13 +79,13 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 				{selectedVan ? (
 					<VanDetailCard van={selectedVan}>
 						<Activity mode={isInitialDetailPage ? 'visible' : 'hidden'}>
-							<HostVanDetailInitial van={selectedVan} />
+							<VanDetailCard.Details />
 						</Activity>
 						<Activity mode={isPhotosPage ? 'visible' : 'hidden'}>
-							<HostVanDetailPhotos van={selectedVan} />
+							<VanDetailCard.Photos />
 						</Activity>
 						<Activity mode={isPricingPage ? 'visible' : 'hidden'}>
-							<HostVanDetailPricing van={selectedVan} />
+							<VanDetailCard.Pricing />
 						</Activity>
 					</VanDetailCard>
 				) : (

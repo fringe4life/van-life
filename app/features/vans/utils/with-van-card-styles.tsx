@@ -29,7 +29,7 @@ export function withVanCardStyles<P extends ComponentPropsWithoutRef<'div'>>(
 	}: WithVanCardStylesProps) {
 		const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);
 
-		const combinedClassName = `${vanStateClasses} ${className}`.trim();
+		const combinedClassName = `group ${vanStateClasses} ${className}`.trim();
 
 		return (
 			<Component

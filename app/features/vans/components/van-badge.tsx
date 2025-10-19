@@ -1,18 +1,17 @@
-import type { VariantProps } from 'class-variance-authority';
-import { Badge, type badgeVariants } from '~/components/ui/badge';
+import { Badge } from '~/components/ui/badge';
 import { formatEnumLabel } from '~/features/vans/utils/format-enum';
-import {
-	isVanNew,
-	lowercaseVanStateWithProcessor,
-} from '~/features/vans/utils/van-state-helpers';
+import { lowercaseVanStateWithProcessor } from '~/features/vans/utils/van-state-helpers';
 import type { VanModel } from '~/generated/prisma/models';
 
 type Props = { van: VanModel };
 
-function computeBadgeVariant(
-	van: VanModel
-): VariantProps<typeof badgeVariants>['variant'] {
-	return lowercaseVanStateWithProcessor(van, (state) => {
+/**
+ * Badge component that displays van state (NEW, ON_SALE, IN_REPAIR).
+ * Visibility controlled by CSS based on parent Card's data-slot attribute.
+ * Hidden by default, shown only for new/sale/repair states via Tailwind has-* variants.
+ */
+export default function VanBadge({ van }: Props) {
+	const variant = lowercaseVanStateWithProcessor(van, (state) => {
 		// Handle special case for van type when state is 'available'
 		if (state === 'available') {
 			return van.type.toLowerCase() as 'simple' | 'luxury' | 'rugged';
@@ -21,18 +20,8 @@ function computeBadgeVariant(
 		// Return the state directly for 'new', 'sale', 'repair'
 		return state as 'new' | 'sale' | 'repair';
 	});
-}
 
-export default function VanBadge({ van }: Props) {
-	const isNewVan = isVanNew(van.createdAt);
-	const shouldShowBadge =
-		isNewVan || van.state === 'IN_REPAIR' || van.state === 'ON_SALE';
-
-	if (!shouldShowBadge) {
-		return null;
-	}
-
-	const variant = computeBadgeVariant(van);
+	// Determine label based on variant
 	let labelRaw: string;
 	if (variant === 'new') {
 		labelRaw = 'NEW';
@@ -45,7 +34,7 @@ export default function VanBadge({ van }: Props) {
 
 	return (
 		<Badge
-			className="absolute top-4 right-4 z-10"
+			className="van-badge absolute top-4 right-4 z-10 hidden group-data-[slot=van-card-new]:block group-data-[slot=van-card-repair]:block group-data-[slot=van-card-sale]:block"
 			title={label}
 			variant={variant}
 		>
