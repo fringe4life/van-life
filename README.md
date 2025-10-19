@@ -6,7 +6,7 @@
 [![React Router](https://img.shields.io/badge/React%20Router-7.9.4-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.14-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.27-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.28-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.7.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.2.6-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-5.6.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
@@ -59,6 +59,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🎨 **TailwindCSS 4** with modern CSS features
 - 📦 **Prisma ORM** with Neon PostgreSQL and relation joins
 - 🔧 **Generic Components** for reusability and maintainability
+- 🎭 **Higher-Order Components** (HOCs) for component enhancement and DRY principles
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with lazy loading and code splitting
@@ -86,9 +87,9 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - **Node.js** with React Router server
 - **Prisma 6.17.1** ORM with Neon PostgreSQL (Rust-free client)
-- **better-auth 1.3.27** for authentication
+- **better-auth 1.3.28** for authentication
 - **ArkType 2.1.23** for schema validation and type narrowing
-- **CUID2 2.2.2** for unique identifiers (configured for 25-character IDs)
+- **CUID2 3.1.0** for unique identifiers (configured for 25-character IDs)
 - **@prisma/adapter-neon 6.17.1** for Neon database integration
 
 ### Development Tools
@@ -482,6 +483,40 @@ const orderBy = createGenericOrderBy(sort, {
 - **Reviews page**: Sort by newest/oldest date or highest/lowest rating
 - **Income page**: Sort by newest/oldest date or highest/lowest amount
 - **Extensible**: Easy to add sorting to any new data table
+
+---
+
+## Higher-Order Components (HOC) Pattern
+
+Reusable HOCs for component enhancement and DRY principles:
+
+### Van Card Styling HOC
+
+`withVanCardStyles` HOC encapsulates common van card styling logic:
+
+```typescript
+// Create styled component
+const StyledCard = withVanCardStyles(Card);
+
+// Use with van data
+<StyledCard van={van} className="custom-classes">
+  {children}
+</StyledCard>
+```
+
+**Features:**
+- Automatic van state styling (NEW, ON_SALE, IN_REPAIR, AVAILABLE)
+- View transition names for smooth animations
+- Data attributes for CSS targeting
+- Type-safe with full TypeScript support
+
+**Benefits:**
+- **DRY**: Common styling logic in one place
+- **Consistency**: All van cards styled identically
+- **Maintainability**: Single source of truth for van card behavior
+- **Type-safe**: Proper TypeScript generics and constraints
+
+**Used in:** `VanCard`, `VanDetail`, `HostVanDetailCard`
 
 ---
 

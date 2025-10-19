@@ -15,12 +15,14 @@ import {
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
 import CustomNavLink from '~/features/navigation/components/custom-nav-link';
-import { getVanStateStyles } from '~/features/vans/utils/van-state-styles';
+import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';
 import { cn } from '~/utils/utils';
 import { validateLowercaseVanType } from '~/utils/validators';
 import VanBadge from './van-badge';
 import VanPrice from './van-price';
+
+const StyledCard = withVanCardStyles(Card);
 
 type VanDetailCardProps = {
 	van: VanModel;
@@ -57,9 +59,6 @@ export default function VanDetailCard({
 	// Create optimized WebP srcSet with 1:1 aspect ratio for both mobile and desktop
 	// since the HostVanDetailCard uses aspect-square
 
-	// Get van state styling
-	const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);
-
 	return (
 		<div
 			className={cn(
@@ -67,7 +66,7 @@ export default function VanDetailCard({
 				className
 			)}
 		>
-			<Card className={vanStateClasses} data-slot={dataSlot}>
+			<StyledCard van={van}>
 				<CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] grid-cols-1 @min-md/detail:grid-rows-[200px_1fr] @min-xl/detail:grid-rows-[300px_1fr] @min-md/detail:gap-x-4">
 					<div className="relative">
 						<VanBadge van={van} />
@@ -121,7 +120,7 @@ export default function VanDetailCard({
 					/>
 				</CardContent>
 				<CardFooter className="contain-inline-size">{children}</CardFooter>
-			</Card>
+			</StyledCard>
 		</div>
 	);
 }
