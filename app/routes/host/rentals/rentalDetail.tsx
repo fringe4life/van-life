@@ -12,16 +12,6 @@ import { rentVanSchema } from '~/lib/schemas.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/rentalDetail';
 
-export function meta({ loaderData }: Route.MetaArgs) {
-	return [
-		{ title: `Rent ${loaderData?.rental.name} | Vanlife` },
-		{
-			name: 'description',
-			content: 'The van you might rent',
-		},
-	];
-}
-
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -93,8 +83,8 @@ export default function AddVan({
 
 	return (
 		<section>
-			<title>Rent Van | Van Life</title>
-			<meta content="Rent a van for your next adventure" name="description" />
+			<title>Rent {rental.name} | Vanlife</title>
+			<meta content="The van you might rent" name="description" />
 			<VanCard
 				action={<p />}
 				link={href('/host/rentals/rent/:vanSlug', { vanSlug: params.vanSlug })}

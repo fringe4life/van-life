@@ -1,4 +1,4 @@
-import { data, href, redirect } from 'react-router';
+import { createContext, data, href, redirect } from 'react-router';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { getHostRentedVan } from '~/db/rental/queries';
@@ -12,25 +12,28 @@ import { getCost } from '~/features/vans/utils/get-cost';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/returnRental';
 
-export function meta({ loaderData }: Route.MetaArgs) {
-	const vanName =
-		typeof loaderData?.rent === 'object' &&
-		loaderData?.rent !== null &&
-		'van' in loaderData.rent
-			? loaderData.rent.van.name
-			: 'Van';
-	return [
-		{ title: `Return ${vanName} | Vanlife` },
-		{
-			name: 'description',
-			content: "The van you might return to it's owner",
-		},
-	];
-}
+/**
+ * Shared context for rental and account data.
+ * This data is fetched once in middleware and shared between loader and action.
+ * The rent is guaranteed to be valid (non-null, non-error) after middleware validation.
+ */
+type SharedRentalData = {
+	rent: NonNullable<
+		Exclude<Awaited<ReturnType<typeof getHostRentedVan>>, string>
+	>;
+	money: number;
+};
 
-export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
+const sharedRentalDataContext = createContext<SharedRentalData>();
 
-export async function loader({ params, context }: Route.LoaderArgs) {
+/**
+ * Middleware to fetch rental and account data once and share it between loader and action.
+ * Runs for both GET (loader) and POST (action) requests.
+ */
+const fetchSharedDataMiddleware: Route.MiddlewareFunction = async (
+	{ params, context },
+	next
+) => {
 	const session = context.get(authContext);
 
 	const [rentResult, moneyResult] = await Promise.all([
@@ -44,6 +47,19 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 	if (!rent || typeof rent !== 'object' || !('van' in rent)) {
 		throw data('Rented van not found', { status: 404 });
 	}
+
+	context.set(sharedRentalDataContext, { rent, money });
+
+	return next();
+};
+
+export const middleware: Route.MiddlewareFunction[] = [
+	authMiddleware,
+	fetchSharedDataMiddleware,
+];
+
+export function loader({ context }: Route.LoaderArgs) {
+	const { rent, money } = context.get(sharedRentalDataContext);
 
 	return data(
 		{
@@ -60,26 +76,17 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 
 export async function action({ params, context }: Route.ActionArgs) {
 	const session = context.get(authContext);
+	const { rent, money } = context.get(sharedRentalDataContext);
 
 	const { rentId } = params;
 
-	const [rentResult, moneyResult] = await Promise.all([
-		tryCatch(async () => await getHostRentedVan(rentId)),
-		tryCatch(async () => await getAccountSummary(session.user.id)),
-	]);
-
-	const rent = rentResult.data;
-	const money = typeof moneyResult.data === 'number' ? moneyResult.data : 0;
-
-	if (!rent || typeof rent !== 'object' || !('van' in rent)) {
-		throw data('Rented van not found', { status: 404 });
-	}
 	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
 	const isUnableToPay = money < amountToPay;
 
 	if (isUnableToPay) {
 		return { errors: 'Cannot afford to return this rental' };
 	}
+
 	const returnResult = await tryCatch(() =>
 		returnVan(rentId, session.user.id, amountToPay, rent.van.id)
 	);
@@ -87,6 +94,7 @@ export async function action({ params, context }: Route.ActionArgs) {
 	if (returnResult.error || !returnResult.data) {
 		return { errors: 'Something went wrong try again later' };
 	}
+
 	throw redirect(href('/host'));
 }
 
@@ -101,9 +109,9 @@ export default function ReturnRental({
 	const isUnableToPay = money < amountToPay;
 	return (
 		<section className="flex flex-col gap-4">
-			<title>Return Van | Van Life</title>
+			<title>Return {rent.van.name} | Vanlife</title>
 			<meta
-				content="Return your rented van and complete your rental"
+				content="The van you might return to it's owner"
 				name="description"
 			/>
 			<h2>Return this van:</h2>

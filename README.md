@@ -7,7 +7,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.14-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.27-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.7.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.7.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.2.6-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-5.6.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-6.17.1-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
@@ -65,6 +65,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🔗 **URL State Management** with nuqs for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
+- 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
 
 ---
 
@@ -78,8 +79,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **TailwindCSS 4.1.14** with modern CSS features
 - **Radix UI** for accessible components
 - **Lucide React 0.501.0** for icons
-- **Recharts 3.2.1** for data visualization (lazy-loaded)
-- **nuqs 2.7.1** for type-safe URL state management
+- **Recharts 3.3.0** for data visualization (lazy-loaded)
+- **nuqs 2.7.2** for type-safe URL state management
 
 ### Backend & Database
 
@@ -266,7 +267,7 @@ generator client {
 
 ## URL State Management with nuqs
 
-The application uses **nuqs 2.7.1** for type-safe URL state management:
+The application uses **nuqs 2.7.2** for type-safe URL state management:
 
 ### Features
 
@@ -295,6 +296,62 @@ export const loadSearchParams = createLoader(paginationParsers);
 const [{ cursor, limit, direction, type }, setSearchParams] =
   useQueryStates(paginationParsers);
 ```
+
+---
+
+## Shared Context Middleware Pattern
+
+React Router 7's middleware system enables efficient data sharing between loaders and actions:
+
+### Benefits
+
+- **Eliminates duplicate fetching** - Data fetched once in middleware, shared between loader and action
+- **Type-safe context** - Fully typed shared data with TypeScript
+- **Cleaner code** - Loaders and actions focus on business logic, not data fetching
+- **Better performance** - Reduces database queries and API calls
+
+### Implementation
+
+```typescript
+import { createContext } from 'react-router';
+
+// Define typed context
+type SharedData = {
+  rent: NonNullable<Awaited<ReturnType<typeof getRent>>>;
+  balance: number;
+};
+
+const sharedDataContext = createContext<SharedData>();
+
+// Fetch data once in middleware
+const fetchDataMiddleware: Route.MiddlewareFunction = async (
+  { params, context },
+  next
+) => {
+  const [rent, balance] = await Promise.all([
+    getRent(params.rentId),
+    getBalance(session.user.id),
+  ]);
+  
+  context.set(sharedDataContext, { rent, balance });
+  return next();
+};
+
+export const middleware = [authMiddleware, fetchDataMiddleware];
+
+// Synchronous loader - just retrieves from context
+export function loader({ context }: Route.LoaderArgs) {
+  return context.get(sharedDataContext);
+}
+
+// Action also uses same data
+export async function action({ context }: Route.ActionArgs) {
+  const { rent, balance } = context.get(sharedDataContext);
+  // Use shared data for validation/business logic
+}
+```
+
+**Note:** Loaders can be synchronous when only retrieving data from context (no `await` needed).
 
 ---
 
