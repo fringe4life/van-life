@@ -11,6 +11,7 @@ export default defineConfig({
 			babelConfig: {
 				presets: ['@babel/preset-typescript'], // if you use TypeScript
 				plugins: ['babel-plugin-react-compiler'],
+				compact: false, // Disable compact mode to keep code optimized even for large files
 			},
 		}),
 		reactRouter(),
