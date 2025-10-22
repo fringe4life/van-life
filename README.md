@@ -5,13 +5,13 @@
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
 [![React Router](https://img.shields.io/badge/React%20Router-7.9.4-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.14-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.15-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.28-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.7.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.2.6-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-5.6.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
-[![Prisma](https://img.shields.io/badge/Prisma-6.17.1-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
-[![Vite](https://img.shields.io/badge/Vite-7.1.10-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Prisma](https://img.shields.io/badge/Prisma-6.18.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
+[![Vite](https://img.shields.io/badge/Vite-7.1.11-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.1.23-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
@@ -79,7 +79,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **React 19.2.0** with stable Activity component for prerendering
 - **React Router 7.9.4** (file-based routing, SSR, optional route parameters)
 - **TypeScript 5.9.3** with strict configuration
-- **TailwindCSS 4.1.14** with modern CSS features
+- **TailwindCSS 4.1.15** with modern CSS features
 - **Radix UI** for accessible components
 - **Lucide React 0.501.0** for icons
 - **Recharts 3.3.0** for data visualization (lazy-loaded)
@@ -88,15 +88,15 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Backend & Database
 
 - **Node.js** with React Router server
-- **Prisma 6.17.1** ORM with Neon PostgreSQL (Rust-free client)
+- **Prisma 6.18.0** ORM with Neon PostgreSQL (Rust-free client)
 - **better-auth 1.3.28** for authentication
 - **ArkType 2.1.23** for schema validation and type narrowing
 - **CUID2 3.1.0** for unique identifiers (configured for 25-character IDs)
-- **@prisma/adapter-neon 6.17.1** for Neon database integration
+- **@prisma/adapter-neon 6.18.0** for Neon database integration
 
 ### Development Tools
 
-- **Vite 7.1.10** - Next-generation frontend tooling with optimized builds
+- **Vite 7.1.11** - Next-generation frontend tooling with optimized builds
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
 - **Biome 2.2.6** for linting and formatting with Ultracite integration
 - **Ultracite 5.6.4** - AI-friendly linting rules for maximum type safety and accessibility
@@ -106,7 +106,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Build System
 
-- **Vite 7.1.10** - Fast builds with native ES modules and optimized bundling
+- **Vite 7.1.11** - Fast builds with native ES modules and optimized bundling
 - **React Compiler** - Configured via `vite-plugin-babel` for optimal integration
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Enhanced performance** - Faster builds and reduced memory usage
@@ -217,14 +217,19 @@ This project uses `prisma.config.ts` for Prisma CLI configuration (GA in Prisma 
 
 ```
 import 'dotenv/config';
-import { defineConfig } from 'prisma/config';
+import type { PrismaConfig } from 'prisma/config';
+import { defineConfig, env } from 'prisma/config';
 
 export default defineConfig({
 	schema: 'prisma',
 	migrations: {
+		path: 'prisma/migrations',
 		seed: 'tsx prisma/seed.ts',
 	},
-});
+	datasource: {
+		url: env('DATABASE_URL'),
+	},
+} satisfies PrismaConfig);
 ```
 
 Notes:
@@ -817,7 +822,7 @@ export default config;
 
 ### TailwindCSS 4 & Modern CSS
 
-- **TailwindCSS 4.1.14** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
+- **TailwindCSS 4.1.15** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
 - **Responsive design** with mobile-first approach and CSS Grid layouts
 - **Biome configuration** for CSS at-rules support
 
