@@ -99,5 +99,10 @@
       }
     }
   },
-  "extends": ["ultracite"]
+  "extends": [
+    "ultracite",
+    "ultracite/core",
+    "ultracite/remix",
+    "ultracite/react"
+  ]
 }

@@ -101,8 +101,7 @@ export default function Image({
 	// Always render the lowRes image initially, swap to fullSrc after load
 	return (
 		<div className={cn('m-0 p-0', classesForContainer)}>
-			{/** biome-ignore lint/nursery/useImageSize: these are provided as props */}
-			{/** biome-ignore lint/performance/noImgElement: this is not a nextjs project */}
+			{/** biome-ignore lint/correctness/useImageSize: passed in as {...rest} */}
 			<img
 				className={cn(
 					'h-full max-w-full bg-cover bg-no-repeat object-cover object-center align-middle text-none italic leading-0 decoration-0 transition-opacity duration-200 ease-in-out contain-strict',
