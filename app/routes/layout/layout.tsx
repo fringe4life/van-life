@@ -17,7 +17,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 	return (
 		<>
 			<Nav hasToken={hasToken} />
-			<main className="mb-6 grid grid-rows-subgrid px-[var(--padding-inline)] contain-content">
+			<main className="mb-6 grid grid-rows-subgrid px-(--padding-inline) contain-content">
 				<Outlet />
 			</main>
 			<footer className="grid place-content-center bg-neutral-800 py-6.25 contain-strict">
@@ -25,7 +25,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 					&copy;{new Date().getFullYear()} #vanlife
 				</p>
 				<a
-					className="inline-block w-full break-words text-center text-[.5rem] text-gray-400 xs:text-xs"
+					className="wrap-break-word inline-block w-full text-center text-[.5rem] text-gray-400 xs:text-xs"
 					href="https://www.flaticon.com/free-icons/camper-van"
 					title="camper van icons"
 				>

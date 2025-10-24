@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnknownTypeSelector: is for a view transition name and perfectly legit */
-/** biome-ignore-all lint/correctness/noUnknownProperty: the property exists */
 @import "tailwindcss";
 
 /* Van state custom variants for cleaner component styling */
@@ -32,6 +30,11 @@ html {
 }
 
 @keyframes --fade-to-right {
+	from {
+		translate: 0 0;
+		opacity: 1;
+		scale: 1;
+	}
 	to {
 		translate: 100vh 0;
 		opacity: 0.5;
@@ -107,88 +110,87 @@ html {
 
 /* only show view transition if no preference, the other option being:  */
 /* prefers-reduced-motion: reduce */
-@media screen and (prefers-reduced-motion: no-preference) {
-	@view-transition {
-		navigation: auto;
-	}
-
-	.mobile-sidebar {
-		animation: --slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-	}
-	.mobile-sidebar.out {
-		animation: --slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-	}
-	/* sets speed for view transitions */
-	::view-transition-group(*) {
-		animation-duration: 500ms;
-	}
-
-	/* only-child means there is not an after snapshot */
-	/* i.e. the card is no longer on the page after being filtered out */
-	::view-transition-old(*):only-child {
-		animation-name: --scale-out;
-	}
-
-	/* only-child means there is not a before snapshot */
-	/* i.e. the card is new to being on the page */
-	::view-transition-new(*):only-child {
-		animation-name: --fade-in;
-	}
-
-	::view-transition-group(image) {
-		animation-duration: 250ms;
-	}
-
-	::view-transition-new(image):only-child {
-		animation-name: --fade-in-from-left;
-	}
-
-	/* view transition for home page of hero section */
-	::view-transition-old(image):only-child {
-		animation-name: --fade-to-right;
-	}
-
-	::view-transition-new(aboutImage):only-child {
-		animation-name: --fade-in-from-left;
-	}
-
-	/* view transition for home page of hero section */
-	::view-transition-old(aboutImage):only-child {
-		animation-name: --fade-to-right;
-	}
-
-	.scroll-sm,
-	.scroll-md,
-	.scroll-lg {
-		animation-timeline: view();
-		animation-range: entry 0% cover 25%;
-	}
-
-	.scroll-md {
-		animation-range: entry 0% cover 10%;
-	}
-
-	.scroll-sm:nth-child(2n + 3) {
-		animation-name: --fade-in-from-left;
-	}
-	.scroll-sm:nth-child(2n):nth-child(n + 3) {
-		animation-name: --fade-in-from-right;
-	}
-
-	.scroll-md:nth-child(2n + 5) {
-		animation-name: --fade-in-from-left;
-	}
-	.scroll-md:nth-child(2n):nth-child(n + 6) {
-		animation-name: --fade-in-from-right;
-	}
-
-	.scroll-lg:nth-child(2n + 7) {
-		animation-name: --fade-in-from-left;
-	}
-	.scroll-lg:nth-child(2n):nth-child(n + 8) {
-		animation-name: --fade-in-from-right;
-	}
+/* @media screen and (prefers-reduced-motion: no-preference) { */
+@view-transition {
+	navigation: auto;
 }
+
+.mobile-sidebar {
+	animation: --slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.mobile-sidebar.out {
+	animation: --slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+/* sets speed for view transitions */
+::view-transition-group(*) {
+	animation-duration: 500ms;
+}
+
+/* only-child means there is not an after snapshot */
+/* i.e. the card is no longer on the page after being filtered out */
+::view-transition-old(*):only-child {
+	animation-name: --scale-out;
+}
+
+/* only-child means there is not a before snapshot */
+/* i.e. the card is new to being on the page */
+::view-transition-new(*):only-child {
+	animation-name: --fade-in;
+}
+
+::view-transition-group(*) {
+	animation-duration: 300ms;
+}
+
+::view-transition-new(about-image):only-child {
+	animation-name: --fade-in-from-left;
+}
+
+/* view transition for home page of hero section */
+::view-transition-old(about-image):only-child {
+	animation-name: --fade-to-right;
+}
+
+::view-transition-new(home-image):only-child {
+	animation-name: --fade-in-from-left;
+}
+
+/* view transition for home page of hero section */
+::view-transition-old(home-image):only-child {
+	animation-name: --fade-to-right;
+}
+.scroll-sm,
+.scroll-md,
+.scroll-lg {
+	animation-timeline: view();
+	animation-range: entry 0% cover 25%;
+}
+
+.scroll-md {
+	animation-range: entry 0% cover 10%;
+}
+
+.scroll-sm:nth-child(2n + 3) {
+	animation-name: --fade-in-from-left;
+}
+.scroll-sm:nth-child(2n):nth-child(n + 3) {
+	animation-name: --fade-in-from-right;
+}
+
+.scroll-md:nth-child(2n + 5) {
+	animation-name: --fade-in-from-left;
+}
+.scroll-md:nth-child(2n):nth-child(n + 6) {
+	animation-name: --fade-in-from-right;
+}
+
+.scroll-lg:nth-child(2n + 7) {
+	animation-name: --fade-in-from-left;
+}
+.scroll-lg:nth-child(2n):nth-child(n + 8) {
+	animation-name: --fade-in-from-right;
+}
+/* } */
 
 @theme {
 	--font-sans:

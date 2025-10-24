@@ -203,7 +203,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 				name="description"
 			/>
 			{/* Income Section */}
-			<div className="-mx-[var(--padding-inline)] grid w-[var(--container-layout)] grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-[var(--padding-inline)] py-6 sm:py-9">
+			<div className="-mx-(--padding-inline) grid w-layout grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-(--padding-inline) py-6 sm:py-9">
 				<h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 					Welcome {name ? name : 'User'}!
 				</h2>
@@ -225,7 +225,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 			</div>
 
 			{/* Balance Section */}
-			<div className="-mx-[var(--padding-inline)] grid w-[var(--container-layout)] grid-cols-[1fr_fit-content] items-center justify-between bg-green-100 px-[var(--padding-inline)] py-6 sm:py-9">
+			<div className="-mx-(--padding-inline) grid w-layout grid-cols-[1fr_fit-content] items-center justify-between bg-green-100 px-(--padding-inline) py-6 sm:py-9">
 				<div>
 					<h3 className="font-bold text-lg text-neutral-900 sm:text-xl">
 						Current Balance
@@ -242,7 +242,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 			</div>
 
 			{/* Money Transaction Form */}
-			<div className="px-[var(--padding-inline)] py-6 sm:py-9">
+			<div className="px-(--padding-inline) py-6 sm:py-9">
 				<h3 className="mb-4 font-bold text-lg text-neutral-900 sm:text-xl">
 					Add or Withdraw Money
 				</h3>
@@ -292,7 +292,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 			</div>
 
 			{/* Reviews Section */}
-			<div className="-mx-[var(--padding-inline)] flex w-[var(--container-layout)] items-center justify-between bg-orange-200 px-[var(--padding-inline)] py-6 sm:py-9">
+			<div className="-mx-(--padding-inline) flex w-layout items-center justify-between bg-orange-200 px-(--padding-inline) py-6 sm:py-9">
 				<div className="font-bold text-lg text-shadow-text sm:text-2xl">
 					{typeof avgRating === 'number' ? (
 						<span>

@@ -32,8 +32,8 @@ export default function About() {
 			/>
 			<Image
 				alt="a couple enjoying their adventure"
-				classesForContainer="-mx-[var(--padding-inline)] w-[var(--container-layout)]"
-				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:aboutImage]"
+				classesForContainer="-mx-(--padding-inline) w-layout"
+				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:about-image]"
 				decoding="sync"
 				fetchPriority="high"
 				height="890"
@@ -56,13 +56,13 @@ export default function About() {
 				in a van.
 			</h2>
 			<div className="flex flex-col gap-y-4 starting:opacity-50 duration-1000 md:gap-x-2 lg:flex-row">
-				<p className="mx-2 grow-1 basis-1/2 sm:mx-4 sm:text-xl">
+				<p className="mx-2 grow basis-1/2 sm:mx-4 sm:text-xl">
 					Our mission is to enliven your road trip with the perfect travel van
 					rental. Our vans are recertified before each trip to ensure your
 					travel plans can go off without a hitch. (Hitch costs extra 😉)
 				</p>
 
-				<p className="mx-2 grow-1 basis-1/2 starting:opacity-50 duration-1000 sm:mx-4 sm:text-xl">
+				<p className="mx-2 grow basis-1/2 starting:opacity-50 duration-1000 sm:mx-4 sm:text-xl">
 					Our team is full of vanlife enthusiasts who know firsthand the magic
 					of touring the world on 4 wheels. So dive into our vast catalog today
 					and make your own magic in the great outdoors 🌳!

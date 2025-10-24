@@ -7,7 +7,7 @@
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2023"],
-    "types": ["node", "vite/client", "react", "react-dom"],
+    "types": ["node", "vite/client", "react/canary", "react-dom/canary"],
     "target": "es2023",
     "module": "es2022",
     "moduleResolution": "bundler",

@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 import { useQueryStates } from 'nuqs';
-import { Activity } from 'react';
+import { Activity, useTransition, ViewTransition } from 'react';
 import { data, href, type ShouldRevalidateFunctionArgs } from 'react-router';
 import ListItems from '~/components/list-items';
 import { badgeVariants } from '~/components/ui/badge';
@@ -101,7 +101,7 @@ export default function Vans({ loaderData, params }: Route.ComponentProps) {
 		hasNextPage,
 		hasPreviousPage,
 	} = loaderData;
-
+	const [_, startTransition] = useTransition();
 	// Use nuqs for client-side state management
 	const [{ cursor, limit, type }, setSearchParams] =
 		useQueryStates(paginationParsers);
@@ -145,85 +145,91 @@ export default function Vans({ loaderData, params }: Route.ComponentProps) {
 			</Activity>
 
 			{/* Van list view - prerendered for fast navigation back */}
-			<Activity mode={isVanDetailPage ? 'hidden' : 'visible'}>
-				<VanPages
-					// generic component props
-					Component={VanCard}
-					emptyStateMessage="There are no vans in our site."
-					hasNextPage={hasNextPage}
-					hasPreviousPage={hasPreviousPage}
-					items={vansArray}
-					// generic component props end
-					// props for all use cases
-					optionalElement={
-						<div className="mb-6 grid grid-cols-2 items-center gap-2 sm:grid-cols-[min-content_min-content_min-content_max-content] sm:gap-4">
-							{
-								<ListItems
-									getKey={(t) => t}
-									getRow={(t) => (
-										<Button
-											className={cn(
-												badgeVariants({
-													variant: t === type ? t : 'outline',
-												}),
-												'w-full cursor-pointer uppercase sm:w-fit'
-											)}
-											onClick={() => {
-												setSearchParams({
-													type: t,
-													cursor: DEFAULT_CURSOR,
-													direction: DEFAULT_DIRECTION,
-												});
-											}}
-											variant="ghost"
-										>
-											{t}
-										</Button>
+			<ViewTransition>
+				<Activity mode={isVanDetailPage ? 'hidden' : 'visible'}>
+					<VanPages
+						// generic component props
+						Component={VanCard}
+						emptyStateMessage="There are no vans in our site."
+						hasNextPage={hasNextPage}
+						hasPreviousPage={hasPreviousPage}
+						items={vansArray}
+						// generic component props end
+						// props for all use cases
+						optionalElement={
+							<div className="mb-6 grid grid-cols-2 items-center gap-2 sm:grid-cols-[min-content_min-content_min-content_max-content] sm:gap-4">
+								{
+									<ListItems
+										getKey={(t) => t}
+										getRow={(t) => (
+											<Button
+												className={cn(
+													badgeVariants({
+														variant: t === type ? t : 'outline',
+													}),
+													'w-full cursor-pointer uppercase sm:w-fit'
+												)}
+												onClick={() => {
+													startTransition(() => {
+														setSearchParams({
+															type: t,
+															cursor: DEFAULT_CURSOR,
+															direction: DEFAULT_DIRECTION,
+														});
+													});
+												}}
+												variant="ghost"
+											>
+												{t}
+											</Button>
+										)}
+										items={badges}
+									/>
+								}
+								<Button
+									className={clsx(
+										'w-full cursor-pointer text-center sm:w-fit sm:text-left',
+										hasActiveTypeFilter && 'underline'
 									)}
-									items={badges}
-								/>
-							}
-							<Button
-								className={clsx(
-									'w-full cursor-pointer text-center sm:w-fit sm:text-left',
-									hasActiveTypeFilter && 'underline'
-								)}
-								onClick={() => {
-									setSearchParams({
-										type: DEFAULT_FILTER,
-										cursor: DEFAULT_CURSOR,
-										direction: DEFAULT_DIRECTION,
-									});
-								}}
-								variant="ghost"
-							>
-								Clear filters
-							</Button>
-						</div>
-					}
-					pathname={href('/vans/:vanSlug?')}
-					renderProps={(van) => ({
-						van,
-						filter: type,
-						action: (
-							<div className="grid justify-end">
-								<VanPrice van={van} />
+									onClick={() => {
+										startTransition(() => {
+											setSearchParams({
+												type: DEFAULT_FILTER,
+												cursor: DEFAULT_CURSOR,
+												direction: DEFAULT_DIRECTION,
+											});
+										});
+									}}
+									variant="ghost"
+								>
+									Clear filters
+								</Button>
 							</div>
-						),
-						link: (() => {
-							const baseUrl = href('/vans/:vanSlug?', { vanSlug: van.slug });
-							const search = buildVanSearchParams({
-								cursor,
-								limit,
-								type,
-							});
-							return search ? `${baseUrl}?${search}` : baseUrl;
-						})(),
-					})}
-					searchParams={{ cursor, limit, type }}
-					title="Explore our van options"
-				/>
-			</Activity>
+						}
+						pathname={href('/vans/:vanSlug?')}
+						renderProps={(van) => ({
+							van,
+							filter: type,
+							action: (
+								<div className="grid justify-end">
+									<VanPrice van={van} />
+								</div>
+							),
+							link: (() => {
+								const baseUrl = href('/vans/:vanSlug?', { vanSlug: van.slug });
+								const search = buildVanSearchParams({
+									cursor,
+									limit,
+									type,
+								});
+								return search ? `${baseUrl}?${search}` : baseUrl;
+							})(),
+						})}
+						searchParams={{ cursor, limit, type }}
+						title="Explore our van options"
+					/>
+				</Activity>
+			</ViewTransition>
 		</>
 	);
 }

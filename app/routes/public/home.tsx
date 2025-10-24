@@ -32,7 +32,7 @@ export default function Home() {
 	return (
 		<PendingUi
 			as="section"
-			className="-mx-[var(--padding-inline)] relative grid aspect-[1/1.5] text-white contain-strict sm:pl-6 md:aspect-video md:place-content-center md:self-center"
+			className="-mx-(--padding-inline) relative grid aspect-[1/1.5] text-white contain-strict sm:pl-6 md:aspect-video md:place-content-center md:self-center"
 		>
 			<title>Home | Van Life</title>
 			<meta
@@ -45,7 +45,7 @@ export default function Home() {
 				<Image
 					alt="Camper van on scenic road"
 					classesForContainer="absolute inset-0 w-full h-full"
-					className="[view-transition-name:image]"
+					className="[view-transition-name:home-image]"
 					decoding="sync"
 					fetchPriority="high"
 					height={1500}
@@ -58,7 +58,7 @@ export default function Home() {
 			</div>
 
 			{/* Content overlay */}
-			<div className="z-20 grid content-center gap-y-6 px-[var(--padding-inline)] md:justify-center md:px-0">
+			<div className="z-20 grid content-center gap-y-6 px-(--padding-inline) md:justify-center md:px-0">
 				<h2 className="max-w-[20ch] p-1 font-extrabold text-2xl text-shadow-lg xs:text-3xl backdrop-blur-sm md:text-4xl">
 					You got the travel plans, we got the travel vans.
 				</h2>

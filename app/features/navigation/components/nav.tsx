@@ -23,7 +23,7 @@ export default function Nav({ hasToken }: NavProps) {
 		trigger: (isOpen) => (
 			<Button
 				aria-label={isOpen ? 'Close menu' : 'Open menu'}
-				className="relative z-[60] cursor-pointer bg-orange-400/50 md:hidden"
+				className="relative z-60 cursor-pointer bg-orange-400/50 md:hidden"
 			>
 				{isOpen ? <X /> : <Menu />}
 			</Button>
@@ -52,7 +52,7 @@ export default function Nav({ hasToken }: NavProps) {
 	});
 
 	return (
-		<header className="flex items-center justify-between gap-3 px-[var(--padding-inline)] py-9 sm:gap-6">
+		<header className="flex items-center justify-between gap-3 px-(--padding-inline) py-9 sm:gap-6">
 			<h1 className="font-black text-xl xs:text-2xl uppercase">
 				<CustomLink to={href('/')}>#vanlife</CustomLink>
 			</h1>
