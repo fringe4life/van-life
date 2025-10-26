@@ -71,7 +71,7 @@ export default function VanDetail({
 										? validateLowercaseVanType(type.toLowerCase())
 										: 'unavailable',
 								}),
-								'@max-xl/card-full:hidden @min-xl/card-full:flex-shrink-0'
+								'@max-xl/card-full:hidden @min-xl/card-full:shrink-0'
 							)}
 							to={
 								vanIsAvailable

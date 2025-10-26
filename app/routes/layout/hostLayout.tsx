@@ -93,7 +93,7 @@ const hostNavItems = [
 export default function HostLayout() {
 	return (
 		<>
-			<div className="max-w-[var(--host-layout-max-width)] contain-content">
+			<div className="max-w-(--host-layout-max-width) contain-content">
 				<GenericComponent
 					as="ul"
 					Component={CustomNavLink}

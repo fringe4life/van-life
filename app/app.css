@@ -250,15 +250,6 @@ html {
 	--chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
 }
 
-/* Responsive padding updates */
-@media (min-width: 768px) {
-	:root {
-		--padding-inline: 3rem; /* Desktop padding */
-	}
-}
-
-/* Custom variants for van state styling */
-
 @utility grid-max {
 	--_gap: 2rem;
 	--_max-columns: 2;
