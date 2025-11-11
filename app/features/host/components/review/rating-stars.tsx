@@ -10,7 +10,7 @@ export default function RatingStars({ rating }: RatingStarsProps) {
 	const PercentageMultiplier = 100;
 	const stars: JSX.Element[] = [];
 
-	for (let i = 1; i <= MaxRating; i++) {
+	for (let i = 1; i <= MaxRating; i += 1) {
 		if (i <= Math.floor(rating)) {
 			// Fully filled star
 			stars.push(

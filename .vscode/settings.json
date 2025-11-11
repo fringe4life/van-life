@@ -7,7 +7,6 @@
     "source.fixAll.biome": "explicit"
   },
   "tailwindCSS.classFunctions": ["cva", "cx"],
-
   "npm.packageManager": "bun",
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"

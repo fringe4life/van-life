@@ -6,7 +6,6 @@ export const DEFAULT_CURSOR = '';
 export const DEFAULT_DIRECTION = 'forward';
 export const DEFAULT_SORT = 'newest';
 
-// biome-ignore lint/style/noMagicNumbers: is an array of numbers of limits
 export const LIMITS = [5, 10, 20, 50] as const;
 export const DIRECTIONS = ['forward', 'backward'] satisfies Direction[];
 export const SORT_OPTIONS = ['newest', 'oldest', 'highest', 'lowest'] as const;

@@ -9,6 +9,8 @@ import {
 import type { Route } from './+types/root';
 import { HTTP_MESSAGES, HTTP_STATUS } from './constants/http-constants';
 import './app.css';
+import { useEffect } from 'react';
+import { scan } from 'react-scan';
 
 export const links: Route.LinksFunction = () => [
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -26,6 +28,12 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+	useEffect(() => {
+		// Make sure to run react-scan only after hydration
+		scan({
+			enabled: true,
+		});
+	}, []);
 	return (
 		<html
 			className="max-w-dvw bg-neutral-50 md:[--padding-inline:3rem]"

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "ultracite": {
+    "rules": [
+      {
+        "path": ".cursor/rules/ultracite.mdc",
+        "globs": "**/*.{ts,tsx,js,jsx,json,jsonc,html,vue,svelte,astro,css,yaml,yml,graphql,gql,md,mdx,grit}",
+        "alwaysApply": false
+      }
+    ],
+    "tasks": {
+      "check": "npx ultracite check",
+      "fix": "npx ultracite fix",
+      "doctor": "npx ultracite doctor"
+    }
+  },
+  "hooks": {
+    "afterFileEdit": [
+      { "command": "npm run test:affected" },
+      { "command": "npx ultracite fix" }
+    ]
+  }
+}

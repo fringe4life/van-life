@@ -126,6 +126,7 @@ export default function Vans({ loaderData, params }: Route.ComponentProps) {
 				name="description"
 			/>
 			{/* Van detail view - prerendered for fast navigation */}
+
 			<Activity mode={isVanDetailPage ? 'visible' : 'hidden'}>
 				<div className="grid grid-rows-[min-content_1fr]">
 					{selectedVan ? (

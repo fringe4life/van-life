@@ -3,17 +3,17 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-7.9.4-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-7.9.5-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.15-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.28-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.7.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.2.6-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-5.6.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
-[![Prisma](https://img.shields.io/badge/Prisma-6.18.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
-[![Vite](https://img.shields.io/badge/Vite-7.1.11-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![ArkType](https://img.shields.io/badge/ArkType-2.1.23-000000?logo=arktype&logoColor=white)](https://arktype.io/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.17-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.34-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.7.3-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![Biome](https://img.shields.io/badge/Biome-2.3.4-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-6.3.2-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Prisma](https://img.shields.io/badge/Prisma-6.19.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
+[![Vite](https://img.shields.io/badge/Vite-7.2.2-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![ArkType](https://img.shields.io/badge/ArkType-2.1.26-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
 </div>
 
@@ -43,7 +43,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - 🚀 **Modern React Router 7** with server-side rendering and file-based routing
 - 🔒 **Authentication** with better-auth (sign up, login, session management)
-- ⚛️ **React 19 & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
+- ⚛️ **React 19 (canary) & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
@@ -64,7 +64,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with lazy loading, code splitting, and smart loader revalidation
-- 🔗 **URL State Management** with nuqs for type-safe search parameters
+- 🔗 **URL State Management** with nuqs 2.7.3 via Context7 for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
 - 🚫 **Smart Revalidation** with `shouldRevalidate` to prevent unnecessary data fetching
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
@@ -76,37 +76,37 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Frontend
 
-- **React 19.2.0** with stable Activity component for prerendering
-- **React Router 7.9.4** (file-based routing, SSR, optional route parameters)
+- **React canary** builds with stable Activity component for prerendering
+- **React Router 7.9.5** (file-based routing, SSR, optional route parameters)
 - **TypeScript 5.9.3** with strict configuration
-- **TailwindCSS 4.1.15** with modern CSS features
+- **TailwindCSS 4.1.17** with modern CSS features
 - **Radix UI** for accessible components
 - **Lucide React 0.501.0** for icons
 - **Recharts 3.3.0** for data visualization (lazy-loaded)
-- **nuqs 2.7.2** for type-safe URL state management
+- **nuqs 2.7.3** for type-safe URL state management via Context7 parsers
 
 ### Backend & Database
 
 - **Node.js** with React Router server
-- **Prisma 6.18.0** ORM with Neon PostgreSQL (Rust-free client)
-- **better-auth 1.3.28** for authentication
-- **ArkType 2.1.23** for schema validation and type narrowing
+- **Prisma 6.19.0** ORM with Neon PostgreSQL (Rust-free client)
+- **better-auth 1.3.34** for authentication
+- **ArkType 2.1.26** for schema validation and type narrowing
 - **CUID2 3.1.0** for unique identifiers (configured for 25-character IDs)
-- **@prisma/adapter-neon 6.18.0** for Neon database integration
+- **@prisma/adapter-neon 6.19.0** for Neon database integration
 
 ### Development Tools
 
-- **Vite 7.1.11** - Next-generation frontend tooling with optimized builds
+- **Vite 7.2.2** - Next-generation frontend tooling with optimized builds
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
-- **Biome 2.2.6** for linting and formatting with Ultracite integration
-- **Ultracite 5.6.4** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.3.4** for linting and formatting with Ultracite integration
+- **Ultracite 6.3.2** - AI-friendly linting rules for maximum type safety and accessibility
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
-- **TypeScript 5.9.3** with native preview
+- **TypeScript 5.9.3** with `@typescript/native-preview` nightly support
 - **Bun** for fast package management and runtime
 
 ### Build System
 
-- **Vite 7.1.11** - Fast builds with native ES modules and optimized bundling
+- **Vite 7.2.2** - Fast builds with native ES modules and optimized bundling
 - **React Compiler** - Configured via `vite-plugin-babel` for optimal integration
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Enhanced performance** - Faster builds and reduced memory usage
@@ -275,7 +275,7 @@ generator client {
 
 ## URL State Management with nuqs
 
-The application uses **nuqs 2.7.2** for type-safe URL state management:
+The application uses **nuqs 2.7.3** for type-safe URL state management:
 
 ### Features
 
@@ -766,12 +766,15 @@ BETTER_AUTH_URL=http://localhost:5173
 # GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
 
+Environment variables are validated at runtime in `app/lib/env.server.ts` via ArkType schemas to keep configuration type-safe.
+
 ---
 
 ## Scripts
 
 - `bun run dev` – Start development server with HMR
 - `bun run build` – Build for production
+- `bun run preview` – Preview the production build with the bundled server output
 - `bun run typecheck` – TypeScript checking and route type generation
 - `bun run lint` – Run Biome linting
 - `bun run lint:fix` – Fix linting issues automatically
@@ -780,12 +783,14 @@ BETTER_AUTH_URL=http://localhost:5173
 - `bun run check` – Run all checks (lint + format)
 - `bun run check:fix` – Fix all issues automatically
 - `bun run ci` – Run CI checks
+- `bun run ultracite` – Run Ultracite checks through Biome integration
+- `bun run ultracite:fix` – Auto-fix issues with Ultracite rules
 
 ### Ultracite Commands
 
 - `bunx ultracite init` – Initialize Ultracite in your project
-- `bunx ultracite fix` – Format and fix code automatically
-- `bunx ultracite check` – Check for issues without fixing
+- `bun run ultracite:fix` – Format and fix code automatically
+- `bun run ultracite` – Check for issues without fixing
 
 ### Git Hooks (Husky + lint-staged)
 
@@ -822,7 +827,7 @@ export default config;
 
 ### TailwindCSS 4 & Modern CSS
 
-- **TailwindCSS 4.1.15** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
+- **TailwindCSS 4.1.17** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
 - **Responsive design** with mobile-first approach and CSS Grid layouts
 - **Biome configuration** for CSS at-rules support
 
@@ -843,10 +848,10 @@ export default config;
 
 ## Code Quality
 
-- **Biome 2.2.6** for linting and formatting with Ultracite integration
-- **Ultracite 5.6.4** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.3.4** for linting and formatting with Ultracite integration
+- **Ultracite 6.3.2** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.3** with strict configuration
-- **ArkType 2.1.23** for runtime validation with regex support for slug validation
+- **ArkType 2.1.26** for runtime validation with regex support for slug validation
 - **Consistent code style:**
   - Tab indentation
   - Single quotes
@@ -881,7 +886,7 @@ This project uses **Ultracite** for enhanced code quality and AI-friendly develo
 
 ### Biome Configuration
 
-- **Ultracite integration** via `"extends": ["ultracite"]` in biome.jsonc
+- **Ultracite integration** via `extends: ["ultracite/core", "ultracite/remix", "ultracite/react"]` in `biome.jsonc`
 - **CSS at-rules support** for TailwindCSS 4 features
 - **Sorted CSS classes** for consistency
 - **TypeScript strict mode** enabled

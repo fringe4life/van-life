@@ -27,7 +27,7 @@ export async function executeOperations<
 	// Create result object with fallback values
 	const result = {} as Record<string, unknown>;
 
-	for (let i = 0; i < operationEntries.length; i++) {
+	for (let i = 0; i < operationEntries.length; i += 1) {
 		const [key] = operationEntries[i];
 		const resultData = results[i];
 

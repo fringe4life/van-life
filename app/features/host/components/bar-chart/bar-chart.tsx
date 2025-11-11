@@ -8,7 +8,7 @@ import {
 	YAxis,
 } from 'recharts';
 
-type BarChartComponentProps = {
+export type BarChartComponentProps = {
 	mappedData: {
 		name: string;
 		amount: number;

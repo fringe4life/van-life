@@ -301,7 +301,7 @@ html {
 
 /* Custom utility for pseudo-random bar heights using CSS trig functions */
 @utility bar-height {
-	height: clamp(
+	block-size: clamp(
 		50px,
 		calc(150px + 100px * sin((pi / 2) * var(--bar-index))),
 		var(--chart-content-height)

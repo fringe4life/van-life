@@ -48,7 +48,7 @@ function findRentableVan(vanIds: VanModel[], excludedIds: string[]): string {
 		attempts < MaxAttempts
 	) {
 		candidateId = getRandomId(vanIds);
-		attempts++;
+		attempts += 1;
 	}
 
 	return candidateId;
