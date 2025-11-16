@@ -8,14 +8,7 @@ import {
 	useState,
 	useTransition,
 } from 'react';
-import {
-	Await,
-	data,
-	href,
-	redirect,
-	useFetcher,
-	useParams,
-} from 'react-router';
+import { Await, data, href, useFetcher, useParams } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import { Button } from '~/components/ui/button';
@@ -132,14 +125,6 @@ export async function action({ request, context }: Route.ActionArgs) {
 			formData,
 		};
 	}
-
-	// Check for returnTo query parameter
-	const url = new URL(request.url);
-	const returnTo = url.searchParams.get('returnTo');
-
-	if (returnTo) {
-		throw redirect(returnTo);
-	}
 }
 
 export default function Host({ loaderData, actionData }: Route.ComponentProps) {
@@ -181,7 +166,9 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 		});
 	};
 
-	// Calculate current balance from transactions
+	const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+		setIsDepositing(e.currentTarget.checked);
+	};
 
 	// Calculate income and elapsed time client-side
 	const sumIncome = Array.isArray(transactions)
@@ -190,10 +177,6 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 	const elapsedTime = Array.isArray(transactions)
 		? getElapsedTime(transactions)
 		: { elapsedDays: 0, description: 'No data' };
-
-	const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-		setIsDepositing(e.currentTarget.checked);
-	};
 
 	return (
 		<PendingUi as="section">
@@ -207,15 +190,30 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 				<h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 					Welcome {name ? name : 'User'}!
 				</h2>
-				<p className="col-start-1 my-4 font-light text-base text-neutral-600 sm:my-6 md:my-8">
-					Income last{' '}
-					<span className="font-medium underline">
-						{elapsedTime.elapsedDays} days
-					</span>
-				</p>
-				<p className="col-start-1 font-extrabold text-2xl text-neutral-900 xs:text-3xl sm:text-4xl md:text-5xl">
-					{displayPrice(sumIncome)}
-				</p>
+				<div className="col-start-1 my-4 grid gap-4 font-light text-base text-neutral-600">
+					<div className="flex items-center justify-between gap-2">
+						<p>
+							Income last{' '}
+							<span className="font-medium underline">
+								{elapsedTime.elapsedDays} days
+							</span>
+						</p>
+						<p className="justify-self-end font-extrabold text-2xl text-neutral-900 xs:text-3xl sm:text-4xl md:text-5xl">
+							{displayPrice(sumIncome)}
+						</p>
+					</div>
+					<div className="flex items-center justify-between gap-2">
+						<p>Balance</p>
+						<p
+							className={clsx(
+								'justify-self-end font-extrabold text-2xl text-neutral-900 xs:text-3xl sm:text-4xl md:text-5xl',
+								isPending && 'opacity-75'
+							)}
+						>
+							{displayPrice(optimisticBalance)}
+						</p>
+					</div>
+				</div>
 				<CustomLink
 					className="col-start-2 row-start-2"
 					to={href('/host/income')}
@@ -224,25 +222,27 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 				</CustomLink>
 			</div>
 
-			{/* Balance Section */}
-			<div className="-mx-(--padding-inline) grid w-layout grid-cols-[1fr_fit-content] items-center justify-between bg-green-100 px-(--padding-inline) py-6 sm:py-9">
-				<div>
-					<h3 className="font-bold text-lg text-neutral-900 sm:text-xl">
-						Current Balance
-					</h3>
-					<p
-						className={clsx(
-							'font-extrabold text-2xl text-neutral-900 xs:text-3xl sm:text-4xl md:text-5xl',
-							isPending && 'opacity-75'
-						)}
-					>
-						{displayPrice(optimisticBalance)}
-					</p>
+			{/* Reviews Section */}
+			<div className="-mx-(--padding-inline) flex w-layout items-center justify-between bg-orange-200 px-(--padding-inline) py-6 sm:py-9">
+				<div className="font-bold text-lg text-shadow-text sm:text-2xl">
+					{typeof avgRating === 'number' ? (
+						<span>
+							Your Avg Review <RatingStars rating={avgRating} />
+						</span>
+					) : (
+						<span>something went wrong</span>
+					)}
 				</div>
+				<CustomLink
+					className="font-medium text-base text-shadow-text"
+					to={href('/host/review')}
+				>
+					Details
+				</CustomLink>
 			</div>
 
 			{/* Money Transaction Form */}
-			<div className="px-(--padding-inline) py-6 sm:py-9">
+			<div className="py-6 sm:py-9">
 				<h3 className="mb-4 font-bold text-lg text-neutral-900 sm:text-xl">
 					Add or Withdraw Money
 				</h3>
@@ -291,29 +291,10 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 				</fetcher.Form>
 			</div>
 
-			{/* Reviews Section */}
-			<div className="-mx-(--padding-inline) flex w-layout items-center justify-between bg-orange-200 px-(--padding-inline) py-6 sm:py-9">
-				<div className="font-bold text-lg text-shadow-text sm:text-2xl">
-					{typeof avgRating === 'number' ? (
-						<span>
-							Your Avg Review <RatingStars rating={avgRating} />
-						</span>
-					) : (
-						<span>something went wrong</span>
-					)}
-				</div>
-				<CustomLink
-					className="font-medium text-base text-shadow-text"
-					to={href('/host/review')}
-				>
-					Details
-				</CustomLink>
-			</div>
-
 			{/* Vans Section */}
 			<Suspense
 				fallback={
-					<div className="grid-max mt-11">
+					<div className="grid-max">
 						<VanCardSkeleton />
 						<VanCardSkeleton />
 						<VanCardSkeleton />

@@ -3,13 +3,15 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-7.9.5-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-7.9.6-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
+[![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.17-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.34-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.7.3-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.3.4-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-6.3.2-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Biome](https://img.shields.io/badge/Biome-2.3.5-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-6.3.3-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-6.19.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.2.2-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -77,12 +79,12 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Frontend
 
 - **React canary** builds with stable Activity component for prerendering
-- **React Router 7.9.5** (file-based routing, SSR, optional route parameters)
+- **React Router 7.9.6** (file-based routing, SSR, optional route parameters)
 - **TypeScript 5.9.3** with strict configuration
 - **TailwindCSS 4.1.17** with modern CSS features
 - **Radix UI** for accessible components
-- **Lucide React 0.501.0** for icons
-- **Recharts 3.3.0** for data visualization (lazy-loaded)
+- **Lucide React 0.553.0** for icons
+- **Recharts 3.4.1** for data visualization (lazy-loaded)
 - **nuqs 2.7.3** for type-safe URL state management via Context7 parsers
 
 ### Backend & Database
@@ -98,8 +100,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - **Vite 7.2.2** - Next-generation frontend tooling with optimized builds
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
-- **Biome 2.3.4** for linting and formatting with Ultracite integration
-- **Ultracite 6.3.2** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.3.5** for linting and formatting with Ultracite integration
+- **Ultracite 6.3.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 5.9.3** with `@typescript/native-preview` nightly support
 - **Bun** for fast package management and runtime
@@ -848,8 +850,8 @@ export default config;
 
 ## Code Quality
 
-- **Biome 2.3.4** for linting and formatting with Ultracite integration
-- **Ultracite 6.3.2** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.3.5** for linting and formatting with Ultracite integration
+- **Ultracite 6.3.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.3** with strict configuration
 - **ArkType 2.1.26** for runtime validation with regex support for slug validation
 - **Consistent code style:**

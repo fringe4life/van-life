@@ -190,7 +190,6 @@ html {
 .scroll-lg:nth-child(2n):nth-child(n + 8) {
 	animation-name: --fade-in-from-right;
 }
-/* } */
 
 @theme {
 	--font-sans:
@@ -308,12 +307,10 @@ html {
 	);
 }
 
-@layer utilities {
-	.no-scrollbar::-webkit-scrollbar {
+@utility no-scrollbar {
+	&::-webkit-scrollbar {
 		display: none;
 	}
-	.no-scrollbar {
-		-ms-overflow-style: none; /* IE and Edge */
-		scrollbar-width: none; /* Firefox */
-	}
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
 }

@@ -10,8 +10,8 @@ export default function UnsuccesfulState({
 	isError = false,
 }: EmptyStateProps) {
 	return (
-		<div className="flex h-full w-full grow-1 items-center">
-			<p className={clsx('grow-1 text-center', isError && 'text-red-500')}>
+		<div className="flex h-full w-full grow items-center">
+			<p className={clsx('grow text-center', isError && 'text-red-500')}>
 				{message}
 			</p>
 		</div>
