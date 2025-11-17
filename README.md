@@ -9,13 +9,13 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.17-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.3.34-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.7.3-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.8.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.3.5-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-6.3.3-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-6.19.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.2.2-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![ArkType](https://img.shields.io/badge/ArkType-2.1.26-000000?logo=arktype&logoColor=white)](https://arktype.io/)
+[![ArkType](https://img.shields.io/badge/ArkType-2.1.27-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
 </div>
 
@@ -66,7 +66,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with lazy loading, code splitting, and smart loader revalidation
-- 🔗 **URL State Management** with nuqs 2.7.3 via Context7 for type-safe search parameters
+- 🔗 **URL State Management** with nuqs 2.8.0 via Context7 for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
 - 🚫 **Smart Revalidation** with `shouldRevalidate` to prevent unnecessary data fetching
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
@@ -83,16 +83,16 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **TypeScript 5.9.3** with strict configuration
 - **TailwindCSS 4.1.17** with modern CSS features
 - **Radix UI** for accessible components
-- **Lucide React 0.553.0** for icons
+- **Lucide React 0.554.0** for icons
 - **Recharts 3.4.1** for data visualization (lazy-loaded)
-- **nuqs 2.7.3** for type-safe URL state management via Context7 parsers
+- **nuqs 2.8.0** for type-safe URL state management via Context7 parsers
 
 ### Backend & Database
 
 - **Node.js** with React Router server
 - **Prisma 6.19.0** ORM with Neon PostgreSQL (Rust-free client)
 - **better-auth 1.3.34** for authentication
-- **ArkType 2.1.26** for schema validation and type narrowing
+- **ArkType 2.1.27** for schema validation and type narrowing
 - **CUID2 3.1.0** for unique identifiers (configured for 25-character IDs)
 - **@prisma/adapter-neon 6.19.0** for Neon database integration
 
@@ -277,7 +277,7 @@ generator client {
 
 ## URL State Management with nuqs
 
-The application uses **nuqs 2.7.3** for type-safe URL state management:
+The application uses **nuqs 2.8.0** for type-safe URL state management:
 
 ### Features
 
@@ -853,7 +853,7 @@ export default config;
 - **Biome 2.3.5** for linting and formatting with Ultracite integration
 - **Ultracite 6.3.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.3** with strict configuration
-- **ArkType 2.1.26** for runtime validation with regex support for slug validation
+- **ArkType 2.1.27** for runtime validation with regex support for slug validation
 - **Consistent code style:**
   - Tab indentation
   - Single quotes

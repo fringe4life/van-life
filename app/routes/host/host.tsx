@@ -180,39 +180,37 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 
 	return (
 		<PendingUi as="section">
+			{/* SEO */}
 			<title>Host Dashboard | Van Life</title>
 			<meta
 				content="Your Van Life host dashboard - manage your vans, view income, and track rentals"
 				name="description"
 			/>
 			{/* Income Section */}
-			<div className="-mx-(--padding-inline) grid w-layout grid-cols-[1fr_fit-content] items-center justify-between bg-orange-100 px-(--padding-inline) py-6 sm:py-9">
+			<div className="grid w-layout grid-cols-min items-center justify-between gap-x-2 bg-orange-100 py-6 sm:py-9">
 				<h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
-					Welcome {name ? name : 'User'}!
+					Welcome, {name ? name : 'User'}!
 				</h2>
-				<div className="col-start-1 my-4 grid gap-4 font-light text-base text-neutral-600">
-					<div className="flex items-center justify-between gap-2">
-						<p>
-							Income last{' '}
-							<span className="font-medium underline">
-								{elapsedTime.elapsedDays} days
-							</span>
-						</p>
-						<p className="justify-self-end font-extrabold text-2xl text-neutral-900 xs:text-3xl sm:text-4xl md:text-5xl">
-							{displayPrice(sumIncome)}
-						</p>
-					</div>
-					<div className="flex items-center justify-between gap-2">
-						<p>Balance</p>
-						<p
-							className={clsx(
-								'justify-self-end font-extrabold text-2xl text-neutral-900 xs:text-3xl sm:text-4xl md:text-5xl',
-								isPending && 'opacity-75'
-							)}
-						>
-							{displayPrice(optimisticBalance)}
-						</p>
-					</div>
+				<div className="col-start-1 my-4 grid grid-cols-[1fr_min-content] grid-rows-2 items-center justify-between gap-4 font-light text-base text-neutral-600">
+					<p className="font-light text-sm sm:font-normal sm:text-base">
+						Income last{' '}
+						<span className="underline sm:font-medium">
+							{elapsedTime.elapsedDays} days
+						</span>
+					</p>
+					<p className="justify-self-end font-semibold text-neutral-900 text-xl xs:text-3xl sm:font-bold sm:text-4xl md:font-extrabold md:text-5xl">
+						{displayPrice(sumIncome)}
+					</p>
+
+					<p className="text-sm sm:text-base">Balance</p>
+					<p
+						className={clsx(
+							'justify-self-end font-semibold text-neutral-90 text-xl0 xs:text-3xl sm:font-bold sm:text-4xl md:font-extrabold md:text-5xl',
+							isPending && 'opacity-75'
+						)}
+					>
+						{displayPrice(optimisticBalance)}
+					</p>
 				</div>
 				<CustomLink
 					className="col-start-2 row-start-2"
@@ -223,7 +221,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 			</div>
 
 			{/* Reviews Section */}
-			<div className="-mx-(--padding-inline) flex w-layout items-center justify-between bg-orange-200 px-(--padding-inline) py-6 sm:py-9">
+			<div className="flex w-layout items-center justify-between bg-orange-200 py-6 sm:py-9">
 				<div className="font-bold text-lg text-shadow-text sm:text-2xl">
 					{typeof avgRating === 'number' ? (
 						<span>

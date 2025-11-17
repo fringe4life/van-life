@@ -36,7 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 	}, []);
 	return (
 		<html
-			className="max-w-dvw bg-neutral-50 md:[--padding-inline:3rem]"
+			className="max-w-svw bg-neutral-50 md:[--padding-inline:3rem]"
 			lang="en"
 		>
 			<head>
