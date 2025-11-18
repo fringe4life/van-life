@@ -6,11 +6,6 @@
 @custom-variant van-repair (&[data-slot*="van-card-repair"]);
 @custom-variant van-available (&[data-slot*="van-card-available"]);
 
-html {
-	scrollbar-gutter: stable;
-	scrollbar-width: thin;
-}
-
 @keyframes --fade-in {
 	from {
 		opacity: 0;
@@ -295,6 +290,10 @@ html {
 	h5,
 	h6 {
 		text-wrap: balance;
+	}
+	html {
+		scrollbar-gutter: stable;
+		scrollbar-width: thin;
 	}
 }
 
