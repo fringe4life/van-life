@@ -51,7 +51,7 @@ export async function getHostTransactions(
 	return await prisma.transaction.findMany({
 		where: {
 			userId,
-			type: 'RENTAL_PAYMENT',
+			type: 'rental_payment',
 		},
 		select: {
 			amount: true,

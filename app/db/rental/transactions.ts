@@ -55,7 +55,7 @@ export async function returnVan(
 			data: {
 				userId,
 				amount: -amount,
-				type: 'RENTAL_RETURN',
+				type: 'rental_return',
 				rentId,
 				description: `Payment for van rental ${vanId}`,
 			},
@@ -66,7 +66,7 @@ export async function returnVan(
 			data: {
 				userId: updatedRent.hostId,
 				amount,
-				type: 'RENTAL_PAYMENT',
+				type: 'rental_payment',
 				rentId,
 				description: `Received payment for van ${vanId}`,
 			},

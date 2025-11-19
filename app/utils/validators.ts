@@ -93,7 +93,7 @@ export function isValidVanType(value: string): value is VanType {
  * @returns A valid VanType or "SIMPLE"
  */
 export function validateVanType(type: string): VanType {
-	return isValidVanType(type) ? type : 'SIMPLE';
+	return isValidVanType(type) ? type : 'simple';
 }
 
 /**
@@ -178,7 +178,7 @@ export function isValidVanState(value: string): value is VanState {
  */
 export function validateVanState(state: string | null): VanState {
 	const stateString = state ?? '';
-	return isValidVanState(stateString) ? stateString : 'AVAILABLE';
+	return isValidVanState(stateString) ? stateString : 'available';
 }
 
 // ============================================================================
@@ -197,12 +197,12 @@ export function isValidTransactionType(
 }
 
 /**
- * Validates and returns a valid TransactionType, defaulting to 'DEPOSIT' if invalid
+ * Validates and returns a valid TransactionType, defaulting to 'deposit' if invalid
  * @param type - The type value to validate
  * @returns A valid TransactionType
  */
 export function validateTransactionType(type: string): TransactionType {
-	return isValidTransactionType(type) ? type : 'DEPOSIT';
+	return isValidTransactionType(type) ? type : 'deposit';
 }
 
 // ============================================================================

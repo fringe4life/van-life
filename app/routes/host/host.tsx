@@ -89,7 +89,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 	// Additional validation for money operations
 	let isValid = false;
-	if (result.type === WITHDRAW) {
+	if (result.type === 'withdraw') {
 		// For withdrawals, amount should be negative (or we'll make it negative)
 		isValid =
 			Math.abs(result.amount) >= MIN_ADD && Math.abs(result.amount) <= MAX_ADD;
@@ -107,7 +107,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 	// Adjust amount based on transaction type
 	const adjustedAmount =
-		result.type === WITHDRAW
+		result.type === 'withdraw'
 			? -Math.abs(result.amount) // Withdrawals are negative
 			: Math.abs(result.amount); // Deposits are positive
 

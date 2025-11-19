@@ -25,7 +25,7 @@ export default function VanBadge({ van }: Props) {
 	let labelRaw: string;
 	if (variant === 'new') {
 		labelRaw = 'NEW';
-	} else if (van.state === 'AVAILABLE') {
+	} else if (van.state === 'available') {
 		labelRaw = van.type;
 	} else {
 		labelRaw = (van.state as unknown as string) ?? 'AVAILABLE';

@@ -30,10 +30,10 @@ export function lowercaseVanState(van: VanModel): string {
 	if (isNew) {
 		return 'new';
 	}
-	if (van.state === 'IN_REPAIR') {
+	if (van.state === 'in_repair') {
 		return 'repair';
 	}
-	if (van.state === 'ON_SALE') {
+	if (van.state === 'on_sale') {
 		return 'sale';
 	}
 	return 'available';
@@ -58,5 +58,5 @@ export function lowercaseVanStateWithProcessor<T>(
  * A van is available when it's not rented and not in repair.
  */
 export function isVanAvailable(van: VanModel): boolean {
-	return !van.isRented && van.state !== 'IN_REPAIR';
+	return !van.isRented && van.state !== 'in_repair';
 }

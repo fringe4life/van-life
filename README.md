@@ -12,7 +12,7 @@
 [![nuqs](https://img.shields.io/badge/nuqs-2.8.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.3.6-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-6.3.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
-[![Prisma](https://img.shields.io/badge/Prisma-6.19.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
+[![Prisma](https://img.shields.io/badge/Prisma-7.0.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.2.2-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.1.27-000000?logo=arktype&logoColor=white)](https://arktype.io/)
@@ -90,11 +90,11 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Backend & Database
 
 - **Node.js** with React Router server
-- **Prisma 6.19.0** ORM with Neon PostgreSQL (Rust-free client)
+- **Prisma 7.0.0** ORM with Neon PostgreSQL (Rust-free client)
 - **better-auth 1.3.34** for authentication
 - **ArkType 2.1.27** for schema validation and type narrowing
 - **CUID2 3.1.0** for unique identifiers (configured for 25-character IDs)
-- **@prisma/adapter-neon 6.19.0** for Neon database integration
+- **@prisma/adapter-neon 7.0.0** for Neon database integration
 
 ### Development Tools
 
@@ -215,7 +215,7 @@ bunx prisma db seed
 
 ### Prisma Configuration
 
-This project uses `prisma.config.ts` for Prisma CLI configuration (GA in Prisma 6.x):
+This project uses `prisma.config.ts` for Prisma CLI configuration (GA in Prisma 7.x):
 
 ```
 import 'dotenv/config';
@@ -775,6 +775,7 @@ Environment variables are validated at runtime in `app/lib/env.server.ts` via Ar
 ## Scripts
 
 - `bun run dev` – Start development server with HMR
+- `bun run dev:email` – Start React Email preview server for email template development
 - `bun run build` – Build for production
 - `bun run preview` – Preview the production build with the bundled server output
 - `bun run typecheck` – TypeScript checking and route type generation

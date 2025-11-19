@@ -31,7 +31,7 @@ const main = async () => {
 			slug: getSlug(van.name),
 			hostId: getRandomId(data),
 			state,
-			discount: state === 'ON_SALE' ? getRandomDiscount() : 0,
+			discount: state === 'on_sale' ? getRandomDiscount() : 0,
 		};
 	});
 
@@ -107,7 +107,7 @@ const main = async () => {
 				{
 					userId: rent.renterId,
 					amount: -amount,
-					type: 'RENTAL_RETURN' as const,
+					type: 'rental_return' as const,
 					rentId: rent.id,
 					description: `Payment for van rental ${rent.vanId}`,
 					createdAt: rentedTo,
@@ -116,7 +116,7 @@ const main = async () => {
 				{
 					userId: rent.hostId,
 					amount,
-					type: 'RENTAL_PAYMENT' as const,
+					type: 'rental_payment' as const,
 					rentId: rent.id,
 					description: `Received payment for van ${rent.vanId}`,
 					createdAt: rentedTo,

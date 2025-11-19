@@ -43,7 +43,7 @@ function findRentableVan(vanIds: VanModel[], excludedIds: string[]): string {
 	let attempts = 0;
 
 	while (
-		(vanIds.find((v) => v.id === candidateId)?.state === 'IN_REPAIR' ||
+		(vanIds.find((v) => v.id === candidateId)?.state === 'in_repair' ||
 			excludedIds.includes(candidateId)) &&
 		attempts < MaxAttempts
 	) {
@@ -127,12 +127,12 @@ async function clearTables() {
 
 // Baseline VanState (do not derive NEW here)
 function getVanState(): VanState {
-	const states: VanState[] = ['IN_REPAIR', 'ON_SALE', 'AVAILABLE'];
+	const states: VanState[] = ['in_repair', 'on_sale', 'available'];
 	return states[Math.floor(Math.random() * states.length)];
 }
 
 function isVanRentable(state: VanState | null): boolean {
-	return state !== 'IN_REPAIR';
+	return state !== 'in_repair';
 }
 
 function getRandomDiscount(min = 5, max = 100): number {

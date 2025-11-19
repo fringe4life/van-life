@@ -44,7 +44,7 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 	const sumAmount = Array.isArray(userTransactions)
 		? userTransactions.reduce(
 				(total, transaction) =>
-					transaction.type === 'DEPOSIT'
+					transaction.type === 'deposit'
 						? total + transaction.amount
 						: total - transaction.amount,
 				0
@@ -102,7 +102,7 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 			renderProps={(item) => ({
 				...item,
 				// Map transaction data to match Income component expectations
-				amount: item.type === 'DEPOSIT' ? item.amount : -item.amount,
+				amount: item.type === 'deposit' ? item.amount : -item.amount,
 				rentedAt: item.createdAt,
 			})}
 			title="Transfers"
