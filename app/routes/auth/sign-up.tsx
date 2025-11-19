@@ -7,7 +7,7 @@ import { Input } from '~/components/ui/input';
 import CustomLink from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
 import { signUpScheme } from '~/lib/schemas.server';
-import type { Route } from './+types/signUp';
+import type { Route } from './+types/sign-up';
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const session = await auth.api.getSession({ headers: request.headers });
@@ -52,7 +52,7 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 	const confirmPasswordId = useId();
 
 	return (
-		<div className="grid items-center justify-center gap-4 sm:gap-6 md:gap-12">
+		<>
 			<title>Sign Up | Van Life</title>
 			<meta
 				content="Create a Van Life account to start renting vans and managing your bookings"
@@ -99,6 +99,6 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 					Sign in now
 				</CustomLink>
 			</p>
-		</div>
+		</>
 	);
 }

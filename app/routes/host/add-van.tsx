@@ -11,7 +11,7 @@ import { authMiddleware } from '~/features/middleware/functions/auth-middleware'
 import { addVanSchema } from '~/lib/schemas.server';
 import { getSlug } from '~/utils/get-slug';
 import { tryCatch } from '~/utils/try-catch.server';
-import type { Route } from './+types/addVan';
+import type { Route } from './+types/add-van';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function action({ request, context }: Route.ActionArgs) {

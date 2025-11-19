@@ -1,6 +1,6 @@
 import { replace } from 'react-router';
 import { auth } from '~/lib/auth.server';
-import type { Route } from './+types/signOut';
+import type { Route } from './+types/sign-out';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
 	const response = await auth.api.signOut({

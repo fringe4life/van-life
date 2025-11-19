@@ -14,7 +14,7 @@ import VanPages from '~/features/vans/components/van-pages';
 import { hostPaginationParsers } from '~/lib/parsers';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
-import type { Route } from './+types/hostVans';
+import type { Route } from './+types/host-vans';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 

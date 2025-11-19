@@ -10,7 +10,7 @@ import CustomLink from '~/features/navigation/components/custom-link';
 import VanCard from '~/features/vans/components/van-card';
 import { getCost } from '~/features/vans/utils/get-cost';
 import { tryCatch } from '~/utils/try-catch.server';
-import type { Route } from './+types/returnRental';
+import type { Route } from './+types/return-rental';
 
 /**
  * Shared context for rental and account data.

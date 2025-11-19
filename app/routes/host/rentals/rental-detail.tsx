@@ -10,13 +10,11 @@ import { authMiddleware } from '~/features/middleware/functions/auth-middleware'
 import VanCard from '~/features/vans/components/van-card';
 import { rentVanSchema } from '~/lib/schemas.server';
 import { tryCatch } from '~/utils/try-catch.server';
-import type { Route } from './+types/rentalDetail';
+import type { Route } from './+types/rental-detail';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function loader({ params }: Route.LoaderArgs) {
-	// No session needed for this loader, but middleware ensures auth
-
 	const result = await tryCatch(() => getVanBySlug(params.vanSlug));
 
 	if (result.error) {

@@ -48,7 +48,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
 	const passwordId = useId();
 
 	return (
-		<div className="grid items-center justify-center gap-4 sm:gap-6 md:gap-12">
+		<>
 			<title>Sign In | Van Life</title>
 			<meta
 				content="Sign in to your Van Life account to manage your van rentals and bookings"
@@ -82,6 +82,6 @@ export default function Login({ actionData }: Route.ComponentProps) {
 					Create one now
 				</CustomLink>
 			</p>
-		</div>
+		</>
 	);
 }

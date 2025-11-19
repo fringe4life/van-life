@@ -6,6 +6,143 @@
 @custom-variant van-repair (&[data-slot*="van-card-repair"]);
 @custom-variant van-available (&[data-slot*="van-card-available"]);
 
+@theme {
+	--font-sans:
+		"Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+	--container-sm: 12rem;
+	--container-md: 26rem;
+	--container-lg: 36rem;
+
+	--container-2xl: 44rem;
+
+	--breakpoint-xs: 26rem;
+
+	--color-orange-100: oklch(94.72% 0.041 73.17);
+	--color-orange-200: oklch(91.55% 0.067 73.33);
+	--color-orange-400: oklch(75.76% 0.159 55.93);
+	--color-orange-600: oklch(68.11% 0.142 38.3);
+	--color-neutral-600: oklch(42.02% 0 0);
+	--color-neutral-900: oklch(20.02% 0 0);
+
+	/* Van state colors extracted from badge component - made more prominent */
+	--color-van-new: oklch(30% 0 0); /* even darker gray for better visibility */
+	--color-van-sale: oklch(40% 0.3 142); /* more saturated green */
+	--color-van-repair: oklch(60% 0.3 85); /* more saturated yellow */
+
+	--container-layout: min(var(--container-5xl), 100svw);
+
+	/* Responsive padding inline - updates automatically */
+	--padding-inline: 0.75rem; /* Mobile default */
+
+	/* Host layout max-width calculation - eliminates redundancy */
+	--host-layout-max-width: calc(
+		var(--container-layout) -
+		(2 * var(--padding-inline))
+	);
+
+	--mobile-menu-width: min(100dvw, 25rem);
+
+	/* Chart dimensions */
+	--chart-height: 350px;
+
+	/* Chart text area components - aliases for Tailwind spacing scale */
+	--chart-text-top-margin: var(--spacing-4); /* mt-4 = 1rem = 16px */
+	--chart-text-first-height: var(--spacing-4); /* h-4 = 1rem = 16px */
+	--chart-text-gap: var(--spacing-2); /* mb-2 = 0.5rem = 8px */
+	--chart-text-second-height: var(--spacing-3); /* h-3 = 0.75rem = 12px */
+
+	/* Total text area height (16 + 16 + 8 + 12 = 52px) */
+	--chart-text-height: calc(
+		var(--chart-text-top-margin) +
+		var(--chart-text-first-height) +
+		var(--chart-text-gap) +
+		var(--chart-text-second-height)
+	);
+
+	--chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
+}
+
+/* BASE STYLES */
+/* part of josh comeaus css reset */
+@layer base {
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		overflow-wrap: break-word;
+	}
+	/* 9. Improve line wrapping */
+	p {
+		text-wrap: pretty;
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		text-wrap: balance;
+	}
+	html {
+		scrollbar-gutter: stable;
+		scrollbar-width: thin;
+	}
+}
+
+/* UTILITIES */
+@utility grid-max {
+	--_gap: 2rem;
+	--_max-columns: 2;
+	--_min-column-size: 300px;
+	display: grid;
+	gap: var(--_gap);
+	grid-template-columns: repeat(
+			auto-fit,
+			minmax(
+				min(
+					max(
+						var(--_min-column-size),
+						calc(
+							(100% - var(--_gap) * var(--_max-columns)) /
+							var(--_max-columns)
+						)
+					),
+					100%
+				),
+				1fr
+			)
+		);
+}
+
+/* Custom utility for pseudo-random bar heights using CSS trig functions */
+@utility bar-height {
+	block-size: clamp(
+		50px,
+		calc(150px + 100px * sin((pi / 2) * var(--bar-index))),
+		var(--chart-content-height)
+	);
+}
+
+@utility no-scrollbar {
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+@utility w-layout {
+	inline-size: var(--host-layout-max-width);
+	margin-inline: calc(var(--padding-inline) * -2);
+	padding-inline: calc(var(--padding-inline) * 2);
+}
+
+/* ANIMATIONS */
 @keyframes --fade-in {
 	from {
 		opacity: 0;
@@ -103,18 +240,17 @@
 	}
 }
 
-/* only show view transition if no preference, the other option being:  */
-/* prefers-reduced-motion: reduce */
-/* @media screen and (prefers-reduced-motion: no-preference) { */
-@view-transition {
-	navigation: auto;
-}
-
 .mobile-sidebar {
 	animation: --slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 .mobile-sidebar.out {
 	animation: --slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* VIEW TRANSITIONS */
+
+@view-transition {
+	navigation: auto;
 }
 /* sets speed for view transitions */
 ::view-transition-group(*) {
@@ -154,6 +290,8 @@
 ::view-transition-old(home-image):only-child {
 	animation-name: --fade-to-right;
 }
+
+/* SCROLL DRIVEN ANIMATIONS */
 .scroll-sm,
 .scroll-md,
 .scroll-lg {
@@ -184,138 +322,4 @@
 }
 .scroll-lg:nth-child(2n):nth-child(n + 8) {
 	animation-name: --fade-in-from-right;
-}
-
-@theme {
-	--font-sans:
-		"Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-
-	--container-sm: 12rem;
-	--container-md: 26rem;
-	--container-lg: 36rem;
-
-	--container-2xl: 44rem;
-
-	--breakpoint-xs: 26rem;
-
-	--color-orange-100: oklch(94.72% 0.041 73.17);
-	--color-orange-200: oklch(91.55% 0.067 73.33);
-	--color-orange-400: oklch(75.76% 0.159 55.93);
-	--color-orange-600: oklch(68.11% 0.142 38.3);
-	--color-neutral-600: oklch(42.02% 0 0);
-	--color-neutral-900: oklch(20.02% 0 0);
-
-	/* Van state colors extracted from badge component - made more prominent */
-	--color-van-new: oklch(30% 0 0); /* even darker gray for better visibility */
-	--color-van-sale: oklch(40% 0.3 142); /* more saturated green */
-	--color-van-repair: oklch(60% 0.3 85); /* more saturated yellow */
-
-	--container-layout: min(var(--container-5xl), 100svw);
-
-	/* Responsive padding inline - updates automatically */
-	--padding-inline: 0.75rem; /* Mobile default */
-
-	/* Host layout max-width calculation - eliminates redundancy */
-	--host-layout-max-width: calc(
-		var(--container-layout) -
-		(2 * var(--padding-inline))
-	);
-
-	--mobile-menu-width: min(100dvw, 25rem);
-
-	/* Chart dimensions */
-	--chart-height: 350px;
-
-	/* Chart text area components - aliases for Tailwind spacing scale */
-	--chart-text-top-margin: var(--spacing-4); /* mt-4 = 1rem = 16px */
-	--chart-text-first-height: var(--spacing-4); /* h-4 = 1rem = 16px */
-	--chart-text-gap: var(--spacing-2); /* mb-2 = 0.5rem = 8px */
-	--chart-text-second-height: var(--spacing-3); /* h-3 = 0.75rem = 12px */
-
-	/* Total text area height (16 + 16 + 8 + 12 = 52px) */
-	--chart-text-height: calc(
-		var(--chart-text-top-margin) +
-		var(--chart-text-first-height) +
-		var(--chart-text-gap) +
-		var(--chart-text-second-height)
-	);
-
-	--chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
-}
-
-@utility grid-max {
-	--_gap: 2rem;
-	--_max-columns: 2;
-	--_min-column-size: 300px;
-	display: grid;
-	gap: var(--_gap);
-	grid-template-columns: repeat(
-			auto-fit,
-			minmax(
-				min(
-					max(
-						var(--_min-column-size),
-						calc(
-							(100% - var(--_gap) * var(--_max-columns)) /
-							var(--_max-columns)
-						)
-					),
-					100%
-				),
-				1fr
-			)
-		);
-}
-
-/* part of josh comeaus css reset */
-@layer base {
-	p,
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		overflow-wrap: break-word;
-	}
-	/* 9. Improve line wrapping */
-	p {
-		text-wrap: pretty;
-	}
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		text-wrap: balance;
-	}
-	html {
-		scrollbar-gutter: stable;
-		scrollbar-width: thin;
-	}
-}
-
-/* Custom utility for pseudo-random bar heights using CSS trig functions */
-@utility bar-height {
-	block-size: clamp(
-		50px,
-		calc(150px + 100px * sin((pi / 2) * var(--bar-index))),
-		var(--chart-content-height)
-	);
-}
-
-@utility no-scrollbar {
-	&::-webkit-scrollbar {
-		display: none;
-	}
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
-}
-
-@utility w-layout {
-	inline-size: calc(var(--host-layout-max-width) - (2 * var(--padding-inline)));
-	margin-inline: calc(var(--padding-inline) * -2);
-	padding-inline: calc(var(--padding-inline) * 2);
 }

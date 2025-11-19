@@ -4,7 +4,7 @@ import { hostNavItems } from '~/features/host/constants/host-nav-items';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomNavLink from '~/features/navigation/components/custom-nav-link';
 import navLinkClassName from '~/features/navigation/utils/nav-link-class-name';
-import type { Route } from './+types/hostLayout';
+import type { Route } from './+types/host-layout';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export default function HostLayout() {
