@@ -30,11 +30,12 @@ function getCost(rentedAt: Date, rentedTo: Date, price: number) {
 	return price * daysDifferent;
 }
 
-function getRandomId<T extends { id: string }>(ids: T[]) {
+function getRandomId<T extends { id: string }>(ids: T[]): string {
 	if (ids.length === 0) {
 		throw new Error('No ids to get');
 	}
-	return ids[Math.floor(Math.random() * ids.length)].id;
+	const randomIndex = Math.floor(Math.random() * ids.length);
+	return ids[randomIndex].id;
 }
 
 function findRentableVan(vanIds: VanModel[], excludedIds: string[]): string {

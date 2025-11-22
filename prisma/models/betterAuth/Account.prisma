@@ -2,7 +2,8 @@ model Account {
   id                    String    @id
   accountId             String
   providerId            String
-  userId                String    @db.VarChar(25)
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -10,9 +11,9 @@ model Account {
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
-  createdAt             DateTime?
-  updatedAt             DateTime?
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
+  @@index([userId])
   @@map("account")
 }

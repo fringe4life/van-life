@@ -15,17 +15,17 @@
       "routes/public/about": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/public/vans": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/login": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/auth/signUp": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/auth/signOut": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/auth/sign-up": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/auth/sign-out": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/host": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/income": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/transfers": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/reviews": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/host/addVan": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/host/add-van": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/host/rentals/rentals": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/host/rentals/rentalDetail": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/host/rentals/returnRental": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
-      "routes/host/hostVans": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/host/rentals/rental-detail": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/host/rentals/return-rental": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/host/host-vans": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/api/auth": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/public/404": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
     },
@@ -65,36 +65,42 @@
         "path": "vans/:vanSlug?",
         "config": {}
       },
+      "routes/layout/auth-layout": {
+        "id": "routes/layout/auth-layout",
+        "parentId": "routes/layout/layout",
+        "file": "app/routes/layout/auth-layout.tsx",
+        "config": {}
+      },
       "routes/auth/login": {
         "id": "routes/auth/login",
-        "parentId": "routes/layout/layout",
+        "parentId": "routes/layout/auth-layout",
         "file": "app/routes/auth/login.tsx",
         "path": "login",
         "config": {}
       },
-      "routes/auth/signUp": {
-        "id": "routes/auth/signUp",
-        "parentId": "routes/layout/layout",
-        "file": "app/routes/auth/signUp.tsx",
+      "routes/auth/sign-up": {
+        "id": "routes/auth/sign-up",
+        "parentId": "routes/layout/auth-layout",
+        "file": "app/routes/auth/sign-up.tsx",
         "path": "signup",
         "config": {}
       },
-      "routes/auth/signOut": {
-        "id": "routes/auth/signOut",
-        "parentId": "routes/layout/layout",
-        "file": "app/routes/auth/signOut.tsx",
+      "routes/auth/sign-out": {
+        "id": "routes/auth/sign-out",
+        "parentId": "routes/layout/auth-layout",
+        "file": "app/routes/auth/sign-out.tsx",
         "path": "signout",
         "config": {}
       },
-      "routes/layout/hostLayout": {
-        "id": "routes/layout/hostLayout",
+      "routes/layout/host-layout": {
+        "id": "routes/layout/host-layout",
         "parentId": "routes/layout/layout",
-        "file": "app/routes/layout/hostLayout.tsx",
+        "file": "app/routes/layout/host-layout.tsx",
         "config": {}
       },
       "routes/host/host": {
         "id": "routes/host/host",
-        "parentId": "routes/layout/hostLayout",
+        "parentId": "routes/layout/host-layout",
         "file": "app/routes/host/host.tsx",
         "path": "host",
         "index": true,
@@ -102,58 +108,58 @@
       },
       "routes/host/income": {
         "id": "routes/host/income",
-        "parentId": "routes/layout/hostLayout",
+        "parentId": "routes/layout/host-layout",
         "file": "app/routes/host/income.tsx",
         "path": "host/income",
         "config": {}
       },
       "routes/host/transfers": {
         "id": "routes/host/transfers",
-        "parentId": "routes/layout/hostLayout",
+        "parentId": "routes/layout/host-layout",
         "file": "app/routes/host/transfers.tsx",
         "path": "host/transfers",
         "config": {}
       },
       "routes/host/reviews": {
         "id": "routes/host/reviews",
-        "parentId": "routes/layout/hostLayout",
+        "parentId": "routes/layout/host-layout",
         "file": "app/routes/host/reviews.tsx",
         "path": "host/review",
         "config": {}
       },
-      "routes/host/addVan": {
-        "id": "routes/host/addVan",
-        "parentId": "routes/layout/hostLayout",
-        "file": "app/routes/host/addVan.tsx",
+      "routes/host/add-van": {
+        "id": "routes/host/add-van",
+        "parentId": "routes/layout/host-layout",
+        "file": "app/routes/host/add-van.tsx",
         "path": "host/add",
         "config": {}
       },
       "routes/host/rentals/rentals": {
         "id": "routes/host/rentals/rentals",
-        "parentId": "routes/layout/hostLayout",
+        "parentId": "routes/layout/host-layout",
         "file": "app/routes/host/rentals/rentals.tsx",
         "path": "host/rentals",
         "index": true,
         "config": {}
       },
-      "routes/host/rentals/rentalDetail": {
-        "id": "routes/host/rentals/rentalDetail",
-        "parentId": "routes/layout/hostLayout",
-        "file": "app/routes/host/rentals/rentalDetail.tsx",
+      "routes/host/rentals/rental-detail": {
+        "id": "routes/host/rentals/rental-detail",
+        "parentId": "routes/layout/host-layout",
+        "file": "app/routes/host/rentals/rental-detail.tsx",
         "path": "host/rentals/rent/:vanSlug",
         "config": {}
       },
-      "routes/host/rentals/returnRental": {
-        "id": "routes/host/rentals/returnRental",
-        "parentId": "routes/layout/hostLayout",
-        "file": "app/routes/host/rentals/returnRental.tsx",
+      "routes/host/rentals/return-rental": {
+        "id": "routes/host/rentals/return-rental",
+        "parentId": "routes/layout/host-layout",
+        "file": "app/routes/host/rentals/return-rental.tsx",
         "path": "host/rentals/returnRental/:rentId",
         "config": {}
       },
-      "routes/host/hostVans": {
-        "id": "routes/host/hostVans",
-        "parentId": "routes/layout/hostLayout",
-        "file": "app/routes/host/hostVans.tsx",
+      "routes/host/host-vans": {
+        "id": "routes/host/host-vans",
+        "parentId": "routes/layout/host-layout",
+        "file": "app/routes/host/host-vans.tsx",
         "path": "host/vans/:vanSlug?/:action?",
         "config": {}
       },
@@ -213,83 +219,88 @@
         "file": "./routes/public/vans.tsx",
         "path": "vans/:vanSlug?"
       },
+      "routes/layout/auth-layout": {
+        "id": "routes/layout/auth-layout",
+        "parentId": "routes/layout/layout",
+        "file": "./routes/layout/auth-layout.tsx"
+      },
       "routes/auth/login": {
         "id": "routes/auth/login",
-        "parentId": "routes/layout/layout",
+        "parentId": "routes/layout/auth-layout",
         "file": "./routes/auth/login.tsx",
         "path": "login"
       },
-      "routes/auth/signUp": {
-        "id": "routes/auth/signUp",
-        "parentId": "routes/layout/layout",
-        "file": "./routes/auth/signUp.tsx",
+      "routes/auth/sign-up": {
+        "id": "routes/auth/sign-up",
+        "parentId": "routes/layout/auth-layout",
+        "file": "./routes/auth/sign-up.tsx",
         "path": "signup"
       },
-      "routes/auth/signOut": {
-        "id": "routes/auth/signOut",
-        "parentId": "routes/layout/layout",
-        "file": "./routes/auth/signOut.tsx",
+      "routes/auth/sign-out": {
+        "id": "routes/auth/sign-out",
+        "parentId": "routes/layout/auth-layout",
+        "file": "./routes/auth/sign-out.tsx",
         "path": "signout"
       },
-      "routes/layout/hostLayout": {
-        "id": "routes/layout/hostLayout",
+      "routes/layout/host-layout": {
+        "id": "routes/layout/host-layout",
         "parentId": "routes/layout/layout",
-        "file": "./routes/layout/hostLayout.tsx"
+        "file": "./routes/layout/host-layout.tsx"
       },
       "routes/host/host": {
         "id": "routes/host/host",
-        "parentId": "routes/layout/hostLayout",
+        "parentId": "routes/layout/host-layout",
         "file": "./routes/host/host.tsx",
         "path": "host",
         "index": true
       },
       "routes/host/income": {
         "id": "routes/host/income",
-        "parentId": "routes/layout/hostLayout",
+        "parentId": "routes/layout/host-layout",
         "file": "./routes/host/income.tsx",
         "path": "host/income"
       },
       "routes/host/transfers": {
         "id": "routes/host/transfers",
-        "parentId": "routes/layout/hostLayout",
+        "parentId": "routes/layout/host-layout",
         "file": "./routes/host/transfers.tsx",
         "path": "host/transfers"
       },
       "routes/host/reviews": {
         "id": "routes/host/reviews",
-        "parentId": "routes/layout/hostLayout",
+        "parentId": "routes/layout/host-layout",
         "file": "./routes/host/reviews.tsx",
         "path": "host/review"
       },
-      "routes/host/addVan": {
-        "id": "routes/host/addVan",
-        "parentId": "routes/layout/hostLayout",
-        "file": "./routes/host/addVan.tsx",
+      "routes/host/add-van": {
+        "id": "routes/host/add-van",
+        "parentId": "routes/layout/host-layout",
+        "file": "./routes/host/add-van.tsx",
         "path": "host/add"
       },
       "routes/host/rentals/rentals": {
         "id": "routes/host/rentals/rentals",
-        "parentId": "routes/layout/hostLayout",
+        "parentId": "routes/layout/host-layout",
         "file": "./routes/host/rentals/rentals.tsx",
         "path": "host/rentals",
         "index": true
       },
-      "routes/host/rentals/rentalDetail": {
-        "id": "routes/host/rentals/rentalDetail",
-        "parentId": "routes/layout/hostLayout",
-        "file": "./routes/host/rentals/rentalDetail.tsx",
+      "routes/host/rentals/rental-detail": {
+        "id": "routes/host/rentals/rental-detail",
+        "parentId": "routes/layout/host-layout",
+        "file": "./routes/host/rentals/rental-detail.tsx",
         "path": "host/rentals/rent/:vanSlug"
       },
-      "routes/host/rentals/returnRental": {
-        "id": "routes/host/rentals/returnRental",
-        "parentId": "routes/layout/hostLayout",
-        "file": "./routes/host/rentals/returnRental.tsx",
+      "routes/host/rentals/return-rental": {
+        "id": "routes/host/rentals/return-rental",
+        "parentId": "routes/layout/host-layout",
+        "file": "./routes/host/rentals/return-rental.tsx",
         "path": "host/rentals/returnRental/:rentId"
       },
-      "routes/host/hostVans": {
-        "id": "routes/host/hostVans",
-        "parentId": "routes/layout/hostLayout",
-        "file": "./routes/host/hostVans.tsx",
+      "routes/host/host-vans": {
+        "id": "routes/host/host-vans",
+        "parentId": "routes/layout/host-layout",
+        "file": "./routes/host/host-vans.tsx",
         "path": "host/vans/:vanSlug?/:action?"
       },
       "routes/api/auth": {
@@ -334,19 +345,24 @@
                 "path": "vans/:vanSlug?"
               },
               {
-                "file": "./routes/auth/login.tsx",
-                "path": "login"
+                "file": "./routes/layout/auth-layout.tsx",
+                "children": [
+                  {
+                    "file": "./routes/auth/login.tsx",
+                    "path": "login"
+                  },
+                  {
+                    "file": "./routes/auth/sign-up.tsx",
+                    "path": "signup"
+                  },
+                  {
+                    "file": "./routes/auth/sign-out.tsx",
+                    "path": "signout"
+                  }
+                ]
               },
               {
-                "file": "./routes/auth/signUp.tsx",
-                "path": "signup"
-              },
-              {
-                "file": "./routes/auth/signOut.tsx",
-                "path": "signout"
-              },
-              {
-                "file": "./routes/layout/hostLayout.tsx",
+                "file": "./routes/layout/host-layout.tsx",
                 "children": [
                   {
                     "file": "./routes/host/host.tsx",
@@ -366,7 +382,7 @@
                     "path": "host/review"
                   },
                   {
-                    "file": "./routes/host/addVan.tsx",
+                    "file": "./routes/host/add-van.tsx",
                     "path": "host/add"
                   },
                   {
@@ -375,15 +391,15 @@
                     "path": "host/rentals"
                   },
                   {
-                    "file": "./routes/host/rentals/rentalDetail.tsx",
+                    "file": "./routes/host/rentals/rental-detail.tsx",
                     "path": "host/rentals/rent/:vanSlug"
                   },
                   {
-                    "file": "./routes/host/rentals/returnRental.tsx",
+                    "file": "./routes/host/rentals/return-rental.tsx",
                     "path": "host/rentals/returnRental/:rentId"
                   },
                   {
-                    "file": "./routes/host/hostVans.tsx",
+                    "file": "./routes/host/host-vans.tsx",
                     "path": "host/vans/:vanSlug?/:action?"
                   }
                 ]

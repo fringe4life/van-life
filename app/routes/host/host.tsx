@@ -135,6 +135,8 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 	const currentBalance =
 		typeof transactionSummary === 'number' ? transactionSummary : 0;
 
+	const isWithdrawing = (actionData?.formData?.type as string) === 'withdraw';
+
 	const fetcher = useFetcher();
 	const [isPending, startTransition] = useTransition();
 
@@ -158,16 +160,17 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 
 		startTransition(() => {
 			addOptimisticBalance({ amount, type: transactionType });
-
-			fetcher.submit(formData, {
-				method: 'POST',
-				action: href('/host'),
+			startTransition(async () => {
+				await fetcher.submit(formData, {
+					method: 'POST',
+					action: href('/host'),
+				});
 			});
 		});
 	};
 
 	const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-		setIsDepositing(e.currentTarget.checked);
+		startTransition(() => setIsDepositing(e.currentTarget.checked));
 	};
 
 	// Calculate income and elapsed time client-side
@@ -253,7 +256,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 						<Label>
 							Deposit
 							<Input
-								defaultChecked={true}
+								defaultChecked={!isWithdrawing}
 								name="type"
 								required
 								type="radio"
@@ -263,9 +266,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 						<Label>
 							Withdraw
 							<Input
-								defaultChecked={
-									(actionData?.formData?.type as string) === 'withdraw'
-								}
+								defaultChecked={isWithdrawing}
 								name="type"
 								onChange={handleChange}
 								type="radio"

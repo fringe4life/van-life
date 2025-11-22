@@ -1,5 +1,5 @@
-import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { betterAuth } from 'better-auth/minimal';
 import {
 	FIVE_MINUTES_IN_SECONDS,
 	ONE_DAY_IN_SECONDS,
@@ -16,6 +16,7 @@ export const auth = betterAuth({
 		enabled: true,
 		requireEmailVerification: false,
 	},
+	experimental: { joins: true },
 	databaseHooks: {
 		user: {
 			create: {

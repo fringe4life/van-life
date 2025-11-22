@@ -1,3 +1,4 @@
+import type { VanCreateManyInput } from '~/generated/prisma/models/Van';
 import { prisma } from '~/lib/prisma.server';
 import { getSlug } from '~/utils/get-slug';
 import { rents } from './seed-data/rents';
@@ -24,14 +25,15 @@ const main = async () => {
 
 	const data = await prisma.user.findMany();
 
-	const vansWithHosts = vans.map((van) => {
+	const vansWithHosts: VanCreateManyInput[] = vans.map((van) => {
 		const state = getVanState();
+		const hostId = getRandomId(data);
 		return {
 			...van,
 			slug: getSlug(van.name),
-			hostId: getRandomId(data),
 			state,
 			discount: state === 'on_sale' ? getRandomDiscount() : 0,
+			hostId,
 		};
 	});
 
