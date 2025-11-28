@@ -1,3 +1,4 @@
+import { TransactionType, VanState } from '~/generated/prisma/enums';
 import type { VanCreateManyInput } from '~/generated/prisma/models/Van';
 import { prisma } from '~/lib/prisma.server';
 import { getSlug } from '~/utils/get-slug';
@@ -32,7 +33,7 @@ const main = async () => {
 			...van,
 			slug: getSlug(van.name),
 			state,
-			discount: state === 'on_sale' ? getRandomDiscount() : 0,
+			discount: state === VanState.ON_SALE ? getRandomDiscount() : 0,
 			hostId,
 		};
 	});
@@ -109,7 +110,7 @@ const main = async () => {
 				{
 					userId: rent.renterId,
 					amount: -amount,
-					type: 'rental_return' as const,
+					type: TransactionType.RENTAL_RETURN,
 					rentId: rent.id,
 					description: `Payment for van rental ${rent.vanId}`,
 					createdAt: rentedTo,
@@ -118,7 +119,7 @@ const main = async () => {
 				{
 					userId: rent.hostId,
 					amount,
-					type: 'rental_payment' as const,
+					type: TransactionType.RENTAL_PAYMENT,
 					rentId: rent.id,
 					description: `Received payment for van ${rent.vanId}`,
 					createdAt: rentedTo,

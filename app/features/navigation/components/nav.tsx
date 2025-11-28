@@ -1,4 +1,5 @@
 import { Menu, X } from 'lucide-react';
+import { Activity } from 'react';
 import { href } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import { Button } from '~/components/ui/button';
@@ -25,7 +26,12 @@ export default function Nav({ hasToken }: NavProps) {
 				aria-label={isOpen ? 'Close menu' : 'Open menu'}
 				className="relative z-60 cursor-pointer bg-orange-400/50 md:hidden"
 			>
-				{isOpen ? <X /> : <Menu />}
+				<Activity mode={isOpen ? 'visible' : 'hidden'}>
+					<X />
+				</Activity>
+				<Activity mode={isOpen ? 'hidden' : 'visible'}>
+					<Menu />
+				</Activity>
 			</Button>
 		),
 		renderContent: (close) => {
@@ -52,7 +58,7 @@ export default function Nav({ hasToken }: NavProps) {
 	});
 
 	return (
-		<header className="flex items-center justify-between gap-3 px-(--padding-inline) py-9 sm:gap-6">
+		<header className="col-start-2 row-start-1 flex items-center justify-between gap-3 py-9 sm:gap-6">
 			<h1 className="font-black text-xl xs:text-2xl uppercase">
 				<CustomLink to={href('/')}>#vanlife</CustomLink>
 			</h1>

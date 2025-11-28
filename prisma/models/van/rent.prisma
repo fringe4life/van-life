@@ -9,7 +9,7 @@ model Rent {
   renter       UserInfo      @relation("renter", fields: [renterId], references: [userId])
   van          Van           @relation(fields: [vanId], references: [id])
   reviews      Review[]
-  transactions Transaction[] // Track all transactions related to this rental
+  transactions Transaction[]
 
   @@index([rentedTo])
   @@index([vanId])

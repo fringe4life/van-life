@@ -1,4 +1,5 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
+import { TransactionType } from '~/generated/prisma/enums';
 import { createGenericOrderBy } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
 import type { SortOption } from '~/types/types';
@@ -51,7 +52,7 @@ export async function getHostTransactions(
 	return await prisma.transaction.findMany({
 		where: {
 			userId,
-			type: 'rental_payment',
+			type: TransactionType.RENTAL_PAYMENT,
 		},
 		select: {
 			amount: true,

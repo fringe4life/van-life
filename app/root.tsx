@@ -35,17 +35,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 		});
 	}, []);
 	return (
-		<html
-			className="max-w-svw bg-neutral-50 md:[--padding-inline:3rem]"
-			lang="en"
-		>
+		<html className="bg-neutral-50 md:[--padding-inline:3rem]" lang="en">
 			<head>
 				<meta charSet="utf-8" />
 				<link href="/camper-van.png" rel="icon" type="image/png" />
 				<meta content="width=device-width, initial-scale=1" name="viewport" />
 				<Links />
 			</head>
-			<body className="mx-auto grid min-h-dvh w-full max-w-layout grid-cols-1 grid-rows-[104px_1fr_100px] bg-orange-50">
+			<body className="layout-grid mx-auto min-h-dvh max-w-layout overflow-x-clip bg-orange-50">
 				{children}
 				<ScrollRestoration />
 				<Scripts />

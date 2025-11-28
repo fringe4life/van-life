@@ -2,18 +2,15 @@ model Transaction {
   id          String          @id @default(cuid()) @db.VarChar(25)
   createdAt   DateTime        @default(now())
   type        TransactionType
-  amount      Float // Positive for deposits/earnings, negative for withdrawals/payments
+  amount      Float
   userId      String          @db.VarChar(25)
+  rentId      String?         @db.VarChar(25)
   description String?
+  rent        Rent?           @relation(fields: [rentId], references: [id])
+  userInfo    UserInfo        @relation(fields: [userId], references: [userId])
 
-  // Optional rental reference
-  rentId   String?  @db.VarChar(25)
-  rent     Rent?    @relation(fields: [rentId], references: [id])
-  userInfo UserInfo @relation(fields: [userId], references: [userId])
-
-  // Indexes for getUserTransactions query
-  @@index([userId]) // Used in: getUserTransactions (where userId)
-  @@index([rentId]) // Used in: getTransactionsByRent (where rentId)
-  @@index([createdAt(sort: Desc)]) // Used in: getUserTransactions (orderBy createdAt)
-  @@index([userId, type]) // Used in: filtering by transaction type
+  @@index([userId])
+  @@index([rentId])
+  @@index([createdAt(sort: Desc)])
+  @@index([userId, type])
 }

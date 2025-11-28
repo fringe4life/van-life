@@ -1,18 +1,18 @@
 enum VanType {
-  SIMPLE @map("simple")
-  LUXURY @map("luxury")
-  RUGGED @map("rugged")
+  SIMPLE
+  LUXURY
+  RUGGED
 }
 
 enum TransactionType {
-  DEPOSIT        @map("deposit")
-  WITHDRAW       @map("withdraw")
-  RENTAL_PAYMENT @map("rental_payment") // Renter pays host
-  RENTAL_RETURN  @map("rental_return") // Host pays renter when van is returned
+  DEPOSIT
+  WITHDRAW
+  RENTAL_PAYMENT
+  RENTAL_RETURN
 }
 
 enum VanState {
-  IN_REPAIR @map("in_repair")
-  ON_SALE   @map("on_sale")
-  AVAILABLE @map("available")
+  IN_REPAIR
+  ON_SALE
+  AVAILABLE
 }

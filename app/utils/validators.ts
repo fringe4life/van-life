@@ -93,9 +93,10 @@ export function isValidVanType(value: string): value is VanType {
  * @returns A valid VanType or "SIMPLE"
  */
 export function validateVanType(type: string): VanType {
-	return isValidVanType(type) ? type : 'simple';
+	return isValidVanType(type) ? type : VanType.SIMPLE;
 }
 
+const lowercaseVanTypes: LowercaseVanType[] = ['simple', 'rugged', 'luxury'];
 /**
  * Type guard to check if a string is a valid lowercase VanType
  * @param value - The value to check
@@ -104,7 +105,6 @@ export function validateVanType(type: string): VanType {
 export function isValidLowercaseVanType(
 	value: string
 ): value is LowercaseVanType {
-	const lowercaseVanTypes: LowercaseVanType[] = ['simple', 'rugged', 'luxury'];
 	return lowercaseVanTypes.includes(value as LowercaseVanType);
 }
 
@@ -178,7 +178,7 @@ export function isValidVanState(value: string): value is VanState {
  */
 export function validateVanState(state: string | null): VanState {
 	const stateString = state ?? '';
-	return isValidVanState(stateString) ? stateString : 'available';
+	return isValidVanState(stateString) ? stateString : VanState.AVAILABLE;
 }
 
 // ============================================================================
@@ -202,7 +202,7 @@ export function isValidTransactionType(
  * @returns A valid TransactionType
  */
 export function validateTransactionType(type: string): TransactionType {
-	return isValidTransactionType(type) ? type : 'deposit';
+	return isValidTransactionType(type) ? type : TransactionType.DEPOSIT;
 }
 
 // ============================================================================

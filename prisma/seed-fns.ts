@@ -44,7 +44,7 @@ function findRentableVan(vanIds: VanModel[], excludedIds: string[]): string {
 	let attempts = 0;
 
 	while (
-		(vanIds.find((v) => v.id === candidateId)?.state === 'in_repair' ||
+		(vanIds.find((v) => v.id === candidateId)?.state === VanState.IN_REPAIR ||
 			excludedIds.includes(candidateId)) &&
 		attempts < MaxAttempts
 	) {
@@ -74,7 +74,7 @@ function generateUniqueIds<T extends { id: string }>(
 	return { id1, id2 };
 }
 
-import type { VanState } from '~/generated/prisma/enums';
+import { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
 import { prisma } from '~/lib/prisma.server';
 
@@ -128,12 +128,16 @@ async function clearTables() {
 
 // Baseline VanState (do not derive NEW here)
 function getVanState(): VanState {
-	const states: VanState[] = ['in_repair', 'on_sale', 'available'];
+	const states: VanState[] = [
+		VanState.IN_REPAIR,
+		VanState.ON_SALE,
+		VanState.AVAILABLE,
+	];
 	return states[Math.floor(Math.random() * states.length)];
 }
 
 function isVanRentable(state: VanState | null): boolean {
-	return state !== 'in_repair';
+	return state !== VanState.IN_REPAIR;
 }
 
 function getRandomDiscount(min = 5, max = 100): number {

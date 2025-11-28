@@ -7,6 +7,7 @@ import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import VanPages from '~/features/vans/components/van-pages';
 import { displayPrice } from '~/features/vans/utils/display-price';
+import { TransactionType } from '~/generated/prisma/enums';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import type { QueryType } from '~/types/types.server';
 import { getElapsedTime } from '~/utils/get-elapsed-time';
@@ -44,9 +45,9 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 	const sumAmount = Array.isArray(userTransactions)
 		? userTransactions.reduce(
 				(total, transaction) =>
-					transaction.type === 'deposit'
+					transaction.type === TransactionType.DEPOSIT
 						? total + transaction.amount
-						: total - transaction.amount,
+						: -transaction.amount,
 				0
 			)
 		: 0;
@@ -102,7 +103,8 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 			renderProps={(item) => ({
 				...item,
 				// Map transaction data to match Income component expectations
-				amount: item.type === 'deposit' ? item.amount : -item.amount,
+				amount:
+					item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
 				rentedAt: item.createdAt,
 			})}
 			title="Transfers"

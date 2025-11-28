@@ -1,4 +1,5 @@
 import { INVALID_ID_ERROR } from '~/constants/constants';
+import { TransactionType } from '~/generated/prisma/enums';
 import { prisma } from '~/lib/prisma.server';
 import { isCUID } from '~/utils/check-is-cuid.server';
 
@@ -55,7 +56,7 @@ export async function returnVan(
 			data: {
 				userId,
 				amount: -amount,
-				type: 'rental_return',
+				type: TransactionType.RENTAL_RETURN,
 				rentId,
 				description: `Payment for van rental ${vanId}`,
 			},
@@ -66,7 +67,7 @@ export async function returnVan(
 			data: {
 				userId: updatedRent.hostId,
 				amount,
-				type: 'rental_payment',
+				type: TransactionType.RENTAL_PAYMENT,
 				rentId,
 				description: `Received payment for van ${vanId}`,
 			},

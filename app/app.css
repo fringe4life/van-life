@@ -42,7 +42,7 @@
 		(2 * var(--padding-inline))
 	);
 
-	--mobile-menu-width: min(100dvw, 25rem);
+	--mobile-menu-width: min(100vw, 25rem);
 
 	/* Chart dimensions */
 	--chart-height: 350px;
@@ -136,10 +136,20 @@
 	scrollbar-width: none; /* Firefox */
 }
 
-@utility w-layout {
+@utility full-layout {
+	margin-inline-start: calc(var(--padding-inline) * -1);
+	margin-inline-end: calc(var(--padding-inline) * -1);
+	inline-size: calc(100% + (2 * var(--padding-inline)));
+	padding-inline-start: var(--padding-inline);
+	padding-inline-end: var(--padding-inline);
+}
+
+@utility layout {
 	inline-size: var(--host-layout-max-width);
-	margin-inline: calc(var(--padding-inline) * -2);
-	padding-inline: calc(var(--padding-inline) * 2);
+}
+
+@utility layout-grid {
+	@apply grid grid-cols-[var(--padding-inline)_1fr_var(--padding-inline)] grid-rows-[104px_1fr_100px];
 }
 
 /* ANIMATIONS */

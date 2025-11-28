@@ -7,7 +7,7 @@ import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-se
 import CustomLink from '~/features/navigation/components/custom-link';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';
-import { validateLowercaseVanType } from '~/utils/validators';
+import { toLowercaseVanType } from '~/utils/validators';
 import VanBadge from './van-badge';
 
 const StyledCard = withVanCardStyles(Card);
@@ -70,7 +70,7 @@ export default function VanCard({
 					{action}
 					<Badge
 						className="@min-md/card:-row-end-1"
-						variant={validateLowercaseVanType(type.toLowerCase())}
+						variant={toLowercaseVanType(type)}
 					>
 						{type}
 					</Badge>

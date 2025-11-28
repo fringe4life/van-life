@@ -1,6 +1,6 @@
 import { SIX_MONTHS } from '~/constants/time-constants';
+import { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
-
 /**
  * Determines if a van is considered "new" based on its creation date
  * @param createdAt - The van's creation date
@@ -30,10 +30,10 @@ export function lowercaseVanState(van: VanModel): string {
 	if (isNew) {
 		return 'new';
 	}
-	if (van.state === 'in_repair') {
+	if (van.state === VanState.IN_REPAIR) {
 		return 'repair';
 	}
-	if (van.state === 'on_sale') {
+	if (van.state === VanState.ON_SALE) {
 		return 'sale';
 	}
 	return 'available';
@@ -58,5 +58,5 @@ export function lowercaseVanStateWithProcessor<T>(
  * A van is available when it's not rented and not in repair.
  */
 export function isVanAvailable(van: VanModel): boolean {
-	return !van.isRented && van.state !== 'in_repair';
+	return !van.isRented && van.state !== VanState.IN_REPAIR;
 }

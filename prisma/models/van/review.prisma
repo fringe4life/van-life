@@ -9,7 +9,6 @@ model Review {
   rent      Rent     @relation(fields: [rentId], references: [id])
   user      UserInfo @relation(fields: [userId], references: [userId])
 
-  // Indexes optimized for actual query patterns
-  @@index([rating(sort: Desc)]) // Used in: getHostReviewsPaginated (rating sorts)
-  @@index([createdAt(sort: Desc)]) // Used in: getHostReviews, getHostReviewsPaginated, getHostReviewsChartData
+  @@index([rating(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
 }

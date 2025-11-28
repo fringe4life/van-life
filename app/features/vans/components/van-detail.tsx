@@ -19,7 +19,10 @@ import { isVanAvailable } from '~/features/vans/utils/van-state-helpers';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';
 import { cn } from '~/utils/utils';
-import { validateLowercaseVanType } from '~/utils/validators';
+import {
+	toLowercaseVanType,
+	validateLowercaseVanType,
+} from '~/utils/validators';
 import VanBadge from './van-badge';
 import VanPrice from './van-price';
 
@@ -68,7 +71,7 @@ export default function VanDetail({
 							className={cn(
 								badgeVariants({
 									variant: vanIsAvailable
-										? validateLowercaseVanType(type.toLowerCase())
+										? toLowercaseVanType(type)
 										: 'unavailable',
 								}),
 								'@max-xl/card-full:hidden @min-xl/card-full:shrink-0'

@@ -1,6 +1,7 @@
 import { Badge } from '~/components/ui/badge';
 import { formatEnumLabel } from '~/features/vans/utils/format-enum';
 import { lowercaseVanStateWithProcessor } from '~/features/vans/utils/van-state-helpers';
+import { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
 
 type Props = { van: VanModel };
@@ -25,7 +26,7 @@ export default function VanBadge({ van }: Props) {
 	let labelRaw: string;
 	if (variant === 'new') {
 		labelRaw = 'NEW';
-	} else if (van.state === 'available') {
+	} else if (van.state === VanState.AVAILABLE) {
 		labelRaw = van.type;
 	} else {
 		labelRaw = (van.state as unknown as string) ?? 'AVAILABLE';

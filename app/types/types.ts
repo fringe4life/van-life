@@ -1,5 +1,7 @@
 // Type helper to convert VanType values to lowercase
-export type LowercaseVanType = 'simple' | 'rugged' | 'luxury';
+import type { VanType } from '~/generated/prisma/enums';
+
+export type LowercaseVanType = Lowercase<VanType>;
 
 // Type for badge variants (includes outline and unavailable)
 export type BadgeVariant = LowercaseVanType | 'outline' | 'unavailable';
@@ -12,3 +14,6 @@ export type Direction = 'forward' | 'backward';
 
 // Type for review sorting options
 export type SortOption = 'newest' | 'oldest' | 'highest' | 'lowest';
+
+// Type for Maybe
+export type Maybe<T> = T | null | undefined;

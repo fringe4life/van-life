@@ -1,7 +1,6 @@
 model Van {
   id          String    @id @default(cuid()) @db.VarChar(25)
   name        String    @unique @db.VarChar(60)
-  slug        String    @unique @db.VarChar(70)
   price       Int       @db.SmallInt
   description String    @db.VarChar(1024)
   imageUrl    String
@@ -11,13 +10,13 @@ model Van {
   createdAt   DateTime  @default(now()) @db.Date
   state       VanState? @default(AVAILABLE)
   discount    Int?      @default(0) @db.SmallInt
+  slug        String    @unique @db.VarChar(70)
   rent        Rent[]
   userInfo    UserInfo  @relation(fields: [hostId], references: [userId])
 
-  // Indexes optimized for actual query patterns
-  @@index([slug]) // Used in: getVanBySlug (public-facing URLs)
-  @@index([hostId]) // Used in: getHostVan, getHostVans, getHostVanCount
-  @@index([type]) // Used in: getVans, getVansCount
-  @@index([hostId, id(sort: Desc)]) // Optimized for: getHostVans pagination (where hostId + orderBy id)
-  @@index([type, id]) // Optimized for: getVans pagination (where type + orderBy id, direction is dynamic)
+  @@index([slug])
+  @@index([hostId])
+  @@index([type])
+  @@index([hostId, id(sort: Desc)])
+  @@index([type, id])
 }

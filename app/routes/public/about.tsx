@@ -32,7 +32,7 @@ export default function About() {
 			/>
 			<Image
 				alt="a couple enjoying their adventure"
-				classesForContainer="-mx-(--padding-inline) w-layout"
+				classesForContainer="full-layout"
 				className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:about-image]"
 				decoding="sync"
 				fetchPriority="high"

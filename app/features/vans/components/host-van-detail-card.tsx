@@ -19,7 +19,7 @@ import CustomNavLink from '~/features/navigation/components/custom-nav-link';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';
 import { cn } from '~/utils/utils';
-import { validateLowercaseVanType } from '~/utils/validators';
+import { toLowercaseVanType } from '~/utils/validators';
 import VanBadge from './van-badge';
 import VanPrice from './van-price';
 
@@ -49,16 +49,16 @@ function VanDetailCardRoot({ van, children, className }: VanDetailCardProps) {
 
 	const navLinks = [
 		{
-			label: 'Details',
+			children: 'Details',
 			to: href('/host/vans/:vanSlug?/:action?', { vanSlug }),
 			end: true,
 		},
 		{
-			label: 'Pricing',
+			children: 'Pricing',
 			to: href('/host/vans/:vanSlug?/:action?', { vanSlug, action: 'pricing' }),
 		},
 		{
-			label: 'Photos',
+			children: 'Photos',
 			to: href('/host/vans/:vanSlug?/:action?', { vanSlug, action: 'photos' }),
 		},
 	];
@@ -99,7 +99,7 @@ function VanDetailCardRoot({ van, children, className }: VanDetailCardProps) {
 						<div className="@min-md/detail:col-span-1 @min-md/detail:col-start-2 content-center">
 							<Badge
 								className="@max-md/detail:mt-4"
-								variant={validateLowercaseVanType(type.toLowerCase())}
+								variant={toLowercaseVanType(type)}
 							>
 								{type}
 							</Badge>
@@ -115,7 +115,7 @@ function VanDetailCardRoot({ van, children, className }: VanDetailCardProps) {
 							className="my-6 flex gap-6"
 							emptyStateMessage=""
 							items={navLinks}
-							renderKey={(item) => item.label}
+							renderKey={(item) => item.children}
 							renderProps={(item) => ({
 								className: ({
 									isActive,
@@ -126,9 +126,7 @@ function VanDetailCardRoot({ van, children, className }: VanDetailCardProps) {
 								}) =>
 									// biome-ignore lint/style/noNestedTernary: simply related to react routers nav links
 									isPending ? 'text-green-500' : isActive ? 'underline' : '',
-								to: item.to,
-								end: item.end,
-								children: item.label,
+								...item,
 							})}
 						/>
 					</CardContent>

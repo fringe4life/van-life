@@ -17,10 +17,10 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 	return (
 		<>
 			<Nav hasToken={hasToken} />
-			<main className="mb-6 grid grid-rows-subgrid px-[calc(var(--padding-inline)*2)] contain-content">
+			<main className="col-start-2 row-start-2 mb-6">
 				<Outlet />
 			</main>
-			<footer className="grid place-content-center bg-neutral-800 py-6.25 contain-strict">
+			<footer className="col-span-full row-start-3 grid place-content-center bg-neutral-800 py-6.25 contain-strict">
 				<p className="text-center text-gray-400 text-sm uppercase">
 					&copy;{new Date().getFullYear()} #vanlife
 				</p>

@@ -12,6 +12,7 @@ import { Await, data, href, useFetcher, useParams } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import { Button } from '~/components/ui/button';
+import { Card } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import UnsuccesfulState from '~/components/unsuccesful-state';
@@ -31,6 +32,7 @@ import VanCard from '~/features/vans/components/van-card';
 import VanCardSkeleton from '~/features/vans/components/van-card-skeleton';
 import { DEPOSIT, WITHDRAW } from '~/features/vans/constants/vans-constants';
 import { displayPrice } from '~/features/vans/utils/display-price';
+import { TransactionType } from '~/generated/prisma/enums';
 import { moneySchema } from '~/lib/schemas.server';
 import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
 import { tryCatch } from '~/utils/try-catch.server';
@@ -89,7 +91,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 	// Additional validation for money operations
 	let isValid = false;
-	if (result.type === 'withdraw') {
+	if (result.type === TransactionType.WITHDRAW) {
 		// For withdrawals, amount should be negative (or we'll make it negative)
 		isValid =
 			Math.abs(result.amount) >= MIN_ADD && Math.abs(result.amount) <= MAX_ADD;
@@ -107,7 +109,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 	// Adjust amount based on transaction type
 	const adjustedAmount =
-		result.type === 'withdraw'
+		result.type === TransactionType.WITHDRAW
 			? -Math.abs(result.amount) // Withdrawals are negative
 			: Math.abs(result.amount); // Deposits are positive
 
@@ -190,7 +192,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 				name="description"
 			/>
 			{/* Income Section */}
-			<div className="grid w-layout grid-cols-min items-center justify-between gap-x-2 bg-orange-100 py-6 sm:py-9">
+			<div className="full-layout grid grid-cols-min items-center justify-between gap-x-2 bg-orange-100 py-6 sm:py-9">
 				<h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 					Welcome, {name ? name : 'User'}!
 				</h2>
@@ -224,7 +226,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 			</div>
 
 			{/* Reviews Section */}
-			<div className="flex w-layout items-center justify-between bg-orange-200 py-6 sm:py-9">
+			<div className="full-layout flex items-center justify-between bg-orange-200 py-6 sm:py-9">
 				<div className="font-bold text-lg text-shadow-text sm:text-2xl">
 					{typeof avgRating === 'number' ? (
 						<span>
@@ -243,7 +245,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 			</div>
 
 			{/* Money Transaction Form */}
-			<div className="py-6 sm:py-9">
+			<Card className="mt-11 py-6 sm:py-9 md:w-1/2">
 				<h3 className="mb-4 font-bold text-lg text-neutral-900 sm:text-xl">
 					Add or Withdraw Money
 				</h3>
@@ -288,7 +290,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 					) : null}
 					<Button type="submit">Complete transaction</Button>
 				</fetcher.Form>
-			</div>
+			</Card>
 
 			{/* Vans Section */}
 			<Suspense
