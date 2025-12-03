@@ -1,11 +1,15 @@
 import { data, href } from 'react-router';
+import GenericComponent from '~/components/generic-component';
+import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
 import { getUserTransactions } from '~/db/user/analytics';
 import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Income from '~/features/host/components/income';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
-import VanPages from '~/features/vans/components/van-pages';
+import Pagination from '~/features/pagination/components/pagination';
+import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
+import VanHeader from '~/features/vans/components/van-header';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { TransactionType } from '~/generated/prisma/enums';
 import { loadHostSearchParams } from '~/lib/search-params.server';
@@ -70,44 +74,57 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 		amount: Math.round(transaction.amount),
 	}));
 
+	const limit = DEFAULT_LIMIT;
+
 	return (
-		<VanPages
-			Component={Income}
-			className="grid-max"
-			emptyStateMessage="Make some transactions and they will appear here."
-			items={filteredTransactions}
-			optionalElement={
-				<>
-					<title>Your Transfers | Van Life</title>
-					<meta
-						content="View your transaction history for deposits and withdrawals"
-						name="description"
-					/>
-					<p>
-						Last{' '}
-						<span className="font-bold text-neutral-600 underline">
-							{elapsedTime.elapsedDays} days
-						</span>
-					</p>
-					<p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
-						{displayPrice(sumAmount)}
-					</p>
-					<LazyBarChart mappedData={mappedData} />
-					<Sortable
-						itemCount={filteredTransactions.length}
-						title="Transaction History"
-					/>
-				</>
-			}
-			pathname={href('/host/transfers')}
-			renderProps={(item) => ({
-				...item,
-				// Map transaction data to match Income component expectations
-				amount:
-					item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
-				rentedAt: item.createdAt,
-			})}
-			title="Transfers"
-		/>
+		<PendingUi
+			as="section"
+			className="grid grid-rows-[min-content_min-content_1fr_min-content] contain-content"
+		>
+			<VanHeader>Transfers</VanHeader>
+
+			<title>Your Transfers | Van Life</title>
+			<meta
+				content="View your transaction history for deposits and withdrawals"
+				name="description"
+			/>
+			<p>
+				Last{' '}
+				<span className="font-bold text-neutral-600 underline">
+					{elapsedTime.elapsedDays} days
+				</span>
+			</p>
+			<p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
+				{displayPrice(sumAmount)}
+			</p>
+			<LazyBarChart mappedData={mappedData} />
+			<Sortable
+				itemCount={filteredTransactions.length}
+				title="Transaction History"
+			/>
+
+			<GenericComponent
+				as="div"
+				Component={Income}
+				className="grid-max mt-6"
+				emptyStateMessage="Make some transactions and they will appear here."
+				items={filteredTransactions}
+				renderProps={(item) => ({
+					...item,
+					// Map transaction data to match Income component expectations
+					amount:
+						item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
+					rentedAt: item.createdAt,
+				})}
+			/>
+			<Pagination
+				cursor={undefined}
+				hasNextPage={false}
+				hasPreviousPage={false}
+				items={filteredTransactions}
+				limit={limit}
+				pathname={href('/host/transfers')}
+			/>
+		</PendingUi>
 	);
 }

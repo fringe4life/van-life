@@ -124,7 +124,7 @@ export default function ReturnRental({
 					van={rent.van}
 				/>
 			</div>
-			{isUnableToPay && (
+			{!!isUnableToPay && (
 				<article>
 					<p className="text-lg text-red-400">
 						You cannot afford to return this van.
@@ -140,7 +140,7 @@ export default function ReturnRental({
 				<Button disabled={isUnableToPay} type="submit">
 					Return
 				</Button>
-				{actionData?.errors && <p>{actionData.errors}</p>}
+				{!!actionData?.errors && <p>{actionData.errors}</p>}
 			</CustomForm>
 		</section>
 	);

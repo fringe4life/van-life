@@ -61,7 +61,7 @@ export default function VanCard({
 							{name}
 							<span
 								className={clsx(
-									linkCoversCard &&
+									!!linkCoversCard &&
 										'absolute inset-0 h-full w-full overflow-hidden'
 								)}
 							/>

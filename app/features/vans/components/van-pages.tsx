@@ -7,6 +7,7 @@ import Pagination, {
 	type PaginationPropsForVanPages,
 } from '~/features/pagination/components/pagination';
 import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
+import VanHeader from './van-header';
 
 type VanPagesProps<T, P, U> = {
 	title: string;
@@ -43,12 +44,12 @@ export default function VanPages<P, T extends { id: string }, U>(
 			as="section"
 			className={clsx(
 				'grid contain-content',
-				optionalElement &&
+				!!optionalElement &&
 					'grid-rows-[min-content_min-content_1fr_min-content]',
 				!optionalElement && 'grid-rows-[min-content_1fr_min-content]'
 			)}
 		>
-			<h2 className="mb-6 font-bold text-3xl">{title}</h2>
+			<VanHeader>{title}</VanHeader>
 			{optionalElement}
 			<GenericComponent className="grid-max mt-6" items={items} {...rest} />
 			<Pagination

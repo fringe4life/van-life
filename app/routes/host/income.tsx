@@ -1,11 +1,15 @@
 import { data, href } from 'react-router';
+import GenericComponent from '~/components/generic-component';
+import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
 import { getHostTransactions } from '~/db/user/analytics';
 import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Income from '~/features/host/components/income';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
-import VanPages from '~/features/vans/components/van-pages';
+import Pagination from '~/features/pagination/components/pagination';
+import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
+import VanHeader from '~/features/vans/components/van-header';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import type { QueryType } from '~/types/types.server';
@@ -56,38 +60,51 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 		amount: Math.round(income.amount),
 	}));
 
+	const limit = DEFAULT_LIMIT;
+
 	return (
-		<VanPages
-			Component={Income}
-			className="grid-max"
-			emptyStateMessage="Rent some vans and your income will appear here."
-			items={filteredHostIncomes}
-			optionalElement={
-				<>
-					<p>
-						Last{' '}
-						<span className="font-bold text-neutral-600 underline">
-							{elapsedTime.elapsedDays} days
-						</span>
-					</p>
-					<p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
-						{displayPrice(sumIncome)}
-					</p>
-					<LazyBarChart mappedData={mappedData} />
-					<Sortable
-						itemCount={filteredHostIncomes.length}
-						title="Income Transactions"
-					/>
-					<title>Your Income | Van Life</title>
-					<meta
-						content="View your income from van rentals and track earnings"
-						name="description"
-					/>
-				</>
-			}
-			pathname={href('/host/income')}
-			renderProps={(item) => item}
-			title="Income"
-		/>
+		<PendingUi
+			as="section"
+			className="grid grid-rows-[min-content_min-content_1fr_min-content] contain-content"
+		>
+			<VanHeader>Income</VanHeader>
+
+			<p>
+				Last{' '}
+				<span className="font-bold text-neutral-600 underline">
+					{elapsedTime.elapsedDays} days
+				</span>
+			</p>
+			<p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
+				{displayPrice(sumIncome)}
+			</p>
+			<LazyBarChart mappedData={mappedData} />
+			<Sortable
+				itemCount={filteredHostIncomes.length}
+				title="Income Transactions"
+			/>
+			<title>Your Income | Van Life</title>
+			<meta
+				content="View your income from van rentals and track earnings"
+				name="description"
+			/>
+
+			<GenericComponent
+				as="div"
+				Component={Income}
+				className="grid-max mt-6"
+				emptyStateMessage="Rent some vans and your income will appear here."
+				items={filteredHostIncomes}
+				renderProps={(item) => item}
+			/>
+			<Pagination
+				cursor={undefined}
+				hasNextPage={false}
+				hasPreviousPage={false}
+				items={filteredHostIncomes}
+				limit={limit}
+				pathname={href('/host/income')}
+			/>
+		</PendingUi>
 	);
 }

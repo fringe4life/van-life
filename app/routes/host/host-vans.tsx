@@ -1,16 +1,20 @@
 import { useQueryStates } from 'nuqs';
 import { Activity } from 'react';
 import { data, href, type ShouldRevalidateFunctionArgs } from 'react-router';
+import GenericComponent from '~/components/generic-component';
+import PendingUi from '~/components/pending-ui';
 import UnsuccesfulState from '~/components/unsuccesful-state';
 import { getHostVanCount, getHostVans } from '~/db/van/host';
 import { determineHostVansRoute } from '~/features/host/utils/determine-host-vans-route';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
+import Pagination from '~/features/pagination/components/pagination';
+import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
 import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
 import VanDetailCard from '~/features/vans/components/host-van-detail-card';
 import VanCard from '~/features/vans/components/van-card';
-import VanPages from '~/features/vans/components/van-pages';
+import VanHeader from '~/features/vans/components/van-header';
 import { hostPaginationParsers } from '~/lib/parsers';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
@@ -96,6 +100,7 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 
 	// Use nuqs for client-side state management
 	const [{ cursor, limit }] = useQueryStates(hostPaginationParsers);
+	const effectiveLimit = limit ?? DEFAULT_LIMIT;
 
 	// Ensure vans is an array
 	const vansArray = Array.isArray(vans) ? vans : [];
@@ -134,37 +139,45 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 				)}
 			</Activity>
 			<Activity mode={isMainPage ? 'visible' : 'hidden'}>
-				<VanPages
-					// generic component props start
-					Component={VanCard}
-					className="grid-max"
-					emptyStateMessage="You are currently not renting any vans."
-					hasNextPage={hasNextPage}
-					hasPreviousPage={hasPreviousPage}
-					items={vansArray}
-					// generic component props end
-
-					// props for all use cases
-					pathname={href('/host/vans/:vanSlug?/:action?')}
-					renderProps={(van) => ({
-						link: href('/host/vans/:vanSlug?/:action?', { vanSlug: van.slug }),
-						van,
-						action: (
-							<p className="text-right">
-								<CustomLink
-									to={href('/host/vans/:vanSlug?/:action?', {
-										vanSlug: van.slug,
-										action: 'edit',
-									})}
-								>
-									Edit
-								</CustomLink>
-							</p>
-						),
-					})}
-					searchParams={{ cursor, limit }}
-					title="Your listed vans"
-				/>
+				<PendingUi
+					as="section"
+					className="grid grid-rows-[min-content_1fr_min-content] contain-content"
+				>
+					<VanHeader>Your listed vans</VanHeader>
+					<GenericComponent
+						as="div"
+						Component={VanCard}
+						className="grid-max mt-6"
+						emptyStateMessage="You are currently not renting any vans."
+						items={vansArray}
+						renderProps={(van) => ({
+							link: href('/host/vans/:vanSlug?/:action?', {
+								vanSlug: van.slug,
+							}),
+							van,
+							action: (
+								<p className="text-right">
+									<CustomLink
+										to={href('/host/vans/:vanSlug?/:action?', {
+											vanSlug: van.slug,
+											action: 'edit',
+										})}
+									>
+										Edit
+									</CustomLink>
+								</p>
+							),
+						})}
+					/>
+					<Pagination
+						cursor={cursor}
+						hasNextPage={hasNextPage}
+						hasPreviousPage={hasPreviousPage}
+						items={vansArray}
+						limit={effectiveLimit}
+						pathname={href('/host/vans/:vanSlug?/:action?')}
+					/>
+				</PendingUi>
 			</Activity>
 		</>
 	);

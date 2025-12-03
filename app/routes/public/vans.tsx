@@ -2,12 +2,15 @@ import { clsx } from 'clsx';
 import { useQueryStates } from 'nuqs';
 import { Activity, useTransition, ViewTransition } from 'react';
 import { data, href, type ShouldRevalidateFunctionArgs } from 'react-router';
+import GenericComponent from '~/components/generic-component';
 import ListItems from '~/components/list-items';
+import PendingUi from '~/components/pending-ui';
 import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import UnsuccesfulState from '~/components/unsuccesful-state';
 import { getVans, getVansCount } from '~/db/van/queries';
 import CustomLink from '~/features/navigation/components/custom-link';
+import Pagination from '~/features/pagination/components/pagination';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
@@ -17,7 +20,7 @@ import { buildVanSearchParams } from '~/features/pagination/utils/build-search-p
 import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
 import VanCard from '~/features/vans/components/van-card';
 import VanDetail from '~/features/vans/components/van-detail';
-import VanPages from '~/features/vans/components/van-pages';
+import VanHeader from '~/features/vans/components/van-header';
 import VanPrice from '~/features/vans/components/van-price';
 import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/search-params.server';
@@ -148,87 +151,95 @@ export default function Vans({ loaderData, params }: Route.ComponentProps) {
 			{/* Van list view - prerendered for fast navigation back */}
 			<ViewTransition>
 				<Activity mode={isVanDetailPage ? 'hidden' : 'visible'}>
-					<VanPages
-						// generic component props
-						Component={VanCard}
-						emptyStateMessage="There are no vans in our site."
-						hasNextPage={hasNextPage}
-						hasPreviousPage={hasPreviousPage}
-						items={vansArray}
-						// generic component props end
-						// props for all use cases
-						optionalElement={
-							<div className="mb-6 grid grid-cols-2 items-center gap-2 sm:grid-cols-[min-content_min-content_min-content_max-content] sm:gap-4">
-								{
-									<ListItems
-										getKey={(t) => t}
-										getRow={(t) => (
-											<Button
-												className={cn(
-													badgeVariants({
-														variant: t === type ? t : 'outline',
-													}),
-													'w-full cursor-pointer uppercase sm:w-fit'
-												)}
-												onClick={() => {
-													startTransition(() => {
-														setSearchParams({
-															type: t,
-															cursor: DEFAULT_CURSOR,
-															direction: DEFAULT_DIRECTION,
-														});
-													});
-												}}
-												variant="ghost"
-											>
-												{t}
-											</Button>
+					<PendingUi
+						as="section"
+						className="grid grid-rows-[min-content_min-content_1fr_min-content] contain-content"
+					>
+						<VanHeader>Explore our van options</VanHeader>
+						<div className="mb-6 grid grid-cols-2 items-center gap-2 sm:grid-cols-[min-content_min-content_min-content_max-content] sm:gap-4">
+							<ListItems
+								getKey={(t) => t}
+								getRow={(t) => (
+									<Button
+										className={cn(
+											badgeVariants({
+												variant: t === type ? t : 'outline',
+											}),
+											'w-full cursor-pointer uppercase sm:w-fit'
 										)}
-										items={badges}
-									/>
-								}
-								<Button
-									className={clsx(
-										'w-full cursor-pointer text-center sm:w-fit sm:text-left',
-										hasActiveTypeFilter && 'underline'
-									)}
-									onClick={() => {
-										startTransition(() => {
-											setSearchParams({
-												type: DEFAULT_FILTER,
-												cursor: DEFAULT_CURSOR,
-												direction: DEFAULT_DIRECTION,
+										onClick={() => {
+											startTransition(() => {
+												setSearchParams({
+													type: t,
+													cursor: DEFAULT_CURSOR,
+													direction: DEFAULT_DIRECTION,
+												});
 											});
+										}}
+										variant="ghost"
+									>
+										{t}
+									</Button>
+								)}
+								items={badges}
+							/>
+
+							<Button
+								className={clsx(
+									'w-full cursor-pointer text-center sm:w-fit sm:text-left',
+									Boolean(hasActiveTypeFilter) && 'underline'
+								)}
+								onClick={() => {
+									startTransition(() => {
+										setSearchParams({
+											type: DEFAULT_FILTER,
+											cursor: DEFAULT_CURSOR,
+											direction: DEFAULT_DIRECTION,
 										});
-									}}
-									variant="ghost"
-								>
-									Clear filters
-								</Button>
-							</div>
-						}
-						pathname={href('/vans/:vanSlug?')}
-						renderProps={(van) => ({
-							van,
-							filter: type,
-							action: (
-								<div className="grid justify-end">
-									<VanPrice van={van} />
-								</div>
-							),
-							link: (() => {
-								const baseUrl = href('/vans/:vanSlug?', { vanSlug: van.slug });
-								const search = buildVanSearchParams({
-									cursor,
-									limit,
-									type,
-								});
-								return search ? `${baseUrl}?${search}` : baseUrl;
-							})(),
-						})}
-						searchParams={{ cursor, limit, type }}
-						title="Explore our van options"
-					/>
+									});
+								}}
+								variant="ghost"
+							>
+								Clear filters
+							</Button>
+						</div>
+						<GenericComponent
+							Component={VanCard}
+							className="grid-max mt-6"
+							emptyStateMessage="There are no vans in our site."
+							items={vansArray}
+							renderKey={(van) => van.id}
+							renderProps={(van) => ({
+								van,
+								filter: type,
+								action: (
+									<div className="grid justify-end">
+										<VanPrice van={van} />
+									</div>
+								),
+								link: (() => {
+									const baseUrl = href('/vans/:vanSlug?', {
+										vanSlug: van.slug,
+									});
+									const search = buildVanSearchParams({
+										cursor,
+										limit,
+										type,
+									});
+									// biome-ignore lint/nursery/noLeakedRender:  TODO
+									return search ? `${baseUrl}?${search}` : baseUrl;
+								})(),
+							})}
+						/>
+						<Pagination
+							cursor={cursor}
+							hasNextPage={hasNextPage}
+							hasPreviousPage={hasPreviousPage}
+							items={vansArray}
+							limit={limit}
+							pathname={href('/vans/:vanSlug?')}
+						/>
+					</PendingUi>
 				</Activity>
 			</ViewTransition>
 		</>

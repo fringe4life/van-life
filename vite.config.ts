@@ -3,7 +3,6 @@ import tailwindcss from '@tailwindcss/vite';
 import { reactRouterDevTools } from 'react-router-devtools';
 import { defineConfig, type UserConfig } from 'vite';
 import babel from 'vite-plugin-babel';
-import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
 	plugins: [
 		reactRouterDevTools(),
@@ -17,6 +16,11 @@ export default defineConfig({
 			},
 		}),
 		reactRouter(),
-		tsconfigPaths(),
 	],
+	resolve: {
+		tsconfigPaths: true,
+	},
+	experimental: {
+		enableNativePlugin: true,
+	},
 } satisfies UserConfig);

@@ -14,7 +14,7 @@ export default function Income({ amount, createdAt }: IncomeProps) {
 				<p className="flex justify-between">
 					<span>{displayPrice(amount)} </span>
 					<span>
-						{createdAt && !Number.isNaN(createdAt)
+						{!!createdAt && !Number.isNaN(createdAt)
 							? createdAt.toDateString()
 							: 'unknown'}
 					</span>

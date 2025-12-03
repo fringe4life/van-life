@@ -211,7 +211,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 					<p
 						className={clsx(
 							'justify-self-end font-semibold text-neutral-90 text-xl0 xs:text-3xl sm:font-bold sm:text-4xl md:font-extrabold md:text-5xl',
-							isPending && 'opacity-75'
+							!!isPending && 'opacity-75'
 						)}
 					>
 						{displayPrice(optimisticBalance)}
@@ -279,6 +279,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 
 					<Input
 						defaultValue={(actionData?.formData?.amount as string) ?? ''}
+						// biome-ignore lint/nursery/noLeakedRender: not a render
 						max={isDepositing ? optimisticBalance : MAX_ADD}
 						min={MIN_ADD}
 						name="amount"

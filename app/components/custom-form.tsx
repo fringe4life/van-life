@@ -10,7 +10,7 @@ export default function CustomForm({
 }: React.ComponentProps<typeof Form>) {
 	const { usingForm } = useIsNavigating();
 	return (
-		<Form className={clsx(className, usingForm && 'opacity-75')} {...props}>
+		<Form className={clsx(className, !!usingForm && 'opacity-75')} {...props}>
 			<fieldset className={className} disabled={usingForm}>
 				{children}
 			</fieldset>

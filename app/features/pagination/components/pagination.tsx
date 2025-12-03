@@ -59,7 +59,7 @@ export default function Pagination<T extends { id: string }>({
 			</select>
 			{/* Navigation buttons */}
 			<div className="flex items-center gap-2">
-				{hasPreviousPage && safeItems.length > 0 ? (
+				{!!hasPreviousPage && safeItems.length > 0 ? (
 					<Button
 						aria-label="Previous page"
 						onClick={() => {
@@ -88,7 +88,7 @@ export default function Pagination<T extends { id: string }>({
 					</Button>
 				)}
 
-				{hasNextPage && safeItems.length > 0 ? (
+				{!!hasNextPage && safeItems.length > 0 ? (
 					<Button
 						aria-label="Next page"
 						onClick={() => {

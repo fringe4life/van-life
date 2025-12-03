@@ -1,4 +1,6 @@
 import { data, href } from 'react-router';
+import GenericComponent from '~/components/generic-component';
+import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
 import {
 	getHostReviewsChartData,
@@ -8,8 +10,10 @@ import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Review from '~/features/host/components/review/review';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
+import Pagination from '~/features/pagination/components/pagination';
+import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
 import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
-import VanPages from '~/features/vans/components/van-pages';
+import VanHeader from '~/features/vans/components/van-header';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/reviews';
@@ -93,32 +97,39 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			}))
 		: []; // Pass error string directly to GenericComponent
 
+	const limit = DEFAULT_LIMIT;
+
 	return (
-		<VanPages
-			// generic component props start
-			Component={Review}
-			emptyStateMessage="You have received no reviews"
-			hasNextPage={hasNextPage}
-			hasPreviousPage={hasPreviousPage}
-			// props to handle errors
-			items={reviewItems}
-			// props that are common
-			optionalElement={
-				<>
-					<title>Reviews | Van Life</title>
-					<meta
-						content="View reviews and ratings from your van rentals"
-						name="description"
-					/>
-					<LazyBarChart mappedData={result} />
-					<Sortable itemCount={safeChartData.length} title="Reviews" />
-				</>
-			}
-			pathname={href('/host/review')}
-			// pagination props
-			renderProps={(item) => item}
-			// optional
-			title="Your Reviews"
-		/>
+		<PendingUi
+			as="section"
+			className="grid grid-rows-[min-content_min-content_1fr_min-content] contain-content"
+		>
+			<VanHeader>Your Reviews</VanHeader>
+
+			<title>Reviews | Van Life</title>
+			<meta
+				content="View reviews and ratings from your van rentals"
+				name="description"
+			/>
+			<LazyBarChart mappedData={result} />
+			<Sortable itemCount={safeChartData.length} title="Reviews" />
+
+			<GenericComponent
+				as="div"
+				Component={Review}
+				className="grid-max mt-6"
+				emptyStateMessage="You have received no reviews"
+				items={reviewItems}
+				renderProps={(item) => item}
+			/>
+			<Pagination
+				cursor={undefined}
+				hasNextPage={hasNextPage}
+				hasPreviousPage={hasPreviousPage}
+				items={reviewItems}
+				limit={limit}
+				pathname={href('/host/review')}
+			/>
+		</PendingUi>
 	);
 }
