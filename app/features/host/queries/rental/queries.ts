@@ -1,14 +1,9 @@
-import { INVALID_ID_ERROR } from '~/constants/constants';
 import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Direction } from '~/types/types';
-import { isCUID } from '~/utils/check-is-cuid.server';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostRentedVan(rentId: string) {
-	if (!isCUID(rentId)) {
-		return INVALID_ID_ERROR;
-	}
 	return prisma.rent.findUnique({
 		where: { id: rentId },
 		include: { van: true },
@@ -21,9 +16,6 @@ export function getHostRentedVans(
 	limit: number,
 	direction: Direction = 'forward'
 ) {
-	if (!isCUID(hostId)) {
-		return INVALID_ID_ERROR;
-	}
 	const { actualCursor, sortOrder, takeAmount } =
 		getCursorPaginationInformation(cursor, limit, direction);
 
@@ -43,9 +35,6 @@ export function getHostRentedVans(
 }
 
 export function getHostRentedVanCount(hostId: string) {
-	if (!isCUID(hostId)) {
-		return INVALID_ID_ERROR;
-	}
 	return prisma.rent.count({
 		where: {
 			hostId,
@@ -62,9 +51,6 @@ export function getHostRents(
 	limit: number,
 	direction: Direction = 'forward'
 ) {
-	if (!isCUID(id)) {
-		return INVALID_ID_ERROR;
-	}
 	const { actualCursor, sortOrder, takeAmount } =
 		getCursorPaginationInformation(cursor, limit, direction);
 

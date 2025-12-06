@@ -4,7 +4,7 @@ import { data, href, type ShouldRevalidateFunctionArgs } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import UnsuccesfulState from '~/components/unsuccesful-state';
-import { getHostVanCount, getHostVans } from '~/db/van/host';
+import { validateCUIDS } from '~/dal/validate-cuids';
 import { determineHostVansRoute } from '~/features/host/utils/determine-host-vans-route';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
@@ -15,6 +15,7 @@ import { hasPagination } from '~/features/pagination/utils/has-pagination.server
 import VanDetailCard from '~/features/vans/components/host-van-detail-card';
 import VanCard from '~/features/vans/components/van-card';
 import VanHeader from '~/features/vans/components/van-header';
+import { getHostVanCount, getHostVans } from '~/features/vans/queries/host';
 import { hostPaginationParsers } from '~/lib/parsers';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
@@ -29,10 +30,17 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
 	const [vansResult, countResult] = await Promise.all([
-		tryCatch(
-			async () => await getHostVans(session.user.id, cursor, limit, direction)
+		tryCatch(() =>
+			validateCUIDS(getHostVans, [0] as const)(
+				session.user.id,
+				cursor,
+				limit,
+				direction
+			)
 		),
-		tryCatch(async () => await getHostVanCount(session.user.id)),
+		tryCatch(() =>
+			validateCUIDS(getHostVanCount, [0] as const)(session.user.id)
+		),
 	]);
 
 	const vans = vansResult.data ?? [];

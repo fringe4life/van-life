@@ -2,12 +2,13 @@ import { data, href } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
+import { validateCUIDS } from '~/dal/validate-cuids';
+import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
+import Review from '~/features/host/components/review/review';
 import {
 	getHostReviewsChartData,
 	getHostReviewsPaginated,
-} from '~/db/review/queries';
-import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
-import Review from '~/features/host/components/review/review';
+} from '~/features/host/queries/review/queries';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import Pagination from '~/features/pagination/components/pagination';
@@ -27,17 +28,20 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
 	// Load chart data and paginated reviews
 	const [chartDataResult, paginatedReviewsResult] = await Promise.all([
-		tryCatch(async () => await getHostReviewsChartData(session.user.id)),
-		tryCatch(
-			async () =>
-				await getHostReviewsPaginated({
-					userId: session.user.id,
+		tryCatch(() =>
+			validateCUIDS(getHostReviewsChartData, [0] as const)(session.user.id)
+		),
+		tryCatch(() => {
+			const getWithUserId = async (userId: string) =>
+				getHostReviewsPaginated({
+					userId,
 					cursor,
 					limit,
 					direction,
 					sort,
-				})
-		),
+				});
+			return validateCUIDS(getWithUserId, [0] as const)(session.user.id);
+		}),
 	]);
 
 	const chartData = chartDataResult.data ?? [];

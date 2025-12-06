@@ -3,15 +3,15 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-7.10.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-7.10.1-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.17-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.5-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.8.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.8.3-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.3.8-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-6.3.8-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-6.3.9-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.1.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-8.0.0--beta-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -66,7 +66,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with lazy loading, code splitting, and smart loader revalidation
-- 🔗 **URL State Management** with nuqs 2.8.0 via Context7 for type-safe search parameters
+- 🔗 **URL State Management** with nuqs 2.8.3 via Context7 for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
 - 🚫 **Smart Revalidation** with `shouldRevalidate` to prevent unnecessary data fetching
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
@@ -79,13 +79,13 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Frontend
 
 - **React canary** builds with stable Activity component for prerendering
-- **React Router 7.10.0** (file-based routing, SSR, optional route parameters)
+- **React Router 7.10.1** (file-based routing, SSR, optional route parameters)
 - **TypeScript 5.9.3** with strict configuration
 - **TailwindCSS 4.1.17** with modern CSS features
 - **Radix UI** for accessible components
-- **Lucide React 0.555.0** for icons
+- **Lucide React 0.556.0** for icons
 - **Recharts 3.5.1** for data visualization (lazy-loaded)
-- **nuqs 2.8.2** for type-safe URL state management via Context7 parsers
+- **nuqs 2.8.3** for type-safe URL state management via Context7 parsers
 
 ### Backend & Database
 
@@ -124,6 +124,8 @@ app/
 │   ├── ui/             # Shadcn UI components (buttons, inputs, cards, etc.)
 │   └── [common]        # Generic components (forms, lists, sortable, etc.)
 ├── constants/          # App-wide constants and enums
+├── dal/                # Data access layer utilities
+│   └── validate-cuids.ts  # Centralized CUID validation helper
 ├── db/                 # Database layer
 │   ├── rental/         # Rental-related queries and transactions
 │   ├── review/         # Review analytics and queries
@@ -199,6 +201,7 @@ prisma/
   - **Slug-based routing** with unique, SEO-friendly URLs (e.g., `/vans/modest-explorer`)
   - **ArkType regex validation** for slugs with built-in length constraints
   - Native JavaScript database drivers for better edge/serverless compatibility
+  - **Centralized CUID validation** with `validateCUIDS` helper for type-safe ID validation before database operations
 
 ### Setup Database
 
@@ -236,8 +239,23 @@ export default defineConfig({
 
 Notes:
 
-- The deprecated `package.json#prisma` block has been removed.
 - Environment variables load via `dotenv/config` in `prisma.config.ts`.
+
+### CUID Validation Helper
+
+The application uses a centralized `validateCUIDS` helper (`app/dal/validate-cuids.ts`) to validate CUID arguments before database operations:
+
+- **Type-safe validation** - Validates selected positional arguments as CUIDs using TypeScript generics
+- **Error handling** - Throws `INVALID_ID_ERROR` for `tryCatch` to handle consistently
+- **Route-level usage** - Validation applied at route call sites, keeping query modules focused on data access
+- **Inline usage** - Designed for inline usage within `tryCatch` blocks for consistent error handling
+
+```typescript
+// Example usage
+const result = await tryCatch(() =>
+  validateCUIDS(getUser, [0] as const)(session.user.id)
+);
+```
 
 ### Prisma Client Migration
 

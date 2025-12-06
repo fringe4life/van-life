@@ -1,9 +1,9 @@
 import { createContext, data, href, redirect } from 'react-router';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
-import { getHostRentedVan } from '~/db/rental/queries';
-import { returnVan } from '~/db/rental/transactions';
-import { getAccountSummary } from '~/db/user/analytics';
+import { getHostRentedVan } from '~/features/host/queries/rental/queries';
+import { returnVan } from '~/features/host/queries/rental/transactions';
+import { getAccountSummary } from '~/features/host/queries/user/analytics';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';

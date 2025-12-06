@@ -8,7 +8,6 @@ import PendingUi from '~/components/pending-ui';
 import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import UnsuccesfulState from '~/components/unsuccesful-state';
-import { getVans, getVansCount } from '~/db/van/queries';
 import CustomLink from '~/features/navigation/components/custom-link';
 import Pagination from '~/features/pagination/components/pagination';
 import {
@@ -22,6 +21,7 @@ import VanCard from '~/features/vans/components/van-card';
 import VanDetail from '~/features/vans/components/van-detail';
 import VanHeader from '~/features/vans/components/van-header';
 import VanPrice from '~/features/vans/components/van-price';
+import { getVans, getVansCount } from '~/features/vans/queries/queries';
 import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/search-params.server';
 import { VAN_TYPE_LOWERCASE } from '~/types/types.server';

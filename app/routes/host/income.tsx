@@ -2,9 +2,10 @@ import { data, href } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
-import { getHostTransactions } from '~/db/user/analytics';
+import { validateCUIDS } from '~/dal/validate-cuids';
 import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Income from '~/features/host/components/income';
+import { getHostTransactions } from '~/features/host/queries/user/analytics';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import Pagination from '~/features/pagination/components/pagination';
@@ -26,7 +27,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	const { sort } = loadHostSearchParams(request);
 
 	const result = await tryCatch(() =>
-		getHostTransactions(session.user.id, sort)
+		validateCUIDS(getHostTransactions, [0] as const)(session.user.id, sort)
 	);
 
 	return data(

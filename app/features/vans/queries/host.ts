@@ -1,14 +1,9 @@
-import { INVALID_ID_ERROR } from '~/constants/constants';
 import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Direction } from '~/types/types';
-import { isCUID } from '~/utils/check-is-cuid.server';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostVanBySlug(userId: string, vanSlug: string) {
-	if (!isCUID(userId)) {
-		return INVALID_ID_ERROR;
-	}
 	return prisma.van.findFirst({
 		where: {
 			slug: vanSlug,
@@ -23,9 +18,6 @@ export function getHostVans(
 	limit: number,
 	direction: Direction = 'forward'
 ) {
-	if (!isCUID(hostId)) {
-		return INVALID_ID_ERROR;
-	}
 	const { actualCursor, sortOrder, takeAmount } =
 		getCursorPaginationInformation(cursor, limit, direction);
 
@@ -41,9 +33,6 @@ export function getHostVans(
 }
 
 export function getHostVanCount(hostId: string) {
-	if (!isCUID(hostId)) {
-		return INVALID_ID_ERROR;
-	}
 	return prisma.van.count({
 		where: {
 			hostId,

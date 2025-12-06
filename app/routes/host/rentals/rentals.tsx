@@ -2,7 +2,11 @@ import { useQueryStates } from 'nuqs';
 import { data, href } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
-import { getHostRentedVanCount, getHostRentedVans } from '~/db/rental/queries';
+import { validateCUIDS } from '~/dal/validate-cuids';
+import {
+	getHostRentedVanCount,
+	getHostRentedVans,
+} from '~/features/host/queries/rental/queries';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
@@ -25,11 +29,17 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
 	const [vansResult, countResult] = await Promise.all([
-		tryCatch(
-			async () =>
-				await getHostRentedVans(session.user.id, cursor, limit, direction)
+		tryCatch(() =>
+			validateCUIDS(getHostRentedVans, [0] as const)(
+				session.user.id,
+				cursor,
+				limit,
+				direction
+			)
 		),
-		tryCatch(async () => await getHostRentedVanCount(session.user.id)),
+		tryCatch(() =>
+			validateCUIDS(getHostRentedVanCount, [0] as const)(session.user.id)
+		),
 	]);
 
 	const vans = vansResult.data ?? [];

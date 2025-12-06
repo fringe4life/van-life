@@ -1,14 +1,10 @@
-import { INVALID_ID_ERROR } from '~/constants/constants';
+/** biome-ignore-all lint/style/useNamingConvention: prisma style */
 import { TransactionType } from '~/generated/prisma/enums';
 import { createGenericOrderBy } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
 import type { SortOption } from '~/types/types';
-import { isCUID } from '~/utils/check-is-cuid.server';
 
 export async function getAccountSummary(userId: string) {
-	if (!isCUID(userId)) {
-		return INVALID_ID_ERROR;
-	}
 	const result = await prisma.transaction.aggregate({
 		where: { userId },
 		_sum: {
@@ -19,9 +15,6 @@ export async function getAccountSummary(userId: string) {
 }
 
 export async function getTransactionSummary(userId: string) {
-	if (!isCUID(userId)) {
-		return INVALID_ID_ERROR;
-	}
 	const result = await prisma.transaction.aggregate({
 		where: { userId },
 		_sum: {
@@ -38,10 +31,6 @@ export async function getHostTransactions(
 	userId: string,
 	sort: SortOption = 'newest'
 ) {
-	if (!isCUID(userId)) {
-		return INVALID_ID_ERROR;
-	}
-
 	// Create orderBy clause using generic sorting utility
 	const orderBy = createGenericOrderBy(sort, {
 		dateField: 'createdAt',
@@ -68,10 +57,6 @@ export async function getUserTransactions(
 	userId: string,
 	sort: SortOption = 'newest'
 ) {
-	if (!isCUID(userId)) {
-		return INVALID_ID_ERROR;
-	}
-
 	// Create orderBy clause using generic sorting utility
 	const orderBy = createGenericOrderBy(sort, {
 		dateField: 'createdAt',

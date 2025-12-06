@@ -17,3 +17,5 @@ export type SortOption = 'newest' | 'oldest' | 'highest' | 'lowest';
 
 // Type for Maybe
 export type Maybe<T> = T | null | undefined;
+
+export type MaybeError<T> = T | string;

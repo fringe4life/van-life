@@ -5,9 +5,10 @@ import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
-import { createVan } from '~/db/van/crud';
+import { validateCUIDS } from '~/dal/validate-cuids';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
+import { createVan } from '~/features/vans/queries/crud';
 import { addVanSchema } from '~/lib/schemas.server';
 import { getSlug } from '~/utils/get-slug';
 import { tryCatch } from '~/utils/try-catch.server';
@@ -36,7 +37,9 @@ export async function action({ request, context }: Route.ActionArgs) {
 		state: result.state ?? null,
 	};
 
-	const result2 = await tryCatch(() => createVan(resultWithHostId));
+	const result2 = await tryCatch(() =>
+		validateCUIDS(createVan, [0])(resultWithHostId)
+	);
 
 	if (result2.error || !result2.data) {
 		return {

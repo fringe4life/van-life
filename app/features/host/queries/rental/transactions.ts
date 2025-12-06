@@ -1,17 +1,11 @@
-import { INVALID_ID_ERROR } from '~/constants/constants';
 import { TransactionType } from '~/generated/prisma/enums';
 import { prisma } from '~/lib/prisma.server';
-import { isCUID } from '~/utils/check-is-cuid.server';
 
 export async function rentVan(
 	vanSlug: string,
 	renterId: string,
 	hostId: string
 ) {
-	if (!(isCUID(renterId) && isCUID(hostId))) {
-		throw new Error(INVALID_ID_ERROR);
-	}
-
 	// Look up van by slug to get its ID
 	const van = await prisma.van.findUnique({
 		where: { slug: vanSlug },
@@ -38,10 +32,6 @@ export async function returnVan(
 	amount: number,
 	vanId: string
 ) {
-	if (!(isCUID(rentId) && isCUID(vanId) && isCUID(userId))) {
-		throw new Error(INVALID_ID_ERROR);
-	}
-
 	return prisma.$transaction(async (tx) => {
 		// 1. Update rental record (mark as returned)
 		const updatedRent = await tx.rent.update({

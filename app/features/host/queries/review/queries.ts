@@ -1,4 +1,4 @@
-import { INVALID_ID_ERROR } from '~/constants/constants';
+/** biome-ignore-all lint/style/useNamingConvention: prisma style */
 import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
 import type { Prisma } from '~/generated/prisma/client';
 import {
@@ -7,13 +7,9 @@ import {
 } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Direction, SortOption } from '~/types/types';
-import { isCUID } from '~/utils/check-is-cuid.server';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostReviews(userId: string) {
-	if (!isCUID(userId)) {
-		return INVALID_ID_ERROR;
-	}
 	return prisma.review.findMany({
 		where: {
 			rent: {
@@ -57,10 +53,6 @@ export function getHostReviewsPaginated({
 	direction = 'forward',
 	sort = 'newest',
 }: GetHostReviewsPaginatedParams) {
-	if (!isCUID(userId)) {
-		return INVALID_ID_ERROR;
-	}
-
 	const { actualCursor, takeAmount } = getCursorPaginationInformation(
 		cursor,
 		limit,
@@ -133,9 +125,6 @@ export function getHostReviewsPaginated({
 }
 
 export function getHostReviewsByRating(userId: string) {
-	if (!isCUID(userId)) {
-		return INVALID_ID_ERROR;
-	}
 	return prisma.review.groupBy({
 		where: {
 			rent: {
@@ -148,9 +137,6 @@ export function getHostReviewsByRating(userId: string) {
 }
 
 export function getHostReviewsChartData(userId: string) {
-	if (!isCUID(userId)) {
-		return INVALID_ID_ERROR;
-	}
 	return prisma.review.findMany({
 		where: {
 			rent: {
@@ -165,9 +151,6 @@ export function getHostReviewsChartData(userId: string) {
 }
 
 export async function getAverageReviewRating(userId: string) {
-	if (!isCUID(userId)) {
-		return INVALID_ID_ERROR;
-	}
 	const avg = await prisma.review.aggregate({
 		_avg: {
 			rating: true,

@@ -17,20 +17,21 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import UnsuccesfulState from '~/components/unsuccesful-state';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
-import { getAverageReviewRating } from '~/db/review/analytics';
+import { validateCUIDS } from '~/dal/validate-cuids';
+import RatingStars from '~/features/host/components/review/rating-stars';
+import { getAverageReviewRating } from '~/features/host/queries/review/analytics';
 import {
 	getHostTransactions,
 	getTransactionSummary,
-} from '~/db/user/analytics';
-import { addMoney } from '~/db/user/payments';
-import { getHostVans } from '~/db/van/host';
-import RatingStars from '~/features/host/components/review/rating-stars';
+} from '~/features/host/queries/user/analytics';
+import { addMoney } from '~/features/host/queries/user/payments';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
 import VanCard from '~/features/vans/components/van-card';
 import VanCardSkeleton from '~/features/vans/components/van-card-skeleton';
 import { DEPOSIT, WITHDRAW } from '~/features/vans/constants/vans-constants';
+import { getHostVans } from '~/features/vans/queries/host';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { TransactionType } from '~/generated/prisma/enums';
 import { moneySchema } from '~/lib/schemas.server';
@@ -46,15 +47,26 @@ export async function loader({ context }: Route.LoaderArgs) {
 
 	// Create a promise for vans data (will be resolved on client)
 	const hostVansLimit = 2;
+	const getHostVansSafe = validateCUIDS(getHostVans, [0] as const);
 	const vansPromise = Promise.resolve(
-		getHostVans(session.user.id, undefined, hostVansLimit)
+		getHostVansSafe(session.user.id, undefined, hostVansLimit)
 	);
+
+	const getHostTransactionsSafe = validateCUIDS(getHostTransactions, [
+		0,
+	] as const);
+	const getAverageReviewRatingSafe = validateCUIDS(getAverageReviewRating, [
+		0,
+	] as const);
+	const getTransactionSummarySafe = validateCUIDS(getTransactionSummary, [
+		0,
+	] as const);
 
 	const [transactionsResult, avgRatingResult, transactionSummaryResult] =
 		await Promise.all([
-			tryCatch(async () => await getHostTransactions(session.user.id)),
-			tryCatch(async () => await getAverageReviewRating(session.user.id)),
-			tryCatch(async () => await getTransactionSummary(session.user.id)),
+			tryCatch(async () => await getHostTransactionsSafe(session.user.id)),
+			tryCatch(async () => await getAverageReviewRatingSafe(session.user.id)),
+			tryCatch(async () => await getTransactionSummarySafe(session.user.id)),
 		]);
 
 	const transactions = transactionsResult.data ?? [];
@@ -114,7 +126,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 			: Math.abs(result.amount); // Deposits are positive
 
 	const result2 = await tryCatch(() =>
-		addMoney(
+		validateCUIDS(addMoney, [0] as const)(
 			session.user.id,
 			adjustedAmount,
 			validateTransactionType(result.type)
