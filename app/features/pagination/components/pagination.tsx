@@ -6,11 +6,12 @@ import {
 	LIMITS,
 } from '~/features/pagination/pagination-constants';
 import { paginationParsers } from '~/lib/parsers';
+import type { Maybe } from '~/types/types';
 import { cn } from '~/utils/utils';
 import { validateLimit } from '~/utils/validators';
 
 type PaginationProps<T = unknown> = {
-	items: T[];
+	items: Maybe<T[]>;
 	limit: number;
 	cursor: string | undefined;
 	hasNextPage: boolean;
@@ -32,7 +33,6 @@ export default function Pagination<T extends { id: string }>({
 	const [, setSearchParams] = useQueryStates(paginationParsers);
 
 	// Ensure items is a valid array
-	const safeItems = Array.isArray(items) ? items : [];
 
 	const handleLimitChange = (newLimit: string) => {
 		// Keep cursor unchanged when changing limit - cursor represents position in dataset
@@ -40,6 +40,10 @@ export default function Pagination<T extends { id: string }>({
 			limit: validateLimit(Number(newLimit)),
 		});
 	};
+
+	if (!items) {
+		return null;
+	}
 
 	return (
 		<div className="my-6 flex items-center justify-between gap-4">
@@ -59,12 +63,12 @@ export default function Pagination<T extends { id: string }>({
 			</select>
 			{/* Navigation buttons */}
 			<div className="flex items-center gap-2">
-				{!!hasPreviousPage && safeItems.length > 0 ? (
+				{!!hasPreviousPage && items.length > 0 ? (
 					<Button
 						aria-label="Previous page"
 						onClick={() => {
 							// For backward pagination, use the first item's ID as cursor
-							const firstItem = safeItems[0];
+							const firstItem = items[0];
 							if (firstItem) {
 								setSearchParams({
 									cursor: firstItem.id,
@@ -88,12 +92,12 @@ export default function Pagination<T extends { id: string }>({
 					</Button>
 				)}
 
-				{!!hasNextPage && safeItems.length > 0 ? (
+				{!!hasNextPage && items.length > 0 ? (
 					<Button
 						aria-label="Next page"
 						onClick={() => {
 							// Get the last item's ID as the next cursor
-							const lastItem = safeItems.at(-1);
+							const lastItem = items.at(-1);
 							if (lastItem) {
 								setSearchParams({
 									cursor: lastItem.id,

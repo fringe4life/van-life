@@ -68,7 +68,7 @@ export default function Home() {
 				</p>
 				<CustomLink
 					className={cn(buttonVariants({ size: 'lg' }), 'max-w-[42.5ch]')}
-					to={href('/vans/:vanSlug?')}
+					to={href('/vans')}
 				>
 					Find your van
 				</CustomLink>

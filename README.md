@@ -9,9 +9,9 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.17-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.5-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.8.3-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.8.4-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.3.8-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-6.3.9-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-6.3.10-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.1.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-8.0.0--beta-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -295,7 +295,7 @@ generator client {
 
 ## URL State Management with nuqs
 
-The application uses **nuqs 2.8.2** for type-safe URL state management:
+The application uses **nuqs 2.8.4** for type-safe URL state management:
 
 ### Features
 
@@ -305,6 +305,7 @@ The application uses **nuqs 2.8.2** for type-safe URL state management:
 - **Bidirectional cursor pagination** with forward/backward navigation
 - **Automatic URL synchronization** with proper type handling
 - **View transitions support** for smooth navigation
+- **Pagination state preservation** - Search params (cursor, type, limit) preserved when navigating to detail pages and back
 
 ### Implementation
 
@@ -323,6 +324,17 @@ export const loadSearchParams = createLoader(paginationParsers);
 // Client-side usage
 const [{ cursor, limit, direction, type }, setSearchParams] =
   useQueryStates(paginationParsers);
+
+// Preserve pagination state in detail pages
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const { cursor, limit, type } = loadSearchParams(request);
+  // ... fetch data
+  return data({ van, cursor, limit, type });
+}
+
+// Build back link with preserved params
+const search = buildVanSearchParams({ cursor, limit, type });
+const backLink = search ? `${baseUrl}?${search}` : baseUrl;
 ```
 
 ---
@@ -487,8 +499,13 @@ route(":vanSlug", "./routes/vans/van.tsx");
 ### URL Examples
 
 - Public van detail: `/vans/modest-explorer`
+- Public van detail with pagination: `/vans/modest-explorer?cursor=abc123&type=luxury`
 - Host van detail: `/host/vans/beach-bum`
 - Rent van: `/host/rentals/rent/the-cruiser`
+
+### Pagination State Preservation
+
+When navigating from a paginated list to a detail page, pagination search params (cursor, type, limit) are preserved in the URL and automatically included in the back link. This ensures users return to the exact same position in the list they were viewing.
 
 ---
 

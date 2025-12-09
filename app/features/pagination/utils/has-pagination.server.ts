@@ -1,4 +1,4 @@
-import type { Direction } from '~/types/types';
+import type { Direction, Maybe } from '~/types/types';
 
 /**
  * Generic pagination utility that processes database results and returns
@@ -11,19 +11,19 @@ import type { Direction } from '~/types/types';
  * @returns Object with actualItems, hasNextPage, and hasPreviousPage
  */
 export function hasPagination<T>(
-	items: T[] | string | number,
+	items: Maybe<T[]>,
 	limit: number,
-	cursor: string | undefined,
+	cursor: Maybe<string>,
 	direction: Direction = 'forward'
 ): {
-	actualItems: T[] | string;
+	actualItems: Maybe<T[]>;
 	hasNextPage: boolean;
 	hasPreviousPage: boolean;
 } {
 	// If items is a string (error) or number (count), return as-is with no pagination
-	if (typeof items === 'string' || typeof items === 'number') {
+	if (items === null) {
 		return {
-			actualItems: items as T[] | string,
+			actualItems: null,
 			hasNextPage: false,
 			hasPreviousPage: false,
 		};

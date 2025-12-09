@@ -14,6 +14,7 @@
       "routes/public/home": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/public/about": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/public/vans": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/public/van-detail": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/login": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/sign-up": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/sign-out": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
@@ -62,7 +63,14 @@
         "id": "routes/public/vans",
         "parentId": "routes/layout/layout",
         "file": "app/routes/public/vans.tsx",
-        "path": "vans/:vanSlug?",
+        "path": "vans",
+        "config": {}
+      },
+      "routes/public/van-detail": {
+        "id": "routes/public/van-detail",
+        "parentId": "routes/layout/layout",
+        "file": "app/routes/public/van-detail.tsx",
+        "path": "vans/:vanSlug",
         "config": {}
       },
       "routes/layout/auth-layout": {
@@ -221,7 +229,13 @@
         "id": "routes/public/vans",
         "parentId": "routes/layout/layout",
         "file": "./routes/public/vans.tsx",
-        "path": "vans/:vanSlug?"
+        "path": "vans"
+      },
+      "routes/public/van-detail": {
+        "id": "routes/public/van-detail",
+        "parentId": "routes/layout/layout",
+        "file": "./routes/public/van-detail.tsx",
+        "path": "vans/:vanSlug"
       },
       "routes/layout/auth-layout": {
         "id": "routes/layout/auth-layout",
@@ -346,7 +360,11 @@
               },
               {
                 "file": "./routes/public/vans.tsx",
-                "path": "vans/:vanSlug?"
+                "path": "vans"
+              },
+              {
+                "file": "./routes/public/van-detail.tsx",
+                "path": "vans/:vanSlug"
               },
               {
                 "file": "./routes/layout/auth-layout.tsx",

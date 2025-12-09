@@ -1,6 +1,5 @@
 import type React from 'react';
-import { isEmptyList } from '~/utils/utils';
-
+import type { Maybe } from '~/types/types';
 import UnsuccesfulState from './unsuccesful-state';
 
 // Type guard to check if item has an id property
@@ -15,7 +14,7 @@ function hasId(item: unknown): item is { id: string } {
 
 export type GenericComponentProps<T, P, E extends React.ElementType = 'div'> = {
 	Component: React.ComponentType<P>;
-	items: T[] | string;
+	items: Maybe<T[]>;
 	renderProps: (item: T, index: number) => P;
 	renderKey?: (item: T, index: number) => React.Key;
 	className?: string;
@@ -34,9 +33,9 @@ const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	as,
 	wrapperProps,
 }: GenericComponentProps<T, P, E>) => {
-	const isEmpty = isEmptyList(items);
-	const isError = typeof items === 'string';
-	if (isEmpty || isError) {
+	const isError = items === null || items === undefined;
+	const isEmpty = !isError && items.length === 0;
+	if (isError || isEmpty) {
 		return <UnsuccesfulState isError message={emptyStateMessage} />;
 	}
 
