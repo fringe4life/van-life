@@ -1,4 +1,4 @@
-import { replace } from 'react-router';
+import { href, replace } from 'react-router';
 import { auth } from '~/lib/auth.server';
 import type { Route } from './+types/sign-out';
 
@@ -7,7 +7,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		headers: request.headers,
 		asResponse: true,
 	});
-	throw replace('/login', { headers: response.headers });
+	throw replace(href('/login'), { headers: response.headers });
 };
 
 export default function Signout() {

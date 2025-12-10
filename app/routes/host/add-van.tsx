@@ -16,7 +16,7 @@ import type { Route } from './+types/add-van';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function action({ request, context }: Route.ActionArgs) {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
 
@@ -33,7 +33,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 		...result,
 		slug: getSlug(result.name),
 		discount: result.discount ?? 0,
-		hostId: session.user.id,
+		hostId: user.id,
 		state: result.state ?? null,
 	};
 

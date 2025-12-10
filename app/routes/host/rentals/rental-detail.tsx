@@ -40,7 +40,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export async function action({ request, params, context }: Route.ActionArgs) {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
 
@@ -48,7 +48,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 
 	const result = rentVanSchema({
 		vanSlug: params.vanSlug,
-		renterId: session.user.id,
+		renterId: user.id,
 		hostId,
 	});
 

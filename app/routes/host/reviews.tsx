@@ -22,16 +22,14 @@ import type { Route } from './+types/reviews';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 
 	// Parse search parameters for pagination and sorting
 	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
 
 	// Load chart data and paginated reviews
 	const [chartDataResult, paginatedReviewsResult] = await Promise.all([
-		tryCatch(() =>
-			validateCUIDS(getHostReviewsChartData, [0])(session.user.id)
-		),
+		tryCatch(() => validateCUIDS(getHostReviewsChartData, [0])(user.id)),
 		tryCatch(() => {
 			const getWithUserId = async (userId: string) =>
 				getHostReviewsPaginated({
@@ -41,12 +39,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 					direction,
 					sort,
 				});
-			return validateCUIDS(getWithUserId, [0])(session.user.id);
+			return validateCUIDS(getWithUserId, [0])(user.id);
 		}),
 	]);
 
-	const chartData = chartDataResult.data ?? [];
-	const paginatedReviews = paginatedReviewsResult.data ?? [];
+	const chartData = chartDataResult.data;
+	const paginatedReviews = paginatedReviewsResult.data;
 
 	// Process pagination logic
 	const pagination = hasPagination(paginatedReviews, limit, cursor, direction);
@@ -120,7 +118,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			<VanHeader>Your Reviews</VanHeader>
 
 			{barChartElement}
-			<Sortable itemCount={chartData.length} title="Reviews" />
+			<Sortable itemCount={chartData?.length} title="Reviews" />
 
 			<GenericComponent
 				as="div"

@@ -14,7 +14,6 @@ import VanHeader from '~/features/vans/components/van-header';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { TransactionType } from '~/generated/prisma/enums';
 import { loadHostSearchParams } from '~/lib/search-params.server';
-import type { QueryType } from '~/types/types.server';
 import { getElapsedTime } from '~/utils/get-elapsed-time';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/transfers';
@@ -22,18 +21,18 @@ import type { Route } from './+types/transfers';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 
 	// Parse search parameters for sorting
 	const { sort } = loadHostSearchParams(request);
 
 	const result = await tryCatch(() =>
-		validateCUIDS(getUserTransactions, [0])(session.user.id, sort)
+		validateCUIDS(getUserTransactions, [0])(user.id, sort)
 	);
 
 	return data(
 		{
-			userTransactions: result.data as QueryType<typeof getUserTransactions>,
+			userTransactions: result.data,
 		},
 		{
 			headers: {
@@ -80,15 +79,15 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 	return (
 		<PendingUi
 			as="section"
-			className="grid grid-rows-[min-content_min-content_1fr_min-content] contain-content"
+			className="grid grid-rows-[min-content_min-content_min-content_var(--chart-height)_min-content_1fr_min-content] contain-content"
 		>
-			<VanHeader>Transfers</VanHeader>
-
 			<title>Your Transfers | Van Life</title>
 			<meta
 				content="View your transaction history for deposits and withdrawals"
 				name="description"
 			/>
+			<VanHeader>Transfers</VanHeader>
+
 			<p>
 				Last{' '}
 				<span className="font-bold text-neutral-600 underline">

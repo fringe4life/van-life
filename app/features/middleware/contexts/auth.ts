@@ -1,4 +1,4 @@
 import { createContext } from 'react-router';
-import type { Session } from '~/types/types.server';
+import type { User } from '~/types/types.server';
 
-export const authContext = createContext<Session>();
+export const authContext = createContext<User>();

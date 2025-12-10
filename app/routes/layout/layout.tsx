@@ -1,15 +1,14 @@
 import { data, Outlet } from 'react-router';
+import { hasAuthContext } from '~/features/middleware/contexts/has-auth';
+import { hasAuthMiddleware } from '~/features/middleware/functions/has-auth-middleware';
 import Nav from '~/features/navigation/components/nav';
-import { auth } from '~/lib/auth.server';
 import type { Route } from './+types/layout';
 
-export async function loader({ request }: Route.LoaderArgs) {
-	const response = await auth.api.getSession({
-		headers: request.headers,
-		asResponse: true,
-	});
-	const session = await response.json();
-	return data(session !== null, { headers: response.headers });
+export const middleware: Route.MiddlewareFunction[] = [hasAuthMiddleware];
+
+export function loader({ context }: Route.LoaderArgs) {
+	const hasAuth = context.get(hasAuthContext);
+	return data(hasAuth);
 }
 
 export default function Layout({ loaderData }: Route.ComponentProps) {

@@ -3,16 +3,27 @@ import { useId } from 'react';
 import { href, redirect, replace } from 'react-router';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
+import {
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
+import { hasAuthContext } from '~/features/middleware/contexts/has-auth';
+import { hasAuthMiddleware } from '~/features/middleware/functions/has-auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
 import { loginSchema } from '~/lib/schemas.server';
 import type { Route } from './+types/login';
 
-export async function loader({ request }: Route.LoaderArgs) {
-	const result = await auth.api.getSession({ headers: request.headers });
-	if (result) {
-		throw redirect('/host');
+export const middleware: Route.MiddlewareFunction[] = [hasAuthMiddleware];
+
+export function loader({ context }: Route.LoaderArgs) {
+	const hasAuth = context.get(hasAuthContext);
+	if (hasAuth) {
+		throw redirect(href('/host'));
 	}
 }
 
@@ -38,7 +49,7 @@ export async function action({ request }: Route.ActionArgs) {
 			email: (formData.email as string) ?? '',
 		};
 	}
-	throw replace('/host', {
+	throw replace(href('/host'), {
 		headers: response.headers,
 	});
 }
@@ -54,34 +65,40 @@ export default function Login({ actionData }: Route.ComponentProps) {
 				content="Sign in to your Van Life account to manage your van rentals and bookings"
 				name="description"
 			/>
-			<h2 className="font-bold text-2xl text-shadow-text sm:text-3xl">
-				Sign into your account
-			</h2>
-			<CustomForm className="grid items-center gap-4" method="POST">
-				<Input
-					autoFocus
-					defaultValue={actionData?.email ?? ''}
-					id={emailId}
-					name="email"
-					placeholder="john.doe@email.com"
-					type="email"
-				/>
-				<Input
-					defaultValue=""
-					id={passwordId}
-					name="password"
-					placeholder="password"
-					type="password"
-				/>
-				{actionData?.errors ? <p>{actionData.errors}</p> : null}
-				<Button type="submit">Sign in</Button>
-			</CustomForm>
-			<p>
-				<span>Don't have an account?</span>{' '}
-				<CustomLink className="text-orange-400" to={href('/signup')}>
-					Create one now
-				</CustomLink>
-			</p>
+			<Card className="grid gap-y-4">
+				<CardHeader>
+					<CardTitle>Sign into your account</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<CustomForm className="grid items-center gap-4" method="POST">
+						<Input
+							autoFocus
+							defaultValue={actionData?.email ?? ''}
+							id={emailId}
+							name="email"
+							placeholder="john.doe@email.com"
+							type="email"
+						/>
+						<Input
+							defaultValue=""
+							id={passwordId}
+							name="password"
+							placeholder="password"
+							type="password"
+						/>
+						{actionData?.errors ? <p>{actionData.errors}</p> : null}
+						<Button type="submit">Sign in</Button>
+					</CustomForm>
+				</CardContent>
+				<CardFooter>
+					<p>
+						<span>Don't have an account?</span>{' '}
+						<CustomLink className="text-orange-400" to={href('/signup')}>
+							Create one now
+						</CustomLink>
+					</p>
+				</CardFooter>
+			</Card>
 		</>
 	);
 }

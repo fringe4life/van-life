@@ -23,23 +23,16 @@ import type { Route } from './+types/rentals';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 
 	// Parse search parameters using nuqs loadHostSearchParams
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
 	const [vansResult, countResult] = await Promise.all([
 		tryCatch(() =>
-			validateCUIDS(getHostRentedVans, [0] as const)(
-				session.user.id,
-				cursor,
-				limit,
-				direction
-			)
+			validateCUIDS(getHostRentedVans, [0])(user.id, cursor, limit, direction)
 		),
-		tryCatch(() =>
-			validateCUIDS(getHostRentedVanCount, [0] as const)(session.user.id)
-		),
+		tryCatch(() => validateCUIDS(getHostRentedVanCount, [0])(user.id)),
 	]);
 
 	const vans = vansResult.data ?? [];

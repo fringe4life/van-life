@@ -24,16 +24,16 @@ import type { Route } from './+types/host-vans';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 
 	// Parse search parameters using nuqs loadHostSearchParams
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
 	const [vansResult, countResult] = await Promise.all([
 		tryCatch(() =>
-			validateCUIDS(getHostVans, [0])(session.user.id, cursor, limit, direction)
+			validateCUIDS(getHostVans, [0])(user.id, cursor, limit, direction)
 		),
-		tryCatch(() => validateCUIDS(getHostVanCount, [0])(session.user.id)),
+		tryCatch(() => validateCUIDS(getHostVanCount, [0])(user.id)),
 	]);
 
 	const vans = vansResult.data;

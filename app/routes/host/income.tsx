@@ -21,13 +21,13 @@ import type { Route } from './+types/income';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 
 	// Parse search parameters for sorting
 	const { sort } = loadHostSearchParams(request);
 
 	const { data: incomeData } = await tryCatch(() =>
-		validateCUIDS(getHostTransactions, [0])(session.user.id, sort)
+		validateCUIDS(getHostTransactions, [0])(user.id, sort)
 	);
 
 	return data(

@@ -13,10 +13,6 @@
       "headers": {
         "Authorization": "Bearer TODO"
       }
-    },
-    "css": {
-      "command": "npx",
-      "args": ["-y", "css-mcp"]
     }
   }
 }

@@ -1,11 +1,11 @@
-import { href, type MiddlewareFunction, redirect } from 'react-router';
+import type { MiddlewareFunction } from 'react-router';
 import { auth } from '~/lib/auth.server';
 import type { Maybe } from '~/types/types';
 import type { Session } from '~/types/types.server';
-import { authContext } from '../contexts/auth';
+import { hasAuthContext } from '../contexts/has-auth';
 import { setCookieHeaders } from '../utils/set-cookie-headers';
 
-export const authMiddleware: MiddlewareFunction<Response> = async (
+export const hasAuthMiddleware: MiddlewareFunction<Response> = async (
 	{ request, context },
 	next
 ) => {
@@ -15,15 +15,19 @@ export const authMiddleware: MiddlewareFunction<Response> = async (
 	});
 	const session: Maybe<Session> = responseWithHeaders?.response;
 
-	if (!session) {
-		throw redirect(href('/login'));
+	if (session?.user) {
+		context.set(hasAuthContext, true);
+	} else {
+		context.set(hasAuthContext, false);
 	}
-
-	context.set(authContext, session.user);
 
 	// Call next to continue the middleware chain
 	const result = await next();
 
-	// Set cookie headers to update cookie cache
-	return setCookieHeaders(responseWithHeaders, result);
+	// If user is logged in, update cookie cache
+	if (session?.user) {
+		return setCookieHeaders(responseWithHeaders, result);
+	}
+
+	return result;
 };

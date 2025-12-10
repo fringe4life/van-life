@@ -44,13 +44,13 @@ import type { Route } from './+types/host';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function loader({ context }: Route.LoaderArgs) {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 
 	// Create a promise for vans data (will be resolved on client)
 	const hostVansLimit = 2;
-	const getHostVansSafe = validateCUIDS(getHostVans, [0] as const);
+	const getHostVansSafe = validateCUIDS(getHostVans, [0]);
 	const vansPromise = Promise.resolve(
-		getHostVansSafe(session.user.id, undefined, hostVansLimit)
+		getHostVansSafe(user.id, undefined, hostVansLimit)
 	);
 
 	const getHostTransactionsSafe = validateCUIDS(getHostTransactions, [0]);
@@ -59,9 +59,9 @@ export async function loader({ context }: Route.LoaderArgs) {
 
 	const [transactionsResult, avgRatingResult, transactionSummaryResult] =
 		await Promise.all([
-			tryCatch(() => getHostTransactionsSafe(session.user.id)),
-			tryCatch(() => getAverageReviewRatingSafe(session.user.id)),
-			tryCatch(() => getTransactionSummarySafe(session.user.id)),
+			tryCatch(() => getHostTransactionsSafe(user.id)),
+			tryCatch(() => getAverageReviewRatingSafe(user.id)),
+			tryCatch(() => getTransactionSummarySafe(user.id)),
 		]);
 
 	const transactions = transactionsResult.data;
@@ -71,7 +71,7 @@ export async function loader({ context }: Route.LoaderArgs) {
 		{
 			vansPromise,
 			avgRating,
-			name: session.user.name,
+			name: user.name,
 			transactions,
 			transactionSummary: transactionSummaryResult.data,
 		},
@@ -84,7 +84,7 @@ export async function loader({ context }: Route.LoaderArgs) {
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
 	const result = moneySchema(formData);
@@ -122,7 +122,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 	const result2 = await tryCatch(() =>
 		validateCUIDS(addMoney, [0] as const)(
-			session.user.id,
+			user.id,
 			adjustedAmount,
 			validateTransactionType(result.type)
 		)

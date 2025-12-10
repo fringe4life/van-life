@@ -34,11 +34,11 @@ const fetchSharedDataMiddleware: Route.MiddlewareFunction = async (
 	{ params, context },
 	next
 ) => {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 
 	const [rentResult, moneyResult] = await Promise.all([
 		tryCatch(async () => await getHostRentedVan(params.rentId)),
-		tryCatch(async () => await getAccountSummary(session.user.id)),
+		tryCatch(async () => await getAccountSummary(user.id)),
 	]);
 
 	const rent = rentResult.data;
@@ -75,7 +75,7 @@ export function loader({ context }: Route.LoaderArgs) {
 }
 
 export async function action({ params, context }: Route.ActionArgs) {
-	const session = context.get(authContext);
+	const user = context.get(authContext);
 	const { rent, money } = context.get(sharedRentalDataContext);
 
 	const { rentId } = params;
@@ -88,7 +88,7 @@ export async function action({ params, context }: Route.ActionArgs) {
 	}
 
 	const returnResult = await tryCatch(() =>
-		returnVan(rentId, session.user.id, amountToPay, rent.van.id)
+		returnVan(rentId, user.id, amountToPay, rent.van.id)
 	);
 
 	if (returnResult.error || !returnResult.data) {
