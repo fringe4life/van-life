@@ -1,6 +1,8 @@
 import { createSerializer } from 'nuqs/server';
+import { validateLimit } from '~/features/pagination/utils/validators';
+import { validateVanTypeOrEmpty } from '~/features/vans/utils/validators';
 import { hostPaginationParsers, paginationParsers } from '~/lib/parsers';
-import { validateLimit, validateVanTypeOrEmpty } from '~/utils/validators';
+import type { Maybe } from '~/types/types';
 
 // Create serializers for different use cases
 const serializePaginationParams = createSerializer(paginationParsers);
@@ -14,8 +16,8 @@ const serializeHostPaginationParams = createSerializer(hostPaginationParsers);
 export function buildVanSearchParams(params: {
 	cursor: string;
 	limit: number;
-	type?: string | null;
-	vanFilter?: string | null;
+	type?: Maybe<string>;
+	vanFilter?: Maybe<string>;
 }): string {
 	const { cursor, limit, type, vanFilter } = params;
 
@@ -72,7 +74,7 @@ export function buildSearchParams(
 	params: {
 		cursor?: string;
 		limit?: number;
-		type?: string | null;
+		type?: Maybe<string>;
 		direction?: string;
 		sort?: string;
 	},

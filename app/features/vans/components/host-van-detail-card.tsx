@@ -16,10 +16,11 @@ import {
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
 import CustomNavLink from '~/features/navigation/components/custom-nav-link';
+import { toLowercaseVanType } from '~/features/vans/utils/validators';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';
+import type { Maybe } from '~/types/types';
 import { cn } from '~/utils/utils';
-import { toLowercaseVanType } from '~/utils/validators';
 import VanBadge from './van-badge';
 import VanPrice from './van-price';
 
@@ -28,7 +29,7 @@ const StyledCard = withVanCardStyles(Card);
 /**
  * Context for sharing van data within VanDetailCard compound component
  */
-const VanDetailCardContext = createContext<VanModel | null>(null);
+const VanDetailCardContext = createContext<Maybe<VanModel>>(null);
 
 function useVanDetailCard() {
 	const van = use(VanDetailCardContext);

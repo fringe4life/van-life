@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DEFAULT_IMAGE_QUALITY } from '~/features/image/img-constants';
 import { createNewImageSizeWithAspectRatio } from '~/features/image/utils/create-new-image-size';
+import type { Maybe } from '~/types/types';
 import canUseDom from '~/utils/can-use-dom';
 import { cn } from '~/utils/utils';
 
@@ -71,7 +72,7 @@ export default function Image({
 	/** State to track if the full-resolution image has loaded */
 	const [loaded, setLoaded] = useState(false);
 	/** State to store the full-resolution image source */
-	const [fullSrc, setFullSrc] = useState<string | null>(null);
+	const [fullSrc, setFullSrc] = useState<Maybe<string>>(null);
 
 	/**
 	 * Effect to load the full-resolution image in the background

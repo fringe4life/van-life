@@ -43,25 +43,21 @@ import type { Route } from './+types/host';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
+const HOST_VANS_LIMIT = 2;
+
 export async function loader({ context }: Route.LoaderArgs) {
 	const user = context.get(authContext);
 
 	// Create a promise for vans data (will be resolved on client)
-	const hostVansLimit = 2;
-	const getHostVansSafe = validateCUIDS(getHostVans, [0]);
 	const vansPromise = Promise.resolve(
-		getHostVansSafe(user.id, undefined, hostVansLimit)
+		validateCUIDS(getHostVans, [0])(user.id, undefined, HOST_VANS_LIMIT)
 	);
-
-	const getHostTransactionsSafe = validateCUIDS(getHostTransactions, [0]);
-	const getAverageReviewRatingSafe = validateCUIDS(getAverageReviewRating, [0]);
-	const getTransactionSummarySafe = validateCUIDS(getTransactionSummary, [0]);
 
 	const [transactionsResult, avgRatingResult, transactionSummaryResult] =
 		await Promise.all([
-			tryCatch(() => getHostTransactionsSafe(user.id)),
-			tryCatch(() => getAverageReviewRatingSafe(user.id)),
-			tryCatch(() => getTransactionSummarySafe(user.id)),
+			tryCatch(() => validateCUIDS(getHostTransactions, [0])(user.id)),
+			tryCatch(() => validateCUIDS(getAverageReviewRating, [0])(user.id)),
+			tryCatch(() => validateCUIDS(getTransactionSummary, [0])(user.id)),
 		]);
 
 	const transactions = transactionsResult.data;
@@ -121,7 +117,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 			: Math.abs(result.amount); // Deposits are positive
 
 	const result2 = await tryCatch(() =>
-		validateCUIDS(addMoney, [0] as const)(
+		validateCUIDS(addMoney, [0])(
 			user.id,
 			adjustedAmount,
 			validateTransactionType(result.type)

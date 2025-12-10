@@ -20,12 +20,12 @@ import VanCard from '~/features/vans/components/van-card';
 import VanHeader from '~/features/vans/components/van-header';
 import VanPrice from '~/features/vans/components/van-price';
 import { getVans, getVansCount } from '~/features/vans/queries/queries';
+import { VAN_TYPE_LOWERCASE } from '~/features/vans/types.server';
+import { validateVanType } from '~/features/vans/utils/validators';
 import { paginationParsers } from '~/lib/parsers';
 import { loadSearchParams } from '~/lib/search-params.server';
-import { VAN_TYPE_LOWERCASE } from '~/types/types.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import { cn } from '~/utils/utils';
-import { validateVanType } from '~/utils/validators';
 import type { Route } from './+types/vans';
 
 export async function loader({ request }: Route.LoaderArgs) {

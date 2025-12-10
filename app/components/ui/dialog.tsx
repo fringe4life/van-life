@@ -2,7 +2,7 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 import type * as React from 'react';
-
+import type { Maybe } from '~/types/types';
 import { cn } from '~/utils/utils';
 
 function Dialog({
@@ -55,7 +55,7 @@ function DialogContent({
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
 	showCloseButton?: boolean;
 	unstyled?: boolean;
-	container?: HTMLElement | null;
+	container?: Maybe<HTMLElement>;
 }) {
 	return (
 		<DialogPortal container={container ?? undefined} data-slot="dialog-portal">

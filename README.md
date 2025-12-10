@@ -139,10 +139,12 @@ app/
 │   ├── middleware/     # Auth middleware and contexts
 │   ├── navigation/     # Navigation components and hooks
 │   ├── pagination/     # Pagination utilities and components
+│   │   └── utils/      # Pagination validators and utilities
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, etc.)
 │       ├── constants/  # Van-related constants
-│       └── utils/      # Van helpers (pricing, styling, display)
+│       ├── types/      # Van-specific TypeScript types
+│       └── utils/      # Van helpers (pricing, styling, display, validators)
 ├── hooks/              # Custom React hooks
 ├── lib/                # Server-side utilities
 │   ├── auth.server.ts      # Better-auth configuration
@@ -161,7 +163,7 @@ app/
 │       ├── about.tsx   # About page
 │       └── 404.tsx     # Not found page
 ├── types/              # TypeScript type definitions
-├── utils/              # Utility functions
+├── utils/              # Utility functions (transaction validators, pricing, etc.)
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
@@ -256,6 +258,20 @@ const result = await tryCatch(() =>
   validateCUIDS(getUser, [0] as const)(session.user.id)
 );
 ```
+
+### Feature-Specific Validators
+
+The application uses **feature-specific validators** organized by domain for better maintainability:
+
+- **Van validators** (`app/features/vans/utils/validators.ts`) - VanType and VanState validation with type guards and conversion utilities
+- **Pagination validators** (`app/features/pagination/utils/validators.ts`) - Limit, direction, sort, and cursor validation for pagination
+- **Transaction validators** (`app/utils/validators.ts`) - TransactionType validation for financial operations
+
+**Benefits:**
+- **Better organization** - Validators co-located with their feature domain
+- **Easier maintenance** - Changes to validation logic isolated to specific features
+- **Type safety** - Type guards and validation functions with proper TypeScript narrowing
+- **Reusability** - Validators can be imported where needed within each feature
 
 ### Prisma Client Migration
 
@@ -899,6 +915,7 @@ export default config;
 - **Error handling** with proper error boundaries
 - **nuqs** for type-safe URL state management
 - **Prisma** with proper type generation and optimized ID constraints
+- **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization
 
 ### GitHub Actions (CodeQL)
 

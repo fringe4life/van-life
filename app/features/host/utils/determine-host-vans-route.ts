@@ -11,7 +11,7 @@ type Params = {
 };
 
 export function determineHostVansRoute<T extends VanItem>(
-	params: Params | undefined,
+	params: Maybe<Params>,
 	vans: Maybe<T[]>
 ) {
 	const hasSlug = Boolean(

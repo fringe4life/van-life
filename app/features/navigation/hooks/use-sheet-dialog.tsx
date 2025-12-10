@@ -1,13 +1,14 @@
 import type { ReactElement, ReactNode } from 'react';
 import { Activity, cloneElement, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '~/components/ui/dialog';
+import type { Maybe } from '~/types/types';
 
 type UseSheetDialogParams = {
 	trigger: ReactElement | ((isOpen: boolean) => ReactElement);
 	renderContent: (close: () => void) => ReactNode;
 	className?: string;
 	modal?: boolean;
-	container?: HTMLElement | null;
+	container?: Maybe<HTMLElement>;
 	title: string;
 };
 

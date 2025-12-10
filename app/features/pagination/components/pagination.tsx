@@ -5,15 +5,15 @@ import {
 	DEFAULT_DIRECTION,
 	LIMITS,
 } from '~/features/pagination/pagination-constants';
+import { validateLimit } from '~/features/pagination/utils/validators';
 import { paginationParsers } from '~/lib/parsers';
 import type { Maybe } from '~/types/types';
 import { cn } from '~/utils/utils';
-import { validateLimit } from '~/utils/validators';
 
 type PaginationProps<T = unknown> = {
 	items: Maybe<T[]>;
 	limit: number;
-	cursor: string | undefined;
+	cursor: Maybe<string>;
 	hasNextPage: boolean;
 	hasPreviousPage: boolean;
 	pathname: string;

@@ -77,6 +77,7 @@ function generateUniqueIds<T extends { id: string }>(
 import { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
 import { prisma } from '~/lib/prisma.server';
+import type { Maybe } from '~/types/types';
 
 function getRandomTransactionType(): 'DEPOSIT' | 'WITHDRAW' {
 	const HalfProbability = 0.5;
@@ -136,7 +137,7 @@ function getVanState(): VanState {
 	return states[Math.floor(Math.random() * states.length)];
 }
 
-function isVanRentable(state: VanState | null): boolean {
+function isVanRentable(state: Maybe<VanState>): boolean {
 	return state !== VanState.IN_REPAIR;
 }
 

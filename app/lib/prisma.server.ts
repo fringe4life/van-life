@@ -2,6 +2,7 @@ import { neonConfig } from '@neondatabase/serverless';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import ws from 'ws';
 import { PrismaClient } from '~/generated/prisma/client';
+import type { Maybe } from '~/types/types';
 import { env } from './env.server';
 
 // Configure Neon for optimal performance
@@ -11,8 +12,8 @@ neonConfig.pipelineConnect = false; // Disabled because using SSL authentication
 neonConfig.coalesceWrites = true; // Reduce network overhead
 
 declare global {
-	var prisma: PrismaClient | undefined;
-	var neonAdapter: PrismaNeon | undefined;
+	var prisma: Maybe<PrismaClient>;
+	var neonAdapter: Maybe<PrismaNeon>;
 }
 
 // Create a singleton adapter with connection pooling

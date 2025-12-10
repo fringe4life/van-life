@@ -1,12 +1,12 @@
 import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
-import type { VanType } from '~/generated/prisma/enums';
 import { prisma } from '~/lib/prisma.server';
-import type { Direction } from '~/types/types';
+import type { Direction, Maybe } from '~/types/types';
+import type { MaybeTypeFilter } from '../types';
 
 export function getVans(
-	cursor: string | undefined,
+	cursor: Maybe<string>,
 	limit: number,
-	typeFilter: VanType | undefined,
+	typeFilter: MaybeTypeFilter,
 	direction: Direction = 'forward'
 ) {
 	const { actualCursor, sortOrder, takeAmount } =
@@ -24,7 +24,7 @@ export function getVans(
 	});
 }
 
-export function getVansCount(typeFilter: VanType | undefined) {
+export function getVansCount(typeFilter: MaybeTypeFilter) {
 	return prisma.van.count({
 		where: {
 			type: typeFilter,

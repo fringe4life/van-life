@@ -6,7 +6,7 @@ import {
 	createGenericOrderBy,
 } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
-import type { Direction, SortOption } from '~/types/types';
+import type { Direction, Maybe, SortOption } from '~/types/types';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostReviews(userId: string) {
@@ -40,7 +40,7 @@ const getOrderBy = (sort: SortOption) =>
 
 type GetHostReviewsPaginatedParams = {
 	userId: string;
-	cursor: string | undefined;
+	cursor: Maybe<string>;
 	limit: number;
 	direction?: Direction;
 	sort?: SortOption;

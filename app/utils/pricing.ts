@@ -1,6 +1,8 @@
+import type { Maybe } from '~/types/types';
+
 export function getDiscountedPrice(
 	price: number,
-	discount?: number | null
+	discount?: Maybe<number>
 ): number {
 	const MaxDiscountPercentage = 50;
 	const d =

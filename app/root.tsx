@@ -11,6 +11,7 @@ import { HTTP_MESSAGES, HTTP_STATUS } from './constants/http-constants';
 import './app.css';
 import { useEffect } from 'react';
 import { scan } from 'react-scan';
+import type { Maybe } from './types/types';
 
 export const links: Route.LinksFunction = () => [
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -62,7 +63,7 @@ export default function App() {
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	let message = 'Oops!';
 	let details = 'An unexpected error occurred.';
-	let stack: string | undefined;
+	let stack: Maybe<string>;
 
 	if (isRouteErrorResponse(error)) {
 		message =
@@ -79,7 +80,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	}
 
 	return (
-		<main className="container mx-auto p-4 pt-16">
+		<main className="container col-start-2 mx-auto p-4 pt-16">
 			<h1>{message}</h1>
 			<p>{details}</p>
 			{!!stack && (
@@ -90,5 +91,3 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 		</main>
 	);
 }
-// Test comment
-// Another test comment

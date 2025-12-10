@@ -15,14 +15,14 @@ import {
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
 import CustomLink from '~/features/navigation/components/custom-link';
+import {
+	toLowercaseVanType,
+	validateLowercaseVanType,
+} from '~/features/vans/utils/validators';
 import { isVanAvailable } from '~/features/vans/utils/van-state-helpers';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';
 import { cn } from '~/utils/utils';
-import {
-	toLowercaseVanType,
-	validateLowercaseVanType,
-} from '~/utils/validators';
 import VanBadge from './van-badge';
 import VanPrice from './van-price';
 

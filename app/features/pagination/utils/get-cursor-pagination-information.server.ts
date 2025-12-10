@@ -1,5 +1,5 @@
 import type { Prisma } from '~/generated/prisma/client';
-import type { Direction } from '~/types/types';
+import type { Direction, Maybe } from '~/types/types';
 
 /**
  * Generalized cursor pagination utility that provides all necessary information
@@ -11,11 +11,11 @@ import type { Direction } from '~/types/types';
  * @returns Object with actualCursor, sortOrder, and takeAmount for Prisma queries
  */
 export function getCursorPaginationInformation(
-	cursor: string | undefined,
+	cursor: Maybe<string>,
 	limit: number,
 	direction: Direction = 'forward'
 ): {
-	actualCursor: string | undefined;
+	actualCursor: Maybe<string>;
 	sortOrder: Prisma.SortOrder;
 	takeAmount: number;
 } {
