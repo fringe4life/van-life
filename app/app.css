@@ -5,6 +5,8 @@
 @custom-variant van-sale (&[data-slot*="van-card-sale"]);
 @custom-variant van-repair (&[data-slot*="van-card-repair"]);
 @custom-variant van-available (&[data-slot*="van-card-available"]);
+@custom-variant error (&[data-error="true"]);
+@custom-variant link-covers-card (&[data-link-covers-card="true"]);
 
 @theme {
 	--font-sans:

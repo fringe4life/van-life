@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import Image from '~/features/image/component/image';
@@ -60,10 +59,8 @@ export default function VanCard({
 						<CustomLink state={state} title={name} to={link}>
 							{name}
 							<span
-								className={clsx(
-									!!linkCoversCard &&
-										'absolute inset-0 h-full w-full overflow-hidden'
-								)}
+								className="link-covers-card:absolute link-covers-card:inset-0 link-covers-card:h-full link-covers-card:w-full link-covers-card:overflow-hidden"
+								data-link-covers-card={linkCoversCard}
 							/>
 						</CustomLink>
 					</CardTitle>

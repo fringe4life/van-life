@@ -7,7 +7,7 @@ import { COOKIE_HEADER } from '../constants';
  * Used to update cookie cache when a user is logged in.
  */
 export function setCookieHeaders(
-	responseWithHeaders: { headers: Headers; response: Maybe<Session> },
+	responseWithHeaders: Maybe<{ headers: Headers; response: Maybe<Session> }>,
 	result: Response
 ): Response {
 	if (!responseWithHeaders?.headers) {

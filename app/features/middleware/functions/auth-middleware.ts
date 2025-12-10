@@ -1,25 +1,19 @@
 import { href, type MiddlewareFunction, redirect } from 'react-router';
-import { auth } from '~/lib/auth.server';
-import type { Maybe } from '~/types/types';
-import type { Session } from '~/types/types.server';
 import { authContext } from '../contexts/auth';
+import { getUser } from '../utils/get-user';
 import { setCookieHeaders } from '../utils/set-cookie-headers';
 
 export const authMiddleware: MiddlewareFunction<Response> = async (
 	{ request, context },
 	next
 ) => {
-	const responseWithHeaders = await auth.api.getSession({
-		headers: request.headers,
-		returnHeaders: true,
-	});
-	const session: Maybe<Session> = responseWithHeaders?.response;
+	const { user, responseWithHeaders } = await getUser(request);
 
-	if (!session) {
+	if (!user) {
 		throw redirect(href('/login'));
 	}
 
-	context.set(authContext, session.user);
+	context.set(authContext, user);
 
 	// Call next to continue the middleware chain
 	const result = await next();
