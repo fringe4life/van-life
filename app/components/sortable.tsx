@@ -6,14 +6,14 @@ import {
 	DEFAULT_DIRECTION,
 } from '~/features/pagination/pagination-constants';
 import { hostPaginationParsers } from '~/lib/parsers';
-import type { SortOption } from '~/types/types';
+import type { Maybe, SortOption } from '~/types/types';
 import { cn } from '~/utils/utils';
 
 type SortableProps = {
 	/** Title to display above the sort buttons */
 	title: string;
 	/** Number of items being sorted (for display) */
-	itemCount: number;
+	itemCount: Maybe<number>;
 	/** Optional className for the container */
 	className?: string;
 };
@@ -56,13 +56,9 @@ export default function Sortable({
 		});
 	};
 
-	// const handleClearFilters = () => {
-	// 	setSearchParams({
-	// 		sort: DEFAULT_SORT,
-	// 		cursor: DEFAULT_CURSOR,
-	// 		direction: DEFAULT_DIRECTION,
-	// 	});
-	// };
+	if (!itemCount) {
+		return null;
+	}
 
 	return (
 		<div

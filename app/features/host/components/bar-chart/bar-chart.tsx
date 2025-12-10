@@ -19,7 +19,7 @@ export default function BarChartComponent({
 	mappedData,
 }: BarChartComponentProps) {
 	return (
-		<div className="h-(--chart-height) w-full text-orange-400">
+		<div className="h-full w-full text-orange-400">
 			<BarChart data={mappedData} height="100%" responsive width="100%">
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis dataKey="name" />

@@ -7,6 +7,7 @@ import {
 	useOptimistic,
 	useState,
 	useTransition,
+	ViewTransition,
 } from 'react';
 import { Await, data, href, useFetcher, useParams } from 'react-router';
 import GenericComponent from '~/components/generic-component';
@@ -52,25 +53,19 @@ export async function loader({ context }: Route.LoaderArgs) {
 		getHostVansSafe(session.user.id, undefined, hostVansLimit)
 	);
 
-	const getHostTransactionsSafe = validateCUIDS(getHostTransactions, [
-		0,
-	] as const);
-	const getAverageReviewRatingSafe = validateCUIDS(getAverageReviewRating, [
-		0,
-	] as const);
-	const getTransactionSummarySafe = validateCUIDS(getTransactionSummary, [
-		0,
-	] as const);
+	const getHostTransactionsSafe = validateCUIDS(getHostTransactions, [0]);
+	const getAverageReviewRatingSafe = validateCUIDS(getAverageReviewRating, [0]);
+	const getTransactionSummarySafe = validateCUIDS(getTransactionSummary, [0]);
 
 	const [transactionsResult, avgRatingResult, transactionSummaryResult] =
 		await Promise.all([
-			tryCatch(async () => await getHostTransactionsSafe(session.user.id)),
-			tryCatch(async () => await getAverageReviewRatingSafe(session.user.id)),
-			tryCatch(async () => await getTransactionSummarySafe(session.user.id)),
+			tryCatch(() => getHostTransactionsSafe(session.user.id)),
+			tryCatch(() => getAverageReviewRatingSafe(session.user.id)),
+			tryCatch(() => getTransactionSummarySafe(session.user.id)),
 		]);
 
-	const transactions = transactionsResult.data ?? [];
-	const avgRating = avgRatingResult.data ?? 0;
+	const transactions = transactionsResult.data;
+	const avgRating = avgRatingResult.data;
 
 	return data(
 		{
@@ -188,12 +183,17 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 	};
 
 	// Calculate income and elapsed time client-side
-	const sumIncome = Array.isArray(transactions)
-		? calculateTotalIncome(transactions)
-		: 0;
-	const elapsedTime = Array.isArray(transactions)
-		? getElapsedTime(transactions)
-		: { elapsedDays: 0, description: 'No data' };
+	const sumIncome = calculateTotalIncome(transactions);
+	const elapsedTime = getElapsedTime(transactions);
+
+	const rating =
+		typeof avgRating === 'number' ? (
+			<>
+				Your Avg Review <RatingStars rating={avgRating} />{' '}
+			</>
+		) : (
+			'something went wrong'
+		);
 
 	return (
 		<PendingUi as="section">
@@ -240,13 +240,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 			{/* Reviews Section */}
 			<div className="full-layout flex items-center justify-between bg-orange-200 py-6 sm:py-9">
 				<div className="font-bold text-lg text-shadow-text sm:text-2xl">
-					{typeof avgRating === 'number' ? (
-						<span>
-							Your Avg Review <RatingStars rating={avgRating} />
-						</span>
-					) : (
-						<span>something went wrong</span>
-					)}
+					<span>{rating}</span>
 				</div>
 				<CustomLink
 					className="font-medium text-base text-shadow-text"
@@ -298,9 +292,11 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 						placeholder="2000"
 						type="number"
 					/>
-					{actionData?.errors ? (
-						<p className="text-red-500">{actionData.errors}</p>
-					) : null}
+					<ViewTransition>
+						{actionData?.errors ? (
+							<p className="text-red-500">{actionData.errors}</p>
+						) : null}
+					</ViewTransition>
 					<Button type="submit">Complete transaction</Button>
 				</fetcher.Form>
 			</Card>
@@ -324,7 +320,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 							Component={VanCard}
 							className="grid-max mt-11"
 							emptyStateMessage="You are not currently renting any vans"
-							items={Array.isArray(vans) ? vans : []}
+							items={vans}
 							renderProps={(item) => ({
 								van: item,
 								link: href('/host/vans/:vanSlug?/:action?', {

@@ -1,3 +1,5 @@
+import type { Maybe } from '~/types/types';
+
 type VanItem = {
 	slug: string;
 	[key: string]: unknown;
@@ -10,7 +12,7 @@ type Params = {
 
 export function determineHostVansRoute<T extends VanItem>(
 	params: Params | undefined,
-	vans: T[]
+	vans: Maybe<T[]>
 ) {
 	const hasSlug = Boolean(
 		params?.vanSlug && typeof params.vanSlug === 'string'
@@ -25,6 +27,16 @@ export function determineHostVansRoute<T extends VanItem>(
 	const isInitialDetailPage = Boolean(params?.action === undefined && hasSlug);
 	const isPhotosPage = Boolean(params?.action === 'photos' && hasSlug);
 	const isPricingPage = Boolean(params?.action === 'pricing' && hasSlug);
+
+	if (!vans) {
+		return {
+			hasSlug,
+			hasAction,
+			isMainPage,
+			isEditPage,
+			isDetailPage,
+		};
+	}
 
 	const selectedVan =
 		isDetailPage && vans.find((van) => van.slug === params?.vanSlug);

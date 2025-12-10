@@ -2,6 +2,7 @@ import { data, href } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
+import UnsuccesfulState from '~/components/unsuccesful-state';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Income from '~/features/host/components/income';
@@ -13,7 +14,6 @@ import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
 import VanHeader from '~/features/vans/components/van-header';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { loadHostSearchParams } from '~/lib/search-params.server';
-import type { QueryType } from '~/types/types.server';
 import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/income';
@@ -26,13 +26,13 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	// Parse search parameters for sorting
 	const { sort } = loadHostSearchParams(request);
 
-	const result = await tryCatch(() =>
-		validateCUIDS(getHostTransactions, [0] as const)(session.user.id, sort)
+	const { data: incomeData } = await tryCatch(() =>
+		validateCUIDS(getHostTransactions, [0])(session.user.id, sort)
 	);
 
 	return data(
 		{
-			hostIncomes: result.data as QueryType<typeof getHostTransactions>,
+			hostIncomes: incomeData,
 		},
 		{
 			headers: {
@@ -46,28 +46,33 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	const { hostIncomes } = loaderData;
 
 	// Calculate income and elapsed time client-side
-	const sumIncome = Array.isArray(hostIncomes)
-		? calculateTotalIncome(hostIncomes)
-		: 0;
-	const elapsedTime = Array.isArray(hostIncomes)
-		? getElapsedTime(hostIncomes)
-		: { elapsedDays: 0, description: 'No data' };
+	const sumIncome = calculateTotalIncome(hostIncomes);
+	const elapsedTime = getElapsedTime(hostIncomes);
 
-	const filteredHostIncomes = Array.isArray(hostIncomes)
-		? hostIncomes.filter((income) => income.amount > 0)
-		: [];
-	const mappedData = filteredHostIncomes.map((income) => ({
-		name: income.createdAt.toDateString(),
-		amount: Math.round(income.amount),
-	}));
+	let barChartElement = (
+		<UnsuccesfulState isError message="No income data available" />
+	);
+
+	if (hostIncomes) {
+		const mappedData = hostIncomes.map((income) => ({
+			name: income.createdAt.toDateString(),
+			amount: Math.round(income.amount),
+		}));
+		barChartElement = <LazyBarChart mappedData={mappedData} />;
+	}
 
 	const limit = DEFAULT_LIMIT;
 
 	return (
 		<PendingUi
 			as="section"
-			className="grid grid-rows-[min-content_min-content_1fr_min-content] contain-content"
+			className="grid grid-rows-[min-content_min-content_min-content_var(--chart-height)_min-content_1fr_min-content] contain-content"
 		>
+			<title>Your Income | Van Life</title>
+			<meta
+				content="View your income from van rentals and track earnings"
+				name="description"
+			/>
 			<VanHeader>Income</VanHeader>
 
 			<p>
@@ -79,30 +84,22 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			<p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
 				{displayPrice(sumIncome)}
 			</p>
-			<LazyBarChart mappedData={mappedData} />
-			<Sortable
-				itemCount={filteredHostIncomes.length}
-				title="Income Transactions"
-			/>
-			<title>Your Income | Van Life</title>
-			<meta
-				content="View your income from van rentals and track earnings"
-				name="description"
-			/>
+			{barChartElement}
+			<Sortable itemCount={hostIncomes?.length} title="Income Transactions" />
 
 			<GenericComponent
 				as="div"
 				Component={Income}
 				className="grid-max mt-6"
 				emptyStateMessage="Rent some vans and your income will appear here."
-				items={filteredHostIncomes}
+				items={hostIncomes}
 				renderProps={(item) => item}
 			/>
 			<Pagination
 				cursor={undefined}
 				hasNextPage={false}
 				hasPreviousPage={false}
-				items={filteredHostIncomes}
+				items={hostIncomes}
 				limit={limit}
 				pathname={href('/host/income')}
 			/>

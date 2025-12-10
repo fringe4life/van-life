@@ -1,6 +1,6 @@
 import { useQueryStates } from 'nuqs';
 import { Activity } from 'react';
-import { data, href, type ShouldRevalidateFunctionArgs } from 'react-router';
+import { data, href } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import UnsuccesfulState from '~/components/unsuccesful-state';
@@ -31,20 +31,13 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
 	const [vansResult, countResult] = await Promise.all([
 		tryCatch(() =>
-			validateCUIDS(getHostVans, [0] as const)(
-				session.user.id,
-				cursor,
-				limit,
-				direction
-			)
+			validateCUIDS(getHostVans, [0])(session.user.id, cursor, limit, direction)
 		),
-		tryCatch(() =>
-			validateCUIDS(getHostVanCount, [0] as const)(session.user.id)
-		),
+		tryCatch(() => validateCUIDS(getHostVanCount, [0])(session.user.id)),
 	]);
 
-	const vans = vansResult.data ?? [];
-	const vansCount = countResult.data ?? 0;
+	const vans = vansResult.data;
+	const vansCount = countResult.data;
 
 	// Process pagination logic
 	const pagination = hasPagination(vans, limit, cursor, direction);
@@ -62,56 +55,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	);
 }
 
-/**
- * Prevent loader revalidation when navigating between sub-routes of the same van.
- * E.g., /vans/silver-bullet/pricing → /vans/silver-bullet/photos
- * Only revalidate if vanSlug changes, pagination changes, or it's a form submission.
- */
-export function shouldRevalidate({
-	currentParams,
-	nextParams,
-	currentUrl,
-	nextUrl,
-	formMethod,
-	defaultShouldRevalidate,
-}: ShouldRevalidateFunctionArgs) {
-	// Always revalidate on form submissions
-	if (formMethod && formMethod !== 'GET') {
-		return true;
-	}
-
-	// If vanSlug changed, revalidate to fetch new van data
-	if (currentParams.vanSlug !== nextParams.vanSlug) {
-		return true;
-	}
-
-	// If pagination params changed, revalidate
-	if (currentUrl.searchParams.toString() !== nextUrl.searchParams.toString()) {
-		return true;
-	}
-
-	// Same van, same pagination, just changing action (pricing/photos/details)
-	// No need to revalidate - we already have the van data
-	if (
-		currentParams.vanSlug === nextParams.vanSlug &&
-		currentParams.action !== nextParams.action
-	) {
-		return false;
-	}
-
-	// Default behavior for all other cases
-	return defaultShouldRevalidate;
-}
-
 export default function Host({ loaderData, params }: Route.ComponentProps) {
 	const { actualItems: vans, hasNextPage, hasPreviousPage } = loaderData;
 
 	// Use nuqs for client-side state management
 	const [{ cursor, limit }] = useQueryStates(hostPaginationParsers);
 	const effectiveLimit = limit ?? DEFAULT_LIMIT;
-
-	// Ensure vans is an array
-	const vansArray = Array.isArray(vans) ? vans : [];
 
 	// Determine route state using utility helper
 	const {
@@ -121,7 +70,7 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 		isPhotosPage,
 		isPricingPage,
 		selectedVan,
-	} = determineHostVansRoute(params, vansArray);
+	} = determineHostVansRoute(params, vans);
 	return (
 		<>
 			<title>Your Vans | Van Life</title>
@@ -157,7 +106,7 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 						Component={VanCard}
 						className="grid-max mt-6"
 						emptyStateMessage="You are currently not renting any vans."
-						items={vansArray}
+						items={vans}
 						renderProps={(van) => ({
 							link: href('/host/vans/:vanSlug?/:action?', {
 								vanSlug: van.slug,
@@ -181,7 +130,7 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 						cursor={cursor}
 						hasNextPage={hasNextPage}
 						hasPreviousPage={hasPreviousPage}
-						items={vansArray}
+						items={vans}
 						limit={effectiveLimit}
 						pathname={href('/host/vans/:vanSlug?/:action?')}
 					/>

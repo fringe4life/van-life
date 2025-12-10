@@ -1,4 +1,5 @@
 import { differenceInDays, formatDistanceToNow } from 'date-fns';
+import type { Maybe } from '~/types/types';
 
 /**
  * Calculates the elapsed time between the first and last rental/transaction
@@ -6,7 +7,7 @@ import { differenceInDays, formatDistanceToNow } from 'date-fns';
  * @returns Object with elapsed days and human-readable description
  */
 export function getElapsedTime(
-	items: Array<{ rentedAt?: Date; createdAt?: Date }>
+	items: Maybe<Array<{ rentedAt?: Date; createdAt?: Date }>>
 ) {
 	if (!items || items.length === 0) {
 		return {
@@ -61,7 +62,9 @@ export function getElapsedTime(
  * @param transactions Array of transaction objects with amount
  * @returns Total income amount
  */
-export function calculateTotalIncome(transactions: Array<{ amount: number }>) {
+export function calculateTotalIncome(
+	transactions: Maybe<Array<{ amount: number }>>
+) {
 	if (!transactions || transactions.length === 0) {
 		return 0;
 	}

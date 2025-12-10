@@ -2,6 +2,7 @@ import { data, href } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
+import UnsuccesfulState from '~/components/unsuccesful-state';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Review from '~/features/host/components/review/review';
@@ -29,7 +30,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	// Load chart data and paginated reviews
 	const [chartDataResult, paginatedReviewsResult] = await Promise.all([
 		tryCatch(() =>
-			validateCUIDS(getHostReviewsChartData, [0] as const)(session.user.id)
+			validateCUIDS(getHostReviewsChartData, [0])(session.user.id)
 		),
 		tryCatch(() => {
 			const getWithUserId = async (userId: string) =>
@@ -40,7 +41,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 					direction,
 					sort,
 				});
-			return validateCUIDS(getWithUserId, [0] as const)(session.user.id);
+			return validateCUIDS(getWithUserId, [0])(session.user.id);
 		}),
 	]);
 
@@ -71,52 +72,55 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 		hasPreviousPage,
 	} = loaderData;
 
-	// Handle case where data might be an error string or null
-	const safeChartData = Array.isArray(chartData) ? chartData : [];
+	let barChartElement = (
+		<UnsuccesfulState isError message="No reviews data available" />
+	);
+
+	if (chartData) {
+		const result = chartData
+			.reduce(
+				(acc, cur) => {
+					acc[cur.rating - 1] += 1;
+					return acc;
+				},
+				[0, 0, 0, 0, 0]
+			)
+			.map((res, index) => ({
+				name: `${index + 1}`,
+				amount: res,
+			}));
+		barChartElement = <LazyBarChart mappedData={result} />;
+	}
 
 	// For the chart, use chart data to show complete statistics
-	const result = safeChartData
-		.reduce(
-			(acc, cur) => {
-				acc[cur.rating - 1] += 1;
-				return acc;
-			},
-			[0, 0, 0, 0, 0]
-		)
-		.map((res, index) => ({
-			name: `${index + 1}`,
-			amount: res,
-		}));
 
 	// Use paginated reviews for the list display
-	const reviewItems = Array.isArray(paginatedReviews)
-		? paginatedReviews.map((review) => ({
-				name: review.user.user.name,
-				text: review.text,
-				rating: review.rating,
-				timestamp:
-					review.updatedAt?.toLocaleDateString() ??
-					review.createdAt.toLocaleDateString(),
-				id: review.id,
-			}))
-		: []; // Pass error string directly to GenericComponent
+	const reviewItems = paginatedReviews?.map((review) => ({
+		name: review.user.user.name,
+		text: review.text,
+		rating: review.rating,
+		timestamp:
+			review.updatedAt?.toLocaleDateString() ??
+			review.createdAt.toLocaleDateString(),
+		id: review.id,
+	})); // Pass error string directly to GenericComponent
 
 	const limit = DEFAULT_LIMIT;
 
 	return (
 		<PendingUi
 			as="section"
-			className="grid grid-rows-[min-content_min-content_1fr_min-content] contain-content"
+			className="grid grid-rows-[min-content_var(--chart-height)_min-content_1fr_min-content] contain-content"
 		>
-			<VanHeader>Your Reviews</VanHeader>
-
 			<title>Reviews | Van Life</title>
 			<meta
 				content="View reviews and ratings from your van rentals"
 				name="description"
 			/>
-			<LazyBarChart mappedData={result} />
-			<Sortable itemCount={safeChartData.length} title="Reviews" />
+			<VanHeader>Your Reviews</VanHeader>
+
+			{barChartElement}
+			<Sortable itemCount={chartData.length} title="Reviews" />
 
 			<GenericComponent
 				as="div"
