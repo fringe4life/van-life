@@ -39,6 +39,25 @@ const getOrderBy = (sort: SortOption) =>
 		COMMON_SORT_CONFIGS.review
 	);
 
+/**
+ * Reverses the sort option for backward pagination
+ * When going backward, we need to query in reverse order, then reverse results
+ */
+const reverseSortOption = (sort: SortOption): SortOption => {
+	switch (sort) {
+		case 'newest':
+			return 'oldest';
+		case 'oldest':
+			return 'newest';
+		case 'highest':
+			return 'lowest';
+		case 'lowest':
+			return 'highest';
+		default:
+			return sort;
+	}
+};
+
 type GetHostReviewsPaginatedParams = {
 	userId: string;
 	cursor: Maybe<string>;
@@ -60,11 +79,17 @@ export function getHostReviewsPaginated({
 		direction
 	);
 
+	// For backward pagination, reverse the sort order
+	// The results will be reversed back in hasPagination utility
+	const effectiveSort =
+		direction === 'backward' ? reverseSortOption(sort) : sort;
+
 	// For rating-based sorting, we need to use a different cursor approach
-	const isRatingSort = sort === 'highest' || sort === 'lowest';
+	const isRatingSort =
+		effectiveSort === 'highest' || effectiveSort === 'lowest';
 
 	if (isRatingSort) {
-		const orderByClause = getOrderBy(sort);
+		const orderByClause = getOrderBy(effectiveSort);
 
 		// For rating sorts, we need to handle cursor differently
 		// We'll use a combination of rating and id for cursor pagination
@@ -96,7 +121,7 @@ export function getHostReviewsPaginated({
 		return prisma.review.findMany(query);
 	}
 
-	const orderByClause = getOrderBy(sort);
+	const orderByClause = getOrderBy(effectiveSort);
 
 	// For date-based sorting, use standard cursor pagination
 	const query = {

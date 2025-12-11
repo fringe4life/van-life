@@ -1,4 +1,5 @@
 import { useQueryStates } from 'nuqs';
+import { startTransition } from 'react';
 import GenericComponent from '~/components/generic-component';
 import { Button } from '~/components/ui/button';
 import {
@@ -50,10 +51,12 @@ export default function Sortable({
 	// const hasActiveSortFilter = sort !== DEFAULT_SORT;
 
 	const handleSortChange = (sortOption: SortOption) => {
-		setSearchParams({
-			sort: sortOption,
-			cursor: DEFAULT_CURSOR,
-			direction: DEFAULT_DIRECTION,
+		startTransition(async () => {
+			await setSearchParams({
+				sort: sortOption,
+				cursor: DEFAULT_CURSOR,
+				direction: DEFAULT_DIRECTION,
+			});
 		});
 	};
 

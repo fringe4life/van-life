@@ -8,8 +8,12 @@ export default function UnsuccesfulState({
 	isError = false,
 }: EmptyStateProps) {
 	return (
-		<div className="flex h-full w-full grow items-center" data-error={isError}>
-			<p className="grow text-center error:text-red-500">{message}</p>
+		<div
+			className="grid h-full w-full items-center"
+			data-error={isError}
+			data-unsuccessful
+		>
+			<p className="text-center error:text-red-500">{message}</p>
 		</div>
 	);
 }

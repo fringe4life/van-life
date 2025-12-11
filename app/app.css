@@ -7,6 +7,7 @@
 @custom-variant van-available (&[data-slot*="van-card-available"]);
 @custom-variant error (&[data-error="true"]);
 @custom-variant link-covers-card (&[data-link-covers-card="true"]);
+@custom-variant unsuccessful (&[data-unsuccessful="true"]);
 
 @theme {
 	--font-sans:

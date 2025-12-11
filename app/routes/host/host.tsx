@@ -300,7 +300,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 			{/* Vans Section */}
 			<Suspense
 				fallback={
-					<div className="grid-max">
+					<div className="grid-max mt-11">
 						<VanCardSkeleton />
 						<VanCardSkeleton />
 						<VanCardSkeleton />

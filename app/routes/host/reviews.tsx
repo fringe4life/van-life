@@ -70,6 +70,9 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 		hasPreviousPage,
 	} = loaderData;
 
+	// const fetcher = useFetcher()
+
+	// const chartDataP = fetcher.load(href("/host/chart-reviews"));
 	let barChartElement = (
 		<UnsuccesfulState isError message="No reviews data available" />
 	);

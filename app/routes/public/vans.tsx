@@ -88,10 +88,10 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			<ViewTransition>
 				<PendingUi
 					as="section"
-					className="grid grid-rows-[min-content_min-content_1fr_min-content] contain-content"
+					className="grid h-full grid-rows-[min-content_min-content_1fr_min-content] gap-y-6 contain-content"
 				>
 					<VanHeader>Explore our van options</VanHeader>
-					<div className="mb-6 grid grid-cols-2 items-center gap-2 sm:grid-cols-[min-content_min-content_min-content_max-content] sm:gap-4">
+					<div className="grid grid-cols-2 items-center gap-2 sm:grid-cols-[min-content_min-content_min-content_max-content] sm:gap-4">
 						<ListItems
 							getKey={(t) => t}
 							getRow={(t) => (
@@ -140,8 +140,8 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 					</div>
 					<GenericComponent
 						Component={VanCard}
-						className="grid-max mt-6"
-						emptyStateMessage="There are no vans in our site."
+						className="grid-max"
+						emptyStateMessage="There are no vans on our site."
 						items={vans}
 						renderKey={(van) => van.id}
 						renderProps={(van) => ({

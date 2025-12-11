@@ -607,6 +607,15 @@ const orderBy = createGenericOrderBy(sort, {
 - **Income page**: Sort by newest/oldest date or highest/lowest amount
 - **Extensible**: Easy to add sorting to any new data table
 
+### Backward Pagination with Sorting
+
+When navigating backward through paginated, sorted results, the sort order is automatically reversed to fetch the correct items. The `reverseSortOption` helper ensures proper bidirectional pagination:
+
+- `newest` ↔ `oldest` (for date-based sorting)
+- `highest` ↔ `lowest` (for value-based sorting)
+
+Results are then reversed back to the correct display order by the `hasPagination` utility.
+
 ---
 
 ## Higher-Order Components (HOC) Pattern

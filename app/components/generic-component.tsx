@@ -33,7 +33,7 @@ const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	as,
 	wrapperProps,
 }: GenericComponentProps<T, P, E>) => {
-	const isError = items === null || items === undefined;
+	const isError = !items;
 	const isEmpty = !isError && items.length === 0;
 	if (isError || isEmpty) {
 		return <UnsuccesfulState isError message={emptyStateMessage} />;

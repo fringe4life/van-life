@@ -64,6 +64,7 @@
         "parentId": "routes/layout/layout",
         "file": "app/routes/public/vans.tsx",
         "path": "vans",
+        "index": true,
         "config": {}
       },
       "routes/public/van-detail": {
@@ -229,7 +230,8 @@
         "id": "routes/public/vans",
         "parentId": "routes/layout/layout",
         "file": "./routes/public/vans.tsx",
-        "path": "vans"
+        "path": "vans",
+        "index": true
       },
       "routes/public/van-detail": {
         "id": "routes/public/van-detail",
@@ -360,6 +362,7 @@
               },
               {
                 "file": "./routes/public/vans.tsx",
+                "index": true,
                 "path": "vans"
               },
               {
