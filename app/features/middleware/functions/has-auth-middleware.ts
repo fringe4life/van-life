@@ -7,7 +7,7 @@ export const hasAuthMiddleware: MiddlewareFunction<Response> = async (
 	{ request, context },
 	next
 ) => {
-	const { user, responseWithHeaders } = await getUser(request);
+	const { user, headers } = await getUser(request);
 
 	if (user) {
 		context.set(hasAuthContext, true);
@@ -20,7 +20,7 @@ export const hasAuthMiddleware: MiddlewareFunction<Response> = async (
 
 	// If user is logged in, update cookie cache
 	if (user) {
-		return setCookieHeaders(responseWithHeaders, result);
+		return setCookieHeaders(headers, result);
 	}
 
 	return result;

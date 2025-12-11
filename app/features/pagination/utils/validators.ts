@@ -11,7 +11,7 @@ import {
 	LIMITS,
 	SORT_OPTIONS,
 } from '~/features/pagination/pagination-constants';
-import type { Direction, SortOption } from '~/types/types';
+import type { Direction, SortOption } from '~/features/pagination/types';
 
 /**
  * Type guard to check if a number is a valid limit value

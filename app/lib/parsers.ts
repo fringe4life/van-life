@@ -9,8 +9,8 @@ import {
 	LIMITS,
 	SORT_OPTIONS,
 } from '~/features/pagination/pagination-constants';
+import type { Direction, SortOption } from '~/features/pagination/types';
 import type { VanTypeOrEmpty } from '~/features/vans/types';
-import type { Direction, SortOption } from '~/types/types';
 
 // Hardcoded van types for client-side safety
 const VAN_TYPE_LOWERCASE: VanTypeOrEmpty[] = ['simple', 'rugged', 'luxury'];

@@ -1,4 +1,4 @@
-import type { Direction } from '~/types/types';
+import type { Direction } from '~/features/pagination/types';
 
 export const DEFAULT_LIMIT = 10;
 export const DEFAULT_FILTER = '';

@@ -1,8 +1,9 @@
 /** biome-ignore-all lint/style/useNamingConvention: prisma style */
+
+import type { SortOption } from '~/features/pagination/types';
 import { TransactionType } from '~/generated/prisma/enums';
 import { createGenericOrderBy } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
-import type { SortOption } from '~/types/types';
 
 export async function getAccountSummary(userId: string) {
 	const result = await prisma.transaction.aggregate({

@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/style/useNamingConvention: prisma style */
+import type { Direction, SortOption } from '~/features/pagination/types';
 import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
 import type { Prisma } from '~/generated/prisma/client';
 import {
@@ -6,7 +7,7 @@ import {
 	createGenericOrderBy,
 } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
-import type { Direction, Maybe, SortOption } from '~/types/types';
+import type { Maybe } from '~/types/types';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostReviews(userId: string) {

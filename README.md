@@ -8,8 +8,8 @@
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.17-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.5-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.8.4-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.6-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.8.5-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.3.8-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-6.3.10-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.1.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
@@ -83,9 +83,9 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **TypeScript 5.9.3** with strict configuration
 - **TailwindCSS 4.1.17** with modern CSS features
 - **Radix UI** for accessible components
-- **Lucide React 0.556.0** for icons
+- **Lucide React 0.559.0** for icons
 - **Recharts 3.5.1** for data visualization (lazy-loaded)
-- **nuqs 2.8.3** for type-safe URL state management via Context7 parsers
+- **nuqs 2.8.5** for type-safe URL state management via Context7 parsers
 
 ### Backend & Database
 
@@ -126,23 +126,21 @@ app/
 ├── constants/          # App-wide constants and enums
 ├── dal/                # Data access layer utilities
 │   └── validate-cuids.ts  # Centralized CUID validation helper
-├── db/                 # Database layer
-│   ├── rental/         # Rental-related queries and transactions
-│   ├── review/         # Review analytics and queries
-│   ├── user/           # User analytics and payments
-│   └── van/            # Van CRUD operations and queries
 ├── features/
 │   ├── host/
 │   │   ├── components/ # Host-specific components (charts, income, reviews)
+│   │   ├── queries/     # Host queries (rental, review, user analytics)
 │   │   └── utils/      # Route determination helpers
 │   ├── image/          # Image optimization utilities
 │   ├── middleware/     # Auth middleware and contexts
 │   ├── navigation/     # Navigation components and hooks
 │   ├── pagination/     # Pagination utilities and components
+│   │   ├── components/ # Pagination UI components
 │   │   └── utils/      # Pagination validators and utilities
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, etc.)
 │       ├── constants/  # Van-related constants
+│       ├── queries/    # Van CRUD operations and queries
 │       ├── types/      # Van-specific TypeScript types
 │       └── utils/      # Van helpers (pricing, styling, display, validators)
 ├── hooks/              # Custom React hooks
@@ -311,7 +309,7 @@ generator client {
 
 ## URL State Management with nuqs
 
-The application uses **nuqs 2.8.4** for type-safe URL state management:
+The application uses **nuqs 2.8.5** for type-safe URL state management:
 
 ### Features
 
@@ -574,7 +572,7 @@ The application features a **reusable sorting system** with type-safe generic ut
 ### Features
 
 - **Generic sorting utility** (`app/lib/genericSorting.server.ts`) for any Prisma model
-- **Reusable Sortable component** (`app/components/common/Sortable.tsx`) for consistent UI
+- **Reusable Sortable component** (`app/components/sortable.tsx`) for consistent UI
 - **Type-safe orderBy clauses** with full TypeScript support
 - **URL state integration** with nuqs for persistent sorting preferences
 - **Four sort options**: newest, oldest, highest, lowest
@@ -826,9 +824,7 @@ Environment variables are validated at runtime in `app/lib/env.server.ts` via Ar
 ## Scripts
 
 - `bun run dev` – Start development server with HMR
-- `bun run dev:email` – Start React Email preview server for email template development
 - `bun run build` – Build for production
-- `bun run preview` – Preview the production build with the bundled server output
 - `bun run typecheck` – TypeScript checking and route type generation
 - `bun run lint` – Run Biome linting
 - `bun run lint:fix` – Fix linting issues automatically

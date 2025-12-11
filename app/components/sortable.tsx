@@ -5,8 +5,9 @@ import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
 } from '~/features/pagination/pagination-constants';
+import type { SortOption } from '~/features/pagination/types';
 import { hostPaginationParsers } from '~/lib/parsers';
-import type { Maybe, SortOption } from '~/types/types';
+import type { Maybe } from '~/types/types';
 import { cn } from '~/utils/utils';
 
 type SortableProps = {

@@ -1,5 +1,5 @@
+import type { SortOption } from '~/features/pagination/types';
 import type { Prisma } from '~/generated/prisma/client';
-import type { SortOption } from '~/types/types';
 
 /**
  * Generic sorting configuration for different Prisma models

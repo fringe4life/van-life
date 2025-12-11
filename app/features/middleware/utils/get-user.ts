@@ -1,9 +1,11 @@
 import { auth } from '~/lib/auth.server';
 import type { Maybe } from '~/types/types';
-import type { Session } from '~/types/types.server';
+import type { User } from '~/types/types.server';
 import { tryCatch } from '~/utils/try-catch.server';
 
-export const getUser = async (request: Request) => {
+export const getUser = async (
+	request: Request
+): Promise<{ user: Maybe<User>; headers: Maybe<Headers> }> => {
 	const { data: responseWithHeaders } = await tryCatch(
 		async () =>
 			await auth.api.getSession({
@@ -11,7 +13,8 @@ export const getUser = async (request: Request) => {
 				returnHeaders: true,
 			})
 	);
-	const session: Maybe<Session> = responseWithHeaders?.response;
+	const user: Maybe<User> = responseWithHeaders?.response?.user;
+	const headers: Maybe<Headers> = responseWithHeaders?.headers;
 
-	return { user: session?.user, responseWithHeaders };
+	return { user, headers };
 };

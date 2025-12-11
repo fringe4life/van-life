@@ -1,4 +1,5 @@
-import type { Direction, Maybe } from '~/types/types';
+import type { Direction } from '~/features/pagination/types';
+import type { Maybe } from '~/types/types';
 
 /**
  * Generic pagination utility that processes database results and returns

@@ -1,6 +1,7 @@
+import type { Direction } from '~/features/pagination/types';
 import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
 import { prisma } from '~/lib/prisma.server';
-import type { Direction, Maybe } from '~/types/types';
+import type { Maybe } from '~/types/types';
 import type { MaybeTypeFilter } from '../types';
 
 export function getVans(

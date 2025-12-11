@@ -7,7 +7,7 @@ export const authMiddleware: MiddlewareFunction<Response> = async (
 	{ request, context },
 	next
 ) => {
-	const { user, responseWithHeaders } = await getUser(request);
+	const { user, headers } = await getUser(request);
 
 	if (!user) {
 		throw redirect(href('/login'));
@@ -19,5 +19,5 @@ export const authMiddleware: MiddlewareFunction<Response> = async (
 	const result = await next();
 
 	// Set cookie headers to update cookie cache
-	return setCookieHeaders(responseWithHeaders, result);
+	return setCookieHeaders(headers, result);
 };

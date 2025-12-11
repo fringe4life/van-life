@@ -1,5 +1,4 @@
 import type { Maybe } from '~/types/types';
-import type { Session } from '~/types/types.server';
 import { COOKIE_HEADER } from '../constants';
 
 /**
@@ -7,14 +6,14 @@ import { COOKIE_HEADER } from '../constants';
  * Used to update cookie cache when a user is logged in.
  */
 export function setCookieHeaders(
-	responseWithHeaders: Maybe<{ headers: Headers; response: Maybe<Session> }>,
+	headers: Maybe<Headers>,
 	result: Response
 ): Response {
-	if (!responseWithHeaders?.headers) {
+	if (!headers) {
 		return result;
 	}
 
-	const cookies = responseWithHeaders.headers.get(COOKIE_HEADER);
+	const cookies = headers.get(COOKIE_HEADER);
 	if (cookies) {
 		result.headers.set(COOKIE_HEADER, cookies);
 	}

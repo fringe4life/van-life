@@ -1,5 +1,6 @@
+import type { Direction } from '~/features/pagination/types';
 import type { Prisma } from '~/generated/prisma/client';
-import type { Direction, Maybe } from '~/types/types';
+import type { Maybe } from '~/types/types';
 
 /**
  * Generalized cursor pagination utility that provides all necessary information
