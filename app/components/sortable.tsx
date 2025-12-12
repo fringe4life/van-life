@@ -61,7 +61,7 @@ export default function Sortable({
 	};
 
 	if (!itemCount) {
-		return null;
+		return <div />;
 	}
 
 	return (

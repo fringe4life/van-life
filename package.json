@@ -65,7 +65,7 @@
     "react-router-devtools": "^6.0.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "ultracite": "6.3.10",
+    "ultracite": "6.4.0",
     "vite": "beta"
   },
   "trustedDependencies": [
