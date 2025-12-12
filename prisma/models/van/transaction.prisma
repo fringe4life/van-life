@@ -13,4 +13,8 @@ model Transaction {
   @@index([rentId])
   @@index([createdAt(sort: Desc)])
   @@index([userId, type])
+  @@index([userId, createdAt])
+  @@index([userId, amount])
+  @@index([userId, type, createdAt])
+  @@index([userId, type, amount])
 }

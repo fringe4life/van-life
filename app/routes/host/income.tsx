@@ -6,33 +6,60 @@ import UnsuccesfulState from '~/components/unsuccesful-state';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Income from '~/features/host/components/income';
-import { getHostTransactions } from '~/features/host/queries/user/analytics';
+import {
+	getHostTransactionsChartData,
+	getHostTransactionsPaginated,
+} from '~/features/host/queries/user/analytics';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import Pagination from '~/features/pagination/components/pagination';
 import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
+import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
 import VanHeader from '~/features/vans/components/van-header';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/income';
-
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export async function loader({ request, context }: Route.LoaderArgs) {
 	const user = context.get(authContext);
 
-	// Parse search parameters for sorting
-	const { sort } = loadHostSearchParams(request);
+	// Parse search parameters for pagination and sorting
+	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
 
-	const { data: incomeData } = await tryCatch(() =>
-		validateCUIDS(getHostTransactions, [0])(user.id, sort)
+	// Load chart data and paginated transactions
+	const [chartDataResult, paginatedTransactionsResult] = await Promise.all([
+		tryCatch(() => validateCUIDS(getHostTransactionsChartData, [0])(user.id)),
+		tryCatch(() => {
+			const getWithUserId = async (userId: string) =>
+				getHostTransactionsPaginated({
+					userId,
+					cursor,
+					limit,
+					direction,
+					sort,
+				});
+			return validateCUIDS(getWithUserId, [0])(user.id);
+		}),
+	]);
+
+	const chartData = chartDataResult.data;
+	const paginatedTransactions = paginatedTransactionsResult.data;
+
+	// Process pagination logic
+	const pagination = hasPagination(
+		paginatedTransactions,
+		limit,
+		cursor,
+		direction
 	);
 
 	return data(
 		{
-			hostIncomes: incomeData,
+			chartData,
+			...pagination,
 		},
 		{
 			headers: {
@@ -43,25 +70,28 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 }
 
 export default function Host({ loaderData }: Route.ComponentProps) {
-	const { hostIncomes } = loaderData;
+	const {
+		chartData,
+		actualItems: paginatedTransactions,
+		hasNextPage,
+		hasPreviousPage,
+	} = loaderData;
 
-	// Calculate income and elapsed time client-side
-	const sumIncome = calculateTotalIncome(hostIncomes);
-	const elapsedTime = getElapsedTime(hostIncomes);
+	// Calculate income and elapsed time from chart data (all transactions)
+	const sumIncome = calculateTotalIncome(chartData);
+	const elapsedTime = getElapsedTime(chartData);
 
 	let barChartElement = (
 		<UnsuccesfulState isError message="No income data available" />
 	);
 
-	if (hostIncomes) {
-		const mappedData = hostIncomes.map((income) => ({
+	if (chartData) {
+		const mappedData = chartData.map((income) => ({
 			name: income.createdAt.toDateString(),
 			amount: Math.round(income.amount),
 		}));
 		barChartElement = <LazyBarChart mappedData={mappedData} />;
 	}
-
-	const limit = DEFAULT_LIMIT;
 
 	return (
 		<PendingUi
@@ -85,22 +115,22 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				{displayPrice(sumIncome)}
 			</p>
 			{barChartElement}
-			<Sortable itemCount={hostIncomes?.length} title="Income Transactions" />
+			<Sortable itemCount={chartData?.length} title="Income Transactions" />
 
 			<GenericComponent
 				as="div"
 				Component={Income}
 				className="grid-max mt-6"
 				emptyStateMessage="Rent some vans and your income will appear here."
-				items={hostIncomes}
+				items={paginatedTransactions}
 				renderProps={(item) => item}
 			/>
 			<Pagination
 				cursor={undefined}
-				hasNextPage={false}
-				hasPreviousPage={false}
-				items={hostIncomes}
-				limit={limit}
+				hasNextPage={hasNextPage}
+				hasPreviousPage={hasPreviousPage}
+				items={paginatedTransactions}
+				limit={DEFAULT_LIMIT}
 				pathname={href('/host/income')}
 			/>
 		</PendingUi>

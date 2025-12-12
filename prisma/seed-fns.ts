@@ -30,7 +30,7 @@ function getCost(rentedAt: Date, rentedTo: Date, price: number) {
 	return price * daysDifferent;
 }
 
-function getRandomId<T extends { id: string }>(ids: T[]): string {
+function getRandomId<T extends Id>(ids: T[]): string {
 	if (ids.length === 0) {
 		throw new Error('No ids to get');
 	}
@@ -59,7 +59,7 @@ function getRandomIdWithConstraint(id: string, constraints: string[]) {
 	return constraints.includes(id);
 }
 
-function generateUniqueIds<T extends { id: string }>(
+function generateUniqueIds<T extends Id>(
 	ids: T[]
 ): { id1: string; id2: string } {
 	if (ids.length < 2) {
@@ -77,7 +77,7 @@ function generateUniqueIds<T extends { id: string }>(
 import { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
 import { prisma } from '~/lib/prisma.server';
-import type { Maybe } from '~/types/types';
+import type { Id, Maybe } from '~/types/types';
 
 function getRandomTransactionType(): 'DEPOSIT' | 'WITHDRAW' {
 	const HalfProbability = 0.5;

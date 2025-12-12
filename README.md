@@ -51,7 +51,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals with analytics)
 - 📈 **Host Dashboard** (income tracking, bar charts, rental analytics)
-- 💰 **Financial Management** (deposit/withdraw funds, transaction tracking)
+- 💰 **Financial Management** (deposit/withdraw funds, transaction tracking with pagination)
 - 🏷️ **Van State System** (NEW, IN_REPAIR, ON_SALE, AVAILABLE with discount pricing)
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
 - 🎨 **Modern UI/UX** with responsive design, custom Tailwind variants, and smooth animations
@@ -193,7 +193,10 @@ prisma/
   - **Rust-free Prisma Client** with `queryCompiler` and `driverAdapters` (now GA)
   - **Relation joins** for optimized queries (preview feature)
   - **Optimized CUID2** with 25-character IDs and VARCHAR(25) constraints for better performance
-  - Proper indexing and constraints with explicit column lengths
+  - **Comprehensive indexing** for optimal query performance:
+    - Transaction model: Composite indexes for pagination (`[userId, createdAt]`, `[userId, amount]`, `[userId, type, createdAt]`, `[userId, type, amount]`)
+    - Review model: Indexes for rating and date sorting
+    - Proper indexing and constraints with explicit column lengths
   - Modular seed data organization with separate files for each model
   - Enhanced seed data with varied van names, descriptions, and state management
   - Van state system with NEW (client-derived), IN_REPAIR, ON_SALE, AVAILABLE states
@@ -317,6 +320,7 @@ The application uses **nuqs 2.8.5** for type-safe URL state management:
 - **Server-side loaders** with `createLoader` for efficient data fetching
 - **Client-side state management** with `useQueryStates`
 - **Bidirectional cursor pagination** with forward/backward navigation
+- **Pagination with sorting** on Reviews, Income, and Transfers pages
 - **Automatic URL synchronization** with proper type handling
 - **View transitions support** for smooth navigation
 - **Pagination state preservation** - Search params (cursor, type, limit) preserved when navigating to detail pages and back
@@ -603,8 +607,9 @@ const orderBy = createGenericOrderBy(sort, {
 
 ### Usage
 
-- **Reviews page**: Sort by newest/oldest date or highest/lowest rating
-- **Income page**: Sort by newest/oldest date or highest/lowest amount
+- **Reviews page**: Sort by newest/oldest date or highest/lowest rating (with pagination)
+- **Income page**: Sort by newest/oldest date or highest/lowest amount (with pagination)
+- **Transfers page**: Sort by newest/oldest date or highest/lowest amount (with pagination)
 - **Extensible**: Easy to add sorting to any new data table
 
 ### Backward Pagination with Sorting

@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/style/useNamingConvention: prisma style */
-import type { Direction, SortOption } from '~/features/pagination/types';
+import type { PaginationParams, SortOption } from '~/features/pagination/types';
 import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
 import type { Prisma } from '~/generated/prisma/client';
 import {
@@ -7,7 +7,7 @@ import {
 	createGenericOrderBy,
 } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
-import type { Maybe } from '~/types/types';
+import { reverseSortOption } from '~/utils/reverse-sort-order';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostReviews(userId: string) {
@@ -39,40 +39,13 @@ const getOrderBy = (sort: SortOption) =>
 		COMMON_SORT_CONFIGS.review
 	);
 
-/**
- * Reverses the sort option for backward pagination
- * When going backward, we need to query in reverse order, then reverse results
- */
-const reverseSortOption = (sort: SortOption): SortOption => {
-	switch (sort) {
-		case 'newest':
-			return 'oldest';
-		case 'oldest':
-			return 'newest';
-		case 'highest':
-			return 'lowest';
-		case 'lowest':
-			return 'highest';
-		default:
-			return sort;
-	}
-};
-
-type GetHostReviewsPaginatedParams = {
-	userId: string;
-	cursor: Maybe<string>;
-	limit: number;
-	direction?: Direction;
-	sort?: SortOption;
-};
-
 export function getHostReviewsPaginated({
 	userId,
 	cursor,
 	limit,
 	direction = 'forward',
 	sort = 'newest',
-}: GetHostReviewsPaginatedParams) {
+}: PaginationParams) {
 	const { actualCursor, takeAmount } = getCursorPaginationInformation(
 		cursor,
 		limit,
@@ -81,8 +54,7 @@ export function getHostReviewsPaginated({
 
 	// For backward pagination, reverse the sort order
 	// The results will be reversed back in hasPagination utility
-	const effectiveSort =
-		direction === 'backward' ? reverseSortOption(sort) : sort;
+	const effectiveSort = reverseSortOption(sort, direction);
 
 	// For rating-based sorting, we need to use a different cursor approach
 	const isRatingSort =

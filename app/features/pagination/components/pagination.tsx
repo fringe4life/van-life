@@ -1,30 +1,18 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
+import { startTransition } from 'react';
 import { Button, buttonVariants } from '~/components/ui/button';
 import {
 	DEFAULT_DIRECTION,
 	LIMITS,
 } from '~/features/pagination/pagination-constants';
+import type { PaginationProps } from '~/features/pagination/types';
 import { validateLimit } from '~/features/pagination/utils/validators';
 import { paginationParsers } from '~/lib/parsers';
-import type { Maybe } from '~/types/types';
+import type { Id } from '~/types/types';
 import { cn } from '~/utils/utils';
 
-type PaginationProps<T = unknown> = {
-	items: Maybe<T[]>;
-	limit: number;
-	cursor: Maybe<string>;
-	hasNextPage: boolean;
-	hasPreviousPage: boolean;
-	pathname: string;
-};
-
-export type PaginationPropsForVanPages<T = unknown> = Pick<
-	PaginationProps<T>,
-	'items' | 'pathname'
->;
-
-export default function Pagination<T extends { id: string }>({
+export default function Pagination<T extends Id>({
 	items,
 	limit,
 	hasNextPage,
@@ -36,13 +24,15 @@ export default function Pagination<T extends { id: string }>({
 
 	const handleLimitChange = (newLimit: string) => {
 		// Keep cursor unchanged when changing limit - cursor represents position in dataset
-		setSearchParams({
-			limit: validateLimit(Number(newLimit)),
+		startTransition(async () => {
+			await setSearchParams({
+				limit: validateLimit(Number(newLimit)),
+			});
 		});
 	};
 
 	if (!items) {
-		return null;
+		return <div />;
 	}
 
 	return (
@@ -70,9 +60,11 @@ export default function Pagination<T extends { id: string }>({
 							// For backward pagination, use the first item's ID as cursor
 							const firstItem = items[0];
 							if (firstItem) {
-								setSearchParams({
-									cursor: firstItem.id,
-									direction: 'backward',
+								startTransition(async () => {
+									await setSearchParams({
+										cursor: firstItem.id,
+										direction: 'backward',
+									});
 								});
 							}
 						}}
@@ -99,9 +91,11 @@ export default function Pagination<T extends { id: string }>({
 							// Get the last item's ID as the next cursor
 							const lastItem = items.at(-1);
 							if (lastItem) {
-								setSearchParams({
-									cursor: lastItem.id,
-									direction: DEFAULT_DIRECTION,
+								startTransition(async () => {
+									await setSearchParams({
+										cursor: lastItem.id,
+										direction: DEFAULT_DIRECTION,
+									});
 								});
 							}
 						}}

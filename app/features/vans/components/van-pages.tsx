@@ -3,11 +3,16 @@ import GenericComponent, {
 	type GenericComponentProps,
 } from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
-import Pagination, {
-	type PaginationPropsForVanPages,
-} from '~/features/pagination/components/pagination';
+import Pagination from '~/features/pagination/components/pagination';
 import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
+import type { PaginationProps } from '~/features/pagination/types';
+import type { Id } from '~/types/types';
 import VanHeader from './van-header';
+
+type PaginationPropsForVanPages<T = unknown> = Pick<
+	PaginationProps<T>,
+	'items' | 'pathname'
+>;
 
 type VanPagesProps<T, P, U> = {
 	title: string;
@@ -22,7 +27,7 @@ type VanPagesProps<T, P, U> = {
 } & GenericComponentProps<T, P> &
 	PaginationPropsForVanPages;
 
-export default function VanPages<P, T extends { id: string }, U>(
+export default function VanPages<P, T extends Id, U>(
 	props: VanPagesProps<T, P, U>
 ) {
 	const {

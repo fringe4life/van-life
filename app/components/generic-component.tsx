@@ -1,14 +1,14 @@
 import type React from 'react';
-import type { Maybe } from '~/types/types';
+import type { Id, Maybe } from '~/types/types';
 import UnsuccesfulState from './unsuccesful-state';
 
 // Type guard to check if item has an id property
-function hasId(item: unknown): item is { id: string } {
+function hasId(item: unknown): item is Id {
 	return (
 		typeof item === 'object' &&
 		item !== null &&
 		'id' in item &&
-		typeof (item as { id: unknown }).id === 'string'
+		typeof item.id === 'string'
 	);
 }
 
