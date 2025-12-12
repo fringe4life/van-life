@@ -135,6 +135,7 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 				className="grid-max mt-6"
 				emptyStateMessage="Make some transactions and they will appear here."
 				items={paginatedTransactions}
+				renderKey={(item) => item.id}
 				renderProps={(item) => ({
 					...item,
 					// Map transaction data to match Income component expectations

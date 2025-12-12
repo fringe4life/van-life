@@ -317,6 +317,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 							className="grid-max mt-11"
 							emptyStateMessage="You are not currently renting any vans"
 							items={vans}
+							renderKey={(van) => van.id}
 							renderProps={(item) => ({
 								van: item,
 								link: href('/host/vans/:vanSlug?/:action?', {

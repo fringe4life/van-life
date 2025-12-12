@@ -19,7 +19,7 @@ import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanCard from '~/features/vans/components/van-card';
 import VanHeader from '~/features/vans/components/van-header';
 import VanPrice from '~/features/vans/components/van-price';
-import { getVans, getVansCount } from '~/features/vans/queries/queries';
+import { getVans } from '~/features/vans/queries/queries';
 import { VAN_TYPE_LOWERCASE } from '~/features/vans/types.server';
 import { validateVanType } from '~/features/vans/utils/validators';
 import { paginationParsers } from '~/lib/parsers';
@@ -39,17 +39,15 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const typeFilter =
 		type === '' ? undefined : validateVanType(type?.toUpperCase());
 
-	const [{ data: vans }, { data: vansCount }] = await Promise.all([
-		tryCatch(() => getVans(cursor, limit, typeFilter, direction)),
-		tryCatch(() => getVansCount(typeFilter)),
-	]);
+	const { data: vans } = await tryCatch(() =>
+		getVans(cursor, limit, typeFilter, direction)
+	);
 
 	// Process pagination logic
 	const pagination = toPagination(vans, limit, cursor, direction);
 
 	const loaderData = {
 		badges,
-		vansCount,
 		...pagination,
 	};
 

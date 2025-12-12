@@ -120,6 +120,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				className="grid-max mt-6"
 				emptyStateMessage="Rent some vans and your income will appear here."
 				items={paginatedTransactions}
+				renderKey={(item) => item.id}
 				renderProps={(item) => item}
 			/>
 			<Pagination

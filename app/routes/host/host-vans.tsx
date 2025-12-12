@@ -13,7 +13,7 @@ import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanDetailCard from '~/features/vans/components/host-van-detail-card';
 import VanCard from '~/features/vans/components/van-card';
 import VanHeader from '~/features/vans/components/van-header';
-import { getHostVanCount, getHostVans } from '~/features/vans/queries/host';
+import { getHostVans } from '~/features/vans/queries/host';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host-vans';
@@ -26,19 +26,15 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	// Parse search parameters using nuqs loadHostSearchParams
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
-	const [{ data: vans }, { data: vansCount }] = await Promise.all([
-		tryCatch(() =>
-			validateCUIDS(getHostVans, [0])(user.id, cursor, limit, direction)
-		),
-		tryCatch(() => validateCUIDS(getHostVanCount, [0])(user.id)),
-	]);
+	const { data: vans } = await tryCatch(() =>
+		validateCUIDS(getHostVans, [0])(user.id, cursor, limit, direction)
+	);
 
 	// Process pagination logic
 	const pagination = toPagination(vans, limit, cursor, direction);
 
 	return data(
 		{
-			vansCount,
 			...pagination,
 		},
 		{
@@ -97,6 +93,7 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 						className="grid-max mt-6"
 						emptyStateMessage="You are currently not renting any vans."
 						items={vans}
+						renderKey={(van) => van.id}
 						renderProps={(van) => ({
 							link: href('/host/vans/:vanSlug?/:action?', {
 								vanSlug: van.slug,
