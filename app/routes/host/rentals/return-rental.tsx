@@ -1,6 +1,14 @@
-import { createContext, data, href, redirect } from 'react-router';
+import {
+	createContext,
+	data,
+	href,
+	isRouteErrorResponse,
+	redirect,
+} from 'react-router';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
+import UnsuccesfulState from '~/components/unsuccesful-state';
+import { validateCUIDS } from '~/dal/validate-cuids';
 import { getHostRentedVan } from '~/features/host/queries/rental/queries';
 import { returnVan } from '~/features/host/queries/rental/transactions';
 import { getAccountSummary } from '~/features/host/queries/user/analytics';
@@ -36,16 +44,17 @@ const fetchSharedDataMiddleware: Route.MiddlewareFunction = async (
 ) => {
 	const user = context.get(authContext);
 
-	const [rentResult, moneyResult] = await Promise.all([
-		tryCatch(async () => await getHostRentedVan(params.rentId)),
-		tryCatch(async () => await getAccountSummary(user.id)),
+	const [{ data: rent }, { data: money }] = await Promise.all([
+		tryCatch(() => validateCUIDS(getHostRentedVan, [0])(params.rentId)),
+		tryCatch(() => validateCUIDS(getAccountSummary, [0])(user.id)),
 	]);
-
-	const rent = rentResult.data;
-	const money = typeof moneyResult.data === 'number' ? moneyResult.data : 0;
 
 	if (!rent || typeof rent !== 'object' || !('van' in rent)) {
 		throw data('Rented van not found', { status: 404 });
+	}
+
+	if (!money) {
+		throw data('Account summary not found', { status: 404 });
 	}
 
 	context.set(sharedRentalDataContext, { rent, money });
@@ -144,4 +153,14 @@ export default function ReturnRental({
 			</CustomForm>
 		</section>
 	);
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+	if (isRouteErrorResponse(error)) {
+		return <UnsuccesfulState isError message={error.statusText} />;
+	}
+	if (error instanceof Error) {
+		return <UnsuccesfulState isError message={error.message} />;
+	}
+	return <UnsuccesfulState isError message="An unknown error occurred." />;
 }

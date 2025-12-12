@@ -64,30 +64,40 @@ export default function AddVan({ actionData }: Route.ComponentProps) {
 			</h2>
 			<CustomForm className="mt-6 grid max-w-102 gap-4" method="POST">
 				<Input
-					defaultValue={(actionData?.formData?.name as string) ?? ''}
+					defaultValue={
+						(actionData?.formData?.name as string | undefined) ?? ''
+					}
 					name="name"
 					placeholder="Silver Bullet"
 					type="text"
 				/>
 				<Input
-					defaultValue={(actionData?.formData?.price as string) ?? ''}
+					defaultValue={
+						(actionData?.formData?.price as string | undefined) ?? ''
+					}
 					name="price"
 					placeholder="100"
 					type="number"
 				/>
 				<Textarea
-					defaultValue={(actionData?.formData?.description as string) ?? ''}
+					defaultValue={
+						(actionData?.formData?.description as string | undefined) ?? ''
+					}
 					name="description"
 					placeholder="The silver bullet can take you on an amazing adventure..."
 				/>
 				<Input
-					defaultValue={(actionData?.formData?.imageUrl as string) ?? ''}
+					defaultValue={
+						(actionData?.formData?.imageUrl as string | undefined) ?? ''
+					}
 					name="imageUrl"
 					placeholder="https://images.unsplash.com/"
 					type="url"
 				/>
 				<Input
-					defaultValue={(actionData?.formData?.type as string) ?? ''}
+					defaultValue={
+						(actionData?.formData?.type as string | undefined) ?? ''
+					}
 					list={id}
 					name="type"
 					placeholder="simple or luxury or rugged"

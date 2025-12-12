@@ -136,7 +136,7 @@ app/
 │   ├── navigation/     # Navigation components and hooks
 │   ├── pagination/     # Pagination utilities and components
 │   │   ├── components/ # Pagination UI components
-│   │   └── utils/      # Pagination validators and utilities
+│   │   └── utils/      # Pagination validators and utilities (toPagination, reverseSortOption, etc.)
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, etc.)
 │       ├── constants/  # Van-related constants
@@ -619,7 +619,65 @@ When navigating backward through paginated, sorted results, the sort order is au
 - `newest` ↔ `oldest` (for date-based sorting)
 - `highest` ↔ `lowest` (for value-based sorting)
 
-Results are then reversed back to the correct display order by the `hasPagination` utility.
+Results are then reversed back to the correct display order by the `toPagination` utility.
+
+---
+
+## Pagination Utilities
+
+The application features **generic pagination utilities** for consistent cursor-based pagination across all data tables:
+
+### Features
+
+- **Generic `toPagination` utility** (`app/features/pagination/utils/to-pagination.server.ts`) - Processes database results and returns items with pagination metadata
+- **Bidirectional pagination support** - Handles both forward and backward pagination with correct logic
+- **Automatic result reversal** - Reverses results for backward pagination to maintain correct display order
+- **Type-safe** - Full TypeScript support with generic types
+- **`reverseSortOption` helper** (`app/features/pagination/utils/reverse-sort-order.ts`) - Reverses sort options for backward pagination queries
+
+### Implementation
+
+```typescript
+// Generic pagination utility
+export function toPagination<T>(
+  items: Maybe<T[]>,
+  limit: number,
+  cursor: Maybe<string>,
+  direction: Direction = 'forward'
+): PaginationProps<T> {
+  // Processes database results, handles extra item detection,
+  // reverses results for backward pagination, and returns
+  // items with hasNextPage and hasPreviousPage flags
+}
+
+// Usage in loaders
+const rawItems = await prisma.review.findMany({
+  take: limit + 1, // Take one extra to detect if there are more results
+  // ... other query options
+});
+
+const { items, hasNextPage, hasPreviousPage } = toPagination(
+  rawItems,
+  limit,
+  cursor,
+  direction
+);
+```
+
+### Pagination Logic
+
+The `toPagination` utility implements correct cursor pagination logic based on Prisma's documentation:
+
+- **Forward pagination**: `hasNextPage = hasMoreResults`, `hasPreviousPage = has cursor`
+- **Backward pagination**: `hasNextPage = has cursor`, `hasPreviousPage = hasMoreResults`
+- **Result reversal**: For backward pagination, results are automatically reversed since Prisma returns them in opposite order
+
+### Benefits
+
+- **Consistent pagination** - Same logic used across all paginated pages (Reviews, Income, Transfers, Vans)
+- **Correct bidirectional navigation** - Proper handling of forward/backward pagination
+- **Type safety** - Generic utility works with any data type
+- **Maintainability** - Single source of truth for pagination logic
 
 ---
 

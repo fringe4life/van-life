@@ -53,15 +53,15 @@ export async function loader({ context }: Route.LoaderArgs) {
 		validateCUIDS(getHostVans, [0])(user.id, undefined, HOST_VANS_LIMIT)
 	);
 
-	const [transactionsResult, avgRatingResult, transactionSummaryResult] =
-		await Promise.all([
-			tryCatch(() => validateCUIDS(getHostTransactions, [0])(user.id)),
-			tryCatch(() => validateCUIDS(getAverageReviewRating, [0])(user.id)),
-			tryCatch(() => validateCUIDS(getTransactionSummary, [0])(user.id)),
-		]);
-
-	const transactions = transactionsResult.data;
-	const avgRating = avgRatingResult.data;
+	const [
+		{ data: transactions },
+		{ data: avgRating },
+		{ data: transactionSummary },
+	] = await Promise.all([
+		tryCatch(() => validateCUIDS(getHostTransactions, [0])(user.id)),
+		tryCatch(() => validateCUIDS(getAverageReviewRating, [0])(user.id)),
+		tryCatch(() => validateCUIDS(getTransactionSummary, [0])(user.id)),
+	]);
 
 	return data(
 		{
@@ -69,7 +69,7 @@ export async function loader({ context }: Route.LoaderArgs) {
 			avgRating,
 			name: user.name,
 			transactions,
-			transactionSummary: transactionSummaryResult.data,
+			transactionSummary,
 		},
 		{
 			headers: {

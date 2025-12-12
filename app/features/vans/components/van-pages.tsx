@@ -4,14 +4,13 @@ import GenericComponent, {
 } from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import Pagination from '~/features/pagination/components/pagination';
-import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
 import type { PaginationProps } from '~/features/pagination/types';
 import type { Id } from '~/types/types';
 import VanHeader from './van-header';
 
 type PaginationPropsForVanPages<T = unknown> = Pick<
 	PaginationProps<T>,
-	'items' | 'pathname'
+	'items'
 >;
 
 type VanPagesProps<T, P, U> = {
@@ -31,18 +30,13 @@ export default function VanPages<P, T extends Id, U>(
 	props: VanPagesProps<T, P, U>
 ) {
 	const {
-		pathname,
 		items,
 		title,
 		optionalElement = null,
-		searchParams = {},
 		hasNextPage = false,
 		hasPreviousPage = false,
 		...rest
 	} = props;
-
-	// Provide default values for pagination
-	const { cursor, limit = DEFAULT_LIMIT } = searchParams;
 
 	return (
 		<PendingUi
@@ -58,12 +52,9 @@ export default function VanPages<P, T extends Id, U>(
 			{optionalElement}
 			<GenericComponent className="grid-max mt-6" items={items} {...rest} />
 			<Pagination
-				cursor={cursor}
 				hasNextPage={hasNextPage}
 				hasPreviousPage={hasPreviousPage}
-				items={Array.isArray(items) ? (items as T[]) : []}
-				limit={limit}
-				pathname={pathname}
+				items={items}
 			/>
 		</PendingUi>
 	);

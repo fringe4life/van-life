@@ -1,8 +1,9 @@
 import { type } from 'arktype';
-import { data, href, redirect } from 'react-router';
+import { data, href, isRouteErrorResponse, redirect } from 'react-router';
 import CustomForm from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
+import UnsuccesfulState from '~/components/unsuccesful-state';
 import { rentVan } from '~/features/host/queries/rental/transactions';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
@@ -101,4 +102,14 @@ export default function AddVan({
 			</CustomForm>
 		</section>
 	);
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+	if (isRouteErrorResponse(error)) {
+		return <UnsuccesfulState isError message={error.statusText} />;
+	}
+	if (error instanceof Error) {
+		return <UnsuccesfulState isError message={error.message} />;
+	}
+	return <UnsuccesfulState isError message="An unknown error occurred." />;
 }

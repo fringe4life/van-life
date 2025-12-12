@@ -15,7 +15,7 @@ import {
 	DEFAULT_FILTER,
 } from '~/features/pagination/pagination-constants';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
-import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
+import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanCard from '~/features/vans/components/van-card';
 import VanHeader from '~/features/vans/components/van-header';
 import VanPrice from '~/features/vans/components/van-price';
@@ -39,17 +39,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const typeFilter =
 		type === '' ? undefined : validateVanType(type?.toUpperCase());
 
-	const [vansResult, countResult] = await Promise.all([
+	const [{ data: vans }, { data: vansCount }] = await Promise.all([
 		tryCatch(() => getVans(cursor, limit, typeFilter, direction)),
 		tryCatch(() => getVansCount(typeFilter)),
 	]);
 
-	// Handle errors with proper type inference
-	const vans = vansResult.data;
-	const vansCount = countResult.data;
-
 	// Process pagination logic
-	const pagination = hasPagination(vans, limit, cursor, direction);
+	const pagination = toPagination(vans, limit, cursor, direction);
 
 	const loaderData = {
 		badges,
@@ -65,12 +61,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Vans({ loaderData }: Route.ComponentProps) {
-	const {
-		actualItems: vans,
-		badges,
-		hasNextPage,
-		hasPreviousPage,
-	} = loaderData;
+	const { items: vans, badges, hasNextPage, hasPreviousPage } = loaderData;
 	// Use nuqs for client-side state management
 	const [{ cursor, limit, type }, setSearchParams] =
 		useQueryStates(paginationParsers);
@@ -167,12 +158,9 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 						})}
 					/>
 					<Pagination
-						cursor={cursor}
 						hasNextPage={hasNextPage}
 						hasPreviousPage={hasPreviousPage}
 						items={vans}
-						limit={limit}
-						pathname={href('/vans')}
 					/>
 				</PendingUi>
 			</ViewTransition>

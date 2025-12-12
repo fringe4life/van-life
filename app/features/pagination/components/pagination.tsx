@@ -4,6 +4,7 @@ import { startTransition } from 'react';
 import { Button, buttonVariants } from '~/components/ui/button';
 import {
 	DEFAULT_DIRECTION,
+	DEFAULT_LIMIT,
 	LIMITS,
 } from '~/features/pagination/pagination-constants';
 import type { PaginationProps } from '~/features/pagination/types';
@@ -14,11 +15,11 @@ import { cn } from '~/utils/utils';
 
 export default function Pagination<T extends Id>({
 	items,
-	limit,
 	hasNextPage,
 	hasPreviousPage,
 }: PaginationProps<T>) {
-	const [, setSearchParams] = useQueryStates(paginationParsers);
+	const [{ limit: currentLimit }, setSearchParams] =
+		useQueryStates(paginationParsers);
 
 	// Ensure items is a valid array
 
@@ -43,7 +44,7 @@ export default function Pagination<T extends Id>({
 					'w-20'
 				)}
 				onChange={(e) => handleLimitChange(e.target.value)}
-				value={limit.toString()}
+				value={currentLimit?.toString() ?? DEFAULT_LIMIT.toString()}
 			>
 				{LIMITS.map((limitOption) => (
 					<option key={limitOption} value={limitOption.toString()}>

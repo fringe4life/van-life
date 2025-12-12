@@ -7,13 +7,10 @@ export type Direction = 'forward' | 'backward';
 // Type for review sorting options
 export type SortOption = 'newest' | 'oldest' | 'highest' | 'lowest';
 
-export type PaginationProps<T = unknown> = {
+export type PaginationProps<T> = {
 	items: Maybe<T[]>;
-	limit: number;
-	cursor: Maybe<string>;
 	hasNextPage: boolean;
 	hasPreviousPage: boolean;
-	pathname: string;
 };
 
 export type CursorPaginationInformation = {

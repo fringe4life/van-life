@@ -6,6 +6,7 @@ import type {
 	SortOption,
 } from '~/features/pagination/types';
 import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
+import { reverseSortOption } from '~/features/pagination/utils/reverse-sort-order';
 import type { Prisma } from '~/generated/prisma/client';
 import { TransactionType } from '~/generated/prisma/enums';
 import {
@@ -14,7 +15,6 @@ import {
 } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Maybe } from '~/types/types';
-import { reverseSortOption } from '~/utils/reverse-sort-order';
 
 export async function getAccountSummary(userId: string) {
 	const result = await prisma.transaction.aggregate({

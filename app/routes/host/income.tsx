@@ -1,4 +1,4 @@
-import { data, href } from 'react-router';
+import { data } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
@@ -13,8 +13,7 @@ import {
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import Pagination from '~/features/pagination/components/pagination';
-import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
-import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
+import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanHeader from '~/features/vans/components/van-header';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { loadHostSearchParams } from '~/lib/search-params.server';
@@ -30,26 +29,24 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
 
 	// Load chart data and paginated transactions
-	const [chartDataResult, paginatedTransactionsResult] = await Promise.all([
-		tryCatch(() => validateCUIDS(getHostTransactionsChartData, [0])(user.id)),
-		tryCatch(() => {
-			const getWithUserId = async (userId: string) =>
-				getHostTransactionsPaginated({
-					userId,
-					cursor,
-					limit,
-					direction,
-					sort,
-				});
-			return validateCUIDS(getWithUserId, [0])(user.id);
-		}),
-	]);
-
-	const chartData = chartDataResult.data;
-	const paginatedTransactions = paginatedTransactionsResult.data;
+	const [{ data: chartData }, { data: paginatedTransactions }] =
+		await Promise.all([
+			tryCatch(() => validateCUIDS(getHostTransactionsChartData, [0])(user.id)),
+			tryCatch(() => {
+				const getWithUserId = async (userId: string) =>
+					getHostTransactionsPaginated({
+						userId,
+						cursor,
+						limit,
+						direction,
+						sort,
+					});
+				return validateCUIDS(getWithUserId, [0])(user.id);
+			}),
+		]);
 
 	// Process pagination logic
-	const pagination = hasPagination(
+	const pagination = toPagination(
 		paginatedTransactions,
 		limit,
 		cursor,
@@ -72,7 +69,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export default function Host({ loaderData }: Route.ComponentProps) {
 	const {
 		chartData,
-		actualItems: paginatedTransactions,
+		items: paginatedTransactions,
 		hasNextPage,
 		hasPreviousPage,
 	} = loaderData;
@@ -126,12 +123,9 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				renderProps={(item) => item}
 			/>
 			<Pagination
-				cursor={undefined}
 				hasNextPage={hasNextPage}
 				hasPreviousPage={hasPreviousPage}
 				items={paginatedTransactions}
-				limit={DEFAULT_LIMIT}
-				pathname={href('/host/income')}
 			/>
 		</PendingUi>
 	);

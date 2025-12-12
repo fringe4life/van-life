@@ -1,4 +1,4 @@
-import type { Direction } from '~/features/pagination/types';
+import type { Direction, PaginationProps } from '~/features/pagination/types';
 import type { Maybe } from '~/types/types';
 
 /**
@@ -9,29 +9,25 @@ import type { Maybe } from '~/types/types';
  * @param limit - The limit used for pagination
  * @param cursor - The cursor used for pagination (for hasPreviousPage calculation)
  * @param direction - The pagination direction ('forward' or 'backward')
- * @returns Object with actualItems, hasNextPage, and hasPreviousPage
+ * @returns Object with items, hasNextPage, and hasPreviousPage
  */
-export function hasPagination<T>(
+export function toPagination<T>(
 	items: Maybe<T[]>,
 	limit: number,
 	cursor: Maybe<string>,
 	direction: Direction = 'forward'
-): {
-	actualItems: Maybe<T[]>;
-	hasNextPage: boolean;
-	hasPreviousPage: boolean;
-} {
-	// If items is a string (error) or number (count), return as-is with no pagination
-	if (items === null) {
+): PaginationProps<T> {
+	// If items is null, return as-is with no pagination
+	if (!items) {
 		return {
-			actualItems: null,
+			items,
 			hasNextPage: false,
 			hasPreviousPage: false,
 		};
 	}
 
 	// Check if there are more results (cursor pagination)
-	const hasMoreResults = Array.isArray(items) && items.length > limit;
+	const hasMoreResults = items.length > limit;
 
 	// FIXED: Correct pagination logic based on Prisma documentation
 	// For forward pagination: hasNextPage = hasMoreResults, hasPreviousPage = has cursor
@@ -42,16 +38,15 @@ export function hasPagination<T>(
 		direction === 'forward' ? Boolean(cursor) : hasMoreResults;
 
 	// Remove the extra item if we took one more than the limit
-	let actualItems =
-		Array.isArray(items) && hasMoreResults ? items.slice(0, limit) : items;
+	let actualItems = hasMoreResults ? items.slice(0, limit) : items;
 
 	// For backward pagination, reverse the results since Prisma returns them in opposite order
-	if (direction === 'backward' && Array.isArray(actualItems)) {
+	if (direction === 'backward') {
 		actualItems = actualItems.reverse();
 	}
 
 	return {
-		actualItems,
+		items: actualItems,
 		hasNextPage,
 		hasPreviousPage,
 	};

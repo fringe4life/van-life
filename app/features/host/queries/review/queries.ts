@@ -1,13 +1,13 @@
 /** biome-ignore-all lint/style/useNamingConvention: prisma style */
 import type { PaginationParams, SortOption } from '~/features/pagination/types';
 import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
+import { reverseSortOption } from '~/features/pagination/utils/reverse-sort-order';
 import type { Prisma } from '~/generated/prisma/client';
 import {
 	COMMON_SORT_CONFIGS,
 	createGenericOrderBy,
 } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
-import { reverseSortOption } from '~/utils/reverse-sort-order';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostReviews(userId: string) {

@@ -1,4 +1,4 @@
-import { data, href } from 'react-router';
+import { data } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
@@ -13,8 +13,7 @@ import {
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import Pagination from '~/features/pagination/components/pagination';
-import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
-import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
+import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanHeader from '~/features/vans/components/van-header';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
@@ -28,7 +27,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
 
 	// Load chart data and paginated reviews
-	const [chartDataResult, paginatedReviewsResult] = await Promise.all([
+	const [{ data: chartData }, { data: paginatedReviews }] = await Promise.all([
 		tryCatch(() => validateCUIDS(getHostReviewsChartData, [0])(user.id)),
 		tryCatch(() => {
 			const getWithUserId = async (userId: string) =>
@@ -43,11 +42,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		}),
 	]);
 
-	const chartData = chartDataResult.data;
-	const paginatedReviews = paginatedReviewsResult.data;
-
 	// Process pagination logic
-	const pagination = hasPagination(paginatedReviews, limit, cursor, direction);
+	const pagination = toPagination(paginatedReviews, limit, cursor, direction);
 
 	return data(
 		{
@@ -65,7 +61,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export default function Reviews({ loaderData }: Route.ComponentProps) {
 	const {
 		chartData,
-		actualItems: paginatedReviews,
+		items: paginatedReviews,
 		hasNextPage,
 		hasPreviousPage,
 	} = loaderData;
@@ -106,8 +102,6 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 		id: review.id,
 	})); // Pass error string directly to GenericComponent
 
-	const limit = DEFAULT_LIMIT;
-
 	return (
 		<PendingUi
 			as="section"
@@ -132,12 +126,9 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 				renderProps={(item) => item}
 			/>
 			<Pagination
-				cursor={undefined}
 				hasNextPage={hasNextPage}
 				hasPreviousPage={hasPreviousPage}
 				items={reviewItems}
-				limit={limit}
-				pathname={href('/host/review')}
 			/>
 		</PendingUi>
 	);

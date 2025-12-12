@@ -1,4 +1,3 @@
-import { useQueryStates } from 'nuqs';
 import { Activity } from 'react';
 import { data, href } from 'react-router';
 import GenericComponent from '~/components/generic-component';
@@ -10,13 +9,11 @@ import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
 import Pagination from '~/features/pagination/components/pagination';
-import { DEFAULT_LIMIT } from '~/features/pagination/pagination-constants';
-import { hasPagination } from '~/features/pagination/utils/has-pagination.server';
+import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanDetailCard from '~/features/vans/components/host-van-detail-card';
 import VanCard from '~/features/vans/components/van-card';
 import VanHeader from '~/features/vans/components/van-header';
 import { getHostVanCount, getHostVans } from '~/features/vans/queries/host';
-import { hostPaginationParsers } from '~/lib/parsers';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host-vans';
@@ -29,18 +26,15 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	// Parse search parameters using nuqs loadHostSearchParams
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
-	const [vansResult, countResult] = await Promise.all([
+	const [{ data: vans }, { data: vansCount }] = await Promise.all([
 		tryCatch(() =>
 			validateCUIDS(getHostVans, [0])(user.id, cursor, limit, direction)
 		),
 		tryCatch(() => validateCUIDS(getHostVanCount, [0])(user.id)),
 	]);
 
-	const vans = vansResult.data;
-	const vansCount = countResult.data;
-
 	// Process pagination logic
-	const pagination = hasPagination(vans, limit, cursor, direction);
+	const pagination = toPagination(vans, limit, cursor, direction);
 
 	return data(
 		{
@@ -56,11 +50,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 }
 
 export default function Host({ loaderData, params }: Route.ComponentProps) {
-	const { actualItems: vans, hasNextPage, hasPreviousPage } = loaderData;
-
-	// Use nuqs for client-side state management
-	const [{ cursor, limit }] = useQueryStates(hostPaginationParsers);
-	const effectiveLimit = limit ?? DEFAULT_LIMIT;
+	const { items: vans, hasNextPage, hasPreviousPage } = loaderData;
 
 	// Determine route state using utility helper
 	const {
@@ -127,12 +117,9 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 						})}
 					/>
 					<Pagination
-						cursor={cursor}
 						hasNextPage={hasNextPage}
 						hasPreviousPage={hasPreviousPage}
 						items={vans}
-						limit={effectiveLimit}
-						pathname={href('/host/vans/:vanSlug?/:action?')}
 					/>
 				</PendingUi>
 			</Activity>
