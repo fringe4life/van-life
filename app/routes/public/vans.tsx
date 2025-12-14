@@ -131,6 +131,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 						Component={VanCard}
 						className="grid-max"
 						emptyStateMessage="There are no vans on our site."
+						errorStateMessage="Something went wrong"
 						items={vans}
 						renderKey={(van) => van.id}
 						renderProps={(van) => ({

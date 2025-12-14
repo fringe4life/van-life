@@ -10,12 +10,13 @@ export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 export default function HostLayout() {
 	return (
 		<>
-			<div className="layout contain-content">
+			<div className="grid grid-cols-1 contain-content">
 				<GenericComponent
 					as="ul"
 					Component={CustomNavLink}
 					className="mask-r-from-95% no-scrollbar mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-3 overflow-x-auto overscroll-x-contain py-3"
 					emptyStateMessage="No nav links"
+					errorStateMessage="Something went wrong"
 					items={hostNavItems}
 					renderKey={(item) => item.to}
 					renderProps={(item) => ({

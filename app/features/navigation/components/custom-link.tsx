@@ -1,12 +1,12 @@
 import { Link, type LinkProps } from 'react-router';
 import useIsPage from '~/hooks/use-is-page';
 
-export default function CustomLink({
+const CustomLink = ({
 	children,
 	to,
 	className,
 	...rest
-}: Omit<LinkProps, 'style'>) {
+}: Omit<LinkProps, 'style'>) => {
 	const { isPage } = useIsPage({ to });
 	return (
 		<Link
@@ -22,4 +22,6 @@ export default function CustomLink({
 			{children}
 		</Link>
 	);
-}
+};
+
+export default CustomLink;

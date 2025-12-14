@@ -34,16 +34,10 @@
 	--color-van-sale: oklch(40% 0.3 142); /* more saturated green */
 	--color-van-repair: oklch(60% 0.3 85); /* more saturated yellow */
 
-	--container-layout: min(var(--container-5xl), 100svw);
+	--container-layout: min(var(--container-5xl), 100svw - var(--padding-inline));
 
 	/* Responsive padding inline - updates automatically */
 	--padding-inline: 0.75rem; /* Mobile default */
-
-	/* Host layout max-width calculation - eliminates redundancy */
-	--host-layout-max-width: calc(
-		var(--container-layout) -
-		(2 * var(--padding-inline))
-	);
 
 	--mobile-menu-width: min(100vw, 25rem);
 
@@ -145,10 +139,6 @@
 	inline-size: calc(100% + (2 * var(--padding-inline)));
 	padding-inline-start: var(--padding-inline);
 	padding-inline-end: var(--padding-inline);
-}
-
-@utility layout {
-	inline-size: var(--host-layout-max-width);
 }
 
 @utility layout-grid {

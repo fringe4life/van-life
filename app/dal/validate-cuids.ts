@@ -35,11 +35,12 @@ type CuidParamIndex<Args extends readonly unknown[]> = Extract<
  *   return validateCUIDS(getWithUserId, [0] as const)(session.user.id);
  * });
  */
-export function validateCUIDS<Args extends readonly unknown[], R>(
-	fn: (...args: Args) => Promise<R>,
-	indices: readonly CuidParamIndex<Args>[]
-) {
-	return async (...args: Args): Promise<R> => {
+export const validateCUIDS =
+	<Args extends readonly unknown[], R>(
+		fn: (...args: Args) => Promise<R>,
+		indices: readonly CuidParamIndex<Args>[]
+	) =>
+	async (...args: Args): Promise<R> => {
 		for (const index of indices) {
 			const value = args[index];
 			if (typeof value !== 'string' || !isCUID(value)) {
@@ -49,4 +50,3 @@ export function validateCUIDS<Args extends readonly unknown[], R>(
 
 		return await fn(...args);
 	};
-}

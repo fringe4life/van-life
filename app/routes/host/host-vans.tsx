@@ -92,6 +92,7 @@ export default function Host({ loaderData, params }: Route.ComponentProps) {
 						Component={VanCard}
 						className="grid-max mt-6"
 						emptyStateMessage="You are currently not renting any vans."
+						errorStateMessage="Something went wrong"
 						items={vans}
 						renderKey={(van) => van.id}
 						renderProps={(van) => ({

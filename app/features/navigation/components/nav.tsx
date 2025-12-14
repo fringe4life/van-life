@@ -16,7 +16,7 @@ type NavProps = {
 	hasToken: boolean;
 };
 
-export default function Nav({ hasToken }: NavProps) {
+const Nav = ({ hasToken }: NavProps) => {
 	const navItems = getNavItems(hasToken);
 
 	const [getTrigger, mobileDialog] = useSheetDialog({
@@ -43,6 +43,7 @@ export default function Nav({ hasToken }: NavProps) {
 					Component={NavItem}
 					className="grid h-full place-content-center gap-4 text-2xl"
 					emptyStateMessage="No nav items"
+					errorStateMessage="Something went wrong"
 					items={mobileNavItems}
 					renderKey={(item) => item.key}
 					renderProps={(item) => ({
@@ -70,6 +71,7 @@ export default function Nav({ hasToken }: NavProps) {
 					Component={NavItem}
 					className="flex justify-end gap-3"
 					emptyStateMessage="No nav items"
+					errorStateMessage="Something went wrong"
 					items={navItems}
 					renderKey={(item) => item.key}
 					renderProps={(item) => ({
@@ -83,4 +85,6 @@ export default function Nav({ hasToken }: NavProps) {
 			{mobileDialog}
 		</header>
 	);
-}
+};
+
+export default Nav;

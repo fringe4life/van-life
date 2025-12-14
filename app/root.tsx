@@ -28,7 +28,7 @@ export const links: Route.LinksFunction = () => [
 	},
 ];
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export const Layout = ({ children }: { children: React.ReactNode }) => {
 	useEffect(() => {
 		// Make sure to run react-scan only after hydration
 		scan({
@@ -43,24 +43,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<meta content="width=device-width, initial-scale=1" name="viewport" />
 				<Links />
 			</head>
-			<body className="layout-grid mx-auto min-h-dvh max-w-layout overflow-x-clip bg-orange-50">
+			<body className="layout-grid mx-auto min-h-dvh w-full max-w-layout bg-orange-50">
 				{children}
 				<ScrollRestoration />
 				<Scripts />
 			</body>
 		</html>
 	);
-}
+};
 
-export default function App() {
-	return (
-		<NuqsAdapter defaultOptions={{ clearOnDefault: true, shallow: false }}>
-			<Outlet />
-		</NuqsAdapter>
-	);
-}
+const App = () => (
+	<NuqsAdapter defaultOptions={{ clearOnDefault: true, shallow: false }}>
+		<Outlet />
+	</NuqsAdapter>
+);
+export default App;
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 	let message = 'Oops!';
 	let details = 'An unexpected error occurred.';
 	let stack: Maybe<string>;
@@ -90,4 +89,4 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 			)}
 		</main>
 	);
-}
+};

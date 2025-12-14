@@ -122,6 +122,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 				Component={Review}
 				className="grid-max mt-6"
 				emptyStateMessage="You have received no reviews"
+				errorStateMessage="Something went wrong"
 				items={reviewItems}
 				renderKey={(item) => item.id}
 				renderProps={(item) => item}

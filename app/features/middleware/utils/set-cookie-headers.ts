@@ -5,10 +5,10 @@ import { COOKIE_HEADER } from '../constants';
  * Sets cookie headers from session response headers onto the result response.
  * Used to update cookie cache when a user is logged in.
  */
-export function setCookieHeaders(
+export const setCookieHeaders = (
 	headers: Maybe<Headers>,
 	result: Response
-): Response {
+): Response => {
 	if (!headers) {
 		return result;
 	}
@@ -19,4 +19,4 @@ export function setCookieHeaders(
 	}
 
 	return result;
-}
+};

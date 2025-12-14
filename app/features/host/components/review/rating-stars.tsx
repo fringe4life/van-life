@@ -5,7 +5,7 @@ type RatingStarsProps = {
 	rating: number;
 };
 
-export default function RatingStars({ rating }: RatingStarsProps) {
+const RatingStars = ({ rating }: RatingStarsProps) => {
 	const MaxRating = 5;
 	const PercentageMultiplier = 100;
 	const stars: JSX.Element[] = [];
@@ -51,4 +51,6 @@ export default function RatingStars({ rating }: RatingStarsProps) {
 		}
 	}
 	return <div className="flex h-5 w-30 gap-2 contain-strict">{stars}</div>;
-}
+};
+
+export default RatingStars;

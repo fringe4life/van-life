@@ -15,19 +15,17 @@ export type BarChartComponentProps = {
 	}[];
 };
 
-export default function BarChartComponent({
-	mappedData,
-}: BarChartComponentProps) {
-	return (
-		<div className="h-full w-full text-orange-400">
-			<BarChart data={mappedData} height="100%" responsive width="100%">
-				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis dataKey="name" />
-				<YAxis />
-				<Tooltip />
-				<Legend />
-				<Bar dataKey="amount" fill="currentColor" />
-			</BarChart>
-		</div>
-	);
-}
+const BarChartComponent = ({ mappedData }: BarChartComponentProps) => (
+	<div className="h-full w-full text-orange-400">
+		<BarChart data={mappedData} height="100%" responsive width="100%">
+			<CartesianGrid strokeDasharray="3 3" />
+			<XAxis dataKey="name" />
+			<YAxis />
+			<Tooltip />
+			<Legend />
+			<Bar dataKey="amount" fill="currentColor" />
+		</BarChart>
+	</div>
+);
+
+export default BarChartComponent;

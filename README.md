@@ -7,7 +7,7 @@
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.17-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.18-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.6-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.8.5-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.3.8-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
@@ -15,7 +15,7 @@
 [![Prisma](https://img.shields.io/badge/Prisma-7.1.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-8.0.0--beta-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![ArkType](https://img.shields.io/badge/ArkType-2.1.28-000000?logo=arktype&logoColor=white)](https://arktype.io/)
+[![ArkType](https://img.shields.io/badge/ArkType-2.1.29-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
 </div>
 
@@ -81,9 +81,9 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **React canary** builds with stable Activity component for prerendering
 - **React Router 7.10.1** (file-based routing, SSR, optional route parameters)
 - **TypeScript 5.9.3** with strict configuration
-- **TailwindCSS 4.1.17** with modern CSS features
+- **TailwindCSS 4.1.18** with modern CSS features
 - **Radix UI** for accessible components
-- **Lucide React 0.559.0** for icons
+- **Lucide React 0.561.0** for icons
 - **Recharts 3.5.1** for data visualization (lazy-loaded)
 - **nuqs 2.8.5** for type-safe URL state management via Context7 parsers
 
@@ -91,8 +91,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - **Node.js** with React Router server
 - **Prisma 7.1.0** ORM with Neon PostgreSQL (Rust-free client)
-- **better-auth 1.4.5** for authentication
-- **ArkType 2.1.28** for schema validation and type narrowing
+- **better-auth 1.4.6** for authentication
+- **ArkType 2.1.29** for schema validation and type narrowing
 - **CUID2 3.1.0** for unique identifiers (configured for 25-character IDs)
 - **@prisma/adapter-neon 7.1.0** for Neon database integration
 
@@ -949,7 +949,7 @@ export default config;
 
 ### TailwindCSS 4 & Modern CSS
 
-- **TailwindCSS 4.1.17** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
+- **TailwindCSS 4.1.18** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
 - **Responsive design** with mobile-first approach and CSS Grid layouts
 - **Biome configuration** for CSS at-rules support
 
@@ -973,7 +973,7 @@ export default config;
 - **Biome 2.3.8** for linting and formatting with Ultracite integration
 - **Ultracite 6.4.0** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.3** with strict configuration
-- **ArkType 2.1.28** for runtime validation with regex support for slug validation
+- **ArkType 2.1.29** for runtime validation with regex support for slug validation
 - **Consistent code style:**
   - Tab indentation
   - Single quotes

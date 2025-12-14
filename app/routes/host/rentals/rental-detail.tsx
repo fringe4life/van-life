@@ -15,7 +15,7 @@ import type { Route } from './+types/rental-detail';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
-export async function loader({ params }: Route.LoaderArgs) {
+export const loader = async ({ params }: Route.LoaderArgs) => {
 	const result = await tryCatch(() => getVanBySlug(params.vanSlug));
 
 	if (result.error) {
@@ -38,9 +38,13 @@ export async function loader({ params }: Route.LoaderArgs) {
 			},
 		}
 	);
-}
+};
 
-export async function action({ request, params, context }: Route.ActionArgs) {
+export const action = async ({
+	request,
+	params,
+	context,
+}: Route.ActionArgs) => {
 	const user = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
@@ -71,13 +75,9 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 		};
 	}
 	throw redirect(href('/host/rentals'));
-}
+};
 
-export default function AddVan({
-	actionData,
-	loaderData,
-	params,
-}: Route.ComponentProps) {
+const AddVan = ({ actionData, loaderData, params }: Route.ComponentProps) => {
 	const { rental } = loaderData;
 
 	return (
@@ -102,9 +102,11 @@ export default function AddVan({
 			</CustomForm>
 		</section>
 	);
-}
+};
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export default AddVan;
+
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 	if (isRouteErrorResponse(error)) {
 		return <UnsuccesfulState isError message={error.statusText} />;
 	}
@@ -112,4 +114,4 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 		return <UnsuccesfulState isError message={error.message} />;
 	}
 	return <UnsuccesfulState isError message="An unknown error occurred." />;
-}
+};

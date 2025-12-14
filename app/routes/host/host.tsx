@@ -38,7 +38,6 @@ import { TransactionType } from '~/generated/prisma/enums';
 import { moneySchema } from '~/lib/schemas.server';
 import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
 import { tryCatch } from '~/utils/try-catch.server';
-import { validateTransactionType } from '~/utils/validators';
 import type { Route } from './+types/host';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
@@ -117,11 +116,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 			: Math.abs(result.amount); // Deposits are positive
 
 	const result2 = await tryCatch(() =>
-		validateCUIDS(addMoney, [0])(
-			user.id,
-			adjustedAmount,
-			validateTransactionType(result.type)
-		)
+		validateCUIDS(addMoney, [0])(user.id, adjustedAmount, result.type)
 	);
 
 	if (result2.error) {
@@ -140,7 +135,8 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 	const currentBalance =
 		typeof transactionSummary === 'number' ? transactionSummary : 0;
 
-	const isWithdrawing = (actionData?.formData?.type as string) === 'withdraw';
+	const isWithdrawing =
+		(actionData?.formData?.type as string | undefined) === 'withdraw';
 
 	const fetcher = useFetcher();
 	const [isPending, startTransition] = useTransition();
@@ -316,6 +312,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 							Component={VanCard}
 							className="grid-max mt-11"
 							emptyStateMessage="You are not currently renting any vans"
+							errorStateMessage="Something went wrong"
 							items={vans}
 							renderKey={(van) => van.id}
 							renderProps={(item) => ({

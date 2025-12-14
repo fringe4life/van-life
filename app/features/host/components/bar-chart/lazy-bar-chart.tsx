@@ -4,10 +4,10 @@ import BarChartSkeleton from './bar-chart-skeleton';
 
 const BarChartComponent = lazy(() => import('./bar-chart'));
 
-export default function LazyBarChart({ mappedData }: BarChartComponentProps) {
-	return (
-		<Suspense fallback={<BarChartSkeleton />}>
-			<BarChartComponent mappedData={mappedData} />
-		</Suspense>
-	);
-}
+const LazyBarChart = ({ mappedData }: BarChartComponentProps) => (
+	<Suspense fallback={<BarChartSkeleton />}>
+		<BarChartComponent mappedData={mappedData} />
+	</Suspense>
+);
+
+export default LazyBarChart;

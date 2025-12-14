@@ -9,6 +9,7 @@ export type GenericComponentProps<T, P, E extends React.ElementType = 'div'> = {
 	renderKey: (item: T, index: number) => React.Key;
 	className?: string;
 	emptyStateMessage: string;
+	errorStateMessage: string;
 	as?: E;
 	wrapperProps?: React.ComponentPropsWithoutRef<E>;
 };
@@ -20,13 +21,15 @@ const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	renderKey,
 	className = '',
 	emptyStateMessage,
+	errorStateMessage,
 	as,
 	wrapperProps,
 }: GenericComponentProps<T, P, E>) => {
 	const isError = !items;
 	const isEmpty = !isError && items.length === 0;
+	const message = isError ? errorStateMessage : emptyStateMessage;
 	if (isError || isEmpty) {
-		return <UnsuccesfulState isError message={emptyStateMessage} />;
+		return <UnsuccesfulState isError message={message} />;
 	}
 
 	const Wrapper = as || 'div';

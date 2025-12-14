@@ -115,6 +115,7 @@ function VanDetailCardRoot({ van, children, className }: VanDetailCardProps) {
 							Component={CustomNavLink}
 							className="my-6 flex gap-6"
 							emptyStateMessage=""
+							errorStateMessage="Something went wrong"
 							items={navLinks}
 							renderKey={(item) => item.children}
 							renderProps={(item) => ({

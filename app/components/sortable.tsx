@@ -39,11 +39,7 @@ const sortOptions = [
 	{ value: 'lowest' as SortOption, label: 'Lowest' },
 ];
 
-export default function Sortable({
-	title,
-	itemCount,
-	className,
-}: SortableProps) {
+export const Sortable = ({ title, itemCount, className }: SortableProps) => {
 	// Use nuqs for client-side state management
 	const [{ sort }, setSearchParams] = useQueryStates(hostPaginationParsers);
 
@@ -79,6 +75,7 @@ export default function Sortable({
 				Component={Button}
 				className="grid grid-cols-2 items-center gap-2 overflow-x-auto sm:grid-flow-col sm:grid-cols-4 sm:gap-4"
 				emptyStateMessage=""
+				errorStateMessage="Something went wrong"
 				items={sortOptions}
 				renderKey={(item) => item.value}
 				renderProps={(item) => ({
@@ -104,4 +101,5 @@ export default function Sortable({
 				</Button> */}
 		</div>
 	);
-}
+};
+export default Sortable;

@@ -14,13 +14,11 @@ export type NavItemProps = {
 	children?: ReactNode;
 };
 
-function isCustomNavLink(
+const isCustomNavLink = (
 	component: NavItemComponent
-): component is typeof CustomNavLink {
-	return component.name === 'CustomNavLink';
-}
+): component is typeof CustomNavLink => component.name === 'CustomNavLink';
 
-function NavItem({ Component, props, children }: NavItemProps) {
+const NavItem = ({ Component, props, children }: NavItemProps) => {
 	// Type guard for CustomNavLink vs CustomLink
 	if (isCustomNavLink(Component)) {
 		// className can be string or function
@@ -40,6 +38,6 @@ function NavItem({ Component, props, children }: NavItemProps) {
 			</Component>
 		</li>
 	);
-}
+};
 
 export default NavItem;

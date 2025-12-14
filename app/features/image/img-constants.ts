@@ -30,3 +30,5 @@ export const HOST_VAN_DETAIL_IMG_SIZES = [200, 250, 300, 400] as const;
 export const DEFAULT_IMAGE_QUALITY = 50; // Optimized for better compression
 export const HIGH_QUALITY_IMAGE_QUALITY = 75; // For cases where higher quality is needed
 export const AVIF_QUALITY_BOOST = 10; // AVIF can handle higher quality
+
+export const PLACEHOLDER_IMAGE_WIDTH = 20;

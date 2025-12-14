@@ -32,7 +32,7 @@ export default function Home() {
 	return (
 		<PendingUi
 			as="section"
-			className="full-layout relative grid aspect-[1/1.5] text-white contain-strict sm:pl-6 md:aspect-video md:place-content-center md:self-center"
+			className="full-layout relative grid aspect-[1/1.5] h-full text-white contain-strict sm:pl-6 md:aspect-video md:place-content-center md:self-center"
 		>
 			<title>Home | Van Life</title>
 			<meta

@@ -7,10 +7,6 @@ export type ListItemProps<T> = {
 	getRow: (t: T) => React.ReactNode;
 };
 
-export default function ListItems<T>({
-	getKey,
-	getRow,
-	items,
-}: ListItemProps<T>) {
-	return items.map((d) => <Fragment key={getKey(d)}>{getRow(d)}</Fragment>);
-}
+export const ListItems = <T,>({ getKey, getRow, items }: ListItemProps<T>) =>
+	items.map((d) => <Fragment key={getKey(d)}>{getRow(d)}</Fragment>);
+export default ListItems;

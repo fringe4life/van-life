@@ -119,6 +119,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				Component={Income}
 				className="grid-max mt-6"
 				emptyStateMessage="Rent some vans and your income will appear here."
+				errorStateMessage="Something went wrong"
 				items={paginatedTransactions}
 				renderKey={(item) => item.id}
 				renderProps={(item) => item}

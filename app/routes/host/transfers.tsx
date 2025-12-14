@@ -35,7 +35,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		await Promise.all([
 			tryCatch(() => validateCUIDS(getUserTransactionsChartData, [0])(user.id)),
 			tryCatch(() => {
-				const getWithUserId = async (userId: string) =>
+				const getWithUserId = (userId: string) =>
 					getUserTransactionsPaginated({
 						userId,
 						cursor,
@@ -134,6 +134,7 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 				Component={Income}
 				className="grid-max mt-6"
 				emptyStateMessage="Make some transactions and they will appear here."
+				errorStateMessage="Something went wrong"
 				items={paginatedTransactions}
 				renderKey={(item) => item.id}
 				renderProps={(item) => ({

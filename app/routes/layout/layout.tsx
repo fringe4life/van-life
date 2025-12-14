@@ -16,7 +16,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 	return (
 		<>
 			<Nav hasToken={hasToken} />
-			<main className="col-start-2 row-start-2 mb-6">
+			<main className="col-start-2 col-end-3 row-start-2 mb-6">
 				<Outlet />
 			</main>
 			<footer className="col-span-full row-start-3 grid place-content-center bg-neutral-800 py-6.25 contain-strict">

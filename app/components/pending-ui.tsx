@@ -58,14 +58,14 @@ type PendingUiProps<T extends ElementType = 'div'> = {
  * </PendingUI>
  * ```
  */
-export default function PendingUI<T extends ElementType = 'div'>({
+export const PendingUI = <T extends ElementType = 'div'>({
 	as,
 	className,
 	isPending,
 	pendingOpacity = 0.75,
 	children,
 	...rest
-}: PendingUiProps<T>) {
+}: PendingUiProps<T>) => {
 	const { changingPage } = useIsNavigating();
 	const isCurrentlyPending = isPending ?? changingPage;
 
@@ -90,4 +90,5 @@ export default function PendingUI<T extends ElementType = 'div'>({
 			{children}
 		</Component>
 	);
-}
+};
+export default PendingUI;

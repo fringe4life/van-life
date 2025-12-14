@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { DEFAULT_IMAGE_QUALITY } from '~/features/image/img-constants';
+import {
+	DEFAULT_IMAGE_QUALITY,
+	PLACEHOLDER_IMAGE_WIDTH,
+} from '~/features/image/img-constants';
 import { createNewImageSizeWithAspectRatio } from '~/features/image/utils/create-new-image-size';
 import type { Maybe } from '~/types/types';
 import canUseDom from '~/utils/can-use-dom';
@@ -53,19 +56,19 @@ type ImgProps = React.ComponentProps<'img'> & {
  *
  * @returns A React component that renders a progressively loading image
  */
-export default function Image({
+const Image = ({
 	src,
 	alt,
 	className,
 	classesForContainer = '',
 	...rest
-}: ImgProps) {
+}: ImgProps) => {
 	/** Low-resolution placeholder image width constant */
-	const LowResImageWidth = 20;
+
 	/** Low-resolution placeholder image (20px width, square aspect ratio) with WebP format and optimized quality */
 	const lowRes = createNewImageSizeWithAspectRatio(
 		src,
-		LowResImageWidth,
+		PLACEHOLDER_IMAGE_WIDTH,
 		'1:1',
 		DEFAULT_IMAGE_QUALITY
 	);
@@ -117,4 +120,6 @@ export default function Image({
 			/>
 		</div>
 	);
-}
+};
+
+export default Image;

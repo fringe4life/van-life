@@ -1,5 +1,6 @@
 import type { Direction, PaginationProps } from '~/features/pagination/types';
 import type { Maybe } from '~/types/types';
+import { NO_PAGINATION } from '../pagination-constants';
 
 /**
  * Generic pagination utility that processes database results and returns
@@ -19,11 +20,7 @@ export function toPagination<T>(
 ): PaginationProps<T> {
 	// If items is null, return as-is with no pagination
 	if (!items) {
-		return {
-			items,
-			hasNextPage: false,
-			hasPreviousPage: false,
-		};
+		return NO_PAGINATION;
 	}
 
 	// Check if there are more results (cursor pagination)

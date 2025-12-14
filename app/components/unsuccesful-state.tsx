@@ -3,17 +3,16 @@ type EmptyStateProps = {
 	isError?: boolean;
 };
 
-export default function UnsuccesfulState({
+export const UnsuccesfulState = ({
 	message,
 	isError = false,
-}: EmptyStateProps) {
-	return (
-		<div
-			className="grid h-full w-full items-center"
-			data-error={isError}
-			data-unsuccessful
-		>
-			<p className="text-center error:text-red-500">{message}</p>
-		</div>
-	);
-}
+}: EmptyStateProps) => (
+	<div
+		className="grid h-full w-full items-center"
+		data-error={isError}
+		data-unsuccessful
+	>
+		<p className="text-center error:text-red-500">{message}</p>
+	</div>
+);
+export default UnsuccesfulState;

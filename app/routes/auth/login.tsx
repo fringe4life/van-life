@@ -35,7 +35,7 @@ export async function action({ request }: Route.ActionArgs) {
 	if (result instanceof type.errors) {
 		return {
 			errors: result.summary,
-			email: (formData.email as string) ?? '',
+			email: (formData.email as string | undefined) ?? '',
 		};
 	}
 	const response = await auth.api.signInEmail({
@@ -46,7 +46,7 @@ export async function action({ request }: Route.ActionArgs) {
 	if (!response.ok) {
 		return {
 			errors: 'Your email or password is incorrect',
-			email: (formData.email as string) ?? '',
+			email: (formData.email as string | undefined) ?? '',
 		};
 	}
 	throw replace(href('/host'), {
