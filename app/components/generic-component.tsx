@@ -2,7 +2,11 @@ import type React from 'react';
 import type { Maybe } from '~/types/types';
 import UnsuccesfulState from './unsuccesful-state';
 
-export type GenericComponentProps<T, P, E extends React.ElementType = 'div'> = {
+export interface GenericComponentProps<
+	T,
+	P,
+	E extends React.ElementType = 'div',
+> {
 	Component: React.ComponentType<P>;
 	items: Maybe<T[]>;
 	renderProps: (item: T, index: number) => P;
@@ -12,7 +16,7 @@ export type GenericComponentProps<T, P, E extends React.ElementType = 'div'> = {
 	errorStateMessage: string;
 	as?: E;
 	wrapperProps?: React.ComponentPropsWithoutRef<E>;
-};
+}
 
 const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	Component,

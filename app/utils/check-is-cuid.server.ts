@@ -1,5 +1,5 @@
 import { type } from 'arktype';
-import { cuidSchema } from '~/lib/schemas.server';
+import { cuidSchema } from '~/lib/schemas';
 
 /**
  * @abstract will test if the string is a CUID

@@ -92,8 +92,8 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 										'w-full cursor-pointer uppercase sm:w-fit'
 									)}
 									onClick={() => {
-										startTransition(() => {
-											setSearchParams({
+										startTransition(async () => {
+											await setSearchParams({
 												type: t,
 												cursor: DEFAULT_CURSOR,
 												direction: DEFAULT_DIRECTION,
@@ -114,8 +114,8 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 								Boolean(hasActiveTypeFilter) && 'underline'
 							)}
 							onClick={() => {
-								startTransition(() => {
-									setSearchParams({
+								startTransition(async () => {
+									await setSearchParams({
 										type: DEFAULT_FILTER,
 										cursor: DEFAULT_CURSOR,
 										direction: DEFAULT_DIRECTION,
@@ -142,18 +142,14 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 									<VanPrice van={van} />
 								</div>
 							),
-							link: (() => {
-								const baseUrl = href('/vans/:vanSlug', {
+							link: buildVanSearchParams({
+								cursor,
+								limit,
+								type,
+								baseUrl: href('/vans/:vanSlug', {
 									vanSlug: van.slug,
-								});
-								const search = buildVanSearchParams({
-									cursor,
-									limit,
-									type,
-								});
-								// biome-ignore lint/nursery/noLeakedRender:  TODO
-								return search ? `${baseUrl}?${search}` : baseUrl;
-							})(),
+								}),
+							}),
 						})}
 					/>
 					<Pagination

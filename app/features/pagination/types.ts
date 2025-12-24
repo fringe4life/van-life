@@ -7,22 +7,22 @@ export type Direction = 'forward' | 'backward';
 // Type for review sorting options
 export type SortOption = 'newest' | 'oldest' | 'highest' | 'lowest';
 
-export type PaginationProps<T> = {
+export interface PaginationProps<T> {
 	items: Maybe<T[]>;
 	hasNextPage: boolean;
 	hasPreviousPage: boolean;
-};
+}
 
-export type CursorPaginationInformation = {
+export interface CursorPaginationInformation {
 	actualCursor: Maybe<string>;
 	sortOrder: Prisma.SortOrder;
 	takeAmount: number;
-};
+}
 
-export type PaginationParams = {
+export interface PaginationParams {
 	userId: string;
 	cursor: Maybe<string>;
 	limit: number;
 	direction?: Direction;
 	sort?: SortOption;
-};
+}

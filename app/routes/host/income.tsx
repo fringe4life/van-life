@@ -2,7 +2,6 @@ import { data } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
-import UnsuccesfulState from '~/components/unsuccesful-state';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Income from '~/features/host/components/income';
@@ -78,17 +77,10 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	const sumIncome = calculateTotalIncome(chartData);
 	const elapsedTime = getElapsedTime(chartData);
 
-	let barChartElement = (
-		<UnsuccesfulState isError message="No income data available" />
-	);
-
-	if (chartData) {
-		const mappedData = chartData.map((income) => ({
-			name: income.createdAt.toDateString(),
-			amount: Math.round(income.amount),
-		}));
-		barChartElement = <LazyBarChart mappedData={mappedData} />;
-	}
+	const mappedData = chartData?.map((income) => ({
+		name: income.createdAt.toDateString(),
+		amount: Math.round(income.amount),
+	}));
 
 	return (
 		<PendingUi
@@ -111,7 +103,11 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			<p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
 				{displayPrice(sumIncome)}
 			</p>
-			{barChartElement}
+			<LazyBarChart
+				data={mappedData}
+				emptyStateMessage="No income yet"
+				errorStateMessage="Something went wrong"
+			/>
 			<Sortable itemCount={chartData?.length} title="Income Transactions" />
 
 			<GenericComponent

@@ -12,9 +12,9 @@ import { getNavItems } from '../utils/get-nav-items';
 import CustomLink from './custom-link';
 import NavItem from './nav-item';
 
-type NavProps = {
+interface NavProps {
 	hasToken: boolean;
-};
+}
 
 const Nav = ({ hasToken }: NavProps) => {
 	const navItems = getNavItems(hasToken);

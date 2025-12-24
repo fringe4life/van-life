@@ -51,16 +51,16 @@ function VanDetailCardRoot({ van, children, className }: VanDetailCardProps) {
 	const navLinks = [
 		{
 			children: 'Details',
-			to: href('/host/vans/:vanSlug?/:action?', { vanSlug }),
+			to: href('/host/vans/:vanSlug/:action?', { vanSlug, action: undefined }),
 			end: true,
 		},
 		{
 			children: 'Pricing',
-			to: href('/host/vans/:vanSlug?/:action?', { vanSlug, action: 'pricing' }),
+			to: href('/host/vans/:vanSlug/:action?', { vanSlug, action: 'pricing' }),
 		},
 		{
 			children: 'Photos',
-			to: href('/host/vans/:vanSlug?/:action?', { vanSlug, action: 'photos' }),
+			to: href('/host/vans/:vanSlug/:action?', { vanSlug, action: 'photos' }),
 		},
 	];
 

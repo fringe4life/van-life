@@ -7,11 +7,11 @@ import {
 	type UnsplashAspectRatio,
 } from './create-new-image-size';
 
-type ResponsiveConfig = {
+interface ResponsiveConfig {
 	sizes: readonly number[] | number[];
 	aspectRatio: UnsplashAspectRatio;
 	quality?: number;
-};
+}
 
 // Constants for better performance and maintainability
 const FORMAT_REGEX = /fm=\w+/g;

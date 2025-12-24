@@ -28,9 +28,9 @@ import VanPrice from './van-price';
 
 const StyledCard = withVanCardStyles(Card);
 
-type VanDetailProps = {
+interface VanDetailProps {
 	van: VanModel;
-};
+}
 
 export default function VanDetail({
 	van: { imageUrl, description, type, name, slug: vanSlug },

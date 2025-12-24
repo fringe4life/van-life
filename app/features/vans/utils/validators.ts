@@ -64,8 +64,8 @@ export function isValidVanTypeOrEmpty(value: string): value is VanTypeOrEmpty {
  * @param type - The type value to validate
  * @returns A valid VanTypeOrEmpty
  */
-export function validateVanTypeOrEmpty(type: string): VanTypeOrEmpty {
-	return isValidVanTypeOrEmpty(type)
+export function validateVanTypeOrEmpty(type: Maybe<string>): VanTypeOrEmpty {
+	return type && isValidVanTypeOrEmpty(type)
 		? (type as VanTypeOrEmpty)
 		: DEFAULT_FILTER;
 }

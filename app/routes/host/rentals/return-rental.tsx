@@ -25,12 +25,12 @@ import type { Route } from './+types/return-rental';
  * This data is fetched once in middleware and shared between loader and action.
  * The rent is guaranteed to be valid (non-null, non-error) after middleware validation.
  */
-type SharedRentalData = {
+interface SharedRentalData {
 	rent: NonNullable<
 		Exclude<Awaited<ReturnType<typeof getHostRentedVan>>, string>
 	>;
 	money: number;
-};
+}
 
 const sharedRentalDataContext = createContext<SharedRentalData>();
 

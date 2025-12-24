@@ -1,9 +1,9 @@
 import { StarIcon } from 'lucide-react';
 import type { JSX } from 'react';
 
-type RatingStarsProps = {
+interface RatingStarsProps {
 	rating: number;
-};
+}
 
 const RatingStars = ({ rating }: RatingStarsProps) => {
 	const MaxRating = 5;

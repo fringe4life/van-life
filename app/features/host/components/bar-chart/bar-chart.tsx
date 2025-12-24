@@ -8,16 +8,14 @@ import {
 	YAxis,
 } from 'recharts';
 
-export type BarChartComponentProps = {
-	mappedData: {
-		name: string;
-		amount: number;
-	}[];
-};
+export type DataArray = {
+	name: string;
+	amount: number;
+}[];
 
-const BarChartComponent = ({ mappedData }: BarChartComponentProps) => (
+const BarChartComponent = <T extends { data: DataArray }>({ data }: T) => (
 	<div className="h-full w-full text-orange-400">
-		<BarChart data={mappedData} height="100%" responsive width="100%">
+		<BarChart data={data} height="100%" responsive width="100%">
 			<CartesianGrid strokeDasharray="3 3" />
 			<XAxis dataKey="name" />
 			<YAxis />

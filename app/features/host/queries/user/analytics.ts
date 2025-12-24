@@ -96,13 +96,13 @@ const getTransactionOrderBy = (sort: SortOption) =>
 		COMMON_SORT_CONFIGS.transaction
 	);
 
-type GetHostTransactionsPaginatedParams = {
+interface GetHostTransactionsPaginatedParams {
 	userId: string;
 	cursor: Maybe<string>;
 	limit: number;
 	direction?: Direction;
 	sort?: SortOption;
-};
+}
 
 export function getHostTransactionsPaginated({
 	userId,

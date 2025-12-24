@@ -15,7 +15,7 @@ import { hasAuthContext } from '~/features/middleware/contexts/has-auth';
 import { hasAuthMiddleware } from '~/features/middleware/functions/has-auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
-import { loginSchema } from '~/lib/schemas.server';
+import { loginSchema } from '~/lib/schemas';
 import type { Route } from './+types/login';
 
 export const middleware: Route.MiddlewareFunction[] = [hasAuthMiddleware];

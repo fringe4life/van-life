@@ -4,7 +4,9 @@ import { lowercaseVanStateWithProcessor } from '~/features/vans/utils/van-state-
 import { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
 
-type Props = { van: VanModel };
+interface Props {
+	van: VanModel;
+}
 
 /**
  * Badge component that displays van state (NEW, ON_SALE, IN_REPAIR).

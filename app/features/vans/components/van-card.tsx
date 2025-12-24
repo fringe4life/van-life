@@ -11,13 +11,13 @@ import VanBadge from './van-badge';
 
 const StyledCard = withVanCardStyles(Card);
 
-type VanCardProps = {
+interface VanCardProps {
 	van: VanModel;
 	link: string;
 	action: React.ReactElement;
 	linkCoversCard?: boolean;
 	state?: Record<string, unknown>;
-};
+}
 
 export default function VanCard({
 	van,

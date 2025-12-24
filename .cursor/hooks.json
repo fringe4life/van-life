@@ -15,9 +15,6 @@
     }
   },
   "hooks": {
-    "afterFileEdit": [
-      { "command": "npm run test:affected" },
-      { "command": "npx ultracite fix" }
-    ]
+    "afterFileEdit": [{ "command": "npx ultracite fix" }]
   }
 }

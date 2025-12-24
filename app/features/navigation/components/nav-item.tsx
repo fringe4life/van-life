@@ -8,11 +8,11 @@ export type NavItemComponentProps =
 	| React.ComponentProps<typeof CustomLink>
 	| React.ComponentProps<typeof CustomNavLink>;
 
-export type NavItemProps = {
+export interface NavItemProps {
 	Component: NavItemComponent;
 	props: NavItemComponentProps;
 	children?: ReactNode;
-};
+}
 
 const isCustomNavLink = (
 	component: NavItemComponent

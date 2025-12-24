@@ -2,7 +2,6 @@ import { data } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
-import UnsuccesfulState from '~/components/unsuccesful-state';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Review from '~/features/host/components/review/review';
@@ -66,30 +65,18 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 		hasPreviousPage,
 	} = loaderData;
 
-	// const fetcher = useFetcher()
-
-	// const chartDataP = fetcher.load(href("/host/chart-reviews"));
-	let barChartElement = (
-		<UnsuccesfulState isError message="No reviews data available" />
-	);
-
-	if (chartData) {
-		const result = chartData
-			.reduce(
-				(acc, cur) => {
-					acc[cur.rating - 1] += 1;
-					return acc;
-				},
-				[0, 0, 0, 0, 0]
-			)
-			.map((res, index) => ({
-				name: `${index + 1}`,
-				amount: res,
-			}));
-		barChartElement = <LazyBarChart mappedData={result} />;
-	}
-
-	// For the chart, use chart data to show complete statistics
+	const result = chartData
+		?.reduce(
+			(acc, cur) => {
+				acc[cur.rating - 1] += 1;
+				return acc;
+			},
+			[0, 0, 0, 0, 0]
+		)
+		.map((res, index) => ({
+			name: `${index + 1}`,
+			amount: res,
+		}));
 
 	// Use paginated reviews for the list display
 	const reviewItems = paginatedReviews?.map((review) => ({
@@ -114,7 +101,11 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			/>
 			<VanHeader>Your Reviews</VanHeader>
 
-			{barChartElement}
+			<LazyBarChart
+				data={result}
+				emptyStateMessage="You have no reviews"
+				errorStateMessage="Something went wrong please try again"
+			/>
 			<Sortable itemCount={chartData?.length} title="Reviews" />
 
 			<GenericComponent

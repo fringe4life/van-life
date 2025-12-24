@@ -31,13 +31,14 @@ export default function VanDetailPage({ loaderData }: Route.ComponentProps) {
 	const { van, cursor, limit, type } = loaderData;
 
 	// Build back link with pagination search params
-	const baseUrl = href('/vans');
-	const search = buildVanSearchParams({
+	const backLink = buildVanSearchParams({
 		cursor,
 		limit,
 		type,
+		baseUrl: href('/vans'),
 	});
-	const backLink = search ? `${baseUrl}?${search}` : baseUrl;
+
+	const backLinkMessage = van.type ? van.type : 'all';
 
 	return (
 		<div className="grid min-h-full grid-rows-[min-content_1fr]">
@@ -45,8 +46,7 @@ export default function VanDetailPage({ loaderData }: Route.ComponentProps) {
 			<meta content={`${van.name} - ${van.description}`} name="description" />
 
 			<CustomLink to={backLink}>
-				&larr; Back to{' '}
-				<span className="uppercase">{van.type ? van.type : 'all'}</span> Vans
+				&larr; Back to <span className="uppercase">{backLinkMessage}</span> Vans
 			</CustomLink>
 			<div className="self-center">
 				<VanDetail van={van} />

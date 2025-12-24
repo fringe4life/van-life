@@ -11,14 +11,14 @@ import { hostPaginationParsers } from '~/lib/parsers';
 import type { Maybe } from '~/types/types';
 import { cn } from '~/utils/utils';
 
-type SortableProps = {
+interface SortableProps {
 	/** Title to display above the sort buttons */
 	title: string;
 	/** Number of items being sorted (for display) */
 	itemCount: Maybe<number>;
 	/** Optional className for the container */
 	className?: string;
-};
+}
 
 /**
  * Reusable sorting component that provides sort buttons and clear filters functionality

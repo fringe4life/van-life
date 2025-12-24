@@ -3,14 +3,14 @@ import { Activity, cloneElement, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '~/components/ui/dialog';
 import type { Maybe } from '~/types/types';
 
-type UseSheetDialogParams = {
+interface UseSheetDialogParams {
 	trigger: ReactElement | ((isOpen: boolean) => ReactElement);
 	renderContent: (close: () => void) => ReactNode;
 	className?: string;
 	modal?: boolean;
 	container?: Maybe<HTMLElement>;
 	title: string;
-};
+}
 
 export function useSheetDialog({
 	trigger,

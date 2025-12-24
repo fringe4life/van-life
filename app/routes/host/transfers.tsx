@@ -2,7 +2,6 @@ import { data } from 'react-router';
 import GenericComponent from '~/components/generic-component';
 import PendingUi from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
-import UnsuccesfulState from '~/components/unsuccesful-state';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Income from '~/features/host/components/income';
@@ -93,17 +92,10 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 		}))
 	);
 
-	let barChartElement = (
-		<UnsuccesfulState isError message="No income data available" />
-	);
-
-	if (chartData) {
-		const mappedData = chartData.map((transaction) => ({
-			name: transaction.createdAt.toDateString(),
-			amount: Math.round(transaction.amount),
-		}));
-		barChartElement = <LazyBarChart mappedData={mappedData} />;
-	}
+	const mappedData = chartData?.map((transaction) => ({
+		name: transaction.createdAt.toDateString(),
+		amount: Math.round(transaction.amount),
+	}));
 
 	return (
 		<PendingUi
@@ -126,7 +118,11 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 			<p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
 				{displayPrice(sumAmount)}
 			</p>
-			{barChartElement}
+			<LazyBarChart
+				data={mappedData}
+				emptyStateMessage="No transfers Yet"
+				errorStateMessage="Something went wrong"
+			/>
 			<Sortable itemCount={chartData?.length} title="Transaction History" />
 
 			<GenericComponent

@@ -31,7 +31,8 @@
       "linter": {
         "rules": {
           "style": {
-            "noMagicNumbers": "off"
+            "noMagicNumbers": "off",
+            "useConsistentTypeDefinitions": "off"
           }
         }
       }

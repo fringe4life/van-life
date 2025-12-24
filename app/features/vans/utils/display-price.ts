@@ -10,8 +10,8 @@ const formatter = new Intl.NumberFormat('en-us', {
  * @param price the price of the item
  * @returns a string representation to be shown to users
  */
-export function displayPrice(price: Maybe<number | string>): string {
-	if (!price || typeof price === 'string') {
+export function displayPrice(price: Maybe<number>): string {
+	if (!price) {
 		return '$0.00';
 	}
 

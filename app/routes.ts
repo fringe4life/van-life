@@ -25,7 +25,6 @@ export default [
 				route('income', './routes/host/income.tsx'),
 				route('transfers', './routes/host/transfers.tsx'),
 				route('review', './routes/host/reviews.tsx'),
-				route('add', './routes/host/add-van.tsx'),
 				...prefix('rentals', [
 					index('./routes/host/rentals/rentals.tsx'),
 					route('rent/:vanSlug', './routes/host/rentals/rental-detail.tsx'),
@@ -34,7 +33,10 @@ export default [
 						'./routes/host/rentals/return-rental.tsx'
 					),
 				]),
-				route('vans/:vanSlug?/:action?', './routes/host/host-vans.tsx'),
+				...prefix('vans', [
+					index('./routes/host/host-vans.tsx'),
+					route(':vanSlug/:action?', './routes/host/host-van-detail.tsx'),
+				]),
 			]),
 		]),
 	]),

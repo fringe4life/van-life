@@ -1,7 +1,7 @@
-type EmptyStateProps = {
+interface EmptyStateProps {
 	message: string;
 	isError?: boolean;
-};
+}
 
 export const UnsuccesfulState = ({
 	message,

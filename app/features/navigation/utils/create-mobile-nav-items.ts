@@ -3,7 +3,7 @@ import CustomLink from '../components/custom-link';
 import CustomNavLink from '../components/custom-nav-link';
 import { linkClassName } from './link-class-name';
 
-export type NavItemType = {
+export interface NavItemType {
 	Component: typeof CustomNavLink | typeof CustomLink;
 	props:
 		| ComponentProps<typeof CustomNavLink>
@@ -11,7 +11,7 @@ export type NavItemType = {
 	children: ReactNode;
 	key: string;
 	show: boolean;
-};
+}
 
 export const createMobileNavItem =
 	(handleNavLinkClick: () => void) =>

@@ -35,7 +35,7 @@ import { DEPOSIT, WITHDRAW } from '~/features/vans/constants/vans-constants';
 import { getHostVans } from '~/features/vans/queries/host';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { TransactionType } from '~/generated/prisma/enums';
-import { moneySchema } from '~/lib/schemas.server';
+import { moneySchema } from '~/lib/schemas';
 import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host';
@@ -276,8 +276,9 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 					</div>
 
 					<Input
-						defaultValue={(actionData?.formData?.amount as string) ?? ''}
-						// biome-ignore lint/nursery/noLeakedRender: not a render
+						defaultValue={
+							(actionData?.formData?.amount as string | undefined) ?? ''
+						}
 						max={isDepositing ? optimisticBalance : MAX_ADD}
 						min={MIN_ADD}
 						name="amount"
@@ -317,7 +318,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 							renderKey={(van) => van.id}
 							renderProps={(item) => ({
 								van: item,
-								link: href('/host/vans/:vanSlug?/:action?', {
+								link: href('/host/vans/:vanSlug/:action?', {
 									vanSlug: item.slug,
 									action: 'edit',
 								}),
@@ -343,7 +344,7 @@ export function ErrorBoundary() {
 			{Object.entries(params).length >= 1 && (
 				<p>
 					Your Van could not be found. Add it here{' '}
-					<CustomLink to={href('/host/add')}>Add a new Van</CustomLink>
+					<CustomLink to={href('/host/vans')}>Add a new Van</CustomLink>
 				</p>
 			)}
 		</main>

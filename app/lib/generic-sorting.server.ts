@@ -5,14 +5,14 @@ import type { Prisma } from '~/generated/prisma/client';
  * Generic sorting configuration for different Prisma models
  * Maps sort options to Prisma orderBy configurations
  */
-export type SortConfig<T extends Record<string, unknown>> = {
+export interface SortConfig<T extends Record<string, unknown>> {
 	/** Field to sort by for newest/oldest (usually createdAt) */
 	dateField: keyof T;
 	/** Field to sort by for highest/lowest (usually amount, rating, etc.) */
 	valueField: keyof T;
 	/** Optional secondary field for stable sorting */
 	secondaryField?: keyof T;
-};
+}
 
 /**
  * Creates a generic orderBy clause for any Prisma model based on sort option

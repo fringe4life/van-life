@@ -1,11 +1,11 @@
 import { Card, CardContent } from '~/components/ui/card';
 import { displayPrice } from '~/features/vans/utils/display-price';
 
-type IncomeProps = {
+interface IncomeProps {
 	id: string;
 	amount: number;
 	createdAt: Date;
-};
+}
 
 const Income = ({ amount, createdAt }: IncomeProps) => (
 	<Card className="contain-content">

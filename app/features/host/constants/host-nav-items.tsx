@@ -42,7 +42,7 @@ const hostNavItems = [
 		),
 	},
 	{
-		to: href('/host/vans/:vanSlug?/:action?'),
+		to: href('/host/vans'),
 		title: 'Vans',
 		children: (
 			<>
@@ -62,7 +62,7 @@ const hostNavItems = [
 		),
 	},
 	{
-		to: href('/host/add'),
+		to: href('/host/vans'),
 		title: 'Add Van',
 		children: (
 			<>

@@ -70,7 +70,7 @@ export const addVanSchema = type({
 	type: vanTypeSchema,
 	imageUrl: 'string.url',
 	price: 'number > 0',
-	'discount?': '0 <= number <= 100',
+	'discount?': '0 <= number <= 50',
 	'state?': vanStateSchema,
 }).narrow((data, ctx) => {
 	if (!data.imageUrl.includes('unsplash')) {

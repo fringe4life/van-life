@@ -1,55 +1,30 @@
 import type { Maybe } from '~/types/types';
 
-type VanItem = {
-	slug: string;
-	[key: string]: unknown;
-};
+interface Params {
+	vanSlug: string;
+	action?: Maybe<string>;
+}
 
-type Params = {
-	vanSlug?: string;
-	action?: string;
-};
+export const determineHostVansRoute = (params: Params) => {
+	const hasAction = Boolean(params.action && typeof params.action === 'string');
 
-export function determineHostVansRoute<T extends VanItem>(
-	params: Maybe<Params>,
-	vans: Maybe<T[]>
-) {
-	const hasSlug = Boolean(
-		params?.vanSlug && typeof params.vanSlug === 'string'
-	);
-	const hasAction = Boolean(
-		params?.action && typeof params.action === 'string'
-	);
+	const isEditPage = Boolean(params.action === 'edit');
+	const isEditRoute = Boolean(params.action === 'edit');
+	const isDetailsView = Boolean(params.action === undefined || !params.action);
+	const isPhotosPage = Boolean(params.action === 'photos');
+	const isPricingPage = Boolean(params.action === 'pricing');
 
-	const isMainPage = Boolean(!(hasAction || hasSlug));
-	const isEditPage = Boolean(params?.action === 'edit' && hasSlug);
-	const isDetailPage = Boolean(params?.action !== 'edit' && hasSlug);
-	const isInitialDetailPage = Boolean(params?.action === undefined && hasSlug);
-	const isPhotosPage = Boolean(params?.action === 'photos' && hasSlug);
-	const isPricingPage = Boolean(params?.action === 'pricing' && hasSlug);
-
-	if (!vans) {
-		return {
-			hasSlug,
-			hasAction,
-			isMainPage,
-			isEditPage,
-			isDetailPage,
-		};
-	}
-
-	const selectedVan =
-		isDetailPage && vans.find((van) => van.slug === params?.vanSlug);
+	const isPhotosView = Boolean(params.action === 'photos');
+	const isPricingView = Boolean(params.action === 'pricing');
 
 	return {
-		hasSlug,
 		hasAction,
-		isMainPage,
 		isEditPage,
-		isDetailPage,
-		isInitialDetailPage,
+		isEditRoute,
 		isPhotosPage,
 		isPricingPage,
-		selectedVan,
+		isDetailsView,
+		isPhotosView,
+		isPricingView,
 	} as const;
-}
+};

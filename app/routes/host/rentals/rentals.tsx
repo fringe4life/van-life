@@ -63,7 +63,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				renderKey={(van) => van.van.id}
 				// TODO: consider if this needs an action
 				renderProps={(van) => ({
-					link: href('/host/vans/:vanSlug?/:action?', {
+					link: href('/host/vans/:vanSlug/:action?', {
 						vanSlug: van.van.slug,
 					}),
 					van: van.van,

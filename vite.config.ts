@@ -10,7 +10,7 @@ export default defineConfig({
 		babel({
 			filter: /\.[jt]sx?$/,
 			babelConfig: {
-				presets: ['@babel/preset-typescript'], // if you use TypeScript
+				presets: ['@babel/preset-typescript'],
 				plugins: ['babel-plugin-react-compiler'],
 				compact: false, // Disable compact mode to keep code optimized even for large files
 			},
@@ -19,8 +19,5 @@ export default defineConfig({
 	],
 	resolve: {
 		tsconfigPaths: true,
-	},
-	experimental: {
-		enableNativePlugin: true,
 	},
 } satisfies UserConfig);

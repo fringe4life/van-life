@@ -9,7 +9,7 @@ import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import VanCard from '~/features/vans/components/van-card';
 import { getVanBySlug } from '~/features/vans/queries/queries';
-import { rentVanSchema } from '~/lib/schemas.server';
+import { rentVanSchema } from '~/lib/schemas';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/rental-detail';
 
