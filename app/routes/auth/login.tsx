@@ -16,6 +16,7 @@ import { hasAuthMiddleware } from '~/features/middleware/functions/has-auth-midd
 import CustomLink from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
 import { loginSchema } from '~/lib/schemas';
+import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/login';
 
 export const middleware: Route.MiddlewareFunction[] = [hasAuthMiddleware];
@@ -38,19 +39,21 @@ export async function action({ request }: Route.ActionArgs) {
 			email: (formData.email as string | undefined) ?? '',
 		};
 	}
-	const response = await auth.api.signInEmail({
-		body: result,
-		asResponse: true,
-	});
+	const { data: login, error } = await tryCatch(() =>
+		auth.api.signInEmail({
+			body: result,
+			returnHeaders: true,
+		})
+	);
 
-	if (!response.ok) {
+	if (!login?.response?.token || error) {
 		return {
 			errors: 'Your email or password is incorrect',
 			email: (formData.email as string | undefined) ?? '',
 		};
 	}
 	throw replace(href('/host'), {
-		headers: response.headers,
+		headers: login.headers,
 	});
 }
 

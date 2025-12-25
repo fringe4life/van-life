@@ -1,13 +1,20 @@
-import { href, replace } from 'react-router';
+import { data, href, replace } from 'react-router';
+import UnsuccesfulState from '~/components/unsuccesful-state';
 import { auth } from '~/lib/auth.server';
+import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/sign-out';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-	const response = await auth.api.signOut({
-		headers: request.headers,
-		asResponse: true,
-	});
-	throw replace(href('/login'), { headers: response.headers });
+	const { data: signOut, error } = await tryCatch(() =>
+		auth.api.signOut({
+			headers: request.headers,
+			returnHeaders: true,
+		})
+	);
+	if (!signOut?.response?.success || error) {
+		throw data('Failed to sign out. Please try again later.', { status: 500 });
+	}
+	throw replace(href('/login'), { headers: signOut.headers });
 };
 
 export default function Signout() {
@@ -19,3 +26,7 @@ export default function Signout() {
 		</>
 	);
 }
+
+export const ErrorBoundary = () => (
+	<UnsuccesfulState isError message="Your signout failed, please try again." />
+);

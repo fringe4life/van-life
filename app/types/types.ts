@@ -6,3 +6,11 @@ export type MaybeError<T> = T | string;
 export interface Id {
 	id: string;
 }
+
+export interface EmptyState {
+	emptyStateMessage: string;
+}
+
+export interface ErrorState {
+	errorStateMessage: string;
+}

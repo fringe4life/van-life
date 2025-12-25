@@ -13,7 +13,7 @@ export const setCookieHeaders = (
 		return result;
 	}
 
-	const cookies = headers.get(COOKIE_HEADER);
+	const cookies: Maybe<string> = headers.get(COOKIE_HEADER);
 	if (cookies) {
 		result.headers.set(COOKIE_HEADER, cookies);
 	}

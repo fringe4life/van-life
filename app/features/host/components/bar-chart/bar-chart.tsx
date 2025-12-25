@@ -7,13 +7,9 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
+import type { Data, DataArray } from '~/features/host/types';
 
-export type DataArray = {
-	name: string;
-	amount: number;
-}[];
-
-const BarChartComponent = <T extends { data: DataArray }>({ data }: T) => (
+const BarChartComponent = <T extends Data<DataArray>>({ data }: T) => (
 	<div className="h-full w-full text-orange-400">
 		<BarChart data={data} height="100%" responsive width="100%">
 			<CartesianGrid strokeDasharray="3 3" />

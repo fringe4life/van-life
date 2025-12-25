@@ -16,6 +16,7 @@ import { hasAuthMiddleware } from '~/features/middleware/functions/has-auth-midd
 import CustomLink from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
 import { signUpScheme } from '~/lib/schemas';
+import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/sign-up';
 
 export const middleware: Route.MiddlewareFunction[] = [hasAuthMiddleware];
@@ -43,12 +44,14 @@ export async function action({ request }: Route.ActionArgs) {
 			email,
 		};
 	}
-	const signUp = await auth.api.signUpEmail({
-		body: result,
-		asResponse: true,
-	});
+	const { data: signUp, error } = await tryCatch(() =>
+		auth.api.signUpEmail({
+			body: result,
+			returnHeaders: true,
+		})
+	);
 
-	if (!signUp.ok) {
+	if (!signUp?.response?.token || error) {
 		return { errors: 'Sign up failed please try again later', name, email };
 	}
 	throw replace('/host', {
