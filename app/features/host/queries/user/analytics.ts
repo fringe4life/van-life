@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/style/useNamingConvention: prisma style */
 
 import type { PaginationParams, SortOption } from '~/features/pagination/types';
-import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
+import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-metadata.server';
 import { reverseSortOption } from '~/features/pagination/utils/reverse-sort-order';
 import type { Prisma } from '~/generated/prisma/client';
 import { TransactionType } from '~/generated/prisma/enums';
@@ -98,11 +98,11 @@ export function getHostTransactionsPaginated({
 	direction = 'forward',
 	sort = 'newest',
 }: PaginationParams) {
-	const { actualCursor, takeAmount } = getCursorPaginationInformation(
+	const { actualCursor, skip, take } = getCursorPaginationInformation({
 		cursor,
 		limit,
-		direction
-	);
+		direction,
+	});
 
 	// For backward pagination, reverse the sort order
 	// The results will be reversed back in hasPagination utility
@@ -124,8 +124,8 @@ export function getHostTransactionsPaginated({
 		},
 		orderBy: orderByClause,
 		cursor: actualCursor ? { id: actualCursor } : undefined,
-		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
-		take: takeAmount,
+		skip, // Skip the cursor record itself
+		take,
 	};
 
 	return prisma.transaction.findMany(query);
@@ -138,11 +138,11 @@ export function getUserTransactionsPaginated({
 	direction = 'forward',
 	sort = 'newest',
 }: PaginationParams) {
-	const { actualCursor, takeAmount } = getCursorPaginationInformation(
+	const { actualCursor, skip, take } = getCursorPaginationInformation({
 		cursor,
 		limit,
-		direction
-	);
+		direction,
+	});
 
 	// For backward pagination, reverse the sort order
 	// The results will be reversed back in hasPagination utility
@@ -163,8 +163,8 @@ export function getUserTransactionsPaginated({
 		},
 		orderBy: orderByClause,
 		cursor: actualCursor ? { id: actualCursor } : undefined,
-		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
-		take: takeAmount,
+		skip, // Skip the cursor record itself
+		take,
 	};
 
 	return prisma.transaction.findMany(query);

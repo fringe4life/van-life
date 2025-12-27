@@ -1,5 +1,5 @@
 import type { Direction } from '~/features/pagination/types';
-import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
+import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-metadata.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Maybe } from '~/types/types';
 import type { MaybeTypeFilter } from '../types';
@@ -10,8 +10,8 @@ export function getVans(
 	typeFilter: MaybeTypeFilter,
 	direction: Direction = 'forward'
 ) {
-	const { actualCursor, sortOrder, takeAmount } =
-		getCursorPaginationInformation(cursor, limit, direction);
+	const { actualCursor, skip, sortOrder, take } =
+		getCursorPaginationInformation({ cursor, limit, direction });
 
 	return prisma.van.findMany({
 		where: {
@@ -20,8 +20,8 @@ export function getVans(
 		// Cursor pagination requires ordering by a unique, sequential field
 		orderBy: { id: sortOrder },
 		cursor: actualCursor ? { id: actualCursor } : undefined,
-		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
-		take: takeAmount,
+		skip, // Skip the cursor record itself
+		take,
 	});
 }
 

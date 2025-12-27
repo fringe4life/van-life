@@ -1,5 +1,5 @@
 import type { Direction } from '~/features/pagination/types';
-import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
+import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-metadata.server';
 import { prisma } from '~/lib/prisma.server';
 import type { Maybe } from '~/types/types';
 
@@ -17,8 +17,8 @@ export function getHostRentedVans(
 	limit: number,
 	direction: Direction = 'forward'
 ) {
-	const { actualCursor, sortOrder, takeAmount } =
-		getCursorPaginationInformation(cursor, limit, direction);
+	const { actualCursor, skip, sortOrder, take } =
+		getCursorPaginationInformation({ cursor, limit, direction });
 
 	return prisma.rent.findMany({
 		where: {
@@ -30,8 +30,8 @@ export function getHostRentedVans(
 		include: { van: true },
 		orderBy: { id: sortOrder },
 		cursor: actualCursor ? { id: actualCursor } : undefined,
-		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
-		take: takeAmount,
+		skip, // Skip the cursor record itself
+		take,
 	});
 }
 
@@ -52,8 +52,8 @@ export function getHostRents(
 	limit: number,
 	direction: Direction = 'forward'
 ) {
-	const { actualCursor, sortOrder, takeAmount } =
-		getCursorPaginationInformation(cursor, limit, direction);
+	const { actualCursor, skip, sortOrder, take } =
+		getCursorPaginationInformation({ cursor, limit, direction });
 
 	return prisma.rent.findMany({
 		where: {
@@ -64,7 +64,7 @@ export function getHostRents(
 		},
 		orderBy: { id: sortOrder },
 		cursor: actualCursor ? { id: actualCursor } : undefined,
-		skip: actualCursor ? 1 : 0, // Skip the cursor record itself
-		take: takeAmount,
+		skip, // Skip the cursor record itself
+		take,
 	});
 }

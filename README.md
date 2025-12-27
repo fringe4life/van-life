@@ -136,7 +136,7 @@ app/
 │   ├── navigation/     # Navigation components and hooks
 │   ├── pagination/     # Pagination utilities and components
 │   │   ├── components/ # Pagination UI components
-│   │   └── utils/      # Pagination validators and utilities (toPagination, reverseSortOption, etc.)
+│   │   └── utils/      # Pagination validators and utilities (toPagination, getCursorMetadata, reverseSortOption, buildSearchParams, etc.)
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, etc.)
 │       ├── constants/  # Van-related constants
@@ -630,14 +630,23 @@ The application features **generic pagination utilities** for consistent cursor-
 ### Features
 
 - **Generic `toPagination` utility** (`app/features/pagination/utils/to-pagination.server.ts`) - Processes database results and returns items with pagination metadata
+- **`getCursorMetadata` utility** (`app/features/pagination/utils/get-cursor-metadata.server.ts`) - Provides cursor, sort order, take, and skip values for Prisma queries
 - **Bidirectional pagination support** - Handles both forward and backward pagination with correct logic
 - **Automatic result reversal** - Reverses results for backward pagination to maintain correct display order
 - **Type-safe** - Full TypeScript support with generic types
 - **`reverseSortOption` helper** (`app/features/pagination/utils/reverse-sort-order.ts`) - Reverses sort options for backward pagination queries
+- **`buildSearchParams` utility** (`app/features/pagination/utils/build-search-params.ts`) - Builds URL search parameters for pagination state preservation
 
 ### Implementation
 
 ```typescript
+// Get cursor metadata for Prisma queries
+const { actualCursor, sortOrder, take, skip } = getCursorMetadata({
+  cursor,
+  limit,
+  direction,
+});
+
 // Generic pagination utility
 export function toPagination<T>(
   items: List<T>,
@@ -647,16 +656,25 @@ export function toPagination<T>(
 ): PaginationProps<T> {
   // Processes database results, handles extra item detection,
   // reverses results for backward pagination, and returns
-  // items with hasNextPage and hasPreviousPage flags
+  // items with paginationMetadata object
 }
 
 // Usage in loaders
+const { actualCursor, sortOrder, take, skip } = getCursorMetadata({
+  cursor,
+  limit,
+  direction,
+});
+
 const rawItems = await prisma.review.findMany({
-  take: limit + 1, // Take one extra to detect if there are more results
+  take,
+  skip,
+  cursor: actualCursor ? { id: actualCursor } : undefined,
+  orderBy: { createdAt: sortOrder },
   // ... other query options
 });
 
-const { items, hasNextPage, hasPreviousPage } = toPagination(
+const { items, paginationMetadata } = toPagination(
   rawItems,
   limit,
   cursor,
@@ -671,6 +689,7 @@ The `toPagination` utility implements correct cursor pagination logic based on P
 - **Forward pagination**: `hasNextPage = hasMoreResults`, `hasPreviousPage = has cursor`
 - **Backward pagination**: `hasNextPage = has cursor`, `hasPreviousPage = hasMoreResults`
 - **Result reversal**: For backward pagination, results are automatically reversed since Prisma returns them in opposite order
+- **Pagination metadata**: Returns `paginationMetadata` object with `hasNextPage` and `hasPreviousPage` flags instead of separate props
 
 ### Benefits
 

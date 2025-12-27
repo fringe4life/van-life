@@ -1,6 +1,8 @@
-import type { CursorMetadata, Direction } from '~/features/pagination/types';
+import type {
+	BasePaginationParams,
+	CursorMetadata,
+} from '~/features/pagination/types';
 import type { Prisma } from '~/generated/prisma/client';
-import type { Maybe } from '~/types/types';
 
 /**
  * Generalized cursor pagination utility that provides all necessary information
@@ -11,11 +13,11 @@ import type { Maybe } from '~/types/types';
  * @param direction - The pagination direction ('forward' or 'backward')
  * @returns Object with actualCursor, sortOrder, and takeAmount for Prisma queries
  */
-export function getCursorPaginationInformation(
-	cursor: Maybe<string>,
-	limit: number,
-	direction: Direction = 'forward'
-): CursorMetadata {
+export const getCursorPaginationInformation = ({
+	cursor,
+	limit,
+	direction = 'forward',
+}: BasePaginationParams): CursorMetadata => {
 	// Convert empty string cursor to undefined for Prisma compatibility
 	const actualCursor = cursor && cursor !== '' ? cursor : undefined;
 
@@ -23,11 +25,14 @@ export function getCursorPaginationInformation(
 	const sortOrder: Prisma.SortOrder = direction === 'backward' ? 'asc' : 'desc';
 
 	// Determine take amount (always positive for Prisma)
-	const takeAmount = limit + 1;
+	const take = limit + 1;
+
+	const skip = actualCursor ? 1 : 0;
 
 	return {
 		actualCursor,
 		sortOrder,
-		takeAmount,
+		take,
+		skip,
 	};
-}
+};
