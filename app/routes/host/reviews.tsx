@@ -11,7 +11,7 @@ import {
 } from '~/features/host/queries/review/queries';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
-import Pagination from '~/features/pagination/components/pagination';
+import { Pagination } from '~/features/pagination/components/pagination';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanHeader from '~/features/vans/components/van-header';
 import { loadHostSearchParams } from '~/lib/search-params.server';

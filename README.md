@@ -83,7 +83,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **TypeScript 5.9.3** with strict configuration
 - **TailwindCSS 4.1.18** with modern CSS features
 - **Radix UI** for accessible components
-- **Lucide React 0.561.0** for icons
+- **Lucide React 0.562.0** for icons
 - **Recharts 3.6.0** for data visualization (lazy-loaded)
 - **nuqs 2.8.6** for type-safe URL state management via Context7 parsers
 
@@ -640,7 +640,7 @@ The application features **generic pagination utilities** for consistent cursor-
 ```typescript
 // Generic pagination utility
 export function toPagination<T>(
-  items: Maybe<T[]>,
+  items: List<T>,
   limit: number,
   cursor: Maybe<string>,
   direction: Direction = 'forward'

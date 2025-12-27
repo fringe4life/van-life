@@ -8,7 +8,7 @@ import PendingUi from '~/components/pending-ui';
 import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import UnsuccesfulState from '~/components/unsuccesful-state';
-import Pagination from '~/features/pagination/components/pagination';
+import { Pagination } from '~/features/pagination/components/pagination';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,

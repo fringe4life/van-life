@@ -1,21 +1,6 @@
 import type React from 'react';
-import type { EmptyState, ErrorState, Maybe } from '~/types/types';
+import type { GenericComponentProps } from '~/types/types';
 import UnsuccesfulState from './unsuccesful-state';
-
-export interface GenericComponentProps<
-	T,
-	P,
-	E extends React.ElementType = 'div',
-> extends EmptyState,
-		ErrorState {
-	Component: React.ComponentType<P>;
-	items: Maybe<T[]>;
-	renderProps: (item: T, index: number) => P;
-	renderKey: (item: T, index: number) => React.Key;
-	className?: string;
-	as?: E;
-	wrapperProps?: React.ComponentPropsWithoutRef<E>;
-}
 
 const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	Component,

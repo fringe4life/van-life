@@ -6,7 +6,7 @@ import { getHostRentedVans } from '~/features/host/queries/rental/queries';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import CustomLink from '~/features/navigation/components/custom-link';
-import Pagination from '~/features/pagination/components/pagination';
+import { Pagination } from '~/features/pagination/components/pagination';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanCard from '~/features/vans/components/van-card';
 import VanHeader from '~/features/vans/components/van-header';

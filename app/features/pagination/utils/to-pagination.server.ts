@@ -1,5 +1,5 @@
 import type { Direction, PaginationProps } from '~/features/pagination/types';
-import type { Maybe } from '~/types/types';
+import type { List, Maybe } from '~/types/types';
 import { NO_PAGINATION } from '../pagination-constants';
 
 /**
@@ -13,7 +13,7 @@ import { NO_PAGINATION } from '../pagination-constants';
  * @returns Object with items, hasNextPage, and hasPreviousPage
  */
 export function toPagination<T>(
-	items: Maybe<T[]>,
+	items: List<T>,
 	limit: number,
 	cursor: Maybe<string>,
 	direction: Direction = 'forward'

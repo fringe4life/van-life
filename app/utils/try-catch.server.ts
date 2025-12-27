@@ -1,13 +1,4 @@
-interface Success<T> {
-	data: T;
-	error: null;
-}
-interface Failure<E> {
-	data: null;
-	error: E;
-}
-
-type Result<T, E> = Success<T> | Failure<E>;
+import type { Result } from '~/types/types';
 
 export const tryCatch = async <T, E>(
 	operation: () => Promise<T>

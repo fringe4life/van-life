@@ -8,17 +8,8 @@ import {
 } from '~/features/pagination/pagination-constants';
 import type { SortOption } from '~/features/pagination/types';
 import { hostPaginationParsers } from '~/lib/parsers';
-import type { Maybe } from '~/types/types';
+import type { SortableProps } from '~/types/types';
 import { cn } from '~/utils/utils';
-
-interface SortableProps {
-	/** Title to display above the sort buttons */
-	title: string;
-	/** Number of items being sorted (for display) */
-	itemCount: Maybe<number>;
-	/** Optional className for the container */
-	className?: string;
-}
 
 /**
  * Reusable sorting component that provides sort buttons and clear filters functionality
@@ -33,10 +24,10 @@ interface SortableProps {
  * ```
  */
 const sortOptions = [
-	{ value: 'newest' as SortOption, label: 'Newest' },
-	{ value: 'oldest' as SortOption, label: 'Oldest' },
-	{ value: 'highest' as SortOption, label: 'Highest' },
-	{ value: 'lowest' as SortOption, label: 'Lowest' },
+	{ value: 'newest' as const, label: 'Newest' },
+	{ value: 'oldest' as const, label: 'Oldest' },
+	{ value: 'highest' as const, label: 'Highest' },
+	{ value: 'lowest' as const, label: 'Lowest' },
 ];
 
 export const Sortable = ({ title, itemCount, className }: SortableProps) => {
@@ -88,17 +79,6 @@ export const Sortable = ({ title, itemCount, className }: SortableProps) => {
 					children: item.label,
 				})}
 			/>
-			{/* 
-				<Button
-					variant="ghost"
-					className={clsx(
-						'w-full text-center sm:w-fit sm:text-left',
-						hasActiveSortFilter && 'underline',
-					)}
-					onClick={handleClearFilters}
-				>
-					Clear filters
-				</Button> */}
 		</div>
 	);
 };

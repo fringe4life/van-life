@@ -1,5 +1,5 @@
 import type { Prisma } from '~/generated/prisma/client';
-import type { Maybe } from '~/types/types';
+import type { List, Maybe } from '~/types/types';
 
 // Type for pagination direction
 export type Direction = 'forward' | 'backward';
@@ -8,7 +8,7 @@ export type Direction = 'forward' | 'backward';
 export type SortOption = 'newest' | 'oldest' | 'highest' | 'lowest';
 
 export interface PaginationProps<T> {
-	items: Maybe<T[]>;
+	items: List<T>;
 	hasNextPage: boolean;
 	hasPreviousPage: boolean;
 }

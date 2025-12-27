@@ -10,14 +10,14 @@ import {
 import type { PaginationProps } from '~/features/pagination/types';
 import { validateLimit } from '~/features/pagination/utils/validators';
 import { paginationParsers } from '~/lib/parsers';
-import type { Id } from '~/types/types';
+import type { Id, Maybe } from '~/types/types';
 import { cn } from '~/utils/utils';
 
-export default function Pagination<T extends Id>({
+export const Pagination = <T extends Id>({
 	items,
 	hasNextPage,
 	hasPreviousPage,
-}: PaginationProps<T>) {
+}: PaginationProps<T>) => {
 	const [{ limit: currentLimit }, setSearchParams] =
 		useQueryStates(paginationParsers);
 
@@ -90,7 +90,7 @@ export default function Pagination<T extends Id>({
 						aria-label="Next page"
 						onClick={() => {
 							// Get the last item's ID as the next cursor
-							const lastItem = items.at(-1);
+							const lastItem: Maybe<T> = items.at(-1);
 							if (lastItem) {
 								startTransition(async () => {
 									await setSearchParams({
@@ -113,4 +113,4 @@ export default function Pagination<T extends Id>({
 			</div>
 		</div>
 	);
-}
+};

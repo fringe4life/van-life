@@ -1,12 +1,9 @@
-interface EmptyStateProps {
-	message: string;
-	isError?: boolean;
-}
+import type { UnsuccesfulStateProps } from '~/types/types';
 
 export const UnsuccesfulState = ({
 	message,
 	isError = false,
-}: EmptyStateProps) => (
+}: UnsuccesfulStateProps) => (
 	<div
 		className="grid h-full w-full items-center"
 		data-error={isError}

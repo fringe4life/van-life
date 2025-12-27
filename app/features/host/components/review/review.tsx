@@ -1,14 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import type { Maybe } from '~/types/types';
+import type { ReviewProps } from '~/features/host/types';
 import RatingStars from './rating-stars';
-
-interface ReviewProps {
-	name: string;
-	rating: number;
-	text: string;
-	timestamp: Maybe<string>;
-	id: string;
-}
 
 const Review = ({ name, rating, text, timestamp }: ReviewProps) => (
 	<Card className="max-w-full contain-content">

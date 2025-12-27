@@ -1,16 +1,15 @@
 import { StarIcon } from 'lucide-react';
 import type { JSX } from 'react';
-
-interface RatingStarsProps {
-	rating: number;
-}
+import {
+	MAX_RATING,
+	PERCENTAGE_MULTIPLIER,
+} from '~/features/host/constants/constants';
+import type { RatingStarsProps } from '~/features/host/types';
 
 const RatingStars = ({ rating }: RatingStarsProps) => {
-	const MaxRating = 5;
-	const PercentageMultiplier = 100;
 	const stars: JSX.Element[] = [];
 
-	for (let i = 1; i <= MaxRating; i += 1) {
+	for (let i = 1; i <= MAX_RATING; i += 1) {
 		if (i <= Math.floor(rating)) {
 			// Fully filled star
 			stars.push(
@@ -21,7 +20,7 @@ const RatingStars = ({ rating }: RatingStarsProps) => {
 			);
 		} else if (i === Math.floor(rating) + 1 && rating % 1 !== 0) {
 			// Partially filled star using SVG gradient
-			const percent = Math.round((rating % 1) * PercentageMultiplier);
+			const percent = Math.round((rating % 1) * PERCENTAGE_MULTIPLIER);
 			const gradientId = `star-gradient-${i}`;
 			stars.push(
 				<svg
