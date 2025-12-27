@@ -32,7 +32,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 	useEffect(() => {
 		// Make sure to run react-scan only after hydration
 		scan({
-			enabled: true,
+			enabled: process.env.NODE_ENV === 'development',
 		});
 	}, []);
 	return (

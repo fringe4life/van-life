@@ -69,8 +69,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	const {
 		chartData,
 		items: paginatedTransactions,
-		hasNextPage,
-		hasPreviousPage,
+		paginationMetadata,
 	} = loaderData;
 
 	// Calculate income and elapsed time from chart data (all transactions)
@@ -121,9 +120,8 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				renderProps={(item) => item}
 			/>
 			<Pagination
-				hasNextPage={hasNextPage}
-				hasPreviousPage={hasPreviousPage}
 				items={paginatedTransactions}
+				paginationMetadata={paginationMetadata}
 			/>
 		</PendingUi>
 	);

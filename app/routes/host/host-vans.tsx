@@ -90,7 +90,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 }
 
 export default function Host({ loaderData, actionData }: Route.ComponentProps) {
-	const { items: vans, hasNextPage, hasPreviousPage } = loaderData;
+	const { items: vans, paginationMetadata } = loaderData;
 
 	const nameId = useId();
 	const priceId = useId();
@@ -254,11 +254,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 						),
 					})}
 				/>
-				<Pagination
-					hasNextPage={hasNextPage}
-					hasPreviousPage={hasPreviousPage}
-					items={vans}
-				/>
+				<Pagination items={vans} paginationMetadata={paginationMetadata} />
 			</PendingUi>
 		</>
 	);

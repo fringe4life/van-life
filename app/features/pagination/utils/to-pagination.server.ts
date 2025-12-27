@@ -25,6 +25,8 @@ export function toPagination<T>(
 
 	// Check if there are more results (cursor pagination)
 	const hasMoreResults = items.length > limit;
+	// Remove the extra item if we took one more than the limit
+	let actualItems = hasMoreResults ? items.slice(0, limit) : items;
 
 	// FIXED: Correct pagination logic based on Prisma documentation
 	// For forward pagination: hasNextPage = hasMoreResults, hasPreviousPage = has cursor
@@ -34,9 +36,6 @@ export function toPagination<T>(
 	const hasPreviousPage =
 		direction === 'forward' ? Boolean(cursor) : hasMoreResults;
 
-	// Remove the extra item if we took one more than the limit
-	let actualItems = hasMoreResults ? items.slice(0, limit) : items;
-
 	// For backward pagination, reverse the results since Prisma returns them in opposite order
 	if (direction === 'backward') {
 		actualItems = actualItems.reverse();
@@ -44,7 +43,9 @@ export function toPagination<T>(
 
 	return {
 		items: actualItems,
-		hasNextPage,
-		hasPreviousPage,
+		paginationMetadata: {
+			hasNextPage,
+			hasPreviousPage,
+		},
 	};
 }

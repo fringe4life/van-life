@@ -96,11 +96,11 @@ export async function action({ params, context }: Route.ActionArgs) {
 		return { errors: 'Cannot afford to return this rental' };
 	}
 
-	const returnResult = await tryCatch(() =>
+	const { data, error } = await tryCatch(() =>
 		returnVan(rentId, user.id, amountToPay, rent.van.id)
 	);
 
-	if (returnResult.error || !returnResult.data) {
+	if (error || !data) {
 		return { errors: 'Something went wrong try again later' };
 	}
 

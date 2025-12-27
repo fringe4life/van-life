@@ -1,7 +1,4 @@
-import type {
-	CursorPaginationInformation,
-	Direction,
-} from '~/features/pagination/types';
+import type { CursorMetadata, Direction } from '~/features/pagination/types';
 import type { Prisma } from '~/generated/prisma/client';
 import type { Maybe } from '~/types/types';
 
@@ -18,7 +15,7 @@ export function getCursorPaginationInformation(
 	cursor: Maybe<string>,
 	limit: number,
 	direction: Direction = 'forward'
-): CursorPaginationInformation {
+): CursorMetadata {
 	// Convert empty string cursor to undefined for Prisma compatibility
 	const actualCursor = cursor && cursor !== '' ? cursor : undefined;
 

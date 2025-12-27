@@ -12,6 +12,8 @@ export const SORT_OPTIONS = ['newest', 'oldest', 'highest', 'lowest'] as const;
 
 export const NO_PAGINATION = {
 	items: null,
-	hasNextPage: false,
-	hasPreviousPage: false,
+	paginationMetadata: {
+		hasNextPage: false,
+		hasPreviousPage: false,
+	},
 } as const;

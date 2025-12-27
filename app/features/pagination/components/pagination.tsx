@@ -15,11 +15,10 @@ import { cn } from '~/utils/utils';
 
 export const Pagination = <T extends Id>({
 	items,
-	hasNextPage,
-	hasPreviousPage,
+	paginationMetadata,
 }: PaginationProps<T>) => {
-	const [{ limit: currentLimit }, setSearchParams] =
-		useQueryStates(paginationParsers);
+	const [{ limit }, setSearchParams] = useQueryStates(paginationParsers);
+	const { hasNextPage, hasPreviousPage } = paginationMetadata;
 
 	// Ensure items is a valid array
 
@@ -44,7 +43,7 @@ export const Pagination = <T extends Id>({
 					'w-20'
 				)}
 				onChange={(e) => handleLimitChange(e.target.value)}
-				value={currentLimit?.toString() ?? DEFAULT_LIMIT.toString()}
+				value={limit?.toString() ?? DEFAULT_LIMIT.toString()}
 			>
 				{LIMITS.map((limitOption) => (
 					<option key={limitOption} value={limitOption.toString()}>

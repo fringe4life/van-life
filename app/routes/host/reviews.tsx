@@ -58,12 +58,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 }
 
 export default function Reviews({ loaderData }: Route.ComponentProps) {
-	const {
-		chartData,
-		items: paginatedReviews,
-		hasNextPage,
-		hasPreviousPage,
-	} = loaderData;
+	const { chartData, items: paginatedReviews, paginationMetadata } = loaderData;
 
 	const result = chartData
 		?.reduce(
@@ -77,17 +72,6 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 			name: `${index + 1}`,
 			amount: res,
 		}));
-
-	// Use paginated reviews for the list display
-	const reviewItems = paginatedReviews?.map((review) => ({
-		name: review.user.user.name,
-		text: review.text,
-		rating: review.rating,
-		timestamp:
-			review.updatedAt?.toLocaleDateString() ??
-			review.createdAt.toLocaleDateString(),
-		id: review.id,
-	})); // Pass error string directly to GenericComponent
 
 	return (
 		<PendingUi
@@ -114,14 +98,20 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 				className="grid-max mt-6"
 				emptyStateMessage="You have received no reviews"
 				errorStateMessage="Something went wrong"
-				items={reviewItems}
+				items={paginatedReviews}
 				renderKey={(item) => item.id}
-				renderProps={(item) => item}
+				renderProps={({ user, text, rating, updatedAt, createdAt, id }) => ({
+					name: user.user.name,
+					text,
+					rating,
+					timestamp:
+						updatedAt?.toLocaleDateString() ?? createdAt.toLocaleDateString(),
+					id,
+				})}
 			/>
 			<Pagination
-				hasNextPage={hasNextPage}
-				hasPreviousPage={hasPreviousPage}
-				items={reviewItems}
+				items={paginatedReviews}
+				paginationMetadata={paginationMetadata}
 			/>
 		</PendingUi>
 	);

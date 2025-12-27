@@ -1,10 +1,6 @@
 /** biome-ignore-all lint/style/useNamingConvention: prisma style */
 
-import type {
-	Direction,
-	PaginationParams,
-	SortOption,
-} from '~/features/pagination/types';
+import type { PaginationParams, SortOption } from '~/features/pagination/types';
 import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-pagination-information.server';
 import { reverseSortOption } from '~/features/pagination/utils/reverse-sort-order';
 import type { Prisma } from '~/generated/prisma/client';
@@ -14,7 +10,6 @@ import {
 	createGenericOrderBy,
 } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
-import type { Maybe } from '~/types/types';
 
 export async function getAccountSummary(userId: string) {
 	const result = await prisma.transaction.aggregate({
@@ -96,21 +91,13 @@ const getTransactionOrderBy = (sort: SortOption) =>
 		COMMON_SORT_CONFIGS.transaction
 	);
 
-interface GetHostTransactionsPaginatedParams {
-	userId: string;
-	cursor: Maybe<string>;
-	limit: number;
-	direction?: Direction;
-	sort?: SortOption;
-}
-
 export function getHostTransactionsPaginated({
 	userId,
 	cursor,
 	limit,
 	direction = 'forward',
 	sort = 'newest',
-}: GetHostTransactionsPaginatedParams) {
+}: PaginationParams) {
 	const { actualCursor, takeAmount } = getCursorPaginationInformation(
 		cursor,
 		limit,

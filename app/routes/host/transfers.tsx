@@ -71,8 +71,7 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 	const {
 		chartData,
 		items: paginatedTransactions,
-		hasNextPage,
-		hasPreviousPage,
+		paginationMetadata,
 	} = loaderData;
 
 	// Calculate total amount and elapsed time from chart data (all transactions)
@@ -142,9 +141,8 @@ export default function Transfers({ loaderData }: Route.ComponentProps) {
 				})}
 			/>
 			<Pagination
-				hasNextPage={hasNextPage}
-				hasPreviousPage={hasPreviousPage}
 				items={paginatedTransactions}
+				paginationMetadata={paginationMetadata}
 			/>
 		</PendingUi>
 	);

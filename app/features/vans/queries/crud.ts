@@ -8,9 +8,3 @@ export function createVan(
 		data: { ...newVan, createdAt: new Date(), isRented: false },
 	});
 }
-
-export function getVan(id: string) {
-	return prisma.van.findUnique({
-		where: { id },
-	});
-}

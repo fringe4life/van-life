@@ -59,7 +59,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Vans({ loaderData }: Route.ComponentProps) {
-	const { items: vans, badges, hasNextPage, hasPreviousPage } = loaderData;
+	const { items: vans, badges, paginationMetadata } = loaderData;
 	// Use nuqs for client-side state management
 	const [{ cursor, limit, type }, setSearchParams] =
 		useQueryStates(paginationParsers);
@@ -152,11 +152,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 							}),
 						})}
 					/>
-					<Pagination
-						hasNextPage={hasNextPage}
-						hasPreviousPage={hasPreviousPage}
-						items={vans}
-					/>
+					<Pagination items={vans} paginationMetadata={paginationMetadata} />
 				</PendingUi>
 			</ViewTransition>
 		</>
