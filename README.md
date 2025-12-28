@@ -642,45 +642,44 @@ The application features **generic pagination utilities** for consistent cursor-
 ```typescript
 // Get cursor metadata for Prisma queries
 // actualCursor is a Prisma cursor object: { id: string } | undefined
-const { actualCursor, sortOrder, take, skip } = getCursorMetadata({
+// orderBy is a Prisma orderBy object: { id: 'asc' | 'desc' }
+const { actualCursor, orderBy, take, skip } = getCursorMetadata({
   cursor,
   limit,
   direction,
 });
 
 // Generic pagination utility
-export function toPagination<T>(
-  items: List<T>,
-  limit: number,
-  cursor: Maybe<string>,
-  direction: Direction = 'forward'
-): PaginationProps<T> {
+export function toPagination<T extends Id>({
+  items,
+  limit,
+  cursor,
+  direction = 'forward',
+}: ToPaginationParams<T>): PaginationProps<T> {
   // Processes database results, handles extra item detection,
   // reverses results for backward pagination, and returns
   // items with paginationMetadata object
 }
 
 // Usage in loaders
-const { actualCursor, sortOrder, take, skip } = getCursorMetadata({
+const { actualCursor, ...rest } = getCursorMetadata({
   cursor,
   limit,
   direction,
 });
 
 const rawItems = await prisma.review.findMany({
-  take,
-  skip,
   cursor: actualCursor, // Already a Prisma cursor object { id: string } | undefined
-  orderBy: { createdAt: sortOrder },
+  ...rest, // Spreads orderBy, take, and skip
   // ... other query options
 });
 
-const { items, paginationMetadata } = toPagination(
-  rawItems,
+const { items, paginationMetadata } = toPagination({
+  items: rawItems,
   limit,
   cursor,
-  direction
-);
+  direction,
+});
 ```
 
 ### Pagination Logic

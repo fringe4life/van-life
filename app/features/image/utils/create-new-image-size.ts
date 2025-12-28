@@ -1,19 +1,10 @@
-import { DEFAULT_IMAGE_QUALITY } from '~/features/image/img-constants';
-
-const WIDTH_REGEX = /w=\d+/g;
-const QUALITY_REGEX = /q=\d+/g;
-const ASPECT_RATIO_REGEX = /ar=[^&]+/g;
-
-/**
- * Valid Unsplash aspect ratios with auto-complete support
- */
-export type UnsplashAspectRatio =
-	| '1:1' // Square
-	| '4:3' // Traditional photo
-	| '3:2' // Classic photo
-	| '16:9' // Widescreen
-	| '3:4' // Portrait
-	| '2:3'; // Portrait
+import {
+	ASPECT_RATIO_REGEX,
+	DEFAULT_IMAGE_QUALITY,
+	QUALITY_REGEX,
+	WIDTH_REGEX,
+} from '~/features/image/img-constants';
+import type { UnsplashAspectRatio } from '../types';
 
 /**
  * Creates a new Unsplash image URL with specified width and aspect ratio

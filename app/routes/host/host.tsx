@@ -30,7 +30,7 @@ import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import VanCard from '~/features/vans/components/van-card';
-import VanCardSkeleton from '~/features/vans/components/van-card-skeleton';
+import { VanCardSkeleton } from '~/features/vans/components/van-card-skeleton';
 import { DEPOSIT, WITHDRAW } from '~/features/vans/constants/vans-constants';
 import { getHostVans } from '~/features/vans/queries/host';
 import { displayPrice } from '~/features/vans/utils/display-price';

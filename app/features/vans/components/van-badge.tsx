@@ -2,18 +2,14 @@ import { Badge } from '~/components/ui/badge';
 import { formatEnumLabel } from '~/features/vans/utils/format-enum';
 import { lowercaseVanStateWithProcessor } from '~/features/vans/utils/van-state-helpers';
 import { VanState } from '~/generated/prisma/enums';
-import type { VanModel } from '~/generated/prisma/models';
-
-interface Props {
-	van: VanModel;
-}
+import type { VanBadgeProps } from '../types';
 
 /**
  * Badge component that displays van state (NEW, ON_SALE, IN_REPAIR).
  * Visibility controlled by CSS based on parent Card's data-slot attribute.
  * Hidden by default, shown only for new/sale/repair states via Tailwind has-* variants.
  */
-export default function VanBadge({ van }: Props) {
+const VanBadge = ({ van }: VanBadgeProps) => {
 	const variant = lowercaseVanStateWithProcessor(van, (state) => {
 		// Handle special case for van type when state is 'available'
 		if (state === 'available') {
@@ -44,4 +40,6 @@ export default function VanBadge({ van }: Props) {
 			{label}
 		</Badge>
 	);
-}
+};
+
+export { VanBadge };

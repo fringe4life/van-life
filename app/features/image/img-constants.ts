@@ -32,3 +32,12 @@ export const HIGH_QUALITY_IMAGE_QUALITY = 75; // For cases where higher quality 
 export const AVIF_QUALITY_BOOST = 10; // AVIF can handle higher quality
 
 export const PLACEHOLDER_IMAGE_WIDTH = 20;
+
+// REGEXES
+
+// Constants for better performance and maintainability
+export const FORMAT_REGEX = /fm=\w+/g;
+
+export const WIDTH_REGEX = /w=\d+/g;
+export const QUALITY_REGEX = /q=\d+/g;
+export const ASPECT_RATIO_REGEX = /ar=[^&]+/g;

@@ -1,12 +1,8 @@
 import { displayPrice } from '~/features/vans/utils/display-price';
-import type { VanModel } from '~/generated/prisma/models';
 import { getDiscountedPrice } from '~/utils/pricing';
+import type { VanPriceProps } from '../types';
 
-interface Props {
-	van: Pick<VanModel, 'price' | 'discount' | 'state'>;
-}
-
-export default function VanPrice({ van: { price, discount } }: Props) {
+const VanPrice = ({ van: { price, discount } }: VanPriceProps) => {
 	const discountedPrice = getDiscountedPrice(price, discount);
 	const hasDiscount = discountedPrice < price;
 	const priceToDisplay = displayPrice(price);
@@ -28,4 +24,6 @@ export default function VanPrice({ van: { price, discount } }: Props) {
 			{priceToDisplay} <span>/day</span>
 		</span>
 	);
-}
+};
+
+export { VanPrice };

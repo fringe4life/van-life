@@ -58,44 +58,6 @@ export const Pagination = <T extends Id>({
 		}
 	};
 
-	let nextPageButton = (
-		<Button aria-label="Next page" disabled size="icon" variant="outline">
-			<ChevronRight className="aspect-square w-4" />
-		</Button>
-	);
-
-	let previousPageButton = (
-		<Button aria-label="Previous page" disabled size="icon" variant="outline">
-			<ChevronLeft className="aspect-square w-4" />
-		</Button>
-	);
-
-	if (hasNextPage) {
-		nextPageButton = (
-			<Button
-				aria-label="Next page"
-				onClick={handleNextPage}
-				size="icon"
-				variant="outline"
-			>
-				<ChevronRight className="aspect-square w-4" />
-			</Button>
-		);
-	}
-
-	if (hasPreviousPage) {
-		previousPageButton = (
-			<Button
-				aria-label="Previous page"
-				onClick={handlePreviousPage}
-				size="icon"
-				variant="outline"
-			>
-				<ChevronLeft className="aspect-square w-4" />
-			</Button>
-		);
-	}
-
 	return (
 		<div className="my-6 flex items-center justify-between gap-4">
 			<select
@@ -103,6 +65,7 @@ export const Pagination = <T extends Id>({
 					buttonVariants({ variant: 'outline', size: 'icon' }),
 					'w-20'
 				)}
+				disabled={!(hasNextPage || hasPreviousPage)}
 				onChange={(e) => handleLimitChange(e.target.value)}
 				value={limit?.toString() ?? DEFAULT_LIMIT.toString()}
 			>
@@ -114,8 +77,24 @@ export const Pagination = <T extends Id>({
 			</select>
 			{/* Navigation buttons */}
 			<div className="flex items-center gap-2">
-				{previousPageButton}
-				{nextPageButton}
+				<Button
+					aria-label="Previous page"
+					disabled={!hasPreviousPage}
+					onClick={handlePreviousPage}
+					size="icon"
+					variant="outline"
+				>
+					<ChevronLeft className="aspect-square w-4" />
+				</Button>
+				<Button
+					aria-label="Next page"
+					disabled={!hasNextPage}
+					onClick={handleNextPage}
+					size="icon"
+					variant="outline"
+				>
+					<ChevronRight className="aspect-square w-4" />
+				</Button>
 			</div>
 		</div>
 	);

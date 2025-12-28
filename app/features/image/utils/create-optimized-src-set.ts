@@ -1,20 +1,10 @@
 import {
 	AVIF_QUALITY_BOOST,
 	DEFAULT_IMAGE_QUALITY,
+	FORMAT_REGEX,
 } from '~/features/image/img-constants';
-import {
-	createNewImageSizeWithAspectRatio,
-	type UnsplashAspectRatio,
-} from './create-new-image-size';
-
-interface ResponsiveConfig {
-	sizes: readonly number[] | number[];
-	aspectRatio: UnsplashAspectRatio;
-	quality?: number;
-}
-
-// Constants for better performance and maintainability
-const FORMAT_REGEX = /fm=\w+/g;
+import type { ResponsiveConfig } from '../types';
+import { createNewImageSizeWithAspectRatio } from './create-new-image-size';
 
 /**
  * Creates an optimized srcSet with multiple formats (WebP, AVIF) for better compression

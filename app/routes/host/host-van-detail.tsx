@@ -7,7 +7,7 @@ import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
-import VanDetailCard from '~/features/vans/components/host-van-detail-card';
+import { VanDetailCard } from '~/features/vans/components/host-van-detail-card';
 import { getHostVanBySlug } from '~/features/vans/queries/host';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';

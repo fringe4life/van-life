@@ -4,10 +4,6 @@ import type {
 } from '~/features/pagination/types';
 import type { Id } from '~/types/types';
 import { NO_PAGINATION, PAGINATION_METADATA } from '../pagination-constants';
-// items: List<T>,
-// limit: number,
-// cursor: Maybe<string>,
-// direction: Direction = 'forward'
 /**
  * Generic pagination utility that processes database results and returns
  * the actual items with pagination metadata.
@@ -39,9 +35,7 @@ export function toPagination<T extends Id>({
 	// Remove the extra item if we took one more than the limit
 	let actualItems = hasMoreResults ? items.slice(0, limit) : items;
 
-	// FIXED: Correct pagination logic based on Prisma documentation
-	// For forward pagination: hasNextPage = hasMoreResults, hasPreviousPage = has cursor
-	// For backward pagination: hasNextPage = has cursor, hasPreviousPage = hasMoreResults
+	// hasNextPage and hasPreviousPage are based on the direction and the cursor
 	const hasNextPage =
 		direction === 'forward' ? hasMoreResults : Boolean(cursor);
 	const hasPreviousPage =

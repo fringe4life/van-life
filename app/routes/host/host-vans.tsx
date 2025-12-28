@@ -18,7 +18,7 @@ import { CustomLink } from '~/features/navigation/components/custom-link';
 import { Pagination } from '~/features/pagination/components/pagination';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanCard from '~/features/vans/components/van-card';
-import VanHeader from '~/features/vans/components/van-header';
+import { VanHeader } from '~/features/vans/components/van-header';
 import { createVan } from '~/features/vans/queries/crud';
 import { getHostVans } from '~/features/vans/queries/host';
 import type { VanModel } from '~/generated/prisma/models/Van';

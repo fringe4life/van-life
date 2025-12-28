@@ -9,7 +9,7 @@ import { CustomLink } from '~/features/navigation/components/custom-link';
 import { Pagination } from '~/features/pagination/components/pagination';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanCard from '~/features/vans/components/van-card';
-import VanHeader from '~/features/vans/components/van-header';
+import { VanHeader } from '~/features/vans/components/van-header';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/rentals';

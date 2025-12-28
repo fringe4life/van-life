@@ -8,7 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '~/components/ui/card';
-import Image from '~/features/image/component/image';
+import { Image } from '~/features/image/component/image';
 import {
 	HIGH_QUALITY_IMAGE_QUALITY,
 	VAN_DETAIL_IMG_SIZES,
@@ -23,8 +23,8 @@ import { isVanAvailable } from '~/features/vans/utils/van-state-helpers';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';
 import { cn } from '~/utils/utils';
-import VanBadge from './van-badge';
-import VanPrice from './van-price';
+import { VanBadge } from './van-badge';
+import { VanPrice } from './van-price';
 
 const StyledCard = withVanCardStyles(Card);
 

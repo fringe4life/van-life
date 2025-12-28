@@ -17,8 +17,8 @@ import {
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanCard from '~/features/vans/components/van-card';
-import VanHeader from '~/features/vans/components/van-header';
-import VanPrice from '~/features/vans/components/van-price';
+import { VanHeader } from '~/features/vans/components/van-header';
+import { VanPrice } from '~/features/vans/components/van-price';
 import { getVans } from '~/features/vans/queries/queries';
 import { VAN_TYPE_LOWERCASE } from '~/features/vans/types.server';
 import { validateVanType } from '~/features/vans/utils/validators';

@@ -9,7 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '~/components/ui/card';
-import Image from '~/features/image/component/image';
+import { Image } from '~/features/image/component/image';
 import {
 	HIGH_QUALITY_IMAGE_QUALITY,
 	HOST_VAN_DETAIL_IMG_SIZES,
@@ -21,8 +21,9 @@ import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';
 import type { Maybe } from '~/types/types';
 import { cn } from '~/utils/utils';
-import VanBadge from './van-badge';
-import VanPrice from './van-price';
+import type { VanDetailCardProps } from '../types';
+import { VanBadge } from './van-badge';
+import { VanPrice } from './van-price';
 
 const StyledCard = withVanCardStyles(Card);
 
@@ -31,7 +32,7 @@ const StyledCard = withVanCardStyles(Card);
  */
 const VanDetailCardContext = createContext<Maybe<VanModel>>(null);
 
-function useVanDetailCard() {
+const useVanDetailCard = () => {
 	const van = use(VanDetailCardContext);
 	if (!van) {
 		throw new Error(
@@ -39,13 +40,13 @@ function useVanDetailCard() {
 		);
 	}
 	return van;
-}
+};
 
-type VanDetailCardProps = {
-	van: VanModel;
-} & React.ComponentProps<'div'>;
-
-function VanDetailCardRoot({ van, children, className }: VanDetailCardProps) {
+const VanDetailCardRoot = ({
+	van,
+	children,
+	className,
+}: VanDetailCardProps) => {
 	const { imageUrl, slug: vanSlug, name, type } = van;
 
 	const navLinks = [
@@ -137,7 +138,7 @@ function VanDetailCardRoot({ van, children, className }: VanDetailCardProps) {
 			</div>
 		</VanDetailCardContext>
 	);
-}
+};
 
 /**
  * Details sub-component - displays van name, category, and description
@@ -187,9 +188,7 @@ function Pricing() {
 
 	return (
 		<div className="my-4 sm:my-6">
-			<VanPrice
-				van={{ price: van.price, discount: van.discount, state: van.state }}
-			/>
+			<VanPrice van={van} />
 		</div>
 	);
 }
@@ -211,4 +210,4 @@ const VanDetailCard = Object.assign(VanDetailCardRoot, {
 	Pricing,
 });
 
-export default VanDetailCard;
+export { VanDetailCard };

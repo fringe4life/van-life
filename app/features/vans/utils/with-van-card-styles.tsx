@@ -1,11 +1,6 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import type { VanModel } from '~/generated/prisma/models';
+import type { ComponentPropsWithoutRef } from 'react';
+import type { WithVanCardStylesProps } from '../types';
 import { getVanStateStyles } from './van-state-styles';
-
-type WithVanCardStylesProps = ComponentPropsWithoutRef<'div'> & {
-	van: VanModel;
-	children?: ReactNode;
-};
 
 /**
  * Higher-order component that injects van card styling props.
@@ -19,14 +14,10 @@ type WithVanCardStylesProps = ComponentPropsWithoutRef<'div'> & {
  * </StyledCard>
  * ```
  */
-export function withVanCardStyles<P extends ComponentPropsWithoutRef<'div'>>(
+export const withVanCardStyles = <P extends ComponentPropsWithoutRef<'div'>>(
 	Component: React.ComponentType<P>
-) {
-	return function VanCardWithStyles({
-		van,
-		className = '',
-		...rest
-	}: WithVanCardStylesProps) {
+) => {
+	return ({ van, className = '', ...rest }: WithVanCardStylesProps) => {
 		const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);
 
 		const combinedClassName = `group ${vanStateClasses} ${className}`.trim();
@@ -40,4 +31,4 @@ export function withVanCardStyles<P extends ComponentPropsWithoutRef<'div'>>(
 			/>
 		);
 	};
-}
+};
