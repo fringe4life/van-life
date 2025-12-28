@@ -1,4 +1,5 @@
-import type { ComponentProps, ElementType } from 'react';
+import type { ElementType } from 'react';
+import type { Items } from '~/features/pagination/types';
 import type { VanModel } from '~/generated/prisma/models';
 
 // Type for Maybe
@@ -16,18 +17,22 @@ export interface ErrorState {
 	errorStateMessage: string;
 }
 
+export interface AsProps<T extends ElementType = 'div'> {
+	as?: T;
+}
+
 export interface GenericComponentProps<
 	T,
 	P,
 	E extends React.ElementType = 'div',
 > extends EmptyState,
-		ErrorState {
+		ErrorState,
+		Items<T>,
+		AsProps<E> {
 	Component: React.ComponentType<P>;
-	items: List<T>;
 	renderProps: (item: T, index: number) => P;
 	renderKey: (item: T, index: number) => React.Key;
 	className?: string;
-	as?: E;
 	wrapperProps?: React.ComponentPropsWithoutRef<E>;
 }
 
@@ -37,9 +42,9 @@ export interface ListItemProps<T> {
 	getRow: (t: T) => React.ReactNode;
 }
 
-export type PendingUiProps<T extends ElementType = 'div'> = {
+export interface PendingUIProps<T extends ElementType = 'div'>
+	extends AsProps<T> {
 	/** The HTML element to render (default: 'div') */
-	as?: T;
 	/** Additional CSS classes to merge with pending UI classes */
 	className?: string;
 	/** Whether to show pending UI (defaults to useIsNavigating hook) */
@@ -48,7 +53,7 @@ export type PendingUiProps<T extends ElementType = 'div'> = {
 	pendingOpacity?: number;
 	/** Children to render */
 	children: React.ReactNode;
-} & Omit<ComponentProps<T>, 'as' | 'className' | 'children'>;
+}
 
 interface Success<T> {
 	data: T;

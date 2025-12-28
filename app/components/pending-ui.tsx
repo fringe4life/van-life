@@ -1,6 +1,6 @@
 import type { ElementType } from 'react';
 import useIsNavigating from '~/hooks/use-is-navigating';
-import type { PendingUiProps } from '~/types/types';
+import type { PendingUIProps } from '~/types/types';
 import { cn } from '~/utils/utils';
 
 /**
@@ -53,7 +53,7 @@ const PendingUI = <T extends ElementType = 'div'>({
 	pendingOpacity = 0.75,
 	children,
 	...rest
-}: PendingUiProps<T>) => {
+}: PendingUIProps<T>) => {
 	const { changingPage } = useIsNavigating();
 	const isCurrentlyPending = isPending ?? changingPage;
 
