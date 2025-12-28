@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
-import { startTransition } from 'react';
+import { type MouseEventHandler, startTransition } from 'react';
 import { Button, buttonVariants } from '~/components/ui/button';
 import {
 	DEFAULT_DIRECTION,
@@ -10,7 +10,7 @@ import {
 import type { PaginationProps } from '~/features/pagination/types';
 import { validateLimit } from '~/features/pagination/utils/validators';
 import { paginationParsers } from '~/lib/parsers';
-import type { Id, Maybe } from '~/types/types';
+import type { Id } from '~/types/types';
 import { cn } from '~/utils/utils';
 
 export const Pagination = <T extends Id>({
@@ -20,7 +20,10 @@ export const Pagination = <T extends Id>({
 	const [{ limit }, setSearchParams] = useQueryStates(paginationParsers);
 	const { hasNextPage, hasPreviousPage } = paginationMetadata;
 
-	// Ensure items is a valid array
+	// Ensure items is a valid array with items and is not empty
+	if (!items || items.length === 0) {
+		return <div />;
+	}
 
 	const handleLimitChange = (newLimit: string) => {
 		// Keep cursor unchanged when changing limit - cursor represents position in dataset
@@ -31,8 +34,66 @@ export const Pagination = <T extends Id>({
 		});
 	};
 
-	if (!items) {
-		return <div />;
+	const handleNextPage: MouseEventHandler<HTMLButtonElement> = () => {
+		const lastItem = items.at(-1);
+		if (lastItem) {
+			startTransition(async () => {
+				await setSearchParams({
+					cursor: lastItem.id,
+					direction: DEFAULT_DIRECTION,
+				});
+			});
+		}
+	};
+
+	const handlePreviousPage: MouseEventHandler<HTMLButtonElement> = () => {
+		const firstItem = items.at(0);
+		if (firstItem) {
+			startTransition(async () => {
+				await setSearchParams({
+					cursor: firstItem.id,
+					direction: 'backward',
+				});
+			});
+		}
+	};
+
+	let nextPageButton = (
+		<Button aria-label="Next page" disabled size="icon" variant="outline">
+			<ChevronRight className="aspect-square w-4" />
+		</Button>
+	);
+
+	let previousPageButton = (
+		<Button aria-label="Previous page" disabled size="icon" variant="outline">
+			<ChevronLeft className="aspect-square w-4" />
+		</Button>
+	);
+
+	if (hasNextPage) {
+		nextPageButton = (
+			<Button
+				aria-label="Next page"
+				onClick={handleNextPage}
+				size="icon"
+				variant="outline"
+			>
+				<ChevronRight className="aspect-square w-4" />
+			</Button>
+		);
+	}
+
+	if (hasPreviousPage) {
+		previousPageButton = (
+			<Button
+				aria-label="Previous page"
+				onClick={handlePreviousPage}
+				size="icon"
+				variant="outline"
+			>
+				<ChevronLeft className="aspect-square w-4" />
+			</Button>
+		);
 	}
 
 	return (
@@ -53,62 +114,8 @@ export const Pagination = <T extends Id>({
 			</select>
 			{/* Navigation buttons */}
 			<div className="flex items-center gap-2">
-				{!!hasPreviousPage && items.length > 0 ? (
-					<Button
-						aria-label="Previous page"
-						onClick={() => {
-							// For backward pagination, use the first item's ID as cursor
-							const firstItem = items[0];
-							if (firstItem) {
-								startTransition(async () => {
-									await setSearchParams({
-										cursor: firstItem.id,
-										direction: 'backward',
-									});
-								});
-							}
-						}}
-						size="icon"
-						variant="outline"
-					>
-						<ChevronLeft className="aspect-square w-4" />
-					</Button>
-				) : (
-					<Button
-						aria-label="Previous page"
-						disabled
-						size="icon"
-						variant="outline"
-					>
-						<ChevronLeft className="aspect-square w-4" />
-					</Button>
-				)}
-
-				{!!hasNextPage && items.length > 0 ? (
-					<Button
-						aria-label="Next page"
-						onClick={() => {
-							// Get the last item's ID as the next cursor
-							const lastItem: Maybe<T> = items.at(-1);
-							if (lastItem) {
-								startTransition(async () => {
-									await setSearchParams({
-										cursor: lastItem.id,
-										direction: DEFAULT_DIRECTION,
-									});
-								});
-							}
-						}}
-						size="icon"
-						variant="outline"
-					>
-						<ChevronRight className="aspect-square w-4" />
-					</Button>
-				) : (
-					<Button aria-label="Next page" disabled size="icon" variant="outline">
-						<ChevronRight className="aspect-square w-4" />
-					</Button>
-				)}
+				{previousPageButton}
+				{nextPageButton}
 			</div>
 		</div>
 	);

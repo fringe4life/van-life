@@ -22,7 +22,9 @@ export const getCursorMetadata = ({
 	const normalisedCursor = cursor && cursor !== '' ? cursor : undefined;
 
 	// Determine sort order based on direction
-	const sortOrder: Prisma.SortOrder = direction === 'backward' ? 'asc' : 'desc';
+	const orderBy: { id: Prisma.SortOrder } = {
+		id: direction === 'backward' ? 'asc' : 'desc',
+	};
 
 	// Determine take amount (always positive for Prisma)
 	const take = limit + 1;
@@ -33,7 +35,7 @@ export const getCursorMetadata = ({
 
 	return {
 		actualCursor,
-		sortOrder,
+		orderBy,
 		take,
 		skip,
 	} satisfies CursorMetadata;

@@ -10,7 +10,7 @@ export function getVans(
 	typeFilter: MaybeTypeFilter,
 	direction: Direction = 'forward'
 ) {
-	const { actualCursor, skip, sortOrder, take } = getCursorMetadata({
+	const { actualCursor, ...rest } = getCursorMetadata({
 		cursor,
 		limit,
 		direction,
@@ -21,10 +21,8 @@ export function getVans(
 			type: typeFilter,
 		},
 		// Cursor pagination requires ordering by a unique, sequential field
-		orderBy: { id: sortOrder },
 		cursor: actualCursor,
-		skip, // Skip the cursor record itself
-		take,
+		...rest,
 	});
 }
 

@@ -22,7 +22,7 @@ export interface PaginationProps<T> extends Items<T> {
 
 export interface CursorMetadata {
 	actualCursor: Exclude<Maybe<Id>, null>;
-	sortOrder: Prisma.SortOrder;
+	orderBy: { id: Prisma.SortOrder };
 	take: number;
 	skip: number;
 }
