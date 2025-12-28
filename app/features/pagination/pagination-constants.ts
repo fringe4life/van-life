@@ -10,10 +10,12 @@ export const LIMITS = [5, 10, 20, 50] as const;
 export const DIRECTIONS = ['forward', 'backward'] satisfies Direction[];
 export const SORT_OPTIONS = ['newest', 'oldest', 'highest', 'lowest'] as const;
 
+export const PAGINATION_METADATA = {
+	hasNextPage: false,
+	hasPreviousPage: false,
+} as const;
+
 export const NO_PAGINATION = {
 	items: null,
-	paginationMetadata: {
-		hasNextPage: false,
-		hasPreviousPage: false,
-	},
+	paginationMetadata: PAGINATION_METADATA,
 } as const;

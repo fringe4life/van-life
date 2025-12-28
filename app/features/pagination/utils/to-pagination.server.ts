@@ -1,26 +1,37 @@
-import type { Direction, PaginationProps } from '~/features/pagination/types';
-import type { List, Maybe } from '~/types/types';
-import { NO_PAGINATION } from '../pagination-constants';
-
+import type {
+	PaginationProps,
+	ToPaginationParams,
+} from '~/features/pagination/types';
+import type { Id } from '~/types/types';
+import { NO_PAGINATION, PAGINATION_METADATA } from '../pagination-constants';
+// items: List<T>,
+// limit: number,
+// cursor: Maybe<string>,
+// direction: Direction = 'forward'
 /**
  * Generic pagination utility that processes database results and returns
  * the actual items with pagination metadata.
  *
- * @param items - The items from database query (can be T[], string for errors, or number for counts)
+ * @param items - The items from database query (can be T[], undefined, or null)
  * @param limit - The limit used for pagination
  * @param cursor - The cursor used for pagination (for hasPreviousPage calculation)
  * @param direction - The pagination direction ('forward' or 'backward')
  * @returns Object with items, hasNextPage, and hasPreviousPage
  */
-export function toPagination<T>(
-	items: List<T>,
-	limit: number,
-	cursor: Maybe<string>,
-	direction: Direction = 'forward'
-): PaginationProps<T> {
+export function toPagination<T extends Id>({
+	items,
+	limit,
+	cursor,
+	direction = 'forward',
+}: ToPaginationParams<T>): PaginationProps<T> {
 	// If items is null, return as-is with no pagination
 	if (!items) {
 		return NO_PAGINATION;
+	}
+
+	// If there are no items, return the items and pagination metadata
+	if (items.length === 0) {
+		return { items, paginationMetadata: PAGINATION_METADATA };
 	}
 
 	// Check if there are more results (cursor pagination)

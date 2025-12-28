@@ -630,7 +630,7 @@ The application features **generic pagination utilities** for consistent cursor-
 ### Features
 
 - **Generic `toPagination` utility** (`app/features/pagination/utils/to-pagination.server.ts`) - Processes database results and returns items with pagination metadata
-- **`getCursorMetadata` utility** (`app/features/pagination/utils/get-cursor-metadata.server.ts`) - Provides cursor, sort order, take, and skip values for Prisma queries
+- **`getCursorMetadata` utility** (`app/features/pagination/utils/get-cursor-metadata.server.ts`) - Provides Prisma cursor object, sort order, take, and skip values for Prisma queries
 - **Bidirectional pagination support** - Handles both forward and backward pagination with correct logic
 - **Automatic result reversal** - Reverses results for backward pagination to maintain correct display order
 - **Type-safe** - Full TypeScript support with generic types
@@ -641,6 +641,7 @@ The application features **generic pagination utilities** for consistent cursor-
 
 ```typescript
 // Get cursor metadata for Prisma queries
+// actualCursor is a Prisma cursor object: { id: string } | undefined
 const { actualCursor, sortOrder, take, skip } = getCursorMetadata({
   cursor,
   limit,
@@ -669,7 +670,7 @@ const { actualCursor, sortOrder, take, skip } = getCursorMetadata({
 const rawItems = await prisma.review.findMany({
   take,
   skip,
-  cursor: actualCursor
+  cursor: actualCursor, // Already a Prisma cursor object { id: string } | undefined
   orderBy: { createdAt: sortOrder },
   // ... other query options
 });

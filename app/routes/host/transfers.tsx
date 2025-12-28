@@ -47,12 +47,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		]);
 
 	// Process pagination logic
-	const pagination = toPagination(
-		paginatedTransactions,
+	const pagination = toPagination({
+		items: paginatedTransactions,
 		limit,
 		cursor,
-		direction
-	);
+		direction,
+	});
 
 	return data(
 		{

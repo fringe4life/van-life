@@ -42,7 +42,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	]);
 
 	// Process pagination logic
-	const pagination = toPagination(paginatedReviews, limit, cursor, direction);
+	const pagination = toPagination({
+		items: paginatedReviews,
+		limit,
+		cursor,
+		direction,
+	});
 
 	return data(
 		{

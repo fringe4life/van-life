@@ -12,8 +12,11 @@ export interface PaginationMetadata {
 	hasPreviousPage: boolean;
 }
 
-export interface PaginationProps<T> {
+export interface Items<T> {
 	items: List<T>;
+}
+
+export interface PaginationProps<T> extends Items<T> {
 	paginationMetadata: PaginationMetadata;
 }
 
@@ -29,6 +32,8 @@ export interface BasePaginationParams {
 	limit: number;
 	direction?: Direction;
 }
+
+export interface ToPaginationParams<T> extends Items<T>, BasePaginationParams {}
 
 export interface PaginationParams extends BasePaginationParams {
 	userId: string;

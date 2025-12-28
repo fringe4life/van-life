@@ -27,7 +27,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	);
 
 	// Process pagination logic
-	const pagination = toPagination(vans, limit, cursor, direction);
+	const pagination = toPagination({ items: vans, limit, cursor, direction });
 
 	return data(
 		{

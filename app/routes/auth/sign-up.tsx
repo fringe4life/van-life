@@ -34,8 +34,8 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
 	const result = signUpScheme(formData);
 
-	const name = (formData.name as string) ?? '';
-	const email = (formData.email as string) ?? '';
+	const name = formData.name as string | undefined;
+	const email = formData.email as string | undefined;
 
 	if (result instanceof type.errors) {
 		return {

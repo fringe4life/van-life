@@ -44,7 +44,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 	);
 
 	// Process pagination logic
-	const pagination = toPagination(vans, limit, cursor, direction);
+	const pagination = toPagination({ items: vans, limit, cursor, direction });
 
 	const loaderData = {
 		badges,

@@ -6,8 +6,6 @@ export type Maybe<T> = T | null | undefined;
 
 export type List<T> = Maybe<T[]>;
 
-export type MaybeError<T> = T | string;
-
 export interface Id extends Pick<VanModel, 'id'> {}
 
 export interface EmptyState {
