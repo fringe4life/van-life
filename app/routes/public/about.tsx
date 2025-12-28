@@ -1,5 +1,5 @@
 import { href } from 'react-router';
-import PendingUi from '~/components/pending-ui';
+import { PendingUI } from '~/components/pending-ui';
 import { buttonVariants } from '~/components/ui/button';
 import Image from '~/features/image/component/image';
 import {
@@ -8,7 +8,7 @@ import {
 	HIGH_QUALITY_IMAGE_QUALITY,
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
-import CustomLink from '~/features/navigation/components/custom-link';
+import { CustomLink } from '~/features/navigation/components/custom-link';
 import { cn } from '~/utils/utils';
 
 // Create optimized WebP srcSet with 16:9 aspect ratio for both mobile and desktop
@@ -21,7 +21,7 @@ const srcSet = createWebPSrcSet(ABOUT_IMG, {
 
 export default function About() {
 	return (
-		<PendingUi
+		<PendingUI
 			as="section"
 			className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-10"
 		>
@@ -80,6 +80,6 @@ export default function About() {
 					Explore our vans
 				</CustomLink>
 			</article>
-		</PendingUi>
+		</PendingUI>
 	);
 }

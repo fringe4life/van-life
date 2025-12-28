@@ -1,6 +1,6 @@
 import type React from 'react';
 import type { GenericComponentProps } from '~/types/types';
-import UnsuccesfulState from './unsuccesful-state';
+import { UnsuccesfulState } from './unsuccesful-state';
 
 const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	Component,
@@ -30,4 +30,4 @@ const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	);
 };
 
-export default GenericComponent;
+export { GenericComponent };

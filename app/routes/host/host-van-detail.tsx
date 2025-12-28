@@ -1,11 +1,11 @@
 import { Activity } from 'react';
 import { data, href, isRouteErrorResponse } from 'react-router';
-import UnsuccesfulState from '~/components/unsuccesful-state';
+import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import { determineHostVansRoute } from '~/features/host/utils/determine-host-vans-route';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
-import CustomLink from '~/features/navigation/components/custom-link';
+import { CustomLink } from '~/features/navigation/components/custom-link';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
 import VanDetailCard from '~/features/vans/components/host-van-detail-card';
 import { getHostVanBySlug } from '~/features/vans/queries/host';

@@ -13,13 +13,13 @@ import type { Prisma } from '~/generated/prisma/client';
  * @param direction - The pagination direction ('forward' or 'backward')
  * @returns Object with actualCursor, sortOrder, and takeAmount for Prisma queries
  */
-export const getCursorPaginationInformation = ({
+export const getCursorMetadata = ({
 	cursor,
 	limit,
 	direction = 'forward',
 }: BasePaginationParams): CursorMetadata => {
 	// Convert empty string cursor to undefined for Prisma compatibility
-	const actualCursor = cursor && cursor !== '' ? cursor : undefined;
+	const normalisedCursor = cursor && cursor !== '' ? cursor : undefined;
 
 	// Determine sort order based on direction
 	const sortOrder: Prisma.SortOrder = direction === 'backward' ? 'asc' : 'desc';
@@ -27,12 +27,14 @@ export const getCursorPaginationInformation = ({
 	// Determine take amount (always positive for Prisma)
 	const take = limit + 1;
 
-	const skip = actualCursor ? 1 : 0;
+	const skip = normalisedCursor ? 1 : 0;
+
+	const actualCursor = normalisedCursor ? { id: normalisedCursor } : undefined;
 
 	return {
 		actualCursor,
 		sortOrder,
 		take,
 		skip,
-	};
+	} satisfies CursorMetadata;
 };

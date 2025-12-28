@@ -1,6 +1,6 @@
 import { data } from 'react-router';
-import GenericComponent from '~/components/generic-component';
-import PendingUi from '~/components/pending-ui';
+import { GenericComponent } from '~/components/generic-component';
+import { PendingUI } from '~/components/pending-ui';
 import Sortable from '~/components/sortable';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
@@ -57,7 +57,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	);
 }
 
-export default function Reviews({ loaderData }: Route.ComponentProps) {
+export default function HostReviews({ loaderData }: Route.ComponentProps) {
 	const { chartData, items: paginatedReviews, paginationMetadata } = loaderData;
 
 	const result = chartData
@@ -74,7 +74,7 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 		}));
 
 	return (
-		<PendingUi
+		<PendingUI
 			as="section"
 			className="grid grid-rows-[min-content_var(--chart-height)_min-content_1fr_min-content] contain-content"
 		>
@@ -113,6 +113,6 @@ export default function Reviews({ loaderData }: Route.ComponentProps) {
 				items={paginatedReviews}
 				paginationMetadata={paginationMetadata}
 			/>
-		</PendingUi>
+		</PendingUI>
 	);
 }

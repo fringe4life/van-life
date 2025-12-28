@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import UnsuccesfulState from '~/components/unsuccesful-state';
+import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import type { Data, DataArray } from '~/features/host/types';
 import type { EmptyState, ErrorState, Maybe } from '~/types/types';
 import BarChartSkeleton from './bar-chart-skeleton';

@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react';
-import CustomLink from '../components/custom-link';
-import CustomNavLink from '../components/custom-nav-link';
+import { CustomLink } from '../components/custom-link';
+import { CustomNavLink } from '../components/custom-nav-link';
 import { linkClassName } from './link-class-name';
 
 export interface NavItemType {

@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/style/useNamingConvention: prisma style */
 
 import type { PaginationParams, SortOption } from '~/features/pagination/types';
-import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-metadata.server';
+import { getCursorMetadata } from '~/features/pagination/utils/get-cursor-metadata.server';
 import { reverseSortOption } from '~/features/pagination/utils/reverse-sort-order';
 import type { Prisma } from '~/generated/prisma/client';
 import { TransactionType } from '~/generated/prisma/enums';
@@ -98,7 +98,7 @@ export function getHostTransactionsPaginated({
 	direction = 'forward',
 	sort = 'newest',
 }: PaginationParams) {
-	const { actualCursor, skip, take } = getCursorPaginationInformation({
+	const { actualCursor, skip, take } = getCursorMetadata({
 		cursor,
 		limit,
 		direction,
@@ -123,7 +123,7 @@ export function getHostTransactionsPaginated({
 			rentId: true,
 		},
 		orderBy: orderByClause,
-		cursor: actualCursor ? { id: actualCursor } : undefined,
+		cursor: actualCursor,
 		skip, // Skip the cursor record itself
 		take,
 	};
@@ -138,7 +138,7 @@ export function getUserTransactionsPaginated({
 	direction = 'forward',
 	sort = 'newest',
 }: PaginationParams) {
-	const { actualCursor, skip, take } = getCursorPaginationInformation({
+	const { actualCursor, skip, take } = getCursorMetadata({
 		cursor,
 		limit,
 		direction,
@@ -162,7 +162,7 @@ export function getUserTransactionsPaginated({
 			createdAt: true,
 		},
 		orderBy: orderByClause,
-		cursor: actualCursor ? { id: actualCursor } : undefined,
+		cursor: actualCursor,
 		skip, // Skip the cursor record itself
 		take,
 	};

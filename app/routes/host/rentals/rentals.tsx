@@ -1,11 +1,11 @@
 import { data, href } from 'react-router';
-import GenericComponent from '~/components/generic-component';
-import PendingUi from '~/components/pending-ui';
+import { GenericComponent } from '~/components/generic-component';
+import { PendingUI } from '~/components/pending-ui';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import { getHostRentedVans } from '~/features/host/queries/rental/queries';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
-import CustomLink from '~/features/navigation/components/custom-link';
+import { CustomLink } from '~/features/navigation/components/custom-link';
 import { Pagination } from '~/features/pagination/components/pagination';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import VanCard from '~/features/vans/components/van-card';
@@ -45,7 +45,7 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 	const { items: vans, paginationMetadata } = loaderData;
 
 	return (
-		<PendingUi
+		<PendingUI
 			as="section"
 			className="grid grid-rows-[min-content_min-content_1fr_min-content] gap-y-6 contain-content"
 		>
@@ -85,6 +85,6 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 				})}
 			/>
 			<Pagination items={vans} paginationMetadata={paginationMetadata} />
-		</PendingUi>
+		</PendingUI>
 	);
 }

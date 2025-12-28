@@ -1,5 +1,5 @@
 import type { Prisma } from '~/generated/prisma/client';
-import type { List, Maybe } from '~/types/types';
+import type { Id, List, Maybe } from '~/types/types';
 
 // Type for pagination direction
 export type Direction = 'forward' | 'backward';
@@ -18,7 +18,7 @@ export interface PaginationProps<T> {
 }
 
 export interface CursorMetadata {
-	actualCursor: Exclude<Maybe<string>, null>;
+	actualCursor: Exclude<Maybe<Id>, null>;
 	sortOrder: Prisma.SortOrder;
 	take: number;
 	skip: number;

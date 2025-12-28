@@ -1,11 +1,8 @@
-import { NavLink, type NavLinkProps } from 'react-router';
+import { NavLink } from 'react-router';
 import useIsPage from '~/hooks/use-is-page';
+import type { CustomNavLinkProps } from '../types';
 
-const CustomNavLink = ({
-	children,
-	to,
-	...rest
-}: Omit<NavLinkProps, 'style'>) => {
+const CustomNavLink = ({ children, to, ...rest }: CustomNavLinkProps) => {
 	const { isPage } = useIsPage({ to });
 	return (
 		<NavLink
@@ -20,4 +17,4 @@ const CustomNavLink = ({
 	);
 };
 
-export default CustomNavLink;
+export { CustomNavLink };

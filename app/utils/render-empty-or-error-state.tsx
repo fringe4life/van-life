@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import UnsuccesfulState from '~/components/unsuccesful-state';
+import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import type { Data } from '~/features/host/types';
 import type { EmptyState, ErrorState, List } from '~/types/types';
 

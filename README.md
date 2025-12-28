@@ -669,7 +669,7 @@ const { actualCursor, sortOrder, take, skip } = getCursorMetadata({
 const rawItems = await prisma.review.findMany({
   take,
   skip,
-  cursor: actualCursor ? { id: actualCursor } : undefined,
+  cursor: actualCursor
   orderBy: { createdAt: sortOrder },
   // ... other query options
 });

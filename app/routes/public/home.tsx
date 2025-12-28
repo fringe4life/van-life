@@ -1,5 +1,5 @@
 import { href } from 'react-router';
-import PendingUi from '~/components/pending-ui';
+import { PendingUI } from '~/components/pending-ui';
 import { buttonVariants } from '~/components/ui/button';
 import Image from '~/features/image/component/image';
 import {
@@ -9,7 +9,7 @@ import {
 	HOME_MOBILE_IMG_SIZES,
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
-import CustomLink from '~/features/navigation/components/custom-link';
+import { CustomLink } from '~/features/navigation/components/custom-link';
 import { cn } from '~/utils/utils';
 
 // Use only mobile images for now to fix the aspect ratio issue
@@ -30,7 +30,7 @@ const sizes = '(max-width: 1024px) 100vw';
 
 export default function Home() {
 	return (
-		<PendingUi
+		<PendingUI
 			as="section"
 			className="full-layout relative grid aspect-[1/1.5] h-full text-white contain-strict sm:pl-6 md:aspect-video md:place-content-center md:self-center"
 		>
@@ -73,6 +73,6 @@ export default function Home() {
 					Find your van
 				</CustomLink>
 			</div>
-		</PendingUi>
+		</PendingUI>
 	);
 }

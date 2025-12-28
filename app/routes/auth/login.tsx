@@ -1,7 +1,7 @@
 import { type } from 'arktype';
 import { useId } from 'react';
 import { href, redirect, replace } from 'react-router';
-import CustomForm from '~/components/custom-form';
+import { CustomForm } from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import {
 	Card,
@@ -13,7 +13,7 @@ import {
 import { Input } from '~/components/ui/input';
 import { hasAuthContext } from '~/features/middleware/contexts/has-auth';
 import { hasAuthMiddleware } from '~/features/middleware/functions/has-auth-middleware';
-import CustomLink from '~/features/navigation/components/custom-link';
+import { CustomLink } from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
 import { loginSchema } from '~/lib/schemas';
 import { tryCatch } from '~/utils/try-catch.server';

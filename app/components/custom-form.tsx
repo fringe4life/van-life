@@ -3,7 +3,7 @@ import type React from 'react';
 import { Form } from 'react-router';
 import useIsNavigating from '~/hooks/use-is-navigating';
 
-export const CustomForm = ({
+const CustomForm = ({
 	children,
 	className,
 	...props
@@ -17,4 +17,5 @@ export const CustomForm = ({
 		</Form>
 	);
 };
-export default CustomForm;
+
+export { CustomForm };

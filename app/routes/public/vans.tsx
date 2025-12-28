@@ -2,12 +2,12 @@ import { clsx } from 'clsx';
 import { useQueryStates } from 'nuqs';
 import { startTransition, ViewTransition } from 'react';
 import { data, href, isRouteErrorResponse } from 'react-router';
-import GenericComponent from '~/components/generic-component';
-import ListItems from '~/components/list-items';
-import PendingUi from '~/components/pending-ui';
+import { GenericComponent } from '~/components/generic-component';
+import { ListItems } from '~/components/list-items';
+import { PendingUI } from '~/components/pending-ui';
 import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
-import UnsuccesfulState from '~/components/unsuccesful-state';
+import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { Pagination } from '~/features/pagination/components/pagination';
 import {
 	DEFAULT_CURSOR,
@@ -28,7 +28,7 @@ import { tryCatch } from '~/utils/try-catch.server';
 import { cn } from '~/utils/utils';
 import type { Route } from './+types/vans';
 
-export async function loader({ request }: Route.LoaderArgs) {
+export const loader = async ({ request }: Route.LoaderArgs) => {
 	// Get badges from the centralized types
 	const badges = VAN_TYPE_LOWERCASE;
 
@@ -56,7 +56,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 			'Cache-Control': 'max-age=259200',
 		},
 	});
-}
+};
 
 export default function Vans({ loaderData }: Route.ComponentProps) {
 	const { items: vans, badges, paginationMetadata } = loaderData;
@@ -75,7 +75,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 				name="description"
 			/>
 			<ViewTransition>
-				<PendingUi
+				<PendingUI
 					as="section"
 					className="grid h-full grid-rows-[min-content_min-content_1fr_min-content] gap-y-6 contain-content"
 				>
@@ -153,7 +153,7 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 						})}
 					/>
 					<Pagination items={vans} paginationMetadata={paginationMetadata} />
-				</PendingUi>
+				</PendingUI>
 			</ViewTransition>
 		</>
 	);

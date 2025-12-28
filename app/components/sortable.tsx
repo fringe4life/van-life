@@ -1,6 +1,6 @@
 import { useQueryStates } from 'nuqs';
 import { startTransition } from 'react';
-import GenericComponent from '~/components/generic-component';
+import { GenericComponent } from '~/components/generic-component';
 import { Button } from '~/components/ui/button';
 import {
 	DEFAULT_CURSOR,

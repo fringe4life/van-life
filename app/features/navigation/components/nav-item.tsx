@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import type CustomLink from './custom-link';
-import type CustomNavLink from './custom-nav-link';
+import type { CustomLink } from './custom-link';
+import type { CustomNavLink } from './custom-nav-link';
 
 // HOC type for NavItem
 export type NavItemComponent = typeof CustomLink | typeof CustomNavLink;
@@ -40,4 +40,4 @@ const NavItem = ({ Component, props, children }: NavItemProps) => {
 	);
 };
 
-export default NavItem;
+export { NavItem };

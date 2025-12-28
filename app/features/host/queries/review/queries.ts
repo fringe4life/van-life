@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/style/useNamingConvention: prisma style */
 import type { PaginationParams, SortOption } from '~/features/pagination/types';
-import { getCursorPaginationInformation } from '~/features/pagination/utils/get-cursor-metadata.server';
+import { getCursorMetadata } from '~/features/pagination/utils/get-cursor-metadata.server';
 import { reverseSortOption } from '~/features/pagination/utils/reverse-sort-order';
 import type { Prisma } from '~/generated/prisma/client';
 import {
@@ -46,7 +46,7 @@ export function getHostReviewsPaginated({
 	direction = 'forward',
 	sort = 'newest',
 }: PaginationParams) {
-	const { actualCursor, skip, take } = getCursorPaginationInformation({
+	const { actualCursor, skip, take } = getCursorMetadata({
 		cursor,
 		limit,
 		direction,
@@ -84,10 +84,8 @@ export function getHostReviewsPaginated({
 			},
 			orderBy: orderByClause,
 			take,
-			...(actualCursor && {
-				cursor: { id: actualCursor },
-				skip: 1,
-			}),
+			cursor: actualCursor,
+			skip,
 		};
 
 		return prisma.review.findMany(query);
@@ -114,7 +112,7 @@ export function getHostReviewsPaginated({
 			},
 		},
 		orderBy: orderByClause,
-		cursor: actualCursor ? { id: actualCursor } : undefined,
+		cursor: actualCursor,
 		skip, // Skip the cursor record itself
 		take,
 	};

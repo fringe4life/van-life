@@ -3,7 +3,7 @@ import { Card, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import Image from '~/features/image/component/image';
 import { VAN_CARD_IMG_SIZES } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
-import CustomLink from '~/features/navigation/components/custom-link';
+import { CustomLink } from '~/features/navigation/components/custom-link';
 import { toLowercaseVanType } from '~/features/vans/utils/validators';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';

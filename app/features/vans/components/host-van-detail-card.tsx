@@ -1,6 +1,6 @@
 import { createContext, use } from 'react';
 import { href } from 'react-router';
-import GenericComponent from '~/components/generic-component';
+import { GenericComponent } from '~/components/generic-component';
 import { Badge } from '~/components/ui/badge';
 import {
 	Card,
@@ -15,7 +15,7 @@ import {
 	HOST_VAN_DETAIL_IMG_SIZES,
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
-import CustomNavLink from '~/features/navigation/components/custom-nav-link';
+import { CustomNavLink } from '~/features/navigation/components/custom-nav-link';
 import { toLowercaseVanType } from '~/features/vans/utils/validators';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';

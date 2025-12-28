@@ -14,7 +14,7 @@ import {
 	VAN_DETAIL_IMG_SIZES,
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
-import CustomLink from '~/features/navigation/components/custom-link';
+import { CustomLink } from '~/features/navigation/components/custom-link';
 import {
 	toLowercaseVanType,
 	validateLowercaseVanType,

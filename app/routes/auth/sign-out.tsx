@@ -1,5 +1,5 @@
 import { data, href, replace } from 'react-router';
-import UnsuccesfulState from '~/components/unsuccesful-state';
+import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { auth } from '~/lib/auth.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/sign-out';

@@ -46,7 +46,7 @@ import { cn } from '~/utils/utils';
  * </PendingUI>
  * ```
  */
-export const PendingUI = <T extends ElementType = 'div'>({
+const PendingUI = <T extends ElementType = 'div'>({
 	as,
 	className,
 	isPending,
@@ -79,4 +79,4 @@ export const PendingUI = <T extends ElementType = 'div'>({
 		</Component>
 	);
 };
-export default PendingUI;
+export { PendingUI };

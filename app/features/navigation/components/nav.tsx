@@ -1,20 +1,17 @@
 import { Menu, X } from 'lucide-react';
 import { Activity } from 'react';
 import { href } from 'react-router';
-import GenericComponent from '~/components/generic-component';
+import { GenericComponent } from '~/components/generic-component';
 import { Button } from '~/components/ui/button';
 import { useSheetDialog } from '~/features/navigation/hooks/use-sheet-dialog';
+import type { NavProps } from '../types';
 import {
 	type NavItemType,
 	toMobileNavItems,
 } from '../utils/create-mobile-nav-items';
 import { getNavItems } from '../utils/get-nav-items';
-import CustomLink from './custom-link';
-import NavItem from './nav-item';
-
-interface NavProps {
-	hasToken: boolean;
-}
+import { CustomLink } from './custom-link';
+import { NavItem } from './nav-item';
 
 const Nav = ({ hasToken }: NavProps) => {
 	const navItems = getNavItems(hasToken);
@@ -87,4 +84,4 @@ const Nav = ({ hasToken }: NavProps) => {
 	);
 };
 
-export default Nav;
+export { Nav };

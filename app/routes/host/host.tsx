@@ -10,13 +10,13 @@ import {
 	ViewTransition,
 } from 'react';
 import { Await, data, href, useFetcher, useParams } from 'react-router';
-import GenericComponent from '~/components/generic-component';
-import PendingUi from '~/components/pending-ui';
+import { GenericComponent } from '~/components/generic-component';
+import { PendingUI } from '~/components/pending-ui';
 import { Button } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
-import UnsuccesfulState from '~/components/unsuccesful-state';
+import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import RatingStars from '~/features/host/components/review/rating-stars';
@@ -28,7 +28,7 @@ import {
 import { addMoney } from '~/features/host/queries/user/payments';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
-import CustomLink from '~/features/navigation/components/custom-link';
+import { CustomLink } from '~/features/navigation/components/custom-link';
 import VanCard from '~/features/vans/components/van-card';
 import VanCardSkeleton from '~/features/vans/components/van-card-skeleton';
 import { DEPOSIT, WITHDRAW } from '~/features/vans/constants/vans-constants';
@@ -188,7 +188,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 		);
 
 	return (
-		<PendingUi as="section">
+		<PendingUI as="section">
 			{/* SEO */}
 			<title>Host Dashboard | Van Life</title>
 			<meta
@@ -328,7 +328,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 					)}
 				</Await>
 			</Suspense>
-		</PendingUi>
+		</PendingUI>
 	);
 }
 

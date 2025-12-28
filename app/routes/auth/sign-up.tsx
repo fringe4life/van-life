@@ -1,7 +1,7 @@
 import { type } from 'arktype';
 import { useId } from 'react';
 import { href, redirect, replace } from 'react-router';
-import CustomForm from '~/components/custom-form';
+import { CustomForm } from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import {
 	Card,
@@ -13,7 +13,7 @@ import {
 import { Input } from '~/components/ui/input';
 import { hasAuthContext } from '~/features/middleware/contexts/has-auth';
 import { hasAuthMiddleware } from '~/features/middleware/functions/has-auth-middleware';
-import CustomLink from '~/features/navigation/components/custom-link';
+import { CustomLink } from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
 import { signUpScheme } from '~/lib/schemas';
 import { tryCatch } from '~/utils/try-catch.server';
@@ -21,15 +21,15 @@ import type { Route } from './+types/sign-up';
 
 export const middleware: Route.MiddlewareFunction[] = [hasAuthMiddleware];
 
-export function loader({ context }: Route.LoaderArgs) {
+export const loader = ({ context }: Route.LoaderArgs) => {
 	const session = context.get(hasAuthContext);
 
 	if (session) {
 		throw redirect(href('/host'));
 	}
-}
+};
 
-export async function action({ request }: Route.ActionArgs) {
+export const action = async ({ request }: Route.ActionArgs) => {
 	const formData = Object.fromEntries(await request.formData());
 
 	const result = signUpScheme(formData);
@@ -57,7 +57,7 @@ export async function action({ request }: Route.ActionArgs) {
 	throw replace('/host', {
 		headers: signUp.headers,
 	});
-}
+};
 
 export default function SignUp({ actionData }: Route.ComponentProps) {
 	const emailId = useId();

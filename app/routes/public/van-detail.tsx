@@ -1,6 +1,6 @@
 import { data, href, isRouteErrorResponse } from 'react-router';
-import UnsuccesfulState from '~/components/unsuccesful-state';
-import CustomLink from '~/features/navigation/components/custom-link';
+import { UnsuccesfulState } from '~/components/unsuccesful-state';
+import { CustomLink } from '~/features/navigation/components/custom-link';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
 import VanDetail from '~/features/vans/components/van-detail';
 import { getVanBySlug } from '~/features/vans/queries/queries';
