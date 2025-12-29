@@ -1,6 +1,6 @@
 import type { ElementType } from 'react';
 import type { Items } from '~/features/pagination/types';
-import type { VanModel } from '~/generated/prisma/models';
+import type { TransactionModel, VanModel } from '~/generated/prisma/models';
 
 // Type for Maybe
 export type Maybe<T> = T | null | undefined;
@@ -8,6 +8,8 @@ export type Maybe<T> = T | null | undefined;
 export type List<T> = Maybe<T[]>;
 
 export interface Id extends Pick<VanModel, 'id'> {}
+
+export interface Amount extends Pick<TransactionModel, 'amount'> {}
 
 export interface EmptyState {
 	emptyStateMessage: string;

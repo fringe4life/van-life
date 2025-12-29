@@ -1,11 +1,11 @@
 import { TransactionType } from '~/generated/prisma/enums';
 import { prisma } from '~/lib/prisma.server';
 
-export async function rentVan(
+export const rentVan = async (
 	vanSlug: string,
 	renterId: string,
 	hostId: string
-) {
+) => {
 	// Look up van by slug to get its ID
 	const van = await prisma.van.findUnique({
 		where: { slug: vanSlug },
@@ -23,15 +23,15 @@ export async function rentVan(
 			hostId,
 		},
 	});
-}
+};
 
 // biome-ignore lint/suspicious/useAwait: needed for tryCatch
-export async function returnVan(
+export const returnVan = async (
 	rentId: string,
 	userId: string,
 	amount: number,
 	vanId: string
-) {
+) => {
 	return prisma.$transaction(async (tx) => {
 		// 1. Update rental record (mark as returned)
 		const updatedRent = await tx.rent.update({
@@ -71,4 +71,4 @@ export async function returnVan(
 
 		return updatedRent;
 	});
-}
+};

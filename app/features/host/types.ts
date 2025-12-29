@@ -3,12 +3,13 @@ import type {
 	TransactionModel,
 	UserModel,
 } from '~/generated/prisma/models';
-import type { Maybe } from '~/types/types';
+import type { Amount, Maybe } from '~/types/types';
 
-export type DataArray = {
-	name: string;
-	amount: number;
-}[];
+export type DataArray = Array<
+	{
+		name: string;
+	} & Amount
+>;
 
 export interface Data<T> {
 	data: T;
@@ -27,3 +28,8 @@ export interface IncomeProps
 	extends Pick<TransactionModel, 'amount' | 'createdAt' | 'id'> {}
 
 export interface RatingStarsProps extends Pick<ReviewModel, 'rating'> {}
+
+export interface Params {
+	vanSlug: string;
+	action?: Maybe<string>;
+}

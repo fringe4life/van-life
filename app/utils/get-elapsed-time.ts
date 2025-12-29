@@ -1,5 +1,5 @@
 import { differenceInDays, formatDistanceToNow } from 'date-fns';
-import type { Maybe } from '~/types/types';
+import type { List, Maybe } from '~/types/types';
 
 const NO_ELAPSED_TIME = {
 	elapsedDays: 0,
@@ -12,7 +12,7 @@ const NO_ELAPSED_TIME = {
  * @returns Object with elapsed days and human-readable description
  */
 export const getElapsedTime = (
-	items: Maybe<Array<{ rentedAt?: Maybe<Date>; createdAt?: Date }>>
+	items: List<{ rentedAt?: Maybe<Date>; createdAt?: Date }>
 ) => {
 	if (!items || items.length === 0) {
 		return NO_ELAPSED_TIME;
@@ -57,24 +57,4 @@ export const getElapsedTime = (
 		firstRental: firstDate,
 		lastRental: lastDate,
 	};
-};
-
-const NO_INCOME = 0 as const;
-
-/**
- * Calculates total income from rental transactions
- * @param transactions Array of transaction objects with amount
- * @returns Total income amount
- */
-export const calculateTotalIncome = (
-	transactions: Maybe<Array<{ amount: number }>>
-) => {
-	if (!transactions || transactions.length === 0) {
-		return NO_INCOME;
-	}
-
-	return transactions.reduce(
-		(total, transaction) => total + transaction.amount,
-		0
-	);
 };

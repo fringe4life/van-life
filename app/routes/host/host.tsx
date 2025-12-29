@@ -36,7 +36,8 @@ import { getHostVans } from '~/features/vans/queries/host';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { TransactionType } from '~/generated/prisma/enums';
 import { moneySchema } from '~/lib/schemas';
-import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
+import { calculateTotalIncome } from '~/utils/calculate-income';
+import { getElapsedTime } from '~/utils/get-elapsed-time';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host';
 

@@ -16,12 +16,13 @@ import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import { VanHeader } from '~/features/vans/components/van-header';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { loadHostSearchParams } from '~/lib/search-params.server';
-import { calculateTotalIncome, getElapsedTime } from '~/utils/get-elapsed-time';
+import { calculateTotalIncome } from '~/utils/calculate-income';
+import { getElapsedTime } from '~/utils/get-elapsed-time';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/income';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
 	// Parse search parameters for pagination and sorting
@@ -63,7 +64,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 			},
 		}
 	);
-}
+};
 
 export default function HostIncome({ loaderData }: Route.ComponentProps) {
 	const {

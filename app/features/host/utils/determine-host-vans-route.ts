@@ -1,9 +1,4 @@
-import type { Maybe } from '~/types/types';
-
-interface Params {
-	vanSlug: string;
-	action?: Maybe<string>;
-}
+import type { Params } from '../types';
 
 export const determineHostVansRoute = (params: Params) => {
 	const hasAction = Boolean(params.action && typeof params.action === 'string');
