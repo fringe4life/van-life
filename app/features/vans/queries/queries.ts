@@ -1,15 +1,13 @@
-import type { Direction } from '~/features/pagination/types';
 import { getCursorMetadata } from '~/features/pagination/utils/get-cursor-metadata.server';
 import { prisma } from '~/lib/prisma.server';
-import type { Maybe } from '~/types/types';
-import type { MaybeTypeFilter } from '../types';
+import type { GetVansProps, TypeFilter } from '../types';
 
-export function getVans(
-	cursor: Maybe<string>,
-	limit: number,
-	typeFilter: MaybeTypeFilter,
-	direction: Direction = 'forward'
-) {
+export function getVans({
+	cursor,
+	limit,
+	direction,
+	typeFilter,
+}: GetVansProps) {
 	const { actualCursor, ...rest } = getCursorMetadata({
 		cursor,
 		limit,
@@ -26,7 +24,7 @@ export function getVans(
 	});
 }
 
-export function getVansCount(typeFilter: MaybeTypeFilter) {
+export function getVansCount({ typeFilter }: TypeFilter) {
 	return prisma.van.count({
 		where: {
 			type: typeFilter,

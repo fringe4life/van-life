@@ -4,28 +4,20 @@ import { Image } from '~/features/image/component/image';
 import { VAN_CARD_IMG_SIZES } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
 import { CustomLink } from '~/features/navigation/components/custom-link';
+import type { VanCardProps } from '~/features/vans/types';
 import { toLowercaseVanType } from '~/features/vans/utils/validators';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
-import type { VanModel } from '~/generated/prisma/models';
 import { VanBadge } from './van-badge';
 
 const StyledCard = withVanCardStyles(Card);
 
-interface VanCardProps {
-	van: VanModel;
-	link: string;
-	action: React.ReactElement;
-	linkCoversCard?: boolean;
-	state?: Record<string, unknown>;
-}
-
-export default function VanCard({
+const VanCard = ({
 	van,
 	link,
 	action,
 	linkCoversCard = true,
 	state,
-}: VanCardProps) {
+}: VanCardProps) => {
 	const { type, name, description, imageUrl } = van;
 
 	// Create optimized WebP srcSet with 1:1 aspect ratio for both mobile and desktop
@@ -75,4 +67,6 @@ export default function VanCard({
 			</StyledCard>
 		</div>
 	);
-}
+};
+
+export { VanCard };

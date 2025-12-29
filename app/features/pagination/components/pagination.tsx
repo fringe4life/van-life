@@ -21,7 +21,7 @@ export const Pagination = <T extends Id>({
 	const { hasNextPage, hasPreviousPage } = paginationMetadata;
 
 	// Ensure items is a valid array with items and is not empty
-	if (!items || items.length === 0) {
+	if (!items) {
 		return <div />;
 	}
 

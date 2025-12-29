@@ -1,4 +1,7 @@
-import type { Direction } from '~/features/pagination/types';
+import type {
+	Direction,
+	PaginationMetadata,
+} from '~/features/pagination/types';
 
 export const DEFAULT_LIMIT = 10;
 export const DEFAULT_FILTER = '';
@@ -13,7 +16,7 @@ export const SORT_OPTIONS = ['newest', 'oldest', 'highest', 'lowest'] as const;
 export const PAGINATION_METADATA = {
 	hasNextPage: false,
 	hasPreviousPage: false,
-} as const;
+} satisfies PaginationMetadata;
 
 export const NO_PAGINATION = {
 	items: null,

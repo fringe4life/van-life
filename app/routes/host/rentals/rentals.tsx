@@ -8,7 +8,7 @@ import { authMiddleware } from '~/features/middleware/functions/auth-middleware'
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { Pagination } from '~/features/pagination/components/pagination';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
-import VanCard from '~/features/vans/components/van-card';
+import { VanCard } from '~/features/vans/components/van-card';
 import { VanHeader } from '~/features/vans/components/van-header';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
@@ -23,7 +23,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
 	const { data: vans } = await tryCatch(() =>
-		validateCUIDS(getHostRentedVans, [0])(user.id, cursor, limit, direction)
+		validateCUIDS(getHostRentedVans, [0])(user.id, { cursor, limit, direction })
 	);
 
 	// Process pagination logic

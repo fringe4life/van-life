@@ -16,7 +16,7 @@ import {
 } from '~/features/pagination/pagination-constants';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
-import VanCard from '~/features/vans/components/van-card';
+import { VanCard } from '~/features/vans/components/van-card';
 import { VanHeader } from '~/features/vans/components/van-header';
 import { VanPrice } from '~/features/vans/components/van-price';
 import { getVans } from '~/features/vans/queries/queries';
@@ -40,7 +40,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		type === '' ? undefined : validateVanType(type?.toUpperCase());
 
 	const { data: vans } = await tryCatch(() =>
-		getVans(cursor, limit, typeFilter, direction)
+		getVans({ cursor, limit, direction, typeFilter })
 	);
 
 	// Process pagination logic

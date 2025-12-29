@@ -19,7 +19,7 @@ import { Label } from '~/components/ui/label';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
 import { validateCUIDS } from '~/dal/validate-cuids';
-import RatingStars from '~/features/host/components/review/rating-stars';
+import { RatingStars } from '~/features/host/components/review/rating-stars';
 import { getAverageReviewRating } from '~/features/host/queries/review/analytics';
 import {
 	getHostTransactions,
@@ -29,7 +29,7 @@ import { addMoney } from '~/features/host/queries/user/payments';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
-import VanCard from '~/features/vans/components/van-card';
+import { VanCard } from '~/features/vans/components/van-card';
 import { VanCardSkeleton } from '~/features/vans/components/van-card-skeleton';
 import { DEPOSIT, WITHDRAW } from '~/features/vans/constants/vans-constants';
 import { getHostVans } from '~/features/vans/queries/host';
@@ -50,7 +50,11 @@ export async function loader({ context }: Route.LoaderArgs) {
 
 	// Create a promise for vans data (will be resolved on client)
 	const vansPromise = Promise.resolve(
-		validateCUIDS(getHostVans, [0])(user.id, undefined, HOST_VANS_LIMIT)
+		validateCUIDS(getHostVans, [0])(user.id, {
+			cursor: undefined,
+			limit: HOST_VANS_LIMIT,
+			direction: 'forward',
+		})
 	);
 
 	const [

@@ -9,22 +9,11 @@ import type { VanModel } from '~/generated/prisma/models';
  * @param vanOrPrice the van object containing price, state, and discount information, or just the price number for backward compatibility
  * @returns {number} the total cost of the rental with any applicable discounts
  */
-export function getCost(
-	rentedAt: Date,
-	rentedTo: Date,
-	vanOrPrice: VanModel | number
-): number {
+export function getCost(rentedAt: Date, rentedTo: Date, van: VanModel): number {
 	const daysDifferent = Math.ceil(
 		(rentedTo.getTime() - rentedAt.getTime()) / MILLISECONDS_PER_DAY
 	);
 
-	// Handle legacy number parameter for backward compatibility
-	if (typeof vanOrPrice === 'number') {
-		return vanOrPrice * daysDifferent;
-	}
-
-	// Handle van object with discount calculation
-	const van = vanOrPrice;
 	const basePrice = van.price;
 
 	// Apply discount if van is on sale

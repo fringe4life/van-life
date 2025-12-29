@@ -15,7 +15,7 @@ import { getAccountSummary } from '~/features/host/queries/user/analytics';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
-import VanCard from '~/features/vans/components/van-card';
+import { VanCard } from '~/features/vans/components/van-card';
 import { getCost } from '~/features/vans/utils/get-cost';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/return-rental';

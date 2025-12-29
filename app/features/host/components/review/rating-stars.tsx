@@ -52,4 +52,4 @@ const RatingStars = ({ rating }: RatingStarsProps) => {
 	return <div className="flex h-5 w-30 gap-2 contain-strict">{stars}</div>;
 };
 
-export default RatingStars;
+export { RatingStars };

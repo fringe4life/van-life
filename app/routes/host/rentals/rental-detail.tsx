@@ -7,7 +7,7 @@ import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { rentVan } from '~/features/host/queries/rental/transactions';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
-import VanCard from '~/features/vans/components/van-card';
+import { VanCard } from '~/features/vans/components/van-card';
 import { getVanBySlug } from '~/features/vans/queries/queries';
 import { rentVanSchema } from '~/lib/schemas';
 import { tryCatch } from '~/utils/try-catch.server';

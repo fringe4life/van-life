@@ -17,7 +17,7 @@ import { authMiddleware } from '~/features/middleware/functions/auth-middleware'
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { Pagination } from '~/features/pagination/components/pagination';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
-import VanCard from '~/features/vans/components/van-card';
+import { VanCard } from '~/features/vans/components/van-card';
 import { VanHeader } from '~/features/vans/components/van-header';
 import { createVan } from '~/features/vans/queries/crud';
 import { getHostVans } from '~/features/vans/queries/host';
@@ -30,14 +30,14 @@ import type { Route } from './+types/host-vans';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
 	// Parse search parameters using nuqs loadHostSearchParams
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
 	const { data: vans } = await tryCatch(() =>
-		validateCUIDS(getHostVans, [0])(user.id, cursor, limit, direction)
+		validateCUIDS(getHostVans, [0])(user.id, { cursor, limit, direction })
 	);
 
 	// Process pagination logic
@@ -53,7 +53,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 			},
 		}
 	);
-}
+};
 
 export async function action({ request, context }: Route.ActionArgs) {
 	const user = context.get(authContext);

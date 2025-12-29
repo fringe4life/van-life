@@ -1,7 +1,6 @@
-import type { Direction } from '~/features/pagination/types';
+import type { BasePaginationParams } from '~/features/pagination/types';
 import { getCursorMetadata } from '~/features/pagination/utils/get-cursor-metadata.server';
 import { prisma } from '~/lib/prisma.server';
-import type { Maybe } from '~/types/types';
 
 // biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
 export async function getHostRentedVan(rentId: string) {
@@ -13,9 +12,7 @@ export async function getHostRentedVan(rentId: string) {
 
 export function getHostRentedVans(
 	hostId: string,
-	cursor: Maybe<string>,
-	limit: number,
-	direction: Direction = 'forward'
+	{ cursor, limit, direction }: BasePaginationParams
 ) {
 	const { actualCursor, ...rest } = getCursorMetadata({
 		cursor,
@@ -49,9 +46,7 @@ export function getHostRentedVanCount(hostId: string) {
 
 export function getHostRents(
 	id: string,
-	cursor: Maybe<string>,
-	limit: number,
-	direction: Direction = 'forward'
+	{ cursor, limit, direction }: BasePaginationParams
 ) {
 	const { actualCursor, ...rest } = getCursorMetadata({
 		cursor,
