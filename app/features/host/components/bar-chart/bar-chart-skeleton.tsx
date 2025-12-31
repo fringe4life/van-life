@@ -18,4 +18,4 @@ const BarChartSkeleton = () => (
 	</div>
 );
 
-export default BarChartSkeleton;
+export { BarChartSkeleton };

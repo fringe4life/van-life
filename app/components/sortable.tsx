@@ -30,7 +30,7 @@ const sortOptions = [
 	{ value: 'lowest' as const, label: 'Lowest' },
 ];
 
-export const Sortable = ({ title, itemCount, className }: SortableProps) => {
+const Sortable = ({ title, itemCount, className }: SortableProps) => {
 	// Use nuqs for client-side state management
 	const [{ sort }, setSearchParams] = useQueryStates(hostPaginationParsers);
 
@@ -82,4 +82,4 @@ export const Sortable = ({ title, itemCount, className }: SortableProps) => {
 		</div>
 	);
 };
-export default Sortable;
+export { Sortable };

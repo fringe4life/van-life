@@ -10,6 +10,5 @@ export default {
 		v8_splitRouteModules: 'enforce',
 		v8_viteEnvironmentApi: true,
 	},
-
 	prerender: ['/', '/about'],
 } satisfies Config;

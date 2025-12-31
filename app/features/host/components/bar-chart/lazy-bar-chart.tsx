@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import type { Data, DataArray } from '~/features/host/types';
 import type { EmptyState, ErrorState, Maybe } from '~/types/types';
-import BarChartSkeleton from './bar-chart-skeleton';
+import { BarChartSkeleton } from './bar-chart-skeleton';
 
 const BarChartComponent = lazy(() => import('./bar-chart'));
 const LazyBarChart = <
@@ -25,4 +25,4 @@ const LazyBarChart = <
 	);
 };
 
-export default LazyBarChart;
+export { LazyBarChart };

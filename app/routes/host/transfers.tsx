@@ -1,9 +1,9 @@
 import { data } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
-import Sortable from '~/components/sortable';
+import { Sortable } from '~/components/sortable';
 import { validateCUIDS } from '~/dal/validate-cuids';
-import LazyBarChart from '~/features/host/components/bar-chart/lazy-bar-chart';
+import { LazyBarChart } from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Income from '~/features/host/components/income';
 import {
 	getUserTransactionsChartData,
