@@ -1,22 +1,21 @@
-import type { Maybe } from '~/types/types';
-import { COOKIE_HEADER } from '../constants';
+import { COOKIE_HEADER } from '~/features/middleware/constants';
+import type { SetCookieHeaders } from '~/features/middleware/types';
 
 /**
  * Sets cookie headers from session response headers onto the result response.
  * Used to update cookie cache when a user is logged in.
  */
-export const setCookieHeaders = (
-	headers: Maybe<Headers>,
-	result: Response
-): Response => {
+const setCookieHeaders = ({ headers, result }: SetCookieHeaders): Response => {
 	if (!headers) {
 		return result;
 	}
 
-	const cookies: Maybe<string> = headers.get(COOKIE_HEADER);
+	const cookies = headers.get(COOKIE_HEADER);
 	if (cookies) {
 		result.headers.set(COOKIE_HEADER, cookies);
 	}
 
 	return result;
 };
+
+export { setCookieHeaders };

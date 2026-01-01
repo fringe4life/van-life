@@ -1,13 +1,13 @@
 import { href, type MiddlewareFunction, redirect } from 'react-router';
-import { authContext } from '../contexts/auth';
-import { getUser } from '../utils/get-user';
-import { setCookieHeaders } from '../utils/set-cookie-headers';
+import { authContext } from '~/features/middleware/contexts/auth';
+import { getUserWithHeaders } from '~/features/middleware/utils/get-user-with-headers';
+import { setCookieHeaders } from '~/features/middleware/utils/set-cookie-headers';
 
-export const authMiddleware: MiddlewareFunction<Response> = async (
+const authMiddleware: MiddlewareFunction<Response> = async (
 	{ request, context },
 	next
 ) => {
-	const { user, headers } = await getUser(request);
+	const { user, headers } = await getUserWithHeaders(request);
 
 	if (!user) {
 		throw redirect(href('/login'));
@@ -19,5 +19,7 @@ export const authMiddleware: MiddlewareFunction<Response> = async (
 	const result = await next();
 
 	// Set cookie headers to update cookie cache
-	return setCookieHeaders(headers, result);
+	return setCookieHeaders({ headers, result });
 };
+
+export { authMiddleware };

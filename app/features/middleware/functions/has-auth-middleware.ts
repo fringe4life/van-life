@@ -1,13 +1,13 @@
 import type { MiddlewareFunction } from 'react-router';
-import { hasAuthContext } from '../contexts/has-auth';
-import { getUser } from '../utils/get-user';
-import { setCookieHeaders } from '../utils/set-cookie-headers';
+import { hasAuthContext } from '~/features/middleware/contexts/has-auth';
+import { getUserWithHeaders } from '~/features/middleware/utils/get-user-with-headers';
+import { setCookieHeaders } from '~/features/middleware/utils/set-cookie-headers';
 
-export const hasAuthMiddleware: MiddlewareFunction<Response> = async (
+const hasAuthMiddleware: MiddlewareFunction<Response> = async (
 	{ request, context },
 	next
 ) => {
-	const { user, headers } = await getUser(request);
+	const { user, headers } = await getUserWithHeaders(request);
 
 	if (user) {
 		context.set(hasAuthContext, true);
@@ -20,8 +20,10 @@ export const hasAuthMiddleware: MiddlewareFunction<Response> = async (
 
 	// If user is logged in, update cookie cache
 	if (user) {
-		return setCookieHeaders(headers, result);
+		return setCookieHeaders({ headers, result });
 	}
 
 	return result;
 };
+
+export { hasAuthMiddleware };
