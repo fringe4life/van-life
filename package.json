@@ -17,7 +17,7 @@
     "ci": "biome ci app/",
     "ultracite": "bun x ultracite check",
     "ultracite:fix": "bun x ultracite fix",
-    "ultracite:upgrade": "bun x ultracite@latest init --pm bun --editors vscode --hooks cursor --agents cursor --frameworks remix --quiet"
+    "ultracite:upgrade": "bun x ultracite@latest init --pm bun --linter biome --editors vscode --hooks cursor --frameworks remix --quiet"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
@@ -59,14 +59,14 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/ws": "^8.18.1",
-    "@typescript/native-preview": "^7.0.0-dev.20251231.1",
+    "@typescript/native-preview": "^7.0.0-dev.20260101.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "react-router-devtools": "^6.0.1",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "ultracite": "6.5.0",
+    "ultracite": "7.0.3",
     "vite": "beta"
   },
   "trustedDependencies": [

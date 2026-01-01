@@ -105,5 +105,9 @@
       }
     }
   },
-  "extends": ["ultracite/core", "ultracite/remix", "ultracite/react"]
+  "extends": [
+    "ultracite/biome/react",
+    "ultracite/biome/core",
+    "ultracite/biome/remix"
+  ]
 }

@@ -8,10 +8,10 @@
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.18-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.9-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.10-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.8.6-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.3.10-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-6.5.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.0.3-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.2.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-8.0.0--beta-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -91,7 +91,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - **Node.js** with React Router server
 - **Prisma 7.2.0** ORM with Neon PostgreSQL (Rust-free client)
-- **better-auth 1.4.9** for authentication
+- **better-auth 1.4.10** for authentication
 - **ArkType 2.1.29** for schema validation and type narrowing
 - **CUID2 3.1.0** for unique identifiers (configured for 25-character IDs)
 - **@prisma/adapter-neon 7.2.0** for Neon database integration
@@ -101,7 +101,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **Vite 8.0.0-beta** - Next-generation frontend tooling with optimized builds
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
 - **Biome 2.3.10** for linting and formatting with Ultracite integration
-- **Ultracite 6.5.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.0.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 5.9.3** with `@typescript/native-preview` nightly support
 - **Bun** for fast package management and runtime
@@ -990,7 +990,7 @@ export default config;
 ## Code Quality
 
 - **Biome 2.3.10** for linting and formatting with Ultracite integration
-- **Ultracite 6.5.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.0.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.3** with strict configuration
 - **ArkType 2.1.29** for runtime validation with regex support for slug validation
 - **Consistent code style:**
@@ -1028,7 +1028,7 @@ This project uses **Ultracite** for enhanced code quality and AI-friendly develo
 
 ### Biome Configuration
 
-- **Ultracite integration** via `extends: ["ultracite/core", "ultracite/remix", "ultracite/react"]` in `biome.jsonc`
+- **Ultracite integration** via `extends: ["ultracite/biome/react", "ultracite/biome/core", "ultracite/biome/remix"]` in `biome.jsonc`
 - **CSS at-rules support** for TailwindCSS 4 features
 - **Sorted CSS classes** for consistency
 - **TypeScript strict mode** enabled
