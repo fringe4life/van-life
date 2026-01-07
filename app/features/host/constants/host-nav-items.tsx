@@ -12,7 +12,7 @@ import { href } from 'react-router';
 const hostNavItems = [
 	{
 		to: href('/host'),
-		title: 'Dashboard',
+		id: 'Dashboard',
 		children: (
 			<>
 				<LayoutDashboard className="aspect-square" />
@@ -23,7 +23,7 @@ const hostNavItems = [
 	},
 	{
 		to: href('/host/income'),
-		title: 'Income',
+		id: 'Income',
 		children: (
 			<>
 				<Wallet className="aspect-square" />
@@ -33,7 +33,7 @@ const hostNavItems = [
 	},
 	{
 		to: href('/host/transfers'),
-		title: 'Transfers',
+		id: 'Transfers',
 		children: (
 			<>
 				<ArrowRightLeft className="aspect-square" />
@@ -43,7 +43,7 @@ const hostNavItems = [
 	},
 	{
 		to: href('/host/vans'),
-		title: 'Vans',
+		id: 'Vans',
 		children: (
 			<>
 				<Car className="aspect-square" />
@@ -53,7 +53,7 @@ const hostNavItems = [
 	},
 	{
 		to: href('/host/review'),
-		title: 'Reviews',
+		id: 'Reviews',
 		children: (
 			<>
 				<Star className="aspect-square" />
@@ -63,7 +63,7 @@ const hostNavItems = [
 	},
 	{
 		to: href('/host/vans'),
-		title: 'Add Van',
+		id: 'Add Van',
 		children: (
 			<>
 				<SquarePlus className="aspect-square" />
@@ -73,7 +73,7 @@ const hostNavItems = [
 	},
 	{
 		to: href('/host/rentals'),
-		title: 'Rentals',
+		id: 'Rentals',
 		children: (
 			<>
 				<KeySquare className="aspect-square" />

@@ -18,7 +18,7 @@ export default function HostLayout() {
 					emptyStateMessage="No nav links"
 					errorStateMessage="Something went wrong"
 					items={hostNavItems}
-					renderKey={(item) => item.to}
+					renderKey={(item) => item.id}
 					renderProps={(item) => ({
 						...item,
 						className: navLinkClassName,

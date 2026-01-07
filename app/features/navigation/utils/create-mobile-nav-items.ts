@@ -9,7 +9,7 @@ export interface NavItemType {
 		| ComponentProps<typeof CustomNavLink>
 		| ComponentProps<typeof CustomLink>;
 	children: ReactNode;
-	key: string;
+	id: string;
 	show: boolean;
 }
 

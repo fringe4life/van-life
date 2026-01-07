@@ -20,6 +20,7 @@ import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
 import { validateCUIDS } from '~/dal/validate-cuids';
 import { RatingStars } from '~/features/host/components/review/rating-stars';
+import { balanceReducer } from '~/features/host/hooks/balance-reducer';
 import { getAverageReviewRating } from '~/features/host/queries/review/analytics';
 import {
 	getHostTransactions,
@@ -149,13 +150,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 	// Use optimistic updates for balance
 	const [optimisticBalance, addOptimisticBalance] = useOptimistic(
 		currentBalance,
-		(state: number, newTransaction: { amount: number; type: string }) => {
-			const adjustedAmount =
-				newTransaction.type === WITHDRAW
-					? -Math.abs(newTransaction.amount)
-					: Math.abs(newTransaction.amount);
-			return state + adjustedAmount;
-		}
+		balanceReducer
 	);
 	const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();

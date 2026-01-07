@@ -100,7 +100,7 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 	const discountId = useId();
 
 	const fetcher = useFetcher();
-	const [, startTransition] = useTransition();
+	const [isPending, startTransition] = useTransition();
 
 	const [optimisticVans, addOptimisticVan] = useOptimistic(
 		vans ?? [],
@@ -219,7 +219,9 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 						type="number"
 					/>
 					{actionData?.errors ? <p>{actionData.errors}</p> : null}
-					<Button type="submit">Add your van</Button>
+					<Button disabled={isPending} type="submit">
+						Add your van
+					</Button>
 				</Form>
 			</section>
 			<PendingUI

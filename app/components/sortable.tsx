@@ -24,10 +24,10 @@ import { cn } from '~/utils/utils';
  * ```
  */
 const sortOptions = [
-	{ value: 'newest' as const, label: 'Newest' },
-	{ value: 'oldest' as const, label: 'Oldest' },
-	{ value: 'highest' as const, label: 'Highest' },
-	{ value: 'lowest' as const, label: 'Lowest' },
+	{ value: 'newest' as const, id: 'Newest' },
+	{ value: 'oldest' as const, id: 'Oldest' },
+	{ value: 'highest' as const, id: 'Highest' },
+	{ value: 'lowest' as const, id: 'Lowest' },
 ];
 
 const Sortable = ({ title, itemCount, className }: SortableProps) => {
@@ -68,7 +68,7 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
 				emptyStateMessage=""
 				errorStateMessage="Something went wrong"
 				items={sortOptions}
-				renderKey={(item) => item.value}
+				renderKey={(item) => item.id}
 				renderProps={(item) => ({
 					variant: 'ghost' as const,
 					className: cn(
@@ -76,7 +76,7 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
 						sort === item.value && 'bg-orange-400 font-semibold text-white'
 					),
 					onClick: () => handleSortChange(item.value),
-					children: item.label,
+					children: item.id,
 				})}
 			/>
 		</div>

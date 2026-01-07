@@ -42,7 +42,7 @@ const Nav = ({ hasToken }: NavProps) => {
 					emptyStateMessage="No nav items"
 					errorStateMessage="Something went wrong"
 					items={mobileNavItems}
-					renderKey={(item) => item.key}
+					renderKey={(item) => item.id}
 					renderProps={(item) => ({
 						Component: item.Component,
 						props: item.props,
@@ -70,7 +70,7 @@ const Nav = ({ hasToken }: NavProps) => {
 					emptyStateMessage="No nav items"
 					errorStateMessage="Something went wrong"
 					items={navItems}
-					renderKey={(item) => item.key}
+					renderKey={(item) => item.id}
 					renderProps={(item) => ({
 						Component: item.Component,
 						props: item.props,

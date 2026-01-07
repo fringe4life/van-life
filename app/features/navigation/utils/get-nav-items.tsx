@@ -16,7 +16,7 @@ export function getNavItems(hasToken: boolean) {
 					<span>About</span>
 				</>
 			),
-			key: 'about',
+			id: 'about',
 			show: true,
 		},
 		{
@@ -28,7 +28,7 @@ export function getNavItems(hasToken: boolean) {
 					<span>Host</span>
 				</>
 			),
-			key: 'host',
+			id: 'host',
 			show: hasToken,
 		},
 		{
@@ -40,7 +40,7 @@ export function getNavItems(hasToken: boolean) {
 					<span>Vans</span>
 				</>
 			),
-			key: 'vans',
+			id: 'vans',
 			show: true,
 		},
 		{
@@ -52,7 +52,7 @@ export function getNavItems(hasToken: boolean) {
 					<span>Login</span>
 				</>
 			),
-			key: 'login',
+			id: 'login',
 			show: !hasToken,
 		},
 		{
@@ -64,7 +64,7 @@ export function getNavItems(hasToken: boolean) {
 					<span>Sign out</span>
 				</>
 			),
-			key: 'signout',
+			id: 'signout',
 			show: !!hasToken,
 		},
 	].filter((item) => item.show);
