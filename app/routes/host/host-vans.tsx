@@ -55,7 +55,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	);
 };
 
-export async function action({ request, context }: Route.ActionArgs) {
+export const action = async ({ request, context }: Route.ActionArgs) => {
 	const user = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
@@ -87,9 +87,9 @@ export async function action({ request, context }: Route.ActionArgs) {
 			formData,
 		};
 	}
-}
+};
 
-export default function Host({ loaderData, actionData }: Route.ComponentProps) {
+const HostVans = ({ loaderData, actionData }: Route.ComponentProps) => {
 	const { items: vans, paginationMetadata } = loaderData;
 
 	const nameId = useId();
@@ -260,4 +260,5 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 			</PendingUI>
 		</>
 	);
-}
+};
+export default HostVans;

@@ -19,7 +19,7 @@ import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/reviews';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
 	// Parse search parameters for pagination and sorting
@@ -60,9 +60,9 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 			},
 		}
 	);
-}
+};
 
-export default function HostReviews({ loaderData }: Route.ComponentProps) {
+const HostReviews = ({ loaderData }: Route.ComponentProps) => {
 	const { chartData, items: paginatedReviews, paginationMetadata } = loaderData;
 
 	const result = chartData
@@ -120,4 +120,5 @@ export default function HostReviews({ loaderData }: Route.ComponentProps) {
 			/>
 		</PendingUI>
 	);
-}
+};
+export default HostReviews;

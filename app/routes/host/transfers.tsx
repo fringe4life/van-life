@@ -23,7 +23,7 @@ import type { Route } from './+types/transfers';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
 	// Parse search parameters for pagination and sorting
@@ -65,9 +65,9 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 			},
 		}
 	);
-}
+};
 
-export default function HostTransfers({ loaderData }: Route.ComponentProps) {
+const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
 	const {
 		chartData,
 		items: paginatedTransactions,
@@ -146,4 +146,5 @@ export default function HostTransfers({ loaderData }: Route.ComponentProps) {
 			/>
 		</PendingUI>
 	);
-}
+};
+export default HostTransfers;

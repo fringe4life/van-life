@@ -28,7 +28,7 @@ const srcSet = createWebPSrcSet(
 );
 const sizes = '(max-width: 1024px) 100vw';
 
-export default function Home() {
+const Home = () => {
 	return (
 		<PendingUI
 			as="section"
@@ -75,4 +75,5 @@ export default function Home() {
 			</div>
 		</PendingUI>
 	);
-}
+};
+export default Home;

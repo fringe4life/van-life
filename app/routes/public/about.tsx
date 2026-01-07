@@ -19,7 +19,7 @@ const srcSet = createWebPSrcSet(ABOUT_IMG, {
 	quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
 });
 
-export default function About() {
+const About = () => {
 	return (
 		<PendingUI
 			as="section"
@@ -82,4 +82,5 @@ export default function About() {
 			</article>
 		</PendingUI>
 	);
-}
+};
+export default About;

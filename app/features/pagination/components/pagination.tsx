@@ -21,8 +21,10 @@ export const Pagination = <T extends Id>({
 	const { hasNextPage, hasPreviousPage } = paginationMetadata;
 
 	// Ensure items is a valid array with items and is not empty
-	if (!items) {
-		return <div />;
+	if (!items || items.length === 0) {
+		return (
+			<p className="text-right text-gray-500 text-sm italic">No items found</p>
+		);
 	}
 
 	const handleLimitChange = (newLimit: string) => {

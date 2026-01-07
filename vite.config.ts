@@ -5,7 +5,10 @@ import { defineConfig, type UserConfig } from 'vite';
 import babel from 'vite-plugin-babel';
 export default defineConfig({
 	plugins: [
-		reactRouterDevTools(),
+		reactRouterDevTools({
+			// biome-ignore lint/style/useNamingConvention: the property is experimental
+			experimental_codegen: { enabled: true },
+		}),
 		tailwindcss(),
 		babel({
 			filter: /\.[jt]sx?$/,

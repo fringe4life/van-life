@@ -15,7 +15,11 @@ import type { Route } from './+types/host-van-detail';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
-export async function loader({ params, request, context }: Route.LoaderArgs) {
+export const loader = async ({
+	params,
+	request,
+	context,
+}: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
 	// Parse search parameters from URL to preserve pagination state
@@ -33,12 +37,9 @@ export async function loader({ params, request, context }: Route.LoaderArgs) {
 		{ van, cursor, limit },
 		{ headers: { 'Cache-Control': 'max-age=259200' } }
 	);
-}
+};
 
-export default function HostVanDetailPage({
-	loaderData,
-	params,
-}: Route.ComponentProps) {
+const HostVanDetailPage = ({ loaderData, params }: Route.ComponentProps) => {
 	const { van, cursor, limit } = loaderData;
 
 	// Determine which view to show based on action parameter
@@ -73,9 +74,10 @@ export default function HostVanDetailPage({
 			</div>
 		</div>
 	);
-}
+};
+export default HostVanDetailPage;
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 	if (isRouteErrorResponse(error)) {
 		return (
 			<UnsuccesfulState
@@ -88,4 +90,4 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 		return <UnsuccesfulState isError message="This van could not be found." />;
 	}
 	return <UnsuccesfulState isError message="An unknown error occurred." />;
-}
+};

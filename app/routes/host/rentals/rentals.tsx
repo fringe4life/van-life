@@ -16,7 +16,7 @@ import type { Route } from './+types/rentals';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
 	// Parse search parameters using nuqs loadHostSearchParams
@@ -39,9 +39,9 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 			},
 		}
 	);
-}
+};
 
-export default function Host({ loaderData }: Route.ComponentProps) {
+const Host = ({ loaderData }: Route.ComponentProps) => {
 	const { items: vans, paginationMetadata } = loaderData;
 
 	return (
@@ -87,4 +87,5 @@ export default function Host({ loaderData }: Route.ComponentProps) {
 			<Pagination items={vans} paginationMetadata={paginationMetadata} />
 		</PendingUI>
 	);
-}
+};
+export default Host;

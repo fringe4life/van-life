@@ -66,7 +66,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	);
 };
 
-export default function HostIncome({ loaderData }: Route.ComponentProps) {
+const HostIncome = ({ loaderData }: Route.ComponentProps) => {
 	const {
 		chartData,
 		items: paginatedTransactions,
@@ -126,4 +126,5 @@ export default function HostIncome({ loaderData }: Route.ComponentProps) {
 			/>
 		</PendingUI>
 	);
-}
+};
+export default HostIncome;

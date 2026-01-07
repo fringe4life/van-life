@@ -6,8 +6,7 @@ import { CustomNavLink } from '~/features/navigation/components/custom-nav-link'
 import { navLinkClassName } from '~/features/navigation/utils/nav-link-class-name';
 import type { Route } from './+types/host-layout';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
-
-export default function HostLayout() {
+const HostLayout = () => {
 	return (
 		<>
 			<div className="grid grid-cols-1 contain-content">
@@ -28,4 +27,5 @@ export default function HostLayout() {
 			<Outlet />
 		</>
 	);
-}
+};
+export default HostLayout;

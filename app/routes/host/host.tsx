@@ -46,7 +46,7 @@ export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 const HOST_VANS_LIMIT = 2;
 
-export async function loader({ context }: Route.LoaderArgs) {
+export const loader = async ({ context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
 	// Create a promise for vans data (will be resolved on client)
@@ -82,9 +82,9 @@ export async function loader({ context }: Route.LoaderArgs) {
 			},
 		}
 	);
-}
+};
 
-export async function action({ request, context }: Route.ActionArgs) {
+export const action = async ({ request, context }: Route.ActionArgs) => {
 	const user = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
@@ -131,9 +131,9 @@ export async function action({ request, context }: Route.ActionArgs) {
 			formData,
 		};
 	}
-}
+};
 
-export default function Host({ loaderData, actionData }: Route.ComponentProps) {
+const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 	const { vansPromise, avgRating, name, transactions, transactionSummary } =
 		loaderData;
 
@@ -330,9 +330,10 @@ export default function Host({ loaderData, actionData }: Route.ComponentProps) {
 			</Suspense>
 		</PendingUI>
 	);
-}
+};
+export default Host;
 
-export function ErrorBoundary() {
+export const ErrorBoundary = () => {
 	const message = 'Oops!';
 	const details = 'An unexpected error occurred. Please try again later';
 
@@ -349,4 +350,4 @@ export function ErrorBoundary() {
 			)}
 		</main>
 	);
-}
+};

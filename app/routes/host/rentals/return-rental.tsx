@@ -67,7 +67,7 @@ export const middleware: Route.MiddlewareFunction[] = [
 	fetchSharedDataMiddleware,
 ];
 
-export function loader({ context }: Route.LoaderArgs) {
+export const loader = ({ context }: Route.LoaderArgs) => {
 	const { rent, money } = context.get(sharedRentalDataContext);
 
 	return data(
@@ -81,9 +81,9 @@ export function loader({ context }: Route.LoaderArgs) {
 			},
 		}
 	);
-}
+};
 
-export async function action({ params, context }: Route.ActionArgs) {
+export const action = async ({ params, context }: Route.ActionArgs) => {
 	const user = context.get(authContext);
 	const { rent, money } = context.get(sharedRentalDataContext);
 
@@ -105,13 +105,13 @@ export async function action({ params, context }: Route.ActionArgs) {
 	}
 
 	throw redirect(href('/host'));
-}
+};
 
-export default function ReturnRental({
+const ReturnRental = ({
 	loaderData,
 	actionData,
 	params,
-}: Route.ComponentProps) {
+}: Route.ComponentProps) => {
 	const { rent, money } = loaderData;
 
 	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
@@ -153,9 +153,10 @@ export default function ReturnRental({
 			</CustomForm>
 		</section>
 	);
-}
+};
+export default ReturnRental;
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 	if (isRouteErrorResponse(error)) {
 		return <UnsuccesfulState isError message={error.statusText} />;
 	}
@@ -163,4 +164,4 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 		return <UnsuccesfulState isError message={error.message} />;
 	}
 	return <UnsuccesfulState isError message="An unknown error occurred." />;
-}
+};

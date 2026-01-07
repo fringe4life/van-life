@@ -8,7 +8,7 @@ import { loadSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/van-detail';
 
-export async function loader({ params, request }: Route.LoaderArgs) {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
 	// Parse search parameters from URL to preserve pagination state
 	const { cursor, limit, type } = loadSearchParams(request);
 
@@ -25,9 +25,9 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 		{ van: result.data, cursor, limit, type },
 		{ headers: { 'Cache-Control': 'max-age=259200' } }
 	);
-}
+};
 
-export default function VanDetailPage({ loaderData }: Route.ComponentProps) {
+const VanDetailPage = ({ loaderData }: Route.ComponentProps) => {
 	const { van, cursor, limit, type } = loaderData;
 
 	// Build back link with pagination search params
@@ -53,9 +53,10 @@ export default function VanDetailPage({ loaderData }: Route.ComponentProps) {
 			</div>
 		</div>
 	);
-}
+};
+export default VanDetailPage;
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 	if (isRouteErrorResponse(error)) {
 		return (
 			<UnsuccesfulState
@@ -68,4 +69,4 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 		return <UnsuccesfulState isError message="This van could not be found." />;
 	}
 	return <UnsuccesfulState isError message="An unknown error occurred." />;
-}
+};

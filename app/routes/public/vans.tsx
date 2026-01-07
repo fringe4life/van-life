@@ -58,7 +58,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 	});
 };
 
-export default function Vans({ loaderData }: Route.ComponentProps) {
+const Vans = ({ loaderData }: Route.ComponentProps) => {
 	const { items: vans, badges, paginationMetadata } = loaderData;
 	// Use nuqs for client-side state management
 	const [{ cursor, limit, type }, setSearchParams] =
@@ -157,9 +157,10 @@ export default function Vans({ loaderData }: Route.ComponentProps) {
 			</ViewTransition>
 		</>
 	);
-}
+};
+export default Vans;
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 	if (isRouteErrorResponse(error)) {
 		return (
 			<UnsuccesfulState
@@ -172,4 +173,4 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 		return <UnsuccesfulState isError message={error.message} />;
 	}
 	return <UnsuccesfulState isError message="An unknown error occurred." />;
-}
+};

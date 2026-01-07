@@ -11,7 +11,7 @@ export function loader({ context }: Route.LoaderArgs) {
 	return data(hasAuth);
 }
 
-export default function Layout({ loaderData }: Route.ComponentProps) {
+const Layout = ({ loaderData }: Route.ComponentProps) => {
 	const hasToken = loaderData;
 	return (
 		<>
@@ -33,4 +33,5 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 			</footer>
 		</>
 	);
-}
+};
+export default Layout;
