@@ -1,4 +1,4 @@
-import type { Maybe } from '~/types/types';
+import type { Maybe } from '~/types';
 
 export const MAX_DISCOUNT_PERCENTAGE = 50;
 const PERCENTAGE_DIVISOR = 100;

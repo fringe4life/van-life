@@ -2,7 +2,7 @@ import { neonConfig } from '@neondatabase/serverless';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import ws from 'ws';
 import { PrismaClient } from '~/generated/prisma/client';
-import type { Maybe } from '~/types/types';
+import type { Maybe } from '~/types';
 import { env } from './env.server';
 
 // Configure Neon for optimal performance

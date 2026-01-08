@@ -1,5 +1,5 @@
 import type { Prisma } from '~/generated/prisma/client';
-import type { Id, List, Maybe } from '~/types/types';
+import type { Id, List, Maybe } from '~/types';
 
 // Type for pagination direction
 export type Direction = 'forward' | 'backward';

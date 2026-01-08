@@ -9,7 +9,7 @@ import type {
 	VanTypeOrEmpty,
 } from '~/features/vans/types';
 import { VanState, VanType } from '~/generated/prisma/enums';
-import type { Maybe } from '~/types/types';
+import type { Maybe } from '~/types';
 
 /**
  * Type guard to check if a string is a valid VanType

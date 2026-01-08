@@ -1,4 +1,4 @@
-import type { Result } from '~/types/types';
+import type { Result } from '~/types';
 
 export const tryCatch = async <T, E>(
 	operation: () => Promise<T>

@@ -2,7 +2,7 @@ import type {
 	PaginationProps,
 	ToPaginationParams,
 } from '~/features/pagination/types';
-import type { Id } from '~/types/types';
+import type { Id } from '~/types';
 import { NO_PAGINATION, PAGINATION_METADATA } from '../pagination-constants';
 /**
  * Generic pagination utility that processes database results and returns

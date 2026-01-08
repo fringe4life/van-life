@@ -77,7 +77,7 @@ function generateUniqueIds<T extends Id>(
 import { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
 import { prisma } from '~/lib/prisma.server';
-import type { Id, Maybe } from '~/types/types';
+import type { Id, Maybe } from '~/types';
 
 function getRandomTransactionType(): 'DEPOSIT' | 'WITHDRAW' {
 	const HalfProbability = 0.5;

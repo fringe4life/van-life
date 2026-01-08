@@ -1,5 +1,5 @@
 import { differenceInDays, formatDistanceToNow } from 'date-fns';
-import type { List, Maybe } from '~/types/types';
+import type { List, Maybe } from '~/types';
 
 const NO_ELAPSED_TIME = {
 	elapsedDays: 0,

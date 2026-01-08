@@ -3,7 +3,7 @@ import type {
 	TransactionModel,
 	UserModel,
 } from '~/generated/prisma/models';
-import type { Amount, Maybe } from '~/types/types';
+import type { Amount, Maybe } from '~/types';
 
 export type DataArray = Array<
 	{

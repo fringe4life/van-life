@@ -1,16 +1,15 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
-import { type MouseEventHandler, startTransition } from 'react';
+import { startTransition } from 'react';
 import { Button, buttonVariants } from '~/components/ui/button';
 import {
-	DEFAULT_DIRECTION,
 	DEFAULT_LIMIT,
 	LIMITS,
 } from '~/features/pagination/pagination-constants';
-import type { PaginationProps } from '~/features/pagination/types';
+import type { Direction, PaginationProps } from '~/features/pagination/types';
 import { validateLimit } from '~/features/pagination/utils/validators';
 import { paginationParsers } from '~/lib/parsers';
-import type { Id } from '~/types/types';
+import type { Id } from '~/types';
 import { cn } from '~/utils/utils';
 
 export const Pagination = <T extends Id>({
@@ -36,25 +35,13 @@ export const Pagination = <T extends Id>({
 		});
 	};
 
-	const handleNextPage: MouseEventHandler<HTMLButtonElement> = () => {
-		const lastItem = items.at(-1);
-		if (lastItem) {
+	const handlePageChange = (direction: Direction) => {
+		const item = direction === 'forward' ? items.at(-1) : items.at(0);
+		if (item) {
 			startTransition(async () => {
 				await setSearchParams({
-					cursor: lastItem.id,
-					direction: DEFAULT_DIRECTION,
-				});
-			});
-		}
-	};
-
-	const handlePreviousPage: MouseEventHandler<HTMLButtonElement> = () => {
-		const firstItem = items.at(0);
-		if (firstItem) {
-			startTransition(async () => {
-				await setSearchParams({
-					cursor: firstItem.id,
-					direction: 'backward',
+					cursor: item.id,
+					direction,
 				});
 			});
 		}
@@ -82,7 +69,7 @@ export const Pagination = <T extends Id>({
 				<Button
 					aria-label="Previous page"
 					disabled={!hasPreviousPage}
-					onClick={handlePreviousPage}
+					onClick={() => handlePageChange('backward')}
 					size="icon"
 					variant="outline"
 				>
@@ -91,7 +78,7 @@ export const Pagination = <T extends Id>({
 				<Button
 					aria-label="Next page"
 					disabled={!hasNextPage}
-					onClick={handleNextPage}
+					onClick={() => handlePageChange('forward')}
 					size="icon"
 					variant="outline"
 				>

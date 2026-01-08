@@ -19,7 +19,7 @@ import { CustomNavLink } from '~/features/navigation/components/custom-nav-link'
 import { toLowercaseVanType } from '~/features/vans/utils/validators';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { VanModel } from '~/generated/prisma/models';
-import type { Maybe } from '~/types/types';
+import type { Maybe } from '~/types';
 import { cn } from '~/utils/utils';
 import type { VanDetailCardProps } from '../types';
 import { VanBadge } from './van-badge';

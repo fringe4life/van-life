@@ -1,4 +1,4 @@
-import type { Maybe } from '~/types/types';
+import type { Maybe } from '~/types';
 
 const formatter = new Intl.NumberFormat('en-us', {
 	style: 'currency',

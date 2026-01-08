@@ -2,7 +2,7 @@ import { createSerializer } from 'nuqs/server';
 import { validateLimit } from '~/features/pagination/utils/validators';
 import { validateVanTypeOrEmpty } from '~/features/vans/utils/validators';
 import { paginationParsers } from '~/lib/parsers';
-import type { Maybe } from '~/types/types';
+import type { Maybe } from '~/types';
 
 // Create serializers for different use cases
 const serializePaginationParams = createSerializer(paginationParsers);

@@ -11,7 +11,7 @@ import { HTTP_MESSAGES, HTTP_STATUS } from './constants/http-constants';
 import './app.css';
 import { useEffect } from 'react';
 import { scan } from 'react-scan';
-import type { Maybe } from './types/types';
+import type { Maybe } from './types';
 
 export const links: Route.LinksFunction = () => [
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },

@@ -1,6 +1,6 @@
 import type { ElementType } from 'react';
 import useIsNavigating from '~/hooks/use-is-navigating';
-import type { PendingUIProps } from '~/types/types';
+import type { PendingUIProps } from '~/types';
 import { cn } from '~/utils/utils';
 
 /**

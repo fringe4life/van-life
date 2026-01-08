@@ -1,5 +1,5 @@
-import type { Maybe } from '~/types/types';
-import type { User } from '~/types/types.server';
+import type { Maybe } from '~/types';
+import type { User } from '~/types/index.server';
 
 interface HeadersObject {
 	headers: Maybe<Headers>;

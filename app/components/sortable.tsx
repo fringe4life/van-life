@@ -8,7 +8,7 @@ import {
 } from '~/features/pagination/pagination-constants';
 import type { SortOption } from '~/features/pagination/types';
 import { hostPaginationParsers } from '~/lib/parsers';
-import type { SortableProps } from '~/types/types';
+import type { SortableProps } from '~/types';
 import { cn } from '~/utils/utils';
 
 /**

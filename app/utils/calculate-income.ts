@@ -1,4 +1,4 @@
-import type { Amount, List } from '~/types/types';
+import type { Amount, List } from '~/types';
 
 const NO_INCOME = 0 as const;
 

@@ -4,7 +4,7 @@ import {
 	PLACEHOLDER_IMAGE_WIDTH,
 } from '~/features/image/img-constants';
 import { createNewImageSizeWithAspectRatio } from '~/features/image/utils/create-new-image-size';
-import type { Maybe } from '~/types/types';
+import type { Maybe } from '~/types';
 import canUseDom from '~/utils/can-use-dom';
 import { cn } from '~/utils/utils';
 import type { ImgProps } from '../types';

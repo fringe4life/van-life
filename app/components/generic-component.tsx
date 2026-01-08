@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { GenericComponentProps } from '~/types/types';
+import type { GenericComponentProps } from '~/types';
 import { UnsuccesfulState } from './unsuccesful-state';
 
 const GenericComponent = <T, P, E extends React.ElementType = 'div'>({

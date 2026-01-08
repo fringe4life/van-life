@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import type { LinkProps, NavLinkProps } from 'react-router';
-import type { Maybe } from '~/types/types';
+import type { Maybe } from '~/types';
 
 export type CustomLinkProps = Omit<LinkProps, 'style'>;
 export type CustomNavLinkProps = Omit<NavLinkProps, 'style'>;
