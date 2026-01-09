@@ -4,13 +4,13 @@ import { CustomLink } from '~/features/navigation/components/custom-link';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
 import VanDetail from '~/features/vans/components/van-detail';
 import { getVanBySlug } from '~/features/vans/queries/queries';
-import { loadSearchParams } from '~/lib/search-params.server';
+import { loadPaginationParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/van-detail';
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
 	// Parse search parameters from URL to preserve pagination state
-	const { cursor, limit, type } = loadSearchParams(request);
+	const { cursor, limit, type } = loadPaginationParams(request);
 
 	const result = await tryCatch(() => getVanBySlug(params.vanSlug));
 	if (result.error) {

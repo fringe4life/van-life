@@ -1,3 +1,5 @@
+import netlify from '@netlify/vite-plugin'; // <- add this (optional)
+import netlifyReactRouter from '@netlify/vite-plugin-react-router'; // <- add this
 import { reactRouter } from '@react-router/dev/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { reactRouterDevTools } from 'react-router-devtools';
@@ -19,6 +21,8 @@ export default defineConfig({
 			},
 		}),
 		reactRouter(),
+		netlifyReactRouter(), // <- add this
+		netlify(), // <- add this (optional)
 	],
 	resolve: {
 		tsconfigPaths: true,

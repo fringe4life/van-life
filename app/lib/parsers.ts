@@ -22,6 +22,8 @@ const parseAsVanType =
 // Custom parser for limit that validates against allowed numeric values
 const parseAsLimit = parseAsNumberLiteral(LIMITS).withDefault(DEFAULT_LIMIT);
 
+export const searchParser = { search: parseAsString.withDefault('') };
+
 // Custom parser for sort options
 const parseAsSortOption = parseAsStringEnum<SortOption>([
 	...SORT_OPTIONS,

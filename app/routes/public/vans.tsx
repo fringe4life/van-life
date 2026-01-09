@@ -7,6 +7,7 @@ import { ListItems } from '~/components/list-items';
 import { PendingUI } from '~/components/pending-ui';
 import { badgeVariants } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { Pagination } from '~/features/pagination/components/pagination';
 import {
@@ -23,7 +24,7 @@ import { getVans } from '~/features/vans/queries/queries';
 import { VAN_TYPE_LOWERCASE } from '~/features/vans/types.server';
 import { validateVanType } from '~/features/vans/utils/validators';
 import { paginationParsers } from '~/lib/parsers';
-import { loadSearchParams } from '~/lib/search-params.server';
+import { loadPaginationParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import { cn } from '~/utils/utils';
 import type { Route } from './+types/vans';
@@ -32,8 +33,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 	// Get badges from the centralized types
 	const badges = VAN_TYPE_LOWERCASE;
 
-	// Parse search parameters using nuqs loadSearchParams
-	const { cursor, limit, type, direction } = loadSearchParams(request);
+	// Parse search parameters using nuqs loadPaginationParams
+	const { cursor, limit, type, direction } = loadPaginationParams(request);
 
 	// Convert empty string to undefined for proper type handling
 	const typeFilter =
@@ -127,6 +128,7 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
 							Clear filters
 						</Button>
 					</div>
+					<Input name="search" placeholder="Modest Explorer" type="search" />
 					<GenericComponent
 						Component={VanCard}
 						className="grid-max"
