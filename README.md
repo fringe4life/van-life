@@ -13,7 +13,7 @@
 [![Biome](https://img.shields.io/badge/Biome-2.3.11-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.0.10-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.2.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
-[![Vite](https://img.shields.io/badge/Vite-8.0.0--beta-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7.3.1-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.1.29-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
@@ -98,7 +98,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Development Tools
 
-- **Vite 8.0.0-beta** - Next-generation frontend tooling with optimized builds
+- **Vite 7.3.1** - Fast frontend tooling with optimized builds
+- **vite-tsconfig-paths 6.0.4** - TypeScript path alias resolution for `~/` imports
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
 - **Biome 2.3.11** for linting and formatting with Ultracite integration
 - **Ultracite 7.0.10** - AI-friendly linting rules for maximum type safety and accessibility
@@ -108,7 +109,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Build System
 
-- **Vite 8.0.0-beta** - Fast builds with native ES modules and optimized bundling
+- **Vite 7.3.1** - Fast builds with native ES modules and optimized bundling
 - **React Compiler** - Configured via `vite-plugin-babel` for optimal integration
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Enhanced performance** - Faster builds and reduced memory usage
@@ -1055,7 +1056,9 @@ The application is configured for Vercel deployment with:
 The application is configured for Netlify deployment with:
 
 - **Netlify React Router plugin** (`@netlify/vite-plugin-react-router`) for serverless functions
-- **Automatic rebuilds disabled** via `netlify.toml` (similar to Vercel's `deploymentEnabled: false`)
+- **Automatic builds disabled** in Netlify UI - use `netlify deploy --prod` for manual deployments
+- **v8_viteEnvironmentApi disabled** in `react-router.config.ts` (required for Netlify plugin function generation)
+- **vite-tsconfig-paths plugin** for TypeScript path alias resolution (`~/` imports)
 - **Prisma client generation** via `postinstall` script
 - **Neon database integration** with `@prisma/adapter-neon`
 

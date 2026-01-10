@@ -5,13 +5,16 @@ import tailwindcss from '@tailwindcss/vite';
 import { reactRouterDevTools } from 'react-router-devtools';
 import { defineConfig, type UserConfig } from 'vite';
 import babel from 'vite-plugin-babel';
+import tsconfigPaths from 'vite-tsconfig-paths';
+
 export default defineConfig({
 	plugins: [
 		reactRouterDevTools({
-			// biome-ignore lint/style/useNamingConvention: the property is experimental
+			// biome-ignore lint/style/useNamingConvention: the property is named like this
 			experimental_codegen: { enabled: true },
 		}),
 		tailwindcss(),
+		tsconfigPaths(), // Use vite-tsconfig-paths plugin instead of resolve.tsconfigPaths
 		babel({
 			filter: /\.[jt]sx?$/,
 			babelConfig: {
@@ -21,10 +24,8 @@ export default defineConfig({
 			},
 		}),
 		reactRouter(),
-		netlifyReactRouter(), // <- add this
+		// netlifyReactRouter must come after reactRouter to access the build output
+		netlifyReactRouter(),
 		netlify(), // <- add this (optional)
 	],
-	resolve: {
-		tsconfigPaths: true,
-	},
 } satisfies UserConfig);

@@ -9,3 +9,6 @@
 # env files (can opt-in for committing if needed)
 .env*
 /app/generated/
+
+# Local Netlify folder
+.netlify

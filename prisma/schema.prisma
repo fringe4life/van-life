@@ -3,6 +3,7 @@ generator client {
   output          = "../app/generated/prisma"
   previewFeatures = ["relationJoins"]
   engineType      = "client"
+  binaryTargets   = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {

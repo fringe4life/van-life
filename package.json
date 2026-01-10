@@ -56,7 +56,7 @@
     "@netlify/vite-plugin": "^2.7.19",
     "@react-router/dev": "^7.12.0",
     "@tailwindcss/vite": "^4.1.18",
-    "@types/node": "^25.0.3",
+    "@types/node": "^25.0.5",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/ws": "^8.18.1",
@@ -68,7 +68,8 @@
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "ultracite": "7.0.10",
-    "vite": "beta"
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.0.4"
   },
   "trustedDependencies": [
     "@parcel/watcher",
