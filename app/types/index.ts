@@ -81,3 +81,7 @@ export interface UnsuccesfulStateProps {
 	message: string;
 	isError?: boolean;
 }
+
+export interface Search {
+	search?: string;
+}

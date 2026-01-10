@@ -59,6 +59,11 @@
 	);
 
 	--chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
+
+	/* Radix UI Dropdown Menu CSS Variables */
+	/* These are typically set dynamically by Radix UI, but we provide fallbacks */
+	--radix-dropdown-menu-content-available-height: calc(100vh - 2rem);
+	--radix-dropdown-menu-content-transform-origin: center;
 }
 
 /* BASE STYLES */

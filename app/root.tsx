@@ -36,15 +36,21 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 		});
 	}, []);
 	return (
-		<html className="bg-neutral-50 md:[--padding-inline:3rem]" lang="en">
+		<html
+			className="bg-neutral-50 md:[--padding-inline:3rem]"
+			dir="ltr"
+			lang="en"
+		>
 			<head>
 				<meta charSet="utf-8" />
 				<link href="/camper-van.png" rel="icon" type="image/png" />
 				<meta content="width=device-width, initial-scale=1" name="viewport" />
 				<Links />
 			</head>
-			<body className="layout-grid mx-auto min-h-dvh w-full max-w-layout bg-orange-50">
-				{children}
+			<body className="min-h-dvh w-full">
+				<div className="layout-grid mx-auto w-full max-w-layout bg-orange-50">
+					{children}
+				</div>
 				<ScrollRestoration />
 				<Scripts />
 			</body>

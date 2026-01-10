@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import type { VanType } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
-import type { Maybe } from '~/types';
+import type { Maybe, Search } from '~/types';
 import type { BasePaginationParams } from '../pagination/types';
 
 export type MaybeTypeFilter = Exclude<Maybe<VanType>, null>;
@@ -10,7 +10,17 @@ export interface TypeFilter {
 	typeFilter: Exclude<Maybe<VanType>, null>;
 }
 
-export interface GetVansProps extends BasePaginationParams, TypeFilter {}
+export interface VanFilters {
+	types?: string[];
+	excludeInRepair?: boolean;
+	onlyOnSale?: boolean;
+}
+
+export interface GetVansProps
+	extends BasePaginationParams,
+		TypeFilter,
+		Search,
+		VanFilters {}
 
 export type LowercaseVanType = Lowercase<VanType>;
 

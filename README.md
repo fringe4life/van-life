@@ -47,6 +47,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🔒 **Authentication** with better-auth (sign up, login, session management)
 - ⚛️ **React 19 (canary) & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
+- 🔍 **Advanced Van Filtering** (search by name, multi-select type filters, state-based filtering with optimistic UI)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals with analytics)
@@ -65,10 +66,9 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🧩 **Compound Components** with React 19's modern context API (no `.Provider`, uses `use()`)
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
-- ⚡ **Performance Optimized** with lazy loading, code splitting, and smart loader revalidation
+- ⚡ **Performance Optimized** with lazy loading and code splitting
 - 🔗 **URL State Management** with nuqs 2.8.6 via Context7 for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
-- 🚫 **Smart Revalidation** with `shouldRevalidate` to prevent unnecessary data fetching
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
 
@@ -82,7 +82,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **React Router 7.12.0** (file-based routing, SSR, optional route parameters)
 - **TypeScript 5.9.3** with strict configuration
 - **TailwindCSS 4.1.18** with modern CSS features
-- **Radix UI** for accessible components
+- **Radix UI** for accessible components (dropdown menus, dialogs, selects)
 - **Lucide React 0.562.0** for icons
 - **Recharts 3.6.0** for data visualization (lazy-loaded)
 - **nuqs 2.8.6** for type-safe URL state management via Context7 parsers
@@ -139,8 +139,9 @@ app/
 │   │   ├── components/ # Pagination UI components
 │   │   └── utils/      # Pagination validators and utilities (toPagination, getCursorMetadata, reverseSortOption, buildSearchParams, etc.)
 │   └── vans/
-│       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, etc.)
+│       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, VanFilters, etc.)
 │       ├── constants/  # Van-related constants
+│       ├── hooks/      # Optimistic UI hooks for filters (useOptimisticBooleanFilter, useOptimisticTypesFilter)
 │       ├── queries/    # Van CRUD operations and queries
 │       ├── types/      # Van-specific TypeScript types
 │       └── utils/      # Van helpers (pricing, styling, display, validators)
@@ -322,6 +323,8 @@ The application uses **nuqs 2.8.6** for type-safe URL state management:
 - **Client-side state management** with `useQueryStates`
 - **Bidirectional cursor pagination** with forward/backward navigation
 - **Pagination with sorting** on Reviews, Income, and Transfers pages
+- **Van search functionality** with debounced input (250ms) and immediate Enter key submission
+- **Advanced van filtering** with multi-select type filters and state-based filters (exclude in repair, only on sale)
 - **Automatic URL synchronization** with proper type handling
 - **View transitions support** for smooth navigation
 - **Pagination state preservation** - Search params (cursor, type, limit) preserved when navigating to detail pages and back
@@ -411,71 +414,6 @@ export async function action({ context }: Route.ActionArgs) {
 ```
 
 **Note:** Loaders can be synchronous when only retrieving data from context (no `await` needed).
-
----
-
-## Smart Loader Revalidation
-
-React Router 7's `shouldRevalidate` prevents unnecessary data fetching during navigation:
-
-### Optimization Strategy
-
-**Problem**: In SSR mode, loaders revalidate on every navigation by default, even when data hasn't changed.
-
-**Solution**: Export `shouldRevalidate` to skip revalidation for specific scenarios.
-
-### Implementation
-
-```typescript
-export function shouldRevalidate({
-  currentParams,
-  nextParams,
-  currentUrl,
-  nextUrl,
-  formMethod,
-}: ShouldRevalidateFunctionArgs) {
-  // Always revalidate on form submissions
-  if (formMethod && formMethod !== 'GET') {
-    return true;
-  }
-
-  // If vanSlug changed, revalidate to fetch new van data
-  if (currentParams.vanSlug !== nextParams.vanSlug) {
-    return true;
-  }
-
-  // If pagination params changed, revalidate
-  if (currentUrl.searchParams.toString() !== nextUrl.searchParams.toString()) {
-    return true;
-  }
-
-  // Same van, same pagination, just changing action (pricing → photos → details)
-  // Skip revalidation - we already have the van data
-  if (
-    currentParams.vanSlug === nextParams.vanSlug &&
-    currentParams.action !== nextParams.action
-  ) {
-    return false;
-  }
-
-  return false;
-}
-```
-
-### Benefits
-
-- **Reduced database queries** - Skip fetching when navigating between sub-routes
-- **Faster navigation** - No loading states when data is already available
-- **Better UX** - Instant transitions between pricing/photos/details
-- **Bandwidth savings** - Less data transferred over the network
-
-### Example Scenarios
-
-- ✅ **Skip**: `/vans/silver-bullet` → `/vans/silver-bullet` (same page)
-- ✅ **Skip**: `/host/vans/beach-bum/pricing` → `/host/vans/beach-bum/photos` (same van, different action)
-- ❌ **Revalidate**: `/vans/silver-bullet` → `/vans/beach-bum` (different van)
-- ❌ **Revalidate**: `/vans?type=luxury` → `/vans?type=simple` (filter change)
-- ❌ **Revalidate**: Form submission (POST/PUT/DELETE)
 
 ---
 
@@ -823,6 +761,24 @@ export default function MyComponent({ items }) {
 ```
 
 **Benefits:** Automatic memoization, reduced boilerplate, better performance without manual optimization.
+
+### Optimistic UI with useOptimistic
+
+React 19's `useOptimistic` hook provides instant visual feedback for user interactions, particularly useful for filter toggles and search:
+
+```tsx
+import { useOptimistic } from 'react';
+
+const [optimisticValue, toggleOptimistic] = useOptimistic(
+  initialValue,
+  reducer
+);
+
+// Immediate UI update, actual state update debounced
+toggleOptimistic({ type: 'toggle' });
+```
+
+**Benefits:** Instant feedback with lower opacity indicators, reduced perceived latency, improved UX with debounced server updates.
 
 ### Lazy Loading with React.lazy()
 

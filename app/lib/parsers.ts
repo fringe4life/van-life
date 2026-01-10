@@ -1,4 +1,10 @@
-import { parseAsNumberLiteral, parseAsString, parseAsStringEnum } from 'nuqs';
+import {
+	parseAsArrayOf,
+	parseAsBoolean,
+	parseAsNumberLiteral,
+	parseAsString,
+	parseAsStringEnum,
+} from 'nuqs';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
@@ -53,4 +59,11 @@ export const paginationParsers = {
 // Money page needs returnTo parameter for redirect after transaction
 export const moneyParsers = {
 	returnTo: parseAsString.withDefault(''),
+};
+
+// Van filters for advanced filtering (multiple types, state filters)
+export const vanFiltersParser = {
+	types: parseAsArrayOf(parseAsStringEnum(VAN_TYPE_LOWERCASE)).withDefault([]),
+	excludeInRepair: parseAsBoolean.withDefault(false),
+	onlyOnSale: parseAsBoolean.withDefault(false),
 };
