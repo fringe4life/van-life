@@ -4,13 +4,19 @@ import { CustomLink } from '~/features/navigation/components/custom-link';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
 import VanDetail from '~/features/vans/components/van-detail';
 import { getVanBySlug } from '~/features/vans/queries/queries';
-import { loadPaginationParams } from '~/lib/search-params.server';
+import {
+	loadPaginationParams,
+	loadSearchParams,
+	loadVanFiltersParams,
+} from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/van-detail';
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
-	// Parse search parameters from URL to preserve pagination state
-	const { cursor, limit, type } = loadPaginationParams(request);
+	// Parse search parameters from URL to preserve pagination and filter state
+	const { cursor, limit } = loadPaginationParams(request);
+	const { search } = loadSearchParams(request);
+	const { types, excludeInRepair, onlyOnSale } = loadVanFiltersParams(request);
 
 	const result = await tryCatch(() => getVanBySlug(params.vanSlug));
 	if (result.error) {
@@ -22,23 +28,42 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 		throw data('Van not found', { status: 404 });
 	}
 	return data(
-		{ van: result.data, cursor, limit, type },
+		{
+			van: result.data,
+			cursor,
+			limit,
+			search,
+			types,
+			excludeInRepair,
+			onlyOnSale,
+		},
 		{ headers: { 'Cache-Control': 'max-age=259200' } }
 	);
 };
 
 const VanDetailPage = ({ loaderData }: Route.ComponentProps) => {
-	const { van, cursor, limit, type } = loaderData;
+	const { van, cursor, limit, search, types, excludeInRepair, onlyOnSale } =
+		loaderData;
 
-	// Build back link with pagination search params
+	// Build back link with pagination and filter search params
 	const backLink = buildVanSearchParams({
 		cursor,
 		limit,
-		type,
+		types,
+		excludeInRepair,
+		onlyOnSale,
+		search,
 		baseUrl: href('/vans'),
 	});
 
-	const backLinkMessage = van.type ? van.type : 'all';
+	// Determine back link message based on active filters
+	const hasActiveFilters =
+		(search && search.trim() !== '') ||
+		(types && types.length > 0) ||
+		excludeInRepair ||
+		onlyOnSale;
+
+	const backLinkMessage = hasActiveFilters ? 'filtered' : 'all';
 
 	return (
 		<div className="grid min-h-full grid-rows-[min-content_1fr]">

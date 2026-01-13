@@ -86,7 +86,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 const Vans = ({ loaderData }: Route.ComponentProps) => {
 	const { items: vans, paginationMetadata } = loaderData;
 	// Use nuqs for client-side state management
-	const [{ cursor, limit, type }] = useQueryStates(paginationParsers);
+	const [{ cursor, limit }] = useQueryStates(paginationParsers);
 	const [{ search }] = useQueryStates(searchParser);
 	const [{ types, excludeInRepair, onlyOnSale }] =
 		useQueryStates(vanFiltersParser);
@@ -129,7 +129,6 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
 						renderKey={(van) => van.id}
 						renderProps={(van) => ({
 							van,
-							filter: type,
 							action: (
 								<div className="grid justify-end">
 									<VanPrice van={van} />
@@ -138,7 +137,10 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
 							link: buildVanSearchParams({
 								cursor,
 								limit,
-								type,
+								types,
+								excludeInRepair,
+								onlyOnSale,
+								search,
 								baseUrl: href('/vans/:vanSlug', {
 									vanSlug: van.slug,
 								}),

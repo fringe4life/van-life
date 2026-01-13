@@ -57,7 +57,7 @@ const VanFilters = () => {
 		// Optimistic update happens immediately
 
 		// Actual URL update with debounce
-		startTransition(async () => {
+		startTransition(() => {
 			toggleOptimisticType(type as LowercaseVanType);
 			// Filter out empty strings and ensure proper typing
 			const currentTypes = (types ?? []).filter(
@@ -68,12 +68,14 @@ const VanFilters = () => {
 			const newTypes = currentTypes.includes(typedType)
 				? currentTypes.filter((t) => t !== typedType)
 				: [...currentTypes, typedType];
-			await setFilters(
-				{ types: newTypes.length > 0 ? newTypes : [] },
-				{
-					limitUrlUpdates: debounce(FILTER_DEBOUNCE_DELAY),
-				}
-			);
+			startTransition(async () => {
+				await setFilters(
+					{ types: newTypes.length > 0 ? newTypes : [] },
+					{
+						limitUrlUpdates: debounce(FILTER_DEBOUNCE_DELAY),
+					}
+				);
+			});
 			startTransition(async () => {
 				await setSearchParams({
 					cursor: DEFAULT_CURSOR,
@@ -88,12 +90,14 @@ const VanFilters = () => {
 		startTransition(async () => {
 			// Optimistic update happens immediately
 			toggleOptimisticExcludeInRepair({ type: 'toggle' });
+
 			await setFilters(
 				{ excludeInRepair: checked },
 				{
 					limitUrlUpdates: debounce(FILTER_DEBOUNCE_DELAY),
 				}
 			);
+
 			startTransition(async () => {
 				await setSearchParams({
 					cursor: DEFAULT_CURSOR,
@@ -107,14 +111,16 @@ const VanFilters = () => {
 		// Optimistic update happens immediately
 
 		// Actual URL update with debounce
-		startTransition(async () => {
+		startTransition(() => {
 			toggleOptimisticOnlyOnSale({ type: 'toggle' });
-			await setFilters(
-				{ onlyOnSale: checked },
-				{
-					limitUrlUpdates: debounce(FILTER_DEBOUNCE_DELAY),
-				}
-			);
+			startTransition(async () => {
+				await setFilters(
+					{ onlyOnSale: checked },
+					{
+						limitUrlUpdates: debounce(FILTER_DEBOUNCE_DELAY),
+					}
+				);
+			});
 			startTransition(async () => {
 				await setSearchParams({
 					cursor: DEFAULT_CURSOR,
@@ -164,8 +170,7 @@ const VanFilters = () => {
 				<DropdownMenuCheckboxItem
 					checked={optimisticExcludeInRepair}
 					className={cn(
-						optimisticExcludeInRepair !== (excludeInRepair ?? false) &&
-							'opacity-75'
+						optimisticExcludeInRepair !== excludeInRepair && 'opacity-75'
 					)}
 					onCheckedChange={handleExcludeInRepairToggle}
 					onSelect={(e) => e.preventDefault()}
@@ -174,9 +179,7 @@ const VanFilters = () => {
 				</DropdownMenuCheckboxItem>
 				<DropdownMenuCheckboxItem
 					checked={optimisticOnlyOnSale}
-					className={cn(
-						optimisticOnlyOnSale !== (onlyOnSale ?? false) && 'opacity-75'
-					)}
+					className={cn(optimisticOnlyOnSale !== onlyOnSale && 'opacity-75')}
 					onCheckedChange={handleOnlyOnSaleToggle}
 					onSelect={(e) => e.preventDefault()}
 				>

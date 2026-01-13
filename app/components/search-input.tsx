@@ -1,6 +1,6 @@
 'use client';
 
-import { debounce, useQueryStates } from 'nuqs';
+import { debounce, defaultRateLimit, useQueryStates } from 'nuqs';
 import {
 	type ChangeEventHandler,
 	type KeyboardEventHandler,
@@ -28,7 +28,7 @@ const SearchInput = () => {
 				{ search: search || '' },
 				{
 					limitUrlUpdates:
-						search === '' ? undefined : debounce(SEARCH_DEBOUNCE_DELAY),
+						search === '' ? defaultRateLimit : debounce(SEARCH_DEBOUNCE_DELAY),
 				}
 			);
 			// Reset cursor and direction when search changes

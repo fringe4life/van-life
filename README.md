@@ -8,10 +8,10 @@
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.18-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.10-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.12-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.8.6-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.3.11-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.0.10-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.0.11-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.2.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.3.1-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -91,7 +91,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - **Node.js** with React Router server
 - **Prisma 7.2.0** ORM with Neon PostgreSQL (Rust-free client)
-- **better-auth 1.4.10** for authentication
+- **better-auth 1.4.12** for authentication
 - **ArkType 2.1.29** for schema validation and type narrowing
 - **CUID2 3.1.0** for unique identifiers (configured for 25-character IDs)
 - **@prisma/adapter-neon 7.2.0** for Neon database integration
@@ -327,7 +327,7 @@ The application uses **nuqs 2.8.6** for type-safe URL state management:
 - **Advanced van filtering** with multi-select type filters and state-based filters (exclude in repair, only on sale)
 - **Automatic URL synchronization** with proper type handling
 - **View transitions support** for smooth navigation
-- **Pagination state preservation** - Search params (cursor, type, limit) preserved when navigating to detail pages and back
+- **Pagination state preservation** - All search params (cursor, limit, types, excludeInRepair, onlyOnSale, search) preserved when navigating to detail pages and back via `buildVanSearchParams` utility
 
 ### Implementation
 
@@ -347,16 +347,25 @@ export const loadSearchParams = createLoader(paginationParsers);
 const [{ cursor, limit, direction, type }, setSearchParams] =
   useQueryStates(paginationParsers);
 
-// Preserve pagination state in detail pages
+// Preserve pagination and filter state in detail pages
 export async function loader({ params, request }: Route.LoaderArgs) {
-  const { cursor, limit, type } = loadSearchParams(request);
+  const { cursor, limit } = loadPaginationParams(request);
+  const { search } = loadSearchParams(request);
+  const { types, excludeInRepair, onlyOnSale } = loadVanFiltersParams(request);
   // ... fetch data
-  return data({ van, cursor, limit, type });
+  return data({ van, cursor, limit, search, types, excludeInRepair, onlyOnSale });
 }
 
-// Build back link with preserved params
-const search = buildVanSearchParams({ cursor, limit, type });
-const backLink = search ? `${baseUrl}?${search}` : baseUrl;
+// Build back link with preserved params (all filters included)
+const backLink = buildVanSearchParams({
+  cursor,
+  limit,
+  types,
+  excludeInRepair,
+  onlyOnSale,
+  search,
+  baseUrl: href('/vans')
+});
 ```
 
 ---
@@ -462,7 +471,7 @@ route(":vanSlug", "./routes/vans/van.tsx");
 
 ### Pagination State Preservation
 
-When navigating from a paginated list to a detail page, pagination search params (cursor, type, limit) are preserved in the URL and automatically included in the back link. This ensures users return to the exact same position in the list they were viewing.
+When navigating from a paginated list to a detail page, all search params (cursor, limit, types, excludeInRepair, onlyOnSale, search) are preserved in the URL and automatically included in the back link via the `buildVanSearchParams` utility. This ensures users return to the exact same filtered and paginated view they were viewing, maintaining complete filter state across navigation.
 
 ---
 
@@ -574,7 +583,7 @@ The application features **generic pagination utilities** for consistent cursor-
 - **Automatic result reversal** - Reverses results for backward pagination to maintain correct display order
 - **Type-safe** - Full TypeScript support with generic types
 - **`reverseSortOption` helper** (`app/features/pagination/utils/reverse-sort-order.ts`) - Reverses sort options for backward pagination queries
-- **`buildSearchParams` utility** (`app/features/pagination/utils/build-search-params.ts`) - Builds URL search parameters for pagination state preservation
+- **`buildVanSearchParams` utility** (`app/features/pagination/utils/build-search-params.ts`) - Builds URL search parameters for pagination and filter state preservation (supports types array, excludeInRepair, onlyOnSale, search params)
 
 ### Implementation
 

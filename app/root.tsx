@@ -47,8 +47,8 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 				<meta content="width=device-width, initial-scale=1" name="viewport" />
 				<Links />
 			</head>
-			<body className="min-h-dvh w-full">
-				<div className="layout-grid mx-auto w-full max-w-layout bg-orange-50">
+			<body>
+				<div className="layout-grid mx-auto min-h-dvh w-full max-w-layout bg-orange-50">
 					{children}
 				</div>
 				<ScrollRestoration />
