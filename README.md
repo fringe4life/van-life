@@ -194,6 +194,7 @@ prisma/
 - **Advanced features:**
   - **Rust-free Prisma Client** with `queryCompiler` and `driverAdapters` (now GA)
   - **Relation joins** for optimized queries (preview feature)
+  - **Full-text search** with PostgreSQL (preview feature) - searches across multiple fields with relevance-based ordering
   - **Optimized CUID2** with 25-character IDs and VARCHAR(25) constraints for better performance
   - **Comprehensive indexing** for optimal query performance:
     - Transaction model: Composite indexes for pagination (`[userId, createdAt]`, `[userId, amount]`, `[userId, type, createdAt]`, `[userId, type, amount]`)
@@ -284,7 +285,7 @@ This project uses the **Rust-free Prisma Client** with the following configurati
 generator client {
   provider        = "prisma-client"
   output          = "../app/generated/prisma"
-  previewFeatures = ["relationJoins"]
+  previewFeatures = ["relationJoins", "fullTextSearchPostgres"]
   engineType      = "client"
 }
 ```
@@ -323,7 +324,7 @@ The application uses **nuqs 2.8.6** for type-safe URL state management:
 - **Client-side state management** with `useQueryStates`
 - **Bidirectional cursor pagination** with forward/backward navigation
 - **Pagination with sorting** on Reviews, Income, and Transfers pages
-- **Van search functionality** with debounced input (250ms) and immediate Enter key submission
+- **Van search functionality** with PostgreSQL full-text search across name and description fields, debounced input (250ms), immediate Enter key submission, and relevance-based result ordering
 - **Advanced van filtering** with multi-select type filters and state-based filters (exclude in repair, only on sale)
 - **Automatic URL synchronization** with proper type handling
 - **View transitions support** for smooth navigation

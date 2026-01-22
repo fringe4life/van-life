@@ -1,7 +1,23 @@
 import { getCursorMetadata } from '~/features/pagination/utils/get-cursor-metadata.server';
+import type { Prisma } from '~/generated/prisma/client';
 import { VanState } from '~/generated/prisma/enums';
 import { prisma } from '~/lib/prisma.server';
 import type { GetVansProps, TypeFilter } from '../types';
+
+const WHITESPACE_REGEX = /\s+/;
+
+/**
+ * Formats a search string for PostgreSQL full-text search.
+ * Splits the input by whitespace and joins with OR operator (|).
+ * Example: "luxury van" -> "luxury | van"
+ */
+function formatFullTextSearchQuery(search: string): string {
+	return search
+		.trim()
+		.split(WHITESPACE_REGEX)
+		.filter((word) => word.length > 0)
+		.join(' | ');
+}
 
 export function getVans({
 	cursor,
@@ -13,7 +29,11 @@ export function getVans({
 	excludeInRepair,
 	onlyOnSale,
 }: GetVansProps) {
-	const { actualCursor, ...rest } = getCursorMetadata({
+	const {
+		actualCursor,
+		orderBy: orderByMetadata,
+		...rest
+	} = getCursorMetadata({
 		cursor,
 		limit,
 		direction,
@@ -39,15 +59,41 @@ export function getVans({
 		typeCondition = undefined;
 	}
 
+	const formattedSearch = search?.trim()
+		? formatFullTextSearchQuery(search)
+		: undefined;
+
+	// When using _relevance, orderBy must be an array
+	// Otherwise, it can be an object
+	const orderBy:
+		| Prisma.VanOrderByWithRelationInput
+		| Prisma.VanOrderByWithRelationInput[] = formattedSearch
+		? [
+				{
+					// biome-ignore lint/style/useNamingConvention: prisma naming convention
+					_relevance: {
+						fields: ['name', 'description'],
+						search: formattedSearch,
+						sort: 'asc',
+					},
+				},
+				orderByMetadata,
+			]
+		: orderByMetadata;
+
 	return prisma.van.findMany({
 		where: {
 			...(typeCondition && typeCondition),
-			...(search?.trim() && {
-				name: { contains: search, mode: 'insensitive' },
+			...(formattedSearch && {
+				OR: [
+					{ name: { search: formattedSearch } },
+					{ description: { search: formattedSearch } },
+				],
 			}),
 			...(excludeInRepair && { state: { not: VanState.IN_REPAIR } }),
 			...(onlyOnSale && { state: VanState.ON_SALE }),
 		},
+		orderBy,
 		// Cursor pagination requires ordering by a unique, sequential field
 		cursor: actualCursor,
 		...rest,
