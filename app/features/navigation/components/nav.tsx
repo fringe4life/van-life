@@ -1,4 +1,5 @@
-import { Menu, X } from 'lucide-react';
+import Menu from 'lucide-react/dist/esm/icons/menu';
+import X from 'lucide-react/dist/esm/icons/x';
 import { Activity } from 'react';
 import { href } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';

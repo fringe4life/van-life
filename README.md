@@ -3,16 +3,16 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-7.12.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-7.13.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.18-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.12-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.17-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.8.6-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.3.11-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.0.11-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
-[![Prisma](https://img.shields.io/badge/Prisma-7.2.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
+[![Prisma](https://img.shields.io/badge/Prisma-7.3.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.3.1-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.1.29-000000?logo=arktype&logoColor=white)](https://arktype.io/)
@@ -66,7 +66,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🧩 **Compound Components** with React 19's modern context API (no `.Provider`, uses `use()`)
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
-- ⚡ **Performance Optimized** with lazy loading and code splitting
+- ⚡ **Performance Optimized** with lazy loading, code splitting, direct icon imports, and immutable array methods
 - 🔗 **URL State Management** with nuqs 2.8.6 via Context7 for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
@@ -83,7 +83,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **TypeScript 5.9.3** with strict configuration
 - **TailwindCSS 4.1.18** with modern CSS features
 - **Radix UI** for accessible components (dropdown menus, dialogs, selects)
-- **Lucide React 0.562.0** for icons
+- **Lucide React 0.563.0** for icons (direct imports for performance)
 - **Recharts 3.6.0** for data visualization (lazy-loaded)
 - **nuqs 2.8.6** for type-safe URL state management via Context7 parsers
 
@@ -140,7 +140,7 @@ app/
 │   │   └── utils/      # Pagination validators and utilities (toPagination, getCursorMetadata, reverseSortOption, buildSearchParams, etc.)
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, VanFilters, etc.)
-│       ├── constants/  # Van-related constants
+│       ├── constants/  # Van-related constants (van-types.ts for client-safe constants)
 │       ├── hooks/      # Optimistic UI hooks for filters (useOptimisticBooleanFilter, useOptimisticTypesFilter)
 │       ├── queries/    # Van CRUD operations and queries
 │       ├── types/      # Van-specific TypeScript types
@@ -151,6 +151,8 @@ app/
 │   ├── parsers.ts          # nuqs search parameter parsers
 │   ├── schemas.server.ts   # ArkType validation schemas
 │   └── search-params.server.ts  # Server-side search param loaders
+├── types/              # TypeScript type definitions
+│   └── lucide-react-direct.d.ts  # Type declarations for direct lucide-react icon imports
 ├── routes/             # Route modules (Activity-based single routes)
 │   ├── api/            # API routes
 │   ├── auth/           # Authentication routes (login, signup, signout)
@@ -196,6 +198,7 @@ prisma/
   - **Relation joins** for optimized queries (preview feature)
   - **Full-text search** with PostgreSQL (preview feature) - searches across multiple fields with relevance-based ordering
   - **Optimized CUID2** with 25-character IDs and VARCHAR(25) constraints for better performance
+  - **Performance optimizations** - Direct lucide-react icon imports (15-70% faster dev boot, 28% faster builds), immutable array methods (`.toSorted()`), client-safe constants for server/client code separation
   - **Comprehensive indexing** for optimal query performance:
     - Transaction model: Composite indexes for pagination (`[userId, createdAt]`, `[userId, amount]`, `[userId, type, createdAt]`, `[userId, type, amount]`)
     - Review model: Indexes for rating and date sorting

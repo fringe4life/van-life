@@ -1,12 +1,10 @@
-import {
-	ArrowRightLeft,
-	Car,
-	KeySquare,
-	LayoutDashboard,
-	SquarePlus,
-	Star,
-	Wallet,
-} from 'lucide-react';
+import ArrowRightLeft from 'lucide-react/dist/esm/icons/arrow-right-left';
+import Car from 'lucide-react/dist/esm/icons/car';
+import KeySquare from 'lucide-react/dist/esm/icons/key-square';
+import LayoutDashboard from 'lucide-react/dist/esm/icons/layout-dashboard';
+import SquarePlus from 'lucide-react/dist/esm/icons/square-plus';
+import Star from 'lucide-react/dist/esm/icons/star';
+import Wallet from 'lucide-react/dist/esm/icons/wallet';
 import { href } from 'react-router';
 
 const hostNavItems = [

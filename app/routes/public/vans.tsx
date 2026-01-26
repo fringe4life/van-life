@@ -13,8 +13,8 @@ import { VanCard } from '~/features/vans/components/van-card';
 import { VanFilters } from '~/features/vans/components/van-filters';
 import { VanHeader } from '~/features/vans/components/van-header';
 import { VanPrice } from '~/features/vans/components/van-price';
+import { VAN_TYPE_LOWERCASE } from '~/features/vans/constants/van-types';
 import { getVans } from '~/features/vans/queries/queries';
-import { VAN_TYPE_LOWERCASE } from '~/features/vans/types.server';
 import { validateVanType } from '~/features/vans/utils/validators';
 import {
 	paginationParsers,

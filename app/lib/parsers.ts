@@ -16,14 +16,13 @@ import {
 	SORT_OPTIONS,
 } from '~/features/pagination/pagination-constants';
 import type { Direction, SortOption } from '~/features/pagination/types';
-import type { VanTypeOrEmpty } from '~/features/vans/types';
-
-// Hardcoded van types for client-side safety
-const VAN_TYPE_LOWERCASE: VanTypeOrEmpty[] = ['simple', 'rugged', 'luxury'];
+import { VAN_TYPE_LOWERCASE } from '~/features/vans/constants/van-types';
 
 // Custom parser for type that handles lowercase values
-const parseAsVanType =
-	parseAsStringEnum(VAN_TYPE_LOWERCASE).withDefault(DEFAULT_FILTER);
+const parseAsVanType = parseAsStringEnum([
+	...VAN_TYPE_LOWERCASE,
+	'',
+]).withDefault(DEFAULT_FILTER);
 
 // Custom parser for limit that validates against allowed numeric values
 const parseAsLimit = parseAsNumberLiteral(LIMITS).withDefault(DEFAULT_LIMIT);
@@ -63,7 +62,9 @@ export const moneyParsers = {
 
 // Van filters for advanced filtering (multiple types, state filters)
 export const vanFiltersParser = {
-	types: parseAsArrayOf(parseAsStringEnum(VAN_TYPE_LOWERCASE)).withDefault([]),
+	types: parseAsArrayOf(parseAsStringEnum([...VAN_TYPE_LOWERCASE])).withDefault(
+		[]
+	),
 	excludeInRepair: parseAsBoolean.withDefault(false),
 	onlyOnSale: parseAsBoolean.withDefault(false),
 };

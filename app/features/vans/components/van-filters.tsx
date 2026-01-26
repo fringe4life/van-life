@@ -1,6 +1,6 @@
 'use client';
 
-import { FilterIcon } from 'lucide-react';
+import FilterIcon from 'lucide-react/dist/esm/icons/filter';
 import { debounce, useQueryStates } from 'nuqs';
 import { startTransition } from 'react';
 import { Badge } from '~/components/ui/badge';
@@ -17,10 +17,12 @@ import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
 } from '~/features/pagination/pagination-constants';
+import {
+	type LowercaseVanType,
+	VAN_TYPE_LOWERCASE,
+} from '~/features/vans/constants/van-types';
 import { useOptimisticBooleanFilter } from '~/features/vans/hooks/use-optimistic-boolean-filter';
 import { useOptimisticTypesFilter } from '~/features/vans/hooks/use-optimistic-types-filter';
-import type { LowercaseVanType } from '~/features/vans/types';
-import { VAN_TYPE_LOWERCASE } from '~/features/vans/types.server';
 import { paginationParsers, vanFiltersParser } from '~/lib/parsers';
 import { cn } from '~/utils/utils';
 
@@ -34,9 +36,8 @@ const VanFilters = () => {
 	const { types, excludeInRepair, onlyOnSale } = filters;
 
 	// Filter out empty strings and ensure proper typing
-	const validTypes = (types ?? []).filter(
-		(t): t is LowercaseVanType =>
-			t !== '' && VAN_TYPE_LOWERCASE.includes(t as LowercaseVanType)
+	const validTypes = (types ?? []).filter((t): t is LowercaseVanType =>
+		VAN_TYPE_LOWERCASE.includes(t as LowercaseVanType)
 	);
 
 	// Use optimistic hooks for immediate UI feedback
@@ -60,9 +61,8 @@ const VanFilters = () => {
 		startTransition(() => {
 			toggleOptimisticType(type as LowercaseVanType);
 			// Filter out empty strings and ensure proper typing
-			const currentTypes = (types ?? []).filter(
-				(t): t is LowercaseVanType =>
-					t !== '' && VAN_TYPE_LOWERCASE.includes(t as LowercaseVanType)
+			const currentTypes = (types ?? []).filter((t): t is LowercaseVanType =>
+				VAN_TYPE_LOWERCASE.includes(t as LowercaseVanType)
 			);
 			const typedType = type as LowercaseVanType;
 			const newTypes = currentTypes.includes(typedType)
@@ -131,7 +131,7 @@ const VanFilters = () => {
 	};
 
 	return (
-		<DropdownMenu>
+		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger asChild>
 				<Button className="gap-2" variant="outline">
 					<FilterIcon className="size-4" />

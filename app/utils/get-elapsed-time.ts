@@ -19,7 +19,7 @@ export const getElapsedTime = (
 	}
 
 	// Sort items by date to get first and last
-	const sortedItems = [...items].sort((a, b) => {
+	const sortedItems = items.toSorted((a, b) => {
 		const dateA = a.rentedAt ?? a.createdAt;
 		const dateB = b.rentedAt ?? b.createdAt;
 		if (!(dateA && dateB)) {

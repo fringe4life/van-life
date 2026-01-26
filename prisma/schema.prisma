@@ -4,6 +4,7 @@ generator client {
   previewFeatures = ["relationJoins", "fullTextSearchPostgres"]
   engineType      = "client"
   compilerBuild   = "fast"
+  runtime         = "bun"
 }
 
 datasource db {

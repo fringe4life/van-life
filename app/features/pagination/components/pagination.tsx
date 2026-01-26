@@ -1,4 +1,5 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import ChevronLeftIcon from 'lucide-react/dist/esm/icons/chevron-left';
+import ChevronRightIcon from 'lucide-react/dist/esm/icons/chevron-right';
 import { useQueryStates } from 'nuqs';
 import { startTransition } from 'react';
 import { Button, buttonVariants } from '~/components/ui/button';
@@ -75,7 +76,7 @@ export const Pagination = <T extends Id>({
 					size="icon"
 					variant="outline"
 				>
-					<ChevronLeft className="aspect-square w-4" />
+					<ChevronLeftIcon className="aspect-square w-4" />
 				</Button>
 				<Button
 					aria-label="Next page"
@@ -84,7 +85,7 @@ export const Pagination = <T extends Id>({
 					size="icon"
 					variant="outline"
 				>
-					<ChevronRight className="aspect-square w-4" />
+					<ChevronRightIcon className="aspect-square w-4" />
 				</Button>
 			</div>
 		</div>
