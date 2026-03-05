@@ -30,11 +30,3 @@ export function getHostVans(
 		...rest,
 	});
 }
-
-export function getHostVanCount(hostId: string) {
-	return prisma.van.count({
-		where: {
-			hostId,
-		},
-	});
-}

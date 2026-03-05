@@ -5,11 +5,11 @@ import { linkClassName } from './link-class-name';
 
 export interface NavItemType {
 	Component: typeof CustomNavLink | typeof CustomLink;
+	children: ReactNode;
+	id: string;
 	props:
 		| ComponentProps<typeof CustomNavLink>
 		| ComponentProps<typeof CustomLink>;
-	children: ReactNode;
-	id: string;
 	show: boolean;
 }
 

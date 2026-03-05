@@ -28,7 +28,7 @@ export type UnsplashAspectRatio =
  * Responsive configuration for the Image component
  */
 export interface ResponsiveConfig {
-	sizes: readonly number[] | number[];
 	aspectRatio: UnsplashAspectRatio;
 	quality?: number;
+	sizes: readonly number[] | number[];
 }

@@ -5,7 +5,6 @@ import tailwindcss from '@tailwindcss/vite';
 import { reactRouterDevTools } from 'react-router-devtools';
 import { defineConfig, type UserConfig } from 'vite';
 import babel from 'vite-plugin-babel';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
 	plugins: [
@@ -14,7 +13,6 @@ export default defineConfig({
 			experimental_codegen: { enabled: true },
 		}),
 		tailwindcss(),
-		tsconfigPaths(), // Use vite-tsconfig-paths plugin instead of resolve.tsconfigPaths
 		babel({
 			filter: /\.[jt]sx?$/,
 			babelConfig: {
@@ -28,4 +26,12 @@ export default defineConfig({
 		netlifyReactRouter(),
 		netlify(), // <- add this (optional)
 	],
+	resolve: {
+		tsconfigPaths: true,
+	},
+	build: {
+		commonjsOptions: {
+			include: [/minimatch/, /node_modules/],
+		},
+	},
 } satisfies UserConfig);

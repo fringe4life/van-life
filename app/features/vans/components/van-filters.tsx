@@ -1,5 +1,3 @@
-'use client';
-
 import FilterIcon from 'lucide-react/dist/esm/icons/filter';
 import { debounce, useQueryStates } from 'nuqs';
 import { startTransition } from 'react';
@@ -113,14 +111,14 @@ const VanFilters = () => {
 		// Actual URL update with debounce
 		startTransition(() => {
 			toggleOptimisticOnlyOnSale({ type: 'toggle' });
-			startTransition(async () => {
+			(async () => {
 				await setFilters(
 					{ onlyOnSale: checked },
 					{
 						limitUrlUpdates: debounce(FILTER_DEBOUNCE_DELAY),
 					}
 				);
-			});
+			})();
 			startTransition(async () => {
 				await setSearchParams({
 					cursor: DEFAULT_CURSOR,

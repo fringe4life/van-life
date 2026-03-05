@@ -102,7 +102,6 @@
 	--_max-columns: 2;
 	--_min-column-size: 300px;
 	display: grid;
-	gap: var(--_gap);
 	grid-template-columns: repeat(
 			auto-fit,
 			minmax(
@@ -119,6 +118,7 @@
 				1fr
 			)
 		);
+	gap: var(--_gap);
 }
 
 /* Custom utility for pseudo-random bar heights using CSS trig functions */
@@ -131,19 +131,19 @@
 }
 
 @utility no-scrollbar {
-	&::-webkit-scrollbar {
-		display: none;
-	}
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
+	&::-webkit-scrollbar {
+		display: none;
+	} /* Firefox */
 }
 
 @utility full-layout {
-	margin-inline-start: calc(var(--padding-inline) * -1);
-	margin-inline-end: calc(var(--padding-inline) * -1);
 	inline-size: calc(100% + (2 * var(--padding-inline)));
 	padding-inline-start: var(--padding-inline);
 	padding-inline-end: var(--padding-inline);
+	margin-inline-start: calc(var(--padding-inline) * -1);
+	margin-inline-end: calc(var(--padding-inline) * -1);
 }
 
 @utility layout-grid {
@@ -304,7 +304,7 @@
 .scroll-md,
 .scroll-lg {
 	animation-timeline: view();
-	animation-range: entry 0% cover 25%;
+	animation-range: entry;
 }
 
 .scroll-md {

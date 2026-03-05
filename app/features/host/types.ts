@@ -30,6 +30,6 @@ export interface IncomeProps
 export interface RatingStarsProps extends Pick<ReviewModel, 'rating'> {}
 
 export interface Params {
-	vanSlug: string;
 	action?: Maybe<string>;
+	vanSlug: string;
 }

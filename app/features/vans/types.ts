@@ -11,9 +11,9 @@ export interface TypeFilter {
 }
 
 export interface VanFilters {
-	types?: string[];
 	excludeInRepair?: boolean;
 	onlyOnSale?: boolean;
+	types?: string[];
 }
 
 export interface GetVansProps
@@ -46,8 +46,8 @@ export interface VanPriceProps extends VanProps {}
 export type VanDetailCardProps = VanProps & ComponentPropsWithoutRef<'div'>;
 
 export interface VanCardProps extends VanProps {
-	link: string;
 	action: React.ReactElement;
+	link: string;
 	linkCoversCard?: boolean;
 	state?: Record<string, unknown>;
 }

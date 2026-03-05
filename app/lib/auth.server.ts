@@ -1,9 +1,9 @@
-import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { prismaAdapter } from '@better-auth/prisma-adapter';
 import { betterAuth } from 'better-auth/minimal';
 import {
 	FIVE_MINUTES_IN_SECONDS,
-	ONE_DAY_IN_SECONDS,
 	ONE_MONTH_IN_SECONDS,
+	SECONDS_PER_DAY,
 } from '~/constants/time-constants';
 import { createId } from '~/lib/cuid.server';
 import { env } from '~/lib/env.server';
@@ -40,7 +40,7 @@ export const auth = betterAuth({
 	session: {
 		cookieCache: { enabled: true, maxAge: FIVE_MINUTES_IN_SECONDS },
 		expiresIn: ONE_MONTH_IN_SECONDS, // 30 days
-		updateAge: ONE_DAY_IN_SECONDS, // 1 day (every 1 day the session expiration is updated)
+		updateAge: SECONDS_PER_DAY, // 1 day (every 1 day the session expiration is updated)
 		preserveSessionInDatabase: true,
 	},
 	telemetry: { enabled: false },

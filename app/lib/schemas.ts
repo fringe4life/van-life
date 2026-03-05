@@ -21,11 +21,6 @@ export const loginSchema = type({
 });
 
 /**
- * TypeScript type inferred from loginSchema.
- */
-export type LoginSchemaType = typeof loginSchema.infer;
-
-/**
  * Schema for user sign-up form.
  * - Extends loginSchema with confirmPassword and name fields.
  * - Ensures password and confirmPassword match.

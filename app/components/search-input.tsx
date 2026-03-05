@@ -1,5 +1,3 @@
-'use client';
-
 import { debounce, defaultRateLimit, useQueryStates } from 'nuqs';
 import {
 	type ChangeEventHandler,

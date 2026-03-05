@@ -9,12 +9,12 @@
       }
     ],
     "tasks": {
-      "check": "npx ultracite check",
-      "fix": "npx ultracite fix",
-      "doctor": "npx ultracite doctor"
+      "check": "bun check",
+      "fix": "bun fix",
+      "doctor": "bun doctor"
     }
   },
   "hooks": {
-    "afterFileEdit": [{ "command": "npx ultracite fix" }]
+    "afterFileEdit": [{ "command": "bun fix" }]
   }
 }

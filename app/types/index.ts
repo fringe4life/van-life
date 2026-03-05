@@ -32,20 +32,22 @@ export interface GenericComponentProps<
 		Items<T>,
 		AsProps<E> {
 	Component: React.ComponentType<P>;
-	renderProps: (item: T, index: number) => P;
-	renderKey: (item: T, index: number) => React.Key;
 	className?: string;
+	renderKey: (item: T, index: number) => React.Key;
+	renderProps: (item: T, index: number) => P;
 	wrapperProps?: React.ComponentPropsWithoutRef<E>;
 }
 
 export interface ListItemProps<T> {
-	items: T[];
 	getKey: (t: T) => React.Key;
 	getRow: (t: T) => React.ReactNode;
+	items: T[];
 }
 
 export interface PendingUIProps<T extends ElementType = 'div'>
 	extends AsProps<T> {
+	/** Children to render */
+	children: React.ReactNode;
 	/** The HTML element to render (default: 'div') */
 	/** Additional CSS classes to merge with pending UI classes */
 	className?: string;
@@ -53,8 +55,6 @@ export interface PendingUIProps<T extends ElementType = 'div'>
 	isPending?: boolean;
 	/** Custom opacity value when pending (default: 0.75) */
 	pendingOpacity?: number;
-	/** Children to render */
-	children: React.ReactNode;
 }
 
 interface Success<T> {
@@ -69,17 +69,17 @@ interface Failure<E> {
 export type Result<T, E> = Success<T> | Failure<E>;
 
 export interface SortableProps {
-	/** Title to display above the sort buttons */
-	title: string;
-	/** Number of items being sorted (for display) */
-	itemCount: Maybe<number>;
 	/** Optional className for the container */
 	className?: string;
+	/** Number of items being sorted (for display) */
+	itemCount: Maybe<number>;
+	/** Title to display above the sort buttons */
+	title: string;
 }
 
 export interface UnsuccesfulStateProps {
-	message: string;
 	isError?: boolean;
+	message: string;
 }
 
 export interface Search {

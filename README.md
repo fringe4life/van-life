@@ -3,19 +3,19 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-7.13.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-7.13.1-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.18-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.4.17-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.8.6-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.3.11-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.0.11-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
-[![Prisma](https://img.shields.io/badge/Prisma-7.3.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
-[![Vite](https://img.shields.io/badge/Vite-7.3.1-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-beta-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.2.1-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.5.3-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.8.9-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![Biome](https://img.shields.io/badge/Biome-2.4.0-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.2.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Prisma](https://img.shields.io/badge/Prisma-7.4.2-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
+[![Vite](https://img.shields.io/badge/Vite-beta-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![ArkType](https://img.shields.io/badge/ArkType-2.1.29-000000?logo=arktype&logoColor=white)](https://arktype.io/)
+[![ArkType](https://img.shields.io/badge/ArkType-2.2.0-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
 </div>
 
@@ -79,37 +79,37 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Frontend
 
 - **React canary** builds with stable Activity component for prerendering
-- **React Router 7.12.0** (file-based routing, SSR, optional route parameters)
-- **TypeScript 5.9.3** with strict configuration
-- **TailwindCSS 4.1.18** with modern CSS features
+- **React Router 7.13.1** (file-based routing, SSR, optional route parameters)
+- **TypeScript** (beta) with strict configuration
+- **TailwindCSS 4.2.1** with modern CSS features
 - **Radix UI** for accessible components (dropdown menus, dialogs, selects)
-- **Lucide React 0.563.0** for icons (direct imports for performance)
-- **Recharts 3.6.0** for data visualization (lazy-loaded)
-- **nuqs 2.8.6** for type-safe URL state management via Context7 parsers
+- **Lucide React 0.577.0** for icons (direct imports for performance)
+- **Recharts 3.7.0** for data visualization (lazy-loaded)
+- **nuqs 2.8.9** for type-safe URL state management via Context7 parsers
 
 ### Backend & Database
 
 - **Node.js** with React Router server
-- **Prisma 7.2.0** ORM with Neon PostgreSQL (Rust-free client)
-- **better-auth 1.4.12** for authentication
-- **ArkType 2.1.29** for schema validation and type narrowing
-- **CUID2 3.1.0** for unique identifiers (configured for 25-character IDs)
-- **@prisma/adapter-neon 7.2.0** for Neon database integration
+- **Prisma 7.4.2** ORM with Neon PostgreSQL (Rust-free client)
+- **better-auth 1.5.3** for authentication
+- **ArkType 2.2.0** for schema validation and type narrowing
+- **CUID2 3.3.0** for unique identifiers (configured for 25-character IDs)
+- **@prisma/adapter-neon 7.4.2** for Neon database integration
 
 ### Development Tools
 
-- **Vite 7.3.1** - Fast frontend tooling with optimized builds
-- **vite-tsconfig-paths 6.0.4** - TypeScript path alias resolution for `~/` imports
+- **Vite** (beta) - Fast frontend tooling with optimized builds
+- **vite-tsconfig-paths 6.1.1** - TypeScript path alias resolution for `~/` imports
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
-- **Biome 2.3.11** for linting and formatting with Ultracite integration
-- **Ultracite 7.0.10** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.4.0** for linting and formatting with Ultracite integration
+- **Ultracite 7.2.4** - AI-friendly linting rules for maximum type safety and accessibility
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
-- **TypeScript 5.9.3** with `@typescript/native-preview` nightly support
+- **TypeScript** (beta) with `@typescript/native-preview` support
 - **Bun** for fast package management and runtime
 
 ### Build System
 
-- **Vite 7.3.1** - Fast builds with native ES modules and optimized bundling
+- **Vite** (beta) - Fast builds with native ES modules and optimized bundling
 - **React Compiler** - Configured via `vite-plugin-babel` for optimal integration
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Enhanced performance** - Faster builds and reduced memory usage
@@ -149,8 +149,10 @@ app/
 ├── lib/                # Server-side utilities
 │   ├── auth.server.ts      # Better-auth configuration
 │   ├── parsers.ts          # nuqs search parameter parsers
-│   ├── schemas.server.ts   # ArkType validation schemas
-│   └── search-params.server.ts  # Server-side search param loaders
+│   ├── schemas.ts          # ArkType validation schemas
+│   ├── search-params.server.ts  # Server-side search param loaders
+│   ├── generic-sorting.server.ts  # Generic Prisma orderBy utilities
+│   └── prisma.server.ts    # Prisma client instance
 ├── types/              # TypeScript type definitions
 │   └── lucide-react-direct.d.ts  # Type declarations for direct lucide-react icon imports
 ├── routes/             # Route modules (Activity-based single routes)
@@ -272,7 +274,7 @@ The application uses **feature-specific validators** organized by domain for bet
 
 - **Van validators** (`app/features/vans/utils/validators.ts`) - VanType and VanState validation with type guards and conversion utilities
 - **Pagination validators** (`app/features/pagination/utils/validators.ts`) - Limit, direction, sort, and cursor validation for pagination
-- **Transaction validators** (`app/utils/validators.ts`) - TransactionType validation for financial operations
+- **Transaction type validation** in `app/lib/schemas.ts` (ArkType) for financial operations
 
 **Benefits:**
 - **Better organization** - Validators co-located with their feature domain
@@ -290,6 +292,8 @@ generator client {
   output          = "../app/generated/prisma"
   previewFeatures = ["relationJoins", "fullTextSearchPostgres"]
   engineType      = "client"
+  compilerBuild   = "fast"
+  runtime         = "bun"
 }
 ```
 
@@ -344,7 +348,7 @@ export const paginationParsers = {
   type: parseAsVanType,
 };
 
-// Server-side loaders (app/lib/searchParams.server.ts)
+// Server-side loaders (app/lib/search-params.server.ts)
 export const loadSearchParams = createLoader(paginationParsers);
 
 // Client-side usage
@@ -527,7 +531,7 @@ The application features a **reusable sorting system** with type-safe generic ut
 
 ### Features
 
-- **Generic sorting utility** (`app/lib/genericSorting.server.ts`) for any Prisma model
+- **Generic sorting utility** (`app/lib/generic-sorting.server.ts`) for any Prisma model
 - **Reusable Sortable component** (`app/components/sortable.tsx`) for consistent UI
 - **Type-safe orderBy clauses** with full TypeScript support
 - **URL state integration** with nuqs for persistent sorting preferences
@@ -886,22 +890,17 @@ Environment variables are validated at runtime in `app/lib/env.server.ts` via Ar
 
 - `bun run dev` – Start development server with HMR
 - `bun run build` – Build for production
-- `bun run typecheck` – TypeScript checking and route type generation
-- `bun run lint` – Run Biome linting
-- `bun run lint:fix` – Fix linting issues automatically
-- `bun run format` – Check code formatting
-- `bun run format:fix` – Fix formatting issues automatically
-- `bun run check` – Run all checks (lint + format)
-- `bun run check:fix` – Fix all issues automatically
-- `bun run ci` – Run CI checks
-- `bun run ultracite` – Run Ultracite checks through Biome integration
-- `bun run ultracite:fix` – Auto-fix issues with Ultracite rules
+- `bun run typecheck` – TypeScript checking and route type generation (`react-router typegen && tsgo`)
+- `bun run fix` – Auto-fix issues with Ultracite (format + lint)
+- `bun run check` – Run Ultracite checks (no fix)
+- `bun run doctor` – Run Ultracite doctor
+- `bun run ultracite:upgrade` – Upgrade Ultracite and re-init (Bun, Biome, Cursor)
 
 ### Ultracite Commands
 
 - `bunx ultracite init` – Initialize Ultracite in your project
-- `bun run ultracite:fix` – Format and fix code automatically
-- `bun run ultracite` – Check for issues without fixing
+- `bun run fix` – Format and fix code via Ultracite
+- `bun run check` – Check for issues without fixing
 
 ### Git Hooks (Husky + lint-staged)
 
@@ -915,20 +914,10 @@ This project uses **Husky** with **lint-staged** for automated pre-commit checks
 
 The pre-commit hook ensures code quality by:
 
-1. Running `bun x ultracite fix` on staged files via lint-staged
+1. Running Ultracite fix on staged files via lint-staged
 2. Blocking the commit if any step fails
 
-Configuration in `lint-staged.config.ts`:
-
-```typescript
-import type { Configuration } from 'lint-staged';
-
-const config: Configuration = {
-  '*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}': ['bun x ultracite fix'],
-};
-
-export default config;
-```
+Configuration in `lint-staged.config.ts` runs `bun x ultracite fix` on staged files.
 
 **Note:** TypeScript config files work seamlessly with Bun's first-class TypeScript support. For Node.js, requires version 22.6.0+ or the `--experimental-strip-types` flag.
 
@@ -959,10 +948,10 @@ export default config;
 
 ## Code Quality
 
-- **Biome 2.3.11** for linting and formatting with Ultracite integration
-- **Ultracite 7.0.10** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.4.0** for linting and formatting with Ultracite integration
+- **Ultracite 7.2.4** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 5.9.3** with strict configuration
-- **ArkType 2.1.29** for runtime validation with regex support for slug validation
+- **ArkType 2.2.0** for runtime validation with regex support for slug validation
 - **Consistent code style:**
   - Tab indentation
   - Single quotes

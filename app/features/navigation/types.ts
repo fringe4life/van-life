@@ -10,10 +10,10 @@ export interface NavProps {
 }
 
 export interface UseSheetDialogParams {
-	trigger: ReactElement | ((isOpen: boolean) => ReactElement);
-	renderContent: (close: () => void) => ReactNode;
 	className?: string;
-	modal?: boolean;
 	container?: Maybe<HTMLElement>;
+	modal?: boolean;
+	renderContent: (close: () => void) => ReactNode;
 	title: string;
+	trigger: ReactElement | ((isOpen: boolean) => ReactElement);
 }

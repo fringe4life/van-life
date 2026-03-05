@@ -23,19 +23,19 @@ export interface PaginationProps<T> extends Items<T> {
 export interface CursorMetadata {
 	actualCursor: Exclude<Maybe<Id>, null>;
 	orderBy: { id: Prisma.SortOrder };
-	take: number;
 	skip: number;
+	take: number;
 }
 
 export interface BasePaginationParams {
 	cursor: Maybe<string>;
-	limit: number;
 	direction?: Direction;
+	limit: number;
 }
 
 export interface ToPaginationParams<T> extends Items<T>, BasePaginationParams {}
 
 export interface PaginationParams extends BasePaginationParams {
-	userId: string;
 	sort?: SortOption;
+	userId: string;
 }

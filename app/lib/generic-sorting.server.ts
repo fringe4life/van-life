@@ -8,10 +8,10 @@ import type { Prisma } from '~/generated/prisma/client';
 export interface SortConfig<T extends Record<string, unknown>> {
 	/** Field to sort by for newest/oldest (usually createdAt) */
 	dateField: keyof T;
-	/** Field to sort by for highest/lowest (usually amount, rating, etc.) */
-	valueField: keyof T;
 	/** Optional secondary field for stable sorting */
 	secondaryField?: keyof T;
+	/** Field to sort by for highest/lowest (usually amount, rating, etc.) */
+	valueField: keyof T;
 }
 
 /**
