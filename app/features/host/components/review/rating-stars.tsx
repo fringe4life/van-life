@@ -1,4 +1,4 @@
-import StarIcon from 'lucide-react/dist/esm/icons/star';
+import { StarIcon } from 'lucide-react';
 import type { JSX } from 'react';
 import {
 	MAX_RATING,

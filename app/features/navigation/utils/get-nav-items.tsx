@@ -1,8 +1,4 @@
-import Info from 'lucide-react/dist/esm/icons/info';
-import LogIn from 'lucide-react/dist/esm/icons/log-in';
-import LogOut from 'lucide-react/dist/esm/icons/log-out';
-import Truck from 'lucide-react/dist/esm/icons/truck';
-import User from 'lucide-react/dist/esm/icons/user';
+import { Info, LogIn, LogOut, Truck, User } from 'lucide-react';
 import { href } from 'react-router';
 import { CustomLink } from '../components/custom-link';
 import { CustomNavLink } from '../components/custom-nav-link';

@@ -1,5 +1,4 @@
-import ChevronLeftIcon from 'lucide-react/dist/esm/icons/chevron-left';
-import ChevronRightIcon from 'lucide-react/dist/esm/icons/chevron-right';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
 import { startTransition } from 'react';
 import { Button, buttonVariants } from '~/components/ui/button';

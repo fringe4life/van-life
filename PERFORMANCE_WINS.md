@@ -35,7 +35,9 @@ import CheckIcon from 'lucide-react/dist/esm/icons/check';
 - 40% faster cold starts
 - Significantly faster HMR
 
-**Note:** Since this is React Router v7 (not Next.js), we can't use `optimizePackageImports`. Direct imports are the solution.
+**Note:** Since this is React Router v7 (not Next.js), we can't use `optimizePackageImports`. Direct imports are the solution. 
+
+**Note:** This didn't work on netlify on deployment.
 
 ---
 

@@ -1,4 +1,4 @@
-import FilterIcon from 'lucide-react/dist/esm/icons/filter';
+import { FilterIcon } from 'lucide-react';
 import { debounce, useQueryStates } from 'nuqs';
 import { startTransition } from 'react';
 import { Badge } from '~/components/ui/badge';

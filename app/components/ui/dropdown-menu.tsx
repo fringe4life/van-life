@@ -1,8 +1,6 @@
 // biome-ignore lint/performance/noNamespaceImport: shadcn component
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
-import CheckIcon from 'lucide-react/dist/esm/icons/check';
-import ChevronRightIcon from 'lucide-react/dist/esm/icons/chevron-right';
-import CircleIcon from 'lucide-react/dist/esm/icons/circle';
+import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
 import type * as React from 'react';
 
 import { cn } from '~/utils/utils';

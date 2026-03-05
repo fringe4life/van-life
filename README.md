@@ -1015,7 +1015,7 @@ The application is configured for Netlify deployment with:
 
 - **Netlify React Router plugin** (`@netlify/vite-plugin-react-router`) for serverless functions
 - **Automatic builds disabled** in Netlify UI - use `netlify deploy --prod` for manual deployments
-- **v8_viteEnvironmentApi disabled** in `react-router.config.ts` (required for Netlify plugin function generation)
+- **v8_viteEnvironmentApi enabled** in `react-router.config.ts` (Vite Environment API; requires Vite 6+)
 - **vite-tsconfig-paths plugin** for TypeScript path alias resolution (`~/` imports)
 - **Prisma client generation** via `postinstall` script
 - **Neon database integration** with `@prisma/adapter-neon`

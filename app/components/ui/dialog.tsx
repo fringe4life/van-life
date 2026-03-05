@@ -1,6 +1,6 @@
 // biome-ignore lint/performance/noNamespaceImport: is a shadcn component
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import XIcon from 'lucide-react/dist/esm/icons/x';
+import { XIcon } from 'lucide-react';
 import type * as React from 'react';
 import type { Maybe } from '~/types';
 import { cn } from '~/utils/utils';
