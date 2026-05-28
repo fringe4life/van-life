@@ -18,12 +18,8 @@ const hasAuthMiddleware: MiddlewareFunction<Response> = async (
 	// Call next to continue the middleware chain
 	const result = await next();
 
-	// If user is logged in, update cookie cache
-	if (user) {
-		return setCookieHeaders({ headers, result });
-	}
-
-	return result;
+	// update cookie cache
+	return setCookieHeaders({ headers, result });
 };
 
 export { hasAuthMiddleware };

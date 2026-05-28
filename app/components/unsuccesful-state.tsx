@@ -9,4 +9,5 @@ const UnsuccesfulState = ({ message, isError }: UnsuccesfulStateProps) => (
 		<p className="text-center">{message}</p>
 	</div>
 );
+
 export { UnsuccesfulState };

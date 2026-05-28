@@ -82,4 +82,5 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
 		</div>
 	);
 };
+
 export { Sortable };

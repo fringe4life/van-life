@@ -55,10 +55,6 @@ function findRentableVan(vanIds: VanModel[], excludedIds: string[]): string {
 	return candidateId;
 }
 
-function getRandomIdWithConstraint(id: string, constraints: string[]) {
-	return constraints.includes(id);
-}
-
 function generateUniqueIds<T extends Id>(
 	ids: T[]
 ): { id1: string; id2: string } {
@@ -79,29 +75,6 @@ import type { VanModel } from '~/generated/prisma/models';
 import { prisma } from '~/lib/prisma.server';
 import type { Id, Maybe } from '~/types';
 
-function getRandomTransactionType(): 'DEPOSIT' | 'WITHDRAW' {
-	const HalfProbability = 0.5;
-	return Math.random() > HalfProbability ? 'DEPOSIT' : 'WITHDRAW';
-}
-
-function getRandomAmount(min = 100, max = 5000): number {
-	const CentsMultiplier = 100;
-	return (
-		Math.round((Math.random() * (max - min) + min) * CentsMultiplier) /
-		CentsMultiplier
-	);
-}
-
-function getRandomTransactionDate(
-	startDate = new Date('2024-01-01'),
-	endDate = new Date()
-): Date {
-	const start = startDate.getTime();
-	const end = endDate.getTime();
-	const randomTime = start + Math.random() * (end - start);
-	return new Date(randomTime);
-}
-
 // Returns a random Date between now - `monthsBack` and now (defaults to 1 month)
 function getRecentDate(monthsBack = 1): Date {
 	const now = new Date();
@@ -117,14 +90,10 @@ function getRecentDate(monthsBack = 1): Date {
 }
 
 async function clearTables() {
-	try {
-		await prisma.transaction.deleteMany();
-		await prisma.review.deleteMany();
-		await prisma.rent.deleteMany();
-		await prisma.van.deleteMany();
-	} catch (_error) {
-		// Ignore errors during cleanup - this is intentional
-	}
+	await prisma.transaction.deleteMany();
+	await prisma.review.deleteMany();
+	await prisma.rent.deleteMany();
+	await prisma.van.deleteMany();
 }
 
 // Baseline VanState (do not derive NEW here)
@@ -161,20 +130,16 @@ function getRecentRentalDate(): Date {
 }
 
 export {
-	randomTrueOrFalse,
 	clearTables,
 	findRentableVan,
+	generateUniqueIds,
 	getCost,
 	getEndDate,
-	generateUniqueIds,
+	getRandomDiscount,
 	getRandomId,
-	getRandomIdWithConstraint,
-	getRandomTransactionType,
-	getRandomAmount,
-	getRandomTransactionDate,
+	getRecentDate,
+	getRecentRentalDate,
 	getVanState,
 	isVanRentable,
-	getRecentDate,
-	getRandomDiscount,
-	getRecentRentalDate,
+	randomTrueOrFalse,
 };

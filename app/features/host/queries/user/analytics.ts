@@ -60,30 +60,6 @@ export async function getHostTransactions(
 	});
 }
 
-export async function getUserTransactions(
-	userId: string,
-	sort: SortOption = 'newest'
-) {
-	// Create orderBy clause using generic sorting utility
-	const orderBy = createGenericOrderBy(sort, {
-		dateField: 'createdAt',
-		valueField: 'amount',
-	});
-
-	return await prisma.transaction.findMany({
-		where: {
-			userId,
-		},
-		select: {
-			id: true,
-			amount: true,
-			type: true,
-			createdAt: true,
-		},
-		orderBy,
-	});
-}
-
 // Use generic sorting utility for transactions
 const getTransactionOrderBy = (sort: SortOption) =>
 	createGenericOrderBy<Prisma.TransactionOrderByWithRelationInput>(

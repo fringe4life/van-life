@@ -14,10 +14,11 @@ import { getVanStateStyles } from './van-state-styles';
  * </StyledCard>
  * ```
  */
-export const withVanCardStyles = <P extends ComponentPropsWithoutRef<'div'>>(
-	Component: React.ComponentType<P>
-) => {
-	return ({ van, className = '', ...rest }: WithVanCardStylesProps) => {
+export const withVanCardStyles =
+	<P extends ComponentPropsWithoutRef<'div'>>(
+		Component: React.ComponentType<P>
+	) =>
+	({ van, className = '', ...rest }: WithVanCardStylesProps) => {
 		const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);
 
 		const combinedClassName = `group ${vanStateClasses} ${className}`.trim();
@@ -31,4 +32,3 @@ export const withVanCardStyles = <P extends ComponentPropsWithoutRef<'div'>>(
 			/>
 		);
 	};
-};

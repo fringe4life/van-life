@@ -4,8 +4,6 @@ import type { VanModel } from '~/generated/prisma/models';
 import type { Maybe, Search } from '~/types';
 import type { BasePaginationParams } from '../pagination/types';
 
-export type MaybeTypeFilter = Exclude<Maybe<VanType>, null>;
-
 export interface TypeFilter {
 	typeFilter: Exclude<Maybe<VanType>, null>;
 }
@@ -23,12 +21,6 @@ export interface GetVansProps
 		VanFilters {}
 
 export type LowercaseVanType = Lowercase<VanType>;
-
-// Type for badge variants (includes outline and unavailable)
-export type BadgeVariant = LowercaseVanType | 'outline' | 'unavailable';
-
-// Type for nuqs parser that includes empty string
-export type VanTypeOrEmpty = LowercaseVanType | '';
 
 interface VanProps {
 	van: VanModel;

@@ -9,8 +9,6 @@ import {
 import type { Route } from './+types/root';
 import { HTTP_MESSAGES, HTTP_STATUS } from './constants/http-constants';
 import './app.css';
-import { useEffect } from 'react';
-import { scan } from 'react-scan';
 import type { Maybe } from './types';
 
 export const links: Route.LinksFunction = () => [
@@ -28,35 +26,27 @@ export const links: Route.LinksFunction = () => [
 	},
 ];
 
-export const Layout = ({ children }: { children: React.ReactNode }) => {
-	useEffect(() => {
-		// Make sure to run react-scan only after hydration
-		scan({
-			enabled: process.env.NODE_ENV === 'development',
-		});
-	}, []);
-	return (
-		<html
-			className="bg-neutral-50 md:[--padding-inline:3rem]"
-			dir="ltr"
-			lang="en"
-		>
-			<head>
-				<meta charSet="utf-8" />
-				<link href="/camper-van.png" rel="icon" type="image/png" />
-				<meta content="width=device-width, initial-scale=1" name="viewport" />
-				<Links />
-			</head>
-			<body>
-				<div className="layout-grid mx-auto min-h-dvh w-full max-w-layout bg-orange-50">
-					{children}
-				</div>
-				<ScrollRestoration />
-				<Scripts />
-			</body>
-		</html>
-	);
-};
+export const Layout = ({ children }: { children: React.ReactNode }) => (
+	<html
+		className="bg-neutral-50 md:[--padding-inline:3rem]"
+		dir="ltr"
+		lang="en"
+	>
+		<head>
+			<meta charSet="utf-8" />
+			<link href="/camper-van.png" rel="icon" type="image/png" />
+			<meta content="width=device-width, initial-scale=1" name="viewport" />
+			<Links />
+		</head>
+		<body>
+			<div className="layout-grid mx-auto min-h-dvh w-full max-w-layout bg-orange-50">
+				{children}
+			</div>
+			<ScrollRestoration />
+			<Scripts />
+		</body>
+	</html>
+);
 
 const App = () => (
 	<NuqsAdapter defaultOptions={{ clearOnDefault: true, shallow: false }}>

@@ -2,7 +2,7 @@ import { getCursorMetadata } from '~/features/pagination/utils/get-cursor-metada
 import type { Prisma } from '~/generated/prisma/client';
 import { VanState } from '~/generated/prisma/enums';
 import { prisma } from '~/lib/prisma.server';
-import type { GetVansProps, TypeFilter } from '../types';
+import type { GetVansProps } from '../types';
 
 const WHITESPACE_REGEX = /\s+/;
 
@@ -97,14 +97,6 @@ export function getVans({
 		// Cursor pagination requires ordering by a unique, sequential field
 		cursor: actualCursor,
 		...rest,
-	});
-}
-
-export function getVansCount({ typeFilter }: TypeFilter) {
-	return prisma.van.count({
-		where: {
-			type: typeFilter,
-		},
 	});
 }
 

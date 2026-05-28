@@ -55,11 +55,6 @@ export const paginationParsers = {
 	vanFilter: parseAsVanFilter,
 };
 
-// Money page needs returnTo parameter for redirect after transaction
-export const moneyParsers = {
-	returnTo: parseAsString.withDefault(''),
-};
-
 // Van filters for advanced filtering (multiple types, state filters)
 export const vanFiltersParser = {
 	types: parseAsArrayOf(parseAsStringEnum([...VAN_TYPE_LOWERCASE])).withDefault(

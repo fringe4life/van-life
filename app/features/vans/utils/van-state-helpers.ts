@@ -1,12 +1,13 @@
 import { SIX_MONTHS } from '~/constants/time-constants';
 import { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
+
 /**
  * Determines if a van is considered "new" based on its creation date
  * @param createdAt - The van's creation date
  * @returns True if the van was created within the last 6 months
  */
-export function isVanNew(createdAt: VanModel['createdAt']): boolean {
+function isVanNew(createdAt: VanModel['createdAt']): boolean {
 	const now = new Date();
 	const sixMonthsAgo = new Date(
 		now.getFullYear(),
@@ -23,7 +24,7 @@ export function isVanNew(createdAt: VanModel['createdAt']): boolean {
  * @param van - The van model
  * @returns The lowercase state string
  */
-export function lowercaseVanState(van: VanModel): string {
+function lowercaseVanState(van: VanModel): string {
 	const isNew = isVanNew(van.createdAt);
 
 	// Determine the state

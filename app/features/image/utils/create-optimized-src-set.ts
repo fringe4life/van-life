@@ -1,70 +1,9 @@
 import {
-	AVIF_QUALITY_BOOST,
 	DEFAULT_IMAGE_QUALITY,
 	FORMAT_REGEX,
 } from '~/features/image/img-constants';
 import type { ResponsiveConfig } from '../types';
 import { createNewImageSizeWithAspectRatio } from './create-new-image-size';
-
-/**
- * Creates an optimized srcSet with multiple formats (WebP, AVIF) for better compression
- * and browser support. Falls back to JPEG for older browsers.
- *
- * @param imgUrl - The unsplash img url
- * @param mobile - Mobile configuration with sizes and aspect ratio
- * @param desktop - (Optional) Desktop configuration with sizes and aspect ratio
- * @returns a string of all the sizes with appropriate aspect ratios and formats
- */
-export function createOptimizedSrcSet(
-	imgUrl: string,
-	mobile: ResponsiveConfig,
-	desktop?: ResponsiveConfig
-): string {
-	const actualDesktop = desktop ?? mobile;
-
-	// Generate srcSet for different formats
-	const formats = [
-		{
-			ext: 'avif',
-			quality: (mobile.quality ?? DEFAULT_IMAGE_QUALITY) + AVIF_QUALITY_BOOST,
-		}, // AVIF can handle higher quality
-		{ ext: 'webp', quality: mobile.quality ?? DEFAULT_IMAGE_QUALITY },
-		{ ext: 'jpg', quality: mobile.quality ?? DEFAULT_IMAGE_QUALITY }, // Fallback
-	];
-
-	const generateSrcSetForFormat = (
-		config: ResponsiveConfig,
-		format: (typeof formats)[0]
-	) => {
-		return config.sizes
-			.map((width) => {
-				const url = createNewImageSizeWithAspectRatio(
-					imgUrl,
-					width,
-					config.aspectRatio,
-					format.quality
-				);
-				// Replace or add format parameter
-				const formatUrl = url.includes('fm=')
-					? url.replace(FORMAT_REGEX, `fm=${format.ext}`)
-					: `${url}&fm=${format.ext}`;
-				return `${formatUrl} ${width}w`;
-			})
-			.join(', ');
-	};
-
-	// Generate srcSets for each format
-	const mobileSrcSets = formats.map((format) =>
-		generateSrcSetForFormat(mobile, format)
-	);
-	const desktopSrcSets = formats.map((format) =>
-		generateSrcSetForFormat(actualDesktop, format)
-	);
-
-	// Combine all formats
-	const allSrcSets = [...mobileSrcSets, ...desktopSrcSets];
-	return allSrcSets.join(', ');
-}
 
 /**
  * Creates a simple optimized srcSet with WebP format for better compression

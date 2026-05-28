@@ -13,7 +13,7 @@ export interface NavItemType {
 	show: boolean;
 }
 
-export const createMobileNavItem =
+const createMobileNavItem =
 	(handleNavLinkClick: () => void) =>
 	(item: NavItemType): NavItemType => {
 		if (item.Component === CustomNavLink) {

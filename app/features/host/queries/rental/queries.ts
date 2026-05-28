@@ -32,36 +32,3 @@ export function getHostRentedVans(
 		...rest,
 	});
 }
-
-export function getHostRentedVanCount(hostId: string) {
-	return prisma.rent.count({
-		where: {
-			hostId,
-			AND: {
-				rentedTo: null,
-			},
-		},
-	});
-}
-
-export function getHostRents(
-	id: string,
-	{ cursor, limit, direction }: BasePaginationParams
-) {
-	const { actualCursor, ...rest } = getCursorMetadata({
-		cursor,
-		limit,
-		direction,
-	});
-
-	return prisma.rent.findMany({
-		where: {
-			renterId: id,
-			AND: {
-				rentedTo: null,
-			},
-		},
-		cursor: actualCursor,
-		...rest,
-	});
-}

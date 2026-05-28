@@ -6,4 +6,4 @@ const loader = async ({ request }: Route.LoaderArgs) => auth.handler(request);
 
 const action = async ({ request }: Route.ActionArgs) => auth.handler(request);
 
-export { loader, action };
+export { action, loader };

@@ -44,14 +44,14 @@ export const signUpScheme = type({
 /**
  * Schema for validating van states.
  */
-export const vanStateSchema = type.or(
+const vanStateSchema = type.or(
 	...Object.values(VanState).map((v) => type(`"${v}"`)),
 	type('null')
 );
-export const vanTypeSchema = type.or(
+const vanTypeSchema = type.or(
 	...Object.values(VanType).map((v) => type(`"${v}"`))
 );
-export const transactionTypeSchema = type.or(
+const transactionTypeSchema = type.or(
 	...Object.values(TransactionType).map((v) => type(`"${v}"`))
 );
 
@@ -131,7 +131,7 @@ export const moneySchema = type({
  * - Must be 1-70 characters
  * - Cannot start or end with hyphen
  */
-export const slugSchema = type('/^[a-z0-9](?:[a-z0-9-]{0,68}[a-z0-9])?$/');
+const slugSchema = type('/^[a-z0-9](?:[a-z0-9-]{0,68}[a-z0-9])?$/');
 
 /**
  * Schema for renting a van (vanSlug, hostId, renterId).

@@ -38,12 +38,6 @@ export interface GenericComponentProps<
 	wrapperProps?: React.ComponentPropsWithoutRef<E>;
 }
 
-export interface ListItemProps<T> {
-	getKey: (t: T) => React.Key;
-	getRow: (t: T) => React.ReactNode;
-	items: T[];
-}
-
 export interface PendingUIProps<T extends ElementType = 'div'>
 	extends AsProps<T> {
 	/** Children to render */

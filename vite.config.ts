@@ -14,7 +14,8 @@ export default defineConfig({
 		}),
 		tailwindcss(),
 		babel({
-			filter: /\.[jt]sx?$/,
+			include: /\.[jt]sx?$/,
+			exclude: /node_modules/,
 			babelConfig: {
 				presets: ['@babel/preset-typescript'],
 				plugins: ['babel-plugin-react-compiler'],
@@ -28,10 +29,5 @@ export default defineConfig({
 	],
 	resolve: {
 		tsconfigPaths: true,
-	},
-	build: {
-		commonjsOptions: {
-			include: [/minimatch/, /node_modules/],
-		},
 	},
 } satisfies UserConfig);

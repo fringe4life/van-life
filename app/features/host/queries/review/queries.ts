@@ -9,29 +9,6 @@ import {
 } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
 
-// biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
-export async function getHostReviews(userId: string) {
-	return prisma.review.findMany({
-		where: {
-			rent: {
-				hostId: userId,
-			},
-		},
-		include: {
-			user: {
-				select: {
-					user: {
-						select: {
-							name: true,
-						},
-					},
-				},
-			},
-		},
-		orderBy: { createdAt: 'desc' },
-	});
-}
-
 // Use generic sorting utility for reviews
 const getOrderBy = (sort: SortOption) =>
 	createGenericOrderBy<Prisma.ReviewOrderByWithRelationInput>(
@@ -120,18 +97,6 @@ export function getHostReviewsPaginated({
 	return prisma.review.findMany(query);
 }
 
-export function getHostReviewsByRating(userId: string) {
-	return prisma.review.groupBy({
-		where: {
-			rent: {
-				hostId: userId,
-			},
-		},
-		by: ['rating'],
-		_count: { _all: true },
-	});
-}
-
 export function getHostReviewsChartData(userId: string) {
 	return prisma.review.findMany({
 		where: {
@@ -144,19 +109,4 @@ export function getHostReviewsChartData(userId: string) {
 		},
 		orderBy: { createdAt: 'desc' },
 	});
-}
-
-export async function getAverageReviewRating(userId: string) {
-	const avg = await prisma.review.aggregate({
-		_avg: {
-			rating: true,
-		},
-		where: {
-			rent: {
-				hostId: userId,
-			},
-		},
-		orderBy: { createdAt: 'desc' },
-	});
-	return avg._avg.rating ?? 0;
 }

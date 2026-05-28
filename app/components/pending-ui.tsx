@@ -79,4 +79,5 @@ const PendingUI = <T extends ElementType = 'div'>({
 		</Component>
 	);
 };
+
 export { PendingUI };

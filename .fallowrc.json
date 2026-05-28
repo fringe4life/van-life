@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "entry": ["app/root.{ts,tsx,js,jsx}"],
+  "rules": {
+    "unused-dependencies": "warn"
+  },
+  "ignorePatterns": ["*.spec.ts", "*.spec.tsx", "*.test.ts", "*.test.tsx"],
+  "ignoreDependencies": ["babel-plugin-react-compiler", "isbot"],
+  "duplicates": {
+    "enabled": true,
+    "minOccurrences": 3
+  }
+}

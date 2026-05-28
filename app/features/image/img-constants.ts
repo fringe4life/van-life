@@ -11,11 +11,6 @@ export const ABOUT_IMG =
 
 export const ABOUT_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
 
-// Home page image sizes optimized for aspect ratio and device sizes
-// Mobile: aspect-[1/1.5] (portrait), Desktop: aspect-video (16:9 landscape)
-// Considering max container width of 5xl (1024px) and various screen sizes
-export const HOME_IMG_SIZES = [400, 600, 800, 1000] as const;
-
 // Separate sizes for mobile (portrait) and desktop (landscape) aspect ratios
 // Mobile sizes go up to 790w, desktop starts at 800w to avoid overlap
 export const HOME_MOBILE_IMG_SIZES = [300, 450, 600, 750] as const;
@@ -29,8 +24,6 @@ export const HOST_VAN_DETAIL_IMG_SIZES = [200, 250, 300, 400] as const;
 // Image quality constants for better compression and performance
 export const DEFAULT_IMAGE_QUALITY = 50; // Optimized for better compression
 export const HIGH_QUALITY_IMAGE_QUALITY = 75; // For cases where higher quality is needed
-export const AVIF_QUALITY_BOOST = 10; // AVIF can handle higher quality
-
 export const PLACEHOLDER_IMAGE_WIDTH = 20;
 
 // REGEXES

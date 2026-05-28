@@ -57,7 +57,7 @@ export function createGenericOrderBy<T extends Record<string, unknown>>(
 /**
  * Type-safe helper to create sort configurations for common model patterns
  */
-export const createSortConfig = <T extends Record<string, unknown>>(
+const createSortConfig = <T extends Record<string, unknown>>(
 	config: SortConfig<T>
 ) => config;
 

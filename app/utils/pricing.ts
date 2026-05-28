@@ -1,6 +1,6 @@
 import type { Maybe } from '~/types';
 
-export const MAX_DISCOUNT_PERCENTAGE = 50;
+const MAX_DISCOUNT_PERCENTAGE = 50;
 const PERCENTAGE_DIVISOR = 100;
 
 export const getDiscountedPrice = (
