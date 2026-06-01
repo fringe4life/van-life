@@ -51,11 +51,7 @@ export function getHostReviewsPaginated({
 			include: {
 				user: {
 					select: {
-						user: {
-							select: {
-								name: true,
-							},
-						},
+						name: true,
 					},
 				},
 			},
@@ -80,11 +76,7 @@ export function getHostReviewsPaginated({
 		include: {
 			user: {
 				select: {
-					user: {
-						select: {
-							name: true,
-						},
-					},
+					name: true,
 				},
 			},
 		},

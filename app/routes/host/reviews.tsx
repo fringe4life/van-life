@@ -2,7 +2,7 @@ import { data } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
 import { Sortable } from '~/components/sortable';
-import { validateCUIDS } from '~/dal/validate-cuids';
+import { validateIds } from '~/dal/validate-ids';
 import { LazyBarChart } from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Review from '~/features/host/components/review/review';
 import {
@@ -27,7 +27,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 	// Load chart data and paginated reviews
 	const [{ data: chartData }, { data: paginatedReviews }] = await Promise.all([
-		tryCatch(() => validateCUIDS(getHostReviewsChartData, [0])(user.id)),
+		tryCatch(() => validateIds(getHostReviewsChartData, [0])(user.id)),
 		tryCatch(() => {
 			const getWithUserId = async (userId: string) =>
 				getHostReviewsPaginated({
@@ -37,7 +37,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 					direction,
 					sort,
 				});
-			return validateCUIDS(getWithUserId, [0])(user.id);
+			return validateIds(getWithUserId, [0])(user.id);
 		}),
 	]);
 
@@ -104,9 +104,8 @@ const HostReviews = ({ loaderData }: Route.ComponentProps) => {
 				emptyStateMessage="You have received no reviews"
 				errorStateMessage="Something went wrong"
 				items={paginatedReviews}
-				renderKey={(item) => item.id}
 				renderProps={({ user, text, rating, updatedAt, createdAt, id }) => ({
-					name: user.user.name,
+					name: user.name,
 					text,
 					rating,
 					timestamp:

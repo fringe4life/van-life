@@ -68,7 +68,6 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
 				emptyStateMessage=""
 				errorStateMessage="Something went wrong"
 				items={sortOptions}
-				renderKey={(item) => item.id}
 				renderProps={(item) => ({
 					variant: 'ghost' as const,
 					className: cn(

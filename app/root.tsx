@@ -9,22 +9,8 @@ import {
 import type { Route } from './+types/root';
 import { HTTP_MESSAGES, HTTP_STATUS } from './constants/http-constants';
 import './app.css';
+import '@fontsource-variable/inter/wght.css';
 import type { Maybe } from './types';
-
-export const links: Route.LinksFunction = () => [
-	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-	{
-		rel: 'preconnect',
-		href: 'https://fonts.gstatic.com',
-		crossOrigin: 'anonymous',
-	},
-	{
-		rel: 'stylesheet',
-		type: 'text/css',
-		as: 'font',
-		href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap&subset=latin,latin-ext',
-	},
-];
 
 export const Layout = ({ children }: { children: React.ReactNode }) => (
 	<html

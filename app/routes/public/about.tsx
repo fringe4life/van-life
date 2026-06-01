@@ -9,7 +9,10 @@ import {
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
 import { CustomLink } from '~/features/navigation/components/custom-link';
+import { buildAboutPageSeo } from '~/features/seo/build-page-seo.server';
+import { SeoHead } from '~/features/seo/seo-head';
 import { cn } from '~/utils/utils';
+import type { Route } from './+types/about';
 
 // Create optimized WebP srcSet with 16:9 aspect ratio for both mobile and desktop
 // since the about page only uses aspect-video
@@ -19,17 +22,17 @@ const srcSet = createWebPSrcSet(ABOUT_IMG, {
 	quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
 });
 
-const About = () => {
+export const loader = ({ request }: Route.LoaderArgs) => ({
+	seo: buildAboutPageSeo(request),
+});
+
+const About = ({ loaderData }: Route.ComponentProps) => {
 	return (
 		<PendingUI
 			as="section"
 			className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-10"
 		>
-			<title>About | Van Life</title>
-			<meta
-				content="Learn about Van Life and our mission to provide the perfect van rental for your road trip adventure"
-				name="description"
-			/>
+			<SeoHead {...loaderData.seo} />
 			<Image
 				alt="a couple enjoying their adventure"
 				classesForContainer="full-layout"

@@ -20,7 +20,12 @@ const Layout = ({ loaderData }: Route.ComponentProps) => {
 				<Outlet />
 			</main>
 			<footer className="col-span-full row-start-3 grid place-content-center bg-neutral-800 py-6.25 contain-strict">
-				<p className="text-center text-gray-400 text-sm uppercase">
+				{/* react-doctor-disable-next-line 
+				react-doctor/rendering-hydration-mismatch-time */}
+				<p
+					className="text-center text-gray-400 text-sm uppercase"
+					suppressHydrationWarning
+				>
 					&copy;{new Date().getFullYear()} #vanlife
 				</p>
 				<a

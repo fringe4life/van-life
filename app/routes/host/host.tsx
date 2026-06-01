@@ -18,7 +18,7 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { MAX_ADD, MIN_ADD } from '~/constants/constants';
-import { validateCUIDS } from '~/dal/validate-cuids';
+import { validateIds } from '~/dal/validate-ids';
 import { RatingStars } from '~/features/host/components/review/rating-stars';
 import { balanceReducer } from '~/features/host/hooks/balance-reducer';
 import { getAverageReviewRating } from '~/features/host/queries/review/analytics';
@@ -51,7 +51,7 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
 
 	// Create a promise for vans data (will be resolved on client)
 	const vansPromise = Promise.resolve(
-		validateCUIDS(getHostVans, [0])(user.id, {
+		validateIds(getHostVans, [0])(user.id, {
 			cursor: undefined,
 			limit: HOST_VANS_LIMIT,
 			direction: 'forward',
@@ -63,9 +63,9 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
 		{ data: avgRating },
 		{ data: transactionSummary },
 	] = await Promise.all([
-		tryCatch(() => validateCUIDS(getHostTransactions, [0])(user.id)),
-		tryCatch(() => validateCUIDS(getAverageReviewRating, [0])(user.id)),
-		tryCatch(() => validateCUIDS(getTransactionSummary, [0])(user.id)),
+		tryCatch(() => validateIds(getHostTransactions, [0])(user.id)),
+		tryCatch(() => validateIds(getAverageReviewRating, [0])(user.id)),
+		tryCatch(() => validateIds(getTransactionSummary, [0])(user.id)),
 	]);
 
 	return data(
@@ -122,7 +122,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 			: Math.abs(result.amount); // Deposits are positive
 
 	const result2 = await tryCatch(() =>
-		validateCUIDS(addMoney, [0])(user.id, adjustedAmount, result.type)
+		validateIds(addMoney, [0])(user.id, adjustedAmount, result.type)
 	);
 
 	if (result2.error) {
@@ -170,7 +170,7 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 		});
 	};
 
-	const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+	const handleChangeType: ChangeEventHandler<HTMLInputElement> = (e) => {
 		startTransition(() => setIsDepositing(e.currentTarget.checked));
 	};
 
@@ -268,7 +268,7 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 							<Input
 								defaultChecked={isWithdrawing}
 								name="type"
-								onChange={handleChange}
+								onChange={handleChangeType}
 								type="radio"
 								value={WITHDRAW}
 							/>
@@ -315,7 +315,6 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 							emptyStateMessage="You are not currently renting any vans"
 							errorStateMessage="Something went wrong"
 							items={vans}
-							renderKey={(van) => van.id}
 							renderProps={(item) => ({
 								van: item,
 								link: href('/host/vans/:vanSlug/:action?', {

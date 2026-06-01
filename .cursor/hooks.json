@@ -15,6 +15,17 @@
     }
   },
   "hooks": {
-    "afterFileEdit": [{ "command": "bun fix" }]
+    "afterFileEdit": [
+      {
+        "command": "bun fix"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": ".cursor/hooks/react-doctor.sh",
+        "matcher": "Write|Edit|MultiEdit|ApplyPatch",
+        "timeout": 120
+      }
+    ]
   }
 }

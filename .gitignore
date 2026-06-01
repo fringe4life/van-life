@@ -8,7 +8,12 @@
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.schema
+!.env.development
 /app/generated/
 
 # Local Netlify folder
 .netlify
+.wrangler
+env.d.ts
+worker-configuration.d.ts

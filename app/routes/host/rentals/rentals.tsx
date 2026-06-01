@@ -1,7 +1,7 @@
 import { data, href } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
-import { validateCUIDS } from '~/dal/validate-cuids';
+import { validateIds } from '~/dal/validate-ids';
 import { getHostRentedVans } from '~/features/host/queries/rental/queries';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
@@ -23,7 +23,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
 	const { data: vans } = await tryCatch(() =>
-		validateCUIDS(getHostRentedVans, [0])(user.id, { cursor, limit, direction })
+		validateIds(getHostRentedVans, [0])(user.id, { cursor, limit, direction })
 	);
 
 	// Process pagination logic
@@ -60,7 +60,6 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
 				emptyStateMessage="You are currently not renting any vans."
 				errorStateMessage="Something went wrong"
 				items={vans}
-				renderKey={(van) => van.van.id}
 				// TODO: consider if this needs an action
 				renderProps={(van) => ({
 					link: href('/host/vans/:vanSlug/:action?', {

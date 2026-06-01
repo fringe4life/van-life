@@ -1,17 +1,19 @@
-import netlify from '@netlify/vite-plugin'; // <- add this (optional)
-import netlifyReactRouter from '@netlify/vite-plugin-react-router'; // <- add this
 import { reactRouter } from '@react-router/dev/vite';
 import tailwindcss from '@tailwindcss/vite';
+import { varlockCloudflareVitePlugin } from '@varlock/cloudflare-integration';
 import { reactRouterDevTools } from 'react-router-devtools';
-import { defineConfig, type UserConfig } from 'vite';
+import { defineConfig } from 'vite';
 import babel from 'vite-plugin-babel';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
 	plugins: [
+		varlockCloudflareVitePlugin({ viteEnvironment: { name: 'ssr' } }),
 		reactRouterDevTools({
 			// biome-ignore lint/style/useNamingConvention: the property is named like this
 			experimental_codegen: { enabled: true },
 		}),
+		tsconfigPaths(),
 		tailwindcss(),
 		babel({
 			include: /\.[jt]sx?$/,
@@ -19,15 +21,15 @@ export default defineConfig({
 			babelConfig: {
 				presets: ['@babel/preset-typescript'],
 				plugins: ['babel-plugin-react-compiler'],
-				compact: false, // Disable compact mode to keep code optimized even for large files
+				compact: false,
 			},
 		}),
 		reactRouter(),
-		// netlifyReactRouter must come after reactRouter to access the build output
-		netlifyReactRouter(),
-		netlify(), // <- add this (optional)
 	],
-	resolve: {
-		tsconfigPaths: true,
-	},
-} satisfies UserConfig);
+	// resolve: {
+	// 	tsconfigPaths: true,
+	// },
+	// server: {
+	// 	forwardConsole: true,
+	// },
+});

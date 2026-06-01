@@ -8,6 +8,7 @@ import type { Route } from './+types/host-layout';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 const HostLayout = () => (
 	<>
+		<meta content="noindex, nofollow" name="robots" />
 		<div className="grid grid-cols-1 contain-content">
 			<GenericComponent
 				as="ul"
@@ -16,7 +17,6 @@ const HostLayout = () => (
 				emptyStateMessage="No nav links"
 				errorStateMessage="Something went wrong"
 				items={hostNavItems}
-				renderKey={(item) => item.id}
 				renderProps={(item) => ({
 					...item,
 					className: navLinkClassName,

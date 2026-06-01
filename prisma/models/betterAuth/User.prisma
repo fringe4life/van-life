@@ -1,14 +1,19 @@
 model User {
-  id            String    @id @db.VarChar(25)
+  id            String        @id @db.Uuid
   name          String
-  email         String    @unique
-  emailVerified Boolean   @default(false)
+  email         String
+  emailVerified Boolean       @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  userInfo      UserInfo?
-  accounts      Account[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   sessions      Session[]
+  accounts      Account[]
+  vans          Van[]
+  hostRents     Rent[]        @relation("host")
+  renterRents   Rent[]        @relation("renter")
+  reviews       Review[]
+  transactions  Transaction[]
 
+  @@unique([email])
   @@map("user")
 }

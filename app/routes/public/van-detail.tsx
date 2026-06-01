@@ -2,6 +2,8 @@ import { data, href, isRouteErrorResponse } from 'react-router';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
+import { buildVanDetailPageSeo } from '~/features/seo/build-page-seo.server';
+import { SeoHead } from '~/features/seo/seo-head';
 import VanDetail from '~/features/vans/components/van-detail';
 import { getVanBySlug } from '~/features/vans/queries/queries';
 import {
@@ -36,14 +38,23 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 			types,
 			excludeInRepair,
 			onlyOnSale,
+			seo: buildVanDetailPageSeo(request, result.data),
 		},
 		{ headers: { 'Cache-Control': 'max-age=259200' } }
 	);
 };
 
 const VanDetailPage = ({ loaderData }: Route.ComponentProps) => {
-	const { van, cursor, limit, search, types, excludeInRepair, onlyOnSale } =
-		loaderData;
+	const {
+		van,
+		cursor,
+		limit,
+		search,
+		types,
+		excludeInRepair,
+		onlyOnSale,
+		seo,
+	} = loaderData;
 
 	// Build back link with pagination and filter search params
 	const backLink = buildVanSearchParams({
@@ -67,9 +78,7 @@ const VanDetailPage = ({ loaderData }: Route.ComponentProps) => {
 
 	return (
 		<div className="grid min-h-full grid-rows-[min-content_1fr]">
-			<title>{van.name} | Van Life</title>
-			<meta content={`${van.name} - ${van.description}`} name="description" />
-
+			<SeoHead {...seo} />
 			<CustomLink to={backLink}>
 				&larr; Back to <span className="uppercase">{backLinkMessage}</span> Vans
 			</CustomLink>

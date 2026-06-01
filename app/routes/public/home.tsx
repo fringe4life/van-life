@@ -10,7 +10,10 @@ import {
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
 import { CustomLink } from '~/features/navigation/components/custom-link';
+import { buildHomePageSeo } from '~/features/seo/build-page-seo.server';
+import { SeoHead } from '~/features/seo/seo-head';
 import { cn } from '~/utils/utils';
+import type { Route } from './+types/home';
 
 // Use only mobile images for now to fix the aspect ratio issue
 const srcSet = createWebPSrcSet(
@@ -28,17 +31,17 @@ const srcSet = createWebPSrcSet(
 );
 const sizes = '(max-width: 1024px) 100vw';
 
-const Home = () => {
+export const loader = ({ request }: Route.LoaderArgs) => ({
+	seo: buildHomePageSeo(request),
+});
+
+const Home = ({ loaderData }: Route.ComponentProps) => {
 	return (
 		<PendingUI
 			as="section"
 			className="full-layout relative grid aspect-1/1.5 h-full text-white contain-strict sm:pl-6 md:aspect-video md:place-content-center md:self-center"
 		>
-			<title>Home | Van Life</title>
-			<meta
-				content="Welcome to Van Life, a site to help you find your next Camper Van!"
-				name="description"
-			/>
+			<SeoHead {...loaderData.seo} />
 			{/* Background Image with gradient overlay */}
 			<div className="mask-cover mask-no-repeat mask-right md:mask-[url(/app/assets/rvMask.svg)] absolute inset-0">
 				<div className="absolute inset-0 z-10 bg-linear-45 from-0% from-indigo-300/40 via-33% via-green-300/40 to-66% to-yellow-200/40 bg-blend-darken" />

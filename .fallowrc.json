@@ -1,13 +1,31 @@
 {
   "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
-  "entry": ["app/root.{ts,tsx,js,jsx}"],
+  "entry": [
+    "app/root.{ts,tsx,js,jsx}",
+    "vite.config.ts",
+    "workers/app.ts",
+    ".env.schema"
+  ],
   "rules": {
     "unused-dependencies": "warn"
   },
-  "ignorePatterns": ["*.spec.ts", "*.spec.tsx", "*.test.ts", "*.test.tsx"],
-  "ignoreDependencies": ["babel-plugin-react-compiler", "isbot"],
+  "ignorePatterns": [
+    "*.spec.ts",
+    "*.spec.tsx",
+    "*.test.ts",
+    "*.test.tsx",
+    "worker-configuration.d.ts"
+  ],
+  "ignoreDependencies": [
+    "babel-plugin-react-compiler",
+    "isbot",
+    "react-doctor",
+    "@varlock/bitwarden-plugin",
+    "@cloudflare/vite-plugin"
+  ],
   "duplicates": {
     "enabled": true,
-    "minOccurrences": 3
+    "minOccurrences": 3,
+    "minLines": 12
   }
 }

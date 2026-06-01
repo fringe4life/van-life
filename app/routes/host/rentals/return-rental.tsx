@@ -8,7 +8,7 @@ import {
 import { CustomForm } from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
-import { validateCUIDS } from '~/dal/validate-cuids';
+import { validateIds } from '~/dal/validate-ids';
 import { getHostRentedVan } from '~/features/host/queries/rental/queries';
 import { returnVan } from '~/features/host/queries/rental/transactions';
 import { getAccountSummary } from '~/features/host/queries/user/analytics';
@@ -45,8 +45,8 @@ const fetchSharedDataMiddleware: Route.MiddlewareFunction = async (
 	const user = context.get(authContext);
 
 	const [{ data: rent }, { data: money }] = await Promise.all([
-		tryCatch(() => validateCUIDS(getHostRentedVan, [0])(params.rentId)),
-		tryCatch(() => validateCUIDS(getAccountSummary, [0])(user.id)),
+		tryCatch(() => validateIds(getHostRentedVan, [0])(params.rentId)),
+		tryCatch(() => validateIds(getAccountSummary, [0])(user.id)),
 	]);
 
 	if (!rent || typeof rent !== 'object' || !('van' in rent)) {

@@ -1,13 +1,13 @@
 model Transaction {
-  id          String          @id @default(cuid()) @db.VarChar(25)
+  id          String          @id @default(uuid(7)) @db.Uuid
   createdAt   DateTime        @default(now())
   type        TransactionType
   amount      Float
-  userId      String          @db.VarChar(25)
-  rentId      String?         @db.VarChar(25)
+  userId      String          @db.Uuid
+  rentId      String?         @db.Uuid
   description String?
   rent        Rent?           @relation(fields: [rentId], references: [id])
-  userInfo    UserInfo        @relation(fields: [userId], references: [userId])
+  user        User            @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([rentId])

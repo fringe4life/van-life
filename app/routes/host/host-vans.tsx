@@ -1,6 +1,6 @@
 import { type } from 'arktype';
 import {
-	type FormEventHandler,
+	type SubmitEventHandler,
 	useId,
 	useOptimistic,
 	useTransition,
@@ -11,7 +11,7 @@ import { PendingUI } from '~/components/pending-ui';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
-import { validateCUIDS } from '~/dal/validate-cuids';
+import { validateIds } from '~/dal/validate-ids';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
@@ -37,7 +37,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
 	const { data: vans } = await tryCatch(() =>
-		validateCUIDS(getHostVans, [0])(user.id, { cursor, limit, direction })
+		validateIds(getHostVans, [0])(user.id, { cursor, limit, direction })
 	);
 
 	// Process pagination logic
@@ -78,7 +78,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 	};
 
 	const result2 = await tryCatch(() =>
-		validateCUIDS(createVan, [0])(resultWithHostId)
+		validateIds(createVan, [0])(resultWithHostId)
 	);
 
 	if (result2.error || !result2.data) {
@@ -107,7 +107,7 @@ const HostVans = ({ loaderData, actionData }: Route.ComponentProps) => {
 		(state: VanModel[], newVan: VanModel) => [...state, newVan]
 	);
 
-	const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+	const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();
 
 		const formData = new FormData(event.currentTarget);
@@ -236,7 +236,6 @@ const HostVans = ({ loaderData, actionData }: Route.ComponentProps) => {
 					emptyStateMessage="You are currently not renting any vans."
 					errorStateMessage="Something went wrong"
 					items={optimisticVans}
-					renderKey={(van) => van.id}
 					renderProps={(van) => ({
 						link: href('/host/vans/:vanSlug/:action?', {
 							vanSlug: van.slug,

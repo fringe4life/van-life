@@ -43,6 +43,12 @@
       }
     },
     {
+      "includes": ["env.d.ts"],
+      "linter": {
+        "enabled": false
+      }
+    },
+    {
       "includes": ["app/db/**/*", "prisma/**/*"],
       "linter": {
         "rules": {

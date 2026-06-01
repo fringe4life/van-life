@@ -1,45 +1,54 @@
 import { neonConfig } from '@neondatabase/serverless';
 import { PrismaNeon } from '@prisma/adapter-neon';
-import ws from 'ws';
 import { PrismaClient } from '~/generated/prisma/client';
 import type { Maybe } from '~/types';
 import { env } from './env.server';
 
-// Configure Neon for optimal performance
-neonConfig.webSocketConstructor = ws;
 neonConfig.poolQueryViaFetch = true;
-neonConfig.pipelineConnect = false; // Disabled because using SSL authentication
-neonConfig.coalesceWrites = true; // Reduce network overhead
+neonConfig.pipelineConnect = false;
+neonConfig.coalesceWrites = true;
+
+if (typeof WebSocket !== 'undefined') {
+	neonConfig.webSocketConstructor = WebSocket;
+}
 
 declare global {
 	var prisma: Maybe<PrismaClient>;
 	var neonAdapter: Maybe<PrismaNeon>;
 }
 
-// Create a singleton adapter with connection pooling
 const createAdapter = () => {
-	if (global.neonAdapter) {
-		return global.neonAdapter;
+	if (import.meta.env?.DEV && globalThis.neonAdapter) {
+		return globalThis.neonAdapter;
 	}
 
-	global.neonAdapter = new PrismaNeon({
+	const adapter = new PrismaNeon({
 		connectionString: env.DATABASE_URL,
 	});
 
-	return global.neonAdapter;
+	if (import.meta.env?.DEV) {
+		globalThis.neonAdapter = adapter;
+	}
+
+	return adapter;
 };
 
-const adapter = createAdapter();
+const createPrismaClient = () => {
+	if (import.meta.env?.DEV && globalThis.prisma) {
+		return globalThis.prisma;
+	}
 
-const db =
-	global.prisma ||
-	new PrismaClient({
-		adapter,
-		log: ['error'], // Only log errors to reduce terminal clutter
+	const client = new PrismaClient({
+		adapter: createAdapter(),
+		log: ['error'],
 	});
 
-if (process.env.NODE_ENV === 'development') {
-	global.prisma = db;
-}
+	if (import.meta.env?.DEV) {
+		globalThis.prisma = client;
+	}
 
-export { db as prisma };
+	return client;
+};
+
+// biome-ignore lint/suspicious/noRedeclare: redeclare global
+export const prisma = createPrismaClient();

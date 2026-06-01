@@ -1,12 +1,15 @@
 import type React from 'react';
-import type { GenericComponentProps } from '~/types';
+import type { GenericComponentProps, Id } from '~/types';
 import { UnsuccesfulState } from './unsuccesful-state';
 
-const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
+const GenericComponent = <
+	T extends Id,
+	P,
+	E extends React.ElementType = 'div',
+>({
 	Component,
 	items,
 	renderProps,
-	renderKey,
 	className = '',
 	emptyStateMessage,
 	errorStateMessage,
@@ -24,7 +27,7 @@ const GenericComponent = <T, P, E extends React.ElementType = 'div'>({
 	return (
 		<Wrapper className={className} {...wrapperProps}>
 			{items.map((item, index) => (
-				<Component key={renderKey(item, index)} {...renderProps(item, index)} />
+				<Component key={item.id} {...renderProps(item, index)} />
 			))}
 		</Wrapper>
 	);

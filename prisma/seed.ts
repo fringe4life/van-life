@@ -1,7 +1,7 @@
 import { TransactionType, VanState } from '~/generated/prisma/enums';
 import type { VanCreateManyInput } from '~/generated/prisma/models/Van';
-import { prisma } from '~/lib/prisma.server';
 import { getSlug } from '~/utils/get-slug';
+import { prisma } from './seed-client';
 import { rents } from './seed-data/rents';
 import { reviews } from './seed-data/reviews';
 import { transactions } from './seed-data/transactions';
@@ -9,7 +9,6 @@ import { vans } from './seed-data/vans';
 import {
 	clearTables,
 	findRentableVan,
-	generateUniqueIds,
 	getCost,
 	getEndDate,
 	getRandomDiscount,
@@ -20,21 +19,29 @@ import {
 	randomTrueOrFalse,
 } from './seed-fns';
 
+const HOST_COUNT = 3;
+
 const main = async () => {
-	// clear tables
 	await clearTables();
 
-	const data = await prisma.user.findMany();
+	const users = await prisma.user.findMany({ orderBy: { createdAt: 'asc' } });
 
-	const vansWithHosts: VanCreateManyInput[] = vans.map((van) => {
+	if (users.length < HOST_COUNT) {
+		throw new Error(
+			`Seed needs at least ${HOST_COUNT} users in the database. Create them in the app first.`
+		);
+	}
+
+	const hosts = users.slice(0, HOST_COUNT);
+
+	const vansWithHosts: VanCreateManyInput[] = vans.map((van, index) => {
 		const state = getVanState();
-		const hostId = getRandomId(data);
 		return {
 			...van,
 			slug: getSlug(van.name),
 			state,
 			discount: state === VanState.ON_SALE ? getRandomDiscount() : 0,
-			hostId,
+			hostId: hosts[index % hosts.length].id,
 		};
 	});
 
@@ -42,29 +49,38 @@ const main = async () => {
 		data: vansWithHosts,
 	});
 
-	const vanIds = await prisma.van.findMany();
+	const vanRecords = await prisma.van.findMany();
 
 	const vansRented: string[] = [];
 	const vansReturned: string[] = [];
 
 	const rentsWithIds = rents.map((rent) => {
-		const { id1, id2 } = generateUniqueIds(data);
-		let vanId = getRandomId(vanIds);
+		let vanId = getRandomId(vanRecords);
 
-		// Find a van that's not already rented
 		while (vansRented.includes(vanId)) {
-			vanId = getRandomId(vanIds);
+			vanId = getRandomId(vanRecords);
 		}
 
-		// biome-ignore lint/style/noNonNullAssertion: guaranteed to be found
-		let selectedVan = vanIds.find((vanItem) => vanItem.id === vanId)!;
+		let selectedVan = vanRecords.find((vanItem) => vanItem.id === vanId);
+		if (!selectedVan) {
+			throw new Error(`Van ${vanId} not found`);
+		}
+
 		if (!isVanRentable(selectedVan.state)) {
-			vanId = findRentableVan(vanIds, vansRented);
-			// biome-ignore lint/style/noNonNullAssertion: guaranteed to be found
-			selectedVan = vanIds.find((v) => v.id === vanId)!;
+			vanId = findRentableVan(vanRecords, vansRented);
+			selectedVan = vanRecords.find((v) => v.id === vanId);
+			if (!selectedVan) {
+				throw new Error(`Rentable van ${vanId} not found`);
+			}
 		}
 
-		// Generate a recent rental date within the last 6 weeks
+		const hostId = selectedVan.hostId;
+		const renterPool = users.filter((user) => user.id !== hostId);
+		if (renterPool.length === 0) {
+			throw new Error('Need at least one renter who is not the van host');
+		}
+		const renterId = getRandomId(renterPool);
+
 		const recentRentalDate = getRecentRentalDate();
 		const rentedTo = randomTrueOrFalse() ? getEndDate(recentRentalDate) : null;
 		if (rentedTo) {
@@ -72,17 +88,17 @@ const main = async () => {
 		} else {
 			vansRented.push(vanId);
 		}
+
 		return {
 			...rent,
 			rentedAt: recentRentalDate,
-			hostId: id1,
-			renterId: id2,
+			hostId,
+			renterId,
 			vanId,
 			rentedTo,
 		};
 	});
 
-	// Create rents individually to get their IDs for transactions
 	const createdRents = await Promise.all(
 		rentsWithIds.map((rent) => prisma.rent.create({ data: rent }))
 	);
@@ -96,17 +112,17 @@ const main = async () => {
 		},
 	});
 
-	// Create rental transactions for returned vans
 	const rentalTransactions = createdRents
 		.filter((rent) => rent.rentedTo !== null)
 		.flatMap((rent) => {
-			// biome-ignore lint/style/noNonNullAssertion: filtered out null values
-			const van = vanIds.find((v) => v.id === rent.vanId)!;
+			const van = vanRecords.find((v) => v.id === rent.vanId);
+			if (!van) {
+				throw new Error(`Van ${rent.vanId} not found for rental transaction`);
+			}
 			const rentedTo = rent.rentedTo as Date;
 			const amount = getCost(rent.rentedAt, rentedTo, van.price);
 
 			return [
-				// Renter payment (debit - negative amount)
 				{
 					userId: rent.renterId,
 					amount: -amount,
@@ -115,7 +131,6 @@ const main = async () => {
 					description: `Payment for van rental ${rent.vanId}`,
 					createdAt: rentedTo,
 				},
-				// Host receiving payment (credit - positive amount)
 				{
 					userId: rent.hostId,
 					amount,
@@ -131,27 +146,39 @@ const main = async () => {
 		data: rentalTransactions,
 	});
 
+	const completedRents = createdRents.filter((rent) => rent.rentedTo !== null);
+
 	const reviewsWithIds = reviews.map((review) => ({
 		...review,
-		userId: getRandomId(data),
-		rentId: getRandomId(createdRents.filter((r) => r.rentedTo !== null)),
+		userId: getRandomId(users),
+		rentId: getRandomId(completedRents),
 	}));
 
 	await prisma.review.createMany({
 		data: reviewsWithIds,
 	});
 
-	// Create user transactions (deposits/withdrawals)
 	const transactionsWithIds = transactions.map((transaction) => ({
 		...transaction,
-		userId: getRandomId(data),
+		userId: getRandomId(users),
 	}));
 
 	await prisma.transaction.createMany({
 		data: transactionsWithIds,
 	});
 
+	const vansPerHost = hosts.map(
+		(host) => vansWithHosts.filter((van) => van.hostId === host.id).length
+	);
+
+	console.info(
+		`Seed complete. ${vans.length} vans (${vansPerHost.join('/')} per host), ${createdRents.length} rents, ${rentalTransactions.length} rental txs, ${reviewsWithIds.length} reviews, ${transactionsWithIds.length} user txs.`
+	);
+
 	await prisma.$disconnect();
 };
 
-main();
+main().catch((error) => {
+	console.error(error);
+	process.exit(1);
+});

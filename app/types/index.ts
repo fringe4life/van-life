@@ -24,7 +24,7 @@ export interface AsProps<T extends ElementType = 'div'> {
 }
 
 export interface GenericComponentProps<
-	T,
+	T extends Id,
 	P,
 	E extends React.ElementType = 'div',
 > extends EmptyState,
@@ -33,7 +33,6 @@ export interface GenericComponentProps<
 		AsProps<E> {
 	Component: React.ComponentType<P>;
 	className?: string;
-	renderKey: (item: T, index: number) => React.Key;
 	renderProps: (item: T, index: number) => P;
 	wrapperProps?: React.ComponentPropsWithoutRef<E>;
 }

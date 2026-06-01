@@ -1,4 +1,3 @@
-import { createContext, use } from 'react';
 import { href } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { Badge } from '~/components/ui/badge';
@@ -16,31 +15,18 @@ import {
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
 import { CustomNavLink } from '~/features/navigation/components/custom-nav-link';
+import type { VanDetailCardProps } from '~/features/vans/types';
 import { toLowercaseVanType } from '~/features/vans/utils/validators';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
-import type { VanModel } from '~/generated/prisma/models';
-import type { Maybe } from '~/types';
 import { cn } from '~/utils/utils';
-import type { VanDetailCardProps } from '../types';
-import { VanBadge } from './van-badge';
-import { VanPrice } from './van-price';
+import { VanBadge } from '../van-badge';
+import { VanPrice } from '../van-price';
+import { VanDetailCardContext } from './context';
+import { Details } from './details';
+import { Photos } from './photos';
+import { Pricing } from './pricing';
 
 const StyledCard = withVanCardStyles(Card);
-
-/**
- * Context for sharing van data within VanDetailCard compound component
- */
-const VanDetailCardContext = createContext<Maybe<VanModel>>(null);
-
-const useVanDetailCard = () => {
-	const van = use(VanDetailCardContext);
-	if (!van) {
-		throw new Error(
-			'VanDetailCard compound components must be used within VanDetailCard'
-		);
-	}
-	return van;
-};
 
 const VanDetailCardRoot = ({
 	van,
@@ -54,14 +40,17 @@ const VanDetailCardRoot = ({
 			children: 'Details',
 			to: href('/host/vans/:vanSlug/:action?', { vanSlug, action: undefined }),
 			end: true,
+			id: 'details',
 		},
 		{
 			children: 'Pricing',
 			to: href('/host/vans/:vanSlug/:action?', { vanSlug, action: 'pricing' }),
+			id: 'pricing',
 		},
 		{
 			children: 'Photos',
 			to: href('/host/vans/:vanSlug/:action?', { vanSlug, action: 'photos' }),
+			id: 'photos',
 		},
 	];
 
@@ -118,7 +107,6 @@ const VanDetailCardRoot = ({
 							emptyStateMessage=""
 							errorStateMessage="Something went wrong"
 							items={navLinks}
-							renderKey={(item) => item.children}
 							renderProps={(item) => ({
 								className: ({
 									isActive,
@@ -139,59 +127,6 @@ const VanDetailCardRoot = ({
 		</VanDetailCardContext>
 	);
 };
-
-/**
- * Details sub-component - displays van name, category, and description
- */
-function Details() {
-	const van = useVanDetailCard();
-	const { name, type, description } = van;
-
-	return (
-		<article>
-			<p className="font-bold">
-				Name: <span className="font-normal">{name}</span>
-			</p>
-			<p className="my-4 font-bold">
-				Category: <span className="font-normal capitalize">{type}</span>
-			</p>
-			<p className="min-w-full max-w-3xs font-bold">
-				Description: <span className="font-normal">{description}</span>
-			</p>
-		</article>
-	);
-}
-
-/**
- * Photos sub-component - displays van image
- */
-function Photos() {
-	const van = useVanDetailCard();
-
-	return (
-		<Image
-			alt={van.name}
-			className="aspect-square rounded-md"
-			height="100"
-			src={van.imageUrl}
-			srcSet=""
-			width="100"
-		/>
-	);
-}
-
-/**
- * Pricing sub-component - displays van price with discount
- */
-function Pricing() {
-	const van = useVanDetailCard();
-
-	return (
-		<div className="my-4 sm:my-6">
-			<VanPrice van={van} />
-		</div>
-	);
-}
 
 /**
  * Compound component for host van details with sub-components

@@ -1,5 +1,5 @@
 model Verification {
-  id         String   @id
+  id         String   @id @db.Uuid
   identifier String
   value      String
   expiresAt  DateTime

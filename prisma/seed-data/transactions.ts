@@ -1,7 +1,7 @@
 import { TransactionType } from '~/generated/prisma/enums';
 import type { TransactionCreateInput } from '~/generated/prisma/models/Transaction';
 
-export const transactions: Omit<TransactionCreateInput, 'userInfo'>[] = [
+export const transactions: Omit<TransactionCreateInput, 'user'>[] = [
 	{
 		type: TransactionType.DEPOSIT,
 		amount: 2500.0,

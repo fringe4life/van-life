@@ -1,3 +1,8 @@
+/**
+ * Recharts implementation — do not import this module directly.
+ * Use `LazyBarChart` from `./lazy-bar-chart` so recharts is code-split via React.lazy().
+ */
+// react-doctor-disable-next-line react-doctor/prefer-dynamic-import
 import {
 	Bar,
 	BarChart,

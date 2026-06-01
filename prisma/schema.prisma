@@ -4,6 +4,15 @@ generator client {
   previewFeatures = ["relationJoins", "fullTextSearchPostgres"]
   engineType      = "client"
   compilerBuild   = "fast"
+  runtime         = "workerd"
+}
+
+generator seedClient {
+  provider        = "prisma-client"
+  output          = "../app/generated/prisma-seed"
+  previewFeatures = ["relationJoins", "fullTextSearchPostgres"]
+  engineType      = "client"
+  compilerBuild   = "fast"
   runtime         = "bun"
 }
 

@@ -1,5 +1,4 @@
-import { isCuid } from '@paralleldrive/cuid2';
-import { scope, type } from 'arktype';
+import { type } from 'arktype';
 import { MAX_ADD } from '~/constants/constants';
 import { TransactionType, VanState, VanType } from '~/generated/prisma/enums';
 
@@ -92,29 +91,10 @@ export const addVanSchema = type({
 	return true;
 });
 
-/**
- * Regex for validating CUID v1 format (used by Prisma's `@default(cuid())`).
- * Format: 'c' + 24 lowercase alphanumeric characters = 25 chars total
- *
- * Our configured CUID v2 (from `createId`) also generates 25-character IDs,
- * validated by the `isCuid()` function.
- */
-const cuid1Regex = /^c[0-9a-z]{24}$/;
-
-const isCUID = scope({
-	isCuid: type('string').narrow((s, ctx) => {
-		if (isCuid(s) || cuid1Regex.test(s)) {
-			return true;
-		}
-		return ctx.mustBe('a valid CUID');
-	}),
-});
-
-/**
- * Schema for validating CUID v1 or CUID v2 identifiers.
- * Accepts both Prisma's `@default(cuid())` format and our configured 25-char CUID v2.
- */
-export const cuidSchema = isCUID.type('isCuid');
+/** Schema for validating RFC 9562 UUID version 7 identifiers. */
+export const uuidv7Schema = type('string.uuid.v7').describe(
+	'A valid UUID v7 string'
+);
 
 /**
  * Schema for money operations (withdraw, deposit) and amount.
@@ -138,6 +118,6 @@ const slugSchema = type('/^[a-z0-9](?:[a-z0-9-]{0,68}[a-z0-9])?$/');
  */
 export const rentVanSchema = type({
 	vanSlug: slugSchema,
-	hostId: cuidSchema,
-	renterId: cuidSchema,
+	hostId: uuidv7Schema,
+	renterId: uuidv7Schema,
 });

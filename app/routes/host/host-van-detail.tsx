@@ -1,13 +1,13 @@
 import { Activity } from 'react';
 import { data, href, isRouteErrorResponse } from 'react-router';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
-import { validateCUIDS } from '~/dal/validate-cuids';
+import { validateIds } from '~/dal/validate-ids';
 import { determineHostVansRoute } from '~/features/host/utils/determine-host-vans-route';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
-import { VanDetailCard } from '~/features/vans/components/host-van-detail-card';
+import { VanDetailCard } from '~/features/vans/components/host detail';
 import { getHostVanBySlug } from '~/features/vans/queries/host';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { tryCatch } from '~/utils/try-catch.server';
@@ -26,7 +26,7 @@ export const loader = async ({
 	const { cursor, limit } = loadHostSearchParams(request);
 
 	const { data: van } = await tryCatch(() =>
-		validateCUIDS(getHostVanBySlug, [0])(user.id, params.vanSlug)
+		validateIds(getHostVanBySlug, [0])(user.id, params.vanSlug)
 	);
 
 	if (!van) {

@@ -1,12 +1,12 @@
 model Rent {
-  id           String        @id @default(cuid()) @db.VarChar(25)
-  renterId     String        @db.VarChar(25)
-  hostId       String        @db.VarChar(25)
+  id           String        @id @default(uuid(7)) @db.Uuid
+  renterId     String        @db.Uuid
+  hostId       String        @db.Uuid
   rentedAt     DateTime      @default(now()) @db.Date
   rentedTo     DateTime?     @db.Date
-  vanId        String        @db.VarChar(25)
-  host         UserInfo      @relation("host", fields: [hostId], references: [userId])
-  renter       UserInfo      @relation("renter", fields: [renterId], references: [userId])
+  vanId        String        @db.Uuid
+  host         User          @relation("host", fields: [hostId], references: [id])
+  renter       User          @relation("renter", fields: [renterId], references: [id])
   van          Van           @relation(fields: [vanId], references: [id])
   reviews      Review[]
   transactions Transaction[]

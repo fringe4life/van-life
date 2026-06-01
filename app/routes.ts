@@ -41,5 +41,7 @@ export default [
 		]),
 	]),
 	route('/api/auth/*', './routes/api/auth.ts'),
+	route('robots.txt', './routes/public/robots.txt.ts'),
+	route('sitemap.xml', './routes/public/sitemap.xml.ts'),
 	route('*', './routes/public/404.tsx'),
 ] satisfies RouteConfig;

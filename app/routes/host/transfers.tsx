@@ -2,7 +2,7 @@ import { data } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
 import { Sortable } from '~/components/sortable';
-import { validateCUIDS } from '~/dal/validate-cuids';
+import { validateIds } from '~/dal/validate-ids';
 import { LazyBarChart } from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Income from '~/features/host/components/income';
 import {
@@ -32,7 +32,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	// Load chart data and paginated transactions
 	const [{ data: chartData }, { data: paginatedTransactions }] =
 		await Promise.all([
-			tryCatch(() => validateCUIDS(getUserTransactionsChartData, [0])(user.id)),
+			tryCatch(() => validateIds(getUserTransactionsChartData, [0])(user.id)),
 			tryCatch(() => {
 				const getWithUserId = (userId: string) =>
 					getUserTransactionsPaginated({
@@ -42,7 +42,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 						direction,
 						sort,
 					});
-				return validateCUIDS(getWithUserId, [0])(user.id);
+				return validateIds(getWithUserId, [0])(user.id);
 			}),
 		]);
 
@@ -131,7 +131,6 @@ const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
 				emptyStateMessage="Make some transactions and they will appear here."
 				errorStateMessage="Something went wrong"
 				items={paginatedTransactions}
-				renderKey={(item) => item.id}
 				renderProps={(item) => ({
 					...item,
 					// Map transaction data to match Income component expectations

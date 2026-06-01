@@ -5,7 +5,8 @@ export default {
 	ssr: true,
 	future: {
 		v8_middleware: true,
-		// v8_viteEnvironmentApi: true, // must stay off for Netlify plugin function generation
+		v8_viteEnvironmentApi: true,
+		v8_passThroughRequests: true,
+		v8_splitRouteModules: true,
 	},
-	prerender: ['/', '/about'],
 } satisfies Config;

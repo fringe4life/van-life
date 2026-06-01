@@ -9,6 +9,8 @@ import { Pagination } from '~/features/pagination/components/pagination';
 import { DEFAULT_CURSOR } from '~/features/pagination/pagination-constants';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
+import { buildVansPageSeo } from '~/features/seo/build-page-seo.server';
+import { SeoHead } from '~/features/seo/seo-head';
 import { VanCard } from '~/features/vans/components/van-card';
 import { VanFilters } from '~/features/vans/components/van-filters';
 import { VanHeader } from '~/features/vans/components/van-header';
@@ -73,6 +75,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 	const loaderData = {
 		badges,
+		seo: buildVansPageSeo(request),
 		...pagination,
 	};
 
@@ -84,7 +87,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 const Vans = ({ loaderData }: Route.ComponentProps) => {
-	const { items: vans, paginationMetadata } = loaderData;
+	const { items: vans, paginationMetadata, seo } = loaderData;
 	// Use nuqs for client-side state management
 	const [{ cursor, limit }] = useQueryStates(paginationParsers);
 	const [{ search }] = useQueryStates(searchParser);
@@ -103,54 +106,47 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
 		: 'There are no vans on our site.';
 
 	return (
-		<>
-			<title>Vans | Van Life</title>
-			<meta
-				content="Browse our vans for rent and find the perfect van for your adventure"
-				name="description"
-			/>
-			<ViewTransition>
-				<PendingUI
-					as="section"
-					className="grid h-full w-full! grid-rows-[min-content_min-content_1fr_min-content] gap-y-6 contain-content"
-				>
-					<VanHeader>Explore our van options</VanHeader>
+		<ViewTransition>
+			<SeoHead {...seo} />
+			<PendingUI
+				as="section"
+				className="grid h-full w-full! grid-rows-[min-content_min-content_1fr_min-content] gap-y-6 contain-content"
+			>
+				<VanHeader>Explore our van options</VanHeader>
 
-					<div className="grid grid-cols-[1fr_min-content] items-center gap-2">
-						<SearchInput />
-						<VanFilters />
-					</div>
-					<GenericComponent
-						Component={VanCard}
-						className="grid-max"
-						emptyStateMessage={emptyMessage}
-						errorStateMessage="Something went wrong"
-						items={vans}
-						renderKey={(van) => van.id}
-						renderProps={(van) => ({
-							van,
-							action: (
-								<div className="grid justify-end">
-									<VanPrice van={van} />
-								</div>
-							),
-							link: buildVanSearchParams({
-								cursor,
-								limit,
-								types,
-								excludeInRepair,
-								onlyOnSale,
-								search,
-								baseUrl: href('/vans/:vanSlug', {
-									vanSlug: van.slug,
-								}),
+				<div className="grid grid-cols-[1fr_min-content] items-center gap-2">
+					<SearchInput />
+					<VanFilters />
+				</div>
+				<GenericComponent
+					Component={VanCard}
+					className="grid-max"
+					emptyStateMessage={emptyMessage}
+					errorStateMessage="Something went wrong"
+					items={vans}
+					renderProps={(van) => ({
+						van,
+						action: (
+							<div className="grid justify-end">
+								<VanPrice van={van} />
+							</div>
+						),
+						link: buildVanSearchParams({
+							cursor,
+							limit,
+							types,
+							excludeInRepair,
+							onlyOnSale,
+							search,
+							baseUrl: href('/vans/:vanSlug', {
+								vanSlug: van.slug,
 							}),
-						})}
-					/>
-					<Pagination items={vans} paginationMetadata={paginationMetadata} />
-				</PendingUI>
-			</ViewTransition>
-		</>
+						}),
+					})}
+				/>
+				<Pagination items={vans} paginationMetadata={paginationMetadata} />
+			</PendingUI>
+		</ViewTransition>
 	);
 };
 export default Vans;

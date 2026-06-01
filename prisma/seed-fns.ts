@@ -55,25 +55,10 @@ function findRentableVan(vanIds: VanModel[], excludedIds: string[]): string {
 	return candidateId;
 }
 
-function generateUniqueIds<T extends Id>(
-	ids: T[]
-): { id1: string; id2: string } {
-	if (ids.length < 2) {
-		throw new Error('length of ids is too short for this function');
-	}
-	const id1 = getRandomId(ids);
-	let id2 = getRandomId(ids);
-
-	while (id1 === id2) {
-		id2 = getRandomId(ids);
-	}
-	return { id1, id2 };
-}
-
 import { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
-import { prisma } from '~/lib/prisma.server';
 import type { Id, Maybe } from '~/types';
+import { prisma } from './seed-client';
 
 // Returns a random Date between now - `monthsBack` and now (defaults to 1 month)
 function getRecentDate(monthsBack = 1): Date {
@@ -132,7 +117,6 @@ function getRecentRentalDate(): Date {
 export {
 	clearTables,
 	findRentableVan,
-	generateUniqueIds,
 	getCost,
 	getEndDate,
 	getRandomDiscount,

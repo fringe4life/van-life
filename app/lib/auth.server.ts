@@ -5,8 +5,8 @@ import {
 	ONE_MONTH_IN_SECONDS,
 	SECONDS_PER_DAY,
 } from '~/constants/time-constants';
-import { createId } from '~/lib/cuid.server';
 import { env } from '~/lib/env.server';
+import { createId } from '~/lib/id.server';
 import { prisma } from '~/lib/prisma.server';
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
@@ -17,25 +17,7 @@ export const auth = betterAuth({
 		requireEmailVerification: false,
 	},
 	experimental: { joins: true },
-	databaseHooks: {
-		user: {
-			create: {
-				before: async (user) => ({
-					data: {
-						...user,
-						id: createId(),
-					},
-				}),
-				after: async (user) => {
-					const { id: userId } = user;
-					// TODO: add error handling...
-					await prisma.userInfo.create({
-						data: { userId },
-					});
-				},
-			},
-		},
-	},
+	baseURL: env.BETTER_AUTH_URL,
 	secret: env.BETTER_AUTH_SECRET,
 	session: {
 		cookieCache: { enabled: true, maxAge: FIVE_MINUTES_IN_SECONDS },
@@ -44,4 +26,9 @@ export const auth = betterAuth({
 		preserveSessionInDatabase: true,
 	},
 	telemetry: { enabled: false },
+	advanced: {
+		database: {
+			generateId: createId,
+		},
+	},
 });

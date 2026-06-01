@@ -11,7 +11,7 @@
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.11-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.8.9-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.4.15-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.7.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.8.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.8.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-8.0.14-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -58,7 +58,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🎨 **Modern UI/UX** with responsive design, custom Tailwind variants, and smooth animations
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **ArkType** for runtime schema validation and type-safe narrowing
-- 🗄️ **Optimized Database IDs** with 25-character CUID v2 and VARCHAR(25) constraints
+- 🗄️ **Time-sortable database IDs** with UUID v7 and PostgreSQL `uuid` columns
 - 🎨 **TailwindCSS 4** with modern CSS features
 - 📦 **Prisma ORM** with Neon PostgreSQL and relation joins
 - 🔧 **Generic Components** for reusability and maintainability
@@ -71,6 +71,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🌐 **View Transitions** for smooth navigation experiences
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
+- 🔍 **SEO Infrastructure** (canonical URLs, Open Graph/Twitter meta, `robots.txt`, dynamic `sitemap.xml` via `@forge42/seo-tools`)
+- ☁️ **Cloudflare Workers** deployment with Varlock-managed secrets and Neon PostgreSQL
 
 ---
 
@@ -83,18 +85,19 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **TypeScript 6.0.3** with strict configuration
 - **TailwindCSS 4.3.0** with modern CSS features
 - **Radix UI** for accessible components (dropdown menus, dialogs, selects)
-- **Lucide React 0.577.0** for icons (direct imports for performance)
-- **Recharts 3.7.0** for data visualization (lazy-loaded)
+- **Lucide React 1.17.0** for icons (direct imports for performance)
+- **Recharts 3.8.1** for data visualization (lazy-loaded)
 - **nuqs 2.8.9** for type-safe URL state management via Context7 parsers
 
 ### Backend & Database
 
-- **Node.js** with React Router server
-- **Prisma 7.8.0** ORM with Neon PostgreSQL (Rust-free client)
+- **Cloudflare Workers** with React Router SSR via `workers/app.ts`
+- **Prisma 7.8.0** ORM with Neon PostgreSQL (Rust-free client, `workerd` runtime)
 - **better-auth 1.6.11** for authentication
 - **ArkType 2.2.0** for schema validation and type narrowing
-- **CUID2 3.3.0** for unique identifiers (configured for 25-character IDs)
-- **@prisma/adapter-neon 7.4.2** for Neon database integration
+- **uuidv7** for app-generated user IDs; Prisma `@default(uuid(7))` for domain models
+- **@prisma/adapter-neon 7.8.0** for Neon database integration
+- **Varlock** for typed, validated environment variables (Bitwarden integration in production)
 
 ### Development Tools
 
@@ -102,7 +105,10 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **vite-tsconfig-paths 6.1.1** - TypeScript path alias resolution for `~/` imports
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
 - **Biome 2.4.15** for linting and formatting with Ultracite integration
-- **Ultracite 7.7.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.8.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
+- **Wrangler 4.95.0** - Cloudflare Workers CLI for deploy and typegen
+- **react-doctor** - React diagnostics in CI and locally
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 6.0.3** with `@typescript/native-preview` support
 - **Bun** for fast package management and runtime
@@ -126,20 +132,22 @@ app/
 │   └── [common]        # Generic components (forms, lists, sortable, etc.)
 ├── constants/          # App-wide constants and enums
 ├── dal/                # Data access layer utilities
-│   └── validate-cuids.ts  # Centralized CUID validation helper
+│   └── validate-ids.ts  # Centralized UUID v7 validation helper
 ├── features/
 │   ├── host/
 │   │   ├── components/ # Host-specific components (charts, income, reviews)
 │   │   ├── queries/     # Host queries (rental, review, user analytics)
 │   │   └── utils/      # Route determination helpers
 │   ├── image/          # Image optimization utilities
-│   ├── middleware/     # Auth middleware and contexts
+│   ├── middleware/     # Auth middleware and Cloudflare context
 │   ├── navigation/     # Navigation components and hooks
 │   ├── pagination/     # Pagination utilities and components
+│   ├── seo/            # SEO helpers (canonical URLs, SeoHead, sitemap)
 │   │   ├── components/ # Pagination UI components
 │   │   └── utils/      # Pagination validators and utilities (toPagination, getCursorMetadata, reverseSortOption, buildSearchParams, etc.)
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, VanFilters, etc.)
+│       │   └── host detail/  # Compound HostVanDetail (Details, Photos, Pricing)
 │       ├── constants/  # Van-related constants (van-types.ts for client-safe constants)
 │       ├── hooks/      # Optimistic UI hooks for filters (useOptimisticBooleanFilter, useOptimisticTypesFilter)
 │       ├── queries/    # Van CRUD operations and queries
@@ -148,6 +156,8 @@ app/
 ├── hooks/              # Custom React hooks
 ├── lib/                # Server-side utilities
 │   ├── auth.server.ts      # Better-auth configuration
+│   ├── env.server.ts       # Varlock env re-export
+│   ├── id.server.ts        # UUID v7 ID generator for Better Auth
 │   ├── parsers.ts          # nuqs search parameter parsers
 │   ├── schemas.ts          # ArkType validation schemas
 │   ├── search-params.server.ts  # Server-side search param loaders
@@ -162,9 +172,12 @@ app/
 │   │   └── rentals/    # Rental management routes
 │   ├── layout/         # Layout components
 │   └── public/         # Public routes
-│       ├── vans.tsx    # Van listing/detail (Activity-based single route)
+│       ├── vans.tsx    # Van listing
+│       ├── van-detail.tsx  # Van detail page
 │       ├── home.tsx    # Home page
 │       ├── about.tsx   # About page
+│       ├── robots.txt.ts   # Dynamic robots.txt
+│       ├── sitemap.xml.ts  # Dynamic sitemap
 │       └── 404.tsx     # Not found page
 ├── types/              # TypeScript type definitions
 ├── utils/              # Utility functions (transaction validators, pricing, etc.)
@@ -175,10 +188,13 @@ app/
 prisma/
 ├── models/             # Modular Prisma model definitions
 │   ├── betterAuth/     # Authentication models (User, Session, Account, Verification)
-│   └── van/            # Van-related models (Van, Rent, Review, UserInfo, Transaction)
+│   └── van/            # Van-related models (Van, Rent, Review, Transaction)
 ├── seed-data/          # Modular seed data files
 ├── schema.prisma       # Prisma schema entrypoint
 └── seed.ts             # Database seeding script
+
+workers/
+└── app.ts              # Cloudflare Workers entry (React Router SSR)
 ```
 
 ---
@@ -193,13 +209,12 @@ prisma/
   - `Van` - Van listings with types (SIMPLE, LUXURY, RUGGED), states (NEW, IN_REPAIR, ON_SALE, AVAILABLE), and **SEO-friendly slugs** for human-readable URLs
   - `Rent` - Rental records and history (links to transactions)
   - `Review` - User reviews and ratings
-  - `UserInfo` - Extended user profile information
   - `Transaction` - **Single source of truth** for all financial data (deposits, withdrawals, rental payments) with optional rental references and descriptions for complete audit trail
 - **Advanced features:**
   - **Rust-free Prisma Client** with `queryCompiler` and `driverAdapters` (now GA)
   - **Relation joins** for optimized queries (preview feature)
   - **Full-text search** with PostgreSQL (preview feature) - searches across multiple fields with relevance-based ordering
-  - **Optimized CUID2** with 25-character IDs and VARCHAR(25) constraints for better performance
+  - **UUID v7** primary keys and foreign keys mapped to PostgreSQL `uuid` for time-ordered, index-friendly IDs
   - **Performance optimizations** - Direct lucide-react icon imports (15-70% faster dev boot, 28% faster builds), immutable array methods (`.toSorted()`), client-safe constants for server/client code separation
   - **Comprehensive indexing** for optimal query performance:
     - Transaction model: Composite indexes for pagination (`[userId, createdAt]`, `[userId, amount]`, `[userId, type, createdAt]`, `[userId, type, amount]`)
@@ -212,7 +227,7 @@ prisma/
   - **Slug-based routing** with unique, SEO-friendly URLs (e.g., `/vans/modest-explorer`)
   - **ArkType regex validation** for slugs with built-in length constraints
   - Native JavaScript database drivers for better edge/serverless compatibility
-  - **Centralized CUID validation** with `validateCUIDS` helper for type-safe ID validation before database operations
+  - **Centralized UUID v7 validation** with `validateIds` helper for type-safe ID validation before database operations
 
 ### Setup Database
 
@@ -224,7 +239,7 @@ bunx prisma generate
 bunx prisma db push
 
 # Seed with enhanced data
-bunx prisma db seed
+bun run db:seed
 ```
 
 ### Prisma Configuration
@@ -232,7 +247,6 @@ bunx prisma db seed
 This project uses `prisma.config.ts` for Prisma CLI configuration (GA in Prisma 7.x):
 
 ```
-import 'dotenv/config';
 import type { PrismaConfig } from 'prisma/config';
 import { defineConfig, env } from 'prisma/config';
 
@@ -245,18 +259,19 @@ export default defineConfig({
 	datasource: {
 		url: env('DATABASE_URL'),
 	},
-} satisfies PrismaConfig);
+}) satisfies PrismaConfig;
 ```
 
 Notes:
 
-- Environment variables load via `dotenv/config` in `prisma.config.ts`.
+- Prisma CLI reads `DATABASE_URL` from the environment (loaded by Varlock in dev/deploy).
+- Separate `seedClient` generator uses `runtime = "bun"` for local seeding; app client uses `runtime = "workerd"` for Cloudflare Workers.
 
-### CUID Validation Helper
+### UUID v7 validation helper
 
-The application uses a centralized `validateCUIDS` helper (`app/dal/validate-cuids.ts`) to validate CUID arguments before database operations:
+The application uses a centralized `validateIds` helper (`app/dal/validate-ids.ts`) to validate UUID v7 arguments before database operations:
 
-- **Type-safe validation** - Validates selected positional arguments as CUIDs using TypeScript generics
+- **Type-safe validation** - Validates selected positional arguments as UUID v7 strings using TypeScript generics
 - **Error handling** - Throws `INVALID_ID_ERROR` for `tryCatch` to handle consistently
 - **Route-level usage** - Validation applied at route call sites, keeping query modules focused on data access
 - **Inline usage** - Designed for inline usage within `tryCatch` blocks for consistent error handling
@@ -264,7 +279,7 @@ The application uses a centralized `validateCUIDS` helper (`app/dal/validate-cui
 ```typescript
 // Example usage
 const result = await tryCatch(() =>
-  validateCUIDS(getUser, [0] as const)(session.user.id)
+  validateIds(getUser, [0] as const)(session.user.id)
 );
 ```
 
@@ -293,7 +308,7 @@ generator client {
   previewFeatures = ["relationJoins", "fullTextSearchPostgres"]
   engineType      = "client"
   compilerBuild   = "fast"
-  runtime         = "bun"
+  runtime         = "workerd"
 }
 ```
 
@@ -302,7 +317,7 @@ generator client {
 - **No Rust binary dependencies** - eliminates native binary requirements
 - **Smaller bundle sizes** - ideal for serverless and edge deployments
 - **Native JavaScript drivers** - uses `@prisma/adapter-neon` for connection pooling
-- **Better edge compatibility** - works seamlessly in Vercel Edge Runtime
+- **Cloudflare Workers compatible** - `workerd` runtime for production SSR
 - **Simplified deployments** - no need to handle platform-specific binaries
 
 ---
@@ -316,7 +331,7 @@ generator client {
 - **Server-side session handling** in loaders
 - **Modular model organization** for better maintainability
 - **Centralized auth types/config** in `app/lib/auth.server.ts`
-- **Custom CUID v2 generator** for 25-character user IDs optimized for database storage
+- **UUID v7 generator** (`createId` in `app/lib/id.server.ts`) for user IDs via Better Auth database hook
 
 ---
 
@@ -436,16 +451,25 @@ export async function action({ context }: Route.ActionArgs) {
 
 ## SEO-Friendly Slug-Based Routing
 
-The application uses **human-readable slugs** for van URLs instead of database IDs:
+The application uses **human-readable slugs** for van URLs and a centralized SEO layer:
 
-### Features
+### SEO Infrastructure
+
+- **`SeoHead` component** (`app/features/seo/seo-head.tsx`) - title, description, canonical, Open Graph, and Twitter meta
+- **Server-side SEO builders** (`build-page-seo.server.ts`) - per-route title/description/canonical URLs
+- **`SITE_URL` env var** - canonical and OG link base (falls back to request origin)
+- **Dynamic `robots.txt`** - production allows public routes, blocks host/auth/api; dev disallows all
+- **Dynamic `sitemap.xml`** - lists public van detail pages from database
+- **`@forge42/seo-tools`** - robots.txt generation
+
+### Slug Routing Features
 
 - **SEO-friendly URLs** - `/vans/modest-explorer` instead of `/vans/cmgg0wp450001zrijvbpx2uo0`
 - **User-friendly** - Shareable, memorable URLs for better user experience
 - **Type-safe validation** - ArkType schema with regex validation
 - **Automatic generation** - Slugs auto-generated from van names using `getSlug()` utility
 - **Unique constraint** - Database-enforced uniqueness with indexed lookups
-- **Internal ID usage** - Database operations still use CUIDs for security and referential integrity
+- **Internal ID usage** - Database operations use UUID v7 for security and referential integrity
 
 ### Implementation
 
@@ -687,7 +711,7 @@ const StyledCard = withVanCardStyles(Card);
 - **Maintainability**: Single source of truth for van card behavior
 - **Type-safe**: Proper TypeScript generics and constraints
 
-**Used in:** `VanCard`, `VanDetail`, `HostVanDetailCard`
+**Used in:** `VanCard`, `VanDetail`, `HostVanDetail` compound component
 
 ### Compound Components
 
@@ -745,16 +769,17 @@ export default function Vans({ params }) {
 
 **Benefits:** Zero perceived latency between views, state preservation (scroll position, filters), memory efficient with paused effects.
 
-### Native Meta Elements
+### Native Meta Elements & SeoHead
 
-Meta tags are defined directly within components using React 19's built-in elements:
+Meta tags use React 19 native elements and the shared `SeoHead` component for full SEO coverage:
 
 ```tsx
+import { SeoHead } from '~/features/seo/seo-head';
+
 export default function Home() {
   return (
     <section>
-      <title>Home | Van Life</title>
-      <meta name="description" content="Welcome to Van Life..." />
+      <SeoHead title="Home | Van Life" description="..." url={canonicalUrl} />
       {/* rest of component */}
     </section>
   );
@@ -822,9 +847,11 @@ const BarChart = lazy(() => import("./BarChart"));
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22+ (or Bun)
 - Neon PostgreSQL database
-- Bun (recommended) or npm
+- Bun (recommended)
+- Cloudflare account (for deployment)
+- Bitwarden access token (optional; for Varlock secret resolution in production)
 
 ### Installation
 
@@ -835,19 +862,18 @@ cd van-life
 
 # Install dependencies
 bun install
-# or
-npm install
 
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your Neon database credentials
+# Set up environment variables (see Environment Variables section)
+# Copy .env.development defaults; add secrets to .env.local or use Varlock + Bitwarden
+cp .env.development .env.local
+# Edit .env.local with DATABASE_URL and BETTER_AUTH_SECRET
 
 # Set up database
 bunx prisma generate
 bunx prisma db push
-bunx prisma db seed
+bun run db:seed
 
-# Start development server
+# Start development server (Varlock loads env)
 bun run dev
 ```
 
@@ -859,45 +885,56 @@ The app will be available at [http://localhost:5173](http://localhost:5173).
 # Build
 bun run build
 
-# Serve the production build
-bunx @react-router/serve
+# Preview locally
+bun run preview
+
+# Deploy to Cloudflare Workers
+bun run deploy
 ```
 
 ---
 
 ## Environment Variables
 
-Create a `.env` file in the root directory:
+Environment variables are defined in `.env.schema` (Varlock) and validated at runtime. Local defaults live in `.env.development`; secrets go in `.env.local` or Bitwarden via Varlock.
 
 ```env
+# Environment (development | preview | production | test)
+VARLOCK_ENV=development
+
 # Database (Neon PostgreSQL)
 DATABASE_URL=postgresql://user:password@ep-xxx-xxx-xxx.region.aws.neon.tech/neondb
 
 # Authentication
-BETTER_AUTH_SECRET=your-secret-key-here
+BETTER_AUTH_SECRET=your-secret-key-here-min-20-chars
 BETTER_AUTH_URL=http://localhost:5173
 
-# Optional: Google OAuth (commented out in env.server.ts)
-# GOOGLE_CLIENT_ID=your-google-client-id
-# GOOGLE_CLIENT_SECRET=your-google-client-secret
+# SEO (canonical URLs, Open Graph)
+SITE_URL=http://localhost:5173
+
+# Optional: Bitwarden (Varlock plugin for production secrets)
+# BITWARDEN_ACCESS_TOKEN=your-bitwarden-token
 ```
 
-Environment variables are validated at runtime in `app/lib/env.server.ts` via ArkType schemas to keep configuration type-safe.
+Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app code through `app/lib/env.server.ts`.
 
 ---
 
 ## Scripts
 
-- `bun run dev` – Start development server with HMR
-- `bun run build` – Build for production
-- `bun run start` – Preview the built app with Vite
-- `bun run build:netlify` – Run Netlify build pipeline
-- `bun run deploy` – Deploy with Netlify CLI
-- `bun run deploy:netlify` – Deploy to Netlify production
-- `bun run typecheck` – TypeScript checking and route type generation (`react-router typegen && tsgo`)
+- `bun run dev` – Start development server with HMR (Varlock loads env)
+- `bun run build` – Build for production (Cloudflare Workers + client assets)
+- `bun run preview` – Preview the production build locally
+- `bun run deploy` – Deploy to Cloudflare Workers via Varlock + Wrangler
+- `bun run typegen` – Generate Wrangler types and React Router route types
+- `bun run typecheck` – TypeScript checking (`typegen` + `tsgo`)
+- `bun run db:migrate` – Run Prisma migrations (dev)
+- `bun run db:seed` – Seed database
+- `bun run db:reset` – Reset database and re-seed
 - `bun run fix` – Auto-fix issues with Ultracite (format + lint)
 - `bun run check` – Run Ultracite checks (no fix)
 - `bun run doctor` – Run Ultracite doctor
+- `bun run react-doctor` – Run React Doctor diagnostics
 - `bun run ultracite:upgrade` – Upgrade Ultracite and re-init (Bun, Biome, Cursor)
 
 ### Ultracite Commands
@@ -953,7 +990,7 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 ## Code Quality
 
 - **Biome 2.4.15** for linting and formatting with Ultracite integration
-- **Ultracite 7.7.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.8.0** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 6.0.3** with strict configuration
 - **ArkType 2.2.0** for runtime validation with regex support for slug validation
 - **Consistent code style:**
@@ -967,16 +1004,10 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 - **Prisma** with proper type generation and optimized ID constraints
 - **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization
 
-### GitHub Actions (CodeQL)
+### GitHub Actions
 
-This project uses GitHub Actions for automated code scanning via CodeQL.
-
-- Location: `.github/workflows/codeql.yml`
-- Triggered on: push and pull requests to `master`, plus a weekly schedule
-- Language matrix: JavaScript/TypeScript
-- Purpose: statically analyze the codebase for security vulnerabilities and quality issues
-- Implementation: `github/codeql-action` (`init` and `analyze`) with `build-mode: none` (no manual build required)
-- Permissions: writes security events; reads packages, actions, and contents as needed
+- **CodeQL** (`.github/workflows/codeql.yml`) - Security and quality scanning on push/PR to `master`
+- **React Doctor** (`.github/workflows/react-doctor.yml`) - React diagnostics on pull requests to `main`
 
 ### Ultracite Integration
 
@@ -1002,26 +1033,24 @@ This project uses **Ultracite** for enhanced code quality and AI-friendly develo
 
 ## Deployment
 
-### Vercel Deployment
+### Cloudflare Workers
 
-The application is configured for Vercel deployment with:
+The application deploys to **Cloudflare Workers** with static client assets:
 
-- **Prisma client generation** via `postinstall` script
-- **Neon database integration** with `@prisma/adapter-neon`
-- **Edge runtime compatibility** with proper WASM handling
-- **Environment variable configuration** for production
-- **Rust-free Prisma Client** for optimized serverless deployments
-- **Automatic deployments disabled** via `vercel.json` (`deploymentEnabled: false`)
+- **Worker entry** - `workers/app.ts` with React Router SSR request handler
+- **Wrangler config** - `wrangler.jsonc` (assets from `./build/client`, `nodejs_compat`)
+- **Varlock deploy** - `bun run deploy` runs `varlock-wrangler deploy` for typed secrets
+- **Neon PostgreSQL** - `@prisma/adapter-neon` with `poolQueryViaFetch` for Workers compatibility
+- **Prisma client** - `workerd` runtime; generated on `postinstall`
+- **Cloudflare context** - `cloudflareContext` middleware shares `env` and `ctx` with routes
 
-### Netlify Deployment
+```bash
+# Build and deploy
+bun run build
+bun run deploy
+```
 
-The application is configured for Netlify deployment with:
-
-- **Netlify React Router plugin** (`@netlify/vite-plugin-react-router`) for serverless functions
-- **Automatic builds disabled** in Netlify UI - use `netlify deploy --prod` for manual deployments
-- **v8_viteEnvironmentApi must be kept disabled** in `react-router.config.ts` (required for Netlify plugin function generation)
-- **Prisma client generation** via `postinstall` script
-- **Neon database integration** with `@prisma/adapter-neon`
+Set production secrets (`DATABASE_URL`, `BETTER_AUTH_SECRET`, `SITE_URL`, etc.) via Varlock/Bitwarden or Wrangler secrets before deploying.
 
 ### Build Process
 
