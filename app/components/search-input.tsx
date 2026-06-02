@@ -4,38 +4,32 @@ import {
 	type KeyboardEventHandler,
 	startTransition,
 } from 'react';
+import { DEFAULT_DEBOUNCE } from '~/constants/constants';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
 } from '~/features/pagination/pagination-constants';
-import { paginationParsers, searchParser } from '~/lib/parsers';
+import { searchUrlParsers } from '~/lib/parsers';
 import { Input } from './ui/input';
 
-// Constants for debounce timing
-const SEARCH_DEBOUNCE_DELAY = 250; // milliseconds
-
 const SearchInput = () => {
-	const [query, setQuery] = useQueryStates(searchParser);
-	const [, setSearchParams] = useQueryStates(paginationParsers);
+	const [urlState, setUrlState] = useQueryStates(searchUrlParsers);
 
 	const handleSearch: ChangeEventHandler<HTMLInputElement> = (e) => {
 		const search = e.currentTarget.value.trim();
 		// Send immediate update if clearing the input, otherwise debounce
 		startTransition(async () => {
-			await setQuery(
-				{ search: search || '' },
+			await setUrlState(
 				{
-					limitUrlUpdates:
-						search === '' ? defaultRateLimit : debounce(SEARCH_DEBOUNCE_DELAY),
-				}
-			);
-			// Reset cursor and direction when search changes
-			startTransition(async () => {
-				await setSearchParams({
+					search: search || '',
 					cursor: DEFAULT_CURSOR,
 					direction: DEFAULT_DIRECTION,
-				});
-			});
+				},
+				{
+					limitUrlUpdates:
+						search === '' ? defaultRateLimit : debounce(DEFAULT_DEBOUNCE),
+				}
+			);
 		});
 	};
 
@@ -44,17 +38,14 @@ const SearchInput = () => {
 			// Send immediate update on Enter key press
 			const search = e.currentTarget.value;
 			startTransition(async () => {
-				await setQuery(
-					{ search: search || '' },
-					{ limitUrlUpdates: undefined }
-				);
-				// Reset cursor and direction when search changes
-				startTransition(async () => {
-					await setSearchParams({
+				await setUrlState(
+					{
+						search: search || '',
 						cursor: DEFAULT_CURSOR,
 						direction: DEFAULT_DIRECTION,
-					});
-				});
+					},
+					{ limitUrlUpdates: undefined }
+				);
 			});
 		}
 	};
@@ -66,7 +57,7 @@ const SearchInput = () => {
 			onKeyDown={handleKeyPress}
 			placeholder="Modest Explorer"
 			type="search"
-			value={query.search || ''}
+			value={urlState.search || ''}
 		/>
 	);
 };

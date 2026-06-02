@@ -9,7 +9,6 @@ import {
 import type { Route } from './+types/root';
 import { HTTP_MESSAGES, HTTP_STATUS } from './constants/http-constants';
 import './app.css';
-import '@fontsource-variable/inter/wght.css';
 import type { Maybe } from './types';
 
 export const Layout = ({ children }: { children: React.ReactNode }) => (

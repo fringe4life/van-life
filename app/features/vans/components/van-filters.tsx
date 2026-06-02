@@ -1,16 +1,16 @@
 import { FilterIcon } from 'lucide-react';
-import { debounce, useQueryStates } from 'nuqs';
-import { startTransition } from 'react';
+import { useQueryStates } from 'nuqs';
+import { startTransition, useId } from 'react';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
+import { Checkbox } from '~/components/ui/checkbox';
+import { Label } from '~/components/ui/label';
 import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '~/components/ui/dropdown-menu';
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '~/components/ui/popover';
+import { Separator } from '~/components/ui/separator';
 import {
 	DEFAULT_CURSOR,
 	DEFAULT_DIRECTION,
@@ -21,24 +21,28 @@ import {
 } from '~/features/vans/constants/van-types';
 import { useOptimisticBooleanFilter } from '~/features/vans/hooks/use-optimistic-boolean-filter';
 import { useOptimisticTypesFilter } from '~/features/vans/hooks/use-optimistic-types-filter';
-import { paginationParsers, vanFiltersParser } from '~/lib/parsers';
+import {
+	activeFilterCount,
+	getLimitUrlUpdates,
+	isRemovingFilter,
+	type VanFilterUrlState,
+} from '~/features/vans/utils/van-filter-url';
+import { vansFilterUrlParsers } from '~/lib/parsers';
 import { cn } from '~/utils/utils';
 
-// Constants for debounce timing
-const FILTER_DEBOUNCE_DELAY = 250; // milliseconds
-
-const VanFilters = () => {
-	const [filters, setFilters] = useQueryStates(vanFiltersParser);
-	const [, setSearchParams] = useQueryStates(paginationParsers);
-
-	const { types, excludeInRepair, onlyOnSale } = filters;
-
-	// Filter out empty strings and ensure proper typing
-	const validTypes = (types ?? []).filter((t): t is LowercaseVanType =>
+const toValidTypes = (types: string[] | null | undefined): LowercaseVanType[] =>
+	(types ?? []).filter((t): t is LowercaseVanType =>
 		VAN_TYPE_LOWERCASE.includes(t as LowercaseVanType)
 	);
 
-	// Use optimistic hooks for immediate UI feedback
+const VanFilters = () => {
+	const [urlState, setUrlState] = useQueryStates(vansFilterUrlParsers);
+	const baseId = useId();
+
+	const { types, excludeInRepair, onlyOnSale } = urlState;
+
+	const validTypes = toValidTypes(types);
+
 	const [optimisticTypes, toggleOptimisticType] =
 		useOptimisticTypesFilter(validTypes);
 	const [optimisticExcludeInRepair, toggleOptimisticExcludeInRepair] =
@@ -46,145 +50,164 @@ const VanFilters = () => {
 	const [optimisticOnlyOnSale, toggleOptimisticOnlyOnSale] =
 		useOptimisticBooleanFilter(onlyOnSale ?? false);
 
-	// Calculate active filter count using optimistic values
-	const activeFilterCount =
-		(optimisticTypes.length ?? 0) +
-		(optimisticExcludeInRepair ? 1 : 0) +
-		(optimisticOnlyOnSale ? 1 : 0);
+	const currentFilterState = (): VanFilterUrlState => ({
+		types: validTypes,
+		excludeInRepair: excludeInRepair ?? false,
+		onlyOnSale: onlyOnSale ?? false,
+	});
 
-	const handleTypeToggle = (type: string) => {
-		// Optimistic update happens immediately
-
-		// Actual URL update with debounce
-		startTransition(() => {
-			toggleOptimisticType(type as LowercaseVanType);
-			// Filter out empty strings and ensure proper typing
-			const currentTypes = (types ?? []).filter((t): t is LowercaseVanType =>
-				VAN_TYPE_LOWERCASE.includes(t as LowercaseVanType)
-			);
-			const typedType = type as LowercaseVanType;
-			const newTypes = currentTypes.includes(typedType)
-				? currentTypes.filter((t) => t !== typedType)
-				: [...currentTypes, typedType];
-			startTransition(async () => {
-				await setFilters(
-					{ types: newTypes.length > 0 ? newTypes : [] },
-					{
-						limitUrlUpdates: debounce(FILTER_DEBOUNCE_DELAY),
-					}
-				);
-			});
-			startTransition(async () => {
-				await setSearchParams({
+	const commitFilterUpdate = (
+		partial: Partial<
+			Pick<VanFilterUrlState, 'types' | 'excludeInRepair' | 'onlyOnSale'>
+		>,
+		optimisticUpdate: () => void,
+		isRemoving: boolean
+	) => {
+		startTransition(async () => {
+			optimisticUpdate();
+			await setUrlState(
+				{
+					...partial,
 					cursor: DEFAULT_CURSOR,
 					direction: DEFAULT_DIRECTION,
-				});
-			});
+				},
+				{ limitUrlUpdates: getLimitUrlUpdates(isRemoving) }
+			);
 		});
+	};
+
+	const badgeCount = activeFilterCount({
+		types: optimisticTypes,
+		excludeInRepair: optimisticExcludeInRepair,
+		onlyOnSale: optimisticOnlyOnSale,
+	});
+
+	const handleTypeToggle = (type: LowercaseVanType) => {
+		const current = currentFilterState();
+		const newTypes = current.types.includes(type)
+			? current.types.filter((t) => t !== type)
+			: [...current.types, type];
+		const next: VanFilterUrlState = {
+			...current,
+			types: newTypes,
+		};
+		const removing = isRemovingFilter(current, next);
+
+		commitFilterUpdate(
+			{ types: next.types },
+			() => toggleOptimisticType(type),
+			removing
+		);
 	};
 
 	const handleExcludeInRepairToggle = (checked: boolean) => {
-		// Actual URL update with debounce
-		startTransition(async () => {
-			// Optimistic update happens immediately
-			toggleOptimisticExcludeInRepair({ type: 'toggle' });
+		const current = currentFilterState();
+		const next: VanFilterUrlState = { ...current, excludeInRepair: checked };
+		const removing = isRemovingFilter(current, next);
 
-			await setFilters(
-				{ excludeInRepair: checked },
-				{
-					limitUrlUpdates: debounce(FILTER_DEBOUNCE_DELAY),
-				}
-			);
-
-			startTransition(async () => {
-				await setSearchParams({
-					cursor: DEFAULT_CURSOR,
-					direction: DEFAULT_DIRECTION,
-				});
-			});
-		});
+		commitFilterUpdate(
+			{ excludeInRepair: checked },
+			() => toggleOptimisticExcludeInRepair({ type: 'toggle' }),
+			removing
+		);
 	};
 
 	const handleOnlyOnSaleToggle = (checked: boolean) => {
-		// Optimistic update happens immediately
+		const current = currentFilterState();
+		const next: VanFilterUrlState = { ...current, onlyOnSale: checked };
+		const removing = isRemovingFilter(current, next);
 
-		// Actual URL update with debounce
-		startTransition(() => {
-			toggleOptimisticOnlyOnSale({ type: 'toggle' });
-			(async () => {
-				await setFilters(
-					{ onlyOnSale: checked },
-					{
-						limitUrlUpdates: debounce(FILTER_DEBOUNCE_DELAY),
-					}
-				);
-			})();
-			startTransition(async () => {
-				await setSearchParams({
-					cursor: DEFAULT_CURSOR,
-					direction: DEFAULT_DIRECTION,
-				});
-			});
-		});
+		commitFilterUpdate(
+			{ onlyOnSale: checked },
+			() => toggleOptimisticOnlyOnSale({ type: 'toggle' }),
+			removing
+		);
 	};
 
 	return (
-		<DropdownMenu modal={false}>
-			<DropdownMenuTrigger asChild>
+		<Popover>
+			<PopoverTrigger asChild>
 				<Button className="gap-2" variant="outline">
 					<FilterIcon className="size-4" />
 					Filters
-					{activeFilterCount > 0 && (
+					{badgeCount > 0 && (
 						<Badge
 							className="ml-1 flex size-5 items-center justify-center rounded-full p-0 text-xs"
 							variant="outline"
 						>
-							{activeFilterCount}
+							{badgeCount}
 						</Badge>
 					)}
 				</Button>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent align="start" className="w-56">
-				<DropdownMenuLabel>Van Types</DropdownMenuLabel>
-				{VAN_TYPE_LOWERCASE.map((type) => {
-					const isOptimistic = optimisticTypes.includes(type);
-					const isActual = types?.includes(type) ?? false;
-					const isPending = isOptimistic !== isActual;
+			</PopoverTrigger>
+			<PopoverContent
+				align="start"
+				className="w-56 border-neutral-300 bg-white p-0 text-neutral-900 shadow-md"
+			>
+				<div className="p-1">
+					<p className="px-2 py-1.5 font-medium text-sm">Van Types</p>
+					{VAN_TYPE_LOWERCASE.map((type) => {
+						const isOptimistic = optimisticTypes.includes(type);
+						const id = `${baseId}-van-filter-type-${type}`;
 
-					return (
-						<DropdownMenuCheckboxItem
-							checked={isOptimistic}
-							className={cn(isPending && 'opacity-75')}
-							key={type}
-							onCheckedChange={() => handleTypeToggle(type)}
-							onSelect={(e) => e.preventDefault()}
+						return (
+							<div
+								className={'flex items-center gap-2 rounded-sm px-2 py-1.5'}
+								key={type}
+							>
+								<Checkbox
+									checked={isOptimistic}
+									id={id}
+									onCheckedChange={() => handleTypeToggle(type)}
+								/>
+								<Label className="cursor-pointer font-normal" htmlFor={id}>
+									{type.charAt(0).toUpperCase() + type.slice(1)}
+								</Label>
+							</div>
+						);
+					})}
+				</div>
+				<Separator className="bg-neutral-300" />
+				<div className="p-1">
+					<p className="px-2 py-1.5 font-medium text-sm">State Filters</p>
+					<div className={'flex items-center gap-2 rounded-sm px-2 py-1.5'}>
+						<Checkbox
+							checked={optimisticExcludeInRepair}
+							id={`${baseId}-van-filter-exclude-in-repair`}
+							onCheckedChange={(checked) =>
+								handleExcludeInRepairToggle(checked === true)
+							}
+						/>
+						<Label
+							className="cursor-pointer font-normal"
+							htmlFor={`${baseId}-van-filter-exclude-in-repair`}
 						>
-							{type.charAt(0).toUpperCase() + type.slice(1)}
-						</DropdownMenuCheckboxItem>
-					);
-				})}
-				<DropdownMenuSeparator />
-				<DropdownMenuLabel>State Filters</DropdownMenuLabel>
-				<DropdownMenuCheckboxItem
-					checked={optimisticExcludeInRepair}
-					className={cn(
-						optimisticExcludeInRepair !== excludeInRepair && 'opacity-75'
-					)}
-					onCheckedChange={handleExcludeInRepairToggle}
-					onSelect={(e) => e.preventDefault()}
-				>
-					Exclude in repair
-				</DropdownMenuCheckboxItem>
-				<DropdownMenuCheckboxItem
-					checked={optimisticOnlyOnSale}
-					className={cn(optimisticOnlyOnSale !== onlyOnSale && 'opacity-75')}
-					onCheckedChange={handleOnlyOnSaleToggle}
-					onSelect={(e) => e.preventDefault()}
-				>
-					Only on sale
-				</DropdownMenuCheckboxItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
+							Exclude in repair
+						</Label>
+					</div>
+					<div
+						className={cn(
+							'flex items-center gap-2 rounded-sm px-2 py-1.5',
+							optimisticOnlyOnSale !== onlyOnSale && 'opacity-75'
+						)}
+					>
+						<Checkbox
+							checked={optimisticOnlyOnSale}
+							id={`${baseId}-van-filter-only-on-sale`}
+							onCheckedChange={(checked) =>
+								handleOnlyOnSaleToggle(checked === true)
+							}
+						/>
+						<Label
+							className="cursor-pointer font-normal"
+							htmlFor={`${baseId}-van-filter-only-on-sale`}
+						>
+							Only on sale
+						</Label>
+					</div>
+				</div>
+			</PopoverContent>
+		</Popover>
 	);
 };
 

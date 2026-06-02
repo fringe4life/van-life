@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../.google-fonts/tailwind.css";
 
 /* Van state custom variants for cleaner component styling */
 @custom-variant van-new (&[data-slot*="van-card-new"]);
@@ -10,10 +11,6 @@
 @custom-variant unsuccessful (&[data-unsuccessful="true"]);
 
 @theme {
-	--font-sans:
-		"Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-
 	--container-sm: 12rem;
 	--container-md: 26rem;
 	--container-lg: 36rem;
@@ -45,10 +42,11 @@
 	--chart-height: 350px;
 
 	/* Chart text area components - aliases for Tailwind spacing scale */
-	--chart-text-top-margin: var(--spacing-4); /* mt-4 = 1rem = 16px */
-	--chart-text-first-height: var(--spacing-4); /* h-4 = 1rem = 16px */
-	--chart-text-gap: var(--spacing-2); /* mb-2 = 0.5rem = 8px */
-	--chart-text-second-height: var(--spacing-3); /* h-3 = 0.75rem = 12px */
+	/* Instead of referencing non-existent --spacing-N vars: */
+	--chart-text-top-margin: calc(4 * var(--spacing)); /* 1rem */
+	--chart-text-first-height: calc(4 * var(--spacing)); /* 1rem */
+	--chart-text-gap: calc(2 * var(--spacing)); /* 0.5rem */
+	--chart-text-second-height: calc(3 * var(--spacing)); /* 0.75rem */
 
 	/* Total text area height (16 + 16 + 8 + 12 = 52px) */
 	--chart-text-height: calc(
@@ -59,6 +57,14 @@
 	);
 
 	--chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
+
+	/* Mobile nav dialog animations */
+	--animate-slide-in-right: --slideInRight 300ms cubic-bezier(0.4, 0, 0.2, 1)
+		both;
+	--animate-slide-out-right: --slideOutRight 300ms cubic-bezier(0.4, 0, 0.2, 1)
+		both;
+	--animate-overlay-fade-in: --overlayFadeIn 300ms ease both;
+	--animate-overlay-fade-out: --overlayFadeOut 300ms ease both;
 
 	/* Radix UI Dropdown Menu CSS Variables */
 	/* These are typically set dynamically by Radix UI, but we provide fallbacks */
@@ -248,11 +254,54 @@
 	}
 }
 
-.mobile-sidebar {
-	animation: --slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+/* Outside any @layer — must be unlayered to beat Radix's unlayered !important */
+@supports (scrollbar-gutter: stable) {
+	html body[data-scroll-locked] {
+		margin-right: 0 !important;
+	}
 }
-.mobile-sidebar.out {
-	animation: --slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+/* ─── SIDEBAR DIALOG ──────────────────────────────────────────────────────
+   Entry: panel slides in from right via @starting-style (fires on showPopover).
+   Exit:  panel slides out to right; `allow-discrete` delays display:none on
+          both the popover and ::backdrop until the 300 ms transition finishes.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* Keep popover visible during exit so the slide-out can play */
+.sidebar-dialog {
+	transition: display 300ms allow-discrete;
+}
+
+/* Panel: off-screen right by default, slides to 0 when popover is open */
+.sidebar-dialog [data-sidebar-panel] {
+	transform: translateX(100%);
+	transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sidebar-dialog:popover-open [data-sidebar-panel] {
+	transform: translateX(0);
+}
+/* No-flash guard: ensure panel starts off-screen on the very first open */
+@starting-style {
+	.sidebar-dialog:popover-open [data-sidebar-panel] {
+		transform: translateX(100%);
+	}
+}
+
+/* Backdrop: fades in when open, fades out on close */
+.sidebar-dialog::backdrop {
+	background-color: rgb(0 0 0 / 0.4);
+	opacity: 0;
+	transition:
+		opacity 300ms,
+		display 300ms allow-discrete;
+}
+.sidebar-dialog:popover-open::backdrop {
+	opacity: 1;
+}
+@starting-style {
+	.sidebar-dialog:popover-open::backdrop {
+		opacity: 0;
+	}
 }
 
 /* VIEW TRANSITIONS */

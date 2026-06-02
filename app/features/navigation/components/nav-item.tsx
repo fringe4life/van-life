@@ -3,12 +3,12 @@ import type { CustomLink } from './custom-link';
 import type { CustomNavLink } from './custom-nav-link';
 
 // HOC type for NavItem
-export type NavItemComponent = typeof CustomLink | typeof CustomNavLink;
-export type NavItemComponentProps =
+type NavItemComponent = typeof CustomLink | typeof CustomNavLink;
+type NavItemComponentProps =
 	| React.ComponentProps<typeof CustomLink>
 	| React.ComponentProps<typeof CustomNavLink>;
 
-export interface NavItemProps {
+interface NavItemProps {
 	Component: NavItemComponent;
 	children?: ReactNode;
 	props: NavItemComponentProps;
@@ -24,16 +24,18 @@ const NavItem = ({ Component, props, children }: NavItemProps) => {
 		// className can be string or function
 		return (
 			<li>
-				<Component {...(props as React.ComponentProps<typeof CustomNavLink>)}>
-					{children}
-				</Component>
+				<Component {...props}>{children}</Component>
 			</li>
 		);
 	}
 	// className must be string
+	const { className, ...rest } = props;
 	return (
 		<li>
-			<Component {...(props as React.ComponentProps<typeof CustomLink>)}>
+			<Component
+				{...rest}
+				className={typeof className === 'string' ? className : undefined}
+			>
 				{children}
 			</Component>
 		</li>

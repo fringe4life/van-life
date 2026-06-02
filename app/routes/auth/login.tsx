@@ -13,6 +13,10 @@ import {
 import { Input } from '~/components/ui/input';
 import { hasAuthContext } from '~/features/middleware/contexts/has-auth';
 import { hasAuthMiddleware } from '~/features/middleware/functions/has-auth-middleware';
+import {
+	getRedirectFromRequest,
+	getSafeRedirectPath,
+} from '~/features/middleware/utils/auth-redirect';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
 import { loginSchema } from '~/lib/schemas';
@@ -21,11 +25,15 @@ import type { Route } from './+types/login';
 
 export const middleware: Route.MiddlewareFunction[] = [hasAuthMiddleware];
 
-export function loader({ context }: Route.LoaderArgs) {
+export function loader({ context, request }: Route.LoaderArgs) {
 	const hasAuth = context.get(hasAuthContext);
+	const redirectTo = getRedirectFromRequest(request);
+
 	if (hasAuth) {
-		throw redirect(href('/host'));
+		throw redirect(redirectTo);
 	}
+
+	return { redirectTo };
 }
 
 export async function action({ request }: Route.ActionArgs) {
@@ -52,12 +60,17 @@ export async function action({ request }: Route.ActionArgs) {
 			email: (formData.email as string | undefined) ?? '',
 		};
 	}
-	throw replace(href('/host'), {
+	const redirectTo = getSafeRedirectPath(formData.redirectTo);
+
+	throw replace(redirectTo, {
 		headers: login.headers,
 	});
 }
 
-export default function Login({ actionData }: Route.ComponentProps) {
+export default function Login({
+	actionData,
+	loaderData,
+}: Route.ComponentProps) {
 	const emailId = useId();
 	const passwordId = useId();
 
@@ -74,6 +87,11 @@ export default function Login({ actionData }: Route.ComponentProps) {
 				</CardHeader>
 				<CardContent>
 					<CustomForm className="grid items-center gap-4" method="POST">
+						<input
+							name="redirectTo"
+							type="hidden"
+							value={loaderData.redirectTo}
+						/>
 						<Input
 							autoFocus
 							defaultValue={actionData?.email ?? ''}

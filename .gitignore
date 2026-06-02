@@ -1,5 +1,6 @@
 .DS_Store
 /node_modules/
+.google-fonts/
 
 # React Router
 /.react-router/
@@ -9,7 +10,6 @@
 # env files (can opt-in for committing if needed)
 .env*
 !.env.schema
-!.env.development
 /app/generated/
 
 # Local Netlify folder
@@ -17,3 +17,6 @@
 .wrangler
 env.d.ts
 worker-configuration.d.ts
+
+
+.agents

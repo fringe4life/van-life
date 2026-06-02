@@ -3,7 +3,7 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-7.15.1-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-7.16.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -13,7 +13,7 @@
 [![Biome](https://img.shields.io/badge/Biome-2.4.15-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.8.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.8.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
-[![Vite](https://img.shields.io/badge/Vite-8.0.14-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7.3.3-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.2.0-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
@@ -44,10 +44,11 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ## Features
 
 - 🚀 **Modern React Router 7** with server-side rendering and file-based routing
-- 🔒 **Authentication** with better-auth (sign up, login, session management)
+- 🔒 **Authentication** with better-auth (sign up, login, session management, safe `redirectTo` return URLs)
 - ⚛️ **React 19 (canary) & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
-- 🔍 **Advanced Van Filtering** (search by name, multi-select type filters, state-based filtering with optimistic UI)
+- 🔍 **Advanced Van Filtering** (popover panel, multi-select types, state toggles, optimistic UI, debounced nuqs updates)
+- 📱 **Mobile Navigation** (Radix Dialog drawer, animated hamburger, slide-in overlay)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals with analytics)
@@ -81,10 +82,10 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Frontend
 
 - **React canary** builds with stable Activity component for prerendering
-- **React Router 7.15.1** (file-based routing, SSR, optional route parameters)
+- **React Router 7.16.0** (file-based routing, SSR, optional route parameters, v8 middleware flags)
 - **TypeScript 6.0.3** with strict configuration
 - **TailwindCSS 4.3.0** with modern CSS features
-- **Radix UI** for accessible components (dropdown menus, dialogs, selects)
+- **Radix UI** (`radix-ui` + `@radix-ui/react-dialog`) for popover, checkbox, label, and mobile nav dialog
 - **Lucide React 1.17.0** for icons (direct imports for performance)
 - **Recharts 3.8.1** for data visualization (lazy-loaded)
 - **nuqs 2.8.9** for type-safe URL state management via Context7 parsers
@@ -101,7 +102,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Development Tools
 
-- **Vite 8.0.14** - Fast frontend tooling with optimized builds
+- **Vite 7.3.3** - Fast frontend tooling with optimized builds
+- **vite-plugin-google-fonts** - Self-hosted Inter via generated `.google-fonts/` (gitignored)
 - **vite-tsconfig-paths 6.1.1** - TypeScript path alias resolution for `~/` imports
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
 - **Biome 2.4.15** for linting and formatting with Ultracite integration
@@ -115,7 +117,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Build System
 
-- **Vite 8.0.14** - Fast builds with native ES modules and optimized bundling
+- **Vite 7.3.3** - Fast builds with native ES modules and optimized bundling
 - **React Compiler** - Configured via `vite-plugin-babel` for optimal integration
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Enhanced performance** - Faster builds and reduced memory usage
@@ -128,7 +130,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ```
 app/
 ├── components/          # Reusable UI components
-│   ├── ui/             # Shadcn UI components (buttons, inputs, cards, etc.)
+│   ├── ui/             # Shadcn UI (button, popover, checkbox, badge, etc.)
 │   └── [common]        # Generic components (forms, lists, sortable, etc.)
 ├── constants/          # App-wide constants and enums
 ├── dal/                # Data access layer utilities
@@ -139,8 +141,8 @@ app/
 │   │   ├── queries/     # Host queries (rental, review, user analytics)
 │   │   └── utils/      # Route determination helpers
 │   ├── image/          # Image optimization utilities
-│   ├── middleware/     # Auth middleware and Cloudflare context
-│   ├── navigation/     # Navigation components and hooks
+│   ├── middleware/     # Auth middleware, Cloudflare context, auth-redirect helpers
+│   ├── navigation/     # Nav, mobile-nav (Dialog), hamburger-icon
 │   ├── pagination/     # Pagination utilities and components
 │   ├── seo/            # SEO helpers (canonical URLs, SeoHead, sitemap)
 │   │   ├── components/ # Pagination UI components
@@ -152,7 +154,7 @@ app/
 │       ├── hooks/      # Optimistic UI hooks for filters (useOptimisticBooleanFilter, useOptimisticTypesFilter)
 │       ├── queries/    # Van CRUD operations and queries
 │       ├── types/      # Van-specific TypeScript types
-│       └── utils/      # Van helpers (pricing, styling, display, validators)
+│       └── utils/      # Van helpers (pricing, van-filter-url, validators)
 ├── hooks/              # Custom React hooks
 ├── lib/                # Server-side utilities
 │   ├── auth.server.ts      # Better-auth configuration
@@ -257,7 +259,7 @@ export default defineConfig({
 		seed: 'bun run prisma/seed.ts',
 	},
 	datasource: {
-		url: env('DATABASE_URL'),
+		url: process.env.DATABASE_URL ?? 'postgresql://ci:ci@127.0.0.1:5432/ci',
 	},
 }) satisfies PrismaConfig;
 ```
@@ -326,7 +328,8 @@ generator client {
 
 - **better-auth** for secure email/password authentication
 - **Session management** with proper security headers
-- **Protected routes** with automatic redirects
+- **Protected routes** with automatic redirects via `getLoginRedirectUrl` / `getSafeRedirectPath` (`app/features/middleware/utils/auth-redirect.ts`)
+- **`redirectTo` query param** on login — returns users to the page they tried to visit (open-redirect safe)
 - **ArkType validation** for all auth forms with custom narrow() validators
 - **Server-side session handling** in loaders
 - **Modular model organization** for better maintainability
@@ -347,7 +350,7 @@ The application uses **nuqs 2.8.9** for type-safe URL state management:
 - **Bidirectional cursor pagination** with forward/backward navigation
 - **Pagination with sorting** on Reviews, Income, and Transfers pages
 - **Van search functionality** with PostgreSQL full-text search across name and description fields, debounced input (250ms), immediate Enter key submission, and relevance-based result ordering
-- **Advanced van filtering** with multi-select type filters and state-based filters (exclude in repair, only on sale)
+- **Advanced van filtering** via `vansFilterUrlParsers` — multi-select types, exclude in repair, only on sale; debounced adds, immediate removes (`van-filter-url.ts`)
 - **Automatic URL synchronization** with proper type handling
 - **View transitions support** for smooth navigation
 - **Pagination state preservation** - All search params (cursor, limit, types, excludeInRepair, onlyOnSale, search) preserved when navigating to detail pages and back via `buildVanSearchParams` utility
@@ -863,10 +866,9 @@ cd van-life
 # Install dependencies
 bun install
 
-# Set up environment variables (see Environment Variables section)
-# Copy .env.development defaults; add secrets to .env.local or use Varlock + Bitwarden
-cp .env.development .env.local
-# Edit .env.local with DATABASE_URL and BETTER_AUTH_SECRET
+# Environment: edit .env.schema defaults or add .env.local (gitignored)
+# Secrets resolve via Varlock; Bitwarden optional in production
+# Required: DATABASE_URL, BETTER_AUTH_SECRET (see .env.schema)
 
 # Set up database
 bunx prisma generate
@@ -896,7 +898,7 @@ bun run deploy
 
 ## Environment Variables
 
-Environment variables are defined in `.env.schema` (Varlock) and validated at runtime. Local defaults live in `.env.development`; secrets go in `.env.local` or Bitwarden via Varlock.
+Environment variables are defined in `.env.schema` (Varlock) and validated at runtime. Only `.env.schema` is committed; use `.env.local` for local overrides or Bitwarden via Varlock in deploy.
 
 ```env
 # Environment (development | preview | production | test)
@@ -969,6 +971,8 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 ### TailwindCSS 4 & Modern CSS
 
 - **TailwindCSS 4.3.0** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
+- **Inter font** via `vite-plugin-google-fonts` (output in `.google-fonts/`, gitignored)
+- **Mobile nav animations** — overlay fade and slide-in/out (`app/app.css`)
 - **Responsive design** with mobile-first approach and CSS Grid layouts
 - **Biome configuration** for CSS at-rules support
 

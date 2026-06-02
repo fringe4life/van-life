@@ -43,6 +43,13 @@ export const hostPaginationParsers = {
 	sort: parseAsSortOption,
 };
 
+// Search input: search + pagination reset in one nuqs setter
+export const searchUrlParsers = {
+	...searchParser,
+	cursor: hostPaginationParsers.cursor,
+	direction: hostPaginationParsers.direction,
+};
+
 // Van filters for the main vans page (sale, new)
 const VAN_FILTERS = ['sale', 'new', ''] as const;
 
@@ -62,4 +69,11 @@ export const vanFiltersParser = {
 	),
 	excludeInRepair: parseAsBoolean.withDefault(false),
 	onlyOnSale: parseAsBoolean.withDefault(false),
+};
+
+// Vans filter UI: filters + pagination reset in one nuqs setter
+export const vansFilterUrlParsers = {
+	...vanFiltersParser,
+	cursor: hostPaginationParsers.cursor,
+	direction: hostPaginationParsers.direction,
 };

@@ -1,5 +1,9 @@
-import { href, type MiddlewareFunction, redirect } from 'react-router';
+import { type MiddlewareFunction, redirect } from 'react-router';
 import { authContext } from '~/features/middleware/contexts/auth';
+import {
+	getLoginRedirectUrl,
+	getReturnPathFromRequest,
+} from '~/features/middleware/utils/auth-redirect';
 import { getUserWithHeaders } from '~/features/middleware/utils/get-user-with-headers';
 import { setCookieHeaders } from '~/features/middleware/utils/set-cookie-headers';
 
@@ -10,7 +14,8 @@ const authMiddleware: MiddlewareFunction<Response> = async (
 	const { user, headers } = await getUserWithHeaders(request);
 
 	if (!user) {
-		throw redirect(href('/login'));
+		const returnPath = getReturnPathFromRequest(request);
+		throw redirect(getLoginRedirectUrl(returnPath));
 	}
 
 	context.set(authContext, user);
