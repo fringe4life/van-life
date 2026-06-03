@@ -1,4 +1,3 @@
-import { type } from 'arktype';
 import { useId } from 'react';
 import { href, redirect, replace } from 'react-router';
 import { CustomForm } from '~/components/custom-form';
@@ -11,6 +10,7 @@ import {
 	CardTitle,
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
+import { loginSchema } from '~/features/auth/schemas.server';
 import { hasAuthContext } from '~/features/middleware/contexts/has-auth';
 import { hasAuthMiddleware } from '~/features/middleware/functions/has-auth-middleware';
 import {
@@ -19,7 +19,7 @@ import {
 } from '~/features/middleware/utils/auth-redirect';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
-import { loginSchema } from '~/lib/schemas';
+import { validateArkType } from '~/utils/parse-arktype.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/login';
 
@@ -39,17 +39,17 @@ export function loader({ context, request }: Route.LoaderArgs) {
 export async function action({ request }: Route.ActionArgs) {
 	const formData = Object.fromEntries(await request.formData());
 
-	const result = loginSchema(formData);
+	const validation = validateArkType(loginSchema, formData);
 
-	if (result instanceof type.errors) {
+	if (!validation.success) {
 		return {
-			errors: result.summary,
+			errors: validation.errors.summary,
 			email: (formData.email as string | undefined) ?? '',
 		};
 	}
 	const { data: login, error } = await tryCatch(() =>
 		auth.api.signInEmail({
-			body: result,
+			body: validation.data,
 			returnHeaders: true,
 		})
 	);

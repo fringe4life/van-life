@@ -1,4 +1,3 @@
-import { type } from 'arktype';
 import { useId } from 'react';
 import { href, redirect, replace } from 'react-router';
 import { CustomForm } from '~/components/custom-form';
@@ -11,11 +10,12 @@ import {
 	CardTitle,
 } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
+import { signUpScheme } from '~/features/auth/schemas.server';
 import { hasAuthContext } from '~/features/middleware/contexts/has-auth';
 import { hasAuthMiddleware } from '~/features/middleware/functions/has-auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { auth } from '~/lib/auth.server';
-import { signUpScheme } from '~/lib/schemas';
+import { validateArkType } from '~/utils/parse-arktype.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/sign-up';
 
@@ -32,21 +32,21 @@ export const loader = ({ context }: Route.LoaderArgs) => {
 export const action = async ({ request }: Route.ActionArgs) => {
 	const formData = Object.fromEntries(await request.formData());
 
-	const result = signUpScheme(formData);
+	const validation = validateArkType(signUpScheme, formData);
 
 	const name = formData.name as string | undefined;
 	const email = formData.email as string | undefined;
 
-	if (result instanceof type.errors) {
+	if (!validation.success) {
 		return {
-			errors: result.summary,
+			errors: validation.errors.summary,
 			name,
 			email,
 		};
 	}
 	const { data: signUp, error } = await tryCatch(() =>
 		auth.api.signUpEmail({
-			body: result,
+			body: validation.data,
 			returnHeaders: true,
 		})
 	);

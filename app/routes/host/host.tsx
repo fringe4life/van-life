@@ -1,8 +1,7 @@
-import { type } from 'arktype';
 import clsx from 'clsx';
 import {
 	type ChangeEventHandler,
-	type FormEventHandler,
+	type SubmitEventHandler,
 	Suspense,
 	useOptimistic,
 	useState,
@@ -17,7 +16,7 @@ import { Card } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
-import { MAX_ADD, MIN_ADD } from '~/constants/constants';
+import { MAX_ADD, MIN_ADD, MIN_WITHDRAW } from '~/constants/constants';
 import { validateIds } from '~/dal/validate-ids';
 import { RatingStars } from '~/features/host/components/review/rating-stars';
 import { balanceReducer } from '~/features/host/hooks/balance-reducer';
@@ -27,6 +26,7 @@ import {
 	getTransactionSummary,
 } from '~/features/host/queries/user/analytics';
 import { addMoney } from '~/features/host/queries/user/payments';
+import { moneySchema } from '~/features/host/schemas.server';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
@@ -35,10 +35,9 @@ import { VanCardSkeleton } from '~/features/vans/components/van-card-skeleton';
 import { DEPOSIT, WITHDRAW } from '~/features/vans/constants/vans-constants';
 import { getHostVans } from '~/features/vans/queries/host';
 import { displayPrice } from '~/features/vans/utils/display-price';
-import { TransactionType } from '~/generated/prisma/enums';
-import { moneySchema } from '~/lib/schemas';
 import { calculateTotalIncome } from '~/utils/calculate-income';
 import { getElapsedTime } from '~/utils/get-elapsed-time';
+import { validateArkType } from '~/utils/parse-arktype.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host';
 
@@ -88,41 +87,19 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 	const user = context.get(authContext);
 
 	const formData = Object.fromEntries(await request.formData());
-	const result = moneySchema(formData);
+	const validation = validateArkType(moneySchema, formData);
 
-	if (result instanceof type.errors) {
+	if (!validation.success) {
 		return {
-			errors: result.summary,
+			errors: validation.errors.summary,
 			formData,
 		};
 	}
 
-	// Additional validation for money operations
-	let isValid = false;
-	if (result.type === TransactionType.WITHDRAW) {
-		// For withdrawals, amount should be negative (or we'll make it negative)
-		isValid =
-			Math.abs(result.amount) >= MIN_ADD && Math.abs(result.amount) <= MAX_ADD;
-	} else {
-		// For deposits, amount should be positive
-		isValid = result.amount >= MIN_ADD && result.amount <= MAX_ADD;
-	}
-
-	if (!isValid) {
-		return {
-			errors: 'Amount must be within valid range for transaction type',
-			formData,
-		};
-	}
-
-	// Adjust amount based on transaction type
-	const adjustedAmount =
-		result.type === TransactionType.WITHDRAW
-			? -Math.abs(result.amount) // Withdrawals are negative
-			: Math.abs(result.amount); // Deposits are positive
+	const { amount, type: transactionType } = validation.data;
 
 	const result2 = await tryCatch(() =>
-		validateIds(addMoney, [0])(user.id, adjustedAmount, result.type)
+		validateIds(addMoney, [0])(user.id, amount, transactionType)
 	);
 
 	if (result2.error) {
@@ -137,12 +114,13 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 	const { vansPromise, avgRating, name, transactions, transactionSummary } =
 		loaderData;
 
-	const [isDepositing, setIsDepositing] = useState(() => false);
+	const [isDepositing, setIsDepositing] = useState(() => {
+		const type = actionData?.formData?.type as string | undefined;
+		return type !== WITHDRAW;
+	});
+
 	const currentBalance =
 		typeof transactionSummary === 'number' ? transactionSummary : 0;
-
-	const isWithdrawing =
-		(actionData?.formData?.type as string | undefined) === 'withdraw';
 
 	const fetcher = useFetcher();
 	const [isPending, startTransition] = useTransition();
@@ -152,7 +130,7 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 		currentBalance,
 		balanceReducer
 	);
-	const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+	const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();
 
 		const formData = new FormData(event.currentTarget);
@@ -171,7 +149,7 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 	};
 
 	const handleChangeType: ChangeEventHandler<HTMLInputElement> = (e) => {
-		startTransition(() => setIsDepositing(e.currentTarget.checked));
+		startTransition(() => setIsDepositing(e.currentTarget.value === DEPOSIT));
 	};
 
 	// Calculate income and elapsed time client-side
@@ -256,8 +234,9 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 						<Label>
 							Deposit
 							<Input
-								defaultChecked={!isWithdrawing}
+								checked={isDepositing}
 								name="type"
+								onChange={handleChangeType}
 								required
 								type="radio"
 								value={DEPOSIT}
@@ -266,7 +245,7 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 						<Label>
 							Withdraw
 							<Input
-								defaultChecked={isWithdrawing}
+								checked={!isDepositing}
 								name="type"
 								onChange={handleChangeType}
 								type="radio"
@@ -279,8 +258,8 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 						defaultValue={
 							(actionData?.formData?.amount as string | undefined) ?? ''
 						}
-						max={isDepositing ? optimisticBalance : MAX_ADD}
-						min={MIN_ADD}
+						max={isDepositing ? MAX_ADD : optimisticBalance}
+						min={isDepositing ? MIN_ADD : MIN_WITHDRAW}
 						name="amount"
 						placeholder="2000"
 						type="number"

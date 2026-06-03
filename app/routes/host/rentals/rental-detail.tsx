@@ -1,15 +1,15 @@
-import { type } from 'arktype';
 import { data, href, isRouteErrorResponse, redirect } from 'react-router';
 import { CustomForm } from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { rentVan } from '~/features/host/queries/rental/transactions';
+import { rentVanSchema } from '~/features/host/rentals/schemas.server';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { VanCard } from '~/features/vans/components/van-card';
 import { getVanBySlug } from '~/features/vans/queries/queries';
-import { rentVanSchema } from '~/lib/schemas';
+import { validateArkType } from '~/utils/parse-arktype.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/rental-detail';
 
@@ -51,21 +51,25 @@ export const action = async ({
 
 	const hostId = formData.hostId as string;
 
-	const result = rentVanSchema({
+	const validation = validateArkType(rentVanSchema, {
 		vanSlug: params.vanSlug,
 		renterId: user.id,
 		hostId,
 	});
 
-	if (result instanceof type.errors) {
+	if (!validation.success) {
 		return {
-			errors: result.summary,
+			errors: validation.errors.summary,
 			formData,
 		};
 	}
 
 	const result2 = await tryCatch(() =>
-		rentVan(result.vanSlug, result.renterId, result.hostId)
+		rentVan(
+			validation.data.vanSlug,
+			validation.data.renterId,
+			validation.data.hostId
+		)
 	);
 
 	if (result2.error || !result2.data) {

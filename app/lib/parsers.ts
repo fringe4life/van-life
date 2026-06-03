@@ -34,20 +34,23 @@ const parseAsSortOption = parseAsStringEnum<SortOption>([
 	...SORT_OPTIONS,
 ]).withDefault(DEFAULT_SORT);
 
-// Host routes need cursor, limit, direction, and sort (no type filter)
-export const hostPaginationParsers = {
+const PAGINATION_PARSERS = {
 	cursor: parseAsString.withDefault(DEFAULT_CURSOR),
-	limit: parseAsLimit,
 	direction:
 		parseAsStringEnum<Direction>(DIRECTIONS).withDefault(DEFAULT_DIRECTION),
+};
+
+// Host routes need cursor, limit, direction, and sort (no type filter)
+export const hostPaginationParsers = {
+	...PAGINATION_PARSERS,
+	limit: parseAsLimit,
 	sort: parseAsSortOption,
 };
 
 // Search input: search + pagination reset in one nuqs setter
 export const searchUrlParsers = {
 	...searchParser,
-	cursor: hostPaginationParsers.cursor,
-	direction: hostPaginationParsers.direction,
+	...PAGINATION_PARSERS,
 };
 
 // Van filters for the main vans page (sale, new)
@@ -74,6 +77,5 @@ export const vanFiltersParser = {
 // Vans filter UI: filters + pagination reset in one nuqs setter
 export const vansFilterUrlParsers = {
 	...vanFiltersParser,
-	cursor: hostPaginationParsers.cursor,
-	direction: hostPaginationParsers.direction,
+	...PAGINATION_PARSERS,
 };

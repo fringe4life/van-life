@@ -6,8 +6,8 @@ const balanceReducer = (
 ) => {
 	const adjustedAmount =
 		newTransaction.type === WITHDRAW
-			? -Math.abs(newTransaction.amount)
-			: Math.abs(newTransaction.amount);
+			? -newTransaction.amount
+			: newTransaction.amount;
 	return state + adjustedAmount;
 };
 

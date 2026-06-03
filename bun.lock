@@ -5,7 +5,7 @@
     "": {
       "name": "van-life",
       "dependencies": {
-        "@better-auth/prisma-adapter": "^1.6.11",
+        "@better-auth/prisma-adapter": "^1.6.13",
         "@forge42/seo-tools": "^1.4.5",
         "@neondatabase/serverless": "^1.1.0",
         "@prisma/adapter-neon": "^7.8.0",
@@ -16,7 +16,7 @@
         "@varlock/bitwarden-plugin": "^1.0.0",
         "@varlock/cloudflare-integration": "^1.1.4",
         "arktype": "^2.2.0",
-        "better-auth": "^1.6.11",
+        "better-auth": "^1.6.13",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "date-fns": "^4.3.0",
@@ -43,13 +43,13 @@
         "@typescript/native-preview": "7.0.0-dev.20260527.2",
         "babel-plugin-react-compiler": "^1.0.0",
         "husky": "^9.1.7",
-        "lint-staged": "^17.0.5",
+        "lint-staged": "^17.0.7",
         "prisma": "^7.8.0",
         "react-doctor": "^0.2.10",
         "react-router-devtools": "^6.2.0",
         "tailwindcss": "^4.3.0",
         "typescript": "^6.0.3",
-        "ultracite": "7.8.0",
+        "ultracite": "7.8.1",
         "vite": "7.3.3",
         "vite-plugin-babel": "^1.7.3",
         "vite-plugin-google-fonts": "^2.5.0",
@@ -1541,7 +1541,7 @@
 
     "uint8array-extras": ["uint8array-extras@1.5.0", "", {}, "sha512-rvKSBiC5zqCCiDZ9kAOszZcDvdAHwwIKJG33Ykj43OKcWsnmcBRL09YTU4nOeHZ8Y2a7l1MgTd08SBe9A8Qj6A=="],
 
-    "ultracite": ["ultracite@7.8.0", "", { "dependencies": { "@clack/prompts": "^1.4.0", "commander": "^14.0.3", "cross-spawn": "^7.0.6", "deepmerge": "^4.3.1", "glob": "^13.0.6", "jsonc-parser": "^3.3.1", "nypm": "^0.6.6", "yaml": "^2.9.0", "zod": "^4.4.3" }, "peerDependencies": { "oxfmt": ">=0.1.0", "oxlint": "^1.0.0" }, "optionalPeers": ["oxfmt", "oxlint"], "bin": { "ultracite": "dist/index.js" } }, "sha512-wAIdn7YTBjygSdpz3ubMCAqja0odk2SCn/YqrM6k17D7ASouo0qaODJa76Xo3tp13yPWnNnLvcduNlmLBAtzYg=="],
+    "ultracite": ["ultracite@7.8.1", "", { "dependencies": { "@clack/prompts": "^1.4.0", "commander": "^14.0.3", "cross-spawn": "^7.0.6", "deepmerge": "^4.3.1", "glob": "^13.0.6", "jsonc-parser": "^3.3.1", "nypm": "^0.6.6", "yaml": "^2.9.0", "zod": "^4.4.3" }, "peerDependencies": { "oxfmt": ">=0.1.0", "oxlint": "^1.0.0" }, "optionalPeers": ["oxfmt", "oxlint"], "bin": { "ultracite": "dist/index.js" } }, "sha512-yVkUHR9gMvqt7uEzC45tkSgJNUfAYztJPqZLSK6Z/PkWksoQOWjSVAcff7pEQarQKUJF/KR2S41UJ7wVAlo44Q=="],
 
     "undici": ["undici@7.24.8", "", {}, "sha512-6KQ/+QxK49Z/p3HO6E5ZCZWNnCasyZLa5ExaVYyvPxUwKtbCPMKELJOqh7EqOle0t9cH/7d2TaaTRRa6Nhs4YQ=="],
 

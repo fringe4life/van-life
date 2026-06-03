@@ -1,17 +1,20 @@
-import { type } from 'arktype';
+import { useQueryStates } from 'nuqs';
 import {
+	Activity,
 	type SubmitEventHandler,
-	useId,
 	useOptimistic,
 	useTransition,
 } from 'react';
-import { data, Form, href, useFetcher } from 'react-router';
+import {
+	data,
+	href,
+	type ShouldRevalidateFunctionArgs,
+	useFetcher,
+} from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
-import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
-import { Textarea } from '~/components/ui/textarea';
 import { validateIds } from '~/dal/validate-ids';
+import { VanForm } from '~/features/host/components/van-form';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
@@ -19,12 +22,22 @@ import { Pagination } from '~/features/pagination/components/pagination';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import { VanCard } from '~/features/vans/components/van-card';
 import { VanHeader } from '~/features/vans/components/van-header';
+import {
+	type HostVansListAction,
+	hostVansListReducer,
+} from '~/features/vans/hooks/host-vans-list-reducer';
+import { useDisplayHostVans } from '~/features/vans/hooks/use-display-host-vans';
 import { createVan } from '~/features/vans/queries/crud';
 import { getHostVans } from '~/features/vans/queries/host';
-import type { VanModel } from '~/generated/prisma/models/Van';
-import { addVanSchema } from '~/lib/schemas';
+import { addVanSchema } from '~/features/vans/schemas.server';
+import type { HostVanListItem, VanCardProps } from '~/features/vans/types';
+import { isPendingVan } from '~/features/vans/types';
+import { pendingVanFromFormData } from '~/features/vans/utils/pending-van-from-form-data';
+import { toVanCardModel } from '~/features/vans/utils/to-van-card-model';
+import { hostPaginationParsers } from '~/lib/parsers';
 import { loadHostSearchParams } from '~/lib/search-params.server';
 import { getSlug } from '~/utils/get-slug';
+import { validateArkType } from '~/utils/parse-arktype.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host-vans';
 
@@ -33,14 +46,12 @@ export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
-	// Parse search parameters using nuqs loadHostSearchParams
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 
 	const { data: vans } = await tryCatch(() =>
 		validateIds(getHostVans, [0])(user.id, { cursor, limit, direction })
 	);
 
-	// Process pagination logic
 	const pagination = toPagination({ items: vans, limit, cursor, direction });
 
 	return data(
@@ -58,16 +69,24 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 export const action = async ({ request, context }: Route.ActionArgs) => {
 	const user = context.get(authContext);
 
-	const formData = Object.fromEntries(await request.formData());
+	const rawFormData = await request.formData();
+	const onFirstPage = rawFormData.get('onFirstPage') === 'true';
+	const clientKey = String(rawFormData.get('clientKey') ?? '');
+	rawFormData.delete('onFirstPage');
+	rawFormData.delete('clientKey');
 
-	const result = addVanSchema(formData);
+	const formData = Object.fromEntries(rawFormData);
 
-	if (result instanceof type.errors) {
+	const validation = validateArkType(addVanSchema, formData);
+
+	if (!validation.success) {
 		return {
-			errors: result.summary,
+			errors: validation.errors.summary,
 			formData,
 		};
 	}
+
+	const result = validation.data;
 
 	const resultWithHostId = {
 		...result,
@@ -77,9 +96,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		state: result.state ?? null,
 	};
 
-	const result2 = await tryCatch(() =>
-		validateIds(createVan, [0])(resultWithHostId)
-	);
+	const result2 = await tryCatch(() => createVan(resultWithHostId));
 
 	if (result2.error || !result2.data) {
 		return {
@@ -87,56 +104,68 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 			formData,
 		};
 	}
+
+	return {
+		van: result2.data,
+		clientKey: clientKey || undefined,
+		skipListRevalidation: onFirstPage,
+	};
 };
 
-const HostVans = ({ loaderData, actionData }: Route.ComponentProps) => {
+export function shouldRevalidate({
+	actionResult,
+	defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) {
+	if (
+		actionResult &&
+		typeof actionResult === 'object' &&
+		'skipListRevalidation' in actionResult &&
+		actionResult.skipListRevalidation
+	) {
+		return false;
+	}
+	return defaultShouldRevalidate;
+}
+
+const HostVans = ({ loaderData }: Route.ComponentProps) => {
 	const { items: vans, paginationMetadata } = loaderData;
+	const onFirstPage = !paginationMetadata.hasPreviousPage;
 
-	const nameId = useId();
-	const priceId = useId();
-	const descriptionId = useId();
-	const imageUrlId = useId();
-	const typeId = useId();
-	const discountId = useId();
-
-	const fetcher = useFetcher();
+	const [{ limit }] = useQueryStates(hostPaginationParsers);
+	const fetcher = useFetcher<Awaited<ReturnType<typeof action>>>();
 	const [isPending, startTransition] = useTransition();
 
-	const [optimisticVans, addOptimisticVan] = useOptimistic(
-		vans ?? [],
-		(state: VanModel[], newVan: VanModel) => [...state, newVan]
+	const [optimisticItems, addOptimisticItem] = useOptimistic(
+		(vans ?? []) as HostVanListItem[],
+		hostVansListReducer
 	);
+
+	const displayItems = useDisplayHostVans({
+		optimisticItems,
+		fetcherData: fetcher.data,
+		fetcherState: fetcher.state,
+		limit,
+	});
+
+	const formDataDefaults = fetcher.data?.formData;
 
 	const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();
 
 		const formData = new FormData(event.currentTarget);
-		const result = addVanSchema(formData);
+		const clientKey = crypto.randomUUID();
+		const pending = pendingVanFromFormData(formData, clientKey);
 
-		if (result instanceof type.errors) {
-			return {
-				errors: result.summary,
-				formData,
-			};
-		}
-		const date = new Date();
-		const newVan = {
-			...result,
-			id: crypto.randomUUID(),
-			createdAt: date,
-			hostId: crypto.randomUUID(),
-			isRented: false,
-			slug: getSlug(result.name),
-			state: null,
-			discount: result.discount ?? 0,
-		};
+		formData.set('clientKey', clientKey);
+		formData.set('onFirstPage', 'true');
+
+		const optimisticAction: HostVansListAction = { type: 'add', item: pending };
+
 		startTransition(() => {
-			addOptimisticVan(newVan);
-			startTransition(async () => {
-				await fetcher.submit(formData, {
-					method: 'POST',
-					action: href('/host/vans'),
-				});
+			addOptimisticItem(optimisticAction);
+			fetcher.submit(formData, {
+				method: 'POST',
+				action: href('/host/vans'),
 			});
 		});
 	};
@@ -152,108 +181,65 @@ const HostVans = ({ loaderData, actionData }: Route.ComponentProps) => {
 				<h2 className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
 					Add Van
 				</h2>
-				<Form
-					className="mt-6 grid max-w-102 gap-4"
-					method="POST"
-					onSubmit={handleSubmit}
-				>
-					<Input
-						defaultValue={
-							(actionData?.formData?.name as string | undefined) ?? ''
-						}
-						id={nameId}
-						name="name"
-						placeholder="Silver Bullet"
-						type="text"
+				<Activity mode={onFirstPage ? 'visible' : 'hidden'}>
+					<VanForm
+						errors={fetcher.data?.errors}
+						formDataDefaults={formDataDefaults}
+						handleSubmit={handleSubmit}
+						isPending={isPending}
 					/>
-					<Input
-						defaultValue={
-							(actionData?.formData?.price as string | undefined) ?? ''
-						}
-						id={priceId}
-						name="price"
-						placeholder="100"
-						type="number"
-					/>
-					<Textarea
-						defaultValue={
-							(actionData?.formData?.description as string | undefined) ?? ''
-						}
-						id={descriptionId}
-						name="description"
-						placeholder="The silver bullet can take you on an amazing adventure..."
-					/>
-					<Input
-						defaultValue={
-							(actionData?.formData?.imageUrl as string | undefined) ?? ''
-						}
-						id={imageUrlId}
-						name="imageUrl"
-						placeholder="https://images.unsplash.com/"
-						type="url"
-					/>
-					<Input
-						defaultValue={
-							(actionData?.formData?.type as string | undefined) ?? ''
-						}
-						id={typeId}
-						list={typeId}
-						name="type"
-						placeholder="simple or luxury or rugged"
-						type="text"
-					/>
-					<datalist id={typeId}>
-						<option value="luxury" />
-						<option value="simple" />
-						<option value="rugged" />
-					</datalist>
-					<Input
-						defaultValue={
-							(actionData?.formData?.discount as string | undefined) ?? '0'
-						}
-						id={discountId}
-						max={50}
-						min={0}
-						name="discount"
-						placeholder="0"
-						type="number"
-					/>
-					{actionData?.errors ? <p>{actionData.errors}</p> : null}
-					<Button disabled={isPending} type="submit">
-						Add your van
-					</Button>
-				</Form>
+				</Activity>
+				{onFirstPage ? null : (
+					<p className="mt-6 text-neutral-600">
+						New vans appear at the top of your list.{' '}
+						<CustomLink to={href('/host/vans')}>
+							Go to first page to add a van
+						</CustomLink>
+					</p>
+				)}
 			</section>
 			<PendingUI
 				as="section"
 				className="grid grid-rows-[min-content_1fr_min-content] contain-content"
 			>
 				<VanHeader>Your listed vans</VanHeader>
-				<GenericComponent
+				<GenericComponent<HostVanListItem, VanCardProps>
 					as="div"
 					Component={VanCard}
 					className="grid-max mt-6"
 					emptyStateMessage="You are currently not renting any vans."
 					errorStateMessage="Something went wrong"
-					items={optimisticVans}
-					renderProps={(van) => ({
-						link: href('/host/vans/:vanSlug/:action?', {
-							vanSlug: van.slug,
-						}),
-						van,
-						action: (
-							<p className="text-right">
-								<CustomLink
-									to={href('/host/vans/:vanSlug/:action?', {
+					items={displayItems}
+					renderProps={(item) => {
+						const van = toVanCardModel(item);
+						const pending = isPendingVan(item);
+
+						return {
+							link: pending
+								? '#'
+								: href('/host/vans/:vanSlug/:action?', {
 										vanSlug: van.slug,
-										action: 'edit',
-									})}
-								>
-									Edit
-								</CustomLink>
-							</p>
-						),
-					})}
+									}),
+							van,
+							linkCoversCard: !pending,
+							action: pending ? (
+								<p className="text-right text-neutral-500 text-sm italic">
+									Saving…
+								</p>
+							) : (
+								<p className="text-right">
+									<CustomLink
+										to={href('/host/vans/:vanSlug/:action?', {
+											vanSlug: van.slug,
+											action: 'edit',
+										})}
+									>
+										Edit
+									</CustomLink>
+								</p>
+							),
+						};
+					}}
 				/>
 				<Pagination items={vans} paginationMetadata={paginationMetadata} />
 			</PendingUI>

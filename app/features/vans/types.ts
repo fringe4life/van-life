@@ -43,3 +43,22 @@ export interface VanCardProps extends VanProps {
 	linkCoversCard?: boolean;
 	state?: Record<string, unknown>;
 }
+
+export interface PendingVan {
+	clientKey: string;
+	description: string;
+	discount: number;
+	id: string;
+	imageUrl: string;
+	name: string;
+	price: number;
+	slug: string;
+	status: 'pending';
+	type: VanType;
+}
+
+export type HostVanListItem = VanModel | PendingVan;
+
+export function isPendingVan(item: HostVanListItem): item is PendingVan {
+	return 'status' in item && item.status === 'pending';
+}

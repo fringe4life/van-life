@@ -8,10 +8,10 @@
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.0-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.11-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.13-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.8.9-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.4.15-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.8.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.8.1-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.8.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.3.3-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -94,7 +94,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - **Cloudflare Workers** with React Router SSR via `workers/app.ts`
 - **Prisma 7.8.0** ORM with Neon PostgreSQL (Rust-free client, `workerd` runtime)
-- **better-auth 1.6.11** for authentication
+- **better-auth 1.6.13** with **@better-auth/prisma-adapter** for authentication
 - **ArkType 2.2.0** for schema validation and type narrowing
 - **uuidv7** for app-generated user IDs; Prisma `@default(uuid(7))` for domain models
 - **@prisma/adapter-neon 7.8.0** for Neon database integration
@@ -107,7 +107,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **vite-tsconfig-paths 6.1.1** - TypeScript path alias resolution for `~/` imports
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
 - **Biome 2.4.15** for linting and formatting with Ultracite integration
-- **Ultracite 7.8.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.8.1** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.95.0** - Cloudflare Workers CLI for deploy and typegen
 - **react-doctor** - React diagnostics in CI and locally
@@ -133,12 +133,18 @@ app/
 │   ├── ui/             # Shadcn UI (button, popover, checkbox, badge, etc.)
 │   └── [common]        # Generic components (forms, lists, sortable, etc.)
 ├── constants/          # App-wide constants and enums
-├── dal/                # Data access layer utilities
-│   └── validate-ids.ts  # Centralized UUID v7 validation helper
+├── dal/                # Data access layer
+│   ├── schemas.server.ts  # Shared UUID v7 ArkType schema
+│   └── validate-ids.ts    # Centralized UUID v7 validation helper
 ├── features/
+│   ├── auth/
+│   │   └── schemas.server.ts  # Login/sign-up ArkType schemas
 │   ├── host/
-│   │   ├── components/ # Host-specific components (charts, income, reviews)
-│   │   ├── queries/     # Host queries (rental, review, user analytics)
+│   │   ├── components/ # Host UI (van-form, charts, income, reviews)
+│   │   ├── queries/    # Host queries (rental, review, user analytics)
+│   │   ├── rentals/
+│   │   │   └── schemas.server.ts  # Rental action schemas
+│   │   ├── schemas.server.ts  # Host action schemas (deposit/withdraw)
 │   │   └── utils/      # Route determination helpers
 │   ├── image/          # Image optimization utilities
 │   ├── middleware/     # Auth middleware, Cloudflare context, auth-redirect helpers
@@ -151,17 +157,17 @@ app/
 │       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, VanFilters, etc.)
 │       │   └── host detail/  # Compound HostVanDetail (Details, Photos, Pricing)
 │       ├── constants/  # Van-related constants (van-types.ts for client-safe constants)
-│       ├── hooks/      # Optimistic UI hooks for filters (useOptimisticBooleanFilter, useOptimisticTypesFilter)
+│       ├── hooks/      # Host vans list reducer, display hooks, optimistic filter hooks
 │       ├── queries/    # Van CRUD operations and queries
+│       ├── schemas.server.ts  # Van form/search ArkType schemas
 │       ├── types/      # Van-specific TypeScript types
-│       └── utils/      # Van helpers (pricing, van-filter-url, validators)
+│       └── utils/      # Van helpers (pricing, van-filter-url, pending-van-from-form-data)
 ├── hooks/              # Custom React hooks
 ├── lib/                # Server-side utilities
 │   ├── auth.server.ts      # Better-auth configuration
 │   ├── env.server.ts       # Varlock env re-export
 │   ├── id.server.ts        # UUID v7 ID generator for Better Auth
 │   ├── parsers.ts          # nuqs search parameter parsers
-│   ├── schemas.ts          # ArkType validation schemas
 │   ├── search-params.server.ts  # Server-side search param loaders
 │   ├── generic-sorting.server.ts  # Generic Prisma orderBy utilities
 │   └── prisma.server.ts    # Prisma client instance
@@ -169,9 +175,9 @@ app/
 │   └── lucide-react-direct.d.ts  # Type declarations for direct lucide-react icon imports
 ├── routes/             # Route modules (Activity-based single routes)
 │   ├── api/            # API routes
-│   ├── auth/           # Authentication routes (login, signup, signout)
-│   ├── host/           # Host dashboard routes (consolidated with Activity)
-│   │   └── rentals/    # Rental management routes
+│   ├── auth/           # login, sign-up, sign-out
+│   ├── host/           # Dashboard, income, transfers, reviews, vans, rentals
+│   │   └── rentals/    # rentals list, rent/:vanSlug, returnRental/:rentId
 │   ├── layout/         # Layout components
 │   └── public/         # Public routes
 │       ├── vans.tsx    # Van listing
@@ -181,8 +187,7 @@ app/
 │       ├── robots.txt.ts   # Dynamic robots.txt
 │       ├── sitemap.xml.ts  # Dynamic sitemap
 │       └── 404.tsx     # Not found page
-├── types/              # TypeScript type definitions
-├── utils/              # Utility functions (transaction validators, pricing, etc.)
+├── utils/              # Shared utilities (parse-arktype.server, check-is-uuidv7, try-catch, etc.)
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
@@ -250,7 +255,7 @@ This project uses `prisma.config.ts` for Prisma CLI configuration (GA in Prisma 
 
 ```
 import type { PrismaConfig } from 'prisma/config';
-import { defineConfig, env } from 'prisma/config';
+import { defineConfig } from 'prisma/config';
 
 export default defineConfig({
 	schema: 'prisma',
@@ -261,7 +266,7 @@ export default defineConfig({
 	datasource: {
 		url: process.env.DATABASE_URL ?? 'postgresql://ci:ci@127.0.0.1:5432/ci',
 	},
-}) satisfies PrismaConfig;
+}) as PrismaConfig;
 ```
 
 Notes:
@@ -291,7 +296,8 @@ The application uses **feature-specific validators** organized by domain for bet
 
 - **Van validators** (`app/features/vans/utils/validators.ts`) - VanType and VanState validation with type guards and conversion utilities
 - **Pagination validators** (`app/features/pagination/utils/validators.ts`) - Limit, direction, sort, and cursor validation for pagination
-- **Transaction type validation** in `app/lib/schemas.ts` (ArkType) for financial operations
+- **Shared UUID schema** (`app/dal/schemas.server.ts`) — `uuidv7Schema` for route/param validation
+- **Server-side ArkType schemas** in feature `schemas.server.ts` files (auth, vans, host, rentals) with shared parsing via `app/utils/parse-arktype.server.ts`
 
 **Benefits:**
 - **Better organization** - Validators co-located with their feature domain
@@ -326,11 +332,11 @@ generator client {
 
 ## Authentication
 
-- **better-auth** for secure email/password authentication
+- **better-auth 1.6.13** with **@better-auth/prisma-adapter** for secure email/password authentication
 - **Session management** with proper security headers
 - **Protected routes** with automatic redirects via `getLoginRedirectUrl` / `getSafeRedirectPath` (`app/features/middleware/utils/auth-redirect.ts`)
 - **`redirectTo` query param** on login — returns users to the page they tried to visit (open-redirect safe)
-- **ArkType validation** for all auth forms with custom narrow() validators
+- **ArkType validation** (`app/features/auth/schemas.server.ts`) for login/sign-up forms
 - **Server-side session handling** in loaders
 - **Modular model organization** for better maintainability
 - **Centralized auth types/config** in `app/lib/auth.server.ts`
@@ -994,7 +1000,7 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 ## Code Quality
 
 - **Biome 2.4.15** for linting and formatting with Ultracite integration
-- **Ultracite 7.8.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.8.1** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 6.0.3** with strict configuration
 - **ArkType 2.2.0** for runtime validation with regex support for slug validation
 - **Consistent code style:**
