@@ -2,20 +2,17 @@ import { data } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
 import { Sortable } from '~/components/sortable';
-import { validateIds } from '~/dal/validate-ids';
 import { LazyBarChart } from '~/features/host/components/bar-chart/lazy-bar-chart';
 import Review from '~/features/host/components/review/review';
-import {
-	getHostReviewsChartData,
-	getHostReviewsPaginated,
-} from '~/features/host/queries/review/queries';
+import { loadReviewsPage } from '~/features/host/services/reviews.server';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { Pagination } from '~/features/pagination/components/pagination';
-import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import { VanHeader } from '~/features/vans/components/van-header';
-import { loadHostSearchParams } from '~/lib/search-params.server';
-import { tryCatch } from '~/utils/try-catch.server';
+import {
+	loadHostSearchParams,
+	parsePaginationCursor,
+} from '~/lib/search-params.server';
 import type { Route } from './+types/reviews';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
@@ -24,42 +21,18 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 	// Parse search parameters for pagination and sorting
 	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
-
-	// Load chart data and paginated reviews
-	const [{ data: chartData }, { data: paginatedReviews }] = await Promise.all([
-		tryCatch(() => validateIds(getHostReviewsChartData, [0])(user.id)),
-		tryCatch(() => {
-			const getWithUserId = async (userId: string) =>
-				getHostReviewsPaginated({
-					userId,
-					cursor,
-					limit,
-					direction,
-					sort,
-				});
-			return validateIds(getWithUserId, [0])(user.id);
-		}),
-	]);
-
-	// Process pagination logic
-	const pagination = toPagination({
-		items: paginatedReviews,
+	const page = await loadReviewsPage(user.id, {
+		cursor: parsePaginationCursor(cursor),
 		limit,
-		cursor,
 		direction,
+		sort,
 	});
 
-	return data(
-		{
-			chartData,
-			...pagination,
+	return data(page, {
+		headers: {
+			'Cache-Control': 'max-age=259200',
 		},
-		{
-			headers: {
-				'Cache-Control': 'max-age=259200',
-			},
-		}
-	);
+	});
 };
 
 const HostReviews = ({ loaderData }: Route.ComponentProps) => {

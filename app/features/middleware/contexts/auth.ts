@@ -1,4 +1,4 @@
 import { createContext } from 'react-router';
-import type { User } from '~/types/index.server';
+import type { AuthenticatedUser } from '~/types/auth.server';
 
-export const authContext = createContext<User>();
+export const authContext = createContext<AuthenticatedUser>();

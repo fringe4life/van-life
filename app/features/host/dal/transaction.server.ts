@@ -10,8 +10,9 @@ import {
 	createGenericOrderBy,
 } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
+import type { UUIDv7 } from '~/types/ids.server';
 
-export async function getAccountSummary(userId: string) {
+export async function getAccountSummary(userId: UUIDv7) {
 	const result = await prisma.transaction.aggregate({
 		where: { userId },
 		_sum: {
@@ -21,7 +22,7 @@ export async function getAccountSummary(userId: string) {
 	return result._sum.amount ?? 0;
 }
 
-export async function getTransactionSummary(userId: string) {
+export async function getTransactionSummary(userId: UUIDv7) {
 	const result = await prisma.transaction.aggregate({
 		where: { userId },
 		_sum: {
@@ -35,16 +36,14 @@ export async function getTransactionSummary(userId: string) {
 }
 
 export async function getHostTransactions(
-	userId: string,
+	userId: UUIDv7,
 	sort: SortOption = 'newest'
 ) {
-	// Create orderBy clause using generic sorting utility
 	const orderBy = createGenericOrderBy(sort, {
 		dateField: 'createdAt',
 		valueField: 'amount',
 	});
 
-	// Get rental payment transactions for host
 	return await prisma.transaction.findMany({
 		where: {
 			userId,
@@ -60,12 +59,32 @@ export async function getHostTransactions(
 	});
 }
 
-// Use generic sorting utility for transactions
 const getTransactionOrderBy = (sort: SortOption) =>
 	createGenericOrderBy<Prisma.TransactionOrderByWithRelationInput>(
 		sort,
 		COMMON_SORT_CONFIGS.transaction
 	);
+
+const hostRentalPaymentTransactionWhere = (
+	userId: UUIDv7
+): Prisma.TransactionWhereInput => ({
+	userId,
+	type: TransactionType.RENTAL_PAYMENT,
+});
+
+const hostTransactionListSelect = {
+	amount: true,
+	createdAt: true,
+	id: true,
+	rentId: true,
+} satisfies Prisma.TransactionSelect;
+
+const userTransactionListSelect = {
+	id: true,
+	amount: true,
+	type: true,
+	createdAt: true,
+} satisfies Prisma.TransactionSelect;
 
 export function getHostTransactionsPaginated({
 	userId,
@@ -80,29 +99,17 @@ export function getHostTransactionsPaginated({
 		direction,
 	});
 
-	// For backward pagination, reverse the sort order
-	// The results will be reversed back in hasPagination utility
 	const effectiveSort = reverseSortOption(sort, direction);
-
 	const orderByClause = getTransactionOrderBy(effectiveSort);
 
-	// For date-based sorting, use standard cursor pagination
 	const query = {
-		where: {
-			userId,
-			type: TransactionType.RENTAL_PAYMENT,
-		},
-		select: {
-			amount: true,
-			createdAt: true,
-			id: true,
-			rentId: true,
-		},
+		where: hostRentalPaymentTransactionWhere(userId),
+		select: hostTransactionListSelect,
 		orderBy: orderByClause,
 		cursor: actualCursor,
-		skip, // Skip the cursor record itself
+		skip,
 		take,
-	};
+	} satisfies Prisma.TransactionFindManyArgs;
 
 	return prisma.transaction.findMany(query);
 }
@@ -120,33 +127,22 @@ export function getUserTransactionsPaginated({
 		direction,
 	});
 
-	// For backward pagination, reverse the sort order
-	// The results will be reversed back in hasPagination utility
 	const effectiveSort = reverseSortOption(sort, direction);
-
 	const orderByClause = getTransactionOrderBy(effectiveSort);
 
-	// For date-based sorting, use standard cursor pagination
 	const query = {
-		where: {
-			userId,
-		},
-		select: {
-			id: true,
-			amount: true,
-			type: true,
-			createdAt: true,
-		},
+		where: { userId },
+		select: userTransactionListSelect,
 		orderBy: orderByClause,
 		cursor: actualCursor,
-		skip, // Skip the cursor record itself
+		skip,
 		take,
-	};
+	} satisfies Prisma.TransactionFindManyArgs;
 
 	return prisma.transaction.findMany(query);
 }
 
-export function getUserTransactionsChartData(userId: string) {
+export function getUserTransactionsChartData(userId: UUIDv7) {
 	return prisma.transaction.findMany({
 		where: {
 			userId,
@@ -159,7 +155,7 @@ export function getUserTransactionsChartData(userId: string) {
 	});
 }
 
-export function getHostTransactionsChartData(userId: string) {
+export function getHostTransactionsChartData(userId: UUIDv7) {
 	return prisma.transaction.findMany({
 		where: {
 			userId,

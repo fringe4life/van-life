@@ -1,17 +1,17 @@
 import { data, href } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
-import { validateIds } from '~/dal/validate-ids';
-import { getHostRentedVans } from '~/features/host/queries/rental/queries';
+import { listActiveRentals } from '~/features/host/services/rental.server';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { Pagination } from '~/features/pagination/components/pagination';
-import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import { VanCard } from '~/features/vans/components/van-card';
 import { VanHeader } from '~/features/vans/components/van-header';
-import { loadHostSearchParams } from '~/lib/search-params.server';
-import { tryCatch } from '~/utils/try-catch.server';
+import {
+	loadHostSearchParams,
+	parsePaginationCursor,
+} from '~/lib/search-params.server';
 import type { Route } from './+types/rentals';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
@@ -21,24 +21,17 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 	// Parse search parameters using nuqs loadHostSearchParams
 	const { cursor, limit, direction } = loadHostSearchParams(request);
+	const pagination = await listActiveRentals(user.id, {
+		cursor: parsePaginationCursor(cursor),
+		limit,
+		direction,
+	});
 
-	const { data: vans } = await tryCatch(() =>
-		validateIds(getHostRentedVans, [0])(user.id, { cursor, limit, direction })
-	);
-
-	// Process pagination logic
-	const pagination = toPagination({ items: vans, limit, cursor, direction });
-
-	return data(
-		{
-			...pagination,
+	return data(pagination, {
+		headers: {
+			'Cache-Control': 'max-age=259200',
 		},
-		{
-			headers: {
-				'Cache-Control': 'max-age=259200',
-			},
-		}
-	);
+	});
 };
 
 const Host = ({ loaderData }: Route.ComponentProps) => {

@@ -26,6 +26,6 @@
   "duplicates": {
     "enabled": true,
     "minOccurrences": 3,
-    "minLines": 12
+    "minLines": 15
   }
 }

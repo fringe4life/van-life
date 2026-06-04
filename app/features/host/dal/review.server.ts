@@ -8,13 +8,29 @@ import {
 	createGenericOrderBy,
 } from '~/lib/generic-sorting.server';
 import { prisma } from '~/lib/prisma.server';
+import type { UUIDv7 } from '~/types/ids.server';
 
-// Use generic sorting utility for reviews
 const getOrderBy = (sort: SortOption) =>
 	createGenericOrderBy<Prisma.ReviewOrderByWithRelationInput>(
 		sort,
 		COMMON_SORT_CONFIGS.review
 	);
+
+const hostReviewListInclude = {
+	user: {
+		select: {
+			name: true,
+		},
+	},
+} satisfies Prisma.ReviewInclude;
+
+function hostReviewListWhere(userId: UUIDv7): Prisma.ReviewWhereInput {
+	return {
+		rent: {
+			hostId: userId,
+		},
+	};
+}
 
 export function getHostReviewsPaginated({
 	userId,
@@ -29,67 +45,22 @@ export function getHostReviewsPaginated({
 		direction,
 	});
 
-	// For backward pagination, reverse the sort order
-	// The results will be reversed back in hasPagination utility
 	const effectiveSort = reverseSortOption(sort, direction);
-
-	// For rating-based sorting, we need to use a different cursor approach
-	const isRatingSort =
-		effectiveSort === 'highest' || effectiveSort === 'lowest';
-
-	if (isRatingSort) {
-		const orderByClause = getOrderBy(effectiveSort);
-
-		// For rating sorts, we need to handle cursor differently
-		// We'll use a combination of rating and id for cursor pagination
-		const query = {
-			where: {
-				rent: {
-					hostId: userId,
-				},
-			},
-			include: {
-				user: {
-					select: {
-						name: true,
-					},
-				},
-			},
-			orderBy: orderByClause,
-			take,
-			cursor: actualCursor,
-			skip,
-		};
-
-		return prisma.review.findMany(query);
-	}
-
 	const orderByClause = getOrderBy(effectiveSort);
 
-	// For date-based sorting, use standard cursor pagination
 	const query = {
-		where: {
-			rent: {
-				hostId: userId,
-			},
-		},
-		include: {
-			user: {
-				select: {
-					name: true,
-				},
-			},
-		},
+		where: hostReviewListWhere(userId),
+		include: hostReviewListInclude,
 		orderBy: orderByClause,
 		cursor: actualCursor,
-		skip, // Skip the cursor record itself
+		skip,
 		take,
-	};
+	} satisfies Prisma.ReviewFindManyArgs;
 
 	return prisma.review.findMany(query);
 }
 
-export function getHostReviewsChartData(userId: string) {
+export function getHostReviewsChartData(userId: UUIDv7) {
 	return prisma.review.findMany({
 		where: {
 			rent: {

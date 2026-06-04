@@ -13,7 +13,7 @@
 [![Biome](https://img.shields.io/badge/Biome-2.4.15-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.8.1-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.8.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
-[![Vite](https://img.shields.io/badge/Vite-7.3.3-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7.3.5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.2.0-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
@@ -102,7 +102,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ### Development Tools
 
-- **Vite 7.3.3** - Fast frontend tooling with optimized builds
+- **Vite 7.3.5** - Fast frontend tooling with optimized builds
 - **vite-plugin-google-fonts** - Self-hosted Inter via generated `.google-fonts/` (gitignored)
 - **vite-tsconfig-paths 6.1.1** - TypeScript path alias resolution for `~/` imports
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
@@ -110,14 +110,14 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **Ultracite 7.8.1** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.95.0** - Cloudflare Workers CLI for deploy and typegen
-- **react-doctor** - React diagnostics in CI and locally
+- **react-doctor 0.2.15** - React diagnostics in CI and locally (`doctor.config.ts`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 6.0.3** with `@typescript/native-preview` support
 - **Bun** for fast package management and runtime
 
 ### Build System
 
-- **Vite 7.3.3** - Fast builds with native ES modules and optimized bundling
+- **Vite 7.3.5** - Fast builds with native ES modules and optimized bundling
 - **React Compiler** - Configured via `vite-plugin-babel` for optimal integration
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Enhanced performance** - Faster builds and reduced memory usage
@@ -133,15 +133,16 @@ app/
 │   ├── ui/             # Shadcn UI (button, popover, checkbox, badge, etc.)
 │   └── [common]        # Generic components (forms, lists, sortable, etc.)
 ├── constants/          # App-wide constants and enums
-├── dal/                # Data access layer
-│   ├── schemas.server.ts  # Shared UUID v7 ArkType schema
-│   └── validate-ids.ts    # Centralized UUID v7 validation helper
+├── dal/                # Global data access helpers
+│   ├── schemas.server.ts      # Shared UUID v7 ArkType schema (branded)
+│   └── parse-uuidv7.server.ts # Parse/string → UUIDv7 at trust boundaries
 ├── features/
 │   ├── auth/
 │   │   └── schemas.server.ts  # Login/sign-up ArkType schemas
 │   ├── host/
 │   │   ├── components/ # Host UI (van-form, charts, income, reviews)
-│   │   ├── queries/    # Host queries (rental, review, user analytics)
+│   │   ├── dal/        # Host Prisma repositories (*.server.ts)
+│   │   ├── services/   # dashboard, income, rental, reviews, transfers, wallet
 │   │   ├── rentals/
 │   │   │   └── schemas.server.ts  # Rental action schemas
 │   │   ├── schemas.server.ts  # Host action schemas (deposit/withdraw)
@@ -151,14 +152,14 @@ app/
 │   ├── navigation/     # Nav, mobile-nav (Dialog), hamburger-icon
 │   ├── pagination/     # Pagination utilities and components
 │   ├── seo/            # SEO helpers (canonical URLs, SeoHead, sitemap)
-│   │   ├── components/ # Pagination UI components
-│   │   └── utils/      # Pagination validators and utilities (toPagination, getCursorMetadata, reverseSortOption, buildSearchParams, etc.)
+│   │   └── dal/        # SEO Prisma reads (sitemap.server.ts)
+│   ├── pagination/     # Shared pagination UI + utils (toPagination, getCursorMetadata)
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, VanFilters, etc.)
-│       │   └── host detail/  # Compound HostVanDetail (Details, Photos, Pricing)
 │       ├── constants/  # Van-related constants (van-types.ts for client-safe constants)
+│       ├── dal/        # Van Prisma repositories (*.server.ts)
+│       ├── services/   # catalog, host-vans, van-detail
 │       ├── hooks/      # Host vans list reducer, display hooks, optimistic filter hooks
-│       ├── queries/    # Van CRUD operations and queries
 │       ├── schemas.server.ts  # Van form/search ArkType schemas
 │       ├── types/      # Van-specific TypeScript types
 │       └── utils/      # Van helpers (pricing, van-filter-url, pending-van-from-form-data)
@@ -170,11 +171,13 @@ app/
 │   ├── parsers.ts          # nuqs search parameter parsers
 │   ├── search-params.server.ts  # Server-side search param loaders
 │   ├── generic-sorting.server.ts  # Generic Prisma orderBy utilities
-│   └── prisma.server.ts    # Prisma client instance
-├── types/              # TypeScript type definitions
-│   └── lucide-react-direct.d.ts  # Type declarations for direct lucide-react icon imports
+│   └── prisma.server.ts    # Prisma client (Neon adapter, workerd runtime)
+├── types/              # Server-only branded types
+│   ├── auth.server.ts      # AuthenticatedUser (UUIDv7 id)
+│   ├── ids.server.ts       # UUIDv7 re-export from dal schemas
+│   └── lucide-react-direct.d.ts  # Direct lucide-react icon import types
 ├── routes/             # Route modules (Activity-based single routes)
-│   ├── api/            # API routes
+│   ├── api/            # better-auth handler (auth.ts)
 │   ├── auth/           # login, sign-up, sign-out
 │   ├── host/           # Dashboard, income, transfers, reviews, vans, rentals
 │   │   └── rentals/    # rentals list, rent/:vanSlug, returnRental/:rentId
@@ -187,7 +190,7 @@ app/
 │       ├── robots.txt.ts   # Dynamic robots.txt
 │       ├── sitemap.xml.ts  # Dynamic sitemap
 │       └── 404.tsx     # Not found page
-├── utils/              # Shared utilities (parse-arktype.server, check-is-uuidv7, try-catch, etc.)
+├── utils/              # Shared utilities (parse-arktype.server, try-catch, etc.)
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
@@ -234,7 +237,7 @@ workers/
   - **Slug-based routing** with unique, SEO-friendly URLs (e.g., `/vans/modest-explorer`)
   - **ArkType regex validation** for slugs with built-in length constraints
   - Native JavaScript database drivers for better edge/serverless compatibility
-  - **Centralized UUID v7 validation** with `validateIds` helper for type-safe ID validation before database operations
+  - **Branded UUID v7 types** via ArkType (`#UUIDv7`) and `parseUuidV7` at auth/route boundaries
 
 ### Setup Database
 
@@ -274,20 +277,22 @@ Notes:
 - Prisma CLI reads `DATABASE_URL` from the environment (loaded by Varlock in dev/deploy).
 - Separate `seedClient` generator uses `runtime = "bun"` for local seeding; app client uses `runtime = "workerd"` for Cloudflare Workers.
 
-### UUID v7 validation helper
+### Data access and services
 
-The application uses a centralized `validateIds` helper (`app/dal/validate-ids.ts`) to validate UUID v7 arguments before database operations:
-
-- **Type-safe validation** - Validates selected positional arguments as UUID v7 strings using TypeScript generics
-- **Error handling** - Throws `INVALID_ID_ERROR` for `tryCatch` to handle consistently
-- **Route-level usage** - Validation applied at route call sites, keeping query modules focused on data access
-- **Inline usage** - Designed for inline usage within `tryCatch` blocks for consistent error handling
+- **`app/dal/`** — global UUID branding and parsing only
+- **`features/*/dal/*.server.ts`** — Prisma repositories (persistence, no `tryCatch`)
+- **`features/*/services/*.server.ts`** — use-case orchestration, pagination DTOs, `tryCatch` where UI tolerates partial failure
+- **Routes** — HTTP only: auth, form validation, call services, map errors to `data()` / redirects
 
 ```typescript
-// Example usage
-const result = await tryCatch(() =>
-  validateIds(getUser, [0] as const)(session.user.id)
-);
+// Route
+const dashboard = await loadHostDashboard(user.id);
+
+// Service (owns tryCatch policy)
+const [transactions, avgRating] = await Promise.all([
+  tryCatch(() => getHostTransactions(userId)),
+  tryCatch(() => getAverageReviewRating(userId)),
+]);
 ```
 
 ### Feature-Specific Validators
@@ -339,7 +344,7 @@ generator client {
 - **ArkType validation** (`app/features/auth/schemas.server.ts`) for login/sign-up forms
 - **Server-side session handling** in loaders
 - **Modular model organization** for better maintainability
-- **Centralized auth types/config** in `app/lib/auth.server.ts`
+- **Better-auth config** in `app/lib/auth.server.ts`; **`AuthenticatedUser`** type in `app/types/auth.server.ts`
 - **UUID v7 generator** (`createId` in `app/lib/id.server.ts`) for user IDs via Better Auth database hook
 
 ---
@@ -942,7 +947,7 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run fix` – Auto-fix issues with Ultracite (format + lint)
 - `bun run check` – Run Ultracite checks (no fix)
 - `bun run doctor` – Run Ultracite doctor
-- `bun run react-doctor` – Run React Doctor diagnostics
+- `bun run react-doctor` – Run React Doctor diagnostics (`doctor.config.ts`)
 - `bun run ultracite:upgrade` – Upgrade Ultracite and re-init (Bun, Biome, Cursor)
 
 ### Ultracite Commands
@@ -1017,7 +1022,7 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 ### GitHub Actions
 
 - **CodeQL** (`.github/workflows/codeql.yml`) - Security and quality scanning on push/PR to `master`
-- **React Doctor** (`.github/workflows/react-doctor.yml`) - React diagnostics on pull requests to `main`
+- **React Doctor** (`.github/workflows/react-doctor.yml`, `doctor.config.ts`) - React diagnostics on pull requests to `main`
 
 ### Ultracite Integration
 

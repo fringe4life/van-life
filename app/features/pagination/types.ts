@@ -1,5 +1,6 @@
 import type { Prisma } from '~/generated/prisma/client';
 import type { Id, List, Maybe } from '~/types';
+import type { UUIDv7 } from '~/types/ids.server';
 
 // Type for pagination direction
 export type Direction = 'forward' | 'backward';
@@ -28,7 +29,7 @@ export interface CursorMetadata {
 }
 
 export interface BasePaginationParams {
-	cursor: Maybe<string>;
+	cursor: Maybe<UUIDv7>;
 	direction?: Direction;
 	limit: number;
 }
@@ -37,5 +38,5 @@ export interface ToPaginationParams<T> extends Items<T>, BasePaginationParams {}
 
 export interface PaginationParams extends BasePaginationParams {
 	sort?: SortOption;
-	userId: string;
+	userId: UUIDv7;
 }

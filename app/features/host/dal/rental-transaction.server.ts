@@ -1,39 +1,28 @@
 import { TransactionType } from '~/generated/prisma/enums';
 import { prisma } from '~/lib/prisma.server';
+import type { UUIDv7 } from '~/types/ids.server';
 
-export const rentVan = async (
-	vanSlug: string,
-	renterId: string,
-	hostId: string
-) => {
-	// Look up van by slug to get its ID
-	const van = await prisma.van.findUnique({
-		where: { slug: vanSlug },
-		select: { id: true },
-	});
-
-	if (!van) {
-		throw new Error('Van not found');
-	}
-
+export function createRent(data: {
+	vanId: UUIDv7;
+	renterId: UUIDv7;
+	hostId: UUIDv7;
+}) {
 	return prisma.rent.create({
 		data: {
-			vanId: van.id,
-			renterId,
-			hostId,
+			vanId: data.vanId,
+			renterId: data.renterId,
+			hostId: data.hostId,
 		},
 	});
-};
+}
 
-// biome-ignore lint/suspicious/useAwait: needed for tryCatch
-export const returnVan = async (
-	rentId: string,
-	userId: string,
+export function executeReturnVanTransaction(
+	rentId: UUIDv7,
+	userId: UUIDv7,
 	amount: number,
-	vanId: string
-) => {
+	vanId: UUIDv7
+) {
 	return prisma.$transaction(async (tx) => {
-		// 1. Update rental record (mark as returned)
 		const updatedRent = await tx.rent.update({
 			where: { id: rentId },
 			data: {
@@ -41,7 +30,6 @@ export const returnVan = async (
 			},
 		});
 
-		// 2. Create transaction for renter (debit - negative amount)
 		await tx.transaction.create({
 			data: {
 				userId,
@@ -52,7 +40,6 @@ export const returnVan = async (
 			},
 		});
 
-		// 3. Create transaction for host (credit - positive amount)
 		await tx.transaction.create({
 			data: {
 				userId: updatedRent.hostId,
@@ -63,7 +50,6 @@ export const returnVan = async (
 			},
 		});
 
-		// 4. Update van status
 		await tx.van.update({
 			where: { id: vanId },
 			data: { isRented: false },
@@ -71,4 +57,4 @@ export const returnVan = async (
 
 		return updatedRent;
 	});
-};
+}

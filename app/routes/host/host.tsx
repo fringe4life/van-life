@@ -17,23 +17,17 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { MAX_ADD, MIN_ADD, MIN_WITHDRAW } from '~/constants/constants';
-import { validateIds } from '~/dal/validate-ids';
 import { RatingStars } from '~/features/host/components/review/rating-stars';
 import { balanceReducer } from '~/features/host/hooks/balance-reducer';
-import { getAverageReviewRating } from '~/features/host/queries/review/analytics';
-import {
-	getHostTransactions,
-	getTransactionSummary,
-} from '~/features/host/queries/user/analytics';
-import { addMoney } from '~/features/host/queries/user/payments';
 import { moneySchema } from '~/features/host/schemas.server';
+import { loadHostDashboard } from '~/features/host/services/dashboard.server';
+import { depositOrWithdraw } from '~/features/host/services/wallet.server';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { VanCard } from '~/features/vans/components/van-card';
 import { VanCardSkeleton } from '~/features/vans/components/van-card-skeleton';
 import { DEPOSIT, WITHDRAW } from '~/features/vans/constants/vans-constants';
-import { getHostVans } from '~/features/vans/queries/host';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { calculateTotalIncome } from '~/utils/calculate-income';
 import { getElapsedTime } from '~/utils/get-elapsed-time';
@@ -43,37 +37,15 @@ import type { Route } from './+types/host';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
-const HOST_VANS_LIMIT = 2;
-
 export const loader = async ({ context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
-	// Create a promise for vans data (will be resolved on client)
-	const vansPromise = Promise.resolve(
-		validateIds(getHostVans, [0])(user.id, {
-			cursor: undefined,
-			limit: HOST_VANS_LIMIT,
-			direction: 'forward',
-		})
-	);
-
-	const [
-		{ data: transactions },
-		{ data: avgRating },
-		{ data: transactionSummary },
-	] = await Promise.all([
-		tryCatch(() => validateIds(getHostTransactions, [0])(user.id)),
-		tryCatch(() => validateIds(getAverageReviewRating, [0])(user.id)),
-		tryCatch(() => validateIds(getTransactionSummary, [0])(user.id)),
-	]);
+	const dashboard = await loadHostDashboard(user.id);
 
 	return data(
 		{
-			vansPromise,
-			avgRating,
+			...dashboard,
 			name: user.name,
-			transactions,
-			transactionSummary,
 		},
 		{
 			headers: {
@@ -99,7 +71,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 	const { amount, type: transactionType } = validation.data;
 
 	const result2 = await tryCatch(() =>
-		validateIds(addMoney, [0])(user.id, amount, transactionType)
+		depositOrWithdraw(user.id, amount, transactionType)
 	);
 
 	if (result2.error) {

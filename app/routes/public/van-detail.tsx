@@ -5,13 +5,12 @@ import { buildVanSearchParams } from '~/features/pagination/utils/build-search-p
 import { buildVanDetailPageSeo } from '~/features/seo/build-page-seo.server';
 import { SeoHead } from '~/features/seo/seo-head';
 import VanDetail from '~/features/vans/components/van-detail';
-import { getVanBySlug } from '~/features/vans/queries/queries';
+import { loadVanBySlug } from '~/features/vans/services/van-detail.server';
 import {
 	loadPaginationParams,
 	loadSearchParams,
 	loadVanFiltersParams,
 } from '~/lib/search-params.server';
-import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/van-detail';
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
@@ -20,7 +19,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 	const { search } = loadSearchParams(request);
 	const { types, excludeInRepair, onlyOnSale } = loadVanFiltersParams(request);
 
-	const result = await tryCatch(() => getVanBySlug(params.vanSlug));
+	const result = await loadVanBySlug(params.vanSlug);
 	if (result.error) {
 		throw data('Failed to load van details. Please try again later.', {
 			status: 500,

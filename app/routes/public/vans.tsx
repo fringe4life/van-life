@@ -6,78 +6,22 @@ import { PendingUI } from '~/components/pending-ui';
 import { SearchInput } from '~/components/search-input';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { Pagination } from '~/features/pagination/components/pagination';
-import { DEFAULT_CURSOR } from '~/features/pagination/pagination-constants';
 import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
-import { toPagination } from '~/features/pagination/utils/to-pagination.server';
-import { buildVansPageSeo } from '~/features/seo/build-page-seo.server';
 import { SeoHead } from '~/features/seo/seo-head';
 import { VanCard } from '~/features/vans/components/van-card';
 import { VanFilters } from '~/features/vans/components/van-filters';
 import { VanHeader } from '~/features/vans/components/van-header';
 import { VanPrice } from '~/features/vans/components/van-price';
-import { VAN_TYPE_LOWERCASE } from '~/features/vans/constants/van-types';
-import { getVans } from '~/features/vans/queries/queries';
-import { validateVanType } from '~/features/vans/utils/validators';
+import { loadVanCatalog } from '~/features/vans/services/catalog.server';
 import {
 	paginationParsers,
 	searchParser,
 	vanFiltersParser,
 } from '~/lib/parsers';
-import {
-	loadPaginationParams,
-	loadSearchParams,
-	loadVanFiltersParams,
-} from '~/lib/search-params.server';
-import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/vans';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-	// Get badges from the centralized types
-	const badges = VAN_TYPE_LOWERCASE;
-
-	// Parse search parameters using nuqs loadPaginationParams
-	const { cursor, limit, type, direction } = loadPaginationParams(request);
-	const { search } = loadSearchParams(request);
-	const { types, excludeInRepair, onlyOnSale } = loadVanFiltersParams(request);
-
-	// Convert empty string to undefined for proper type handling
-	const typeFilter =
-		type === '' ? undefined : validateVanType(type?.toUpperCase());
-
-	// Reset cursor when search or filters change
-	const hasFilters =
-		search?.trim() ||
-		(types && types.length > 0) ||
-		excludeInRepair ||
-		onlyOnSale;
-	const actualCursor = hasFilters ? DEFAULT_CURSOR : cursor;
-
-	const { data: vans } = await tryCatch(() =>
-		getVans({
-			cursor: actualCursor,
-			limit,
-			direction,
-			typeFilter,
-			search,
-			types,
-			excludeInRepair,
-			onlyOnSale,
-		})
-	);
-
-	// Process pagination logic
-	const pagination = toPagination({
-		items: vans,
-		limit,
-		cursor: actualCursor,
-		direction,
-	});
-
-	const loaderData = {
-		badges,
-		seo: buildVansPageSeo(request),
-		...pagination,
-	};
+	const loaderData = await loadVanCatalog(request);
 
 	return data(loaderData, {
 		headers: {
@@ -88,7 +32,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 const Vans = ({ loaderData }: Route.ComponentProps) => {
 	const { items: vans, paginationMetadata, seo } = loaderData;
-	// Use nuqs for client-side state management
 	const [{ cursor, limit }] = useQueryStates(paginationParsers);
 	const [{ search }] = useQueryStates(searchParser);
 	const [{ types, excludeInRepair, onlyOnSale }] =

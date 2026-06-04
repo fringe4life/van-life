@@ -3,12 +3,12 @@ import { CustomForm } from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
-import { rentVan } from '~/features/host/queries/rental/transactions';
 import { rentVanSchema } from '~/features/host/rentals/schemas.server';
+import { rentVan } from '~/features/host/services/rental.server';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { VanCard } from '~/features/vans/components/van-card';
-import { getVanBySlug } from '~/features/vans/queries/queries';
+import { loadVanBySlug } from '~/features/vans/services/van-detail.server';
 import { validateArkType } from '~/utils/parse-arktype.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/rental-detail';
@@ -16,7 +16,7 @@ import type { Route } from './+types/rental-detail';
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
-	const result = await tryCatch(() => getVanBySlug(params.vanSlug));
+	const result = await loadVanBySlug(params.vanSlug);
 
 	if (result.error) {
 		throw data('Failed to load rental details. Please try again later.', {

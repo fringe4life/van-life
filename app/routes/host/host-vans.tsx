@@ -13,13 +13,11 @@ import {
 } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
-import { validateIds } from '~/dal/validate-ids';
 import { VanForm } from '~/features/host/components/van-form';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { Pagination } from '~/features/pagination/components/pagination';
-import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import { VanCard } from '~/features/vans/components/van-card';
 import { VanHeader } from '~/features/vans/components/van-header';
 import {
@@ -27,18 +25,17 @@ import {
 	hostVansListReducer,
 } from '~/features/vans/hooks/host-vans-list-reducer';
 import { useDisplayHostVans } from '~/features/vans/hooks/use-display-host-vans';
-import { createVan } from '~/features/vans/queries/crud';
-import { getHostVans } from '~/features/vans/queries/host';
 import { addVanSchema } from '~/features/vans/schemas.server';
+import {
+	createHostVan,
+	loadHostVansPage,
+} from '~/features/vans/services/host-vans.server';
 import type { HostVanListItem, VanCardProps } from '~/features/vans/types';
 import { isPendingVan } from '~/features/vans/types';
 import { pendingVanFromFormData } from '~/features/vans/utils/pending-van-from-form-data';
 import { toVanCardModel } from '~/features/vans/utils/to-van-card-model';
 import { hostPaginationParsers } from '~/lib/parsers';
-import { loadHostSearchParams } from '~/lib/search-params.server';
-import { getSlug } from '~/utils/get-slug';
 import { validateArkType } from '~/utils/parse-arktype.server';
-import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host-vans';
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
@@ -46,24 +43,13 @@ export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
-	const { cursor, limit, direction } = loadHostSearchParams(request);
+	const pagination = await loadHostVansPage(user.id, request);
 
-	const { data: vans } = await tryCatch(() =>
-		validateIds(getHostVans, [0])(user.id, { cursor, limit, direction })
-	);
-
-	const pagination = toPagination({ items: vans, limit, cursor, direction });
-
-	return data(
-		{
-			...pagination,
+	return data(pagination, {
+		headers: {
+			'Cache-Control': 'max-age=259200',
 		},
-		{
-			headers: {
-				'Cache-Control': 'max-age=259200',
-			},
-		}
-	);
+	});
 };
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
@@ -86,17 +72,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		};
 	}
 
-	const result = validation.data;
-
-	const resultWithHostId = {
-		...result,
-		slug: getSlug(result.name),
-		discount: result.discount ?? 0,
-		hostId: user.id,
-		state: result.state ?? null,
-	};
-
-	const result2 = await tryCatch(() => createVan(resultWithHostId));
+	const result2 = await createHostVan(user.id, validation.data);
 
 	if (result2.error || !result2.data) {
 		return {

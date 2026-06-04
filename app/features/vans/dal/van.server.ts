@@ -1,16 +1,37 @@
 import { getCursorMetadata } from '~/features/pagination/utils/get-cursor-metadata.server';
+import type { GetVansProps } from '~/features/vans/types';
 import type { Prisma } from '~/generated/prisma/client';
-import { VanState } from '~/generated/prisma/enums';
+import type { VanType as VanTypeEnum } from '~/generated/prisma/enums';
+import { VanState, VanType } from '~/generated/prisma/enums';
+import type { VanModel } from '~/generated/prisma/models';
 import { prisma } from '~/lib/prisma.server';
-import type { GetVansProps } from '../types';
 
 const WHITESPACE_REGEX = /\s+/;
+const VAN_TYPE_VALUES = new Set<string>(Object.values(VanType));
 
-/**
- * Formats a search string for PostgreSQL full-text search.
- * Splits the input by whitespace and joins with OR operator (|).
- * Example: "luxury van" -> "luxury | van"
- */
+function parseVanTypeStrings(types: string[]): VanTypeEnum[] {
+	return types
+		.map((t) => t.toUpperCase())
+		.filter((t): t is VanTypeEnum => VAN_TYPE_VALUES.has(t));
+}
+
+function buildVanTypeFilter(
+	types: string[] | undefined,
+	typeFilter: VanTypeEnum | undefined
+): Pick<Prisma.VanWhereInput, 'type'> | undefined {
+	if (types && types.length > 0) {
+		const vanTypes = parseVanTypeStrings(types);
+		if (vanTypes.length === 0) {
+			return;
+		}
+		return { type: { in: vanTypes } };
+	}
+	if (typeFilter) {
+		return { type: typeFilter };
+	}
+	return;
+}
+
 function formatFullTextSearchQuery(search: string): string {
 	return search
 		.trim()
@@ -39,32 +60,12 @@ export function getVans({
 		direction,
 	});
 
-	// Prioritize types array over single typeFilter
-	// Convert lowercase types to VanType enum values
-	let typeCondition:
-		| { type: { in: Array<'SIMPLE' | 'LUXURY' | 'RUGGED'> } }
-		| { type: 'SIMPLE' | 'LUXURY' | 'RUGGED' }
-		| undefined;
-	if (types && types.length > 0) {
-		typeCondition = {
-			type: {
-				in: types.map((t) => t.toUpperCase()) as Array<
-					'SIMPLE' | 'LUXURY' | 'RUGGED'
-				>,
-			},
-		};
-	} else if (typeFilter) {
-		typeCondition = { type: typeFilter };
-	} else {
-		typeCondition = undefined;
-	}
+	const typeCondition = buildVanTypeFilter(types, typeFilter);
 
 	const formattedSearch = search?.trim()
 		? formatFullTextSearchQuery(search)
 		: undefined;
 
-	// When using _relevance, orderBy must be an array
-	// Otherwise, it can be an object
 	const orderBy:
 		| Prisma.VanOrderByWithRelationInput
 		| Prisma.VanOrderByWithRelationInput[] = formattedSearch
@@ -94,7 +95,6 @@ export function getVans({
 			...(onlyOnSale && { state: VanState.ON_SALE }),
 		},
 		orderBy,
-		// Cursor pagination requires ordering by a unique, sequential field
 		cursor: actualCursor,
 		...rest,
 	});
@@ -105,5 +105,13 @@ export function getVanBySlug(slug: string) {
 		where: {
 			slug,
 		},
+	});
+}
+
+export function createVan(
+	newVan: Omit<VanModel, 'id' | 'createdAt' | 'isRented'>
+) {
+	return prisma.van.create({
+		data: { ...newVan, createdAt: new Date(), isRented: false },
 	});
 }

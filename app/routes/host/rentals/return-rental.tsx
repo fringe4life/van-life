@@ -8,52 +8,40 @@ import {
 import { CustomForm } from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
-import { validateIds } from '~/dal/validate-ids';
-import { getHostRentedVan } from '~/features/host/queries/rental/queries';
-import { returnVan } from '~/features/host/queries/rental/transactions';
-import { getAccountSummary } from '~/features/host/queries/user/analytics';
+import { parseUuidV7 } from '~/dal/parse-uuidv7.server';
+import {
+	completeReturnRental,
+	type HostRentedVan,
+	loadReturnRentalContext,
+} from '~/features/host/services/rental.server';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { VanCard } from '~/features/vans/components/van-card';
 import { getCost } from '~/features/vans/utils/get-cost';
-import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/return-rental';
 
-/**
- * Shared context for rental and account data.
- * This data is fetched once in middleware and shared between loader and action.
- * The rent is guaranteed to be valid (non-null, non-error) after middleware validation.
- */
 interface SharedRentalData {
 	money: number;
-	rent: NonNullable<
-		Exclude<Awaited<ReturnType<typeof getHostRentedVan>>, string>
-	>;
+	rent: HostRentedVan;
 }
 
 const sharedRentalDataContext = createContext<SharedRentalData>();
 
-/**
- * Middleware to fetch rental and account data once and share it between loader and action.
- * Runs for both GET (loader) and POST (action) requests.
- */
 const fetchSharedDataMiddleware: Route.MiddlewareFunction = async (
 	{ params, context },
 	next
 ) => {
 	const user = context.get(authContext);
+	const rentId = parseUuidV7(params.rentId);
 
-	const [{ data: rent }, { data: money }] = await Promise.all([
-		tryCatch(() => validateIds(getHostRentedVan, [0])(params.rentId)),
-		tryCatch(() => validateIds(getAccountSummary, [0])(user.id)),
-	]);
+	const { rent, money } = await loadReturnRentalContext(rentId, user.id);
 
 	if (!rent || typeof rent !== 'object' || !('van' in rent)) {
 		throw data('Rented van not found', { status: 404 });
 	}
 
-	if (!money) {
+	if (money === null || money === undefined) {
 		throw data('Account summary not found', { status: 404 });
 	}
 
@@ -87,21 +75,15 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
 	const user = context.get(authContext);
 	const { rent, money } = context.get(sharedRentalDataContext);
 
-	const { rentId } = params;
+	const result = await completeReturnRental({
+		rentId: parseUuidV7(params.rentId),
+		userId: user.id,
+		rent,
+		money,
+	});
 
-	const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
-	const isUnableToPay = money < amountToPay;
-
-	if (isUnableToPay) {
-		return { errors: 'Cannot afford to return this rental' };
-	}
-
-	const { data, error } = await tryCatch(() =>
-		returnVan(rentId, user.id, amountToPay, rent.van.id)
-	);
-
-	if (error || !data) {
-		return { errors: 'Something went wrong try again later' };
+	if (!result.success) {
+		return { errors: result.errors };
 	}
 
 	throw redirect(href('/host'));

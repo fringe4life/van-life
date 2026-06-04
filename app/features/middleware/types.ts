@@ -1,12 +1,12 @@
 import type { Maybe } from '~/types';
-import type { User } from '~/types/index.server';
+import type { AuthenticatedUser } from '~/types/auth.server';
 
 interface HeadersObject {
 	headers: Maybe<Headers>;
 }
 
 export interface UserAndHeaders extends HeadersObject {
-	user: Maybe<User>;
+	user: Maybe<AuthenticatedUser>;
 }
 
 export interface SetCookieHeaders extends HeadersObject {

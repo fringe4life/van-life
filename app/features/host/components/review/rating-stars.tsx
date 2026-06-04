@@ -15,7 +15,7 @@ const RatingStars = ({ rating }: RatingStarsProps) => {
 			stars.push(
 				<StarIcon
 					className="size-5 fill-orange-400 stroke-orange-400"
-					key={i}
+					key={`stars-${i}`}
 				/>
 			);
 		} else if (i === Math.floor(rating) + 1 && rating % 1 !== 0) {
@@ -27,7 +27,7 @@ const RatingStars = ({ rating }: RatingStarsProps) => {
 					aria-label="Star"
 					className="size-5"
 					fill="none"
-					key={i}
+					key={`stars-${i}`}
 					stroke="#fb923c"
 					strokeLinecap="round"
 					strokeLinejoin="round"
