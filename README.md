@@ -109,8 +109,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **Biome 2.4.15** for linting and formatting with Ultracite integration
 - **Ultracite 7.8.1** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.95.0** - Cloudflare Workers CLI for deploy and typegen
-- **react-doctor 0.2.15** - React diagnostics in CI and locally (`doctor.config.ts`)
+- **Wrangler 4.97.0** - Cloudflare Workers CLI for deploy and typegen
+- **react-doctor 0.2.16** - React diagnostics in CI and locally (`doctor.config.ts`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 6.0.3** with `@typescript/native-preview` support
 - **Bun** for fast package management and runtime
@@ -902,7 +902,7 @@ bun run build
 bun run preview
 
 # Deploy to Cloudflare Workers
-bun run deploy
+bun run deploy:project
 ```
 
 ---
@@ -938,7 +938,7 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run dev` – Start development server with HMR (Varlock loads env)
 - `bun run build` – Build for production (Cloudflare Workers + client assets)
 - `bun run preview` – Preview the production build locally
-- `bun run deploy` – Deploy to Cloudflare Workers via Varlock + Wrangler
+- `bun run deploy:project` – Deploy to Cloudflare Workers via Varlock + Wrangler
 - `bun run typegen` – Generate Wrangler types and React Router route types
 - `bun run typecheck` – TypeScript checking (`typegen` + `tsgo`)
 - `bun run db:migrate` – Run Prisma migrations (dev)
@@ -1054,7 +1054,7 @@ The application deploys to **Cloudflare Workers** with static client assets:
 
 - **Worker entry** - `workers/app.ts` with React Router SSR request handler
 - **Wrangler config** - `wrangler.jsonc` (assets from `./build/client`, `nodejs_compat`)
-- **Varlock deploy** - `bun run deploy` runs `varlock-wrangler deploy` for typed secrets
+- **Varlock deploy** - `bun run deploy:project` runs `varlock-wrangler deploy` for typed secrets
 - **Neon PostgreSQL** - `@prisma/adapter-neon` with `poolQueryViaFetch` for Workers compatibility
 - **Prisma client** - `workerd` runtime; generated on `postinstall`
 - **Cloudflare context** - `cloudflareContext` middleware shares `env` and `ctx` with routes
@@ -1062,7 +1062,7 @@ The application deploys to **Cloudflare Workers** with static client assets:
 ```bash
 # Build and deploy
 bun run build
-bun run deploy
+bun run deploy:project
 ```
 
 Set production secrets (`DATABASE_URL`, `BETTER_AUTH_SECRET`, `SITE_URL`, etc.) via Varlock/Bitwarden or Wrangler secrets before deploying.

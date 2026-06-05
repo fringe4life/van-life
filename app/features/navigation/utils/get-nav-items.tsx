@@ -1,14 +1,13 @@
 import { Info, LogIn, LogOut, Truck, User } from 'lucide-react';
 import { href } from 'react-router';
-import { CustomLink } from '../components/custom-link';
-import { CustomNavLink } from '../components/custom-nav-link';
+import type { NavItem } from '../types';
 import { linkClassName } from './link-class-name';
 import { navLinkClassName } from './nav-link-class-name';
 
-export function getNavItems(hasToken: boolean) {
-	return [
+export function getNavItems(hasToken: boolean): NavItem[] {
+	const items = [
 		{
-			Component: CustomNavLink,
+			type: 'nav-link',
 			props: { to: href('/about'), className: navLinkClassName },
 			children: (
 				<>
@@ -20,7 +19,7 @@ export function getNavItems(hasToken: boolean) {
 			show: true,
 		},
 		{
-			Component: CustomNavLink,
+			type: 'nav-link',
 			props: { to: href('/host'), className: navLinkClassName },
 			children: (
 				<>
@@ -32,7 +31,7 @@ export function getNavItems(hasToken: boolean) {
 			show: hasToken,
 		},
 		{
-			Component: CustomNavLink,
+			type: 'nav-link',
 			props: { to: href('/vans'), className: navLinkClassName },
 			children: (
 				<>
@@ -44,7 +43,7 @@ export function getNavItems(hasToken: boolean) {
 			show: true,
 		},
 		{
-			Component: CustomNavLink,
+			type: 'nav-link',
 			props: { to: href('/login'), className: navLinkClassName },
 			children: (
 				<>
@@ -56,7 +55,7 @@ export function getNavItems(hasToken: boolean) {
 			show: !hasToken,
 		},
 		{
-			Component: CustomLink,
+			type: 'link',
 			props: { to: href('/signout'), className: linkClassName },
 			children: (
 				<>
@@ -67,5 +66,7 @@ export function getNavItems(hasToken: boolean) {
 			id: 'signout',
 			show: !!hasToken,
 		},
-	].filter((item) => item.show);
+	] satisfies NavItem[];
+
+	return items.filter((item) => item.show);
 }

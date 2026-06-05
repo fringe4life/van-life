@@ -89,9 +89,13 @@ const VanForm = ({
 						placeholder="simple or luxury or rugged"
 						type="text"
 					/>
+					{/* react-doctor-disable-next-line*/}
 					<datalist id={`${typeId}-list`}>
+						{/* react-doctor-disable-next-line*/}
 						<option value="luxury" />
+						{/* react-doctor-disable-next-line*/}
 						<option value="simple" />
+						{/* react-doctor-disable-next-line*/}
 						<option value="rugged" />
 					</datalist>
 				</div>

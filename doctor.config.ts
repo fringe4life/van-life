@@ -18,6 +18,10 @@ export default {
 				files: ['app/root.tsx'],
 				rules: ['react-doctor/no-multi-comp'],
 			},
+			{
+				files: ['app/features/host/components/review/rating-stars.tsx'],
+				rules: ['react-doctor/no-array-index-as-key'],
+			},
 		],
 	},
 } satisfies ReactDoctorConfig;

@@ -23,10 +23,10 @@ const Nav = ({ hasToken }: NavProps) => {
 					emptyStateMessage="No nav items"
 					errorStateMessage="Something went wrong"
 					items={navItems}
-					renderProps={(item) => item}
+					renderProps={(item) => ({ item })}
 				/>
 			</nav>
-			<MobileNav hasToken={hasToken} />
+			<MobileNav items={navItems} />
 		</header>
 	);
 };

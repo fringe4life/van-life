@@ -1,17 +1,17 @@
 // biome-ignore lint/performance/noNamespaceImport: false positive — Dialog is a namespace
 import * as Dialog from '@radix-ui/react-dialog';
 import { useState } from 'react';
-import type { NavProps } from '../types';
-import { toMobileNavItems } from '../utils/create-mobile-nav-items';
-import { getNavItems } from '../utils/get-nav-items';
+import { GenericComponent } from '~/components/generic-component';
+import type { MobileNavProps } from '../types';
 import { HamburgerIcon } from './hamburger-icon';
 import { NavItem } from './nav-item';
 
-const MobileNav = ({ hasToken }: NavProps) => {
+const MobileNav = ({ items }: MobileNavProps) => {
 	const [open, setOpen] = useState(false);
-	const navItems = toMobileNavItems(getNavItems(hasToken), () =>
-		setOpen(false)
-	);
+
+	const handleClose = () => {
+		setOpen(false);
+	};
 
 	return (
 		<Dialog.Root onOpenChange={setOpen} open={open}>
@@ -44,11 +44,36 @@ const MobileNav = ({ hasToken }: NavProps) => {
 					</Dialog.Close>
 
 					<nav>
-						<ul className="flex flex-col items-center gap-6 text-lg">
-							{navItems.map((item) => (
-								<NavItem key={item.id} {...item} />
-							))}
-						</ul>
+						<GenericComponent
+							as="ul"
+							Component={NavItem}
+							className="flex flex-col items-center gap-6 text-lg"
+							emptyStateMessage="No nav items"
+							errorStateMessage="Something went wrong"
+							items={items}
+							renderProps={(item) => {
+								switch (item.type) {
+									case 'link':
+										return {
+											item: {
+												...item,
+												props: { ...item.props, onClick: handleClose },
+											},
+										};
+									case 'nav-link':
+										return {
+											item: {
+												...item,
+												props: { ...item.props, onClick: handleClose },
+											},
+										};
+									default:
+										throw new Error(
+											`Invalid item type: ${item satisfies never}`
+										);
+								}
+							}}
+						/>
 					</nav>
 				</Dialog.Content>
 			</Dialog.Portal>

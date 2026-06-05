@@ -14,7 +14,8 @@
     "*.spec.tsx",
     "*.test.ts",
     "*.test.tsx",
-    "worker-configuration.d.ts"
+    "worker-configuration.d.ts",
+    "doctor.config.ts"
   ],
   "ignoreDependencies": [
     "babel-plugin-react-compiler",

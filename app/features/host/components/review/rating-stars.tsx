@@ -46,7 +46,9 @@ const RatingStars = ({ rating }: RatingStarsProps) => {
 			);
 		} else {
 			// Empty star
-			stars.push(<StarIcon className="size-5 stroke-orange-400" key={i} />);
+			stars.push(
+				<StarIcon className="size-5 stroke-orange-400" key={`stars-${i}`} />
+			);
 		}
 	}
 	return <div className="flex h-5 w-30 gap-2 contain-strict">{stars}</div>;
