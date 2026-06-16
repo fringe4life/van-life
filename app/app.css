@@ -1,5 +1,13 @@
 @import "tailwindcss";
-@import "../.google-fonts/tailwind.css";
+
+@font-face {
+	font-family: Inter;
+	font-style: normal;
+	font-display: swap;
+	font-weight: 100 900;
+	src: url("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2")
+		format("woff2-variations");
+}
 
 /* Van state custom variants for cleaner component styling */
 @custom-variant van-new (&[data-slot*="van-card-new"]);
@@ -11,6 +19,10 @@
 @custom-variant unsuccessful (&[data-unsuccessful="true"]);
 
 @theme {
+	--font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+
+	--header-height: 104px;
+
 	--container-sm: 12rem;
 	--container-md: 26rem;
 	--container-lg: 36rem;
@@ -38,6 +50,55 @@
 
 	--mobile-menu-width: min(100vw, 25rem);
 
+	/* Spring easings (Open Props presets) */
+	/* Playful spring, ~16% overshoot — for the icon morph */
+	--ease-spring: linear(
+		0,
+		0.009,
+		0.035 2.1%,
+		0.141 4.4%,
+		0.281 6.7%,
+		0.723 12.9%,
+		0.938 16.7%,
+		1.017,
+		1.077,
+		1.121,
+		1.149 24.3%,
+		1.159,
+		1.163,
+		1.161,
+		1.154 29.9%,
+		1.129 32.8%,
+		1.051 39.6%,
+		1.017 43.1%,
+		0.991,
+		0.977 51%,
+		0.974 53.8%,
+		0.975 57.1%,
+		0.997 69.8%,
+		1.003 76.9%,
+		1.004 83.8%,
+		1 100%
+	);
+
+	/* Gentle spring, barely overshoots — for the panel slide */
+	--ease-spring-soft: linear(
+		0,
+		0.006,
+		0.025 2.8%,
+		0.101 6.1%,
+		0.539 18.9%,
+		0.721 25.3%,
+		0.849 31.5%,
+		0.937 38.1%,
+		0.968 41.8%,
+		0.991 45.7%,
+		1.006 50.1%,
+		1.015 55%,
+		1.017 63.9%,
+		1.001 100%
+	);
+
 	/* Chart dimensions */
 	--chart-height: 350px;
 
@@ -58,18 +119,41 @@
 
 	--chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
 
-	/* Mobile nav dialog animations */
-	--animate-slide-in-right: --slideInRight 300ms cubic-bezier(0.4, 0, 0.2, 1)
-		both;
-	--animate-slide-out-right: --slideOutRight 300ms cubic-bezier(0.4, 0, 0.2, 1)
-		both;
+	/* Mobile nav dialog animations — spring on entry, plain ease-in on exit */
+	--animate-slide-in-right: --slideInRight 500ms var(--ease-spring-soft) both;
+	--animate-slide-out-right: --slideOutRight 250ms ease-in both;
 	--animate-overlay-fade-in: --overlayFadeIn 300ms ease both;
 	--animate-overlay-fade-out: --overlayFadeOut 300ms ease both;
 
-	/* Radix UI Dropdown Menu CSS Variables */
-	/* These are typically set dynamically by Radix UI, but we provide fallbacks */
-	--radix-dropdown-menu-content-available-height: calc(100vh - 2rem);
-	--radix-dropdown-menu-content-transform-origin: center;
+	/* shadcn semantic tokens (light only) */
+	--color-background: hsl(0 0% 100%);
+	--color-foreground: hsl(0 0% 3.9%);
+	--color-card: hsl(0 0% 100%);
+	--color-card-foreground: hsl(0 0% 3.9%);
+	--color-popover: hsl(0 0% 100%);
+	--color-popover-foreground: hsl(0 0% 3.9%);
+	--color-primary: hsl(0 0% 9%);
+	--color-primary-foreground: hsl(0 0% 98%);
+	--color-secondary: hsl(0 0% 96.1%);
+	--color-secondary-foreground: hsl(0 0% 9%);
+	--color-muted: hsl(0 0% 96.1%);
+	--color-muted-foreground: hsl(0 0% 45.1%);
+	--color-accent: hsl(0 0% 96.1%);
+	--color-accent-foreground: hsl(0 0% 9%);
+	--color-destructive: hsl(0 84.2% 60.2%);
+	--color-destructive-foreground: hsl(0 0% 98%);
+	--color-border: hsl(0 0% 89.8%);
+	--color-input: hsl(0 0% 89.8%);
+	--color-ring: hsl(0 0% 3.9%);
+	--color-chart-1: hsl(12 76% 61%);
+	--color-chart-2: hsl(173 58% 39%);
+	--color-chart-3: hsl(197 37% 24%);
+	--color-chart-4: hsl(43 74% 66%);
+	--color-chart-5: hsl(27 87% 67%);
+	--radius-sm: 0.375rem;
+	--radius-md: 0.5rem;
+	--radius-lg: 0.625rem;
+	--radius-xl: 0.75rem;
 }
 
 /* BASE STYLES */
@@ -153,7 +237,7 @@
 }
 
 @utility layout-grid {
-	@apply grid grid-cols-[var(--padding-inline)_1fr_var(--padding-inline)] grid-rows-[104px_1fr_100px];
+	@apply grid grid-cols-[var(--padding-inline)_1fr_var(--padding-inline)] grid-rows-[var(--header-height)_1fr_100px];
 }
 
 /* ANIMATIONS */
@@ -251,13 +335,6 @@
 	to {
 		opacity: 0;
 		background-color: rgba(0, 0, 0, 0);
-	}
-}
-
-/* Outside any @layer — must be unlayered to beat Radix's unlayered !important */
-@supports (scrollbar-gutter: stable) {
-	html body[data-scroll-locked] {
-		margin-right: 0 !important;
 	}
 }
 

@@ -6,7 +6,6 @@ import { LazyBarChart } from '~/features/host/components/bar-chart/lazy-bar-char
 import Review from '~/features/host/components/review/review';
 import { loadReviewsPage } from '~/features/host/services/reviews.server';
 import { authContext } from '~/features/middleware/contexts/auth';
-import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { Pagination } from '~/features/pagination/components/pagination';
 import { VanHeader } from '~/features/vans/components/van-header';
 import {
@@ -14,7 +13,6 @@ import {
 	parsePaginationCursor,
 } from '~/lib/search-params.server';
 import type { Route } from './+types/reviews';
-export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);

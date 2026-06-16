@@ -1,7 +1,8 @@
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
 import { startTransition } from 'react';
-import { Button, buttonVariants } from '~/components/ui/button';
+import { Button } from '~/components/ui/button';
+import { buttonVariants } from '~/components/ui/button-variants';
 import {
 	DEFAULT_LIMIT,
 	LIMITS,

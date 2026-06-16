@@ -15,14 +15,16 @@
     "*.test.ts",
     "*.test.tsx",
     "worker-configuration.d.ts",
-    "doctor.config.ts"
+    "doctor.config.ts",
+    "*.old.tsx"
   ],
   "ignoreDependencies": [
     "babel-plugin-react-compiler",
     "isbot",
     "react-doctor",
     "@varlock/bitwarden-plugin",
-    "@cloudflare/vite-plugin"
+    "@cloudflare/vite-plugin",
+    "@fontsource-variable/inter"
   ],
   "duplicates": {
     "enabled": true,

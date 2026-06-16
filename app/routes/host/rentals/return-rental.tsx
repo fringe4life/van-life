@@ -15,7 +15,6 @@ import {
 	loadReturnRentalContext,
 } from '~/features/host/services/rental.server';
 import { authContext } from '~/features/middleware/contexts/auth';
-import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { VanCard } from '~/features/vans/components/van-card';
 import { getCost } from '~/features/vans/utils/get-cost';
@@ -51,7 +50,6 @@ const fetchSharedDataMiddleware: Route.MiddlewareFunction = async (
 };
 
 export const middleware: Route.MiddlewareFunction[] = [
-	authMiddleware,
 	fetchSharedDataMiddleware,
 ];
 

@@ -3,15 +3,15 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-7.16.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-7.17.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.0-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.13-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.1-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.18-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.8.9-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.4.15-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.8.1-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Biome](https://img.shields.io/badge/Biome-2.4.16-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.8.3-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.8.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.3.5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -48,7 +48,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - ⚛️ **React 19 (canary) & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🔍 **Advanced Van Filtering** (popover panel, multi-select types, state toggles, optimistic UI, debounced nuqs updates)
-- 📱 **Mobile Navigation** (Radix Dialog drawer, animated hamburger, slide-in overlay)
+- 📱 **Mobile Navigation** (Base UI Dialog drawer, animated hamburger, slide-in overlay)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals with analytics)
@@ -72,6 +72,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 🌐 **View Transitions** for smooth navigation experiences
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
+- 🔐 **Consolidated host auth middleware** on `host-layout.tsx` (no duplicate session lookups on leaf routes)
 - 🔍 **SEO Infrastructure** (canonical URLs, Open Graph/Twitter meta, `robots.txt`, dynamic `sitemap.xml` via `@forge42/seo-tools`)
 - ☁️ **Cloudflare Workers** deployment with Varlock-managed secrets and Neon PostgreSQL
 
@@ -82,11 +83,11 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Frontend
 
 - **React canary** builds with stable Activity component for prerendering
-- **React Router 7.16.0** (file-based routing, SSR, optional route parameters, v8 middleware flags)
+- **React Router 7.17.0** (file-based routing, SSR, optional route parameters, v8 middleware flags)
 - **TypeScript 6.0.3** with strict configuration
-- **TailwindCSS 4.3.0** with modern CSS features
-- **Radix UI** (`radix-ui` + `@radix-ui/react-dialog`) for popover, checkbox, label, and mobile nav dialog
-- **Lucide React 1.17.0** for icons (direct imports for performance)
+- **TailwindCSS 4.3.1** with modern CSS features
+- **@base-ui/react** + **shadcn/ui** (`base-nova` style) for dialog, popover, checkbox, label, and mobile nav
+- **Lucide React 1.18.0** for icons (direct imports for performance)
 - **Recharts 3.8.1** for data visualization (lazy-loaded)
 - **nuqs 2.8.9** for type-safe URL state management via Context7 parsers
 
@@ -94,7 +95,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 - **Cloudflare Workers** with React Router SSR via `workers/app.ts`
 - **Prisma 7.8.0** ORM with Neon PostgreSQL (Rust-free client, `workerd` runtime)
-- **better-auth 1.6.13** with **@better-auth/prisma-adapter** for authentication
+- **better-auth 1.6.18** with **@better-auth/prisma-adapter** for authentication
 - **ArkType 2.2.0** for schema validation and type narrowing
 - **uuidv7** for app-generated user IDs; Prisma `@default(uuid(7))` for domain models
 - **@prisma/adapter-neon 7.8.0** for Neon database integration
@@ -103,14 +104,14 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Development Tools
 
 - **Vite 7.3.5** - Fast frontend tooling with optimized builds
-- **vite-plugin-google-fonts** - Self-hosted Inter via generated `.google-fonts/` (gitignored)
+- **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **vite-tsconfig-paths 6.1.1** - TypeScript path alias resolution for `~/` imports
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
-- **Biome 2.4.15** for linting and formatting with Ultracite integration
-- **Ultracite 7.8.1** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.4.16** for linting and formatting with Ultracite integration
+- **Ultracite 7.8.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.97.0** - Cloudflare Workers CLI for deploy and typegen
-- **react-doctor 0.2.16** - React diagnostics in CI and locally (`doctor.config.ts`)
+- **Wrangler 4.100.0** - Cloudflare Workers CLI for deploy and typegen
+- **react-doctor 0.5.1** - React diagnostics in CI and locally (`doctor.config.ts`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 6.0.3** with `@typescript/native-preview` support
 - **Bun** for fast package management and runtime
@@ -130,7 +131,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ```
 app/
 ├── components/          # Reusable UI components
-│   ├── ui/             # Shadcn UI (button, popover, checkbox, badge, etc.)
+│   ├── ui/             # shadcn base-nova (@base-ui/react): button, dialog, popover, checkbox, badge, etc.
+│   │                   # Variant tokens in button-variants.ts, badge-variants.ts
 │   └── [common]        # Generic components (forms, lists, sortable, etc.)
 ├── constants/          # App-wide constants and enums
 ├── dal/                # Global data access helpers
@@ -149,7 +151,7 @@ app/
 │   │   └── utils/      # Route determination helpers
 │   ├── image/          # Image optimization utilities
 │   ├── middleware/     # Auth middleware, Cloudflare context, auth-redirect helpers
-│   ├── navigation/     # Nav, mobile-nav (Dialog), hamburger-icon
+│   ├── navigation/     # Nav, mobile-nav (Base UI Dialog), hamburger-icon
 │   ├── pagination/     # Pagination utilities and components
 │   ├── seo/            # SEO helpers (canonical URLs, SeoHead, sitemap)
 │   │   └── dal/        # SEO Prisma reads (sitemap.server.ts)
@@ -205,6 +207,9 @@ prisma/
 
 workers/
 └── app.ts              # Cloudflare Workers entry (React Router SSR)
+
+docs/
+└── react-router-audit.md  # Framework-mode audit and middleware notes
 ```
 
 ---
@@ -337,9 +342,10 @@ generator client {
 
 ## Authentication
 
-- **better-auth 1.6.13** with **@better-auth/prisma-adapter** for secure email/password authentication
+- **better-auth 1.6.18** with **@better-auth/prisma-adapter** for secure email/password authentication
 - **Session management** with proper security headers
 - **Protected routes** with automatic redirects via `getLoginRedirectUrl` / `getSafeRedirectPath` (`app/features/middleware/utils/auth-redirect.ts`)
+- **Host auth middleware** runs once on `host-layout.tsx` (stub loader ensures `.data` requests on client navigations)
 - **`redirectTo` query param** on login — returns users to the page they tried to visit (open-redirect safe)
 - **ArkType validation** (`app/features/auth/schemas.server.ts`) for login/sign-up forms
 - **Server-side session handling** in loaders
@@ -981,15 +987,15 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 
 ### TailwindCSS 4 & Modern CSS
 
-- **TailwindCSS 4.3.0** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
-- **Inter font** via `vite-plugin-google-fonts` (output in `.google-fonts/`, gitignored)
+- **TailwindCSS 4.3.1** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
+- **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — overlay fade and slide-in/out (`app/app.css`)
 - **Responsive design** with mobile-first approach and CSS Grid layouts
 - **Biome configuration** for CSS at-rules support
 
 ### Custom Design System
 
-- **Component variants** using `class-variance-authority` for consistent UI
+- **Component variants** using `cva` (`button-variants.ts`, `badge-variants.ts`) for consistent UI
 - **Custom Tailwind variants** for van states (`van-new`, `van-sale`, `van-repair`, `van-available`)
 - **Centralized styling utilities** - `getVanStateStyles()` function provides consistent styling across all van components
 - **Type-safe styling** with TypeScript support throughout
@@ -1004,8 +1010,8 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 
 ## Code Quality
 
-- **Biome 2.4.15** for linting and formatting with Ultracite integration
-- **Ultracite 7.8.1** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.4.16** for linting and formatting with Ultracite integration
+- **Ultracite 7.8.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 6.0.3** with strict configuration
 - **ArkType 2.2.0** for runtime validation with regex support for slug validation
 - **Consistent code style:**

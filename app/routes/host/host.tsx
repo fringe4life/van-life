@@ -3,12 +3,19 @@ import {
 	type ChangeEventHandler,
 	type SubmitEventHandler,
 	Suspense,
+	useId,
 	useOptimistic,
 	useState,
 	useTransition,
 	ViewTransition,
 } from 'react';
-import { Await, data, href, useFetcher, useParams } from 'react-router';
+import {
+	Await,
+	data,
+	href,
+	isRouteErrorResponse,
+	useFetcher,
+} from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
 import { Button } from '~/components/ui/button';
@@ -23,7 +30,6 @@ import { moneySchema } from '~/features/host/schemas.server';
 import { loadHostDashboard } from '~/features/host/services/dashboard.server';
 import { depositOrWithdraw } from '~/features/host/services/wallet.server';
 import { authContext } from '~/features/middleware/contexts/auth';
-import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { VanCard } from '~/features/vans/components/van-card';
 import { VanCardSkeleton } from '~/features/vans/components/van-card-skeleton';
@@ -34,8 +40,6 @@ import { getElapsedTime } from '~/utils/get-elapsed-time';
 import { validateArkType } from '~/utils/parse-arktype.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host';
-
-export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export const loader = async ({ context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
@@ -96,6 +100,7 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 
 	const fetcher = useFetcher();
 	const [isPending, startTransition] = useTransition();
+	const id = useId();
 
 	// Use optimistic updates for balance
 	const [optimisticBalance, addOptimisticBalance] = useOptimistic(
@@ -225,11 +230,12 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 							/>
 						</Label>
 					</div>
-
+					<Label htmlFor={id}>Amount</Label>
 					<Input
 						defaultValue={
 							(actionData?.formData?.amount as string | undefined) ?? ''
 						}
+						id={id}
 						max={isDepositing ? MAX_ADD : optimisticBalance}
 						min={isDepositing ? MIN_ADD : MIN_WITHDRAW}
 						name="amount"
@@ -283,21 +289,22 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 };
 export default Host;
 
-export const ErrorBoundary = () => {
-	const message = 'Oops!';
-	const details = 'An unexpected error occurred. Please try again later';
-
-	const params = useParams();
-	return (
-		<main className="container mx-auto p-4 pt-16">
-			<h1>{message}</h1>
-			<p>{details}</p>
-			{Object.entries(params).length >= 1 && (
-				<p>
-					Your Van could not be found. Add it here{' '}
-					<CustomLink to={href('/host/vans')}>Add a new Van</CustomLink>
-				</p>
-			)}
-		</main>
-	);
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+	if (isRouteErrorResponse(error)) {
+		return (
+			<UnsuccesfulState
+				isError
+				message={error.statusText || 'An unknown error occurred.'}
+			/>
+		);
+	}
+	if (error instanceof Error) {
+		return (
+			<UnsuccesfulState
+				isError
+				message="Something went wrong loading your dashboard."
+			/>
+		);
+	}
+	return <UnsuccesfulState isError message="An unknown error occurred." />;
 };

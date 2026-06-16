@@ -15,12 +15,16 @@ export default {
 		],
 		overrides: [
 			{
-				files: ['app/root.tsx'],
+				files: ['app/root.tsx', 'app/components/ui/**'],
 				rules: ['react-doctor/no-multi-comp'],
 			},
 			{
 				files: ['app/features/host/components/review/rating-stars.tsx'],
 				rules: ['react-doctor/no-array-index-as-key'],
+			},
+			{
+				files: ['app/components/ui/**'],
+				rules: ['react-doctor/label-has-associated-control'],
 			},
 		],
 	},

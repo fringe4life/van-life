@@ -1,5 +1,6 @@
 import { href } from 'react-router';
-import { Badge, badgeVariants } from '~/components/ui/badge';
+import { Badge } from '~/components/ui/badge';
+import { badgeVariants } from '~/components/ui/badge-variants';
 import {
 	Card,
 	CardContent,

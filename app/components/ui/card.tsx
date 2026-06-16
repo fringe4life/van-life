@@ -40,16 +40,16 @@ const CardDescription = ({
 	/>
 );
 
-const CardAction = ({ className, ...props }: React.ComponentProps<'div'>) => (
-	<div
-		className={cn(
-			'col-start-2 row-span-2 row-start-1 self-start justify-self-end',
-			className
-		)}
-		data-slot="card-action"
-		{...props}
-	/>
-);
+// const CardAction = ({ className, ...props }: React.ComponentProps<'div'>) => (
+// 	<div
+// 		className={cn(
+// 			'col-start-2 row-span-2 row-start-1 self-start justify-self-end',
+// 			className
+// 		)}
+// 		data-slot="card-action"
+// 		{...props}
+// 	/>
+// );
 
 const CardContent = ({ className, ...props }: React.ComponentProps<'div'>) => (
 	<div className={cn('', className)} data-slot="card-content" {...props} />
@@ -65,7 +65,7 @@ const CardFooter = ({ className, ...props }: React.ComponentProps<'div'>) => (
 
 export {
 	Card,
-	CardAction,
+	// CardAction,
 	CardContent,
 	CardDescription,
 	CardFooter,

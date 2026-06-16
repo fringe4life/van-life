@@ -5,7 +5,15 @@ import { authMiddleware } from '~/features/middleware/functions/auth-middleware'
 import { CustomNavLink } from '~/features/navigation/components/custom-nav-link';
 import { navLinkClassName } from '~/features/navigation/utils/nav-link-class-name';
 import type { Route } from './+types/host-layout';
+
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
+
+// Intentionally empty: forces a `.data` request on client navigations under `/host`
+// so `authMiddleware` runs before child routes render. Without this loader, RR may
+// skip server middleware when a target route has no loader of its own.
+// See docs/react-router-audit.md and node_modules/react-router/docs/how-to/middleware.md
+export const loader = () => null;
+
 const HostLayout = () => (
 	<>
 		<meta content="noindex, nofollow" name="robots" />

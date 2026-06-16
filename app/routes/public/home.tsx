@@ -1,6 +1,6 @@
 import { href } from 'react-router';
 import { PendingUI } from '~/components/pending-ui';
-import { buttonVariants } from '~/components/ui/button';
+import { buttonVariants } from '~/components/ui/button-variants';
 import { Image } from '~/features/image/component/image';
 import {
 	HIGH_QUALITY_IMAGE_QUALITY,

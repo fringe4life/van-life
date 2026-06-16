@@ -6,14 +6,11 @@ import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { rentVanSchema } from '~/features/host/rentals/schemas.server';
 import { rentVan } from '~/features/host/services/rental.server';
 import { authContext } from '~/features/middleware/contexts/auth';
-import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { VanCard } from '~/features/vans/components/van-card';
 import { loadVanBySlug } from '~/features/vans/services/van-detail.server';
 import { validateArkType } from '~/utils/parse-arktype.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/rental-detail';
-
-export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 	const result = await loadVanBySlug(params.vanSlug);

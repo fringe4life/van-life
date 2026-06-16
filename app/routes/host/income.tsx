@@ -6,7 +6,6 @@ import { LazyBarChart } from '~/features/host/components/bar-chart/lazy-bar-char
 import Income from '~/features/host/components/income';
 import { loadIncomePage } from '~/features/host/services/income.server';
 import { authContext } from '~/features/middleware/contexts/auth';
-import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { Pagination } from '~/features/pagination/components/pagination';
 import { VanHeader } from '~/features/vans/components/van-header';
 import { displayPrice } from '~/features/vans/utils/display-price';
@@ -17,7 +16,6 @@ import {
 import { calculateTotalIncome } from '~/utils/calculate-income';
 import { getElapsedTime } from '~/utils/get-elapsed-time';
 import type { Route } from './+types/income';
-export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);

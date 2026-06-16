@@ -15,7 +15,6 @@ import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
 import { VanForm } from '~/features/host/components/van-form';
 import { authContext } from '~/features/middleware/contexts/auth';
-import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { Pagination } from '~/features/pagination/components/pagination';
 import { VanCard } from '~/features/vans/components/van-card';
@@ -37,8 +36,6 @@ import { toVanCardModel } from '~/features/vans/utils/to-van-card-model';
 import { hostPaginationParsers } from '~/lib/parsers';
 import { validateArkType } from '~/utils/parse-arktype.server';
 import type { Route } from './+types/host-vans';
-
-export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);

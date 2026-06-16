@@ -4,25 +4,12 @@ import { varlockCloudflareVitePlugin } from '@varlock/cloudflare-integration';
 import { reactRouterDevTools } from 'react-router-devtools';
 import { defineConfig } from 'vite';
 import babel from 'vite-plugin-babel';
-import googleFonts from 'vite-plugin-google-fonts';
 import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
 	plugins: [
 		varlockCloudflareVitePlugin({ viteEnvironment: { name: 'ssr' } }),
 		reactRouterDevTools(),
 		tsconfigPaths(),
-		googleFonts({
-			entry: 'app/root.tsx',
-			tailwind: {
-				cssEntry: 'app/app.css',
-			},
-			fonts: {
-				Inter: {
-					variable: '--font-sans',
-					subsets: ['latin'],
-				},
-			},
-		}),
 		tailwindcss(),
 		babel({
 			include: /\.[jt]sx?$/,

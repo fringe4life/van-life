@@ -126,20 +126,22 @@ const VanFilters = () => {
 
 	return (
 		<Popover>
-			<PopoverTrigger asChild>
-				<Button className="gap-2" variant="outline">
-					<FilterIcon className="size-4" />
-					Filters
-					{badgeCount > 0 && (
-						<Badge
-							className="ml-1 flex size-5 items-center justify-center rounded-full p-0 text-xs"
-							variant="outline"
-						>
-							{badgeCount}
-						</Badge>
-					)}
-				</Button>
-			</PopoverTrigger>
+			<PopoverTrigger
+				render={
+					<Button className="gap-2" variant="outline">
+						<FilterIcon className="size-4" />
+						Filters
+						{badgeCount > 0 && (
+							<Badge
+								className="ml-1 flex size-5 items-center justify-center rounded-full p-0 text-xs"
+								variant="outline"
+							>
+								{badgeCount}
+							</Badge>
+						)}
+					</Button>
+				}
+			/>
 			<PopoverContent
 				align="start"
 				className="w-56 border-neutral-300 bg-white p-0 text-neutral-900 shadow-md"

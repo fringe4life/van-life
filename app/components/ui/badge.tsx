@@ -1,53 +1,32 @@
-import { Slot } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
-import type * as React from 'react';
+import { mergeProps } from '@base-ui/react/merge-props';
+import { useRender } from '@base-ui/react/use-render';
 
 import { cn } from '~/utils/utils';
 
-const badgeVariants = cva(
-	'inline-flex items-center  justify-center  rounded-md  text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-red-500/50 focus-visible:ring-[3px]  transition-opacity overflow-hidden',
-	{
-		variants: {
-			variant: {
-				simple: ' bg-orange-600 text-white hover:bg-orange-600/90',
-				luxury: ' bg-neutral-900 text-white hover:bg-neutral-900/90',
-				rugged:
-					'bg-teal-800 text-white  hover:bg-teal-800/90 focus-visible:ring-teal-800/20 ',
-				outline: 'bg-orange-100  hover:bg-orange/80 ',
-				unavailable:
-					'bg-red-500 text-white disabled cursor-not-allowed hover:bg-red-500/90',
-				new: 'bg-gray-500 text-white hover:bg-gray-500/90',
-				sale: 'bg-green-500 text-white hover:bg-green-500/90',
-				repair: 'bg-yellow-500 text-black hover:bg-yellow-500/90',
-			},
-			size: {
-				default: 'px-4 py-2',
-				small: 'px-1 py-0.5',
-			},
-		},
-		defaultVariants: {
-			variant: 'outline',
-			size: 'default',
-		},
-	}
-);
+import { type BadgeVariantProps, badgeVariants } from './badge-variants';
 
-const Badge = ({
+function Badge({
 	className,
-	variant,
-	asChild = false,
+	variant = 'outline',
+	size = 'default',
+	render,
 	...props
-}: React.ComponentProps<'span'> &
-	VariantProps<typeof badgeVariants> & { asChild?: boolean }) => {
-	const Comp = asChild ? Slot : 'span';
+}: useRender.ComponentProps<'span'> & BadgeVariantProps) {
+	return useRender({
+		defaultTagName: 'span',
+		props: mergeProps<'span'>(
+			{
+				className: cn(badgeVariants({ variant, size }), className),
+			},
+			props
+		),
+		render,
+		state: {
+			slot: 'badge',
+			variant,
+			size,
+		},
+	});
+}
 
-	return (
-		<Comp
-			className={cn(badgeVariants({ variant }), className)}
-			data-slot="badge"
-			{...props}
-		/>
-	);
-};
-
-export { Badge, badgeVariants };
+export { Badge };

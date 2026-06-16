@@ -1,7 +1,11 @@
-// biome-ignore lint/performance/noNamespaceImport: false positive — Dialog is a namespace
-import * as Dialog from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import { GenericComponent } from '~/components/generic-component';
+import {
+	Dialog,
+	DialogContent,
+	DialogTitle,
+	DialogTrigger,
+} from '~/components/ui/dialog';
 import type { MobileNavProps } from '../types';
 import { HamburgerIcon } from './hamburger-icon';
 import { NavItem } from './nav-item';
@@ -14,70 +18,58 @@ const MobileNav = ({ items }: MobileNavProps) => {
 	};
 
 	return (
-		<Dialog.Root onOpenChange={setOpen} open={open}>
-			<Dialog.Trigger asChild>
-				<button
-					aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
-					className="cursor-pointer rounded p-1 transition-colors duration-250 hover:bg-orange-100 md:hidden"
-					type="button"
-				>
-					<HamburgerIcon isOpen={open} size={24} />
-				</button>
-			</Dialog.Trigger>
+		<Dialog onOpenChange={setOpen} open={open}>
+			<DialogTrigger
+				render={
+					<button
+						aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
+						className="relative z-50 cursor-pointer rounded p-1 transition-colors duration-250 hover:bg-orange-100 md:hidden"
+						type="button"
+					/>
+				}
+			>
+				<HamburgerIcon isOpen={open} size={24} />
+			</DialogTrigger>
 
-			<Dialog.Portal>
-				<Dialog.Overlay className="fixed inset-0 z-40 data-[state=closed]:animate-overlay-fade-out data-[state=open]:animate-overlay-fade-in" />
-				<Dialog.Content
-					aria-describedby={undefined}
-					className="fixed inset-y-0 right-0 z-50 flex w-(--mobile-menu-width) flex-col items-center justify-center bg-white shadow-2xl data-[state=closed]:animate-slide-out-right data-[state=open]:animate-slide-in-right"
-				>
-					<Dialog.Title className="sr-only">Navigation</Dialog.Title>
+			<DialogContent
+				className="fixed top-(--header-height) right-0 bottom-0 left-auto flex w-(--mobile-menu-width) max-w-none translate-x-0 translate-y-0 flex-col items-center justify-center rounded-none bg-white p-0 shadow-2xl ring-0 data-closed:animate-slide-out-right data-open:animate-slide-in-right"
+				overlayClassName="top-(--header-height) z-40 bg-black/60 data-closed:animate-overlay-fade-out data-open:animate-overlay-fade-in"
+				showCloseButton={false}
+			>
+				<DialogTitle className="sr-only">Navigation</DialogTitle>
 
-					<Dialog.Close asChild>
-						<button
-							aria-label="Close navigation menu"
-							className="absolute top-5 right-5 cursor-pointer rounded p-1 transition-colors duration-250 hover:bg-orange-100"
-							type="button"
-						>
-							<HamburgerIcon isOpen size={24} />
-						</button>
-					</Dialog.Close>
-
-					<nav>
-						<GenericComponent
-							as="ul"
-							Component={NavItem}
-							className="flex flex-col items-center gap-6 text-lg"
-							emptyStateMessage="No nav items"
-							errorStateMessage="Something went wrong"
-							items={items}
-							renderProps={(item) => {
-								switch (item.type) {
-									case 'link':
-										return {
-											item: {
-												...item,
-												props: { ...item.props, onClick: handleClose },
-											},
-										};
-									case 'nav-link':
-										return {
-											item: {
-												...item,
-												props: { ...item.props, onClick: handleClose },
-											},
-										};
-									default:
-										throw new Error(
-											`Invalid item type: ${item satisfies never}`
-										);
-								}
-							}}
-						/>
-					</nav>
-				</Dialog.Content>
-			</Dialog.Portal>
-		</Dialog.Root>
+				<nav>
+					<GenericComponent
+						as="ul"
+						Component={NavItem}
+						className="flex flex-col items-center gap-6 text-lg"
+						emptyStateMessage="No nav items"
+						errorStateMessage="Something went wrong"
+						items={items}
+						renderProps={(item) => {
+							switch (item.type) {
+								case 'link':
+									return {
+										item: {
+											...item,
+											props: { ...item.props, onClick: handleClose },
+										},
+									};
+								case 'nav-link':
+									return {
+										item: {
+											...item,
+											props: { ...item.props, onClick: handleClose },
+										},
+									};
+								default:
+									throw new Error(`Invalid item type: ${item satisfies never}`);
+							}
+						}}
+					/>
+				</nav>
+			</DialogContent>
+		</Dialog>
 	);
 };
 

@@ -3,7 +3,6 @@ import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
 import { listActiveRentals } from '~/features/host/services/rental.server';
 import { authContext } from '~/features/middleware/contexts/auth';
-import { authMiddleware } from '~/features/middleware/functions/auth-middleware';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { Pagination } from '~/features/pagination/components/pagination';
 import { VanCard } from '~/features/vans/components/van-card';
@@ -13,8 +12,6 @@ import {
 	parsePaginationCursor,
 } from '~/lib/search-params.server';
 import type { Route } from './+types/rentals';
-
-export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);

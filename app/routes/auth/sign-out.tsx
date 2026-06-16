@@ -1,4 +1,4 @@
-import { data, href, replace } from 'react-router';
+import { data, href, isRouteErrorResponse, replace } from 'react-router';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { auth } from '~/lib/auth.server';
 import { tryCatch } from '~/utils/try-catch.server';
@@ -27,6 +27,31 @@ export default function Signout() {
 	);
 }
 
-export const ErrorBoundary = () => (
-	<UnsuccesfulState isError message="Your signout failed, please try again." />
-);
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
+	if (isRouteErrorResponse(error)) {
+		return (
+			<UnsuccesfulState
+				isError
+				message={
+					typeof error.data === 'string'
+						? error.data
+						: 'Your signout failed, please try again.'
+				}
+			/>
+		);
+	}
+	if (error instanceof Error) {
+		return (
+			<UnsuccesfulState
+				isError
+				message="Your signout failed, please try again."
+			/>
+		);
+	}
+	return (
+		<UnsuccesfulState
+			isError
+			message="Your signout failed, please try again."
+		/>
+	);
+};
