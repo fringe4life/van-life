@@ -20,8 +20,8 @@ export interface GetVansProps
 		Search,
 		VanFilters {}
 
+/** Canonical lowercase van type; */
 export type LowercaseVanType = Lowercase<VanType>;
-
 interface VanProps {
 	van: VanModel;
 }

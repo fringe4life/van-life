@@ -1,0 +1,53 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "entry": [
+    "app/root.{ts,tsx,js,jsx}",
+    "vite.config.ts",
+    "workers/app.ts",
+    ".env.schema"
+  ],
+  "rules": {
+    "unused-dependencies": "warn",
+    "prop-drilling": "warn",
+    "thin-wrapper": "warn",
+    "duplicate-prop-shape": "warn"
+  },
+  "ignorePatterns": ["worker-configuration.d.ts", "doctor.config.ts"],
+  "ignoreDependencies": [
+    "babel-plugin-react-compiler",
+    "isbot",
+    "react-doctor",
+    "@varlock/bitwarden-plugin",
+    "@cloudflare/vite-plugin",
+    "@fontsource-variable/inter"
+  ],
+  "duplicates": {
+    "enabled": true,
+    "minOccurrences": 3,
+    "minLines": 15
+  },
+  "security": {
+    "categories": {
+      "include": [
+        "dangerous-html",
+        "open-redirect",
+        "sql-injection",
+        "ssrf",
+        "path-traversal"
+      ]
+    }
+  },
+  "health": {
+    "maxCognitive": 20,
+    "maxCyclomatic": 20,
+    "maxCrap": 70,
+    "thresholdOverrides": [
+      {
+        "files": ["prisma/**/*", "app/features/host/components/van-form.tsx"],
+        "maxCognitive": 100,
+        "maxCyclomatic": 100,
+        "maxCrap": 300
+      }
+    ]
+  }
+}

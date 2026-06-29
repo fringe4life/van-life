@@ -6,52 +6,54 @@ import {
 } from '~/features/host/constants/constants';
 import type { RatingStarsProps } from '~/features/host/types';
 
-const RatingStars = ({ rating }: RatingStarsProps) => {
-	const stars: JSX.Element[] = [];
+/**
+ * Individual star component that handles partial filling using clip-path.
+ * @param fillPercent - The percentage (0-100) to fill the star.
+ */
+interface StarProps {
+	fillPercent: number;
+}
 
-	for (let i = 1; i <= MAX_RATING; i += 1) {
-		if (i <= Math.floor(rating)) {
-			// Fully filled star
-			stars.push(
-				<StarIcon
-					className="size-5 fill-orange-400 stroke-orange-400"
-					key={`stars-${i}`}
-				/>
-			);
-		} else if (i === Math.floor(rating) + 1 && rating % 1 !== 0) {
-			// Partially filled star using SVG gradient
-			const percent = Math.round((rating % 1) * PERCENTAGE_MULTIPLIER);
-			const gradientId = `star-gradient-${i}`;
-			stars.push(
-				<svg
-					aria-label="Star"
-					className="size-5"
-					fill="none"
-					key={`stars-${i}`}
-					stroke="#fb923c"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					strokeWidth={2}
-					viewBox="0 0 24 24"
+const Star = ({ fillPercent }: StarProps): JSX.Element => {
+	return (
+		<div aria-hidden="true" className="relative size-(--star-size)">
+			{/* Background star (empty state) */}
+			<StarIcon className="size-(--star-size) stroke-orange-400" />
+			{/* Overlay star (filled state) clipped to the fill percentage */}
+			{fillPercent > 0 && (
+				<div
+					className="absolute inset-0 overflow-hidden text-orange-400"
+					style={{ clipPath: `inset(0 ${100 - fillPercent}% 0 0)` }}
 				>
-					<title>{`Star ${i} - ${percent}% filled`}</title>
-					<defs>
-						<linearGradient id={gradientId} x1="0" x2="1" y1="0" y2="0">
-							<stop offset={`${percent}%`} stopColor="#fb923c" />
-							<stop offset={`${percent}%`} stopColor="transparent" />
-						</linearGradient>
-					</defs>
-					<StarIcon fill={`url(#${gradientId})`} stroke="#fb923c" />
-				</svg>
-			);
-		} else {
-			// Empty star
-			stars.push(
-				<StarIcon className="size-5 stroke-orange-400" key={`stars-${i}`} />
-			);
-		}
-	}
-	return <div className="flex h-5 w-30 gap-2 contain-strict">{stars}</div>;
+					<StarIcon className="size-(--star-size) fill-current stroke-current" />
+				</div>
+			)}
+		</div>
+	);
+};
+
+const RatingStars = ({ rating }: RatingStarsProps): JSX.Element => {
+	const stars = Array.from({ length: MAX_RATING }, (_, i) => {
+		const starIndex = i + 1;
+		// Calculate fill percentage for each star:
+		// Clamps (rating - i) * 100 between 0 and 100.
+		const fillPercent = Math.max(
+			0,
+			Math.min(100, (rating - i) * PERCENTAGE_MULTIPLIER)
+		);
+
+		return <Star fillPercent={fillPercent} key={`star-${starIndex}`} />;
+	});
+
+	return (
+		<div
+			aria-label={`Rating: ${rating} out of ${MAX_RATING} stars`}
+			className="flex h-(--star-size) w-(--rating-stars-width) gap-(--star-gap) contain-strict"
+			role="img"
+		>
+			{stars}
+		</div>
+	);
 };
 
 export { RatingStars };

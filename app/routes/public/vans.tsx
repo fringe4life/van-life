@@ -6,7 +6,7 @@ import { PendingUI } from '~/components/pending-ui';
 import { SearchInput } from '~/components/search-input';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { Pagination } from '~/features/pagination/components/pagination';
-import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
+import { buildVanUrl } from '~/features/pagination/utils/build-search-params';
 import { SeoHead } from '~/features/seo/seo-head';
 import { VanCard } from '~/features/vans/components/van-card';
 import { VanFilters } from '~/features/vans/components/van-filters';
@@ -74,7 +74,7 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
 								<VanPrice van={van} />
 							</div>
 						),
-						link: buildVanSearchParams({
+						link: buildVanUrl({
 							cursor,
 							limit,
 							types,

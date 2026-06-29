@@ -1,5 +1,6 @@
 import type { LowercaseVanType } from '~/features/vans/types';
 import { VanType } from '~/generated/prisma/enums';
+import { VAN_TYPE_LOWERCASE } from '../constants/van-types';
 
 /**
  * Type guard to check if a string is a valid VanType
@@ -19,7 +20,7 @@ export function validateVanType(type: string): VanType {
 	return isValidVanType(type) ? type : VanType.SIMPLE;
 }
 
-const lowercaseVanTypes: LowercaseVanType[] = ['simple', 'rugged', 'luxury'];
+const lowercaseVanTypes: LowercaseVanType[] = [...VAN_TYPE_LOWERCASE];
 /**
  * Type guard to check if a string is a valid lowercase VanType
  * @param value - The value to check

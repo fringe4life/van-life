@@ -5,6 +5,9 @@ import { reactRouterDevTools } from 'react-router-devtools';
 import { defineConfig } from 'vite';
 import babel from 'vite-plugin-babel';
 import tsconfigPaths from 'vite-tsconfig-paths';
+
+const JSX_FILE_EXTENSION_RE = /\.[jt]sx$/;
+
 export default defineConfig({
 	plugins: [
 		varlockCloudflareVitePlugin({ viteEnvironment: { name: 'ssr' } }),
@@ -13,7 +16,8 @@ export default defineConfig({
 		tailwindcss(),
 		babel({
 			include: /\.[jt]sx?$/,
-			exclude: /node_modules/,
+			exclude: [/node_modules/, /workers\//],
+			loader: (path) => (JSX_FILE_EXTENSION_RE.test(path) ? 'jsx' : 'js'),
 			babelConfig: {
 				presets: ['@babel/preset-typescript'],
 				plugins: ['babel-plugin-react-compiler'],
@@ -22,11 +26,14 @@ export default defineConfig({
 		}),
 		reactRouter(),
 	],
-	// reenable when migrating to vite 8
+	// Vite 8+ (reenable when migrating back)
 	// resolve: {
 	// 	tsconfigPaths: true,
 	// },
 	// server: {
 	// 	forwardConsole: true,
+	// },
+	// build: {
+	// 	target: 'esnext',
 	// },
 });

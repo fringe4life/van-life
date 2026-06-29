@@ -1,10 +1,10 @@
-# React Router v7 Audit
+# React Router v8 Audit
 
-Audit of the Van Life codebase against React Router v7 framework-mode docs (bundled at `node_modules/react-router/docs/`).
+Audit of the Van Life codebase against React Router v8 framework-mode docs (bundled at `node_modules/react-router/docs/`).
 
 ## Overview
 
-This app uses React Router v7 framework mode with SSR, typed route modules (`./+types/*`), `href()` for URL generation, and the v8 middleware flag enabled in `react-router.config.ts`.
+This app uses React Router v8 framework mode with SSR, typed route modules (`./+types/*`), `href()` for URL generation, and middleware enabled by default (formerly `future.v8_middleware`).
 
 ## What Is Already Strong
 
@@ -18,7 +18,7 @@ This app uses React Router v7 framework mode with SSR, typed route modules (`./+
 
 ### Middleware
 
-- `v8_middleware: true` in `react-router.config.ts`
+- Middleware always enabled in v8 (adopted via `future.v8_middleware` before upgrade)
 - Typed contexts via `createContext` from `react-router` (`authContext`, `hasAuthContext`)
 - Post-`next()` cookie handling in auth middleware (`setCookieHeaders`)
 
@@ -79,10 +79,10 @@ Framework mode passes `error` via `Route.ErrorBoundaryProps`. Updated:
 | **Global pending UI** | Optional `useNavigation()` spinner in `root.tsx` or main layout |
 | **SEO consistency** | Pick one style: inline `<title>`/`<meta>` (host/auth) vs `SeoHead` component (public pages) |
 | **Query in links** | Replace manual query strings (e.g. `returnTo` on host dashboard link) with typed search-param helpers |
-| **Middleware typing** | Optional `Future` module augmentation with `v8_middleware: true` in a `react-router.d.ts` file |
+| **Middleware typing** | Optional `Future` module augmentation no longer needed in v8 — `context` is always `RouterContextProvider` |
 | **Breadcrumbs** | Route `handle` + `useMatches` to avoid prop drilling for section titles |
 | **Client middleware** | Optional `clientMiddleware` for client-only analytics or timing on every client navigation |
-| **`entry.server.tsx`** | If adding custom `getLoadContext`, return `RouterContextProvider` + `createContext` instead of plain objects |
+| **`entry.server.tsx`** | Uses `RouterContextProvider` for load context (v8 default) |
 
 ## Reference Docs
 

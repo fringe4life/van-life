@@ -1,7 +1,7 @@
 import { data, href, isRouteErrorResponse } from 'react-router';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { CustomLink } from '~/features/navigation/components/custom-link';
-import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
+import { buildVanUrl } from '~/features/pagination/utils/build-search-params';
 import { buildVanDetailPageSeo } from '~/features/seo/build-page-seo.server';
 import { SeoHead } from '~/features/seo/seo-head';
 import VanDetail from '~/features/vans/components/van-detail';
@@ -56,7 +56,7 @@ const VanDetailPage = ({ loaderData }: Route.ComponentProps) => {
 	} = loaderData;
 
 	// Build back link with pagination and filter search params
-	const backLink = buildVanSearchParams({
+	const backLink = buildVanUrl({
 		cursor,
 		limit,
 		types,

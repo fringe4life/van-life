@@ -3,23 +3,23 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-7.17.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-8.0.1-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.1-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.18-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.8.9-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.22-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.9.0--beta.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.4.16-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.8.3-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.8.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.3.5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![ArkType](https://img.shields.io/badge/ArkType-2.2.0-000000?logo=arktype&logoColor=white)](https://arktype.io/)
+[![ArkType](https://img.shields.io/badge/ArkType-2.2.1-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
 </div>
 
-A modern full-stack van rental platform built with React Router 7, showcasing advanced web development techniques including server-side rendering, authentication, and responsive design.
+A modern full-stack van rental platform built with React Router 8, showcasing advanced web development techniques including server-side rendering, authentication, and responsive design.
 
 ## Table of Contents
 
@@ -43,16 +43,16 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 
 ## Features
 
-- 🚀 **Modern React Router 7** with server-side rendering and file-based routing
+- 🚀 **Modern React Router 8** with server-side rendering and file-based routing
 - 🔒 **Authentication** with better-auth (sign up, login, session management, safe `redirectTo` return URLs)
 - ⚛️ **React 19 (canary) & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
-- 🔍 **Advanced Van Filtering** (popover panel, multi-select types, state toggles, optimistic UI, debounced nuqs updates)
+- 🔍 **Advanced Van Filtering** (modular filter panel, `useVanFilters` hook, multi-select types, state toggles, optimistic UI, debounced nuqs updates)
 - 📱 **Mobile Navigation** (Base UI Dialog drawer, animated hamburger, slide-in overlay)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals with analytics)
-- 📈 **Host Dashboard** (income tracking, bar charts, rental analytics)
+- 📈 **Host Dashboard** (modular sections — income, reviews, vans, wallet — with bar charts and rental analytics)
 - 💰 **Financial Management** (deposit/withdraw funds, transaction tracking with pagination)
 - 🏷️ **Van State System** (NEW, IN_REPAIR, ON_SALE, AVAILABLE with discount pricing)
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
@@ -68,9 +68,9 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with lazy loading, code splitting, direct icon imports, and immutable array methods
-- 🔗 **URL State Management** with nuqs 2.8.9 via Context7 for type-safe search parameters
+- 🔗 **URL State Management** with nuqs 2.9.0 via Context7 for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
-- 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router v7 middleware)
+- 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router 8 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
 - 🔐 **Consolidated host auth middleware** on `host-layout.tsx` (no duplicate session lookups on leaf routes)
 - 🔍 **SEO Infrastructure** (canonical URLs, Open Graph/Twitter meta, `robots.txt`, dynamic `sitemap.xml` via `@forge42/seo-tools`)
@@ -83,20 +83,20 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Frontend
 
 - **React canary** builds with stable Activity component for prerendering
-- **React Router 7.17.0** (file-based routing, SSR, optional route parameters, v8 middleware flags)
+- **React Router 8.0.1** (file-based routing, SSR, optional route parameters, middleware)
 - **TypeScript 6.0.3** with strict configuration
 - **TailwindCSS 4.3.1** with modern CSS features
-- **@base-ui/react** + **shadcn/ui** (`base-nova` style) for dialog, popover, checkbox, label, and mobile nav
-- **Lucide React 1.18.0** for icons (direct imports for performance)
-- **Recharts 3.8.1** for data visualization (lazy-loaded)
-- **nuqs 2.8.9** for type-safe URL state management via Context7 parsers
+- **@base-ui/react 1.6.0** + **shadcn/ui** (`base-nova` style) for dialog, popover, checkbox, label, and mobile nav
+- **Lucide React 1.21.0** for icons (direct imports for performance)
+- **Recharts 3.9.0** for data visualization (lazy-loaded)
+- **nuqs 2.9.0-beta.1** for type-safe URL state management via Context7 parsers
 
 ### Backend & Database
 
 - **Cloudflare Workers** with React Router SSR via `workers/app.ts`
 - **Prisma 7.8.0** ORM with Neon PostgreSQL (Rust-free client, `workerd` runtime)
-- **better-auth 1.6.18** with **@better-auth/prisma-adapter** for authentication
-- **ArkType 2.2.0** for schema validation and type narrowing
+- **better-auth 1.6.22** with **@better-auth/prisma-adapter** for authentication
+- **ArkType 2.2.1** for schema validation and type narrowing
 - **uuidv7** for app-generated user IDs; Prisma `@default(uuid(7))` for domain models
 - **@prisma/adapter-neon 7.8.0** for Neon database integration
 - **Varlock** for typed, validated environment variables (Bitwarden integration in production)
@@ -110,8 +110,8 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 - **Biome 2.4.16** for linting and formatting with Ultracite integration
 - **Ultracite 7.8.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.100.0** - Cloudflare Workers CLI for deploy and typegen
-- **react-doctor 0.5.1** - React diagnostics in CI and locally (`doctor.config.ts`)
+- **Wrangler 4.105.0** - Cloudflare Workers CLI for deploy and typegen
+- **react-doctor 0.5.8** - React diagnostics in CI and locally (`doctor.config.ts`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 6.0.3** with `@typescript/native-preview` support
 - **Bun** for fast package management and runtime
@@ -119,7 +119,7 @@ A modern full-stack van rental platform built with React Router 7, showcasing ad
 ### Build System
 
 - **Vite 7.3.5** - Fast builds with native ES modules and optimized bundling
-- **React Compiler** - Configured via `vite-plugin-babel` for optimal integration
+- **React Compiler** - Configured via `vite-plugin-babel` with `@babel/preset-typescript` (see `docs/babel-react-compiler.md`)
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Enhanced performance** - Faster builds and reduced memory usage
 - **Type-safe configuration** - Full TypeScript support in Vite config
@@ -142,9 +142,11 @@ app/
 │   ├── auth/
 │   │   └── schemas.server.ts  # Login/sign-up ArkType schemas
 │   ├── host/
-│   │   ├── components/ # Host UI (van-form, charts, income, reviews)
+│   │   ├── components/ # Host UI (van-form, charts, dashboard sections, reviews)
+│   │   │   └── dashboard/  # host-income-section, host-review-section, host-vans-section, host-wallet-form
 │   │   ├── dal/        # Host Prisma repositories (*.server.ts)
 │   │   ├── services/   # dashboard, income, rental, reviews, transfers, wallet
+│   │   ├── hooks/      # use-host-wallet, balance-reducer
 │   │   ├── rentals/
 │   │   │   └── schemas.server.ts  # Rental action schemas
 │   │   ├── schemas.server.ts  # Host action schemas (deposit/withdraw)
@@ -152,16 +154,16 @@ app/
 │   ├── image/          # Image optimization utilities
 │   ├── middleware/     # Auth middleware, Cloudflare context, auth-redirect helpers
 │   ├── navigation/     # Nav, mobile-nav (Base UI Dialog), hamburger-icon
-│   ├── pagination/     # Pagination utilities and components
+│   ├── pagination/     # Shared pagination UI + utils (toPagination, getCursorMetadata, build-search-params)
 │   ├── seo/            # SEO helpers (canonical URLs, SeoHead, sitemap)
 │   │   └── dal/        # SEO Prisma reads (sitemap.server.ts)
-│   ├── pagination/     # Shared pagination UI + utils (toPagination, getCursorMetadata)
 │   └── vans/
-│       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, VanFilters, etc.)
+│       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, van-filters/, etc.)
+│       │   └── van-filters/  # VanFilters, type/state filter sections, filter-checkbox-row
 │       ├── constants/  # Van-related constants (van-types.ts for client-safe constants)
 │       ├── dal/        # Van Prisma repositories (*.server.ts)
 │       ├── services/   # catalog, host-vans, van-detail
-│       ├── hooks/      # Host vans list reducer, display hooks, optimistic filter hooks
+│       ├── hooks/      # use-van-filters, host-vans list reducer, display hooks, optimistic filter hooks
 │       ├── schemas.server.ts  # Van form/search ArkType schemas
 │       ├── types/      # Van-specific TypeScript types
 │       └── utils/      # Van helpers (pricing, van-filter-url, pending-van-from-form-data)
@@ -209,7 +211,9 @@ workers/
 └── app.ts              # Cloudflare Workers entry (React Router SSR)
 
 docs/
-└── react-router-audit.md  # Framework-mode audit and middleware notes
+├── react-router-audit.md   # Framework-mode audit and middleware notes
+├── babel-react-compiler.md # React Compiler setup via vite-plugin-babel
+└── fallow-health-backlog.md # Code health backlog from fallow analysis
 ```
 
 ---
@@ -342,7 +346,7 @@ generator client {
 
 ## Authentication
 
-- **better-auth 1.6.18** with **@better-auth/prisma-adapter** for secure email/password authentication
+- **better-auth 1.6.22** with **@better-auth/prisma-adapter** for secure email/password authentication
 - **Session management** with proper security headers
 - **Protected routes** with automatic redirects via `getLoginRedirectUrl` / `getSafeRedirectPath` (`app/features/middleware/utils/auth-redirect.ts`)
 - **Host auth middleware** runs once on `host-layout.tsx` (stub loader ensures `.data` requests on client navigations)
@@ -357,7 +361,7 @@ generator client {
 
 ## URL State Management with nuqs
 
-The application uses **nuqs 2.8.9** for type-safe URL state management:
+The application uses **nuqs 2.9.0-beta.1** for type-safe URL state management:
 
 ### Features
 
@@ -415,7 +419,7 @@ const backLink = buildVanSearchParams({
 
 ## Shared Context Middleware Pattern
 
-React Router 7's middleware system enables efficient data sharing between loaders and actions:
+React Router 8's middleware system enables efficient data sharing between loaders and actions:
 
 ### Benefits
 
@@ -954,6 +958,7 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run check` – Run Ultracite checks (no fix)
 - `bun run doctor` – Run Ultracite doctor
 - `bun run react-doctor` – Run React Doctor diagnostics (`doctor.config.ts`)
+- `bun run test` – Run Bun test suite
 - `bun run ultracite:upgrade` – Upgrade Ultracite and re-init (Bun, Biome, Cursor)
 
 ### Ultracite Commands
@@ -1013,7 +1018,7 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 - **Biome 2.4.16** for linting and formatting with Ultracite integration
 - **Ultracite 7.8.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 6.0.3** with strict configuration
-- **ArkType 2.2.0** for runtime validation with regex support for slug validation
+- **ArkType 2.2.1** for runtime validation with regex support for slug validation
 - **Consistent code style:**
   - Tab indentation
   - Single quotes
@@ -1116,4 +1121,4 @@ This project is for educational/portfolio purposes and demonstrates modern full-
 
 ---
 
-_Built with ❤️ using React Router 7, TypeScript, nuqs, and modern web technologies._
+_Built with ❤️ using React Router 8, TypeScript, nuqs, and modern web technologies._

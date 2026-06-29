@@ -30,8 +30,8 @@ export async function loadHostDashboard(userId: UUIDv7) {
 
 	return {
 		vansPromise,
-		avgRating,
+		avgRating: avgRating ?? 0,
 		transactions,
-		transactionSummary,
+		transactionSummary: transactionSummary ?? 0,
 	};
 }

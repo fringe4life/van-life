@@ -1,4 +1,4 @@
-import { NuqsAdapter } from 'nuqs/adapters/react-router/v7';
+import { NuqsAdapter } from 'nuqs/adapters/react-router/v8';
 import {
 	isRouteErrorResponse,
 	Links,
@@ -40,6 +40,7 @@ const App = () => (
 );
 export default App;
 
+// fallow-ignore-next-line complexity
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 	let message = 'Oops!';
 	let details = 'An unexpected error occurred.';

@@ -6,55 +6,35 @@ const NO_ELAPSED_TIME = {
 	description: 'No data yet',
 } as const;
 
+interface ElapsedTime {
+	createdAt?: Date;
+	rentedAt?: Maybe<Date>;
+}
+
+function getItemDate(item: ElapsedTime): Date | undefined {
+	return item.rentedAt ?? item.createdAt ?? undefined;
+}
+
 /**
  * Calculates the elapsed time between the first and last rental/transaction
  * @param items Array of objects with either rentedAt or createdAt dates
  * @returns Object with elapsed days and human-readable description
  */
-export const getElapsedTime = (
-	items: List<{ rentedAt?: Maybe<Date>; createdAt?: Date }>
-) => {
-	if (!items || items.length === 0) {
+export const getElapsedTime = (items: List<ElapsedTime>) => {
+	const dates = (items ?? [])
+		.map(getItemDate)
+		.filter((date): date is Date => date != null);
+
+	if (dates.length === 0) {
 		return NO_ELAPSED_TIME;
 	}
 
-	// Sort items by date to get first and last
-	const sortedItems = items.toSorted((a, b) => {
-		const dateA = a.rentedAt ?? a.createdAt;
-		const dateB = b.rentedAt ?? b.createdAt;
-		if (!(dateA && dateB)) {
-			return 0;
-		}
-		return dateA.getTime() - dateB.getTime();
-	});
-
-	const firstItem = sortedItems[0];
-	const lastItem = sortedItems.at(-1);
-
-	const firstDate = firstItem?.rentedAt ?? firstItem?.createdAt;
-	const lastDate = lastItem?.rentedAt ?? lastItem?.createdAt;
-
-	if (!(lastDate && firstDate)) {
-		return {
-			elapsedDays: 0,
-			description: 'No data yet',
-			firstRental: firstDate,
-			lastRental: firstDate,
-		};
-	}
-
-	// Calculate days between first and last
-	const elapsedDays = differenceInDays(lastDate, firstDate) + 1;
-
-	// Get human-readable description
-	const description = formatDistanceToNow(firstDate, {
-		addSuffix: true,
-	});
+	const timestamps = dates.map((date) => date.getTime());
+	const firstDate = new Date(Math.min(...timestamps));
+	const lastDate = new Date(Math.max(...timestamps));
 
 	return {
-		elapsedDays,
-		description,
-		firstRental: firstDate,
-		lastRental: lastDate,
+		elapsedDays: differenceInDays(lastDate, firstDate) + 1,
+		description: formatDistanceToNow(firstDate, { addSuffix: true }),
 	};
 };

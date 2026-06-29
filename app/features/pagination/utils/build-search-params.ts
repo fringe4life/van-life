@@ -7,7 +7,6 @@ import {
 } from '~/lib/parsers';
 import type { Maybe } from '~/types';
 
-// Create combined serializer for all van route params
 const combinedVanParsers = {
 	...paginationParsers,
 	...vanFiltersParser,
@@ -15,57 +14,70 @@ const combinedVanParsers = {
 };
 const serializeVanParams = createSerializer(combinedVanParsers);
 
-/**
- * Builds search parameters string for van routes with pagination, filter, and search params
- * @param params - Object containing cursor, limit, optional types, excludeInRepair, onlyOnSale, search, and optional baseUrl
- * @returns If baseUrl is provided: full URL with query string (or just baseUrl if no params). Otherwise: query string (without '?' prefix) or empty string if no params
- */
-export const buildVanSearchParams = (params: {
+export interface VanSearchParams {
 	cursor: string;
-	limit: number;
-	types?: Maybe<string[]>;
 	excludeInRepair?: Maybe<boolean>;
+	limit: number;
 	onlyOnSale?: Maybe<boolean>;
 	search?: Maybe<string>;
-	baseUrl?: Maybe<string>;
-}): string => {
-	const { cursor, limit, types, excludeInRepair, onlyOnSale, search, baseUrl } =
-		params;
+	types?: Maybe<string[]>;
+}
 
-	// Build search params with validated limit (nuqs will clear on default)
-	const searchParams: Record<string, string | number | string[] | boolean> = {
-		cursor,
-		limit: validateLimit(limit),
+type VanQueryParams = Record<string, string | number | string[] | boolean>;
+
+function getOptionalVanFilterParams({
+	types,
+	excludeInRepair,
+	onlyOnSale,
+	search,
+}: Pick<
+	VanSearchParams,
+	'types' | 'excludeInRepair' | 'onlyOnSale' | 'search'
+>): VanQueryParams {
+	return {
+		...(types?.length ? { types } : {}),
+		...(excludeInRepair === true ? { excludeInRepair: true } : {}),
+		...(onlyOnSale === true ? { onlyOnSale: true } : {}),
+		...(search?.trim() ? { search: search.trim() } : {}),
 	};
+}
 
-	// Add filter params only if they have values (nuqs will handle defaults)
-	if (types && types.length > 0) {
-		searchParams.types = types;
+function buildVanQueryParams(params: VanSearchParams): VanQueryParams {
+	return {
+		cursor: params.cursor,
+		limit: validateLimit(params.limit),
+		...getOptionalVanFilterParams(params),
+	};
+}
+
+function normalizeQueryString(query: string): string {
+	if (query.startsWith('?')) {
+		return query.slice(1);
 	}
+	return query;
+}
 
-	if (excludeInRepair === true) {
-		searchParams.excludeInRepair = true;
+function joinBaseUrl(baseUrl: string, query: string): string {
+	if (!query) {
+		return baseUrl;
 	}
+	return `${baseUrl}?${query}`;
+}
 
-	if (onlyOnSale === true) {
-		searchParams.onlyOnSale = true;
-	}
+/**
+ * Builds query string for van routes (no leading `?`).
+ */
+export function buildVanQueryString(params: VanSearchParams): string {
+	const queryString = serializeVanParams(buildVanQueryParams(params));
+	return normalizeQueryString(queryString);
+}
 
-	if (search && search.trim() !== '') {
-		searchParams.search = search.trim();
-	}
-
-	// Serialize and normalize: strip leading '?' if present
-	const queryString = serializeVanParams(searchParams);
-	const normalizedQuery = queryString.startsWith('?')
-		? queryString.slice(1)
-		: queryString;
-
-	// If baseUrl is provided, return full URL with query string
-	if (baseUrl) {
-		return normalizedQuery ? `${baseUrl}?${normalizedQuery}` : baseUrl;
-	}
-
-	// Otherwise, return just the query string (backward compatible)
-	return normalizedQuery;
-};
+/**
+ * Builds full URL with van route query string.
+ */
+export function buildVanUrl(
+	params: VanSearchParams & { baseUrl: string }
+): string {
+	const { baseUrl, ...searchParams } = params;
+	return joinBaseUrl(baseUrl, buildVanQueryString(searchParams));
+}

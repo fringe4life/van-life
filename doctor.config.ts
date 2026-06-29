@@ -1,7 +1,7 @@
 import type { ReactDoctorConfig } from 'react-doctor/api';
 
 export default {
-	diff: false,
+	scope: 'full',
 	verbose: true,
 	share: false,
 	ignore: {

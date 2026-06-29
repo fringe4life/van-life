@@ -4,7 +4,7 @@ import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { determineHostVansRoute } from '~/features/host/utils/determine-host-vans-route';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { CustomLink } from '~/features/navigation/components/custom-link';
-import { buildVanSearchParams } from '~/features/pagination/utils/build-search-params';
+import { buildVanUrl } from '~/features/pagination/utils/build-search-params';
 import { VanDetailCard } from '~/features/vans/components/host detail';
 import { getHostVanBySlug } from '~/features/vans/dal/host-van.server';
 import { loadHostSearchParams } from '~/lib/search-params.server';
@@ -43,7 +43,7 @@ const HostVanDetailPage = ({ loaderData, params }: Route.ComponentProps) => {
 		determineHostVansRoute(params);
 
 	// Build back link with pagination search params
-	const backLink = buildVanSearchParams({
+	const backLink = buildVanUrl({
 		cursor,
 		limit,
 		baseUrl: href('/host/vans'),
