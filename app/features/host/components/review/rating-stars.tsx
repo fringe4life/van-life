@@ -1,10 +1,13 @@
 import { StarIcon } from 'lucide-react';
-import type { JSX } from 'react';
+import type { ReactNode } from 'react';
 import {
 	MAX_RATING,
 	PERCENTAGE_MULTIPLIER,
 } from '~/features/host/constants/constants';
 import type { RatingStarsProps } from '~/features/host/types';
+
+const TRANSPARENT_PIXEL =
+	"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E";
 
 /**
  * Individual star component that handles partial filling using clip-path.
@@ -14,7 +17,7 @@ interface StarProps {
 	fillPercent: number;
 }
 
-const Star = ({ fillPercent }: StarProps): JSX.Element => {
+const Star = ({ fillPercent }: StarProps): ReactNode => {
 	return (
 		<div aria-hidden="true" className="relative size-(--star-size)">
 			{/* Background star (empty state) */}
@@ -32,7 +35,7 @@ const Star = ({ fillPercent }: StarProps): JSX.Element => {
 	);
 };
 
-const RatingStars = ({ rating }: RatingStarsProps): JSX.Element => {
+const RatingStars = ({ rating }: RatingStarsProps): ReactNode => {
 	const stars = Array.from({ length: MAX_RATING }, (_, i) => {
 		const starIndex = i + 1;
 		// Calculate fill percentage for each star:
@@ -46,13 +49,21 @@ const RatingStars = ({ rating }: RatingStarsProps): JSX.Element => {
 	});
 
 	return (
-		<div
-			aria-label={`Rating: ${rating} out of ${MAX_RATING} stars`}
-			className="flex h-(--star-size) w-(--rating-stars-width) gap-(--star-gap) contain-strict"
-			role="img"
-		>
-			{stars}
-		</div>
+		<span className="relative inline-flex h-(--star-size) w-(--rating-stars-width) contain-strict">
+			<img
+				alt={`Rating: ${rating} out of ${MAX_RATING} stars`}
+				className="sr-only"
+				height={1}
+				src={TRANSPARENT_PIXEL}
+				width={1}
+			/>
+			<span
+				aria-hidden="true"
+				className="absolute inset-0 flex gap-(--star-gap)"
+			>
+				{stars}
+			</span>
+		</span>
 	);
 };
 
