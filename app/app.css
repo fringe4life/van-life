@@ -103,8 +103,8 @@
 	--chart-height: 350px;
 
 	/* Rating stars dimensions */
-	--star-size: calc(5 * var(--spacing)); /* size-5 = 1.25rem = 20px */
-	--star-gap: calc(2 * var(--spacing)); /* gap-2 = 0.5rem = 8px */
+	--star-size: --spacing(5); /* size-5 = 1.25rem = 20px */
+	--star-gap: --spacing(2); /* gap-2 = 0.5rem = 8px */
 	--star-count: 5;
 	--rating-stars-width: calc(
 		var(--star-size) *
@@ -115,10 +115,10 @@
 
 	/* Chart text area components - aliases for Tailwind spacing scale */
 	/* Instead of referencing non-existent --spacing-N vars: */
-	--chart-text-top-margin: calc(4 * var(--spacing)); /* 1rem */
-	--chart-text-first-height: calc(4 * var(--spacing)); /* 1rem */
-	--chart-text-gap: calc(2 * var(--spacing)); /* 0.5rem */
-	--chart-text-second-height: calc(3 * var(--spacing)); /* 0.75rem */
+	--chart-text-top-margin: --spacing(4); /* 1rem */
+	--chart-text-first-height: --spacing(4); /* 1rem */
+	--chart-text-gap: --spacing(2); /* 0.5rem */
+	--chart-text-second-height: --spacing(3); /* 0.75rem */
 
 	/* Total text area height (16 + 16 + 8 + 12 = 52px) */
 	--chart-text-height: calc(
