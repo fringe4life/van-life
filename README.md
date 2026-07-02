@@ -3,12 +3,12 @@
 <div align="center">
 
 [![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
-[![React Router](https://img.shields.io/badge/React%20Router-8.0.1-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-8.1.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.1-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.22-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.2-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.23-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.9.0--beta.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.4.16-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.8.3-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
@@ -83,11 +83,11 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Frontend
 
 - **React canary** builds with stable Activity component for prerendering
-- **React Router 8.0.1** (file-based routing, SSR, optional route parameters, middleware)
+- **React Router 8.1.0** (file-based routing, SSR, optional route parameters, middleware)
 - **TypeScript 6.0.3** with strict configuration
-- **TailwindCSS 4.3.1** with modern CSS features
+- **TailwindCSS 4.3.2** with modern CSS features
 - **@base-ui/react 1.6.0** + **shadcn/ui** (`base-nova` style) for dialog, popover, checkbox, label, and mobile nav
-- **Lucide React 1.21.0** for icons (direct imports for performance)
+- **Lucide React 1.22.0** for icons (direct imports for performance)
 - **Recharts 3.9.0** for data visualization (lazy-loaded)
 - **nuqs 2.9.0-beta.1** for type-safe URL state management via Context7 parsers
 
@@ -95,7 +95,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 - **Cloudflare Workers** with React Router SSR via `workers/app.ts`
 - **Prisma 7.8.0** ORM with Neon PostgreSQL (Rust-free client, `workerd` runtime)
-- **better-auth 1.6.22** with **@better-auth/prisma-adapter** for authentication
+- **better-auth 1.6.23** with **@better-auth/prisma-adapter** for authentication
 - **ArkType 2.2.1** for schema validation and type narrowing
 - **uuidv7** for app-generated user IDs; Prisma `@default(uuid(7))` for domain models
 - **@prisma/adapter-neon 7.8.0** for Neon database integration
@@ -111,7 +111,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **Ultracite 7.8.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.105.0** - Cloudflare Workers CLI for deploy and typegen
-- **react-doctor 0.5.8** - React diagnostics in CI and locally (`doctor.config.ts`)
+- **react-doctor 0.5.8** - React diagnostics in CI, locally, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 6.0.3** with `@typescript/native-preview` support
 - **Bun** for fast package management and runtime
@@ -133,6 +133,7 @@ app/
 ├── components/          # Reusable UI components
 │   ├── ui/             # shadcn base-nova (@base-ui/react): button, dialog, popover, checkbox, badge, etc.
 │   │                   # Variant tokens in button-variants.ts, badge-variants.ts
+│   ├── types.ts        # Shared component prop types (AsProps, EmptyState, ErrorState)
 │   └── [common]        # Generic components (forms, lists, sortable, etc.)
 ├── constants/          # App-wide constants and enums
 ├── dal/                # Global data access helpers
@@ -176,7 +177,7 @@ app/
 │   ├── search-params.server.ts  # Server-side search param loaders
 │   ├── generic-sorting.server.ts  # Generic Prisma orderBy utilities
 │   └── prisma.server.ts    # Prisma client (Neon adapter, workerd runtime)
-├── types/              # Server-only branded types
+├── types/              # Shared utility types (Maybe, List, Id, Replace, Search)
 │   ├── auth.server.ts      # AuthenticatedUser (UUIDv7 id)
 │   ├── ids.server.ts       # UUIDv7 re-export from dal schemas
 │   └── lucide-react-direct.d.ts  # Direct lucide-react icon import types
@@ -346,7 +347,7 @@ generator client {
 
 ## Authentication
 
-- **better-auth 1.6.22** with **@better-auth/prisma-adapter** for secure email/password authentication
+- **better-auth 1.6.23** with **@better-auth/prisma-adapter** for secure email/password authentication
 - **Session management** with proper security headers
 - **Protected routes** with automatic redirects via `getLoginRedirectUrl` / `getSafeRedirectPath` (`app/features/middleware/utils/auth-redirect.ts`)
 - **Host auth middleware** runs once on `host-layout.tsx` (stub loader ensures `.data` requests on client navigations)
@@ -992,7 +993,7 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 
 ### TailwindCSS 4 & Modern CSS
 
-- **TailwindCSS 4.3.1** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
+- **TailwindCSS 4.3.2** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — overlay fade and slide-in/out (`app/app.css`)
 - **Responsive design** with mobile-first approach and CSS Grid layouts
@@ -1033,7 +1034,7 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 ### GitHub Actions
 
 - **CodeQL** (`.github/workflows/codeql.yml`) - Security and quality scanning on push/PR to `master`
-- **React Doctor** (`.github/workflows/react-doctor.yml`, `doctor.config.ts`) - React diagnostics on pull requests to `main`
+- **React Doctor** (`.github/workflows/react-doctor.yml`, `doctor.config.ts`, `.cursor/hooks/react-doctor.mjs`) - React diagnostics on PRs, locally, and after Cursor edits
 
 ### Ultracite Integration
 

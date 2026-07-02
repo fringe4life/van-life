@@ -1,6 +1,22 @@
 import type React from 'react';
-import type { GenericComponentProps, Id } from '~/types';
+import type { Items } from '~/features/pagination/types';
+import type { Id } from '~/types';
+import type { AsProps, EmptyState, ErrorState } from './types';
 import { UnsuccesfulState } from './unsuccesful-state';
+
+interface GenericComponentProps<
+	T extends Id,
+	P,
+	E extends React.ElementType = 'div',
+> extends EmptyState,
+		ErrorState,
+		Items<T>,
+		AsProps<E> {
+	Component: React.ComponentType<P>;
+	className?: string;
+	renderProps: (item: T, index: number) => P;
+	wrapperProps?: React.ComponentPropsWithoutRef<E>;
+}
 
 const GenericComponent = <
 	T extends Id,
@@ -27,7 +43,7 @@ const GenericComponent = <
 	return (
 		<Wrapper className={className} {...wrapperProps}>
 			{items.map((item, index) => (
-				<Component key={item.id} {...renderProps(item, index)} />
+				<Component {...renderProps(item, index)} key={item.id} />
 			))}
 		</Wrapper>
 	);

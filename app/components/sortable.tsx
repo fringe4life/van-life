@@ -8,8 +8,17 @@ import {
 } from '~/features/pagination/pagination-constants';
 import type { SortOption } from '~/features/pagination/types';
 import { hostPaginationParsers } from '~/lib/parsers';
-import type { SortableProps } from '~/types';
+import type { Maybe } from '~/types';
 import { cn } from '~/utils/utils';
+
+interface SortableProps {
+	/** Optional className for the container */
+	className?: string;
+	/** Number of items being sorted (for display) */
+	itemCount: Maybe<number>;
+	/** Title to display above the sort buttons */
+	title: string;
+}
 
 /**
  * Reusable sorting component that provides sort buttons and clear filters functionality

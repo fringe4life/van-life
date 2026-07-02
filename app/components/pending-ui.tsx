@@ -1,7 +1,19 @@
 import type { ElementType } from 'react';
 import useIsNavigating from '~/hooks/use-is-navigating';
-import type { PendingUIProps } from '~/types';
 import { cn } from '~/utils/utils';
+import type { AsProps } from './types';
+
+interface PendingUIProps<T extends ElementType = 'div'> extends AsProps<T> {
+	/** Children to render */
+	children: React.ReactNode;
+	/** The HTML element to render (default: 'div') */
+	/** Additional CSS classes to merge with pending UI classes */
+	className?: string;
+	/** Whether to show pending UI (defaults to useIsNavigating hook) */
+	isPending?: boolean;
+	/** Custom opacity value when pending (default: 0.75) */
+	pendingOpacity?: number;
+}
 
 /**
  * A polymorphic component that applies pending UI styling to any HTML element.

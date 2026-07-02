@@ -1,7 +1,8 @@
 import { lazy, Suspense } from 'react';
+import type { EmptyState, ErrorState } from '~/components/types';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import type { Data, DataArray } from '~/features/host/types';
-import type { EmptyState, ErrorState, Maybe } from '~/types';
+import type { Maybe } from '~/types';
 import { BarChartSkeleton } from './bar-chart-skeleton';
 
 const BarChartComponent = lazy(() => import('./bar-chart'));

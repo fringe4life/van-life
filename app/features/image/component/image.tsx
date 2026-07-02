@@ -7,7 +7,22 @@ import { createNewImageSizeWithAspectRatio } from '~/features/image/utils/create
 import type { Maybe } from '~/types';
 import canUseDom from '~/utils/can-use-dom';
 import { cn } from '~/utils/utils';
-import type { ImgProps } from '../types';
+
+/**
+ * Extended props for the Image component, extending native img element props
+ */
+interface ImgProps extends React.ComponentProps<'img'> {
+	/** Additional CSS classes for the container div */
+	classesForContainer?: string;
+	/** The height of the image (string or number) */
+	height: string | number;
+	/** The source URL of the image */
+	src: string;
+	/** Optional srcSet for responsive images */
+	srcSet?: string;
+	/** The width of the image (string or number) */
+	width: string | number;
+}
 
 /**
  * A progressive image loading component that displays a low-resolution placeholder

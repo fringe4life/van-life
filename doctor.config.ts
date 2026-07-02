@@ -2,6 +2,7 @@ import type { ReactDoctorConfig } from 'react-doctor/api';
 
 export default {
 	scope: 'full',
+	deadCode: false,
 	verbose: true,
 	share: false,
 	ignore: {
@@ -9,9 +10,6 @@ export default {
 		rules: [
 			'react-doctor/only-export-components',
 			'react-doctor/server-auth-actions',
-			'deslop/unused-file',
-			'deslop/unused-dependency',
-			'deslop/unused-dev-dependency',
 		],
 		overrides: [
 			{
@@ -27,5 +25,10 @@ export default {
 				rules: ['react-doctor/label-has-associated-control'],
 			},
 		],
+	},
+	rules: {
+		'react-doctor/no-danger': 'warn',
+		'react-doctor/design-no-vague-button-label': 'warn',
+		'react-doctor/jsx-no-useless-fragment': 'warn',
 	},
 } satisfies ReactDoctorConfig;

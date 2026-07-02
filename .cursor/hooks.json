@@ -22,7 +22,7 @@
     ],
     "postToolUse": [
       {
-        "command": ".cursor/hooks/react-doctor.sh",
+        "command": "node .cursor/hooks/react-doctor.mjs",
         "matcher": "Write|Edit|MultiEdit|ApplyPatch",
         "timeout": 120
       }

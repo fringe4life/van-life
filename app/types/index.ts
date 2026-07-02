@@ -1,8 +1,5 @@
-import type { ElementType } from 'react';
-import type { Items } from '~/features/pagination/types';
 import type { TransactionModel, VanModel } from '~/generated/prisma/models';
 
-// Type for Maybe
 export type Maybe<T> = T | null | undefined;
 
 export type List<T> = Maybe<T[]>;
@@ -11,69 +8,7 @@ export interface Id extends Pick<VanModel, 'id'> {}
 
 export interface Amount extends Pick<TransactionModel, 'amount'> {}
 
-export interface EmptyState {
-	emptyStateMessage: string;
-}
-
-export interface ErrorState {
-	errorStateMessage: string;
-}
-
-export interface AsProps<T extends ElementType = 'div'> {
-	as?: T;
-}
-
-export interface GenericComponentProps<
-	T extends Id,
-	P,
-	E extends React.ElementType = 'div',
-> extends EmptyState,
-		ErrorState,
-		Items<T>,
-		AsProps<E> {
-	Component: React.ComponentType<P>;
-	className?: string;
-	renderProps: (item: T, index: number) => P;
-	wrapperProps?: React.ComponentPropsWithoutRef<E>;
-}
-
-export interface PendingUIProps<T extends ElementType = 'div'>
-	extends AsProps<T> {
-	/** Children to render */
-	children: React.ReactNode;
-	/** The HTML element to render (default: 'div') */
-	/** Additional CSS classes to merge with pending UI classes */
-	className?: string;
-	/** Whether to show pending UI (defaults to useIsNavigating hook) */
-	isPending?: boolean;
-	/** Custom opacity value when pending (default: 0.75) */
-	pendingOpacity?: number;
-}
-
-interface Success<T> {
-	data: T;
-	error: null;
-}
-interface Failure<E> {
-	data: null;
-	error: E;
-}
-
-export type Result<T, E> = Success<T> | Failure<E>;
-
-export interface SortableProps {
-	/** Optional className for the container */
-	className?: string;
-	/** Number of items being sorted (for display) */
-	itemCount: Maybe<number>;
-	/** Title to display above the sort buttons */
-	title: string;
-}
-
-export interface UnsuccesfulStateProps {
-	isError?: boolean;
-	message: string;
-}
+export type Replace<T, K extends keyof T, U> = Omit<T, K> & { [P in K]: U };
 
 export interface Search {
 	search?: string;

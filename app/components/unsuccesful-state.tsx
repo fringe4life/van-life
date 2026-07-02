@@ -1,4 +1,7 @@
-import type { UnsuccesfulStateProps } from '~/types';
+export interface UnsuccesfulStateProps {
+	isError?: boolean;
+	message: string;
+}
 
 const UnsuccesfulState = ({ message, isError }: UnsuccesfulStateProps) => (
 	<div
