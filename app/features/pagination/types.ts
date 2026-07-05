@@ -1,5 +1,5 @@
 import type { Prisma } from '~/generated/prisma/client';
-import type { Id, List, Maybe } from '~/types';
+import type { Id, List, Maybe, Prettify } from '~/types';
 import type { UUIDv7 } from '~/types/ids.server';
 
 // Type for pagination direction
@@ -17,9 +17,11 @@ export interface Items<T> {
 	items: List<T>;
 }
 
-export interface PaginationProps<T> extends Items<T> {
-	paginationMetadata: PaginationMetadata;
-}
+export type PaginationProps<T> = Prettify<
+	Items<T> & {
+		paginationMetadata: PaginationMetadata;
+	}
+>;
 
 export interface CursorMetadata {
 	actualCursor: Exclude<Maybe<Id>, null>;
@@ -34,9 +36,11 @@ export interface BasePaginationParams {
 	limit: number;
 }
 
-export interface ToPaginationParams<T> extends Items<T>, BasePaginationParams {}
+export type ToPaginationParams<T> = Prettify<Items<T> & BasePaginationParams>;
 
-export interface PaginationParams extends BasePaginationParams {
-	sort?: SortOption;
-	userId: UUIDv7;
-}
+export type PaginationParams = Prettify<
+	BasePaginationParams & {
+		sort?: SortOption;
+		userId: UUIDv7;
+	}
+>;

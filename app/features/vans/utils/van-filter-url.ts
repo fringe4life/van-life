@@ -25,9 +25,9 @@ export const toValidTypes = (
 export const snapshotFilterState = (
 	urlState: VanFilterUrlSnapshotInput
 ): VanFilterUrlState => ({
-	types: toValidTypes(urlState.types),
 	excludeInRepair: urlState.excludeInRepair ?? false,
 	onlyOnSale: urlState.onlyOnSale ?? false,
+	types: toValidTypes(urlState.types),
 });
 
 export const activeFilterCount = (state: VanFilterUrlState): number =>

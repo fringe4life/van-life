@@ -11,7 +11,34 @@ import {
 	loadHostSearchParams,
 	parsePaginationCursor,
 } from '~/lib/search-params.server';
+import type { Prettify } from '~/types';
 import type { Route } from './+types/rentals';
+
+type ActiveRental = Prettify<
+	NonNullable<Awaited<ReturnType<typeof listActiveRentals>>['items']>[number]
+>;
+
+const renderRentalVanCardProps = (rental: ActiveRental) => ({
+	action: (
+		<div className="justify-self-end text-right">
+			<CustomLink
+				state={{
+					van: rental,
+				}}
+				to={href('/host/rentals/returnRental/:rentId', {
+					rentId: rental.id,
+				})}
+			>
+				Return
+			</CustomLink>
+		</div>
+	),
+	link: href('/host/vans/:vanSlug/:action?', {
+		vanSlug: rental.van.slug,
+	}),
+	linkCoversCard: false,
+	van: rental.van,
+});
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
@@ -20,8 +47,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const { cursor, limit, direction } = loadHostSearchParams(request);
 	const pagination = await listActiveRentals(user.id, {
 		cursor: parsePaginationCursor(cursor),
-		limit,
 		direction,
+		limit,
 	});
 
 	return data(pagination, {
@@ -50,28 +77,7 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
 				emptyStateMessage="You are currently not renting any vans."
 				errorStateMessage="Something went wrong"
 				items={vans}
-				// TODO: consider if this needs an action
-				renderProps={(van) => ({
-					link: href('/host/vans/:vanSlug/:action?', {
-						vanSlug: van.van.slug,
-					}),
-					van: van.van,
-					linkCoversCard: false,
-					action: (
-						<div className="justify-self-end text-right">
-							<CustomLink
-								state={{
-									van,
-								}}
-								to={href('/host/rentals/returnRental/:rentId', {
-									rentId: van.id,
-								})}
-							>
-								Return
-							</CustomLink>
-						</div>
-					),
-				})}
+				renderProps={renderRentalVanCardProps}
 			/>
 			<Pagination items={vans} paginationMetadata={paginationMetadata} />
 		</PendingUI>

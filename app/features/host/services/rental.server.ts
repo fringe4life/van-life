@@ -9,34 +9,34 @@ import {
 } from '~/features/host/dal/rental-transaction.server';
 import { getAccountSummary } from '~/features/host/dal/transaction.server';
 import type { HostPaginatedPageParams } from '~/features/host/services/income.server';
-import type { Direction } from '~/features/pagination/types';
 import { toPagination } from '~/features/pagination/utils/to-pagination.server';
 import { getVanBySlug } from '~/features/vans/dal/van.server';
 import { getCost } from '~/features/vans/utils/get-cost';
+import type { Prettify } from '~/types';
 import type { UUIDv7 } from '~/types/ids.server';
 import { tryCatch } from '~/utils/try-catch.server';
 
-export type HostRentedVan = NonNullable<
-	Exclude<Awaited<ReturnType<typeof getHostRentedVan>>, string>
+export type HostRentedVan = Prettify<
+	NonNullable<Exclude<Awaited<ReturnType<typeof getHostRentedVan>>, string>>
 >;
 
 export async function listActiveRentals(
-	hostId: UUIDv7,
+	renterId: UUIDv7,
 	{
 		cursor,
 		limit,
 		direction,
-	}: Pick<HostPaginatedPageParams, 'cursor' | 'limit' | 'direction'>
+	}: Prettify<Pick<HostPaginatedPageParams, 'cursor' | 'limit' | 'direction'>>
 ) {
 	const { data: vans } = await tryCatch(() =>
-		getHostRentedVans(hostId, { cursor, limit, direction })
+		getHostRentedVans(renterId, { cursor, direction, limit })
 	);
 
 	return toPagination({
+		cursor,
+		direction,
 		items: vans,
 		limit,
-		cursor,
-		direction: direction as Direction,
 	});
 }
 
@@ -52,19 +52,19 @@ export async function rentVan(
 	}
 
 	return createRent({
-		vanId: parseUuidV7(van.id),
-		renterId,
 		hostId,
+		renterId,
+		vanId: parseUuidV7(van.id),
 	});
 }
 
 export async function loadReturnRentalContext(rentId: UUIDv7, userId: UUIDv7) {
 	const [{ data: rent }, { data: money }] = await Promise.all([
-		tryCatch(() => getHostRentedVan(rentId)),
+		tryCatch(() => getHostRentedVan(rentId, userId)),
 		tryCatch(() => getAccountSummary(userId)),
 	]);
 
-	return { rent, money };
+	return { money, rent };
 }
 
 export async function completeReturnRental({
@@ -82,8 +82,8 @@ export async function completeReturnRental({
 
 	if (money < amountToPay) {
 		return {
-			success: false as const,
 			errors: 'Cannot afford to return this rental',
+			success: false as const,
 		};
 	}
 
@@ -98,10 +98,10 @@ export async function completeReturnRental({
 
 	if (error || !data) {
 		return {
-			success: false as const,
 			errors: 'Something went wrong try again later',
+			success: false as const,
 		};
 	}
 
-	return { success: true as const, data };
+	return { data, success: true as const };
 }

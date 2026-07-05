@@ -24,7 +24,7 @@ const getUserWithHeaders = async (
 
 	const user = sessionUser ? toAuthenticatedUser(sessionUser) : undefined;
 
-	return { user, headers };
+	return { headers, user };
 };
 
 export { getUserWithHeaders };

@@ -9,9 +9,9 @@ export function addMoney(
 ) {
 	return prisma.transaction.create({
 		data: {
-			userId,
 			amount,
 			type: transactionType,
+			userId,
 		},
 	});
 }

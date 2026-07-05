@@ -1,4 +1,5 @@
 import type { VanModel } from '~/generated/prisma/models';
+import type { VanCardDataSlot } from '../types';
 import { lowercaseVanStateWithProcessor } from './van-state-helpers';
 
 /**
@@ -9,7 +10,7 @@ import { lowercaseVanStateWithProcessor } from './van-state-helpers';
 export function getVanStateStyles(van: VanModel) {
 	const dataSlot = lowercaseVanStateWithProcessor(
 		van,
-		(state: string) => `van-card-${state}`
+		(state): VanCardDataSlot => `van-card-${state}`
 	);
 
 	// Base van state styling classes using custom variants
@@ -26,7 +27,7 @@ export function getVanStateStyles(van: VanModel) {
 	].join(' ');
 
 	return {
-		dataSlot,
 		className: vanStateClasses,
+		dataSlot,
 	};
 }

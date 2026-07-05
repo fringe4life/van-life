@@ -12,7 +12,7 @@ function Button({
 }: ButtonPrimitive.Props & ButtonVariantProps) {
 	return (
 		<ButtonPrimitive
-			className={cn(buttonVariants({ variant, size, className }))}
+			className={cn(buttonVariants({ className, size, variant }))}
 			data-slot="button"
 			{...props}
 		/>

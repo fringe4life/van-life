@@ -9,13 +9,13 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.2-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.23-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.9.0--beta.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.4.16-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.8.3-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.9.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![Biome](https://img.shields.io/badge/Biome-2.5.2-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.9.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.8.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.3.5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![ArkType](https://img.shields.io/badge/ArkType-2.2.1-000000?logo=arktype&logoColor=white)](https://arktype.io/)
+[![ArkType](https://img.shields.io/badge/ArkType-2.2.2-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
 </div>
 
@@ -68,7 +68,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with lazy loading, code splitting, direct icon imports, and immutable array methods
-- 🔗 **URL State Management** with nuqs 2.9.0 via Context7 for type-safe search parameters
+- 🔗 **URL State Management** with nuqs 2.9.0 for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation experiences
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router 8 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
@@ -87,16 +87,16 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **TypeScript 6.0.3** with strict configuration
 - **TailwindCSS 4.3.2** with modern CSS features
 - **@base-ui/react 1.6.0** + **shadcn/ui** (`base-nova` style) for dialog, popover, checkbox, label, and mobile nav
-- **Lucide React 1.22.0** for icons (direct imports for performance)
-- **Recharts 3.9.0** for data visualization (lazy-loaded)
-- **nuqs 2.9.0-beta.1** for type-safe URL state management via Context7 parsers
+- **Lucide React 1.23.0** for icons (direct imports for performance)
+- **Recharts 3.9.1** for data visualization (lazy-loaded)
+- **nuqs 2.9.0** for type-safe URL state management via shared parsers
 
 ### Backend & Database
 
 - **Cloudflare Workers** with React Router SSR via `workers/app.ts`
 - **Prisma 7.8.0** ORM with Neon PostgreSQL (Rust-free client, `workerd` runtime)
 - **better-auth 1.6.23** with **@better-auth/prisma-adapter** for authentication
-- **ArkType 2.2.1** for schema validation and type narrowing
+- **ArkType 2.2.2** for schema validation and type narrowing
 - **uuidv7** for app-generated user IDs; Prisma `@default(uuid(7))` for domain models
 - **@prisma/adapter-neon 7.8.0** for Neon database integration
 - **Varlock** for typed, validated environment variables (Bitwarden integration in production)
@@ -107,11 +107,11 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **vite-tsconfig-paths 6.1.1** - TypeScript path alias resolution for `~/` imports
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
-- **Biome 2.4.16** for linting and formatting with Ultracite integration
-- **Ultracite 7.8.3** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.5.2** for linting and formatting with Ultracite integration
+- **Ultracite 7.9.0** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.105.0** - Cloudflare Workers CLI for deploy and typegen
-- **react-doctor 0.5.8** - React diagnostics in CI, locally, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
+- **Wrangler 4.107.0** - Cloudflare Workers CLI for deploy and typegen
+- **react-doctor 0.6.0** - React diagnostics in CI, locally, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 6.0.3** with `@typescript/native-preview` support
 - **Bun** for fast package management and runtime
@@ -177,7 +177,7 @@ app/
 │   ├── search-params.server.ts  # Server-side search param loaders
 │   ├── generic-sorting.server.ts  # Generic Prisma orderBy utilities
 │   └── prisma.server.ts    # Prisma client (Neon adapter, workerd runtime)
-├── types/              # Shared utility types (Maybe, List, Id, Replace, Search)
+├── types/              # Shared utility types (Maybe, List, Id, Prettify, Replace, Search)
 │   ├── auth.server.ts      # AuthenticatedUser (UUIDv7 id)
 │   ├── ids.server.ts       # UUIDv7 re-export from dal schemas
 │   └── lucide-react-direct.d.ts  # Direct lucide-react icon import types
@@ -195,7 +195,7 @@ app/
 │       ├── robots.txt.ts   # Dynamic robots.txt
 │       ├── sitemap.xml.ts  # Dynamic sitemap
 │       └── 404.tsx     # Not found page
-├── utils/              # Shared utilities (parse-arktype.server, try-catch, etc.)
+├── utils/              # Shared utilities (parse-arktype, try-catch, not-found, server-error, get-route-error-message, get-collection-state)
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
@@ -362,7 +362,7 @@ generator client {
 
 ## URL State Management with nuqs
 
-The application uses **nuqs 2.9.0-beta.1** for type-safe URL state management:
+The application uses **nuqs 2.9.0** for type-safe URL state management:
 
 ### Features
 
@@ -1016,17 +1016,17 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 
 ## Code Quality
 
-- **Biome 2.4.16** for linting and formatting with Ultracite integration
-- **Ultracite 7.8.3** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.5.2** for linting and formatting with Ultracite integration
+- **Ultracite 7.9.0** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 6.0.3** with strict configuration
-- **ArkType 2.2.1** for runtime validation with regex support for slug validation
+- **ArkType 2.2.2** for runtime validation with regex support for slug validation
 - **Consistent code style:**
   - Tab indentation
   - Single quotes
   - Sorted CSS classes
   - Organized imports
 - **Type safety** throughout the application
-- **Error handling** with proper error boundaries
+- **Error handling** with `notFound` / `serverError` helpers, `getRouteErrorMessage` for boundaries, and `getCollectionState` for list empty/error states
 - **nuqs** for type-safe URL state management
 - **Prisma** with proper type generation and optimized ID constraints
 - **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization

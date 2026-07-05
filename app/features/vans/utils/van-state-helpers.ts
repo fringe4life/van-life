@@ -1,6 +1,7 @@
 import { SIX_MONTHS } from '~/constants/time-constants';
 import { VanState } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
+import type { LowercaseVanState } from '../types';
 
 /**
  * Determines if a van is considered "new" based on its creation date
@@ -24,7 +25,7 @@ function isVanNew(createdAt: VanModel['createdAt']): boolean {
  * @param van - The van model
  * @returns The lowercase state string
  */
-function lowercaseVanState(van: VanModel): string {
+function lowercaseVanState(van: VanModel): LowercaseVanState {
 	const isNew = isVanNew(van.createdAt);
 
 	// Determine the state
@@ -48,7 +49,7 @@ function lowercaseVanState(van: VanModel): string {
  */
 export function lowercaseVanStateWithProcessor<T>(
 	van: VanModel,
-	processor: (state: string) => T
+	processor: (state: LowercaseVanState) => T
 ): T {
 	const state = lowercaseVanState(van);
 	return processor(state);

@@ -15,20 +15,20 @@ export async function loadReviewsPage(
 		tryCatch(() => getHostReviewsChartData(userId)),
 		tryCatch(() =>
 			getHostReviewsPaginated({
-				userId,
 				cursor,
-				limit,
 				direction,
+				limit,
 				sort,
+				userId,
 			})
 		),
 	]);
 
 	const pagination = toPagination({
-		items: paginatedReviews,
-		limit,
 		cursor,
 		direction,
+		items: paginatedReviews,
+		limit,
 	});
 
 	return {

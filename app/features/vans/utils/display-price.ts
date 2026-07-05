@@ -1,8 +1,8 @@
 import type { Maybe } from '~/types';
 
 const formatter = new Intl.NumberFormat('en-us', {
-	style: 'currency',
 	currency: 'USD',
+	style: 'currency',
 });
 
 /**

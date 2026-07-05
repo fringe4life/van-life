@@ -36,7 +36,7 @@ export const getCursorMetadata = ({
 	return {
 		actualCursor,
 		orderBy,
-		take,
 		skip,
+		take,
 	} satisfies CursorMetadata;
 };

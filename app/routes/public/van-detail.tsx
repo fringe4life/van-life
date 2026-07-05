@@ -1,4 +1,4 @@
-import { data, href, isRouteErrorResponse } from 'react-router';
+import { data, href } from 'react-router';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { buildVanUrl } from '~/features/pagination/utils/build-search-params';
@@ -11,6 +11,9 @@ import {
 	loadSearchParams,
 	loadVanFiltersParams,
 } from '~/lib/search-params.server';
+import { getRouteErrorMessage } from '~/utils/get-route-error-message';
+import { notFound } from '~/utils/not-found';
+import { serverError } from '~/utils/server-error';
 import type { Route } from './+types/van-detail';
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
@@ -21,23 +24,21 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
 	const result = await loadVanBySlug(params.vanSlug);
 	if (result.error) {
-		throw data('Failed to load van details. Please try again later.', {
-			status: 500,
-		});
+		serverError('Failed to load van details. Please try again later.');
 	}
 	if (!result.data) {
-		throw data('Van not found', { status: 404 });
+		notFound('Van not found');
 	}
 	return data(
 		{
-			van: result.data,
 			cursor,
-			limit,
-			search,
-			types,
 			excludeInRepair,
+			limit,
 			onlyOnSale,
+			search,
 			seo: buildVanDetailPageSeo(request, result.data),
+			types,
+			van: result.data,
 		},
 		{ headers: { 'Cache-Control': 'max-age=259200' } }
 	);
@@ -57,13 +58,13 @@ const VanDetailPage = ({ loaderData }: Route.ComponentProps) => {
 
 	// Build back link with pagination and filter search params
 	const backLink = buildVanUrl({
+		baseUrl: href('/vans'),
 		cursor,
-		limit,
-		types,
 		excludeInRepair,
+		limit,
 		onlyOnSale,
 		search,
-		baseUrl: href('/vans'),
+		types,
 	});
 
 	// Determine back link message based on active filters
@@ -89,17 +90,11 @@ const VanDetailPage = ({ loaderData }: Route.ComponentProps) => {
 };
 export default VanDetailPage;
 
-export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
-	if (isRouteErrorResponse(error)) {
-		return (
-			<UnsuccesfulState
-				isError
-				message={error.statusText || 'An unknown error occurred.'}
-			/>
-		);
-	}
-	if (error instanceof Error) {
-		return <UnsuccesfulState isError message="This van could not be found." />;
-	}
-	return <UnsuccesfulState isError message="An unknown error occurred." />;
-};
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
+	<UnsuccesfulState
+		isError
+		message={getRouteErrorMessage(error, {
+			errorFallback: 'This van could not be found.',
+		})}
+	/>
+);

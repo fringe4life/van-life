@@ -8,11 +8,30 @@ import { loadReviewsPage } from '~/features/host/services/reviews.server';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { Pagination } from '~/features/pagination/components/pagination';
 import { VanHeader } from '~/features/vans/components/van-header';
+import type { ReviewModel, UserModel } from '~/generated/prisma/models';
 import {
 	loadHostSearchParams,
 	parsePaginationCursor,
 } from '~/lib/search-params.server';
+import type { Prettify } from '~/types';
 import type { Route } from './+types/reviews';
+
+type ReviewListItem = Prettify<ReviewModel & { user: Pick<UserModel, 'name'> }>;
+
+const renderReviewProps = ({
+	user,
+	text,
+	rating,
+	updatedAt,
+	createdAt,
+	id,
+}: ReviewListItem) => ({
+	id,
+	name: user.name,
+	rating,
+	text,
+	timestamp: updatedAt?.toLocaleDateString() ?? createdAt.toLocaleDateString(),
+});
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
@@ -21,8 +40,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
 	const page = await loadReviewsPage(user.id, {
 		cursor: parsePaginationCursor(cursor),
-		limit,
 		direction,
+		limit,
 		sort,
 	});
 
@@ -45,8 +64,8 @@ const HostReviews = ({ loaderData }: Route.ComponentProps) => {
 			[0, 0, 0, 0, 0]
 		)
 		.map((res, index) => ({
-			name: `${index + 1}`,
 			amount: res,
+			name: `${index + 1}`,
 		}));
 
 	return (
@@ -75,14 +94,7 @@ const HostReviews = ({ loaderData }: Route.ComponentProps) => {
 				emptyStateMessage="You have received no reviews"
 				errorStateMessage="Something went wrong"
 				items={paginatedReviews}
-				renderProps={({ user, text, rating, updatedAt, createdAt, id }) => ({
-					name: user.name,
-					text,
-					rating,
-					timestamp:
-						updatedAt?.toLocaleDateString() ?? createdAt.toLocaleDateString(),
-					id,
-				})}
+				renderProps={renderReviewProps}
 			/>
 			<Pagination
 				items={paginatedReviews}

@@ -1,10 +1,14 @@
-# React Router v8 Audit
+# React Router v8.1 Audit
 
-Audit of the Van Life codebase against React Router v8 framework-mode docs (bundled at `node_modules/react-router/docs/`).
+Audit of the Van Life codebase against React Router v8.1 framework-mode docs (bundled at `node_modules/react-router/docs/`).
+
+**Packages:** `react-router@8.1.0`, `@react-router/dev@8.1.0`
 
 ## Overview
 
-This app uses React Router v8 framework mode with SSR, typed route modules (`./+types/*`), `href()` for URL generation, and middleware enabled by default (formerly `future.v8_middleware`).
+This app uses React Router v8.1 framework mode with SSR on Cloudflare Workers, typed route modules (`./+types/*`), `href()` for URL generation, and middleware enabled by default (no `future.v8_middleware` flag needed).
+
+URL search state is handled by **nuqs** via `NuqsAdapter` in `app/root.tsx` and shared parsers in `app/lib/parsers.ts`.
 
 ## What Is Already Strong
 
@@ -18,18 +22,32 @@ This app uses React Router v8 framework mode with SSR, typed route modules (`./+
 
 ### Middleware
 
-- Middleware always enabled in v8 (adopted via `future.v8_middleware` before upgrade)
-- Typed contexts via `createContext` from `react-router` (`authContext`, `hasAuthContext`)
+- Middleware always enabled in v8 — `context` is `RouterContextProvider` (no `Future` module augmentation needed)
+- Typed contexts via `createContext` from `react-router` (`authContext`, `hasAuthContext`, `cloudflareContext`)
 - Post-`next()` cookie handling in auth middleware (`setCookieHeaders`)
+- **Auth chain consolidated:**
+  - `hasAuthMiddleware` on root `layout.tsx`
+  - `authMiddleware` only on `host-layout.tsx` (not duplicated on host leaf routes)
+  - Stub layout loader (`return null`) so client navigations under `/host` trigger a `.data` request and run layout middleware reliably
+  - Route-specific middleware only where needed (e.g. `fetchSharedDataMiddleware` on return-rental)
 
 ### UX and navigation
 
-- `PendingUI` + `useNavigation` for global pending styling
+- Per-route `PendingUI` + `useNavigation` for opacity-based pending styling (preferred over a global root spinner)
+- `navLinkClassName` with `isPending` / `isActive` on host nav and van-detail tabs
 - `viewTransition` on `CustomLink` / `CustomNavLink`
 - `prefetch="intent"` on navigation links
 - Fetcher forms for wallet deposit/withdraw and optimistic van list updates
 - `shouldRevalidate` on host vans after optimistic add
 - Deferred-style UI: `vansPromise` + `<Suspense>` / `<Await>` on host dashboard
+
+### URL state (nuqs)
+
+- `NuqsAdapter` from `nuqs/adapters/react-router/v8` in `root.tsx`
+- Shared parsers in `app/lib/parsers.ts` (pagination, filters, sort)
+- Server-side loaders use `createLoader` / `createSerializer` from `nuqs/server`
+- Login redirect uses `redirectTo` search param via `getRedirectFromRequest` / `getLoginRedirectUrl`
+- Host top-up flow uses `getHostRedirectUrl` + deposit action redirect back to return-rental (same `redirectTo` param, `getSafeRedirectPath` validation)
 
 ### Resource routes
 
@@ -38,51 +56,26 @@ This app uses React Router v8 framework mode with SSR, typed route modules (`./+
 ### SEO
 
 - React 19 `<title>` and `<meta>` elements in route components (preferred over the route module `meta()` export per current docs)
-- Public pages use `SeoHead` fed from loader SEO data
+- Public pages use `SeoHead` fed from loader SEO data; host/auth pages use inline meta (including `noindex` on host layout)
 
-## Changes Applied (Host Auth Consolidation)
+### Error boundaries
 
-### Problem
+- Framework mode passes `error` via `Route.ErrorBoundaryProps` — used in `root.tsx`, host routes, auth sign-out, and public van pages
+- Host dashboard boundary uses `isRouteErrorResponse` + `UnsuccesfulState` (no `useParams()` hack)
 
-`authMiddleware` was exported on `host-layout.tsx` **and** duplicated on every host leaf route, causing redundant session/user lookups per request.
+### Server entry
 
-### Solution
+- `app/entry.server.tsx` accepts `RouterContextProvider` as load context (v8 default)
+- `workers/app.ts` creates `RouterContextProvider`, sets `cloudflareContext`, and passes it to `createRequestHandler`
 
-Middleware chain:
-
-```
-layout.tsx (hasAuthMiddleware)
-  └── host-layout.tsx (authMiddleware + stub loader)
-        └── host leaf routes (route-specific middleware only, e.g. return-rental)
-```
-
-1. **Keep** `authMiddleware` only on [`app/routes/layout/host-layout.tsx`](../app/routes/layout/host-layout.tsx)
-2. **Add** a minimal layout loader (`return null`) so client navigations under `/host` trigger a `.data` request and run layout middleware reliably
-3. **Remove** duplicate `authMiddleware` from all host leaf routes
-4. **Keep** route-specific middleware where needed (e.g. `fetchSharedDataMiddleware` on return-rental)
-
-Child loaders and actions continue using `context.get(authContext)` — no logic changes required.
-
-### ErrorBoundary fixes
-
-Framework mode passes `error` via `Route.ErrorBoundaryProps`. Updated:
-
-- [`app/routes/host/host.tsx`](../app/routes/host/host.tsx) — removed `useParams()` hack; uses `isRouteErrorResponse` + `UnsuccesfulState`
-- [`app/routes/auth/sign-out.tsx`](../app/routes/auth/sign-out.tsx) — typed boundary surfaces loader `throw data(...)` messages
-
-## Recommended Follow-Ups (Not Yet Implemented)
+## Recommended Follow-Ups (Optional)
 
 | Area | Suggestion |
 |------|------------|
-| **Nav pending** | Use NavLink `className={({ isPending, isActive }) => ...}` in `CustomNavLink` for per-link pending states |
-| **Login / signup forms** | Consider `useFetcher` + `fetcher.Form` so validation errors avoid full document navigation |
-| **Global pending UI** | Optional `useNavigation()` spinner in `root.tsx` or main layout |
-| **SEO consistency** | Pick one style: inline `<title>`/`<meta>` (host/auth) vs `SeoHead` component (public pages) |
-| **Query in links** | Replace manual query strings (e.g. `returnTo` on host dashboard link) with typed search-param helpers |
-| **Middleware typing** | Optional `Future` module augmentation no longer needed in v8 — `context` is always `RouterContextProvider` |
+| **Login / signup forms** | Optional `useFetcher` + `fetcher.Form` for validation errors — avoids the navigation/revalidation cycle (`useNavigation` pending, loader re-run); does **not** fix full page reloads (regular `<Form>` is already client-side) |
+| **SEO consistency** | Document or unify the split: inline `<title>`/`<meta>` on host/auth vs `SeoHead` on public pages |
 | **Breadcrumbs** | Route `handle` + `useMatches` to avoid prop drilling for section titles |
 | **Client middleware** | Optional `clientMiddleware` for client-only analytics or timing on every client navigation |
-| **`entry.server.tsx`** | Uses `RouterContextProvider` for load context (v8 default) |
 
 ## Reference Docs
 

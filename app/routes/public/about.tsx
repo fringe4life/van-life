@@ -17,9 +17,9 @@ import type { Route } from './+types/about';
 // Create optimized WebP srcSet with 16:9 aspect ratio for both mobile and desktop
 // since the about page only uses aspect-video
 const srcSet = createWebPSrcSet(ABOUT_IMG, {
-	sizes: ABOUT_IMG_SIZES,
 	aspectRatio: '16:9',
 	quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for about page
+	sizes: ABOUT_IMG_SIZES,
 });
 
 export const loader = ({ request }: Route.LoaderArgs) => ({

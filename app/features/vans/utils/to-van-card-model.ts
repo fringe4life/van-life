@@ -7,18 +7,18 @@ import type { VanModel } from '~/generated/prisma/models';
 
 function pendingToVanCardModel(pending: PendingVan): VanModel {
 	return {
+		createdAt: new Date(0),
+		description: pending.description,
+		discount: pending.discount,
+		hostId: '',
 		id: pending.id,
+		imageUrl: pending.imageUrl,
+		isRented: false,
 		name: pending.name,
 		price: pending.price,
-		description: pending.description,
-		imageUrl: pending.imageUrl,
-		type: pending.type,
-		hostId: '',
-		isRented: false,
-		createdAt: new Date(0),
-		state: null,
-		discount: pending.discount,
 		slug: pending.slug,
+		state: null,
+		type: pending.type,
 	};
 }
 

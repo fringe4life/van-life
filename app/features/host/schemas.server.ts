@@ -9,22 +9,22 @@ const moneyTransactionType = type.or(`"${DEPOSIT}"`, `"${WITHDRAW}"`);
  * Pipe normalizes sign (deposits +, withdrawals -) for storage.
  */
 export const moneySchema = type({
-	type: moneyTransactionType,
 	amount: 'string.numeric.parse',
+	type: moneyTransactionType,
 })
 	.narrow((data, ctx) => {
 		if (data.amount <= 0) {
 			return ctx.reject({
-				expected: 'greater than 0',
 				actual: String(data.amount),
+				expected: 'greater than 0',
 				path: ['amount'],
 			});
 		}
 
 		if (data.amount > MAX_ADD) {
 			return ctx.reject({
-				expected: `at most ${MAX_ADD}`,
 				actual: String(data.amount),
+				expected: `at most ${MAX_ADD}`,
 				path: ['amount'],
 			});
 		}
@@ -33,8 +33,8 @@ export const moneySchema = type({
 
 		if (data.amount < minAmount) {
 			return ctx.reject({
-				expected: `at least ${minAmount}`,
 				actual: String(data.amount),
+				expected: `at least ${minAmount}`,
 				path: ['amount'],
 			});
 		}
@@ -42,6 +42,6 @@ export const moneySchema = type({
 		return true;
 	})
 	.pipe((data) => ({
-		type: data.type,
 		amount: data.type === WITHDRAW ? -data.amount : data.amount,
+		type: data.type,
 	}));

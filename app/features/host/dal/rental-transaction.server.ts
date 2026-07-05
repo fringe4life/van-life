@@ -9,9 +9,9 @@ export function createRent(data: {
 }) {
 	return prisma.rent.create({
 		data: {
-			vanId: data.vanId,
-			renterId: data.renterId,
 			hostId: data.hostId,
+			renterId: data.renterId,
+			vanId: data.vanId,
 		},
 	});
 }
@@ -24,35 +24,35 @@ export function executeReturnVanTransaction(
 ) {
 	return prisma.$transaction(async (tx) => {
 		const updatedRent = await tx.rent.update({
-			where: { id: rentId },
 			data: {
 				rentedTo: new Date(),
 			},
+			where: { id: rentId },
 		});
 
 		await tx.transaction.create({
 			data: {
-				userId,
 				amount: -amount,
-				type: TransactionType.RENTAL_RETURN,
-				rentId,
 				description: `Payment for van rental ${vanId}`,
+				rentId,
+				type: TransactionType.RENTAL_RETURN,
+				userId,
 			},
 		});
 
 		await tx.transaction.create({
 			data: {
-				userId: updatedRent.hostId,
 				amount,
-				type: TransactionType.RENTAL_PAYMENT,
-				rentId,
 				description: `Received payment for van ${vanId}`,
+				rentId,
+				type: TransactionType.RENTAL_PAYMENT,
+				userId: updatedRent.hostId,
 			},
 		});
 
 		await tx.van.update({
-			where: { id: vanId },
 			data: { isRented: false },
+			where: { id: vanId },
 		});
 
 		return updatedRent;

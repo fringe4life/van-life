@@ -38,10 +38,10 @@ const main = async () => {
 		const state = getVanState();
 		return {
 			...van,
-			slug: getSlug(van.name),
-			state,
 			discount: state === VanState.ON_SALE ? getRandomDiscount() : 0,
 			hostId: hosts[index % hosts.length].id,
+			slug: getSlug(van.name),
+			state,
 		};
 	});
 
@@ -74,7 +74,7 @@ const main = async () => {
 			}
 		}
 
-		const hostId = selectedVan.hostId;
+		const { hostId } = selectedVan;
 		const renterPool = users.filter((user) => user.id !== hostId);
 		if (renterPool.length === 0) {
 			throw new Error('Need at least one renter who is not the van host');
@@ -91,11 +91,11 @@ const main = async () => {
 
 		return {
 			...rent,
-			rentedAt: recentRentalDate,
 			hostId,
+			rentedAt: recentRentalDate,
+			rentedTo,
 			renterId,
 			vanId,
-			rentedTo,
 		};
 	});
 
@@ -104,11 +104,11 @@ const main = async () => {
 	);
 
 	await prisma.van.updateMany({
-		where: {
-			id: { in: vansRented },
-		},
 		data: {
 			isRented: true,
+		},
+		where: {
+			id: { in: vansRented },
 		},
 	});
 
@@ -124,20 +124,20 @@ const main = async () => {
 
 			return [
 				{
-					userId: rent.renterId,
 					amount: -amount,
-					type: TransactionType.RENTAL_RETURN,
-					rentId: rent.id,
-					description: `Payment for van rental ${rent.vanId}`,
 					createdAt: rentedTo,
+					description: `Payment for van rental ${rent.vanId}`,
+					rentId: rent.id,
+					type: TransactionType.RENTAL_RETURN,
+					userId: rent.renterId,
 				},
 				{
-					userId: rent.hostId,
 					amount,
-					type: TransactionType.RENTAL_PAYMENT,
-					rentId: rent.id,
-					description: `Received payment for van ${rent.vanId}`,
 					createdAt: rentedTo,
+					description: `Received payment for van ${rent.vanId}`,
+					rentId: rent.id,
+					type: TransactionType.RENTAL_PAYMENT,
+					userId: rent.hostId,
 				},
 			];
 		});
@@ -150,8 +150,8 @@ const main = async () => {
 
 	const reviewsWithIds = reviews.map((review) => ({
 		...review,
-		userId: getRandomId(users),
 		rentId: getRandomId(completedRents),
+		userId: getRandomId(users),
 	}));
 
 	await prisma.review.createMany({

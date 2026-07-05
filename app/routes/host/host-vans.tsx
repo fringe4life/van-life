@@ -79,9 +79,9 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 	}
 
 	return {
-		van: result2.data,
 		clientKey: clientKey || undefined,
 		skipListRevalidation: onFirstPage,
+		van: result2.data,
 	};
 };
 
@@ -100,6 +100,35 @@ export function shouldRevalidate({
 	return defaultShouldRevalidate;
 }
 
+const renderHostVanCardProps = (item: HostVanListItem) => {
+	const van = toVanCardModel(item);
+	const pending = isPendingVan(item);
+
+	return {
+		action: pending ? (
+			<p className="text-right text-neutral-500 text-sm italic">Saving…</p>
+		) : (
+			<p className="text-right">
+				<CustomLink
+					to={href('/host/vans/:vanSlug/:action?', {
+						action: 'edit',
+						vanSlug: van.slug,
+					})}
+				>
+					Edit
+				</CustomLink>
+			</p>
+		),
+		link: pending
+			? '#'
+			: href('/host/vans/:vanSlug/:action?', {
+					vanSlug: van.slug,
+				}),
+		linkCoversCard: !pending,
+		van,
+	};
+};
+
 const HostVans = ({ loaderData }: Route.ComponentProps) => {
 	const { items: vans, paginationMetadata } = loaderData;
 	const onFirstPage = !paginationMetadata.hasPreviousPage;
@@ -114,10 +143,10 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
 	);
 
 	const displayItems = useDisplayHostVans({
-		optimisticItems,
 		fetcherData: fetcher.data,
 		fetcherState: fetcher.state,
 		limit,
+		optimisticItems,
 	});
 
 	const formDataDefaults = fetcher.data?.formData;
@@ -132,13 +161,13 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
 		formData.set('clientKey', clientKey);
 		formData.set('onFirstPage', 'true');
 
-		const optimisticAction: HostVansListAction = { type: 'add', item: pending };
+		const optimisticAction: HostVansListAction = { item: pending, type: 'add' };
 
 		startTransition(() => {
 			addOptimisticItem(optimisticAction);
 			fetcher.submit(formData, {
-				method: 'POST',
 				action: href('/host/vans'),
+				method: 'POST',
 			});
 		});
 	};
@@ -183,36 +212,7 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
 					emptyStateMessage="You are currently not renting any vans."
 					errorStateMessage="Something went wrong"
 					items={displayItems}
-					renderProps={(item) => {
-						const van = toVanCardModel(item);
-						const pending = isPendingVan(item);
-
-						return {
-							link: pending
-								? '#'
-								: href('/host/vans/:vanSlug/:action?', {
-										vanSlug: van.slug,
-									}),
-							van,
-							linkCoversCard: !pending,
-							action: pending ? (
-								<p className="text-right text-neutral-500 text-sm italic">
-									Saving…
-								</p>
-							) : (
-								<p className="text-right">
-									<CustomLink
-										to={href('/host/vans/:vanSlug/:action?', {
-											vanSlug: van.slug,
-											action: 'edit',
-										})}
-									>
-										Edit
-									</CustomLink>
-								</p>
-							),
-						};
-					}}
+					renderProps={renderHostVanCardProps}
 				/>
 				<Pagination items={vans} paginationMetadata={paginationMetadata} />
 			</PendingUI>

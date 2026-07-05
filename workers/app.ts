@@ -14,7 +14,7 @@ const requestHandler = createRequestHandler(
 export default {
 	fetch(request, env, ctx) {
 		const loadContext = new RouterContextProvider();
-		loadContext.set(cloudflareContext, { env, ctx });
+		loadContext.set(cloudflareContext, { ctx, env });
 		return requestHandler(request, loadContext);
 	},
 } satisfies ExportedHandler<CloudflareEnvironment>;

@@ -14,12 +14,12 @@ export const determineHostVansRoute = (params: Params) => {
 
 	return {
 		hasAction,
+		isDetailsView,
 		isEditPage,
 		isEditRoute,
 		isPhotosPage,
-		isPricingPage,
-		isDetailsView,
 		isPhotosView,
+		isPricingPage,
 		isPricingView,
 	} as const;
 };

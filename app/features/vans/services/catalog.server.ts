@@ -31,21 +31,21 @@ export async function loadVanCatalog(request: Request) {
 	const { data: vans } = await tryCatch(() =>
 		getVans({
 			cursor: actualCursor,
-			limit,
 			direction,
-			typeFilter,
-			search,
-			types,
 			excludeInRepair,
+			limit,
 			onlyOnSale,
+			search,
+			typeFilter,
+			types,
 		})
 	);
 
 	const pagination = toPagination({
-		items: vans,
-		limit,
 		cursor: actualCursor,
 		direction,
+		items: vans,
+		limit,
 	});
 
 	return {

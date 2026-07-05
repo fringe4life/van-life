@@ -13,9 +13,12 @@ import {
 	loadHostSearchParams,
 	parsePaginationCursor,
 } from '~/lib/search-params.server';
+import type { Id } from '~/types';
 import { calculateTotalIncome } from '~/utils/calculate-income';
 import { getElapsedTime } from '~/utils/get-elapsed-time';
 import type { Route } from './+types/income';
+
+const renderIncomeItemProps = <T extends Id>(item: T) => item;
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
@@ -24,8 +27,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
 	const page = await loadIncomePage(user.id, {
 		cursor: parsePaginationCursor(cursor),
-		limit,
 		direction,
+		limit,
 		sort,
 	});
 
@@ -48,8 +51,8 @@ const HostIncome = ({ loaderData }: Route.ComponentProps) => {
 	const elapsedTime = getElapsedTime(chartData);
 
 	const mappedData = chartData?.map((income) => ({
-		name: income.createdAt.toDateString(),
 		amount: Math.round(income.amount),
+		name: income.createdAt.toDateString(),
 	}));
 
 	return (
@@ -87,7 +90,7 @@ const HostIncome = ({ loaderData }: Route.ComponentProps) => {
 				emptyStateMessage="Rent some vans and your income will appear here."
 				errorStateMessage="Something went wrong"
 				items={paginatedTransactions}
-				renderProps={(item) => item}
+				renderProps={renderIncomeItemProps}
 			/>
 			<Pagination
 				items={paginatedTransactions}

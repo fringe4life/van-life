@@ -19,25 +19,25 @@ export async function loadHostVansPage(userId: UUIDv7, request: Request) {
 	const { data: vans } = await tryCatch(() =>
 		getHostVans(userId, {
 			cursor: brandedCursor,
-			limit,
 			direction,
+			limit,
 		})
 	);
 
 	return toPagination({
-		items: vans,
-		limit,
 		cursor: brandedCursor,
 		direction,
+		items: vans,
+		limit,
 	});
 }
 
 export function createHostVan(userId: UUIDv7, validated: AddVanInput) {
 	const resultWithHostId = {
 		...validated,
-		slug: getSlug(validated.name),
 		discount: validated.discount ?? 0,
 		hostId: userId,
+		slug: getSlug(validated.name),
 		state: validated.state ?? null,
 	};
 

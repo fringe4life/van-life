@@ -16,20 +16,20 @@ export async function loadTransfersPage(
 			tryCatch(() => getUserTransactionsChartData(userId)),
 			tryCatch(() =>
 				getUserTransactionsPaginated({
-					userId,
 					cursor,
-					limit,
 					direction,
+					limit,
 					sort,
+					userId,
 				})
 			),
 		]);
 
 	const pagination = toPagination({
-		items: paginatedTransactions,
-		limit,
 		cursor,
 		direction,
+		items: paginatedTransactions,
+		limit,
 	});
 
 	return {

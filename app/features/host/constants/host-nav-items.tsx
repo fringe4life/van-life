@@ -11,8 +11,6 @@ import { href } from 'react-router';
 
 const hostNavItems = [
 	{
-		to: href('/host'),
-		id: 'Dashboard',
 		children: (
 			<>
 				<LayoutDashboard className="aspect-square" />
@@ -20,66 +18,68 @@ const hostNavItems = [
 			</>
 		),
 		end: true,
+		id: 'Dashboard',
+		to: href('/host'),
 	},
 	{
-		to: href('/host/income'),
-		id: 'Income',
 		children: (
 			<>
 				<Wallet className="aspect-square" />
 				<span>Income</span>
 			</>
 		),
+		id: 'Income',
+		to: href('/host/income'),
 	},
 	{
-		to: href('/host/transfers'),
-		id: 'Transfers',
 		children: (
 			<>
 				<ArrowRightLeft className="aspect-square" />
 				<span>Transfers</span>
 			</>
 		),
+		id: 'Transfers',
+		to: href('/host/transfers'),
 	},
 	{
-		to: href('/host/vans'),
-		id: 'Vans',
 		children: (
 			<>
 				<Car className="aspect-square" />
 				<span>Vans</span>
 			</>
 		),
+		id: 'Vans',
+		to: href('/host/vans'),
 	},
 	{
-		to: href('/host/review'),
-		id: 'Reviews',
 		children: (
 			<>
 				<Star className="aspect-square" />
 				<span>Reviews</span>
 			</>
 		),
+		id: 'Reviews',
+		to: href('/host/review'),
 	},
 	{
-		to: href('/host/vans'),
-		id: 'Add Van',
 		children: (
 			<>
 				<SquarePlus className="aspect-square" />
 				<span>Add Van</span>
 			</>
 		),
+		id: 'Add Van',
+		to: href('/host/vans'),
 	},
 	{
-		to: href('/host/rentals'),
-		id: 'Rentals',
 		children: (
 			<>
 				<KeySquare className="aspect-square" />
 				<span>Rentals</span>
 			</>
 		),
+		id: 'Rentals',
+		to: href('/host/rentals'),
 	},
 ];
 

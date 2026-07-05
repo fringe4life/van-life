@@ -19,7 +19,7 @@ describe('getElapsedTime', () => {
 	});
 
 	it('returns empty state for null, undefined, or empty input', () => {
-		const empty = { elapsedDays: 0, description: 'No data yet' };
+		const empty = { description: 'No data yet', elapsedDays: 0 };
 
 		expect(getElapsedTime(null)).toEqual(empty);
 		expect(getElapsedTime(undefined)).toEqual(empty);
@@ -30,8 +30,8 @@ describe('getElapsedTime', () => {
 		expect(
 			getElapsedTime([{ rentedAt: null }, { createdAt: undefined }])
 		).toEqual({
-			elapsedDays: 0,
 			description: 'No data yet',
+			elapsedDays: 0,
 		});
 	});
 
@@ -39,7 +39,7 @@ describe('getElapsedTime', () => {
 		const rentedAt = new Date('2024-03-10T00:00:00Z');
 		const createdAt = new Date('2024-01-01T00:00:00Z');
 
-		const result = getElapsedTime([{ rentedAt, createdAt }]);
+		const result = getElapsedTime([{ createdAt, rentedAt }]);
 
 		expect(result.elapsedDays).toBe(1);
 		expect(formatDistanceToNow).toHaveBeenCalledWith(rentedAt, {

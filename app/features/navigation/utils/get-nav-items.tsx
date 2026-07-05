@@ -7,8 +7,6 @@ import { navLinkClassName } from './nav-link-class-name';
 export function getNavItems(hasToken: boolean): NavItem[] {
 	const items = [
 		{
-			type: 'nav-link',
-			props: { to: href('/about'), className: navLinkClassName },
 			children: (
 				<>
 					<Info className="aspect-square" />
@@ -16,11 +14,11 @@ export function getNavItems(hasToken: boolean): NavItem[] {
 				</>
 			),
 			id: 'about',
+			props: { className: navLinkClassName, to: href('/about') },
 			show: true,
+			type: 'nav-link',
 		},
 		{
-			type: 'nav-link',
-			props: { to: href('/host'), className: navLinkClassName },
 			children: (
 				<>
 					<User className="aspect-square" />
@@ -28,11 +26,11 @@ export function getNavItems(hasToken: boolean): NavItem[] {
 				</>
 			),
 			id: 'host',
+			props: { className: navLinkClassName, to: href('/host') },
 			show: hasToken,
+			type: 'nav-link',
 		},
 		{
-			type: 'nav-link',
-			props: { to: href('/vans'), className: navLinkClassName },
 			children: (
 				<>
 					<Truck className="aspect-square" />
@@ -40,11 +38,11 @@ export function getNavItems(hasToken: boolean): NavItem[] {
 				</>
 			),
 			id: 'vans',
+			props: { className: navLinkClassName, to: href('/vans') },
 			show: true,
+			type: 'nav-link',
 		},
 		{
-			type: 'nav-link',
-			props: { to: href('/login'), className: navLinkClassName },
 			children: (
 				<>
 					<LogIn className="aspect-square" />
@@ -52,11 +50,11 @@ export function getNavItems(hasToken: boolean): NavItem[] {
 				</>
 			),
 			id: 'login',
+			props: { className: navLinkClassName, to: href('/login') },
 			show: !hasToken,
+			type: 'nav-link',
 		},
 		{
-			type: 'link',
-			props: { to: href('/signout'), className: linkClassName },
 			children: (
 				<>
 					<LogOut className="aspect-square" />
@@ -64,7 +62,9 @@ export function getNavItems(hasToken: boolean): NavItem[] {
 				</>
 			),
 			id: 'signout',
+			props: { className: linkClassName, to: href('/signout') },
 			show: !!hasToken,
+			type: 'link',
 		},
 	] satisfies NavItem[];
 

@@ -1,10 +1,4 @@
-import {
-	createContext,
-	data,
-	href,
-	isRouteErrorResponse,
-	redirect,
-} from 'react-router';
+import { createContext, data, href, redirect } from 'react-router';
 import { CustomForm } from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
@@ -15,9 +9,12 @@ import {
 	loadReturnRentalContext,
 } from '~/features/host/services/rental.server';
 import { authContext } from '~/features/middleware/contexts/auth';
+import { getHostRedirectUrl } from '~/features/middleware/utils/auth-redirect';
 import { CustomLink } from '~/features/navigation/components/custom-link';
 import { VanCard } from '~/features/vans/components/van-card';
 import { getCost } from '~/features/vans/utils/get-cost';
+import { getRouteErrorMessage } from '~/utils/get-route-error-message';
+import { notFound } from '~/utils/not-found';
 import type { Route } from './+types/return-rental';
 
 interface SharedRentalData {
@@ -36,15 +33,15 @@ const fetchSharedDataMiddleware: Route.MiddlewareFunction = async (
 
 	const { rent, money } = await loadReturnRentalContext(rentId, user.id);
 
-	if (!rent || typeof rent !== 'object' || !('van' in rent)) {
-		throw data('Rented van not found', { status: 404 });
+	if (!rent) {
+		notFound('Rented van not found');
 	}
 
-	if (money === null || money === undefined) {
-		throw data('Account summary not found', { status: 404 });
+	if (typeof money !== 'number') {
+		notFound('Account summary not found');
 	}
 
-	context.set(sharedRentalDataContext, { rent, money });
+	context.set(sharedRentalDataContext, { money, rent });
 
 	return next();
 };
@@ -54,12 +51,11 @@ export const middleware: Route.MiddlewareFunction[] = [
 ];
 
 export const loader = ({ context }: Route.LoaderArgs) => {
-	const { rent, money } = context.get(sharedRentalDataContext);
+	const rentalData = context.get(sharedRentalDataContext);
 
 	return data(
 		{
-			rent,
-			money,
+			...rentalData,
 		},
 		{
 			headers: {
@@ -74,10 +70,10 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
 	const { rent, money } = context.get(sharedRentalDataContext);
 
 	const result = await completeReturnRental({
+		money,
+		rent,
 		rentId: parseUuidV7(params.rentId),
 		userId: user.id,
-		rent,
-		money,
 	});
 
 	if (!result.success) {
@@ -119,7 +115,11 @@ const ReturnRental = ({
 						You cannot afford to return this van.
 					</p>
 					<CustomLink
-						to={`${href('/host')}?returnTo=${encodeURIComponent(href('/host/rentals/returnRental/:rentId', { rentId: params.rentId }))}`}
+						to={getHostRedirectUrl(
+							href('/host/rentals/returnRental/:rentId', {
+								rentId: params.rentId,
+							})
+						)}
 					>
 						Top up your account <span className="underline">here</span>
 					</CustomLink>
@@ -136,12 +136,6 @@ const ReturnRental = ({
 };
 export default ReturnRental;
 
-export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
-	if (isRouteErrorResponse(error)) {
-		return <UnsuccesfulState isError message={error.statusText} />;
-	}
-	if (error instanceof Error) {
-		return <UnsuccesfulState isError message={error.message} />;
-	}
-	return <UnsuccesfulState isError message="An unknown error occurred." />;
-};
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
+	<UnsuccesfulState isError message={getRouteErrorMessage(error)} />
+);

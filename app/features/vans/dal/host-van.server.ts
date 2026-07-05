@@ -7,8 +7,8 @@ import type { UUIDv7 } from '~/types/ids.server';
 export async function getHostVanBySlug(userId: UUIDv7, vanSlug: string) {
 	return prisma.van.findFirst({
 		where: {
-			slug: vanSlug,
 			hostId: userId,
+			slug: vanSlug,
 		},
 	});
 }
@@ -19,15 +19,15 @@ export function getHostVans(
 ) {
 	const { actualCursor, ...rest } = getCursorMetadata({
 		cursor,
-		limit,
 		direction,
+		limit,
 	});
 
 	return prisma.van.findMany({
+		cursor: actualCursor,
 		where: {
 			hostId,
 		},
-		cursor: actualCursor,
 		...rest,
 	});
 }

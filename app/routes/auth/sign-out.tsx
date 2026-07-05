@@ -1,6 +1,8 @@
-import { data, href, isRouteErrorResponse, replace } from 'react-router';
+import { href, replace } from 'react-router';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { auth } from '~/lib/auth.server';
+import { getRouteErrorMessage } from '~/utils/get-route-error-message';
+import { serverError } from '~/utils/server-error';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/sign-out';
 
@@ -12,7 +14,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		})
 	);
 	if (!signOut?.response?.success || error) {
-		throw data('Failed to sign out. Please try again later.', { status: 500 });
+		serverError('Failed to sign out. Please try again later.');
 	}
 	throw replace(href('/login'), { headers: signOut.headers });
 };
@@ -27,31 +29,14 @@ export default function Signout() {
 	);
 }
 
-export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
-	if (isRouteErrorResponse(error)) {
-		return (
-			<UnsuccesfulState
-				isError
-				message={
-					typeof error.data === 'string'
-						? error.data
-						: 'Your signout failed, please try again.'
-				}
-			/>
-		);
-	}
-	if (error instanceof Error) {
-		return (
-			<UnsuccesfulState
-				isError
-				message="Your signout failed, please try again."
-			/>
-		);
-	}
-	return (
-		<UnsuccesfulState
-			isError
-			message="Your signout failed, please try again."
-		/>
-	);
-};
+const SIGN_OUT_ERROR = 'Your signout failed, please try again.';
+
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
+	<UnsuccesfulState
+		isError
+		message={getRouteErrorMessage(error, {
+			errorFallback: SIGN_OUT_ERROR,
+			fallback: SIGN_OUT_ERROR,
+		})}
+	/>
+);

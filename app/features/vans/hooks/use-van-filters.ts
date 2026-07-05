@@ -102,21 +102,21 @@ const useVanFilters = () => {
 	);
 
 	const badgeCount = activeFilterCount({
-		types: optimisticTypes,
 		excludeInRepair: optimisticExcludeInRepair,
 		onlyOnSale: optimisticOnlyOnSale,
+		types: optimisticTypes,
 	});
 
 	return {
+		badgeCount,
 		baseId,
-		optimisticTypes,
+		onlyOnSale,
 		optimisticExcludeInRepair,
 		optimisticOnlyOnSale,
-		onlyOnSale,
-		badgeCount,
-		toggleType,
+		optimisticTypes,
 		setExcludeInRepair,
 		setOnlyOnSale,
+		toggleType,
 	} as const;
 };
 

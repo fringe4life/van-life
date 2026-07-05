@@ -56,8 +56,9 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 				? HTTP_MESSAGES.NOT_FOUND_DETAILS
 				: error.statusText || details;
 	} else if (import.meta.env.DEV && error && error instanceof Error) {
-		details = error.message;
-		stack = error.stack;
+		const { message: errorMessage, stack: errorStack } = error;
+		details = errorMessage;
+		stack = errorStack;
 	}
 
 	return (

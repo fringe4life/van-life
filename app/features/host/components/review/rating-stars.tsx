@@ -4,7 +4,10 @@ import {
 	MAX_RATING,
 	PERCENTAGE_MULTIPLIER,
 } from '~/features/host/constants/constants';
-import type { RatingStarsProps } from '~/features/host/types';
+import type { ReviewModel } from '~/generated/prisma/models';
+import type { Prettify } from '~/types';
+
+type RatingStarsProps = Prettify<Pick<ReviewModel, 'rating'>>;
 
 const TRANSPARENT_PIXEL =
 	"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E";

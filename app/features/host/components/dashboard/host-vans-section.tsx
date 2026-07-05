@@ -6,6 +6,15 @@ import { VanCard } from '~/features/vans/components/van-card';
 import { VanCardSkeleton } from '~/features/vans/components/van-card-skeleton';
 import type { VanModel } from '~/generated/prisma/models';
 
+const renderHostVanCardProps = (item: VanModel) => ({
+	action: <p className="justify-self-end text-right">Edit</p>,
+	link: href('/host/vans/:vanSlug/:action?', {
+		action: 'edit',
+		vanSlug: item.slug,
+	}),
+	van: item,
+});
+
 interface HostVansSectionProps {
 	vansPromise: Promise<VanModel[]>;
 }
@@ -31,14 +40,7 @@ const HostVansSection = ({ vansPromise }: HostVansSectionProps) => (
 					emptyStateMessage="You are not currently renting any vans"
 					errorStateMessage="Something went wrong"
 					items={vans}
-					renderProps={(item) => ({
-						van: item,
-						link: href('/host/vans/:vanSlug/:action?', {
-							vanSlug: item.slug,
-							action: 'edit',
-						}),
-						action: <p className="justify-self-end text-right">Edit</p>,
-					})}
+					renderProps={renderHostVanCardProps}
 				/>
 			)}
 		</Await>

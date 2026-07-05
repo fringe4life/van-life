@@ -11,16 +11,16 @@ export function pendingVanFromFormData(
 	const discountRaw = formData.get('discount');
 
 	return {
-		status: 'pending',
-		id: `pending:${clientKey}`,
 		clientKey,
-		name,
 		description: String(formData.get('description') ?? ''),
-		type: validateVanType(typeRaw.trim().toUpperCase()),
-		imageUrl: String(formData.get('imageUrl') ?? ''),
-		price: Number(formData.get('price')),
 		discount:
 			discountRaw === null || discountRaw === '' ? 0 : Number(discountRaw),
+		id: `pending:${clientKey}`,
+		imageUrl: String(formData.get('imageUrl') ?? ''),
+		name,
+		price: Number(formData.get('price')),
 		slug: getSlug(name),
+		status: 'pending',
+		type: validateVanType(typeRaw.trim().toUpperCase()),
 	};
 }

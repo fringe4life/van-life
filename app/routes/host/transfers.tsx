@@ -10,12 +10,21 @@ import { Pagination } from '~/features/pagination/components/pagination';
 import { VanHeader } from '~/features/vans/components/van-header';
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { TransactionType } from '~/generated/prisma/enums';
+import type { TransactionModel } from '~/generated/prisma/models';
 import {
 	loadHostSearchParams,
 	parsePaginationCursor,
 } from '~/lib/search-params.server';
 import { getElapsedTime } from '~/utils/get-elapsed-time';
 import type { Route } from './+types/transfers';
+
+const renderTransferItemProps = (
+	item: Pick<TransactionModel, 'amount' | 'createdAt' | 'type' | 'id'>
+) => ({
+	...item,
+	amount: item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
+	rentedAt: item.createdAt,
+});
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
@@ -24,8 +33,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
 	const page = await loadTransfersPage(user.id, {
 		cursor: parsePaginationCursor(cursor),
-		limit,
 		direction,
+		limit,
 		sort,
 	});
 
@@ -55,14 +64,14 @@ const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
 
 	const elapsedTime = getElapsedTime(
 		chartData?.map((t) => ({
-			rentedAt: t.createdAt,
 			amount: t.amount,
+			rentedAt: t.createdAt,
 		}))
 	);
 
 	const mappedData = chartData?.map((transaction) => ({
-		name: transaction.createdAt.toDateString(),
 		amount: Math.round(transaction.amount),
+		name: transaction.createdAt.toDateString(),
 	}));
 
 	return (
@@ -100,13 +109,7 @@ const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
 				emptyStateMessage="Make some transactions and they will appear here."
 				errorStateMessage="Something went wrong"
 				items={paginatedTransactions}
-				renderProps={(item) => ({
-					...item,
-					// Map transaction data to match Income component expectations
-					amount:
-						item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
-					rentedAt: item.createdAt,
-				})}
+				renderProps={renderTransferItemProps}
 			/>
 			<Pagination
 				items={paginatedTransactions}

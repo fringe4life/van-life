@@ -43,8 +43,8 @@ export async function action({ request }: Route.ActionArgs) {
 
 	if (!validation.success) {
 		return {
-			errors: validation.errors.summary,
 			email: (formData.email as string | undefined) ?? '',
+			errors: validation.errors.summary,
 		};
 	}
 	const { data: login, error } = await tryCatch(() =>
@@ -56,8 +56,8 @@ export async function action({ request }: Route.ActionArgs) {
 
 	if (!login?.response?.token || error) {
 		return {
-			errors: 'Your email or password is incorrect',
 			email: (formData.email as string | undefined) ?? '',
+			errors: 'Your email or password is incorrect',
 		};
 	}
 	const redirectTo = getSafeRedirectPath(formData.redirectTo);

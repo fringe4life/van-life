@@ -1,22 +1,25 @@
 import type React from 'react';
 import type { Items } from '~/features/pagination/types';
-import type { Id } from '~/types';
+import type { Id, Prettify } from '~/types';
+import { getCollectionState } from '~/utils/get-collection-state';
 import type { AsProps, EmptyState, ErrorState } from './types';
 import { UnsuccesfulState } from './unsuccesful-state';
 
-interface GenericComponentProps<
+type GenericComponentProps<
 	T extends Id,
 	P,
 	E extends React.ElementType = 'div',
-> extends EmptyState,
-		ErrorState,
-		Items<T>,
-		AsProps<E> {
-	Component: React.ComponentType<P>;
-	className?: string;
-	renderProps: (item: T, index: number) => P;
-	wrapperProps?: React.ComponentPropsWithoutRef<E>;
-}
+> = Prettify<
+	EmptyState &
+		ErrorState &
+		Items<T> &
+		AsProps<E> & {
+			Component: React.ComponentType<P>;
+			className?: string;
+			renderProps: (item: T, index: number) => P;
+			wrapperProps?: React.ComponentPropsWithoutRef<E>;
+		}
+>;
 
 const GenericComponent = <
 	T extends Id,
@@ -32,17 +35,24 @@ const GenericComponent = <
 	as,
 	wrapperProps,
 }: GenericComponentProps<T, P, E>) => {
-	const isError = !items;
-	const isEmpty = !isError && items.length === 0;
-	const message = isError ? errorStateMessage : emptyStateMessage;
-	if (isError || isEmpty) {
-		return <UnsuccesfulState isError message={message} />;
+	const collectionState = getCollectionState(items, {
+		emptyStateMessage,
+		errorStateMessage,
+	});
+
+	if (collectionState.kind !== 'ok') {
+		return (
+			<UnsuccesfulState
+				isError={collectionState.kind === 'error'}
+				message={collectionState.message}
+			/>
+		);
 	}
 
 	const Wrapper = as || 'div';
 	return (
 		<Wrapper className={className} {...wrapperProps}>
-			{items.map((item, index) => (
+			{collectionState.items.map((item, index) => (
 				<Component {...renderProps(item, index)} key={item.id} />
 			))}
 		</Wrapper>

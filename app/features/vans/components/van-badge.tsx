@@ -1,8 +1,10 @@
 import { Badge } from '~/components/ui/badge';
+import type { BadgeVariantProps } from '~/components/ui/badge-variants';
 import { formatEnumLabel } from '~/features/vans/utils/format-enum';
 import { lowercaseVanStateWithProcessor } from '~/features/vans/utils/van-state-helpers';
 import { VanState } from '~/generated/prisma/enums';
 import type { VanBadgeProps } from '../types';
+import { toLowercaseVanType } from '../utils/validators';
 
 /**
  * Badge component that displays van state (NEW, ON_SALE, IN_REPAIR).
@@ -10,15 +12,16 @@ import type { VanBadgeProps } from '../types';
  * Hidden by default, shown only for new/sale/repair states via Tailwind has-* variants.
  */
 const VanBadge = ({ van }: VanBadgeProps) => {
-	const variant = lowercaseVanStateWithProcessor(van, (state) => {
-		// Handle special case for van type when state is 'available'
-		if (state === 'available') {
-			return van.type.toLowerCase() as 'simple' | 'luxury' | 'rugged';
-		}
+	const variant = lowercaseVanStateWithProcessor(
+		van,
+		(state): NonNullable<BadgeVariantProps['variant']> => {
+			if (state === 'available') {
+				return toLowercaseVanType(van.type);
+			}
 
-		// Return the state directly for 'new', 'sale', 'repair'
-		return state as 'new' | 'sale' | 'repair';
-	});
+			return state;
+		}
+	);
 
 	// Determine label based on variant
 	let labelRaw: string;
@@ -27,7 +30,7 @@ const VanBadge = ({ van }: VanBadgeProps) => {
 	} else if (van.state === VanState.AVAILABLE) {
 		labelRaw = van.type;
 	} else {
-		labelRaw = (van.state as unknown as string) ?? 'AVAILABLE';
+		labelRaw = van.state ?? 'AVAILABLE';
 	}
 	const label = formatEnumLabel(labelRaw);
 

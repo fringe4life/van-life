@@ -13,6 +13,14 @@ export interface VanFormProps {
 	isPending: boolean;
 }
 
+const formatFormErrors = (formErrors: string | string[]) => {
+	if (Array.isArray(formErrors)) {
+		return formErrors.join(', ');
+	}
+
+	return formErrors;
+};
+
 const VanForm = ({
 	handleSubmit,
 	isPending,
@@ -25,6 +33,8 @@ const VanForm = ({
 	const imageUrlId = useId();
 	const typeId = useId();
 	const discountId = useId();
+
+	const errorMessage = errors ? formatFormErrors(errors) : null;
 
 	return (
 		<div className="@container/form">
@@ -113,9 +123,9 @@ const VanForm = ({
 						type="number"
 					/>
 				</div>
-				{errors ? (
+				{errorMessage ? (
 					<p className="col-span-full font-medium text-red-500 text-sm">
-						{Array.isArray(errors) ? errors.join(', ') : errors}
+						{errorMessage}
 					</p>
 				) : null}
 				<div className="col-span-full grid grid-cols-subgrid">

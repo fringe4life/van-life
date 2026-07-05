@@ -7,12 +7,12 @@ export async function getAverageReviewRating(userId: UUIDv7) {
 		_avg: {
 			rating: true,
 		},
+		orderBy: { createdAt: 'desc' },
 		where: {
 			rent: {
 				hostId: userId,
 			},
 		},
-		orderBy: { createdAt: 'desc' },
 	});
 	return avg._avg.rating ?? 0;
 }

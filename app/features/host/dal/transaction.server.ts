@@ -14,23 +14,23 @@ import type { UUIDv7 } from '~/types/ids.server';
 
 export async function getAccountSummary(userId: UUIDv7) {
 	const result = await prisma.transaction.aggregate({
-		where: { userId },
 		_sum: {
 			amount: true,
 		},
+		where: { userId },
 	});
 	return result._sum.amount ?? 0;
 }
 
 export async function getTransactionSummary(userId: UUIDv7) {
 	const result = await prisma.transaction.aggregate({
-		where: { userId },
 		_sum: {
 			amount: true,
 		},
 		orderBy: {
 			createdAt: 'desc',
 		},
+		where: { userId },
 	});
 	return result._sum.amount ?? 0;
 }
@@ -45,17 +45,17 @@ export async function getHostTransactions(
 	});
 
 	return await prisma.transaction.findMany({
-		where: {
-			userId,
-			type: TransactionType.RENTAL_PAYMENT,
-		},
+		orderBy,
 		select: {
 			amount: true,
 			createdAt: true,
 			id: true,
 			rentId: true,
 		},
-		orderBy,
+		where: {
+			type: TransactionType.RENTAL_PAYMENT,
+			userId,
+		},
 	});
 }
 
@@ -68,8 +68,8 @@ const getTransactionOrderBy = (sort: SortOption) =>
 const hostRentalPaymentTransactionWhere = (
 	userId: UUIDv7
 ): Prisma.TransactionWhereInput => ({
-	userId,
 	type: TransactionType.RENTAL_PAYMENT,
+	userId,
 });
 
 const hostTransactionListSelect = {
@@ -80,10 +80,10 @@ const hostTransactionListSelect = {
 } satisfies Prisma.TransactionSelect;
 
 const userTransactionListSelect = {
-	id: true,
 	amount: true,
-	type: true,
 	createdAt: true,
+	id: true,
+	type: true,
 } satisfies Prisma.TransactionSelect;
 
 export function getHostTransactionsPaginated({
@@ -95,20 +95,20 @@ export function getHostTransactionsPaginated({
 }: PaginationParams) {
 	const { actualCursor, skip, take } = getCursorMetadata({
 		cursor,
-		limit,
 		direction,
+		limit,
 	});
 
 	const effectiveSort = reverseSortOption(sort, direction);
 	const orderByClause = getTransactionOrderBy(effectiveSort);
 
 	const query = {
-		where: hostRentalPaymentTransactionWhere(userId),
-		select: hostTransactionListSelect,
-		orderBy: orderByClause,
 		cursor: actualCursor,
+		orderBy: orderByClause,
+		select: hostTransactionListSelect,
 		skip,
 		take,
+		where: hostRentalPaymentTransactionWhere(userId),
 	} satisfies Prisma.TransactionFindManyArgs;
 
 	return prisma.transaction.findMany(query);
@@ -123,20 +123,20 @@ export function getUserTransactionsPaginated({
 }: PaginationParams) {
 	const { actualCursor, skip, take } = getCursorMetadata({
 		cursor,
-		limit,
 		direction,
+		limit,
 	});
 
 	const effectiveSort = reverseSortOption(sort, direction);
 	const orderByClause = getTransactionOrderBy(effectiveSort);
 
 	const query = {
-		where: { userId },
-		select: userTransactionListSelect,
-		orderBy: orderByClause,
 		cursor: actualCursor,
+		orderBy: orderByClause,
+		select: userTransactionListSelect,
 		skip,
 		take,
+		where: { userId },
 	} satisfies Prisma.TransactionFindManyArgs;
 
 	return prisma.transaction.findMany(query);
@@ -144,26 +144,26 @@ export function getUserTransactionsPaginated({
 
 export function getUserTransactionsChartData(userId: UUIDv7) {
 	return prisma.transaction.findMany({
-		where: {
-			userId,
-		},
 		select: {
 			amount: true,
 			createdAt: true,
 			type: true,
+		},
+		where: {
+			userId,
 		},
 	});
 }
 
 export function getHostTransactionsChartData(userId: UUIDv7) {
 	return prisma.transaction.findMany({
-		where: {
-			userId,
-			type: TransactionType.RENTAL_PAYMENT,
-		},
 		select: {
 			amount: true,
 			createdAt: true,
+		},
+		where: {
+			type: TransactionType.RENTAL_PAYMENT,
+			userId,
 		},
 	});
 }

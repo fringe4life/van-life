@@ -14,25 +14,25 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		domain: origin,
 		routes: [
 			{
-				url: href('/'),
 				changefreq: 'weekly',
 				priority: 1,
+				url: href('/'),
 			},
 			{
-				url: href('/about'),
 				changefreq: 'monthly',
 				priority: 0.8,
+				url: href('/about'),
 			},
 			{
-				url: href('/vans'),
 				changefreq: 'daily',
 				priority: 0.9,
+				url: href('/vans'),
 			},
 			...vans.map((van) => ({
-				url: href('/vans/:vanSlug', { vanSlug: van.slug }),
-				lastmod: formatLastMod(van.createdAt),
 				changefreq: 'weekly' as const,
+				lastmod: formatLastMod(van.createdAt),
 				priority: 0.7 as const,
+				url: href('/vans/:vanSlug', { vanSlug: van.slug }),
 			})),
 		],
 	});

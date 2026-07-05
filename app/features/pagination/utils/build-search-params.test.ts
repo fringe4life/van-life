@@ -16,10 +16,10 @@ describe('buildVanQueryString', () => {
 	it('omits inactive optional filters', () => {
 		const query = buildVanQueryString({
 			...baseParams,
-			types: [],
 			excludeInRepair: false,
 			onlyOnSale: false,
 			search: '   ',
+			types: [],
 		});
 
 		expect(query).not.toContain('types=');
@@ -31,10 +31,10 @@ describe('buildVanQueryString', () => {
 	it('includes active optional filters', () => {
 		const query = buildVanQueryString({
 			...baseParams,
-			types: ['simple', 'rugged'],
 			excludeInRepair: true,
 			onlyOnSale: true,
 			search: '  camper  ',
+			types: ['simple', 'rugged'],
 		});
 
 		expect(query).toContain('types=simple,rugged');
@@ -60,9 +60,9 @@ describe('buildVanUrl', () => {
 
 	it('returns baseUrl alone when query serializes empty', () => {
 		const url = buildVanUrl({
+			baseUrl: '/vans',
 			cursor: '',
 			limit: 10,
-			baseUrl: '/vans',
 		});
 
 		expect(url).toBe('/vans');

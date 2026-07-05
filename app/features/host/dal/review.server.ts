@@ -41,20 +41,20 @@ export function getHostReviewsPaginated({
 }: PaginationParams) {
 	const { actualCursor, skip, take } = getCursorMetadata({
 		cursor,
-		limit,
 		direction,
+		limit,
 	});
 
 	const effectiveSort = reverseSortOption(sort, direction);
 	const orderByClause = getOrderBy(effectiveSort);
 
 	const query = {
-		where: hostReviewListWhere(userId),
+		cursor: actualCursor,
 		include: hostReviewListInclude,
 		orderBy: orderByClause,
-		cursor: actualCursor,
 		skip,
 		take,
+		where: hostReviewListWhere(userId),
 	} satisfies Prisma.ReviewFindManyArgs;
 
 	return prisma.review.findMany(query);
@@ -62,14 +62,14 @@ export function getHostReviewsPaginated({
 
 export function getHostReviewsChartData(userId: UUIDv7) {
 	return prisma.review.findMany({
+		orderBy: { createdAt: 'desc' },
+		select: {
+			rating: true,
+		},
 		where: {
 			rent: {
 				hostId: userId,
 			},
 		},
-		select: {
-			rating: true,
-		},
-		orderBy: { createdAt: 'desc' },
 	});
 }

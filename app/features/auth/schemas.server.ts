@@ -23,15 +23,15 @@ export const loginSchema = type({
  * - Ensures password and confirmPassword match.
  */
 export const signUpScheme = type({
-	email: 'string.email',
-	password: passwordSchema,
 	confirmPassword: passwordSchema,
+	email: 'string.email',
 	name: '2 <= string <= 124',
+	password: passwordSchema,
 }).narrow((data, ctx) => {
 	if (data.password !== data.confirmPassword) {
 		return ctx.reject({
-			expected: 'identical to password',
 			actual: '',
+			expected: 'identical to password',
 			path: ['confirmPassword'],
 		});
 	}

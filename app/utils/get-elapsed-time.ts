@@ -2,8 +2,8 @@ import { differenceInDays, formatDistanceToNow } from 'date-fns';
 import type { List, Maybe } from '~/types';
 
 const NO_ELAPSED_TIME = {
-	elapsedDays: 0,
 	description: 'No data yet',
+	elapsedDays: 0,
 } as const;
 
 interface ElapsedTime {
@@ -23,7 +23,7 @@ function getItemDate(item: ElapsedTime): Date | undefined {
 export const getElapsedTime = (items: List<ElapsedTime>) => {
 	const dates = (items ?? [])
 		.map(getItemDate)
-		.filter((date): date is Date => date != null);
+		.filter((date): date is Date => date !== undefined);
 
 	if (dates.length === 0) {
 		return NO_ELAPSED_TIME;
@@ -34,7 +34,7 @@ export const getElapsedTime = (items: List<ElapsedTime>) => {
 	const lastDate = new Date(Math.max(...timestamps));
 
 	return {
-		elapsedDays: differenceInDays(lastDate, firstDate) + 1,
 		description: formatDistanceToNow(firstDate, { addSuffix: true }),
+		elapsedDays: differenceInDays(lastDate, firstDate) + 1,
 	};
 };

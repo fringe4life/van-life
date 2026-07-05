@@ -29,15 +29,15 @@ const HamburgerIcon = ({
 	className,
 }: HamburgerIconProps) => {
 	const lineStyle = (direction: 1 | -1): CSSProperties => ({
+		transform: isOpen
+			? `rotate(${direction * ROTATION_DEG}deg) translateY(${direction * LINE_OFFSET}px)`
+			: 'none',
 		transformBox: 'view-box',
 		transformOrigin: 'center',
 		// Spring on open (settle time needs the longer duration); quick ease on close
 		transition: isOpen
 			? 'transform 500ms var(--ease-spring)'
 			: 'transform 250ms ease',
-		transform: isOpen
-			? `rotate(${direction * ROTATION_DEG}deg) translateY(${direction * LINE_OFFSET}px)`
-			: 'none',
 	});
 
 	return (

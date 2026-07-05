@@ -5,6 +5,7 @@ import type { VanType as VanTypeEnum } from '~/generated/prisma/enums';
 import { VanState, VanType } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
 import { prisma } from '~/lib/prisma.server';
+import type { Prettify } from '~/types';
 
 const WHITESPACE_REGEX = /\s+/;
 const VAN_TYPE_VALUES = new Set<string>(Object.values(VanType));
@@ -18,7 +19,7 @@ function parseVanTypeStrings(types: string[]): VanTypeEnum[] {
 function buildVanTypeFilter(
 	types: string[] | undefined,
 	typeFilter: VanTypeEnum | undefined
-): Pick<Prisma.VanWhereInput, 'type'> | undefined {
+): Prettify<Pick<Prisma.VanWhereInput, 'type'>> | undefined {
 	if (types && types.length > 0) {
 		const vanTypes = parseVanTypeStrings(types);
 		if (vanTypes.length === 0) {
@@ -29,7 +30,6 @@ function buildVanTypeFilter(
 	if (typeFilter) {
 		return { type: typeFilter };
 	}
-	return;
 }
 
 function formatFullTextSearchQuery(search: string): string {
@@ -56,8 +56,8 @@ export function getVans({
 		...rest
 	} = getCursorMetadata({
 		cursor,
-		limit,
 		direction,
+		limit,
 	});
 
 	const typeCondition = buildVanTypeFilter(types, typeFilter);
@@ -83,6 +83,8 @@ export function getVans({
 		: orderByMetadata;
 
 	return prisma.van.findMany({
+		cursor: actualCursor,
+		orderBy,
 		where: {
 			...(typeCondition && typeCondition),
 			...(formattedSearch && {
@@ -94,8 +96,6 @@ export function getVans({
 			...(excludeInRepair && { state: { not: VanState.IN_REPAIR } }),
 			...(onlyOnSale && { state: VanState.ON_SALE }),
 		},
-		orderBy,
-		cursor: actualCursor,
 		...rest,
 	});
 }
@@ -109,7 +109,7 @@ export function getVanBySlug(slug: string) {
 }
 
 export function createVan(
-	newVan: Omit<VanModel, 'id' | 'createdAt' | 'isRented'>
+	newVan: Prettify<Omit<VanModel, 'id' | 'createdAt' | 'isRented'>>
 ) {
 	return prisma.van.create({
 		data: { ...newVan, createdAt: new Date(), isRented: false },

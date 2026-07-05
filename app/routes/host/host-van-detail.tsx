@@ -1,5 +1,5 @@
 import { Activity } from 'react';
-import { data, href, isRouteErrorResponse } from 'react-router';
+import { data, href } from 'react-router';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { determineHostVansRoute } from '~/features/host/utils/determine-host-vans-route';
 import { authContext } from '~/features/middleware/contexts/auth';
@@ -8,6 +8,8 @@ import { buildVanUrl } from '~/features/pagination/utils/build-search-params';
 import { VanDetailCard } from '~/features/vans/components/host detail';
 import { getHostVanBySlug } from '~/features/vans/dal/host-van.server';
 import { loadHostSearchParams } from '~/lib/search-params.server';
+import { getRouteErrorMessage } from '~/utils/get-route-error-message';
+import { notFound } from '~/utils/not-found';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host-van-detail';
 
@@ -26,11 +28,11 @@ export const loader = async ({
 	);
 
 	if (!van) {
-		throw data('Van not found', { status: 404 });
+		notFound('Van not found');
 	}
 
 	return data(
-		{ van, cursor, limit },
+		{ cursor, limit, van },
 		{ headers: { 'Cache-Control': 'max-age=259200' } }
 	);
 };
@@ -44,9 +46,9 @@ const HostVanDetailPage = ({ loaderData, params }: Route.ComponentProps) => {
 
 	// Build back link with pagination search params
 	const backLink = buildVanUrl({
+		baseUrl: href('/host/vans'),
 		cursor,
 		limit,
-		baseUrl: href('/host/vans'),
 	});
 
 	return (
@@ -73,17 +75,11 @@ const HostVanDetailPage = ({ loaderData, params }: Route.ComponentProps) => {
 };
 export default HostVanDetailPage;
 
-export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
-	if (isRouteErrorResponse(error)) {
-		return (
-			<UnsuccesfulState
-				isError
-				message={error.statusText || 'An unknown error occurred.'}
-			/>
-		);
-	}
-	if (error instanceof Error) {
-		return <UnsuccesfulState isError message="This van could not be found." />;
-	}
-	return <UnsuccesfulState isError message="An unknown error occurred." />;
-};
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
+	<UnsuccesfulState
+		isError
+		message={getRouteErrorMessage(error, {
+			errorFallback: 'This van could not be found.',
+		})}
+	/>
+);

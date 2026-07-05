@@ -3,7 +3,7 @@ export const HTTP_STATUS = {
 } as const;
 
 export const HTTP_MESSAGES = {
-	NOT_FOUND: '404',
 	ERROR: 'Error',
+	NOT_FOUND: '404',
 	NOT_FOUND_DETAILS: 'The requested page could not be found.',
 } as const;

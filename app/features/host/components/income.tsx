@@ -1,6 +1,11 @@
 import { Card, CardContent } from '~/components/ui/card';
-import type { IncomeProps } from '~/features/host/types';
 import { displayPrice } from '~/features/vans/utils/display-price';
+import type { TransactionModel } from '~/generated/prisma/models';
+import type { Prettify } from '~/types';
+
+type IncomeProps = Prettify<
+	Pick<TransactionModel, 'amount' | 'createdAt' | 'id'>
+>;
 
 const Income = ({ amount, createdAt }: IncomeProps) => (
 	<Card className="contain-content">

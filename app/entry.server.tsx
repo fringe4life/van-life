@@ -19,6 +19,7 @@ export default async function handleRequest(
 		{
 			onError(error: unknown) {
 				statusCode = 500;
+				// biome-ignore lint/suspicious/noUnnecessaryConditions: recommended by react router
 				if (shellRendered) {
 					console.error(error);
 				}

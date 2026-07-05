@@ -24,13 +24,13 @@ export function validateArkType<T extends Type>(
 
 	if (result instanceof ArkErrors) {
 		return {
-			success: false as const,
 			errors: result,
+			success: false as const,
 		} satisfies ValidationFailure;
 	}
 
 	return {
-		success: true as const,
 		data: result as T['infer'],
+		success: true as const,
 	} satisfies ValidationSuccess<T>;
 }

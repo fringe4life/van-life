@@ -16,15 +16,15 @@ function Badge({
 		defaultTagName: 'span',
 		props: mergeProps<'span'>(
 			{
-				className: cn(badgeVariants({ variant, size }), className),
+				className: cn(badgeVariants({ size, variant }), className),
 			},
 			props
 		),
 		render,
 		state: {
+			size,
 			slot: 'badge',
 			variant,
-			size,
 		},
 	});
 }

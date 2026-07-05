@@ -6,9 +6,27 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '~/components/ui/dialog';
-import type { MobileNavProps } from '../types';
+import type { MobileNavProps, NavItem as NavItemType } from '../types';
 import { HamburgerIcon } from './hamburger-icon';
 import { NavItem } from './nav-item';
+
+const renderMobileNavItemProps = (item: NavItemType, onClose: () => void) => {
+	if (item.type === 'link') {
+		return {
+			item: {
+				...item,
+				props: { ...item.props, onClick: onClose },
+			},
+		};
+	}
+
+	return {
+		item: {
+			...item,
+			props: { ...item.props, onClick: onClose },
+		},
+	};
+};
 
 const MobileNav = ({ items }: MobileNavProps) => {
 	const [open, setOpen] = useState(false);
@@ -16,6 +34,9 @@ const MobileNav = ({ items }: MobileNavProps) => {
 	const handleClose = () => {
 		setOpen(false);
 	};
+
+	const renderProps = (item: NavItemType) =>
+		renderMobileNavItemProps(item, handleClose);
 
 	return (
 		<Dialog onOpenChange={setOpen} open={open}>
@@ -46,26 +67,7 @@ const MobileNav = ({ items }: MobileNavProps) => {
 						emptyStateMessage="No nav items"
 						errorStateMessage="Something went wrong"
 						items={items}
-						renderProps={(item) => {
-							switch (item.type) {
-								case 'link':
-									return {
-										item: {
-											...item,
-											props: { ...item.props, onClick: handleClose },
-										},
-									};
-								case 'nav-link':
-									return {
-										item: {
-											...item,
-											props: { ...item.props, onClick: handleClose },
-										},
-									};
-								default:
-									throw new Error(`Invalid item type: ${item satisfies never}`);
-							}
-						}}
+						renderProps={renderProps}
 					/>
 				</nav>
 			</DialogContent>

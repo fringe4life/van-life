@@ -6,7 +6,7 @@ import {
 	useState,
 	useTransition,
 } from 'react';
-import { href, useFetcher } from 'react-router';
+import { useFetcher } from 'react-router';
 import { balanceReducer } from '~/features/host/hooks/balance-reducer';
 import { DEPOSIT, WITHDRAW } from '~/features/vans/constants/vans-constants';
 
@@ -37,10 +37,7 @@ const useHostWallet = (
 		startTransition(() => {
 			addOptimisticBalance({ amount, type: transactionType });
 			startTransition(async () => {
-				await fetcher.submit(formData, {
-					method: 'POST',
-					action: href('/host'),
-				});
+				await fetcher.submit(formData, { method: 'POST' });
 			});
 		});
 	};

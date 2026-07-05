@@ -23,20 +23,20 @@ export async function loadIncomePage(
 			tryCatch(() => getHostTransactionsChartData(userId)),
 			tryCatch(() =>
 				getHostTransactionsPaginated({
-					userId,
 					cursor,
-					limit,
 					direction,
+					limit,
 					sort,
+					userId,
 				})
 			),
 		]);
 
 	const pagination = toPagination({
-		items: paginatedTransactions,
-		limit,
 		cursor,
 		direction,
+		items: paginatedTransactions,
+		limit,
 	});
 
 	return {

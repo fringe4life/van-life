@@ -9,6 +9,12 @@ import { env } from '~/lib/env.server';
 import { createId } from '~/lib/id.server';
 import { prisma } from '~/lib/prisma.server';
 export const auth = betterAuth({
+	advanced: {
+		database: {
+			generateId: createId,
+		},
+	},
+	baseURL: env.BETTER_AUTH_URL,
 	database: prismaAdapter(prisma, {
 		provider: 'postgresql',
 	}),
@@ -17,18 +23,12 @@ export const auth = betterAuth({
 		requireEmailVerification: false,
 	},
 	experimental: { joins: true },
-	baseURL: env.BETTER_AUTH_URL,
 	secret: env.BETTER_AUTH_SECRET,
 	session: {
 		cookieCache: { enabled: true, maxAge: FIVE_MINUTES_IN_SECONDS },
 		expiresIn: ONE_MONTH_IN_SECONDS, // 30 days
-		updateAge: SECONDS_PER_DAY, // 1 day (every 1 day the session expiration is updated)
 		preserveSessionInDatabase: true,
+		updateAge: SECONDS_PER_DAY, // 1 day (every 1 day the session expiration is updated)
 	},
 	telemetry: { enabled: false },
-	advanced: {
-		database: {
-			generateId: createId,
-		},
-	},
 });

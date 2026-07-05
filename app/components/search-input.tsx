@@ -21,9 +21,9 @@ const SearchInput = () => {
 		startTransition(async () => {
 			await setUrlState(
 				{
-					search: search || '',
 					cursor: DEFAULT_CURSOR,
 					direction: DEFAULT_DIRECTION,
+					search: search || '',
 				},
 				{
 					limitUrlUpdates:
@@ -40,9 +40,9 @@ const SearchInput = () => {
 			startTransition(async () => {
 				await setUrlState(
 					{
-						search: search || '',
 						cursor: DEFAULT_CURSOR,
 						direction: DEFAULT_DIRECTION,
+						search: search || '',
 					},
 					{ limitUrlUpdates: undefined }
 				);

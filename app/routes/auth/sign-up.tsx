@@ -39,9 +39,9 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
 	if (!validation.success) {
 		return {
+			email,
 			errors: validation.errors.summary,
 			name,
-			email,
 		};
 	}
 	const { data: signUp, error } = await tryCatch(() =>
@@ -52,7 +52,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 	);
 
 	if (!signUp?.response?.token || error) {
-		return { errors: 'Sign up failed please try again later', name, email };
+		return { email, errors: 'Sign up failed please try again later', name };
 	}
 	throw replace('/host', {
 		headers: signUp.headers,

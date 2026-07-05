@@ -1,10 +1,12 @@
 import { href } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
-import type { NavProps } from '../types';
+import type { NavItem as NavItemType, NavProps } from '../types';
 import { getNavItems } from '../utils/get-nav-items';
 import { CustomLink } from './custom-link';
 import { MobileNav } from './mobile-nav';
 import { NavItem } from './nav-item';
+
+const renderNavItemProps = (item: NavItemType) => ({ item });
 
 const Nav = ({ hasToken }: NavProps) => {
 	const navItems = getNavItems(hasToken);
@@ -23,7 +25,7 @@ const Nav = ({ hasToken }: NavProps) => {
 					emptyStateMessage="No nav items"
 					errorStateMessage="Something went wrong"
 					items={navItems}
-					renderProps={(item) => ({ item })}
+					renderProps={renderNavItemProps}
 				/>
 			</nav>
 			<MobileNav items={navItems} />

@@ -50,3 +50,13 @@ export function getLoginRedirectUrl(returnPath: string): string {
 	const params = new URLSearchParams({ [REDIRECT_SEARCH_PARAM]: redirectTo });
 	return `${href('/login')}?${params}`;
 }
+
+export function getHostRedirectUrl(returnPath: string): string {
+	const redirectTo = getSafeRedirectPath(returnPath);
+	const params = new URLSearchParams({ [REDIRECT_SEARCH_PARAM]: redirectTo });
+	return `${href('/host')}?${params}`;
+}
+
+export function getRedirectParamFromRequest(request: Request): string | null {
+	return new URL(request.url).searchParams.get(REDIRECT_SEARCH_PARAM);
+}

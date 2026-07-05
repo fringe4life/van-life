@@ -6,6 +6,11 @@ import { CustomNavLink } from '~/features/navigation/components/custom-nav-link'
 import { navLinkClassName } from '~/features/navigation/utils/nav-link-class-name';
 import type { Route } from './+types/host-layout';
 
+const renderHostNavItemProps = (item: (typeof hostNavItems)[number]) => ({
+	...item,
+	className: navLinkClassName,
+});
+
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
 // Intentionally empty: forces a `.data` request on client navigations under `/host`
@@ -25,10 +30,7 @@ const HostLayout = () => (
 				emptyStateMessage="No nav links"
 				errorStateMessage="Something went wrong"
 				items={hostNavItems}
-				renderProps={(item) => ({
-					...item,
-					className: navLinkClassName,
-				})}
+				renderProps={renderHostNavItemProps}
 			/>
 		</div>
 		<Outlet />

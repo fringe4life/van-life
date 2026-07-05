@@ -67,11 +67,11 @@ export const paginationParsers = {
 
 // Van filters for advanced filtering (multiple types, state filters)
 export const vanFiltersParser = {
+	excludeInRepair: parseAsBoolean.withDefault(false),
+	onlyOnSale: parseAsBoolean.withDefault(false),
 	types: parseAsArrayOf(parseAsStringEnum([...VAN_TYPE_LOWERCASE])).withDefault(
 		[]
 	),
-	excludeInRepair: parseAsBoolean.withDefault(false),
-	onlyOnSale: parseAsBoolean.withDefault(false),
 };
 
 // Vans filter UI: filters + pagination reset in one nuqs setter

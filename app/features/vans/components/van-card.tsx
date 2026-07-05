@@ -23,8 +23,8 @@ const VanCard = ({
 	// Create optimized WebP srcSet with 1:1 aspect ratio for both mobile and desktop
 	// since the VanCard uses aspect-square
 	const srcSet = createWebPSrcSet(imageUrl, {
-		sizes: VAN_CARD_IMG_SIZES,
 		aspectRatio: '1:1',
+		sizes: VAN_CARD_IMG_SIZES,
 		// quality defaults to DEFAULT_IMAGE_QUALITY (50) for better compression
 	});
 

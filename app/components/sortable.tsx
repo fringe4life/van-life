@@ -33,11 +33,13 @@ interface SortableProps {
  * ```
  */
 const sortOptions = [
-	{ value: 'newest' as const, id: 'Newest' },
-	{ value: 'oldest' as const, id: 'Oldest' },
-	{ value: 'highest' as const, id: 'Highest' },
-	{ value: 'lowest' as const, id: 'Lowest' },
+	{ id: 'Newest', value: 'newest' as const },
+	{ id: 'Oldest', value: 'oldest' as const },
+	{ id: 'Highest', value: 'highest' as const },
+	{ id: 'Lowest', value: 'lowest' as const },
 ];
+
+type SortOptionItem = (typeof sortOptions)[number];
 
 const Sortable = ({ title, itemCount, className }: SortableProps) => {
 	// Use nuqs for client-side state management
@@ -49,12 +51,22 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
 	const handleSortChange = (sortOption: SortOption) => {
 		startTransition(async () => {
 			await setSearchParams({
-				sort: sortOption,
 				cursor: DEFAULT_CURSOR,
 				direction: DEFAULT_DIRECTION,
+				sort: sortOption,
 			});
 		});
 	};
+
+	const renderSortButtonProps = (item: SortOptionItem) => ({
+		children: item.id,
+		className: cn(
+			'w-full cursor-pointer text-center sm:w-fit sm:text-left',
+			sort === item.value && 'bg-orange-400 font-semibold text-white'
+		),
+		onClick: () => handleSortChange(item.value),
+		variant: 'ghost' as const,
+	});
 
 	if (!itemCount) {
 		return <div />;
@@ -77,15 +89,7 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
 				emptyStateMessage=""
 				errorStateMessage="Something went wrong"
 				items={sortOptions}
-				renderProps={(item) => ({
-					variant: 'ghost' as const,
-					className: cn(
-						'w-full cursor-pointer text-center sm:w-fit sm:text-left',
-						sort === item.value && 'bg-orange-400 font-semibold text-white'
-					),
-					onClick: () => handleSortChange(item.value),
-					children: item.id,
-				})}
+				renderProps={renderSortButtonProps}
 			/>
 		</div>
 	);

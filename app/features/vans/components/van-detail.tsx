@@ -39,9 +39,9 @@ export default function VanDetail({
 }: VanDetailProps) {
 	const vanIsAvailable = isVanAvailable(van);
 	const srcSet = createWebPSrcSet(imageUrl, {
-		sizes: VAN_DETAIL_IMG_SIZES,
 		aspectRatio: '1:1',
 		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
+		sizes: VAN_DETAIL_IMG_SIZES,
 	});
 
 	return (

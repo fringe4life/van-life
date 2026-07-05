@@ -18,22 +18,31 @@ const FilterCheckboxRow = ({
 	onCheckedChange,
 	className,
 	labelClassName,
-}: FilterCheckboxRowProps) => (
-	<div
-		className={cn('flex items-center gap-2 rounded-sm px-2 py-1.5', className)}
-	>
-		<Checkbox
-			checked={checked}
-			id={id}
-			onCheckedChange={(value) => onCheckedChange(value === true)}
-		/>
-		<Label
-			className={cn('cursor-pointer font-normal', labelClassName)}
-			htmlFor={id}
+}: FilterCheckboxRowProps) => {
+	const handleCheckedChange = (value: boolean | 'indeterminate') => {
+		onCheckedChange(value === true);
+	};
+
+	return (
+		<div
+			className={cn(
+				'flex items-center gap-2 rounded-sm px-2 py-1.5',
+				className
+			)}
 		>
-			{label}
-		</Label>
-	</div>
-);
+			<Checkbox
+				checked={checked}
+				id={id}
+				onCheckedChange={handleCheckedChange}
+			/>
+			<Label
+				className={cn('cursor-pointer font-normal', labelClassName)}
+				htmlFor={id}
+			>
+				{label}
+			</Label>
+		</div>
+	);
+};
 
 export { FilterCheckboxRow };

@@ -1,27 +1,34 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import type { VanType } from '~/generated/prisma/enums';
+import type { VanState, VanType } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
-import type { Maybe, Search } from '~/types';
+import type { Maybe, Prettify, Search } from '~/types';
 import type { BasePaginationParams } from '../pagination/types';
 
-export interface TypeFilter {
-	typeFilter: Exclude<Maybe<VanType>, null>;
+interface TypeFilter {
+	typeFilter: Prettify<Exclude<Maybe<VanType>, null>>;
 }
 
-export interface VanFilters {
+interface VanFilters {
 	excludeInRepair?: boolean;
 	onlyOnSale?: boolean;
 	types?: string[];
 }
 
-export interface GetVansProps
-	extends BasePaginationParams,
-		TypeFilter,
-		Search,
-		VanFilters {}
+export type GetVansProps = Prettify<
+	BasePaginationParams & TypeFilter & Search & VanFilters
+>;
 
-/** Canonical lowercase van type; */
+/** Lowercase enum value; suffix after `_` when present, else whole value. */
+type LowercaseEnumValue<T extends string> =
+	T extends `${string}_${infer Suffix}` ? Lowercase<Suffix> : Lowercase<T>;
+
+/** Canonical lowercase van type. */
 export type LowercaseVanType = Lowercase<VanType>;
+
+/** Canonical lowercase van state, including runtime-only `new`. */
+export type LowercaseVanState = LowercaseEnumValue<VanState> | 'new';
+
+export type VanCardDataSlot = `van-card-${LowercaseVanState}`;
 interface VanProps {
 	van: VanModel;
 }
@@ -37,12 +44,14 @@ export interface VanPriceProps extends VanProps {}
 
 export type VanDetailCardProps = VanProps & ComponentPropsWithoutRef<'div'>;
 
-export interface VanCardProps extends VanProps {
-	action: React.ReactElement;
-	link: string;
-	linkCoversCard?: boolean;
-	state?: Record<string, unknown>;
-}
+export type VanCardProps = Prettify<
+	VanProps & {
+		action: React.ReactElement;
+		link: string;
+		linkCoversCard?: boolean;
+		state?: Record<string, unknown>;
+	}
+>;
 
 export interface PendingVan {
 	clientKey: string;

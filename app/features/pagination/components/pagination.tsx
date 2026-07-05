@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
-import { startTransition } from 'react';
+import { type ChangeEvent, startTransition } from 'react';
 import { Button } from '~/components/ui/button';
 import { buttonVariants } from '~/components/ui/button-variants';
 import {
@@ -50,15 +50,27 @@ export const Pagination = <T extends Id>({
 		}
 	};
 
+	const handleLimitSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+		handleLimitChange(event.target.value);
+	};
+
+	const handlePreviousPage = () => {
+		handlePageChange('backward');
+	};
+
+	const handleNextPage = () => {
+		handlePageChange('forward');
+	};
+
 	return (
 		<div className="my-6 flex items-center justify-between gap-4">
 			<select
 				className={cn(
-					buttonVariants({ variant: 'outline', size: 'icon' }),
+					buttonVariants({ size: 'icon', variant: 'outline' }),
 					'w-20'
 				)}
 				disabled={!(hasNextPage || hasPreviousPage)}
-				onChange={(e) => handleLimitChange(e.target.value)}
+				onChange={handleLimitSelectChange}
 				value={limit?.toString() ?? DEFAULT_LIMIT.toString()}
 			>
 				{LIMITS.map((limitOption) => (
@@ -72,7 +84,7 @@ export const Pagination = <T extends Id>({
 				<Button
 					aria-label="Previous page"
 					disabled={!hasPreviousPage}
-					onClick={() => handlePageChange('backward')}
+					onClick={handlePreviousPage}
 					size="icon"
 					variant="outline"
 				>
@@ -81,7 +93,7 @@ export const Pagination = <T extends Id>({
 				<Button
 					aria-label="Next page"
 					disabled={!hasNextPage}
-					onClick={() => handlePageChange('forward')}
+					onClick={handleNextPage}
 					size="icon"
 					variant="outline"
 				>

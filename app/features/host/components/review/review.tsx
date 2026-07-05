@@ -1,6 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import type { ReviewProps } from '~/features/host/types';
+import type { ReviewModel, UserModel } from '~/generated/prisma/models';
+import type { Maybe, Prettify } from '~/types';
 import { RatingStars } from './rating-stars';
+
+type ReviewProps = Prettify<
+	Pick<UserModel, 'name'> &
+		Omit<
+			ReviewModel,
+			'user' | 'rent' | 'createdAt' | 'updatedAt' | 'rentId' | 'userId'
+		> & {
+			timestamp: Maybe<string>;
+		}
+>;
 
 const Review = ({ name, rating, text, timestamp }: ReviewProps) => (
 	<Card className="max-w-full contain-content">

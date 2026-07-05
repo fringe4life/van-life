@@ -19,14 +19,14 @@ import type { Route } from './+types/home';
 const srcSet = createWebPSrcSet(
 	HOME_IMG_URL,
 	{
-		sizes: HOME_MOBILE_IMG_SIZES,
 		aspectRatio: '2:3',
 		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for home page
+		sizes: HOME_MOBILE_IMG_SIZES,
 	}, // mobile aspect ratio (2:3)
 	{
-		sizes: HOME_DESKTOP_IMG_SIZES,
 		aspectRatio: '16:9',
 		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for home page
+		sizes: HOME_DESKTOP_IMG_SIZES,
 	} // desktop aspect ratio (16:9)
 );
 const sizes = '(max-width: 1024px) 100vw';

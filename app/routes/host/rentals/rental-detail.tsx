@@ -1,4 +1,4 @@
-import { data, href, isRouteErrorResponse, redirect } from 'react-router';
+import { data, href, redirect } from 'react-router';
 import { CustomForm } from '~/components/custom-form';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -8,7 +8,10 @@ import { rentVan } from '~/features/host/services/rental.server';
 import { authContext } from '~/features/middleware/contexts/auth';
 import { VanCard } from '~/features/vans/components/van-card';
 import { loadVanBySlug } from '~/features/vans/services/van-detail.server';
+import { getRouteErrorMessage } from '~/utils/get-route-error-message';
+import { notFound } from '~/utils/not-found';
 import { validateArkType } from '~/utils/parse-arktype.server';
+import { serverError } from '~/utils/server-error';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/rental-detail';
 
@@ -16,13 +19,11 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 	const result = await loadVanBySlug(params.vanSlug);
 
 	if (result.error) {
-		throw data('Failed to load rental details. Please try again later.', {
-			status: 500,
-		});
+		serverError('Failed to load rental details. Please try again later.');
 	}
 
-	if (!result.data || typeof result.data === 'string') {
-		throw data('Van not found', { status: 404 });
+	if (!result.data) {
+		notFound('Van not found');
 	}
 
 	return data(
@@ -49,9 +50,9 @@ export const action = async ({
 	const hostId = formData.hostId as string;
 
 	const validation = validateArkType(rentVanSchema, {
-		vanSlug: params.vanSlug,
-		renterId: user.id,
 		hostId,
+		renterId: user.id,
+		vanSlug: params.vanSlug,
 	});
 
 	if (!validation.success) {
@@ -107,12 +108,6 @@ const AddVan = ({ actionData, loaderData, params }: Route.ComponentProps) => {
 
 export default AddVan;
 
-export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
-	if (isRouteErrorResponse(error)) {
-		return <UnsuccesfulState isError message={error.statusText} />;
-	}
-	if (error instanceof Error) {
-		return <UnsuccesfulState isError message={error.message} />;
-	}
-	return <UnsuccesfulState isError message="An unknown error occurred." />;
-};
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
+	<UnsuccesfulState isError message={getRouteErrorMessage(error)} />
+);

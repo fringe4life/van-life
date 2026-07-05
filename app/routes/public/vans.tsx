@@ -1,6 +1,6 @@
 import { useQueryStates } from 'nuqs';
 import { ViewTransition } from 'react';
-import { data, href, isRouteErrorResponse } from 'react-router';
+import { data, href } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { PendingUI } from '~/components/pending-ui';
 import { SearchInput } from '~/components/search-input';
@@ -13,11 +13,13 @@ import { VanFilters } from '~/features/vans/components/van-filters';
 import { VanHeader } from '~/features/vans/components/van-header';
 import { VanPrice } from '~/features/vans/components/van-price';
 import { loadVanCatalog } from '~/features/vans/services/catalog.server';
+import type { VanModel } from '~/generated/prisma/models';
 import {
 	paginationParsers,
 	searchParser,
 	vanFiltersParser,
 } from '~/lib/parsers';
+import { getRouteErrorMessage } from '~/utils/get-route-error-message';
 import type { Route } from './+types/vans';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
@@ -48,6 +50,26 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
 		? 'No vans found matching your filters.'
 		: 'There are no vans on our site.';
 
+	const renderVanCardProps = (van: VanModel) => ({
+		action: (
+			<div className="grid justify-end">
+				<VanPrice van={van} />
+			</div>
+		),
+		link: buildVanUrl({
+			baseUrl: href('/vans/:vanSlug', {
+				vanSlug: van.slug,
+			}),
+			cursor,
+			excludeInRepair,
+			limit,
+			onlyOnSale,
+			search,
+			types,
+		}),
+		van,
+	});
+
 	return (
 		<ViewTransition>
 			<SeoHead {...seo} />
@@ -67,25 +89,7 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
 					emptyStateMessage={emptyMessage}
 					errorStateMessage="Something went wrong"
 					items={vans}
-					renderProps={(van) => ({
-						van,
-						action: (
-							<div className="grid justify-end">
-								<VanPrice van={van} />
-							</div>
-						),
-						link: buildVanUrl({
-							cursor,
-							limit,
-							types,
-							excludeInRepair,
-							onlyOnSale,
-							search,
-							baseUrl: href('/vans/:vanSlug', {
-								vanSlug: van.slug,
-							}),
-						}),
-					})}
+					renderProps={renderVanCardProps}
 				/>
 				<Pagination items={vans} paginationMetadata={paginationMetadata} />
 			</PendingUI>
@@ -94,17 +98,6 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
 };
 export default Vans;
 
-export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
-	if (isRouteErrorResponse(error)) {
-		return (
-			<UnsuccesfulState
-				isError
-				message={error.statusText || 'An unknown error occurred.'}
-			/>
-		);
-	}
-	if (error instanceof Error) {
-		return <UnsuccesfulState isError message={error.message} />;
-	}
-	return <UnsuccesfulState isError message="An unknown error occurred." />;
-};
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
+	<UnsuccesfulState isError message={getRouteErrorMessage(error)} />
+);

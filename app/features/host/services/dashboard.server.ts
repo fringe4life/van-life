@@ -13,8 +13,8 @@ export async function loadHostDashboard(userId: UUIDv7) {
 	const vansPromise = Promise.resolve(
 		getHostVans(userId, {
 			cursor: undefined,
-			limit: HOST_VANS_LIMIT,
 			direction: 'forward',
+			limit: HOST_VANS_LIMIT,
 		})
 	);
 
@@ -29,9 +29,9 @@ export async function loadHostDashboard(userId: UUIDv7) {
 	]);
 
 	return {
-		vansPromise,
 		avgRating: avgRating ?? 0,
-		transactions,
 		transactionSummary: transactionSummary ?? 0,
+		transactions,
+		vansPromise,
 	};
 }

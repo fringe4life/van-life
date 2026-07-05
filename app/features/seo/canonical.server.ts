@@ -40,11 +40,11 @@ export const buildVanListCanonicalUrl = (
 ): string => {
 	const origin = getSiteOrigin(request);
 	const queryString = serializeCanonicalVanListParams({
-		search: params.search,
-		types: params.types,
 		excludeInRepair: params.excludeInRepair,
 		onlyOnSale: params.onlyOnSale,
+		search: params.search,
 		type: params.type,
+		types: params.types,
 		vanFilter: params.vanFilter,
 	});
 

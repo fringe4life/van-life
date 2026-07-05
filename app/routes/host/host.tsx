@@ -1,4 +1,4 @@
-import { data, isRouteErrorResponse } from 'react-router';
+import { data, redirect } from 'react-router';
 import { PendingUI } from '~/components/pending-ui';
 import { UnsuccesfulState } from '~/components/unsuccesful-state';
 import { HostIncomeSection } from '~/features/host/components/dashboard/host-income-section';
@@ -10,9 +10,14 @@ import { moneySchema } from '~/features/host/schemas.server';
 import { loadHostDashboard } from '~/features/host/services/dashboard.server';
 import { depositOrWithdraw } from '~/features/host/services/wallet.server';
 import { authContext } from '~/features/middleware/contexts/auth';
+import {
+	getRedirectParamFromRequest,
+	getSafeRedirectPath,
+} from '~/features/middleware/utils/auth-redirect';
 import { DEPOSIT } from '~/features/vans/constants/vans-constants';
 import { calculateTotalIncome } from '~/utils/calculate-income';
 import { getElapsedTime } from '~/utils/get-elapsed-time';
+import { getRouteErrorMessage } from '~/utils/get-route-error-message';
 import { validateArkType } from '~/utils/parse-arktype.server';
 import { tryCatch } from '~/utils/try-catch.server';
 import type { Route } from './+types/host';
@@ -64,6 +69,11 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 			formData: submittedValues,
 		};
 	}
+
+	const redirectParam = getRedirectParamFromRequest(request);
+	if (transactionType === DEPOSIT && redirectParam) {
+		throw redirect(getSafeRedirectPath(redirectParam));
+	}
 };
 
 const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
@@ -100,22 +110,11 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
 };
 export default Host;
 
-export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
-	if (isRouteErrorResponse(error)) {
-		return (
-			<UnsuccesfulState
-				isError
-				message={error.statusText || 'An unknown error occurred.'}
-			/>
-		);
-	}
-	if (error instanceof Error) {
-		return (
-			<UnsuccesfulState
-				isError
-				message="Something went wrong loading your dashboard."
-			/>
-		);
-	}
-	return <UnsuccesfulState isError message="An unknown error occurred." />;
-};
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
+	<UnsuccesfulState
+		isError
+		message={getRouteErrorMessage(error, {
+			errorFallback: 'Something went wrong loading your dashboard.',
+		})}
+	/>
+);

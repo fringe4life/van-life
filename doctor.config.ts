@@ -1,16 +1,9 @@
 import type { ReactDoctorConfig } from 'react-doctor/api';
 
 export default {
-	scope: 'full',
 	deadCode: false,
-	verbose: true,
-	share: false,
 	ignore: {
 		files: ['build', 'app/generated/**'],
-		rules: [
-			'react-doctor/only-export-components',
-			'react-doctor/server-auth-actions',
-		],
 		overrides: [
 			{
 				files: ['app/root.tsx', 'app/components/ui/**'],
@@ -25,10 +18,17 @@ export default {
 				rules: ['react-doctor/label-has-associated-control'],
 			},
 		],
+		rules: [
+			'react-doctor/only-export-components',
+			'react-doctor/server-auth-actions',
+		],
 	},
 	rules: {
-		'react-doctor/no-danger': 'warn',
 		'react-doctor/design-no-vague-button-label': 'warn',
 		'react-doctor/jsx-no-useless-fragment': 'warn',
+		'react-doctor/no-danger': 'warn',
 	},
+	scope: 'full',
+	share: false,
+	verbose: true,
 } satisfies ReactDoctorConfig;

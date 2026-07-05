@@ -18,6 +18,7 @@ import { CustomNavLink } from '~/features/navigation/components/custom-nav-link'
 import type { VanDetailCardProps } from '~/features/vans/types';
 import { toLowercaseVanType } from '~/features/vans/utils/validators';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
+import type { Id } from '~/types';
 import { cn } from '~/utils/utils';
 import { VanBadge } from '../van-badge';
 import { VanPrice } from '../van-price';
@@ -27,6 +28,21 @@ import { Photos } from './photos';
 import { Pricing } from './pricing';
 
 const StyledCard = withVanCardStyles(Card);
+
+const hostVanDetailNavClassName = ({
+	isActive,
+	isPending,
+}: {
+	isActive: boolean;
+	isPending: boolean;
+}) =>
+	// biome-ignore lint/style/noNestedTernary: simply related to react routers nav links
+	isPending ? 'text-green-500' : isActive ? 'underline' : '';
+
+const renderHostVanDetailNavProps = <T extends Id>(item: T) => ({
+	className: hostVanDetailNavClassName,
+	...item,
+});
 
 const VanDetailCardRoot = ({
 	van,
@@ -38,26 +54,26 @@ const VanDetailCardRoot = ({
 	const navLinks = [
 		{
 			children: 'Details',
-			to: href('/host/vans/:vanSlug/:action?', { vanSlug, action: undefined }),
 			end: true,
 			id: 'details',
+			to: href('/host/vans/:vanSlug/:action?', { action: undefined, vanSlug }),
 		},
 		{
 			children: 'Pricing',
-			to: href('/host/vans/:vanSlug/:action?', { vanSlug, action: 'pricing' }),
 			id: 'pricing',
+			to: href('/host/vans/:vanSlug/:action?', { action: 'pricing', vanSlug }),
 		},
 		{
 			children: 'Photos',
-			to: href('/host/vans/:vanSlug/:action?', { vanSlug, action: 'photos' }),
 			id: 'photos',
+			to: href('/host/vans/:vanSlug/:action?', { action: 'photos', vanSlug }),
 		},
 	];
 
 	const srcSet = createWebPSrcSet(imageUrl, {
-		sizes: HOST_VAN_DETAIL_IMG_SIZES,
 		aspectRatio: '1:1',
 		quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
+		sizes: HOST_VAN_DETAIL_IMG_SIZES,
 	});
 	// Create optimized WebP srcSet with 1:1 aspect ratio for both mobile and desktop
 	// since the HostVanDetailCard uses aspect-square
@@ -107,18 +123,7 @@ const VanDetailCardRoot = ({
 							emptyStateMessage=""
 							errorStateMessage="Something went wrong"
 							items={navLinks}
-							renderProps={(item) => ({
-								className: ({
-									isActive,
-									isPending,
-								}: {
-									isActive: boolean;
-									isPending: boolean;
-								}) =>
-									// biome-ignore lint/style/noNestedTernary: simply related to react routers nav links
-									isPending ? 'text-green-500' : isActive ? 'underline' : '',
-								...item,
-							})}
+							renderProps={renderHostVanDetailNavProps}
 						/>
 					</CardContent>
 					<CardFooter className="contain-inline-size">{children}</CardFooter>
