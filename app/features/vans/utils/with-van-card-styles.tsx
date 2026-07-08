@@ -1,5 +1,5 @@
-import type { ComponentPropsWithoutRef } from 'react';
-import type { WithVanCardStylesProps } from '../types';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { VanProps } from '../types';
 import { getVanStateStyles } from './van-state-styles';
 
 /**
@@ -14,6 +14,12 @@ import { getVanStateStyles } from './van-state-styles';
  * </StyledCard>
  * ```
  */
+
+type WithVanCardStylesProps = ComponentPropsWithoutRef<'div'> &
+	VanProps & {
+		children?: ReactNode;
+	};
+
 export const withVanCardStyles =
 	<P extends ComponentPropsWithoutRef<'div'>>(
 		Component: React.ComponentType<P>

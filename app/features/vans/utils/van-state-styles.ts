@@ -1,7 +1,8 @@
 import type { VanModel } from '~/generated/prisma/models';
-import type { VanCardDataSlot } from '../types';
+import type { LowercaseVanState } from '../types';
 import { lowercaseVanStateWithProcessor } from './van-state-helpers';
 
+type VanCardDataSlot = `van-card-${LowercaseVanState}`;
 /**
  * Generates Tailwind CSS classes for van state styling
  * @param van - The van model

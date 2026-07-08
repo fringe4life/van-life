@@ -1,6 +1,8 @@
 import { displayPrice } from '~/features/vans/utils/display-price';
 import { getDiscountedPrice } from '~/utils/pricing';
-import type { VanPriceProps } from '../types';
+import type { VanProps } from '../types';
+
+interface VanPriceProps extends VanProps {}
 
 const VanPrice = ({ van: { price, discount } }: VanPriceProps) => {
 	const discountedPrice = getDiscountedPrice(price, discount);

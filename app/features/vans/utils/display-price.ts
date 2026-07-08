@@ -14,6 +14,5 @@ export function displayPrice(price: Maybe<number>): string {
 	if (!price) {
 		return '$0.00';
 	}
-
 	return formatter.format(price);
 }

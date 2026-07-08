@@ -19,7 +19,11 @@
     "react-doctor",
     "@varlock/bitwarden-plugin",
     "@cloudflare/vite-plugin",
-    "@fontsource-variable/inter"
+    "@fontsource-variable/inter",
+    // Build-time only: CSS `@import "tailwindcss"` compiled by @tailwindcss/vite, never runtime
+    "tailwindcss",
+    // Build-time only: route/vite config (app/routes.ts, vite.config.ts, react-router.config.ts)
+    "@react-router/dev"
   ],
   "duplicates": {
     "enabled": true,

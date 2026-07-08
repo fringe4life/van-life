@@ -11,7 +11,7 @@
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.23-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.9.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.2-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.9.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.9.2-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-7.8.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.3.5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -69,7 +69,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with lazy loading, code splitting, direct icon imports, and immutable array methods
 - 🔗 **URL State Management** with nuqs 2.9.0 for type-safe search parameters
-- 🌐 **View Transitions** for smooth navigation experiences
+- 🌐 **View Transitions** for smooth navigation (auth login/sign-up title, footer, and form field morphs)
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router 8 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
 - 🔐 **Consolidated host auth middleware** on `host-layout.tsx` (no duplicate session lookups on leaf routes)
@@ -88,7 +88,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **TailwindCSS 4.3.2** with modern CSS features
 - **@base-ui/react 1.6.0** + **shadcn/ui** (`base-nova` style) for dialog, popover, checkbox, label, and mobile nav
 - **Lucide React 1.23.0** for icons (direct imports for performance)
-- **Recharts 3.9.1** for data visualization (lazy-loaded)
+- **Recharts 3.9.2** for data visualization (lazy-loaded)
 - **nuqs 2.9.0** for type-safe URL state management via shared parsers
 
 ### Backend & Database
@@ -108,10 +108,10 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **vite-tsconfig-paths 6.1.1** - TypeScript path alias resolution for `~/` imports
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
 - **Biome 2.5.2** for linting and formatting with Ultracite integration
-- **Ultracite 7.9.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.9.2** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.107.0** - Cloudflare Workers CLI for deploy and typegen
-- **react-doctor 0.6.0** - React diagnostics in CI, locally, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
+- **react-doctor 0.7.1** - React diagnostics in CI, locally, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 6.0.3** with `@typescript/native-preview` support
 - **Bun** for fast package management and runtime
@@ -353,6 +353,7 @@ generator client {
 - **Host auth middleware** runs once on `host-layout.tsx` (stub loader ensures `.data` requests on client navigations)
 - **`redirectTo` query param** on login — returns users to the page they tried to visit (open-redirect safe)
 - **ArkType validation** (`app/features/auth/schemas.server.ts`) for login/sign-up forms
+- **View transitions** on login/sign-up — named `viewTransitionName` on card, title, fields, submit, footer with CSS morph animations
 - **Server-side session handling** in loaders
 - **Modular model organization** for better maintainability
 - **Better-auth config** in `app/lib/auth.server.ts`; **`AuthenticatedUser`** type in `app/types/auth.server.ts`
@@ -996,6 +997,7 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 - **TailwindCSS 4.3.2** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — overlay fade and slide-in/out (`app/app.css`)
+- **Auth view transitions** — login/sign-up title slide, footer drop/fade morphs (`::view-transition-old/new` in `app/app.css`)
 - **Responsive design** with mobile-first approach and CSS Grid layouts
 - **Biome configuration** for CSS at-rules support
 
@@ -1017,7 +1019,7 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 ## Code Quality
 
 - **Biome 2.5.2** for linting and formatting with Ultracite integration
-- **Ultracite 7.9.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.9.2** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 6.0.3** with strict configuration
 - **ArkType 2.2.2** for runtime validation with regex support for slug validation
 - **Consistent code style:**

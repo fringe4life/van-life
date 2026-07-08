@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router';
+import { NavLink, type NavLinkProps } from 'react-router';
 import useIsPage from '~/hooks/use-is-page';
-import type { CustomNavLinkProps } from '../types';
+export type CustomNavLinkProps = Omit<NavLinkProps, 'style'>;
 
 const CustomNavLink = ({ children, to, ...rest }: CustomNavLinkProps) => {
 	const { isPage } = useIsPage({ to });

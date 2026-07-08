@@ -18,14 +18,6 @@ import {
 import { getElapsedTime } from '~/utils/get-elapsed-time';
 import type { Route } from './+types/transfers';
 
-const renderTransferItemProps = (
-	item: Pick<TransactionModel, 'amount' | 'createdAt' | 'type' | 'id'>
-) => ({
-	...item,
-	amount: item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
-	rentedAt: item.createdAt,
-});
-
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
@@ -44,6 +36,14 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 		},
 	});
 };
+
+const renderTransferItemProps = (
+	item: Pick<TransactionModel, 'amount' | 'createdAt' | 'type' | 'id'>
+) => ({
+	...item,
+	amount: item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
+	rentedAt: item.createdAt,
+});
 
 const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
 	const {

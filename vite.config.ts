@@ -1,7 +1,7 @@
 import { reactRouter } from '@react-router/dev/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { varlockCloudflareVitePlugin } from '@varlock/cloudflare-integration';
-import { reactRouterDevTools } from 'react-router-devtools';
+// import { reactRouterDevTools } from 'react-router-devtools';
 import { defineConfig } from 'vite';
 import babel from 'vite-plugin-babel';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -11,7 +11,7 @@ const JSX_FILE_EXTENSION_RE = /\.[jt]sx$/;
 export default defineConfig({
 	plugins: [
 		varlockCloudflareVitePlugin({ viteEnvironment: { name: 'ssr' } }),
-		reactRouterDevTools(),
+		// reactRouterDevTools(),
 		tsconfigPaths(),
 		tailwindcss(),
 		babel({

@@ -1,11 +1,12 @@
+import type { BasePaginationParams } from '~/features/pagination/types';
 import { getCursorMetadata } from '~/features/pagination/utils/get-cursor-metadata.server';
-import type { GetVansProps } from '~/features/vans/types';
 import type { Prisma } from '~/generated/prisma/client';
 import type { VanType as VanTypeEnum } from '~/generated/prisma/enums';
 import { VanState, VanType } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
 import { prisma } from '~/lib/prisma.server';
-import type { Prettify } from '~/types';
+import type { List, Maybe, Prettify, Search } from '~/types';
+import type { TypeFilter, VanFilters } from '../types';
 
 const WHITESPACE_REGEX = /\s+/;
 const VAN_TYPE_VALUES = new Set<string>(Object.values(VanType));
@@ -17,8 +18,8 @@ function parseVanTypeStrings(types: string[]): VanTypeEnum[] {
 }
 
 function buildVanTypeFilter(
-	types: string[] | undefined,
-	typeFilter: VanTypeEnum | undefined
+	types: List<string>,
+	typeFilter: Maybe<VanTypeEnum>
 ): Prettify<Pick<Prisma.VanWhereInput, 'type'>> | undefined {
 	if (types && types.length > 0) {
 		const vanTypes = parseVanTypeStrings(types);
@@ -39,6 +40,10 @@ function formatFullTextSearchQuery(search: string): string {
 		.filter((word) => word.length > 0)
 		.join(' | ');
 }
+
+type GetVansProps = Prettify<
+	BasePaginationParams & TypeFilter & Search & VanFilters
+>;
 
 export function getVans({
 	cursor,

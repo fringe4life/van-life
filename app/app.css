@@ -436,6 +436,68 @@
 	animation-name: --fade-to-right;
 }
 
+/* AUTH FOOTER: old drops down + fades out, new drops in from top + fades in */
+@keyframes --fade-out-down {
+	from {
+		translate: 0 0;
+		opacity: 1;
+	}
+	to {
+		translate: 0 1rem;
+		opacity: 0;
+	}
+}
+
+@keyframes --fade-in-from-top {
+	from {
+		translate: 0 -1rem;
+		opacity: 0;
+	}
+	to {
+		translate: 0 0;
+		opacity: 1;
+	}
+}
+
+::view-transition-old(auth-footer) {
+	animation-name: --fade-out-down;
+}
+
+::view-transition-new(auth-footer) {
+	animation-name: --fade-in-from-top;
+}
+
+/* AUTH TITLE: old slides right + fades out, new fades in from the left */
+@keyframes --fade-out-right-sm {
+	from {
+		translate: 0 0;
+		opacity: 1;
+	}
+	to {
+		translate: 1rem 0;
+		opacity: 0;
+	}
+}
+
+@keyframes --fade-in-from-left-sm {
+	from {
+		translate: -1rem 0;
+		opacity: 0;
+	}
+	to {
+		translate: 0 0;
+		opacity: 1;
+	}
+}
+
+::view-transition-old(auth-title) {
+	animation-name: --fade-out-right-sm;
+}
+
+::view-transition-new(auth-title) {
+	animation-name: --fade-in-from-left-sm;
+}
+
 /* SCROLL DRIVEN ANIMATIONS */
 .scroll-sm,
 .scroll-md,

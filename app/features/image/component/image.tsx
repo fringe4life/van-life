@@ -5,8 +5,11 @@ import {
 } from '~/features/image/img-constants';
 import { createNewImageSizeWithAspectRatio } from '~/features/image/utils/create-new-image-size';
 import type { Maybe } from '~/types';
-import canUseDom from '~/utils/can-use-dom';
+import { canUseDOM } from '~/utils/can-use-dom';
 import { cn } from '~/utils/utils';
+
+/** The size of the image (string or number) */
+type Size = string | number;
 
 /**
  * Extended props for the Image component, extending native img element props
@@ -15,13 +18,13 @@ interface ImgProps extends React.ComponentProps<'img'> {
 	/** Additional CSS classes for the container div */
 	classesForContainer?: string;
 	/** The height of the image (string or number) */
-	height: string | number;
+	height: Size;
 	/** The source URL of the image */
 	src: string;
 	/** Optional srcSet for responsive images */
 	srcSet?: string;
 	/** The width of the image (string or number) */
-	width: string | number;
+	width: Size;
 }
 
 /**
@@ -82,7 +85,7 @@ const Image = ({
 	 * Only runs on the client side to avoid SSR issues
 	 */
 	useEffect(() => {
-		if (!canUseDom) {
+		if (!canUseDOM) {
 			return;
 		}
 

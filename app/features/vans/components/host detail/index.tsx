@@ -1,3 +1,4 @@
+import type { ComponentPropsWithoutRef } from 'react';
 import { href } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
 import { Badge } from '~/components/ui/badge';
@@ -15,7 +16,8 @@ import {
 } from '~/features/image/img-constants';
 import { createWebPSrcSet } from '~/features/image/utils/create-optimized-src-set';
 import { CustomNavLink } from '~/features/navigation/components/custom-nav-link';
-import type { VanDetailCardProps } from '~/features/vans/types';
+import type { NavLinkClassNameProps } from '~/features/navigation/types';
+import type { VanProps } from '~/features/vans/types';
 import { toLowercaseVanType } from '~/features/vans/utils/validators';
 import { withVanCardStyles } from '~/features/vans/utils/with-van-card-styles';
 import type { Id } from '~/types';
@@ -27,15 +29,14 @@ import { Details } from './details';
 import { Photos } from './photos';
 import { Pricing } from './pricing';
 
+type VanDetailCardProps = VanProps & ComponentPropsWithoutRef<'div'>;
+
 const StyledCard = withVanCardStyles(Card);
 
 const hostVanDetailNavClassName = ({
 	isActive,
 	isPending,
-}: {
-	isActive: boolean;
-	isPending: boolean;
-}) =>
+}: NavLinkClassNameProps) =>
 	// biome-ignore lint/style/noNestedTernary: simply related to react routers nav links
 	isPending ? 'text-green-500' : isActive ? 'underline' : '';
 

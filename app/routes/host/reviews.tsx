@@ -16,23 +16,6 @@ import {
 import type { Prettify } from '~/types';
 import type { Route } from './+types/reviews';
 
-type ReviewListItem = Prettify<ReviewModel & { user: Pick<UserModel, 'name'> }>;
-
-const renderReviewProps = ({
-	user,
-	text,
-	rating,
-	updatedAt,
-	createdAt,
-	id,
-}: ReviewListItem) => ({
-	id,
-	name: user.name,
-	rating,
-	text,
-	timestamp: updatedAt?.toLocaleDateString() ?? createdAt.toLocaleDateString(),
-});
-
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
@@ -52,6 +35,22 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	});
 };
 
+type ReviewListItem = Prettify<ReviewModel & { user: Pick<UserModel, 'name'> }>;
+
+const renderReviewProps = ({
+	user,
+	text,
+	rating,
+	updatedAt,
+	createdAt,
+	id,
+}: ReviewListItem) => ({
+	id,
+	name: user.name,
+	rating,
+	text,
+	timestamp: updatedAt?.toLocaleDateString() ?? createdAt.toLocaleDateString(),
+});
 const HostReviews = ({ loaderData }: Route.ComponentProps) => {
 	const { chartData, items: paginatedReviews, paginationMetadata } = loaderData;
 

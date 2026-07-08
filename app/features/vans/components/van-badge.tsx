@@ -3,9 +3,10 @@ import type { BadgeVariantProps } from '~/components/ui/badge-variants';
 import { formatEnumLabel } from '~/features/vans/utils/format-enum';
 import { lowercaseVanStateWithProcessor } from '~/features/vans/utils/van-state-helpers';
 import { VanState } from '~/generated/prisma/enums';
-import type { VanBadgeProps } from '../types';
+import type { VanProps } from '../types';
 import { toLowercaseVanType } from '../utils/validators';
 
+interface VanBadgeProps extends VanProps {}
 /**
  * Badge component that displays van state (NEW, ON_SALE, IN_REPAIR).
  * Visibility controlled by CSS based on parent Card's data-slot attribute.

@@ -72,9 +72,14 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 				content="Create a Van Life account to start renting vans and managing your bookings"
 				name="description"
 			/>
-			<Card className="grid gap-y-4">
+			<Card
+				className="grid gap-y-4"
+				style={{ viewTransitionName: 'auth-card' }}
+			>
 				<CardHeader>
-					<CardTitle>Create your account</CardTitle>
+					<CardTitle style={{ viewTransitionName: 'auth-title' }}>
+						Create your account
+					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<CustomForm className="grid items-center gap-4" method="POST">
@@ -83,6 +88,7 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 							id={emailId}
 							name="email"
 							placeholder="your.email@email.com"
+							style={{ viewTransitionName: 'auth-email' }}
 							type="email"
 						/>
 						<Input
@@ -96,6 +102,7 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 							id={passwordId}
 							name="password"
 							placeholder="password"
+							style={{ viewTransitionName: 'auth-password' }}
 							type="password"
 						/>
 						<Input
@@ -105,13 +112,17 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
 							type="password"
 						/>
 						{actionData?.errors ? <p>{actionData.errors}</p> : null}
-						<Button type="submit" variant="default">
+						<Button
+							style={{ viewTransitionName: 'auth-submit' }}
+							type="submit"
+							variant="default"
+						>
 							Sign up
 						</Button>
 					</CustomForm>
 				</CardContent>
 				<CardFooter>
-					<p>
+					<p style={{ viewTransitionName: 'auth-footer' }}>
 						<span>Already have an account?</span>{' '}
 						<CustomLink className="text-orange-400" to={href('/login')}>
 							Sign in now

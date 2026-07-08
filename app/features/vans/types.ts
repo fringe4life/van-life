@@ -1,22 +1,16 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import type { VanState, VanType } from '~/generated/prisma/enums';
 import type { VanModel } from '~/generated/prisma/models';
-import type { Maybe, Prettify, Search } from '~/types';
-import type { BasePaginationParams } from '../pagination/types';
+import type { Maybe, Prettify } from '~/types';
 
-interface TypeFilter {
+export interface TypeFilter {
 	typeFilter: Prettify<Exclude<Maybe<VanType>, null>>;
 }
 
-interface VanFilters {
+export interface VanFilters {
 	excludeInRepair?: boolean;
 	onlyOnSale?: boolean;
 	types?: string[];
 }
-
-export type GetVansProps = Prettify<
-	BasePaginationParams & TypeFilter & Search & VanFilters
->;
 
 /** Lowercase enum value; suffix after `_` when present, else whole value. */
 type LowercaseEnumValue<T extends string> =
@@ -28,21 +22,9 @@ export type LowercaseVanType = Lowercase<VanType>;
 /** Canonical lowercase van state, including runtime-only `new`. */
 export type LowercaseVanState = LowercaseEnumValue<VanState> | 'new';
 
-export type VanCardDataSlot = `van-card-${LowercaseVanState}`;
-interface VanProps {
+export interface VanProps {
 	van: VanModel;
 }
-
-export type WithVanCardStylesProps = ComponentPropsWithoutRef<'div'> &
-	VanProps & {
-		children?: ReactNode;
-	};
-
-export interface VanBadgeProps extends VanProps {}
-
-export interface VanPriceProps extends VanProps {}
-
-export type VanDetailCardProps = VanProps & ComponentPropsWithoutRef<'div'>;
 
 export type VanCardProps = Prettify<
 	VanProps & {

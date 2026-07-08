@@ -1,12 +1,16 @@
 import { href } from 'react-router';
 import { GenericComponent } from '~/components/generic-component';
-import type { NavItem as NavItemType, NavProps } from '../types';
+import type { NavItem as NavItemType } from '../types';
 import { getNavItems } from '../utils/get-nav-items';
 import { CustomLink } from './custom-link';
 import { MobileNav } from './mobile-nav';
 import { NavItem } from './nav-item';
 
 const renderNavItemProps = (item: NavItemType) => ({ item });
+
+interface NavProps {
+	hasToken: boolean;
+}
 
 const Nav = ({ hasToken }: NavProps) => {
 	const navItems = getNavItems(hasToken);

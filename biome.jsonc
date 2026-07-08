@@ -22,40 +22,9 @@
   },
   "overrides": [
     {
-      "includes": ["prisma/seed-data/**/*"],
-      "linter": {
-        "rules": {
-          "style": {
-            "noMagicNumbers": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["app/constants/**/*"],
-      "linter": {
-        "rules": {
-          "style": {
-            "noMagicNumbers": "off",
-            "useConsistentTypeDefinitions": "off"
-          }
-        }
-      }
-    },
-    {
       "includes": ["env.d.ts"],
       "linter": {
         "enabled": false
-      }
-    },
-    {
-      "includes": ["app/db/**/*", "prisma/**/*"],
-      "linter": {
-        "rules": {
-          "style": {
-            "useNamingConvention": "off"
-          }
-        }
       }
     }
   ],

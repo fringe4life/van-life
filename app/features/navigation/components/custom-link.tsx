@@ -1,6 +1,6 @@
-import { Link } from 'react-router';
+import { Link, type LinkProps } from 'react-router';
 import useIsPage from '~/hooks/use-is-page';
-import type { CustomLinkProps } from '../types';
+export type CustomLinkProps = Omit<LinkProps, 'style'>;
 
 const CustomLink = ({ children, to, className, ...rest }: CustomLinkProps) => {
 	const { isPage } = useIsPage({ to });

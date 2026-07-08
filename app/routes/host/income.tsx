@@ -18,8 +18,6 @@ import { calculateTotalIncome } from '~/utils/calculate-income';
 import { getElapsedTime } from '~/utils/get-elapsed-time';
 import type { Route } from './+types/income';
 
-const renderIncomeItemProps = <T extends Id>(item: T) => item;
-
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const user = context.get(authContext);
 
@@ -38,6 +36,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 		},
 	});
 };
+const renderIncomeItemProps = <T extends Id>(item: T) => item;
 
 const HostIncome = ({ loaderData }: Route.ComponentProps) => {
 	const {
@@ -82,7 +81,6 @@ const HostIncome = ({ loaderData }: Route.ComponentProps) => {
 				errorStateMessage="Something went wrong"
 			/>
 			<Sortable itemCount={chartData?.length} title="Income Transactions" />
-
 			<GenericComponent
 				as="div"
 				Component={Income}

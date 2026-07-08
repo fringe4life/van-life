@@ -1,17 +1,11 @@
 import type { ReactNode } from 'react';
-import type { LinkProps, NavLinkProps } from 'react-router';
+import type { NavLinkRenderProps } from 'react-router';
 import type { Prettify } from '~/types';
+import type { CustomLinkProps } from './components/custom-link';
+import type { CustomNavLinkProps } from './components/custom-nav-link';
 
-export type CustomLinkProps = Omit<LinkProps, 'style'>;
-export type CustomNavLinkProps = Omit<NavLinkProps, 'style'>;
-
-export interface NavProps {
-	hasToken: boolean;
-}
-
-export interface MobileNavProps {
-	items: NavItem[];
-}
+/** Props passed to NavLink `className`, `style`, and `children` render functions. */
+export type NavLinkClassNameProps = NavLinkRenderProps;
 
 interface BaseNavItem {
 	children: ReactNode;

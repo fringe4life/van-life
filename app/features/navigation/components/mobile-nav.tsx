@@ -6,10 +6,12 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '~/components/ui/dialog';
-import type { MobileNavProps, NavItem as NavItemType } from '../types';
+import type { Items } from '~/features/pagination/types';
+import type { NavItem as NavItemType } from '../types';
 import { HamburgerIcon } from './hamburger-icon';
 import { NavItem } from './nav-item';
 
+interface MobileNavProps extends Items<NavItemType> {}
 const renderMobileNavItemProps = (item: NavItemType, onClose: () => void) => {
 	if (item.type === 'link') {
 		return {

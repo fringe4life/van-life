@@ -2,6 +2,7 @@ import { debounce, defaultRateLimit } from 'nuqs';
 import { DEFAULT_DEBOUNCE } from '~/constants/constants';
 import { VAN_TYPE_LOWERCASE } from '~/features/vans/constants/van-types';
 import type { LowercaseVanType } from '~/features/vans/types';
+import type { List, Maybe } from '~/types';
 
 export interface VanFilterUrlState {
 	excludeInRepair: boolean;
@@ -9,15 +10,13 @@ export interface VanFilterUrlState {
 	types: LowercaseVanType[];
 }
 
-export interface VanFilterUrlSnapshotInput {
-	excludeInRepair: boolean | null | undefined;
-	onlyOnSale: boolean | null | undefined;
-	types: string[] | null | undefined;
+interface VanFilterUrlSnapshotInput {
+	excludeInRepair: Maybe<boolean>;
+	onlyOnSale: Maybe<boolean>;
+	types: List<string>;
 }
 
-export const toValidTypes = (
-	types: string[] | null | undefined
-): LowercaseVanType[] =>
+export const toValidTypes = (types: List<string>): LowercaseVanType[] =>
 	(types ?? []).filter((t): t is LowercaseVanType =>
 		VAN_TYPE_LOWERCASE.includes(t as LowercaseVanType)
 	);
