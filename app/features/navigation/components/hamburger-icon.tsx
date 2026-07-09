@@ -1,9 +1,9 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties } from "react";
 
 interface HamburgerIconProps {
-	className?: string;
-	isOpen: boolean;
-	size?: number;
+  className?: string;
+  isOpen: boolean;
+  size?: number;
 }
 
 /**
@@ -24,40 +24,40 @@ const ROTATION_DEG = 45;
 const LINE_OFFSET = 4; // user units from each line (y=8 / y=16) to centre (y=12)
 
 const HamburgerIcon = ({
-	isOpen,
-	size = 20,
-	className,
+  isOpen,
+  size = 20,
+  className,
 }: HamburgerIconProps) => {
-	const lineStyle = (direction: 1 | -1): CSSProperties => ({
-		transform: isOpen
-			? `rotate(${direction * ROTATION_DEG}deg) translateY(${direction * LINE_OFFSET}px)`
-			: 'none',
-		transformBox: 'view-box',
-		transformOrigin: 'center',
-		// Spring on open (settle time needs the longer duration); quick ease on close
-		transition: isOpen
-			? 'transform 500ms var(--ease-spring)'
-			: 'transform 250ms ease',
-	});
+  const lineStyle = (direction: 1 | -1): CSSProperties => ({
+    transform: isOpen
+      ? `rotate(${direction * ROTATION_DEG}deg) translateY(${direction * LINE_OFFSET}px)`
+      : "none",
+    transformBox: "view-box",
+    transformOrigin: "center",
+    // Spring on open (settle time needs the longer duration); quick ease on close
+    transition: isOpen
+      ? "transform 500ms var(--ease-spring)"
+      : "transform 250ms ease",
+  });
 
-	return (
-		<svg
-			aria-hidden="true"
-			className={className}
-			fill="none"
-			height={size}
-			stroke="currentColor"
-			strokeLinecap="round"
-			strokeWidth={2}
-			viewBox="0 0 24 24"
-			width={size}
-		>
-			{/* Top line: moves down to centre, rotates +45° in place */}
-			<line style={lineStyle(1)} x1="3" x2="21" y1="8" y2="8" />
-			{/* Bottom line: moves up to centre, rotates -45° in place */}
-			<line style={lineStyle(-1)} x1="3" x2="21" y1="16" y2="16" />
-		</svg>
-	);
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      height={size}
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth={2}
+      viewBox="0 0 24 24"
+      width={size}
+    >
+      {/* Top line: moves down to centre, rotates +45° in place */}
+      <line style={lineStyle(1)} x1="3" x2="21" y1="8" y2="8" />
+      {/* Bottom line: moves up to centre, rotates -45° in place */}
+      <line style={lineStyle(-1)} x1="3" x2="21" y1="16" y2="16" />
+    </svg>
+  );
 };
 
 export { HamburgerIcon };

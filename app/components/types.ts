@@ -1,13 +1,13 @@
-import type { ElementType } from 'react';
+import type { ElementType } from "react";
 
-export interface AsProps<T extends ElementType = 'div'> {
-	as?: T;
+export interface AsProps<T extends ElementType = "div"> {
+  as?: T;
 }
 
 export interface EmptyState {
-	emptyStateMessage: string;
+  emptyStateMessage: string;
 }
 
 export interface ErrorState {
-	errorStateMessage: string;
+  errorStateMessage: string;
 }

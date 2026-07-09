@@ -1,8 +1,8 @@
-import type { Maybe } from '~/types';
+import type { Maybe } from "~/types";
 
-const formatter = new Intl.NumberFormat('en-us', {
-	currency: 'USD',
-	style: 'currency',
+const formatter = new Intl.NumberFormat("en-us", {
+  currency: "USD",
+  style: "currency",
 });
 
 /**
@@ -11,8 +11,8 @@ const formatter = new Intl.NumberFormat('en-us', {
  * @returns a string representation to be shown to users
  */
 export function displayPrice(price: Maybe<number>): string {
-	if (!price) {
-		return '$0.00';
-	}
-	return formatter.format(price);
+  if (!price) {
+    return "$0.00";
+  }
+  return formatter.format(price);
 }

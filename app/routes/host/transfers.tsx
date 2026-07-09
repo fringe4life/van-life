@@ -1,121 +1,123 @@
-import { data } from 'react-router';
-import { GenericComponent } from '~/components/generic-component';
-import { PendingUI } from '~/components/pending-ui';
-import { Sortable } from '~/components/sortable';
-import { LazyBarChart } from '~/features/host/components/bar-chart/lazy-bar-chart';
-import Income from '~/features/host/components/income';
-import { loadTransfersPage } from '~/features/host/services/transfers.server';
-import { authContext } from '~/features/middleware/contexts/auth';
-import { Pagination } from '~/features/pagination/components/pagination';
-import { VanHeader } from '~/features/vans/components/van-header';
-import { displayPrice } from '~/features/vans/utils/display-price';
-import { TransactionType } from '~/generated/prisma/enums';
-import type { TransactionModel } from '~/generated/prisma/models';
+import { data } from "react-router";
+import { GenericComponent } from "~/components/generic-component";
+import { PendingUI } from "~/components/pending-ui";
+import { Sortable } from "~/components/sortable";
+import type { TransactionModel } from "~/db/client.server";
+import { TransactionType } from "~/db/enums";
+import { LazyBarChart } from "~/features/host/components/bar-chart/lazy-bar-chart";
+import Income from "~/features/host/components/income";
+import { loadTransfersPage } from "~/features/host/services/transfers.server";
+import { authContext } from "~/features/middleware/contexts/auth";
+import { dbContext } from "~/features/middleware/contexts/db";
+import { Pagination } from "~/features/pagination/components/pagination";
+import { VanHeader } from "~/features/vans/components/van-header";
+import { displayPrice } from "~/features/vans/utils/display-price";
 import {
-	loadHostSearchParams,
-	parsePaginationCursor,
-} from '~/lib/search-params.server';
-import { getElapsedTime } from '~/utils/get-elapsed-time';
-import type { Route } from './+types/transfers';
+  loadHostSearchParams,
+  parsePaginationCursor,
+} from "~/lib/search-params.server";
+import { getElapsedTime } from "~/utils/get-elapsed-time";
+import type { Route } from "./+types/transfers";
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
-	const user = context.get(authContext);
+  const user = context.get(authContext);
+  const db = context.get(dbContext);
 
-	// Parse search parameters for pagination and sorting
-	const { cursor, limit, direction, sort } = loadHostSearchParams(request);
-	const page = await loadTransfersPage(user.id, {
-		cursor: parsePaginationCursor(cursor),
-		direction,
-		limit,
-		sort,
-	});
+  // Parse search parameters for pagination and sorting
+  const { cursor, limit, direction, sort } = loadHostSearchParams(request);
+  const page = await loadTransfersPage(db, user.id, {
+    cursor: parsePaginationCursor(cursor),
+    direction,
+    limit,
+    sort,
+  });
 
-	return data(page, {
-		headers: {
-			'Cache-Control': 'max-age=259200',
-		},
-	});
+  return data(page, {
+    headers: {
+      "Cache-Control": "max-age=259200",
+    },
+  });
 };
 
 const renderTransferItemProps = (
-	item: Pick<TransactionModel, 'amount' | 'createdAt' | 'type' | 'id'>
+  item: Pick<TransactionModel, "amount" | "createdAt" | "type" | "id">
 ) => ({
-	...item,
-	amount: item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
-	rentedAt: item.createdAt,
+  ...item,
+  amount: item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
+  rentedAt: item.createdAt,
 });
 
 const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
-	const {
-		chartData,
-		items: paginatedTransactions,
-		paginationMetadata,
-	} = loaderData;
+  const {
+    chartData,
+    items: paginatedTransactions,
+    paginationMetadata,
+  } = loaderData;
 
-	// Calculate total amount and elapsed time from chart data (all transactions)
-	const sumAmount =
-		chartData?.reduce(
-			(total, transaction) =>
-				transaction.type === TransactionType.DEPOSIT
-					? total + transaction.amount
-					: -transaction.amount,
-			0
-		) ?? 0;
+  // Calculate total amount and elapsed time from chart data (all transactions)
+  const sumAmount =
+    chartData?.reduce(
+      (total, transaction) =>
+        transaction.type === TransactionType.DEPOSIT
+          ? total + transaction.amount
+          : -transaction.amount,
+      0
+    ) ?? 0;
 
-	const elapsedTime = getElapsedTime(
-		chartData?.map((t) => ({
-			amount: t.amount,
-			rentedAt: t.createdAt,
-		}))
-	);
+  const elapsedTime = getElapsedTime(
+    chartData?.map((t) => ({
+      amount: t.amount,
+      rentedAt: t.createdAt,
+    }))
+  );
 
-	const mappedData = chartData?.map((transaction) => ({
-		amount: Math.round(transaction.amount),
-		name: transaction.createdAt.toDateString(),
-	}));
+  const mappedData = chartData?.map((transaction) => ({
+    amount: Math.round(transaction.amount),
+    name: transaction.createdAt.toDateString(),
+  }));
 
-	return (
-		<PendingUI
-			as="section"
-			className="grid grid-rows-[min-content_min-content_min-content_var(--chart-height)_min-content_1fr_min-content] contain-content"
-		>
-			<title>Your Transfers | Van Life</title>
-			<meta
-				content="View your transaction history for deposits and withdrawals"
-				name="description"
-			/>
-			<VanHeader>Transfers</VanHeader>
+  return (
+    <PendingUI
+      as="section"
+      className="grid grid-rows-[min-content_min-content_min-content_var(--chart-height)_min-content_1fr_min-content] contain-content"
+    >
+      <title>Your Transfers | Van Life</title>
+      <meta
+        content="View your transaction history for deposits and withdrawals"
+        name="description"
+      />
+      <VanHeader>Transfers</VanHeader>
 
-			<p className="mt-6">
-				Last{' '}
-				<span className="font-bold text-neutral-600 underline">
-					{elapsedTime.elapsedDays} days
-				</span>
-			</p>
-			<p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
-				{displayPrice(sumAmount)}
-			</p>
-			<LazyBarChart
-				data={mappedData}
-				emptyStateMessage="No transfers Yet"
-				errorStateMessage="Something went wrong"
-			/>
-			<Sortable itemCount={chartData?.length} title="Transaction History" />
+      <p className="mt-6">
+        Last{" "}
+        <span className="font-bold text-neutral-600 underline">
+          {elapsedTime.elapsedDays} days
+        </span>
+      </p>
+      <p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
+        {displayPrice(sumAmount)}
+      </p>
+      <LazyBarChart
+        data={mappedData}
+        emptyStateMessage="No transfers Yet"
+        errorStateMessage="Something went wrong"
+      />
+      <Sortable itemCount={chartData?.length} title="Transaction History" />
 
-			<GenericComponent
-				as="div"
-				Component={Income}
-				className="grid-max mt-6"
-				emptyStateMessage="Make some transactions and they will appear here."
-				errorStateMessage="Something went wrong"
-				items={paginatedTransactions}
-				renderProps={renderTransferItemProps}
-			/>
-			<Pagination
-				items={paginatedTransactions}
-				paginationMetadata={paginationMetadata}
-			/>
-		</PendingUI>
-	);
+      <GenericComponent
+        as="div"
+        Component={Income}
+        className="grid-max mt-6"
+        emptyStateMessage="Make some transactions and they will appear here."
+        errorStateMessage="Something went wrong"
+        items={paginatedTransactions}
+        renderProps={renderTransferItemProps}
+      />
+      <Pagination
+        items={paginatedTransactions}
+        paginationMetadata={paginationMetadata}
+      />
+    </PendingUI>
+  );
 };
 export default HostTransfers;

@@ -1,23 +1,23 @@
-import { SIX_MONTHS } from '~/constants/time-constants';
-import { VanState } from '~/generated/prisma/enums';
-import type { VanModel } from '~/generated/prisma/models';
-import type { LowercaseVanState } from '../types';
+import { SIX_MONTHS } from "~/constants/time-constants";
+import type { VanModel } from "~/db/client.server";
+import { VanState } from "~/db/enums";
+import type { LowercaseVanState } from "../types";
 
 /**
  * Determines if a van is considered "new" based on its creation date
  * @param createdAt - The van's creation date
  * @returns True if the van was created within the last 6 months
  */
-function isVanNew(createdAt: VanModel['createdAt']): boolean {
-	const now = new Date();
-	const sixMonthsAgo = new Date(
-		now.getFullYear(),
-		now.getMonth() - SIX_MONTHS,
-		now.getDate()
-	);
-	const isNew = new Date(createdAt) > sixMonthsAgo;
+function isVanNew(createdAt: VanModel["createdAt"]): boolean {
+  const now = new Date();
+  const sixMonthsAgo = new Date(
+    now.getFullYear(),
+    now.getMonth() - SIX_MONTHS,
+    now.getDate()
+  );
+  const isNew = new Date(createdAt) > sixMonthsAgo;
 
-	return isNew;
+  return isNew;
 }
 
 /**
@@ -26,19 +26,19 @@ function isVanNew(createdAt: VanModel['createdAt']): boolean {
  * @returns The lowercase state string
  */
 function lowercaseVanState(van: VanModel): LowercaseVanState {
-	const isNew = isVanNew(van.createdAt);
+  const isNew = isVanNew(van.createdAt);
 
-	// Determine the state
-	if (isNew) {
-		return 'new';
-	}
-	if (van.state === VanState.IN_REPAIR) {
-		return 'repair';
-	}
-	if (van.state === VanState.ON_SALE) {
-		return 'sale';
-	}
-	return 'available';
+  // Determine the state
+  if (isNew) {
+    return "new";
+  }
+  if (van.state === VanState.IN_REPAIR) {
+    return "repair";
+  }
+  if (van.state === VanState.ON_SALE) {
+    return "sale";
+  }
+  return "available";
 }
 
 /**
@@ -48,11 +48,11 @@ function lowercaseVanState(van: VanModel): LowercaseVanState {
  * @returns The processed state
  */
 export function lowercaseVanStateWithProcessor<T>(
-	van: VanModel,
-	processor: (state: LowercaseVanState) => T
+  van: VanModel,
+  processor: (state: LowercaseVanState) => T
 ): T {
-	const state = lowercaseVanState(van);
-	return processor(state);
+  const state = lowercaseVanState(van);
+  return processor(state);
 }
 
 /**
@@ -60,5 +60,5 @@ export function lowercaseVanStateWithProcessor<T>(
  * A van is available when it's not rented and not in repair.
  */
 export function isVanAvailable(van: VanModel): boolean {
-	return !van.isRented && van.state !== VanState.IN_REPAIR;
+  return !van.isRented && van.state !== VanState.IN_REPAIR;
 }

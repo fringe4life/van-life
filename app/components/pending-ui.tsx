@@ -1,18 +1,18 @@
-import type { ElementType } from 'react';
-import useIsNavigating from '~/hooks/use-is-navigating';
-import { cn } from '~/utils/utils';
-import type { AsProps } from './types';
+import type { ElementType } from "react";
+import useIsNavigating from "~/hooks/use-is-navigating";
+import { cn } from "~/utils/utils";
+import type { AsProps } from "./types";
 
-interface PendingUIProps<T extends ElementType = 'div'> extends AsProps<T> {
-	/** Children to render */
-	children: React.ReactNode;
-	/** The HTML element to render (default: 'div') */
-	/** Additional CSS classes to merge with pending UI classes */
-	className?: string;
-	/** Whether to show pending UI (defaults to useIsNavigating hook) */
-	isPending?: boolean;
-	/** Custom opacity value when pending (default: 0.75) */
-	pendingOpacity?: number;
+interface PendingUIProps<T extends ElementType = "div"> extends AsProps<T> {
+  /** Children to render */
+  children: React.ReactNode;
+  /** The HTML element to render (default: 'div') */
+  /** Additional CSS classes to merge with pending UI classes */
+  className?: string;
+  /** Whether to show pending UI (defaults to useIsNavigating hook) */
+  isPending?: boolean;
+  /** Custom opacity value when pending (default: 0.75) */
+  pendingOpacity?: number;
 }
 
 /**
@@ -58,38 +58,38 @@ interface PendingUIProps<T extends ElementType = 'div'> extends AsProps<T> {
  * </PendingUI>
  * ```
  */
-const PendingUI = <T extends ElementType = 'div'>({
-	as,
-	className,
-	isPending,
-	pendingOpacity = 0.75,
-	children,
-	...rest
+const PendingUI = <T extends ElementType = "div">({
+  as,
+  className,
+  isPending,
+  pendingOpacity = 0.75,
+  children,
+  ...rest
 }: PendingUIProps<T>) => {
-	const { changingPage } = useIsNavigating();
-	const isCurrentlyPending = isPending ?? changingPage;
+  const { changingPage } = useIsNavigating();
+  const isCurrentlyPending = isPending ?? changingPage;
 
-	// Default to 'div' if no as prop is provided
-	const Component = as || 'div';
+  // Default to 'div' if no as prop is provided
+  const Component = as || "div";
 
-	// Calculate opacity class based on pending state
-	const OpacityPercentageMultiplier = 100;
-	const opacityClass = isCurrentlyPending
-		? `opacity-${Math.round(pendingOpacity * OpacityPercentageMultiplier)}`
-		: '';
+  // Calculate opacity class based on pending state
+  const OpacityPercentageMultiplier = 100;
+  const opacityClass = isCurrentlyPending
+    ? `opacity-${Math.round(pendingOpacity * OpacityPercentageMultiplier)}`
+    : "";
 
-	// Merge all classes using cn utility
-	const mergedClassName = cn(
-		'transition-opacity duration-200',
-		opacityClass,
-		className
-	);
+  // Merge all classes using cn utility
+  const mergedClassName = cn(
+    "transition-opacity duration-200",
+    opacityClass,
+    className
+  );
 
-	return (
-		<Component className={mergedClassName} {...rest}>
-			{children}
-		</Component>
-	);
+  return (
+    <Component className={mergedClassName} {...rest}>
+      {children}
+    </Component>
+  );
 };
 
 export { PendingUI };

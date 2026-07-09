@@ -1,21 +1,21 @@
 interface Success<T> {
-	data: T;
-	error: null;
+  data: T;
+  error: null;
 }
 interface Failure<E> {
-	data: null;
-	error: E;
+  data: null;
+  error: E;
 }
 
 export type Result<T, E> = Success<T> | Failure<E>;
 
 export const tryCatch = async <T, E>(
-	operation: () => Promise<T>
+  operation: () => Promise<T>
 ): Promise<Result<T, E>> => {
-	try {
-		const data = await operation();
-		return { data, error: null };
-	} catch (error) {
-		return { data: null, error: error as E };
-	}
+  try {
+    const data = await operation();
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error: error as E };
+  }
 };

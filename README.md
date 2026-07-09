@@ -2,18 +2,18 @@
 
 <div align="center">
 
-[![Made with Prisma](http://made-with.prisma.io/dark.svg)](https://prisma.io)
 [![React Router](https://img.shields.io/badge/React%20Router-8.1.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.2-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.6.23-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.0--rc.1-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.9.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.2-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.9.2-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
-[![Prisma](https://img.shields.io/badge/Prisma-7.8.0-2D3748?logo=prisma&logoColor=white)](https://prisma.io/)
-[![Vite](https://img.shields.io/badge/Vite-7.3.5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
+[![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
+[![Vite](https://img.shields.io/badge/Vite-7.3.6-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.2.2-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
@@ -59,9 +59,9 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🎨 **Modern UI/UX** with responsive design, custom Tailwind variants, and smooth animations
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **ArkType** for runtime schema validation and type-safe narrowing
-- 🗄️ **Time-sortable database IDs** with UUID v7 and PostgreSQL `uuid` columns
+- 🗄️ **Time-sortable database IDs** with UUID v7 (text columns on D1/SQLite)
 - 🎨 **TailwindCSS 4** with modern CSS features
-- 📦 **Prisma ORM** with Neon PostgreSQL and relation joins
+- 📦 **Drizzle ORM** with Cloudflare D1 (SQLite) and relational queries
 - 🔧 **Generic Components** for reusability and maintainability
 - 🎭 **Higher-Order Components** (HOCs) for component enhancement and DRY principles
 - 🧩 **Compound Components** with React 19's modern context API (no `.Provider`, uses `use()`)
@@ -74,7 +74,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
 - 🔐 **Consolidated host auth middleware** on `host-layout.tsx` (no duplicate session lookups on leaf routes)
 - 🔍 **SEO Infrastructure** (canonical URLs, Open Graph/Twitter meta, `robots.txt`, dynamic `sitemap.xml` via `@forge42/seo-tools`)
-- ☁️ **Cloudflare Workers** deployment with Varlock-managed secrets and Neon PostgreSQL
+- ☁️ **Cloudflare Workers** deployment with Varlock-managed secrets and D1 binding (`env.DB`)
 
 ---
 
@@ -94,23 +94,23 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Backend & Database
 
 - **Cloudflare Workers** with React Router SSR via `workers/app.ts`
-- **Prisma 7.8.0** ORM with Neon PostgreSQL (Rust-free client, `workerd` runtime)
-- **better-auth 1.6.23** with **@better-auth/prisma-adapter** for authentication
+- **Drizzle ORM 1.0.0-rc.4** with **Cloudflare D1** (SQLite; `drizzle-orm/d1`)
+- **better-auth 1.7.0-rc.1** with **@better-auth/drizzle-adapter** for authentication
 - **ArkType 2.2.2** for schema validation and type narrowing
-- **uuidv7** for app-generated user IDs; Prisma `@default(uuid(7))` for domain models
-- **@prisma/adapter-neon 7.8.0** for Neon database integration
+- **uuidv7** for app-generated IDs (`createId` / `uuidv7PrimaryKey` helpers)
 - **Varlock** for typed, validated environment variables (Bitwarden integration in production)
 
 ### Development Tools
 
-- **Vite 7.3.5** - Fast frontend tooling with optimized builds
+- **Vite 7.3.6** - Fast frontend tooling with optimized builds
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **vite-tsconfig-paths 6.1.1** - TypeScript path alias resolution for `~/` imports
 - **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
 - **Biome 2.5.2** for linting and formatting with Ultracite integration
 - **Ultracite 7.9.2** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.107.0** - Cloudflare Workers CLI for deploy and typegen
+- **Wrangler 4.107.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
+- **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` driver for remote)
 - **react-doctor 0.7.1** - React diagnostics in CI, locally, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 6.0.3** with `@typescript/native-preview` support
@@ -118,7 +118,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 ### Build System
 
-- **Vite 7.3.5** - Fast builds with native ES modules and optimized bundling
+- **Vite 7.3.6** - Fast builds with native ES modules and optimized bundling
 - **React Compiler** - Configured via `vite-plugin-babel` with `@babel/preset-typescript` (see `docs/babel-react-compiler.md`)
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Enhanced performance** - Faster builds and reduced memory usage
@@ -145,7 +145,7 @@ app/
 │   ├── host/
 │   │   ├── components/ # Host UI (van-form, charts, dashboard sections, reviews)
 │   │   │   └── dashboard/  # host-income-section, host-review-section, host-vans-section, host-wallet-form
-│   │   ├── dal/        # Host Prisma repositories (*.server.ts)
+│   │   ├── dal/        # Host Drizzle repositories (*.server.ts)
 │   │   ├── services/   # dashboard, income, rental, reviews, transfers, wallet
 │   │   ├── hooks/      # use-host-wallet, balance-reducer
 │   │   ├── rentals/
@@ -153,34 +153,39 @@ app/
 │   │   ├── schemas.server.ts  # Host action schemas (deposit/withdraw)
 │   │   └── utils/      # Route determination helpers
 │   ├── image/          # Image optimization utilities
-│   ├── middleware/     # Auth middleware, Cloudflare context, auth-redirect helpers
+│   ├── middleware/     # Auth, Cloudflare, db context, auth-redirect helpers
 │   ├── navigation/     # Nav, mobile-nav (Base UI Dialog), hamburger-icon
 │   ├── pagination/     # Shared pagination UI + utils (toPagination, getCursorMetadata, build-search-params)
 │   ├── seo/            # SEO helpers (canonical URLs, SeoHead, sitemap)
-│   │   └── dal/        # SEO Prisma reads (sitemap.server.ts)
+│   │   └── dal/        # SEO Drizzle reads (sitemap.server.ts)
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, van-filters/, etc.)
 │       │   └── van-filters/  # VanFilters, type/state filter sections, filter-checkbox-row
 │       ├── constants/  # Van-related constants (van-types.ts for client-safe constants)
-│       ├── dal/        # Van Prisma repositories (*.server.ts)
+│       ├── dal/        # Van Drizzle repositories (*.server.ts)
 │       ├── services/   # catalog, host-vans, van-detail
 │       ├── hooks/      # use-van-filters, host-vans list reducer, display hooks, optimistic filter hooks
 │       ├── schemas.server.ts  # Van form/search ArkType schemas
-│       ├── types/      # Van-specific TypeScript types
+│       ├── types.ts    # Van-specific TypeScript types
 │       └── utils/      # Van helpers (pricing, van-filter-url, pending-van-from-form-data)
+├── db/                 # Drizzle schema, client, seed
+│   ├── client.server.ts    # createDb(d1) → drizzle-orm/d1
+│   ├── d1-http.server.ts   # Remote D1 HTTP client for seed/studio
+│   ├── schema/             # auth.ts, van.ts, index.ts
+│   ├── seed-data/          # Modular seed data files
+│   ├── seed.ts             # Local + remote seed entry
+│   └── relations.ts        # Drizzle relations
 ├── hooks/              # Custom React hooks
 ├── lib/                # Server-side utilities
-│   ├── auth.server.ts      # Better-auth configuration
+│   ├── auth.server.ts      # Better-auth + drizzle-adapter
 │   ├── env.server.ts       # Varlock env re-export
 │   ├── id.server.ts        # UUID v7 ID generator for Better Auth
 │   ├── parsers.ts          # nuqs search parameter parsers
 │   ├── search-params.server.ts  # Server-side search param loaders
-│   ├── generic-sorting.server.ts  # Generic Prisma orderBy utilities
-│   └── prisma.server.ts    # Prisma client (Neon adapter, workerd runtime)
+│   └── generic-sorting.server.ts  # Generic Drizzle orderBy utilities
 ├── types/              # Shared utility types (Maybe, List, Id, Prettify, Replace, Search)
 │   ├── auth.server.ts      # AuthenticatedUser (UUIDv7 id)
-│   ├── ids.server.ts       # UUIDv7 re-export from dal schemas
-│   └── lucide-react-direct.d.ts  # Direct lucide-react icon import types
+│   └── ids.server.ts       # UUIDv7 re-export from dal schemas
 ├── routes/             # Route modules (Activity-based single routes)
 │   ├── api/            # better-auth handler (auth.ts)
 │   ├── auth/           # login, sign-up, sign-out
@@ -200,18 +205,14 @@ app/
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
 
-prisma/
-├── models/             # Modular Prisma model definitions
-│   ├── betterAuth/     # Authentication models (User, Session, Account, Verification)
-│   └── van/            # Van-related models (Van, Rent, Review, Transaction)
-├── seed-data/          # Modular seed data files
-├── schema.prisma       # Prisma schema entrypoint
-└── seed.ts             # Database seeding script
+drizzle/
+└── migrations/         # SQL migrations (flattened for Wrangler D1)
 
 workers/
 └── app.ts              # Cloudflare Workers entry (React Router SSR)
 
 docs/
+├── d1-setup.md             # Cloudflare D1 create/migrate/seed guide
 ├── react-router-audit.md   # Framework-mode audit and middleware notes
 ├── babel-react-compiler.md # React Compiler setup via vite-plugin-babel
 └── fallow-health-backlog.md # Code health backlog from fallow analysis
@@ -221,76 +222,70 @@ docs/
 
 ## Database
 
-- **Neon PostgreSQL** with Prisma ORM (Rust-free client)
-- **Modular schema** with organized model files in subdirectories
-- **Config via prisma.config.ts** (schema folder + seed command)
-- **Main models:**
-  - `User`, `Session`, `Account`, `Verification` - Authentication system
-  - `Van` - Van listings with types (SIMPLE, LUXURY, RUGGED), states (NEW, IN_REPAIR, ON_SALE, AVAILABLE), and **SEO-friendly slugs** for human-readable URLs
-  - `Rent` - Rental records and history (links to transactions)
-  - `Review` - User reviews and ratings
-  - `Transaction` - **Single source of truth** for all financial data (deposits, withdrawals, rental payments) with optional rental references and descriptions for complete audit trail
-- **Advanced features:**
-  - **Rust-free Prisma Client** with `queryCompiler` and `driverAdapters` (now GA)
-  - **Relation joins** for optimized queries (preview feature)
-  - **Full-text search** with PostgreSQL (preview feature) - searches across multiple fields with relevance-based ordering
-  - **UUID v7** primary keys and foreign keys mapped to PostgreSQL `uuid` for time-ordered, index-friendly IDs
-  - **Performance optimizations** - Direct lucide-react icon imports (15-70% faster dev boot, 28% faster builds), immutable array methods (`.toSorted()`), client-safe constants for server/client code separation
-  - **Comprehensive indexing** for optimal query performance:
-    - Transaction model: Composite indexes for pagination (`[userId, createdAt]`, `[userId, amount]`, `[userId, type, createdAt]`, `[userId, type, amount]`)
-    - Review model: Indexes for rating and date sorting
-    - Proper indexing and constraints with explicit column lengths
-  - Modular seed data organization with separate files for each model
-  - Enhanced seed data with varied van names, descriptions, and state management
-  - Van state system with NEW (client-derived), IN_REPAIR, ON_SALE, AVAILABLE states
-  - Discount pricing for ON_SALE vans with random discount percentages
-  - **Slug-based routing** with unique, SEO-friendly URLs (e.g., `/vans/modest-explorer`)
-  - **ArkType regex validation** for slugs with built-in length constraints
-  - Native JavaScript database drivers for better edge/serverless compatibility
-  - **Branded UUID v7 types** via ArkType (`#UUIDv7`) and `parseUuidV7` at auth/route boundaries
+- **Cloudflare D1** (SQLite) with **Drizzle ORM** (`drizzle-orm/d1`)
+- **Schema** in `app/db/schema/` (`auth.ts`, `van.ts`); config via `drizzle.config.ts` (`d1-http` driver)
+- **Setup guide:** [`docs/d1-setup.md`](docs/d1-setup.md)
+- **Main tables:**
+  - `user`, `session`, `account`, `verification` — Authentication (better-auth)
+  - `van` — Listings with types (SIMPLE, LUXURY, RUGGED), states (IN_REPAIR, ON_SALE, AVAILABLE), SEO slugs
+  - `rent` — Rental records and history
+  - `review` — User reviews and ratings
+  - `transaction` — Financial ledger (deposits, withdrawals, rental payments)
+- **Features:**
+  - **UUID v7** primary keys via `uuidv7PrimaryKey` / `createId`
+  - **Drizzle relations** (`app/db/relations.ts`) for typed relational queries
+  - **Van search** — case-insensitive `LIKE` on name/description (word-split)
+  - **Indexes** for slug, host, type, and pagination composites
+  - **Van state** — NEW is client-derived; IN_REPAIR / ON_SALE / AVAILABLE stored
+  - **Slug-based routing** with ArkType regex validation
+  - **Branded UUID v7 types** via ArkType (`#UUIDv7`) and `parseUuidV7` at trust boundaries
+  - **`dbContext` middleware** — shares `AppDb` from `env.DB` with loaders/actions
 
 ### Setup Database
 
 ```bash
-# Generate Prisma client (Rust-free with relationJoins)
-bunx prisma generate
+# Create D1 DB once (see docs/d1-setup.md), then:
 
-# Push schema to database
-bunx prisma db push
+# Generate SQL migrations from schema
+bun run db:generate
 
-# Seed with enhanced data
-bun run db:seed
+# Apply locally (Miniflare) or remotely
+bun run db:migrate:local
+bun run db:migrate:remote
+
+# Seed (needs ≥3 users via sign-up first)
+bun run db:seed          # local
+bun run db:seed:remote   # remote D1 HTTP
 ```
 
-### Prisma Configuration
+### Drizzle Configuration
 
-This project uses `prisma.config.ts` for Prisma CLI configuration (GA in Prisma 7.x):
-
-```
-import type { PrismaConfig } from 'prisma/config';
-import { defineConfig } from 'prisma/config';
-
+```ts
+// drizzle.config.ts
 export default defineConfig({
-	schema: 'prisma',
-	migrations: {
-		path: 'prisma/migrations',
-		seed: 'bun run prisma/seed.ts',
-	},
-	datasource: {
-		url: process.env.DATABASE_URL ?? 'postgresql://ci:ci@127.0.0.1:5432/ci',
-	},
-}) as PrismaConfig;
+  dialect: "sqlite",
+  driver: "d1-http",
+  schema: "./app/db/schema/index.ts",
+  out: "./drizzle/migrations",
+  dbCredentials: {
+    accountId: process.env.CLOUDFLARE_ACCOUNT_ID ?? "",
+    databaseId: process.env.CLOUDFLARE_DATABASE_ID ?? "",
+    token: process.env.CLOUDFLARE_D1_TOKEN ?? "",
+  },
+});
 ```
 
 Notes:
 
-- Prisma CLI reads `DATABASE_URL` from the environment (loaded by Varlock in dev/deploy).
-- Separate `seedClient` generator uses `runtime = "bun"` for local seeding; app client uses `runtime = "workerd"` for Cloudflare Workers.
+- Runtime uses `createDb(env.DB)` — no `DATABASE_URL`.
+- Optional `CLOUDFLARE_*` vars for drizzle-kit Studio / remote seed only.
+- Nested drizzle-kit folders are flattened by `scripts/flatten-d1-migrations.ts` before Wrangler apply.
+- Hyperdrive is **not** used (Postgres/MySQL only).
 
 ### Data access and services
 
 - **`app/dal/`** — global UUID branding and parsing only
-- **`features/*/dal/*.server.ts`** — Prisma repositories (persistence, no `tryCatch`)
+- **`features/*/dal/*.server.ts`** — Drizzle repositories (persistence, no `tryCatch`)
 - **`features/*/services/*.server.ts`** — use-case orchestration, pagination DTOs, `tryCatch` where UI tolerates partial failure
 - **Routes** — HTTP only: auth, form validation, call services, map errors to `data()` / redirects
 
@@ -307,47 +302,16 @@ const [transactions, avgRating] = await Promise.all([
 
 ### Feature-Specific Validators
 
-The application uses **feature-specific validators** organized by domain for better maintainability:
-
-- **Van validators** (`app/features/vans/utils/validators.ts`) - VanType and VanState validation with type guards and conversion utilities
-- **Pagination validators** (`app/features/pagination/utils/validators.ts`) - Limit, direction, sort, and cursor validation for pagination
-- **Shared UUID schema** (`app/dal/schemas.server.ts`) — `uuidv7Schema` for route/param validation
-- **Server-side ArkType schemas** in feature `schemas.server.ts` files (auth, vans, host, rentals) with shared parsing via `app/utils/parse-arktype.server.ts`
-
-**Benefits:**
-- **Better organization** - Validators co-located with their feature domain
-- **Easier maintenance** - Changes to validation logic isolated to specific features
-- **Type safety** - Type guards and validation functions with proper TypeScript narrowing
-- **Reusability** - Validators can be imported where needed within each feature
-
-### Prisma Client Migration
-
-This project uses the **Rust-free Prisma Client** with the following configuration:
-
-```prisma
-generator client {
-  provider        = "prisma-client"
-  output          = "../app/generated/prisma"
-  previewFeatures = ["relationJoins", "fullTextSearchPostgres"]
-  engineType      = "client"
-  compilerBuild   = "fast"
-  runtime         = "workerd"
-}
-```
-
-**Key Benefits:**
-
-- **No Rust binary dependencies** - eliminates native binary requirements
-- **Smaller bundle sizes** - ideal for serverless and edge deployments
-- **Native JavaScript drivers** - uses `@prisma/adapter-neon` for connection pooling
-- **Cloudflare Workers compatible** - `workerd` runtime for production SSR
-- **Simplified deployments** - no need to handle platform-specific binaries
+- **Van validators** (`app/features/vans/utils/validators.ts`) — VanType / VanState guards
+- **Pagination validators** (`app/features/pagination/utils/validators.ts`) — limit, direction, sort, cursor
+- **Shared UUID schema** (`app/dal/schemas.server.ts`) — `uuidv7Schema`
+- **Server-side ArkType schemas** in feature `schemas.server.ts` files with `app/utils/parse-arktype.server.ts`
 
 ---
 
 ## Authentication
 
-- **better-auth 1.6.23** with **@better-auth/prisma-adapter** for secure email/password authentication
+- **better-auth 1.7.0-rc.1** with **@better-auth/drizzle-adapter** (SQLite / D1)
 - **Session management** with proper security headers
 - **Protected routes** with automatic redirects via `getLoginRedirectUrl` / `getSafeRedirectPath` (`app/features/middleware/utils/auth-redirect.ts`)
 - **Host auth middleware** runs once on `host-layout.tsx` (stub loader ensures `.data` requests on client navigations)
@@ -355,9 +319,8 @@ generator client {
 - **ArkType validation** (`app/features/auth/schemas.server.ts`) for login/sign-up forms
 - **View transitions** on login/sign-up — named `viewTransitionName` on card, title, fields, submit, footer with CSS morph animations
 - **Server-side session handling** in loaders
-- **Modular model organization** for better maintainability
 - **Better-auth config** in `app/lib/auth.server.ts`; **`AuthenticatedUser`** type in `app/types/auth.server.ts`
-- **UUID v7 generator** (`createId` in `app/lib/id.server.ts`) for user IDs via Better Auth database hook
+- **UUID v7 generator** (`createId` in `app/lib/id.server.ts`) for user IDs via Better Auth `generateId`
 
 ---
 
@@ -372,7 +335,7 @@ The application uses **nuqs 2.9.0** for type-safe URL state management:
 - **Client-side state management** with `useQueryStates`
 - **Bidirectional cursor pagination** with forward/backward navigation
 - **Pagination with sorting** on Reviews, Income, and Transfers pages
-- **Van search functionality** with PostgreSQL full-text search across name and description fields, debounced input (250ms), immediate Enter key submission, and relevance-based result ordering
+- **Van search functionality** with case-insensitive `LIKE` across name and description (word-split), debounced input (250ms), immediate Enter key submission
 - **Advanced van filtering** via `vansFilterUrlParsers` — multi-select types, exclude in repair, only on sale; debounced adds, immediate removes (`van-filter-url.ts`)
 - **Automatic URL synchronization** with proper type handling
 - **View transitions support** for smooth navigation
@@ -503,21 +466,15 @@ The application uses **human-readable slugs** for van URLs and a centralized SEO
 // Slug schema with built-in regex validation (1-70 chars, no leading/trailing hyphens)
 export const slugSchema = type("/^[a-z0-9](?:[a-z0-9-]{0,68}[a-z0-9])?$/");
 
-// Database lookup by slug
-export async function rentVan(
-  vanSlug: string,
-  renterId: string,
-  hostId: string
-) {
-  const van = await prisma.van.findUnique({
-    where: { slug: vanSlug },
-    select: { id: true },
-  });
-  // ... use van.id for database operations
-}
+// Database lookup by slug (Drizzle)
+const [row] = await db
+  .select({ id: van.id })
+  .from(van)
+  .where(eq(van.slug, vanSlug))
+  .limit(1);
 
 // Routes use slugs
-route(":vanSlug", "./routes/vans/van.tsx");
+route(":vanSlug", "./routes/public/van-detail.tsx");
 ```
 
 ### URL Examples
@@ -555,12 +512,11 @@ The application features a comprehensive **van state management system** with dy
 ### Implementation
 
 ```typescript
-// Van state with optional discount
-model Van {
-  state       VanState? @default(AVAILABLE)
-  discount    Int?      @default(0) @db.SmallInt
-  // ... other fields
-}
+// Van state + discount (Drizzle sqliteTable)
+state: text("state", {
+  enum: ["IN_REPAIR", "ON_SALE", "AVAILABLE"],
+}).default("AVAILABLE"),
+discount: integer("discount").default(0),
 
 // Dynamic pricing component
 <VanPrice van={{ price, discount, state }} />
@@ -581,7 +537,7 @@ The application features a **reusable sorting system** with type-safe generic ut
 
 ### Features
 
-- **Generic sorting utility** (`app/lib/generic-sorting.server.ts`) for any Prisma model
+- **Generic sorting utility** (`app/lib/generic-sorting.server.ts`) for Drizzle orderBy clauses
 - **Reusable Sortable component** (`app/components/sortable.tsx`) for consistent UI
 - **Type-safe orderBy clauses** with full TypeScript support
 - **URL state integration** with nuqs for persistent sorting preferences
@@ -591,11 +547,11 @@ The application features a **reusable sorting system** with type-safe generic ut
 
 ```typescript
 // Generic sorting utility
-export function createGenericOrderBy<T>(
+export function createGenericOrderBy(
   sort: SortOption,
-  config: SortConfig<T>
-): T {
-  // Returns type-safe Prisma orderBy clause
+  config: SortConfig
+): OrderByClause {
+  // Returns { field: 'asc' | 'desc' } for Drizzle
 }
 
 // Reusable component
@@ -636,7 +592,7 @@ The application features **generic pagination utilities** for consistent cursor-
 ### Features
 
 - **Generic `toPagination` utility** (`app/features/pagination/utils/to-pagination.server.ts`) - Processes database results and returns items with pagination metadata
-- **`getCursorMetadata` utility** (`app/features/pagination/utils/get-cursor-metadata.server.ts`) - Provides Prisma cursor object, sort order, take, and skip values for Prisma queries
+- **`getCursorMetadata` utility** (`app/features/pagination/utils/get-cursor-metadata.server.ts`) - Provides `cursorId`, sort order, and `take` for Drizzle `lt`/`gt` + `limit` queries
 - **Bidirectional pagination support** - Handles both forward and backward pagination with correct logic
 - **Automatic result reversal** - Reverses results for backward pagination to maintain correct display order
 - **Type-safe** - Full TypeScript support with generic types
@@ -646,10 +602,8 @@ The application features **generic pagination utilities** for consistent cursor-
 ### Implementation
 
 ```typescript
-// Get cursor metadata for Prisma queries
-// actualCursor is a Prisma cursor object: { id: string } | undefined
-// orderBy is a Prisma orderBy object: { id: 'asc' | 'desc' }
-const { actualCursor, orderBy, take, skip } = getCursorMetadata({
+// Get cursor metadata for Drizzle queries
+const { cursorId, orderBy, take } = getCursorMetadata({
   cursor,
   limit,
   direction,
@@ -662,23 +616,16 @@ export function toPagination<T extends Id>({
   cursor,
   direction = 'forward',
 }: ToPaginationParams<T>): PaginationProps<T> {
-  // Processes database results, handles extra item detection,
-  // reverses results for backward pagination, and returns
-  // items with paginationMetadata object
+  // Processes results, detects extra item, reverses for backward nav
 }
 
-// Usage in loaders
-const { actualCursor, ...rest } = getCursorMetadata({
-  cursor,
-  limit,
-  direction,
-});
-
-const rawItems = await prisma.review.findMany({
-  cursor: actualCursor, // Already a Prisma cursor object { id: string } | undefined
-  ...rest, // Spreads orderBy, take, and skip
-  // ... other query options
-});
+// Usage in loaders — apply cursorId with lt/gt on id + limit(take)
+const rawItems = await db
+  .select()
+  .from(review)
+  .where(/* cursorId ? lt/gt(review.id, cursorId) : undefined */)
+  .orderBy(/* from orderBy */)
+  .limit(take);
 
 const { items, paginationMetadata } = toPagination({
   items: rawItems,
@@ -690,11 +637,11 @@ const { items, paginationMetadata } = toPagination({
 
 ### Pagination Logic
 
-The `toPagination` utility implements correct cursor pagination logic based on Prisma's documentation:
+The `toPagination` utility implements correct cursor pagination logic:
 
 - **Forward pagination**: `hasNextPage = hasMoreResults`, `hasPreviousPage = has cursor`
 - **Backward pagination**: `hasNextPage = has cursor`, `hasPreviousPage = hasMoreResults`
-- **Result reversal**: For backward pagination, results are automatically reversed since Prisma returns them in opposite order
+- **Result reversal**: For backward pagination, results are automatically reversed since the query returns them in opposite order
 - **Pagination metadata**: Returns `paginationMetadata` object with `hasNextPage` and `hasPreviousPage` flags instead of separate props
 
 ### Benefits
@@ -874,9 +821,8 @@ const BarChart = lazy(() => import("./BarChart"));
 ### Prerequisites
 
 - Node.js 22+ (or Bun)
-- Neon PostgreSQL database
 - Bun (recommended)
-- Cloudflare account (for deployment)
+- Cloudflare account + D1 database (see [`docs/d1-setup.md`](docs/d1-setup.md))
 - Bitwarden access token (optional; for Varlock secret resolution in production)
 
 ### Installation
@@ -891,14 +837,16 @@ bun install
 
 # Environment: edit .env.schema defaults or add .env.local (gitignored)
 # Secrets resolve via Varlock; Bitwarden optional in production
-# Required: DATABASE_URL, BETTER_AUTH_SECRET (see .env.schema)
+# Required: BETTER_AUTH_SECRET (see .env.schema)
+# Optional for remote seed/studio: CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_DATABASE_ID, CLOUDFLARE_D1_TOKEN
 
-# Set up database
-bunx prisma generate
-bunx prisma db push
+# Set up D1 (create DB + paste database_id into wrangler.jsonc first)
+bun run db:generate
+bun run db:migrate:local
+# Sign up ≥3 users in the app, then:
 bun run db:seed
 
-# Start development server (Varlock loads env)
+# Start development server (Varlock loads env; Vite CF plugin provides env.DB)
 bun run dev
 ```
 
@@ -927,9 +875,6 @@ Environment variables are defined in `.env.schema` (Varlock) and validated at ru
 # Environment (development | preview | production | test)
 VARLOCK_ENV=development
 
-# Database (Neon PostgreSQL)
-DATABASE_URL=postgresql://user:password@ep-xxx-xxx-xxx.region.aws.neon.tech/neondb
-
 # Authentication
 BETTER_AUTH_SECRET=your-secret-key-here-min-20-chars
 BETTER_AUTH_URL=http://localhost:5173
@@ -939,9 +884,14 @@ SITE_URL=http://localhost:5173
 
 # Optional: Bitwarden (Varlock plugin for production secrets)
 # BITWARDEN_ACCESS_TOKEN=your-bitwarden-token
+
+# Optional: drizzle-kit d1-http / remote seed
+# CLOUDFLARE_ACCOUNT_ID=
+# CLOUDFLARE_DATABASE_ID=
+# CLOUDFLARE_D1_TOKEN=
 ```
 
-Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app code through `app/lib/env.server.ts`.
+Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app code through `app/lib/env.server.ts`. Runtime DB is the Wrangler D1 binding `env.DB` (not a connection string).
 
 ---
 
@@ -953,9 +903,11 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run deploy:project` – Deploy to Cloudflare Workers via Varlock + Wrangler
 - `bun run typegen` – Generate Wrangler types and React Router route types
 - `bun run typecheck` – TypeScript checking (`typegen` + `tsgo`)
-- `bun run db:migrate` – Run Prisma migrations (dev)
-- `bun run db:seed` – Seed database
-- `bun run db:reset` – Reset database and re-seed
+- `bun run db:generate` – Generate Drizzle SQL migrations
+- `bun run db:migrate:local` – Flatten + apply D1 migrations locally
+- `bun run db:migrate:remote` – Flatten + apply D1 migrations remotely
+- `bun run db:seed` – Seed local Miniflare D1
+- `bun run db:seed:remote` – Seed remote D1 via HTTP API
 - `bun run fix` – Auto-fix issues with Ultracite (format + lint)
 - `bun run check` – Run Ultracite checks (no fix)
 - `bun run doctor` – Run Ultracite doctor
@@ -1030,7 +982,7 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 - **Type safety** throughout the application
 - **Error handling** with `notFound` / `serverError` helpers, `getRouteErrorMessage` for boundaries, and `getCollectionState` for list empty/error states
 - **nuqs** for type-safe URL state management
-- **Prisma** with proper type generation and optimized ID constraints
+- **Drizzle** with typed schema in `app/db/schema/`
 - **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization
 
 ### GitHub Actions
@@ -1067,19 +1019,19 @@ This project uses **Ultracite** for enhanced code quality and AI-friendly develo
 The application deploys to **Cloudflare Workers** with static client assets:
 
 - **Worker entry** - `workers/app.ts` with React Router SSR request handler
-- **Wrangler config** - `wrangler.jsonc` (assets from `./build/client`, `nodejs_compat`)
+- **Wrangler config** - `wrangler.jsonc` (assets from `./build/client`, `nodejs_compat`, D1 binding `DB`)
 - **Varlock deploy** - `bun run deploy:project` runs `varlock-wrangler deploy` for typed secrets
-- **Neon PostgreSQL** - `@prisma/adapter-neon` with `poolQueryViaFetch` for Workers compatibility
-- **Prisma client** - `workerd` runtime; generated on `postinstall`
-- **Cloudflare context** - `cloudflareContext` middleware shares `env` and `ctx` with routes
+- **Cloudflare D1** - SQLite via `env.DB`; Drizzle `createDb(d1)` in middleware/`auth.server.ts`
+- **Cloudflare context** - `cloudflareContext` + `dbContext` middleware share `env` / `AppDb` with routes
 
 ```bash
-# Build and deploy
+# Migrate remote D1, then build and deploy
+bun run db:migrate:remote
 bun run build
 bun run deploy:project
 ```
 
-Set production secrets (`DATABASE_URL`, `BETTER_AUTH_SECRET`, `SITE_URL`, etc.) via Varlock/Bitwarden or Wrangler secrets before deploying.
+Set production secrets (`BETTER_AUTH_SECRET`, `SITE_URL`, etc.) via Varlock/Bitwarden or Wrangler secrets before deploying.
 
 ### Build Process
 

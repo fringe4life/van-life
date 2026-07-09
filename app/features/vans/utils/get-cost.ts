@@ -1,6 +1,6 @@
-import { MILLISECONDS_PER_DAY } from '~/constants/time-constants';
-import { VanState } from '~/generated/prisma/enums';
-import type { VanModel } from '~/generated/prisma/models';
+import { MILLISECONDS_PER_DAY } from "~/constants/time-constants";
+import type { VanModel } from "~/db/client.server";
+import { VanState } from "~/db/enums";
 
 /**
  * @abstract calculates the cost of the rental, factoring in van sale discounts
@@ -10,19 +10,19 @@ import type { VanModel } from '~/generated/prisma/models';
  * @returns {number} the total cost of the rental with any applicable discounts
  */
 export function getCost(rentedAt: Date, rentedTo: Date, van: VanModel): number {
-	const daysDifferent = Math.ceil(
-		(rentedTo.getTime() - rentedAt.getTime()) / MILLISECONDS_PER_DAY
-	);
+  const daysDifferent = Math.ceil(
+    (rentedTo.getTime() - rentedAt.getTime()) / MILLISECONDS_PER_DAY
+  );
 
-	const basePrice = van.price;
+  const basePrice = van.price;
 
-	// Apply discount if van is on sale
-	if (van.state === VanState.ON_SALE && van.discount && van.discount > 0) {
-		const PercentageDivisor = 100;
-		const discountAmount = (basePrice * van.discount) / PercentageDivisor;
-		const discountedPrice = basePrice - discountAmount;
-		return discountedPrice * daysDifferent;
-	}
+  // Apply discount if van is on sale
+  if (van.state === VanState.ON_SALE && van.discount && van.discount > 0) {
+    const PercentageDivisor = 100;
+    const discountAmount = (basePrice * van.discount) / PercentageDivisor;
+    const discountedPrice = basePrice - discountAmount;
+    return discountedPrice * daysDifferent;
+  }
 
-	return basePrice * daysDifferent;
+  return basePrice * daysDifferent;
 }

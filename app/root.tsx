@@ -1,75 +1,75 @@
-import { NuqsAdapter } from 'nuqs/adapters/react-router/v8';
+import { NuqsAdapter } from "nuqs/adapters/react-router/v8";
 import {
-	isRouteErrorResponse,
-	Links,
-	Outlet,
-	Scripts,
-	ScrollRestoration,
-} from 'react-router';
-import type { Route } from './+types/root';
-import { HTTP_MESSAGES, HTTP_STATUS } from './constants/http-constants';
-import './app.css';
-import type { Maybe } from './types';
+  isRouteErrorResponse,
+  Links,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from "react-router";
+import type { Route } from "./+types/root";
+import { HTTP_MESSAGES, HTTP_STATUS } from "./constants/http-constants";
+import "./app.css";
+import type { Maybe } from "./types";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => (
-	<html
-		className="bg-neutral-50 md:[--padding-inline:3rem]"
-		dir="ltr"
-		lang="en"
-	>
-		<head>
-			<meta charSet="utf-8" />
-			<link href="/camper-van.png" rel="icon" type="image/png" />
-			<meta content="width=device-width, initial-scale=1" name="viewport" />
-			<Links />
-		</head>
-		<body>
-			<div className="layout-grid mx-auto min-h-dvh w-full max-w-layout bg-orange-50">
-				{children}
-			</div>
-			<ScrollRestoration />
-			<Scripts />
-		</body>
-	</html>
+  <html
+    className="bg-neutral-50 md:[--padding-inline:3rem]"
+    dir="ltr"
+    lang="en"
+  >
+    <head>
+      <meta charSet="utf-8" />
+      <link href="/camper-van.png" rel="icon" type="image/png" />
+      <meta content="width=device-width, initial-scale=1" name="viewport" />
+      <Links />
+    </head>
+    <body>
+      <div className="layout-grid mx-auto min-h-dvh w-full max-w-layout bg-orange-50">
+        {children}
+      </div>
+      <ScrollRestoration />
+      <Scripts />
+    </body>
+  </html>
 );
 
 const App = () => (
-	<NuqsAdapter defaultOptions={{ clearOnDefault: true, shallow: false }}>
-		<Outlet />
-	</NuqsAdapter>
+  <NuqsAdapter defaultOptions={{ clearOnDefault: true, shallow: false }}>
+    <Outlet />
+  </NuqsAdapter>
 );
 export default App;
 
 // fallow-ignore-next-line complexity
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
-	let message = 'Oops!';
-	let details = 'An unexpected error occurred.';
-	let stack: Maybe<string>;
+  let message = "Oops!";
+  let details = "An unexpected error occurred.";
+  let stack: Maybe<string>;
 
-	if (isRouteErrorResponse(error)) {
-		message =
-			error.status === HTTP_STATUS.NOT_FOUND
-				? HTTP_MESSAGES.NOT_FOUND
-				: HTTP_MESSAGES.ERROR;
-		details =
-			error.status === HTTP_STATUS.NOT_FOUND
-				? HTTP_MESSAGES.NOT_FOUND_DETAILS
-				: error.statusText || details;
-	} else if (import.meta.env.DEV && error && error instanceof Error) {
-		const { message: errorMessage, stack: errorStack } = error;
-		details = errorMessage;
-		stack = errorStack;
-	}
+  if (isRouteErrorResponse(error)) {
+    message =
+      error.status === HTTP_STATUS.NOT_FOUND
+        ? HTTP_MESSAGES.NOT_FOUND
+        : HTTP_MESSAGES.ERROR;
+    details =
+      error.status === HTTP_STATUS.NOT_FOUND
+        ? HTTP_MESSAGES.NOT_FOUND_DETAILS
+        : error.statusText || details;
+  } else if (import.meta.env.DEV && error && error instanceof Error) {
+    const { message: errorMessage, stack: errorStack } = error;
+    details = errorMessage;
+    stack = errorStack;
+  }
 
-	return (
-		<main className="container col-start-2 mx-auto p-4 pt-16">
-			<h1>{message}</h1>
-			<p>{details}</p>
-			{!!stack && (
-				<pre className="w-full overflow-x-auto p-4">
-					<code>{stack}</code>
-				</pre>
-			)}
-		</main>
-	);
+  return (
+    <main className="container col-start-2 mx-auto p-4 pt-16">
+      <h1>{message}</h1>
+      <p>{details}</p>
+      {!!stack && (
+        <pre className="w-full overflow-x-auto p-4">
+          <code>{stack}</code>
+        </pre>
+      )}
+    </main>
+  );
 };

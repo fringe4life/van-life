@@ -1,11 +1,11 @@
-import { type } from 'arktype';
+import { type } from "arktype";
 
 /**
  * Schema for validating user passwords.
  * - Must be a string with at least 10 characters.
  */
-const passwordSchema = type('string >= 10').describe(
-	'Password has to be a minimum of 10 characters'
+const passwordSchema = type("string >= 10").describe(
+  "Password has to be a minimum of 10 characters"
 );
 
 /**
@@ -13,8 +13,8 @@ const passwordSchema = type('string >= 10').describe(
  * - Requires a valid email and password.
  */
 export const loginSchema = type({
-	email: 'string.email',
-	password: passwordSchema,
+  email: "string.email",
+  password: passwordSchema,
 });
 
 /**
@@ -23,17 +23,17 @@ export const loginSchema = type({
  * - Ensures password and confirmPassword match.
  */
 export const signUpScheme = type({
-	confirmPassword: passwordSchema,
-	email: 'string.email',
-	name: '2 <= string <= 124',
-	password: passwordSchema,
+  confirmPassword: passwordSchema,
+  email: "string.email",
+  name: "2 <= string <= 124",
+  password: passwordSchema,
 }).narrow((data, ctx) => {
-	if (data.password !== data.confirmPassword) {
-		return ctx.reject({
-			actual: '',
-			expected: 'identical to password',
-			path: ['confirmPassword'],
-		});
-	}
-	return true;
+  if (data.password !== data.confirmPassword) {
+    return ctx.reject({
+      actual: "",
+      expected: "identical to password",
+      path: ["confirmPassword"],
+    });
+  }
+  return true;
 });

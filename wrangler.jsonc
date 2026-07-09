@@ -10,5 +10,13 @@
   "assets": {
     "directory": "./build/client",
     "not_found_handling": "single-page-application"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "van-life",
+      "database_id": "72a2a3ad-7768-4a39-99de-ce609c8c79b8",
+      "migrations_dir": "drizzle/migrations"
+    }
+  ]
 }

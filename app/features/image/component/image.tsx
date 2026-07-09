@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
-	DEFAULT_IMAGE_QUALITY,
-	PLACEHOLDER_IMAGE_WIDTH,
-} from '~/features/image/img-constants';
-import { createNewImageSizeWithAspectRatio } from '~/features/image/utils/create-new-image-size';
-import type { Maybe } from '~/types';
-import { canUseDOM } from '~/utils/can-use-dom';
-import { cn } from '~/utils/utils';
+  DEFAULT_IMAGE_QUALITY,
+  PLACEHOLDER_IMAGE_WIDTH,
+} from "~/features/image/img-constants";
+import { createNewImageSizeWithAspectRatio } from "~/features/image/utils/create-new-image-size";
+import type { Maybe } from "~/types";
+import { canUseDOM } from "~/utils/can-use-dom";
+import { cn } from "~/utils/utils";
 
 /** The size of the image (string or number) */
 type Size = string | number;
@@ -14,17 +14,17 @@ type Size = string | number;
 /**
  * Extended props for the Image component, extending native img element props
  */
-interface ImgProps extends React.ComponentProps<'img'> {
-	/** Additional CSS classes for the container div */
-	classesForContainer?: string;
-	/** The height of the image (string or number) */
-	height: Size;
-	/** The source URL of the image */
-	src: string;
-	/** Optional srcSet for responsive images */
-	srcSet?: string;
-	/** The width of the image (string or number) */
-	width: Size;
+interface ImgProps extends React.ComponentProps<"img"> {
+  /** Additional CSS classes for the container div */
+  classesForContainer?: string;
+  /** The height of the image (string or number) */
+  height: Size;
+  /** The source URL of the image */
+  src: string;
+  /** Optional srcSet for responsive images */
+  srcSet?: string;
+  /** The width of the image (string or number) */
+  width: Size;
 }
 
 /**
@@ -60,69 +60,69 @@ interface ImgProps extends React.ComponentProps<'img'> {
  * @returns A React component that renders a progressively loading image
  */
 const Image = ({
-	src,
-	alt,
-	className,
-	classesForContainer = '',
-	...rest
+  src,
+  alt,
+  className,
+  classesForContainer = "",
+  ...rest
 }: ImgProps) => {
-	/** Low-resolution placeholder image width constant */
+  /** Low-resolution placeholder image width constant */
 
-	/** Low-resolution placeholder image (20px width, square aspect ratio) with WebP format and optimized quality */
-	const lowRes = createNewImageSizeWithAspectRatio(
-		src,
-		PLACEHOLDER_IMAGE_WIDTH,
-		'1:1',
-		DEFAULT_IMAGE_QUALITY
-	);
-	/** State to track if the full-resolution image has loaded */
-	const [loaded, setLoaded] = useState(false);
-	/** State to store the full-resolution image source */
-	const [fullSrc, setFullSrc] = useState<Maybe<string>>(null);
+  /** Low-resolution placeholder image (20px width, square aspect ratio) with WebP format and optimized quality */
+  const lowRes = createNewImageSizeWithAspectRatio(
+    src,
+    PLACEHOLDER_IMAGE_WIDTH,
+    "1:1",
+    DEFAULT_IMAGE_QUALITY
+  );
+  /** State to track if the full-resolution image has loaded */
+  const [loaded, setLoaded] = useState(false);
+  /** State to store the full-resolution image source */
+  const [fullSrc, setFullSrc] = useState<Maybe<string>>(null);
 
-	/**
-	 * Effect to load the full-resolution image in the background
-	 * Only runs on the client side to avoid SSR issues
-	 */
-	useEffect(() => {
-		if (!canUseDOM) {
-			return;
-		}
+  /**
+   * Effect to load the full-resolution image in the background
+   * Only runs on the client side to avoid SSR issues
+   */
+  useEffect(() => {
+    if (!canUseDOM) {
+      return;
+    }
 
-		let isCancelled = false;
-		const img = new window.Image();
-		img.src = src;
+    let isCancelled = false;
+    const img = new window.Image();
+    img.src = src;
 
-		img.onload = () => {
-			if (!isCancelled) {
-				setFullSrc(src);
-				setLoaded(true);
-			}
-		};
+    img.onload = () => {
+      if (!isCancelled) {
+        setFullSrc(src);
+        setLoaded(true);
+      }
+    };
 
-		return () => {
-			isCancelled = true;
-		};
-	}, [src]);
+    return () => {
+      isCancelled = true;
+    };
+  }, [src]);
 
-	// Always render the lowRes image initially, swap to fullSrc after load
-	return (
-		<div className={cn('m-0 p-0', classesForContainer)}>
-			{/** biome-ignore lint/correctness/useImageSize: passed in as {...rest} */}
-			<img
-				className={cn(
-					'h-full max-w-full bg-cover bg-no-repeat object-cover object-center align-middle text-none italic leading-0 decoration-0 transition-opacity duration-200 ease-in-out contain-strict',
-					!loaded && 'animate-pulse blur-sm',
-					className
-				)}
-				decoding="async"
-				loading="lazy"
-				{...rest}
-				alt={alt}
-				src={fullSrc || lowRes}
-			/>
-		</div>
-	);
+  // Always render the lowRes image initially, swap to fullSrc after load
+  return (
+    <div className={cn("m-0 p-0", classesForContainer)}>
+      {/** biome-ignore lint/correctness/useImageSize: passed in as {...rest} */}
+      <img
+        className={cn(
+          "h-full max-w-full bg-cover bg-no-repeat object-cover object-center align-middle text-none italic leading-0 decoration-0 transition-opacity duration-200 ease-in-out contain-strict",
+          !loaded && "animate-pulse blur-sm",
+          className
+        )}
+        decoding="async"
+        loading="lazy"
+        {...rest}
+        alt={alt}
+        src={fullSrc || lowRes}
+      />
+    </div>
+  );
 };
 
 export { Image };

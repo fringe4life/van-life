@@ -1,4 +1,4 @@
-import type { Amount, List } from '~/types';
+import type { Amount, List } from "~/types";
 
 const NO_INCOME = 0 as const;
 
@@ -8,9 +8,9 @@ const NO_INCOME = 0 as const;
  * @returns Total income amount
  */
 export const calculateTotalIncome = <T extends Amount>(items: List<T>) => {
-	if (!items || items.length === 0) {
-		return NO_INCOME;
-	}
+  if (!items || items.length === 0) {
+    return NO_INCOME;
+  }
 
-	return items.reduce((total, item) => total + item.amount, 0);
+  return items.reduce((total, item) => total + item.amount, 0);
 };

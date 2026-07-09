@@ -1,1 +1,1 @@
-export const COOKIE_HEADER = 'Set-Cookie' as const;
+export const COOKIE_HEADER = "Set-Cookie" as const;

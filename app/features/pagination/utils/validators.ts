@@ -3,9 +3,9 @@
 // ============================================================================
 
 import {
-	DEFAULT_LIMIT,
-	LIMITS,
-} from '~/features/pagination/pagination-constants';
+  DEFAULT_LIMIT,
+  LIMITS,
+} from "~/features/pagination/pagination-constants";
 
 /**
  * Type guard to check if a number is a valid limit value
@@ -13,7 +13,7 @@ import {
  * @returns True if the value is in the LIMITS array, false otherwise
  */
 function isValidLimit(value: number): value is (typeof LIMITS)[number] {
-	return LIMITS.includes(value as (typeof LIMITS)[number]);
+  return LIMITS.includes(value as (typeof LIMITS)[number]);
 }
 
 /**
@@ -22,5 +22,5 @@ function isValidLimit(value: number): value is (typeof LIMITS)[number] {
  * @returns A valid limit value from the LIMITS array
  */
 export function validateLimit(limit: number): (typeof LIMITS)[number] {
-	return isValidLimit(limit) ? limit : DEFAULT_LIMIT;
+  return isValidLimit(limit) ? limit : DEFAULT_LIMIT;
 }

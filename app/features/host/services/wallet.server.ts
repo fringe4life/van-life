@@ -1,11 +1,13 @@
-import { addMoney } from '~/features/host/dal/payment.server';
-import type { TransactionType } from '~/generated/prisma/enums';
-import type { UUIDv7 } from '~/types/ids.server';
+import type { AppDb } from "~/db/client.server";
+import type { TransactionType } from "~/db/enums";
+import { addMoney } from "~/features/host/dal/payment.server";
+import type { UUIDv7 } from "~/types/ids.server";
 
 export function depositOrWithdraw(
-	userId: UUIDv7,
-	amount: number,
-	transactionType: TransactionType
+  db: AppDb,
+  userId: UUIDv7,
+  amount: number,
+  transactionType: TransactionType
 ) {
-	return addMoney(userId, amount, transactionType);
+  return addMoney(db, userId, amount, transactionType);
 }

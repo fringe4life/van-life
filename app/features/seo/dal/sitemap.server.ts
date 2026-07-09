@@ -1,12 +1,10 @@
-import { prisma } from '~/lib/prisma.server';
+import { desc } from "drizzle-orm";
+import type { AppDb } from "~/db/client.server";
+import { van } from "~/db/schema/van";
 
-export const getVanSlugsForSitemap = () =>
-	prisma.van.findMany({
-		orderBy: {
-			createdAt: 'desc',
-		},
-		select: {
-			createdAt: true,
-			slug: true,
-		},
-	});
+export function getVanSlugsForSitemap(db: AppDb) {
+  return db
+    .select({ createdAt: van.createdAt, slug: van.slug })
+    .from(van)
+    .orderBy(desc(van.createdAt));
+}

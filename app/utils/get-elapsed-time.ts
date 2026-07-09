@@ -1,18 +1,18 @@
-import { differenceInDays, formatDistanceToNow } from 'date-fns';
-import type { List, Maybe } from '~/types';
+import { differenceInDays, formatDistanceToNow } from "date-fns";
+import type { List, Maybe } from "~/types";
 
 const NO_ELAPSED_TIME = {
-	description: 'No data yet',
-	elapsedDays: 0,
+  description: "No data yet",
+  elapsedDays: 0,
 } as const;
 
 interface ElapsedTime {
-	createdAt?: Date;
-	rentedAt?: Maybe<Date>;
+  createdAt?: Date;
+  rentedAt?: Maybe<Date>;
 }
 
 function getItemDate(item: ElapsedTime): Date | undefined {
-	return item.rentedAt ?? item.createdAt ?? undefined;
+  return item.rentedAt ?? item.createdAt ?? undefined;
 }
 
 /**
@@ -21,20 +21,20 @@ function getItemDate(item: ElapsedTime): Date | undefined {
  * @returns Object with elapsed days and human-readable description
  */
 export const getElapsedTime = (items: List<ElapsedTime>) => {
-	const dates = (items ?? [])
-		.map(getItemDate)
-		.filter((date): date is Date => date !== undefined);
+  const dates = (items ?? [])
+    .map(getItemDate)
+    .filter((date): date is Date => date !== undefined);
 
-	if (dates.length === 0) {
-		return NO_ELAPSED_TIME;
-	}
+  if (dates.length === 0) {
+    return NO_ELAPSED_TIME;
+  }
 
-	const timestamps = dates.map((date) => date.getTime());
-	const firstDate = new Date(Math.min(...timestamps));
-	const lastDate = new Date(Math.max(...timestamps));
+  const timestamps = dates.map((date) => date.getTime());
+  const firstDate = new Date(Math.min(...timestamps));
+  const lastDate = new Date(Math.max(...timestamps));
 
-	return {
-		description: formatDistanceToNow(firstDate, { addSuffix: true }),
-		elapsedDays: differenceInDays(lastDate, firstDate) + 1,
-	};
+  return {
+    description: formatDistanceToNow(firstDate, { addSuffix: true }),
+    elapsedDays: differenceInDays(lastDate, firstDate) + 1,
+  };
 };

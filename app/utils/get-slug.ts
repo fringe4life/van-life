@@ -1,2 +1,2 @@
 export const getSlug = (text: string) =>
-	text.trim().toLowerCase().replace(/ /g, '-');
+  text.trim().toLowerCase().replace(/ /g, "-");

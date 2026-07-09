@@ -1,12 +1,12 @@
-import type { Amount, Maybe, Prettify } from '~/types';
+import type { Amount, Maybe, Prettify } from "~/types";
 
 export type DataArray = Prettify<{ name: string } & Amount>[];
 
 export interface Data<T> {
-	data: T;
+  data: T;
 }
 
 export interface Params {
-	action?: Maybe<string>;
-	vanSlug: string;
+  action?: Maybe<string>;
+  vanSlug: string;
 }

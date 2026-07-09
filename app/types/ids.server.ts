@@ -1,1 +1,1 @@
-export type { UUIDv7 } from '~/dal/schemas.server';
+export type { UUIDv7 } from "~/dal/schemas.server";

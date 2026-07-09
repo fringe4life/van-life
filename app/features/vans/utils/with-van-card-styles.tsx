@@ -1,6 +1,6 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import type { VanProps } from '../types';
-import { getVanStateStyles } from './van-state-styles';
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { VanProps } from "../types";
+import { getVanStateStyles } from "./van-state-styles";
 
 /**
  * Higher-order component that injects van card styling props.
@@ -15,26 +15,26 @@ import { getVanStateStyles } from './van-state-styles';
  * ```
  */
 
-type WithVanCardStylesProps = ComponentPropsWithoutRef<'div'> &
-	VanProps & {
-		children?: ReactNode;
-	};
+type WithVanCardStylesProps = ComponentPropsWithoutRef<"div"> &
+  VanProps & {
+    children?: ReactNode;
+  };
 
 export const withVanCardStyles =
-	<P extends ComponentPropsWithoutRef<'div'>>(
-		Component: React.ComponentType<P>
-	) =>
-	({ van, className = '', ...rest }: WithVanCardStylesProps) => {
-		const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);
+  <P extends ComponentPropsWithoutRef<"div">>(
+    Component: React.ComponentType<P>
+  ) =>
+  ({ van, className = "", ...rest }: WithVanCardStylesProps) => {
+    const { dataSlot, className: vanStateClasses } = getVanStateStyles(van);
 
-		const combinedClassName = `group ${vanStateClasses} ${className}`.trim();
+    const combinedClassName = `group ${vanStateClasses} ${className}`.trim();
 
-		return (
-			<Component
-				{...(rest as P)}
-				className={combinedClassName}
-				data-slot={dataSlot}
-				style={{ viewTransitionName: `card-${van.id}` }}
-			/>
-		);
-	};
+    return (
+      <Component
+        {...(rest as P)}
+        className={combinedClassName}
+        data-slot={dataSlot}
+        style={{ viewTransitionName: `card-${van.id}` }}
+      />
+    );
+  };

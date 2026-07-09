@@ -1,12 +1,12 @@
-import { isRouteErrorResponse } from 'react-router';
+import { isRouteErrorResponse } from "react-router";
 
-const DEFAULT_FALLBACK = 'An unknown error occurred.';
+const DEFAULT_FALLBACK = "An unknown error occurred.";
 
 interface GetRouteErrorMessageOptions {
-	/** Message when `error instanceof Error` instead of `error.message`. */
-	errorFallback?: string;
-	/** Message when the error type is unknown or unhandled. */
-	fallback?: string;
+  /** Message when `error instanceof Error` instead of `error.message`. */
+  errorFallback?: string;
+  /** Message when the error type is unknown or unhandled. */
+  fallback?: string;
 }
 
 /**
@@ -22,21 +22,21 @@ interface GetRouteErrorMessageOptions {
  * `errorFallback` overrides it.
  */
 export function getRouteErrorMessage(
-	error: unknown,
-	options: GetRouteErrorMessageOptions = {}
+  error: unknown,
+  options: GetRouteErrorMessageOptions = {}
 ): string {
-	const fallback = options.fallback ?? DEFAULT_FALLBACK;
+  const fallback = options.fallback ?? DEFAULT_FALLBACK;
 
-	if (isRouteErrorResponse(error)) {
-		if (typeof error.data === 'string') {
-			return error.data;
-		}
-		return error.statusText || fallback;
-	}
+  if (isRouteErrorResponse(error)) {
+    if (typeof error.data === "string") {
+      return error.data;
+    }
+    return error.statusText || fallback;
+  }
 
-	if (error instanceof Error) {
-		return options.errorFallback ?? error.message;
-	}
+  if (error instanceof Error) {
+    return options.errorFallback ?? error.message;
+  }
 
-	return fallback;
+  return fallback;
 }

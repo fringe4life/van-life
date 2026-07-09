@@ -1,33 +1,48 @@
-import type { BasePaginationParams } from '~/features/pagination/types';
-import { getCursorMetadata } from '~/features/pagination/utils/get-cursor-metadata.server';
-import { prisma } from '~/lib/prisma.server';
-import type { UUIDv7 } from '~/types/ids.server';
+import { and, asc, desc, eq, gt, lt, type SQL } from "drizzle-orm";
+import type { AppDb } from "~/db/client.server";
+import { van } from "~/db/schema/van";
+import type { BasePaginationParams } from "~/features/pagination/types";
+import { getCursorMetadata } from "~/features/pagination/utils/get-cursor-metadata.server";
+import type { UUIDv7 } from "~/types/ids.server";
 
-// biome-ignore lint/suspicious/useAwait: Prisma queries are async and need await
-export async function getHostVanBySlug(userId: UUIDv7, vanSlug: string) {
-	return prisma.van.findFirst({
-		where: {
-			hostId: userId,
-			slug: vanSlug,
-		},
-	});
+export async function getHostVanBySlug(
+  db: AppDb,
+  userId: UUIDv7,
+  vanSlug: string
+) {
+  const [result] = await db
+    .select()
+    .from(van)
+    .where(and(eq(van.hostId, userId), eq(van.slug, vanSlug)))
+    .limit(1);
+  return result ?? null;
 }
 
 export function getHostVans(
-	hostId: UUIDv7,
-	{ cursor, limit, direction }: BasePaginationParams
+  db: AppDb,
+  hostId: UUIDv7,
+  { cursor, limit, direction }: BasePaginationParams
 ) {
-	const { actualCursor, ...rest } = getCursorMetadata({
-		cursor,
-		direction,
-		limit,
-	});
+  const { cursorId, orderBy, take } = getCursorMetadata({
+    cursor,
+    direction,
+    limit,
+  });
 
-	return prisma.van.findMany({
-		cursor: actualCursor,
-		where: {
-			hostId,
-		},
-		...rest,
-	});
+  const conditions: SQL[] = [eq(van.hostId, hostId)];
+
+  if (cursorId) {
+    conditions.push(
+      orderBy.id === "desc" ? lt(van.id, cursorId) : gt(van.id, cursorId)
+    );
+  }
+
+  const idOrder = orderBy.id === "desc" ? desc(van.id) : asc(van.id);
+
+  return db
+    .select()
+    .from(van)
+    .where(and(...conditions))
+    .orderBy(idOrder)
+    .limit(take);
 }

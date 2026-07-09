@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @font-face {
-	font-family: Inter;
-	font-style: normal;
-	font-display: swap;
-	font-weight: 100 900;
-	src: url("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2")
-		format("woff2-variations");
+  font-family: Inter;
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2")
+    format("woff2-variations");
 }
 
 /* Van state custom variants for cleaner component styling */
@@ -19,334 +19,334 @@
 @custom-variant unsuccessful (&[data-unsuccessful="true"]);
 
 @theme {
-	--font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
 
-	--header-height: 104px;
+  --header-height: 104px;
 
-	--container-sm: 12rem;
-	--container-md: 26rem;
-	--container-lg: 36rem;
+  --container-sm: 12rem;
+  --container-md: 26rem;
+  --container-lg: 36rem;
 
-	--container-2xl: 44rem;
+  --container-2xl: 44rem;
 
-	--breakpoint-xs: 26rem;
+  --breakpoint-xs: 26rem;
 
-	--color-orange-100: oklch(94.72% 0.041 73.17);
-	--color-orange-200: oklch(91.55% 0.067 73.33);
-	--color-orange-400: oklch(75.76% 0.159 55.93);
-	--color-orange-600: oklch(68.11% 0.142 38.3);
-	--color-neutral-600: oklch(42.02% 0 0);
-	--color-neutral-900: oklch(20.02% 0 0);
+  --color-orange-100: oklch(94.72% 0.041 73.17);
+  --color-orange-200: oklch(91.55% 0.067 73.33);
+  --color-orange-400: oklch(75.76% 0.159 55.93);
+  --color-orange-600: oklch(68.11% 0.142 38.3);
+  --color-neutral-600: oklch(42.02% 0 0);
+  --color-neutral-900: oklch(20.02% 0 0);
 
-	/* Van state colors extracted from badge component - made more prominent */
-	--color-van-new: oklch(30% 0 0); /* even darker gray for better visibility */
-	--color-van-sale: oklch(40% 0.3 142); /* more saturated green */
-	--color-van-repair: oklch(60% 0.3 85); /* more saturated yellow */
+  /* Van state colors extracted from badge component - made more prominent */
+  --color-van-new: oklch(30% 0 0); /* even darker gray for better visibility */
+  --color-van-sale: oklch(40% 0.3 142); /* more saturated green */
+  --color-van-repair: oklch(60% 0.3 85); /* more saturated yellow */
 
-	--container-layout: min(var(--container-5xl), 100svw - var(--padding-inline));
+  --container-layout: min(var(--container-5xl), 100svw - var(--padding-inline));
 
-	/* Responsive padding inline - updates automatically */
-	--padding-inline: 0.75rem; /* Mobile default */
+  /* Responsive padding inline - updates automatically */
+  --padding-inline: 0.75rem; /* Mobile default */
 
-	--mobile-menu-width: min(100vw, 25rem);
+  --mobile-menu-width: min(100vw, 25rem);
 
-	/* Spring easings (Open Props presets) */
-	/* Playful spring, ~16% overshoot — for the icon morph */
-	--ease-spring: linear(
-		0,
-		0.009,
-		0.035 2.1%,
-		0.141 4.4%,
-		0.281 6.7%,
-		0.723 12.9%,
-		0.938 16.7%,
-		1.017,
-		1.077,
-		1.121,
-		1.149 24.3%,
-		1.159,
-		1.163,
-		1.161,
-		1.154 29.9%,
-		1.129 32.8%,
-		1.051 39.6%,
-		1.017 43.1%,
-		0.991,
-		0.977 51%,
-		0.974 53.8%,
-		0.975 57.1%,
-		0.997 69.8%,
-		1.003 76.9%,
-		1.004 83.8%,
-		1 100%
-	);
+  /* Spring easings (Open Props presets) */
+  /* Playful spring, ~16% overshoot — for the icon morph */
+  --ease-spring: linear(
+    0,
+    0.009,
+    0.035 2.1%,
+    0.141 4.4%,
+    0.281 6.7%,
+    0.723 12.9%,
+    0.938 16.7%,
+    1.017,
+    1.077,
+    1.121,
+    1.149 24.3%,
+    1.159,
+    1.163,
+    1.161,
+    1.154 29.9%,
+    1.129 32.8%,
+    1.051 39.6%,
+    1.017 43.1%,
+    0.991,
+    0.977 51%,
+    0.974 53.8%,
+    0.975 57.1%,
+    0.997 69.8%,
+    1.003 76.9%,
+    1.004 83.8%,
+    1 100%
+  );
 
-	/* Gentle spring, barely overshoots — for the panel slide */
-	--ease-spring-soft: linear(
-		0,
-		0.006,
-		0.025 2.8%,
-		0.101 6.1%,
-		0.539 18.9%,
-		0.721 25.3%,
-		0.849 31.5%,
-		0.937 38.1%,
-		0.968 41.8%,
-		0.991 45.7%,
-		1.006 50.1%,
-		1.015 55%,
-		1.017 63.9%,
-		1.001 100%
-	);
+  /* Gentle spring, barely overshoots — for the panel slide */
+  --ease-spring-soft: linear(
+    0,
+    0.006,
+    0.025 2.8%,
+    0.101 6.1%,
+    0.539 18.9%,
+    0.721 25.3%,
+    0.849 31.5%,
+    0.937 38.1%,
+    0.968 41.8%,
+    0.991 45.7%,
+    1.006 50.1%,
+    1.015 55%,
+    1.017 63.9%,
+    1.001 100%
+  );
 
-	/* Chart dimensions */
-	--chart-height: 350px;
+  /* Chart dimensions */
+  --chart-height: 350px;
 
-	/* Rating stars dimensions */
-	--star-size: --spacing(5); /* size-5 = 1.25rem = 20px */
-	--star-gap: --spacing(2); /* gap-2 = 0.5rem = 8px */
-	--star-count: 5;
-	--rating-stars-width: calc(
-		var(--star-size) *
-		var(--star-count) +
-		var(--star-gap) *
-		(var(--star-count) - 1)
-	);
+  /* Rating stars dimensions */
+  --star-size: --spacing(5); /* size-5 = 1.25rem = 20px */
+  --star-gap: --spacing(2); /* gap-2 = 0.5rem = 8px */
+  --star-count: 5;
+  --rating-stars-width: calc(
+    var(--star-size) *
+    var(--star-count) +
+    var(--star-gap) *
+    (var(--star-count) - 1)
+  );
 
-	/* Chart text area components - aliases for Tailwind spacing scale */
-	/* Instead of referencing non-existent --spacing-N vars: */
-	--chart-text-top-margin: --spacing(4); /* 1rem */
-	--chart-text-first-height: --spacing(4); /* 1rem */
-	--chart-text-gap: --spacing(2); /* 0.5rem */
-	--chart-text-second-height: --spacing(3); /* 0.75rem */
+  /* Chart text area components - aliases for Tailwind spacing scale */
+  /* Instead of referencing non-existent --spacing-N vars: */
+  --chart-text-top-margin: --spacing(4); /* 1rem */
+  --chart-text-first-height: --spacing(4); /* 1rem */
+  --chart-text-gap: --spacing(2); /* 0.5rem */
+  --chart-text-second-height: --spacing(3); /* 0.75rem */
 
-	/* Total text area height (16 + 16 + 8 + 12 = 52px) */
-	--chart-text-height: calc(
-		var(--chart-text-top-margin) +
-		var(--chart-text-first-height) +
-		var(--chart-text-gap) +
-		var(--chart-text-second-height)
-	);
+  /* Total text area height (16 + 16 + 8 + 12 = 52px) */
+  --chart-text-height: calc(
+    var(--chart-text-top-margin) +
+    var(--chart-text-first-height) +
+    var(--chart-text-gap) +
+    var(--chart-text-second-height)
+  );
 
-	--chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
+  --chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
 
-	/* Mobile nav dialog animations — spring on entry, plain ease-in on exit */
-	--animate-slide-in-right: --slideInRight 500ms var(--ease-spring-soft) both;
-	--animate-slide-out-right: --slideOutRight 250ms ease-in both;
-	--animate-overlay-fade-in: --overlayFadeIn 300ms ease both;
-	--animate-overlay-fade-out: --overlayFadeOut 300ms ease both;
+  /* Mobile nav dialog animations — spring on entry, plain ease-in on exit */
+  --animate-slide-in-right: --slideInRight 500ms var(--ease-spring-soft) both;
+  --animate-slide-out-right: --slideOutRight 250ms ease-in both;
+  --animate-overlay-fade-in: --overlayFadeIn 300ms ease both;
+  --animate-overlay-fade-out: --overlayFadeOut 300ms ease both;
 
-	/* shadcn semantic tokens (light only) */
-	--color-background: hsl(0 0% 100%);
-	--color-foreground: hsl(0 0% 3.9%);
-	--color-card: hsl(0 0% 100%);
-	--color-card-foreground: hsl(0 0% 3.9%);
-	--color-popover: hsl(0 0% 100%);
-	--color-popover-foreground: hsl(0 0% 3.9%);
-	--color-primary: hsl(0 0% 9%);
-	--color-primary-foreground: hsl(0 0% 98%);
-	--color-secondary: hsl(0 0% 96.1%);
-	--color-secondary-foreground: hsl(0 0% 9%);
-	--color-muted: hsl(0 0% 96.1%);
-	--color-muted-foreground: hsl(0 0% 45.1%);
-	--color-accent: hsl(0 0% 96.1%);
-	--color-accent-foreground: hsl(0 0% 9%);
-	--color-destructive: hsl(0 84.2% 60.2%);
-	--color-destructive-foreground: hsl(0 0% 98%);
-	--color-border: hsl(0 0% 89.8%);
-	--color-input: hsl(0 0% 89.8%);
-	--color-ring: hsl(0 0% 3.9%);
-	--color-chart-1: hsl(12 76% 61%);
-	--color-chart-2: hsl(173 58% 39%);
-	--color-chart-3: hsl(197 37% 24%);
-	--color-chart-4: hsl(43 74% 66%);
-	--color-chart-5: hsl(27 87% 67%);
-	--radius-sm: 0.375rem;
-	--radius-md: 0.5rem;
-	--radius-lg: 0.625rem;
-	--radius-xl: 0.75rem;
+  /* shadcn semantic tokens (light only) */
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(0 0% 3.9%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(0 0% 3.9%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(0 0% 3.9%);
+  --color-primary: hsl(0 0% 9%);
+  --color-primary-foreground: hsl(0 0% 98%);
+  --color-secondary: hsl(0 0% 96.1%);
+  --color-secondary-foreground: hsl(0 0% 9%);
+  --color-muted: hsl(0 0% 96.1%);
+  --color-muted-foreground: hsl(0 0% 45.1%);
+  --color-accent: hsl(0 0% 96.1%);
+  --color-accent-foreground: hsl(0 0% 9%);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(0 0% 98%);
+  --color-border: hsl(0 0% 89.8%);
+  --color-input: hsl(0 0% 89.8%);
+  --color-ring: hsl(0 0% 3.9%);
+  --color-chart-1: hsl(12 76% 61%);
+  --color-chart-2: hsl(173 58% 39%);
+  --color-chart-3: hsl(197 37% 24%);
+  --color-chart-4: hsl(43 74% 66%);
+  --color-chart-5: hsl(27 87% 67%);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.75rem;
 }
 
 /* BASE STYLES */
 /* part of josh comeaus css reset */
 @layer base {
-	p,
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		overflow-wrap: break-word;
-	}
-	/* 9. Improve line wrapping */
-	p {
-		text-wrap: pretty;
-	}
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		text-wrap: balance;
-	}
-	html {
-		scrollbar-gutter: stable;
-		scrollbar-width: thin;
-	}
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+  /* 9. Improve line wrapping */
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-wrap: balance;
+  }
+  html {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+  }
 }
 
 /* UTILITIES */
 @utility grid-max {
-	--_gap: 2rem;
-	--_max-columns: 2;
-	--_min-column-size: 300px;
-	display: grid;
-	grid-template-columns: repeat(
-			auto-fit,
-			minmax(
-				min(
-					max(
-						var(--_min-column-size),
-						calc(
-							(100% - var(--_gap) * var(--_max-columns)) /
-							var(--_max-columns)
-						)
-					),
-					100%
-				),
-				1fr
-			)
-		);
-	gap: var(--_gap);
+  --_gap: 2rem;
+  --_max-columns: 2;
+  --_min-column-size: 300px;
+  display: grid;
+  grid-template-columns: repeat(
+      auto-fit,
+      minmax(
+        min(
+          max(
+            var(--_min-column-size),
+            calc(
+              (100% - var(--_gap) * var(--_max-columns)) /
+              var(--_max-columns)
+            )
+          ),
+          100%
+        ),
+        1fr
+      )
+    );
+  gap: var(--_gap);
 }
 
 /* Custom utility for pseudo-random bar heights using CSS trig functions */
 @utility bar-height {
-	block-size: clamp(
-		50px,
-		calc(150px + 100px * sin((pi / 2) * var(--bar-index))),
-		var(--chart-content-height)
-	);
+  block-size: clamp(
+    50px,
+    calc(150px + 100px * sin((pi / 2) * var(--bar-index))),
+    var(--chart-content-height)
+  );
 }
 
 @utility no-scrollbar {
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
-	&::-webkit-scrollbar {
-		display: none;
-	} /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  } /* Firefox */
 }
 
 @utility full-layout {
-	inline-size: calc(100% + (2 * var(--padding-inline)));
-	padding-inline-start: var(--padding-inline);
-	padding-inline-end: var(--padding-inline);
-	margin-inline-start: calc(var(--padding-inline) * -1);
-	margin-inline-end: calc(var(--padding-inline) * -1);
+  inline-size: calc(100% + (2 * var(--padding-inline)));
+  padding-inline-start: var(--padding-inline);
+  padding-inline-end: var(--padding-inline);
+  margin-inline-start: calc(var(--padding-inline) * -1);
+  margin-inline-end: calc(var(--padding-inline) * -1);
 }
 
 @utility layout-grid {
-	@apply grid grid-cols-[var(--padding-inline)_1fr_var(--padding-inline)] grid-rows-[var(--header-height)_1fr_100px];
+  @apply grid grid-cols-[var(--padding-inline)_1fr_var(--padding-inline)] grid-rows-[var(--header-height)_1fr_100px];
 }
 
 /* ANIMATIONS */
 @keyframes --fade-in {
-	from {
-		opacity: 0;
-		scale: 0;
-	}
-	to {
-		opacity: 1;
-		scale: 1;
-	}
+  from {
+    opacity: 0;
+    scale: 0;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
 }
 
 @keyframes --scale-out {
-	to {
-		opacity: 0;
-		scale: 0;
-	}
+  to {
+    opacity: 0;
+    scale: 0;
+  }
 }
 
 @keyframes --fade-to-right {
-	from {
-		translate: 0 0;
-		opacity: 1;
-		scale: 1;
-	}
-	to {
-		translate: 100vh 0;
-		opacity: 0.5;
-		scale: 0.5;
-	}
+  from {
+    translate: 0 0;
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    translate: 100vh 0;
+    opacity: 0.5;
+    scale: 0.5;
+  }
 }
 
 @keyframes --fade-in-from-left {
-	from {
-		translate: -100vh 0;
-		scale: 0.5;
-		opacity: 0.5;
-	}
-	to {
-		translate: 0 0;
-		scale: 1;
-		opacity: 1;
-	}
+  from {
+    translate: -100vh 0;
+    scale: 0.5;
+    opacity: 0.5;
+  }
+  to {
+    translate: 0 0;
+    scale: 1;
+    opacity: 1;
+  }
 }
 
 @keyframes --fade-in-from-right {
-	from {
-		translate: 100vh 0;
-		scale: 0.5;
-		opacity: 0.5;
-	}
-	to {
-		translate: 0 0;
-		scale: 1;
-		opacity: 1;
-	}
+  from {
+    translate: 100vh 0;
+    scale: 0.5;
+    opacity: 0.5;
+  }
+  to {
+    translate: 0 0;
+    scale: 1;
+    opacity: 1;
+  }
 }
 
 @keyframes --slideInRight {
-	from {
-		transform: translateX(100%);
-	}
-	to {
-		transform: translateX(0);
-	}
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 @keyframes --slideOutRight {
-	from {
-		transform: translateX(0);
-	}
-	to {
-		transform: translateX(100%);
-	}
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
 
 @keyframes --overlayFadeIn {
-	from {
-		opacity: 0;
-		background-color: rgba(0, 0, 0, 0);
-	}
-	to {
-		opacity: 1;
-		background-color: rgba(0, 0, 0, 0.6);
-	}
+  from {
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
 }
 
 @keyframes --overlayFadeOut {
-	from {
-		opacity: 1;
-		background-color: rgba(0, 0, 0, 0.6);
-	}
-	to {
-		opacity: 0;
-		background-color: rgba(0, 0, 0, 0);
-	}
+  from {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  to {
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0);
+  }
 }
 
 /* ─── SIDEBAR DIALOG ──────────────────────────────────────────────────────
@@ -357,176 +357,176 @@
 
 /* Keep popover visible during exit so the slide-out can play */
 .sidebar-dialog {
-	transition: display 300ms allow-discrete;
+  transition: display 300ms allow-discrete;
 }
 
 /* Panel: off-screen right by default, slides to 0 when popover is open */
 .sidebar-dialog [data-sidebar-panel] {
-	transform: translateX(100%);
-	transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(100%);
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .sidebar-dialog:popover-open [data-sidebar-panel] {
-	transform: translateX(0);
+  transform: translateX(0);
 }
 /* No-flash guard: ensure panel starts off-screen on the very first open */
 @starting-style {
-	.sidebar-dialog:popover-open [data-sidebar-panel] {
-		transform: translateX(100%);
-	}
+  .sidebar-dialog:popover-open [data-sidebar-panel] {
+    transform: translateX(100%);
+  }
 }
 
 /* Backdrop: fades in when open, fades out on close */
 .sidebar-dialog::backdrop {
-	background-color: rgb(0 0 0 / 0.4);
-	opacity: 0;
-	transition:
-		opacity 300ms,
-		display 300ms allow-discrete;
+  background-color: rgb(0 0 0 / 0.4);
+  opacity: 0;
+  transition:
+    opacity 300ms,
+    display 300ms allow-discrete;
 }
 .sidebar-dialog:popover-open::backdrop {
-	opacity: 1;
+  opacity: 1;
 }
 @starting-style {
-	.sidebar-dialog:popover-open::backdrop {
-		opacity: 0;
-	}
+  .sidebar-dialog:popover-open::backdrop {
+    opacity: 0;
+  }
 }
 
 /* VIEW TRANSITIONS */
 
 @view-transition {
-	navigation: auto;
+  navigation: auto;
 }
 /* sets speed for view transitions */
 ::view-transition-group(*) {
-	animation-duration: 500ms;
+  animation-duration: 500ms;
 }
 
 /* only-child means there is not an after snapshot */
 /* i.e. the card is no longer on the page after being filtered out */
 ::view-transition-old(*):only-child {
-	animation-name: --scale-out;
+  animation-name: --scale-out;
 }
 
 /* only-child means there is not a before snapshot */
 /* i.e. the card is new to being on the page */
 ::view-transition-new(*):only-child {
-	animation-name: --fade-in;
+  animation-name: --fade-in;
 }
 
 ::view-transition-group(*) {
-	animation-duration: 300ms;
+  animation-duration: 300ms;
 }
 
 ::view-transition-new(about-image):only-child {
-	animation-name: --fade-in-from-left;
+  animation-name: --fade-in-from-left;
 }
 
 /* view transition for home page of hero section */
 ::view-transition-old(about-image):only-child {
-	animation-name: --fade-to-right;
+  animation-name: --fade-to-right;
 }
 
 ::view-transition-new(home-image):only-child {
-	animation-name: --fade-in-from-left;
+  animation-name: --fade-in-from-left;
 }
 
 /* view transition for home page of hero section */
 ::view-transition-old(home-image):only-child {
-	animation-name: --fade-to-right;
+  animation-name: --fade-to-right;
 }
 
 /* AUTH FOOTER: old drops down + fades out, new drops in from top + fades in */
 @keyframes --fade-out-down {
-	from {
-		translate: 0 0;
-		opacity: 1;
-	}
-	to {
-		translate: 0 1rem;
-		opacity: 0;
-	}
+  from {
+    translate: 0 0;
+    opacity: 1;
+  }
+  to {
+    translate: 0 1rem;
+    opacity: 0;
+  }
 }
 
 @keyframes --fade-in-from-top {
-	from {
-		translate: 0 -1rem;
-		opacity: 0;
-	}
-	to {
-		translate: 0 0;
-		opacity: 1;
-	}
+  from {
+    translate: 0 -1rem;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
 }
 
 ::view-transition-old(auth-footer) {
-	animation-name: --fade-out-down;
+  animation-name: --fade-out-down;
 }
 
 ::view-transition-new(auth-footer) {
-	animation-name: --fade-in-from-top;
+  animation-name: --fade-in-from-top;
 }
 
 /* AUTH TITLE: old slides right + fades out, new fades in from the left */
 @keyframes --fade-out-right-sm {
-	from {
-		translate: 0 0;
-		opacity: 1;
-	}
-	to {
-		translate: 1rem 0;
-		opacity: 0;
-	}
+  from {
+    translate: 0 0;
+    opacity: 1;
+  }
+  to {
+    translate: 1rem 0;
+    opacity: 0;
+  }
 }
 
 @keyframes --fade-in-from-left-sm {
-	from {
-		translate: -1rem 0;
-		opacity: 0;
-	}
-	to {
-		translate: 0 0;
-		opacity: 1;
-	}
+  from {
+    translate: -1rem 0;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
 }
 
 ::view-transition-old(auth-title) {
-	animation-name: --fade-out-right-sm;
+  animation-name: --fade-out-right-sm;
 }
 
 ::view-transition-new(auth-title) {
-	animation-name: --fade-in-from-left-sm;
+  animation-name: --fade-in-from-left-sm;
 }
 
 /* SCROLL DRIVEN ANIMATIONS */
 .scroll-sm,
 .scroll-md,
 .scroll-lg {
-	animation-timeline: view();
-	animation-range: entry;
+  animation-timeline: view();
+  animation-range: entry;
 }
 
 .scroll-md {
-	animation-range: entry 0% cover 10%;
+  animation-range: entry 0% cover 10%;
 }
 
 .scroll-sm:nth-child(2n + 3) {
-	animation-name: --fade-in-from-left;
+  animation-name: --fade-in-from-left;
 }
 .scroll-sm:nth-child(2n):nth-child(n + 3) {
-	animation-name: --fade-in-from-right;
+  animation-name: --fade-in-from-right;
 }
 
 .scroll-md:nth-child(2n + 5) {
-	animation-name: --fade-in-from-left;
+  animation-name: --fade-in-from-left;
 }
 .scroll-md:nth-child(2n):nth-child(n + 6) {
-	animation-name: --fade-in-from-right;
+  animation-name: --fade-in-from-right;
 }
 
 .scroll-lg:nth-child(2n + 7) {
-	animation-name: --fade-in-from-left;
+  animation-name: --fade-in-from-left;
 }
 .scroll-lg:nth-child(2n):nth-child(n + 8) {
-	animation-name: --fade-in-from-right;
+  animation-name: --fade-in-from-right;
 }

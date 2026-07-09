@@ -1,18 +1,14 @@
-/** biome-ignore-all lint/style/useNamingConvention: prisma style */
-import { prisma } from '~/lib/prisma.server';
-import type { UUIDv7 } from '~/types/ids.server';
+import { avg, eq } from "drizzle-orm";
+import type { AppDb } from "~/db/client.server";
+import { rent, review } from "~/db/schema/van";
+import type { UUIDv7 } from "~/types/ids.server";
 
-export async function getAverageReviewRating(userId: UUIDv7) {
-	const avg = await prisma.review.aggregate({
-		_avg: {
-			rating: true,
-		},
-		orderBy: { createdAt: 'desc' },
-		where: {
-			rent: {
-				hostId: userId,
-			},
-		},
-	});
-	return avg._avg.rating ?? 0;
+export async function getAverageReviewRating(db: AppDb, userId: UUIDv7) {
+  const [result] = await db
+    .select({ avgRating: avg(review.rating) })
+    .from(review)
+    .innerJoin(rent, eq(review.rentId, rent.id))
+    .where(eq(rent.hostId, userId));
+
+  return Number(result?.avgRating ?? 0);
 }

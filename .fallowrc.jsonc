@@ -47,7 +47,10 @@
     "maxCrap": 70,
     "thresholdOverrides": [
       {
-        "files": ["prisma/**/*", "app/features/host/components/van-form.tsx"],
+        "files": [
+          "app/db/seed.ts",
+          "app/features/host/components/van-form.tsx"
+        ],
         "maxCognitive": 100,
         "maxCyclomatic": 100,
         "maxCrap": 300

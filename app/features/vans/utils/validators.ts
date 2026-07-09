@@ -1,6 +1,6 @@
-import type { LowercaseVanType } from '~/features/vans/types';
-import { VanType } from '~/generated/prisma/enums';
-import { VAN_TYPE_LOWERCASE } from '../constants/van-types';
+import { VanType } from "~/db/enums";
+import type { LowercaseVanType } from "~/features/vans/types";
+import { VAN_TYPE_LOWERCASE } from "../constants/van-types";
 
 /**
  * Type guard to check if a string is a valid VanType
@@ -8,7 +8,7 @@ import { VAN_TYPE_LOWERCASE } from '../constants/van-types';
  * @returns True if the value is a valid VanType, false otherwise
  */
 function isValidVanType(value: string): value is VanType {
-	return Object.values(VanType).includes(value as VanType);
+  return Object.values(VanType).includes(value as VanType);
 }
 
 /**
@@ -17,7 +17,7 @@ function isValidVanType(value: string): value is VanType {
  * @returns A valid VanType or "SIMPLE"
  */
 export function validateVanType(type: string): VanType {
-	return isValidVanType(type) ? type : VanType.SIMPLE;
+  return isValidVanType(type) ? type : VanType.SIMPLE;
 }
 
 const lowercaseVanTypes: LowercaseVanType[] = [...VAN_TYPE_LOWERCASE];
@@ -27,7 +27,7 @@ const lowercaseVanTypes: LowercaseVanType[] = [...VAN_TYPE_LOWERCASE];
  * @returns True if the value is a valid LowercaseVanType, false otherwise
  */
 function isValidLowercaseVanType(value: string): value is LowercaseVanType {
-	return lowercaseVanTypes.includes(value as LowercaseVanType);
+  return lowercaseVanTypes.includes(value as LowercaseVanType);
 }
 
 /**
@@ -36,7 +36,7 @@ function isValidLowercaseVanType(value: string): value is LowercaseVanType {
  * @returns A valid LowercaseVanType or undefined
  */
 export function validateLowercaseVanType(type: string): LowercaseVanType {
-	return isValidLowercaseVanType(type) ? type : 'simple';
+  return isValidLowercaseVanType(type) ? type : "simple";
 }
 
 /**
@@ -45,5 +45,5 @@ export function validateLowercaseVanType(type: string): LowercaseVanType {
  * @returns The lowercase version of the VanType
  */
 export function toLowercaseVanType(vanType: VanType): LowercaseVanType {
-	return vanType.toLowerCase() as LowercaseVanType;
+  return vanType.toLowerCase() as LowercaseVanType;
 }
