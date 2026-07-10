@@ -1,39 +1,27 @@
 import { reactRouter } from "@react-router/dev/vite";
+import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
 import { varlockCloudflareVitePlugin } from "@varlock/cloudflare-integration";
+import { reactCompilerPreset } from "@vitejs/plugin-react";
 // import { reactRouterDevTools } from 'react-router-devtools';
 import { defineConfig } from "vite";
-import babel from "vite-plugin-babel";
-import tsconfigPaths from "vite-tsconfig-paths";
-
-const JSX_FILE_EXTENSION_RE = /\.[jt]sx$/;
 
 export default defineConfig({
+  build: {
+    target: "esnext",
+  },
   plugins: [
     varlockCloudflareVitePlugin({ viteEnvironment: { name: "ssr" } }),
     // reactRouterDevTools(),
-    tsconfigPaths(),
     tailwindcss(),
-    babel({
-      babelConfig: {
-        compact: false,
-        plugins: ["babel-plugin-react-compiler"],
-        presets: ["@babel/preset-typescript"],
-      },
-      exclude: [/node_modules/, /workers\//],
-      include: /\.[jt]sx?$/,
-      loader: (path) => (JSX_FILE_EXTENSION_RE.test(path) ? "jsx" : "js"),
-    }),
+    // React Router owns JSX/HMR — import only reactCompilerPreset, not react()
     reactRouter(),
+    babel({ presets: [reactCompilerPreset()] }),
   ],
-  // Vite 8+ (reenable when migrating back)
-  // resolve: {
-  // 	tsconfigPaths: true,
-  // },
-  // server: {
-  // 	forwardConsole: true,
-  // },
-  // build: {
-  // 	target: 'esnext',
-  // },
+  resolve: {
+    tsconfigPaths: true,
+  },
+  server: {
+    forwardConsole: true,
+  },
 });

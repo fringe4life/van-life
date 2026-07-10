@@ -12,7 +12,14 @@ const Income = ({ amount, createdAt }: IncomeProps) => (
     <CardContent>
       <p className="flex justify-between">
         <span>{displayPrice(amount)} </span>
-        <span>{createdAt?.toDateString() ?? "unknown"}</span>
+        {/*
+          Local toDateString() can differ SSR (UTC Workers) vs browser TZ → hydration mismatch.
+          suppressHydrationWarning avoids Suspense-boundary client re-render cost.
+          TODO: prefer UTC→viewer-TZ formatting (e.g. date-fns/tz or Intl with fixed timeZone) in loader.
+        */}
+        <span suppressHydrationWarning>
+          {createdAt?.toDateString() ?? "unknown"}
+        </span>
       </p>
     </CardContent>
   </Card>

@@ -1,5 +1,5 @@
 /**
- * Recharts implementation — do not import this module directly.
+ * Recharts implementation — client-only (`.client`) so `es-toolkit` stays out of the SSR graph.
  * Use `LazyBarChart` from `./lazy-bar-chart` so recharts is code-split via React.lazy().
  */
 // react-doctor-disable-next-line react-doctor/prefer-dynamic-import

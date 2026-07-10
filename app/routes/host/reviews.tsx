@@ -51,6 +51,7 @@ const renderReviewProps = ({
   name: user.name,
   rating,
   text,
+  // TODO: UTC→viewer-TZ in loader; toLocaleDateString() can mismatch SSR vs client
   timestamp: updatedAt?.toLocaleDateString() ?? createdAt.toLocaleDateString(),
 });
 const HostReviews = ({ loaderData }: Route.ComponentProps) => {

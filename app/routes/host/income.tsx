@@ -51,6 +51,7 @@ const HostIncome = ({ loaderData }: Route.ComponentProps) => {
   const sumIncome = calculateTotalIncome(chartData);
   const elapsedTime = getElapsedTime(chartData);
 
+  // TODO: UTC→viewer-TZ labels (toDateString() is local; SSR Workers UTC ≠ browser)
   const mappedData = chartData?.map((income) => ({
     amount: Math.round(income.amount),
     name: income.createdAt.toDateString(),

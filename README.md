@@ -13,7 +13,7 @@
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.9.2-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
-[![Vite](https://img.shields.io/badge/Vite-7.3.6-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8.1.3-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.2.2-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
@@ -102,13 +102,12 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 ### Development Tools
 
-- **Vite 7.3.6** - Fast frontend tooling with optimized builds
+- **Vite 8.1.3** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
-- **vite-tsconfig-paths 6.1.1** - TypeScript path alias resolution for `~/` imports
-- **React Compiler 1.0** (stable) - Automatic memoization and performance optimization
+- **React Compiler 1.0** (stable) - Automatic memoization via `@rolldown/plugin-babel` + `reactCompilerPreset`
 - **Biome 2.5.2** for linting and formatting with Ultracite integration
 - **Ultracite 7.9.2** - AI-friendly linting rules for maximum type safety and accessibility
-- **Varlock** - Typed env schema (`.env.schema`) with Cloudflare integration
+- **Varlock 1.10.0** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.107.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` driver for remote)
 - **react-doctor 0.7.1** - React diagnostics in CI, locally, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
@@ -118,10 +117,10 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 ### Build System
 
-- **Vite 7.3.6** - Fast builds with native ES modules and optimized bundling
-- **React Compiler** - Configured via `vite-plugin-babel` with `@babel/preset-typescript` (see `docs/babel-react-compiler.md`)
+- **Vite 8.1.3** - Rolldown pipeline, `build.target: "esnext"`, `server.forwardConsole`
+- **React Compiler** - `@rolldown/plugin-babel` + `reactCompilerPreset()` from `@vitejs/plugin-react` (import preset only — not `react()`; see `docs/babel-react-compiler.md`)
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
-- **Enhanced performance** - Faster builds and reduced memory usage
+- **Path aliases** - Native Vite `resolve.tsconfigPaths` (no `vite-tsconfig-paths` plugin)
 - **Type-safe configuration** - Full TypeScript support in Vite config
 
 ---
@@ -214,7 +213,7 @@ workers/
 docs/
 ├── d1-setup.md             # Cloudflare D1 create/migrate/seed guide
 ├── react-router-audit.md   # Framework-mode audit and middleware notes
-├── babel-react-compiler.md # React Compiler setup via vite-plugin-babel
+├── babel-react-compiler.md # React Compiler via @rolldown/plugin-babel (Vite 8)
 └── fallow-health-backlog.md # Code health backlog from fallow analysis
 ```
 
@@ -797,15 +796,17 @@ toggleOptimistic({ type: 'toggle' });
 
 ### Lazy Loading with React.lazy()
 
-Heavy components like charts are code-split using `React.lazy()` and `Suspense`:
+Heavy components like charts are code-split using `React.lazy()` and `Suspense`. Recharts lives in `bar-chart.client.tsx` (`.client` suffix) so `es-toolkit` stays out of the SSR graph:
 
 ```tsx
-const BarChart = lazy(() => import("./BarChart"));
+const BarChartComponent = lazy(() => import("./bar-chart.client"));
 
 <Suspense fallback={<Skeleton />}>
-  <BarChart data={chartData} />
+  <BarChartComponent data={chartData} />
 </Suspense>;
 ```
+
+Host income/review date labels use `suppressHydrationWarning` where SSR (Workers UTC) and browser TZ can disagree; prefer UTC→viewer-TZ formatting in loaders long-term.
 
 ### Benefits
 

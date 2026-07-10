@@ -71,6 +71,7 @@ const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
     }))
   );
 
+  // TODO: UTC→viewer-TZ labels (toDateString() is local; SSR Workers UTC ≠ browser)
   const mappedData = chartData?.map((transaction) => ({
     amount: Math.round(transaction.amount),
     name: transaction.createdAt.toDateString(),

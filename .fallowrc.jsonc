@@ -15,6 +15,9 @@
   "ignorePatterns": ["worker-configuration.d.ts", "doctor.config.ts"],
   "ignoreDependencies": [
     "babel-plugin-react-compiler",
+    "@rolldown/plugin-babel",
+    "@vitejs/plugin-react",
+    "@babel/core",
     "isbot",
     "react-doctor",
     "@varlock/bitwarden-plugin",
@@ -23,7 +26,8 @@
     // Build-time only: CSS `@import "tailwindcss"` compiled by @tailwindcss/vite, never runtime
     "tailwindcss",
     // Build-time only: route/vite config (app/routes.ts, vite.config.ts, react-router.config.ts)
-    "@react-router/dev"
+    "@react-router/dev",
+    "wrangler"
   ],
   "duplicates": {
     "enabled": true,

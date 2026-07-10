@@ -10,7 +10,7 @@ type LazyBarChartProps = Prettify<
   Data<Maybe<DataArray>> & EmptyState & ErrorState
 >;
 
-const BarChartComponent = lazy(() => import("./bar-chart"));
+const BarChartComponent = lazy(() => import("./bar-chart.client"));
 const LazyBarChart = ({
   data,
   errorStateMessage,
