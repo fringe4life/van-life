@@ -1,3 +1,4 @@
+import "~/lib/arktype.config";
 import { type } from "arktype";
 import { MAX_ADD, MIN_ADD, MIN_WITHDRAW } from "~/constants/constants";
 import { DEPOSIT, WITHDRAW } from "~/features/vans/constants/vans-constants";

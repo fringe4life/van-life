@@ -1,3 +1,4 @@
+import "~/lib/arktype.config";
 import { type } from "arktype";
 
 /**

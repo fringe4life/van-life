@@ -1,3 +1,4 @@
+import "~/lib/arktype.config";
 import { type } from "arktype";
 
 /** Schema for validating RFC 9562 UUID version 7 identifiers. */

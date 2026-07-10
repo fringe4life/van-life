@@ -1,3 +1,4 @@
+import "~/lib/arktype.config";
 import { ArkErrors, type Type } from "arktype";
 
 interface ValidationFailure {
