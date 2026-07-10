@@ -901,7 +901,9 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run dev` – Start development server with HMR (Varlock loads env)
 - `bun run build` – Build for production (Cloudflare Workers + client assets)
 - `bun run preview` – Preview the production build locally
-- `bun run deploy:project` – Deploy to Cloudflare Workers via Varlock + Wrangler
+- `bun run deploy:project` – Deploy to Cloudflare Workers via Varlock + Wrangler (upload + go live)
+- `bun run deploy:upload` – Upload a Worker version only (preview URL; prod traffic unchanged)
+- `bun run deploy:versions` – Promote an uploaded version to traffic (interactive; supports gradual %)
 - `bun run typegen` – Generate Wrangler types and React Router route types
 - `bun run typecheck` – TypeScript checking (`typegen` + `tsgo`)
 - `bun run db:generate` – Generate Drizzle SQL migrations
@@ -1026,9 +1028,15 @@ The application deploys to **Cloudflare Workers** with static client assets:
 - **Cloudflare context** - `cloudflareContext` + `dbContext` middleware share `env` / `AppDb` with routes
 
 ```bash
-# Migrate remote D1, then build and deploy
+# Migrate remote D1, then build
 bun run db:migrate:remote
 bun run build
+
+# Safe path: upload → test preview URL → promote
+bun run deploy:upload      # preview only
+bun run deploy:versions    # promote when ready
+
+# Or all-in-one (goes live immediately)
 bun run deploy:project
 ```
 

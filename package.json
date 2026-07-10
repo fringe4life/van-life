@@ -52,6 +52,8 @@
   "scripts": {
     "build": "varlock run -- react-router build",
     "deploy:project": "varlock-wrangler deploy",
+    "deploy:upload": "varlock-wrangler versions upload",
+    "deploy:versions": "varlock-wrangler versions deploy",
     "dev": "varlock run -- react-router dev",
     "preview": "varlock run -- vite preview",
     "typegen": "varlock-wrangler types && react-router typegen",

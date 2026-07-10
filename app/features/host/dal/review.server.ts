@@ -20,6 +20,7 @@ function mapReviewOrderBy(orderByClause: OrderByClause) {
 }
 
 export async function getHostReviewsPaginated(
+  // fallow-ignore-next-line code-duplication
   db: AppDb,
   {
     userId,

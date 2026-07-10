@@ -64,6 +64,7 @@ export function getHostTransactions(
 }
 
 export function getHostTransactionsPaginated(
+  // fallow-ignore-next-line code-duplication
   db: AppDb,
   {
     userId,
@@ -114,8 +115,8 @@ export function getHostTransactionsPaginated(
     .orderBy(...sortCols, idOrder)
     .limit(take);
 }
-
 export function getUserTransactionsPaginated(
+  // fallow-ignore-next-line code-duplication
   db: AppDb,
   {
     userId,

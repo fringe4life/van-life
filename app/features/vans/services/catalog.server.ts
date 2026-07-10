@@ -22,16 +22,11 @@ export async function loadVanCatalog(db: AppDb, request: Request) {
   const typeFilter =
     type === "" ? undefined : validateVanType(type?.toUpperCase());
 
-  const hasFilters =
-    search?.trim() ||
-    (types && types.length > 0) ||
-    excludeInRepair ||
-    onlyOnSale;
-  const actualCursor = hasFilters ? undefined : parsePaginationCursor(cursor);
+  const brandedCursor = parsePaginationCursor(cursor);
 
   const { data: vans } = await tryCatch(() =>
     getVans(db, {
-      cursor: actualCursor,
+      cursor: brandedCursor,
       direction,
       excludeInRepair,
       limit,
@@ -43,7 +38,7 @@ export async function loadVanCatalog(db: AppDb, request: Request) {
   );
 
   const pagination = toPagination({
-    cursor: actualCursor,
+    cursor: brandedCursor,
     direction,
     items: vans,
     limit,
