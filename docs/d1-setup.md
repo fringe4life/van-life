@@ -15,7 +15,7 @@ Copy the printed `database_id` into [`wrangler.jsonc`](../wrangler.jsonc):
   "binding": "DB",
   "database_name": "van-life",
   "database_id": "<paste-id-here>",
-  "migrations_dir": "drizzle/migrations"
+  "migrations_dir": "app/db/migrations"
 }]
 ```
 
@@ -25,7 +25,7 @@ Copy the printed `database_id` into [`wrangler.jsonc`](../wrangler.jsonc):
 bun run db:generate
 ```
 
-Drizzle Kit 1.0 rc may emit nested folders (`drizzle/migrations/<timestamp>_name/migration.sql`). Apply scripts flatten them for Wrangler.
+Drizzle Kit 1.0 rc may emit nested folders (`app/db/migrations/<timestamp>_name/migration.sql`). Apply scripts flatten them for Wrangler.
 
 ## 3. Apply migrations
 

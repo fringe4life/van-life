@@ -8,6 +8,6 @@ export default defineConfig({
   },
   dialect: "sqlite",
   driver: "d1-http",
-  out: "./drizzle/migrations",
+  out: "./app/db/migrations",
   schema: "./app/db/schema/index.ts",
 });

@@ -12,80 +12,111 @@ For complexity-only (no git churn / hotspot penalty):
 fallow health --score
 ```
 
-Last snapshot: **78.3** (grade **B**), fallow **2.101.0**.
+Last snapshot: **78.2** (grade **B**), fallow **3.3.0** (schema 7, formula v2).
+
+`fallow health --score` alone (no hotspots): **88** (grade **A**) — only unit_size (−10) + coupling (−1.8).
 
 ## Score breakdown
 
 | Penalty | Points | Status |
 |---------|--------|--------|
 | Hotspots (complex + frequently changed files) | −10.0 | Open |
-| Unit size (large functions) | −10.0 | In progress |
-| Coupling (high fan-out files) | −1.7 | Open |
+| Unit size (functions over 60 LOC) | −10.0 | Open |
+| Coupling (high fan-out files) | −1.8 | Open |
 | Dead code, complexity, maintainability, deps, cycles, duplication | 0.0 | Clean |
 
 ## What's healthy
 
 - **0** dead-code issues (unused files, exports, dependencies)
 - **0** circular dependencies
-- Average cyclomatic complexity **2.0** (p90 **4**)
-- Average maintainability index **93**
-- **1%** code duplication (below penalty threshold)
+- Average cyclomatic complexity **1.8** (p90 **4**)
+- Average maintainability index **92.7**
+- **1.6%** code duplication (below penalty threshold)
+- **0** severity findings under default thresholds (cyclomatic 20 / cognitive 20 / CRAP 70) — score pain is unit size + hotspots + coupling, not flagged complexity
 
 ## Priority backlog
 
 | Priority | Area | Why | Suggested direction | Done |
 |----------|------|-----|---------------------|------|
-| P0 | Van filters | 177 LOC, unit_size penalty | Refactored into `van-filters/` subfolder + `useVanFilters` hook | [x] |
-| P1 | `Host` in `app/routes/host/host.tsx` | 201 LOC, critical severity, hotspot, fan_out 23 | Extract wallet form, stats cards, van list sections; thin route component | [ ] |
-| P1 | `VanForm` in `app/features/host/components/van-form.tsx` | cyclomatic 15, CRAP 240 | Split field groups / validation UI; consider react-hook-form field components | [ ] |
-| P2 | `HostVans` in `app/routes/host/host-vans.tsx` | 119 LOC, hotspot, fan_out 17 | Extract list toolbar, optimistic list, empty state | [ ] |
-| P2 | `getElapsedTime` in `app/utils/get-elapsed-time.ts` | cyclomatic 11, CRAP 132 | Table-driven intervals or `Intl.RelativeTimeFormat`; add unit tests | [ ] |
-| P2 | `buildVanSearchParams` in `app/features/pagination/utils/build-search-params.ts` | cyclomatic 10, CRAP 110 | Extract param builders per filter key | [ ] |
-| P3 | Hotspot routes | `vans.tsx`, `pagination.tsx`, `root.tsx` churn + complexity | Stabilize APIs before more edits; split loaders from UI where mixed | [ ] |
-| P3 | Auth routes | `login.tsx`, `sign-up.tsx` (56–63 LOC) | Extract shared auth form shell | [ ] |
-| P3 | `getVans` DAL | cyclomatic 7 in `app/features/vans/dal/van.server.ts` | Extract filter/sort/pagination query builders | [ ] |
-| P4 | High render fan-in | `CustomLink`, `GenericComponent`, `Button` | Expected for shared UI; document as intentional; avoid risky API changes | [ ] |
+| P0 | Van filters | Was 177 LOC unit_size penalty | Refactored into `van-filters/` + `useVanFilters` | [x] |
+| P1 | `VanForm` in `app/features/host/components/van-form.tsx` | 120 LOC (largest app fn), crap_max 240 | Split field groups / validation UI; field components | [ ] |
+| P1 | `useVanFilters` in `app/features/vans/hooks/use-van-filters.ts` | 102 LOC; filter refactor leftover | Split commit helpers / URL sync from UI-facing API | [ ] |
+| P1 | `Host` route coupling | File down to 124 lines (sections extracted) but fan_out **19**, hotspot 38.5 | Trim imports; move loader/action helpers out of route module | [~] |
+| P2 | `HostVans` in `app/routes/host/host-vans.tsx` | 90 LOC fn, fan_out 18, hotspot 31.7 | Extract list toolbar, optimistic list, empty state | [ ] |
+| P2 | `VanDetail` / `VanDetailCardRoot` | 98 / 88 LOC; fan_out 14–19 | Split presentational chunks; keep route thin | [ ] |
+| P2 | `Pagination` in `app/features/pagination/components/pagination.tsx` | 91 LOC, hotspot 33.0 cooling | Extract page-range / control subcomponents | [ ] |
+| P2 | Auth routes | `login.tsx` / `sign-up.tsx` (65–74 LOC), shared shape | Extract shared auth form shell | [ ] |
+| P2 | `van-filter-url.ts` | Top hotspot **46.7 accelerating** | Stabilize API; add tests (churn from P0 refactor) | [ ] |
+| P3 | Hotspot routes | `host.tsx`, `root.tsx`, `host-vans.tsx`, `vans.tsx` | Stabilize APIs; keep loaders/UI split | [ ] |
+| P3 | `getVans` DAL / `van.server.ts` | File cyclomatic 24, hotspot accelerating | Extract filter/sort/pagination query builders | [ ] |
+| P3 | Other large fns | `HostTransfers` 74, `getNavItems` 66, `Image` 65, `getHostReviewsPaginated` 63 | Split when next touched | [ ] |
+| P4 | High render fan-in | `CustomLink`, `GenericComponent`, `UnsuccesfulState`, `Button`, `PendingUI` | Expected for shared UI; avoid risky API churn | [ ] |
+
+### Closed / no longer score drivers
+
+| Area | Notes |
+|------|-------|
+| `getElapsedTime` | File 41 LOC, crap_max **4.9** (was CRAP 132). Still mild hotspot (cooling) — leave alone |
+| `buildVanSearchParams` | crap_max **13.8** (was 110); not in large_functions list |
+| Host UI sections | `HostWalletForm`, `HostIncomeSection`, `HostReviewSection`, `HostVansSection` extracted — unit_size on `Host` cleared; coupling remains |
 
 ## Hotspot files (top churn × complexity)
 
-All trending **cooling** at last snapshot — score may improve as edit frequency drops.
-
 | File | Hotspot score | Trend |
 |------|---------------|-------|
-| `app/routes/public/vans.tsx` | 41.9 | cooling |
-| `app/features/pagination/components/pagination.tsx` | 40.9 | cooling |
-| `app/routes/host/host-vans.tsx` | 38.5 | cooling |
-| `app/routes/host/host.tsx` | 34.3 | cooling |
-| `app/root.tsx` | 33.4 | cooling |
+| `app/features/vans/utils/van-filter-url.ts` | 46.7 | accelerating |
+| `app/routes/host/host.tsx` | 38.5 | cooling |
+| `app/root.tsx` | 34.9 | stable |
+| `app/features/pagination/components/pagination.tsx` | 33.0 | cooling |
+| `app/routes/host/host-vans.tsx` | 31.7 | cooling |
+| `app/utils/get-elapsed-time.ts` | 30.2 | cooling |
+| `app/routes/public/vans.tsx` | 29.6 | cooling |
+| `app/features/navigation/utils/nav-link-class-name.ts` | 29.5 | accelerating |
+| `app/routes/host/transfers.tsx` | 28.4 | cooling |
+| `app/features/vans/utils/pending-van-from-form-data.ts` | 26.4 | accelerating |
+| `app/features/vans/dal/van.server.ts` | 25.0 | accelerating |
 
 ## High coupling (fan-out)
 
 | File | fan_out |
 |------|---------|
-| `app/routes/host/host.tsx` | 23 |
-| `app/routes/host/host-vans.tsx` | 17 |
-| `app/features/vans/components/host detail/index.tsx` | 17 |
-| `app/routes/public/vans.tsx` | 13 |
-| `app/features/vans/components/van-detail.tsx` | 13 |
+| `app/routes/host/host.tsx` | 19 |
+| `app/features/vans/components/host detail/index.tsx` | 19 |
+| `app/routes/host/host-vans.tsx` | 18 |
+| `app/routes/public/vans.tsx` | 16 |
+| `app/routes/host/rentals/rental-detail.tsx` | 15 |
+| `app/routes/host/transfers.tsx` | 15 |
+| `app/routes/host/income.tsx` | 15 |
+| `app/features/vans/components/van-detail.tsx` | 14 |
 
-## Complexity findings (severity ≥ high)
+## Large functions (unit_size drivers, app code)
 
-| Severity | Location | Function | LOC | Cyclomatic | CRAP |
-|----------|----------|----------|-----|------------|------|
-| critical | `app/routes/host/host.tsx:89` | `Host` | 201 | 11 | 132 |
-| critical | `app/features/host/components/van-form.tsx:16` | `VanForm` | 118 | 15 | 240 |
-| critical | `app/features/pagination/utils/build-search-params.ts:23` | `buildVanSearchParams` | 49 | 10 | 110 |
-| critical | `app/utils/get-elapsed-time.ts:14` | `getElapsedTime` | 47 | 11 | 132 |
-| high | `app/features/vans/components/van-detail.tsx:36` | `VanDetail` | 98 | 7 | 56 |
-| high | `app/routes/auth/sign-up.tsx:62` | `SignUp` | 63 | 7 | 56 |
-| high | `app/routes/public/vans.tsx:33` | `Vans` | 62 | 7 | 56 |
-| high | `app/features/vans/dal/van.server.ts:43` | `getVans` | 59 | 7 | 56 |
+Default threshold: **60 LOC**. Profile: 69% low / 17% medium / 10% high / 4% very-high risk. **38.3** functions-over-60 per 1k.
 
-## CRAP caveat
+| LOC | Location | Function |
+|-----|----------|----------|
+| 120 | `app/features/host/components/van-form.tsx:24` | `VanForm` |
+| 102 | `app/features/vans/hooks/use-van-filters.ts:20` | `useVanFilters` |
+| 98 | `app/features/vans/components/van-detail.tsx:36` | `VanDetail` |
+| 91 | `app/features/pagination/components/pagination.tsx:16` | `Pagination` |
+| 90 | `app/routes/host/host-vans.tsx:135` | `HostVans` |
+| 88 | `app/features/vans/components/host detail/index.tsx:48` | `VanDetailCardRoot` |
+| 74 | `app/routes/auth/sign-up.tsx:62` | `SignUp` |
+| 74 | `app/routes/host/transfers.tsx:50` | `HostTransfers` |
+| 66 | `app/features/navigation/utils/get-nav-items.tsx:7` | `getNavItems` |
+| 65 | `app/features/host/components/dashboard/host-wallet-form.tsx:16` | `HostWalletForm` |
+| 65 | `app/features/image/component/image.tsx:62` | `Image` |
+| 65 | `app/routes/auth/login.tsx:70` | `Login` |
+| 64 | `app/routes/public/vans.tsx:37` | `Vans` |
+| 63 | `app/features/host/dal/review.server.ts:22` | `getHostReviewsPaginated` |
 
-Fallow uses `static_estimated` coverage when no Istanbul/Vitest coverage file is supplied. High CRAP scores flag complex code without a verified test path — they may overstate risk for logic that is tested but not wired into fallow.
+Also flagged but lower priority: `app/db/seed.ts` `main` (181), test helpers, `app/db/relations.ts`.
 
-Optional improvement: run Vitest with coverage and pass output to fallow:
+## CRAP / coverage caveat
+
+Fallow still uses `static_estimated` coverage when no Istanbul/Vitest coverage file is supplied. High `crap_max` on file scores (e.g. `VanForm` 240, `root.tsx` 90) can overstate risk for tested code not wired into fallow.
+
+Optional:
 
 ```bash
 fallow health --score --coverage coverage/coverage-final.json
@@ -93,11 +124,15 @@ fallow health --score --coverage coverage/coverage-final.json
 
 ## Van filters refactor (P0)
 
-Addressed by grouping filter UI under `app/features/vans/components/van-filters/`:
+Done under `app/features/vans/components/van-filters/` + hook/utils:
 
-- `useVanFilters` hook — URL state, optimistic updates, shared `commitChange`
-- `FilterCheckboxRow` — reusable checkbox row
-- `VanTypeFilterSection` / `VanStateFilterSection` — popover sections
-- Utils moved to `van-filter-url.ts` (`toValidTypes`, `snapshotFilterState`)
+- `useVanFilters` — URL state, optimistic updates, shared `commitChange` (**still 102 LOC** → P1)
+- `FilterCheckboxRow`, type/state popover sections
+- `van-filter-url.ts` — now top accelerating hotspot; prefer tests over more churn
 
-Re-run `fallow health --score --hotspots` after merge to confirm `VanFilters` drops from moderate findings.
+## v3.3 notes vs prior backlog (2.101)
+
+- Score ~flat (**78.3 → 78.2**); coupling penalty **−1.7 → −1.8**
+- Severity-based complexity table gone under raised defaults — track **`large_functions`** + hotspots instead
+- Host route UI extraction landed; remaining Host debt is **fan-out / hotspot**, not giant component LOC
+- `getElapsedTime` + `buildVanSearchParams` no longer critical score drivers

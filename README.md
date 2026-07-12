@@ -2,20 +2,20 @@
 
 <div align="center">
 
-[![React Router](https://img.shields.io/badge/React%20Router-8.1.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-8.2.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.2-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.0--rc.1-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.9.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.2-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.9.2-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.9.3-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
 [![Vite](https://img.shields.io/badge/Vite-8.1.3-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![ArkType](https://img.shields.io/badge/ArkType-2.2.2-000000?logo=arktype&logoColor=white)](https://arktype.io/)
+[![ArkType](https://img.shields.io/badge/ArkType-2.2.3-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
 </div>
 
@@ -83,8 +83,8 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Frontend
 
 - **React canary** builds with stable Activity component for prerendering
-- **React Router 8.1.0** (file-based routing, SSR, optional route parameters, middleware)
-- **TypeScript 6.0.3** with strict configuration
+- **React Router 8.2.0** (file-based routing, SSR, optional route parameters, middleware)
+- **TypeScript 7.0.2** with strict configuration
 - **TailwindCSS 4.3.2** with modern CSS features
 - **@base-ui/react 1.6.0** + **shadcn/ui** (`base-nova` style) for dialog, popover, checkbox, label, and mobile nav
 - **Lucide React 1.23.0** for icons (direct imports for performance)
@@ -96,7 +96,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **Cloudflare Workers** with React Router SSR via `workers/app.ts`
 - **Drizzle ORM 1.0.0-rc.4** with **Cloudflare D1** (SQLite; `drizzle-orm/d1`)
 - **better-auth 1.7.0-rc.1** with **@better-auth/drizzle-adapter** for authentication
-- **ArkType 2.2.2** for schema validation and type narrowing
+- **ArkType 2.2.3** for schema validation and type narrowing
 - **uuidv7** for app-generated IDs (`createId` / `uuidv7PrimaryKey` helpers)
 - **Varlock** for typed, validated environment variables (Bitwarden integration in production)
 
@@ -106,13 +106,13 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler 1.0** (stable) - Automatic memoization via `@rolldown/plugin-babel` + `reactCompilerPreset`
 - **Biome 2.5.2** for linting and formatting with Ultracite integration
-- **Ultracite 7.9.2** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.9.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock 1.10.0** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.107.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` driver for remote)
-- **react-doctor 0.7.1** - React diagnostics in CI, locally, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
+- **react-doctor 0.7.1** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
-- **TypeScript 6.0.3** with `@typescript/native-preview` support
+- **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **Bun** for fast package management and runtime
 
 ### Build System
@@ -167,9 +167,10 @@ app/
 │       ├── schemas.server.ts  # Van form/search ArkType schemas
 │       ├── types.ts    # Van-specific TypeScript types
 │       └── utils/      # Van helpers (pricing, van-filter-url, pending-van-from-form-data)
-├── db/                 # Drizzle schema, client, seed
+├── db/                 # Drizzle schema, client, seed, migrations
 │   ├── client.server.ts    # createDb(d1) → drizzle-orm/d1
 │   ├── d1-http.server.ts   # Remote D1 HTTP client for seed/studio
+│   ├── migrations/         # SQL migrations (flattened for Wrangler D1)
 │   ├── schema/             # auth.ts, van.ts, index.ts
 │   ├── seed-data/          # Modular seed data files
 │   ├── seed.ts             # Local + remote seed entry
@@ -203,9 +204,6 @@ app/
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
-
-drizzle/
-└── migrations/         # SQL migrations (flattened for Wrangler D1)
 
 workers/
 └── app.ts              # Cloudflare Workers entry (React Router SSR)
@@ -265,7 +263,7 @@ export default defineConfig({
   dialect: "sqlite",
   driver: "d1-http",
   schema: "./app/db/schema/index.ts",
-  out: "./drizzle/migrations",
+  out: "./app/db/migrations",
   dbCredentials: {
     accountId: process.env.CLOUDFLARE_ACCOUNT_ID ?? "",
     databaseId: process.env.CLOUDFLARE_DATABASE_ID ?? "",
@@ -905,8 +903,8 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run deploy:upload` – Upload a Worker version only (preview URL; prod traffic unchanged)
 - `bun run deploy:versions` – Promote an uploaded version to traffic (interactive; supports gradual %)
 - `bun run typegen` – Generate Wrangler types and React Router route types
-- `bun run typecheck` – TypeScript checking (`typegen` + `tsgo`)
-- `bun run db:generate` – Generate Drizzle SQL migrations
+- `bun run typecheck` – TypeScript checking (`typegen` + `tsc`)
+- `bun run db:generate` – Generate Drizzle SQL migrations to `app/db/migrations`
 - `bun run db:migrate:local` – Flatten + apply D1 migrations locally
 - `bun run db:migrate:remote` – Flatten + apply D1 migrations remotely
 - `bun run db:seed` – Seed local Miniflare D1
@@ -916,6 +914,7 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run doctor` – Run Ultracite doctor
 - `bun run react-doctor` – Run React Doctor diagnostics (`doctor.config.ts`)
 - `bun run test` – Run Bun test suite
+- `bun run prepare` – Install Husky hooks
 - `bun run ultracite:upgrade` – Upgrade Ultracite and re-init (Bun, Biome, Cursor)
 
 ### Ultracite Commands
@@ -928,18 +927,19 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 
 This project uses **Husky** with **lint-staged** for automated pre-commit checks:
 
-- **Pre-commit hook** runs automatically before each commit
-- **lint-staged** runs Ultracite only on staged files for efficiency
+- **Pre-commit hook** (`bunx lint-staged`) runs automatically before each commit
+- **lint-staged** runs Ultracite, react-doctor, and typecheck on staged files
 - **Automatic formatting** with Ultracite on staged files
 - **Commit blocking** if any checks fail
-- **TypeScript configuration** for type-safe setup
 
 The pre-commit hook ensures code quality by:
 
-1. Running Ultracite fix on staged files via lint-staged
-2. Blocking the commit if any step fails
+1. Running `bun fix` (Ultracite) on staged files via lint-staged
+2. Running `react-doctor --staged` on JS/TS files
+3. Running `bun typecheck` on TypeScript files
+4. Blocking the commit if any step fails
 
-Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged files.
+Configuration in `lint-staged.config.ts`.
 
 **Note:** TypeScript config files work seamlessly with Bun's first-class TypeScript support. For Node.js, requires version 22.6.0+ or the `--experimental-strip-types` flag.
 
@@ -974,9 +974,9 @@ Configuration in `lint-staged.config.ts` runs `bunx ultracite fix` on staged fil
 ## Code Quality
 
 - **Biome 2.5.2** for linting and formatting with Ultracite integration
-- **Ultracite 7.9.2** - AI-friendly linting rules for maximum type safety and accessibility
-- **TypeScript 6.0.3** with strict configuration
-- **ArkType 2.2.2** for runtime validation with regex support for slug validation
+- **Ultracite 7.9.3** - AI-friendly linting rules for maximum type safety and accessibility
+- **TypeScript 7.0.2** with strict configuration
+- **ArkType 2.2.3** for runtime validation with regex support for slug validation
 - **Consistent code style:**
   - Tab indentation
   - Single quotes

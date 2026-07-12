@@ -3,11 +3,11 @@ import path from "node:path";
 
 /**
  * Drizzle Kit 1.0 rc emits nested folders:
- *   drizzle/migrations/<timestamp>_name/migration.sql
+ *   app/db/migrations/<timestamp>_name/migration.sql
  * Wrangler D1 expects flat:
- *   drizzle/migrations/<timestamp>_name.sql
+ *   app/db/migrations/<timestamp>_name.sql
  */
-const MIGRATIONS_DIR = path.resolve("drizzle/migrations");
+const MIGRATIONS_DIR = path.resolve("app/db/migrations");
 
 async function flatten() {
   const entries = await readdir(MIGRATIONS_DIR, { withFileTypes: true });

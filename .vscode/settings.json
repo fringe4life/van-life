@@ -31,7 +31,7 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[css]": {
     "editor.defaultFormatter": "biomejs.biome"
@@ -112,7 +112,7 @@
   "[mdx]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "typescript.native-preview.tsdk": "node_modules/@typescript/native-preview",
-  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.experimental.useTsgo": true,
+  "js/ts.tsdk.path": "./node_modules/typescript",
   "js/ts.tsdk.promptToUseWorkspaceVersion": true
 }
