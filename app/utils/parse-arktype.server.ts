@@ -35,3 +35,23 @@ export function validateArkType<T extends Type>(
     success: true as const,
   } satisfies ValidationSuccess<T>;
 }
+
+/**
+ * Maps ArkType path errors onto a known field key set for form UIs.
+ * Uses problem text (no path prefix) so messages sit cleanly under inputs.
+ */
+export function arkErrorsToFieldErrors<K extends string>(
+  errors: ArkErrors,
+  fields: readonly K[]
+): Partial<Record<K, string>> {
+  const fieldErrors: Partial<Record<K, string>> = {};
+
+  for (const field of fields) {
+    const problems = errors.flatProblemsByPath[field];
+    if (problems?.length) {
+      fieldErrors[field] = problems.join("; ");
+    }
+  }
+
+  return fieldErrors;
+}

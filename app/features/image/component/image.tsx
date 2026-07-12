@@ -119,7 +119,7 @@ const Image = ({
         loading="lazy"
         {...rest}
         alt={alt}
-        src={fullSrc || lowRes}
+        src={fullSrc ?? lowRes}
       />
     </div>
   );

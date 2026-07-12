@@ -1,13 +1,20 @@
 import { VAN_TYPE_LOWERCASE } from "~/features/vans/constants/van-types";
 import type { LowercaseVanType } from "~/features/vans/types";
+import type { Prettify } from "~/types";
 import { FilterCheckboxRow } from "./filter-checkbox-row";
+import type {
+  FilterBaseId,
+  VanTypeFilterSelection,
+  VanTypeFilterToggle,
+} from "./types";
 
-interface VanTypeFilterRowProps {
-  baseId: string;
-  onToggle: (type: LowercaseVanType) => void;
-  type: LowercaseVanType;
-  types: LowercaseVanType[];
-}
+type VanTypeFilterRowProps = Prettify<
+  FilterBaseId &
+    VanTypeFilterToggle &
+    VanTypeFilterSelection & {
+      type: LowercaseVanType;
+    }
+>;
 
 const VanTypeFilterRow = ({
   baseId,
@@ -30,11 +37,9 @@ const VanTypeFilterRow = ({
   );
 };
 
-interface VanTypeFilterSectionProps {
-  baseId: string;
-  onToggle: (type: LowercaseVanType) => void;
-  types: LowercaseVanType[];
-}
+type VanTypeFilterSectionProps = Prettify<
+  FilterBaseId & VanTypeFilterToggle & VanTypeFilterSelection
+>;
 
 const VanTypeFilterSection = ({
   baseId,

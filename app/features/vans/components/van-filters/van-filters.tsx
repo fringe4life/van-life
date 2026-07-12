@@ -12,8 +12,15 @@ import { VanStateFilterSection } from "./van-state-filter-section";
 import { VanTypeFilterSection } from "./van-type-filter-section";
 
 const VanFilters = () => {
-  const filters = useVanFilters();
-
+  const {
+    badgeCount,
+    baseId,
+    optimisticTypes,
+    stateFacets,
+    toggleType,
+    setStateFilter,
+  } = useVanFilters();
+  const hasFilters = badgeCount > 0;
   return (
     <Popover>
       <PopoverTrigger
@@ -21,12 +28,12 @@ const VanFilters = () => {
           <Button className="gap-2" variant="outline">
             <FilterIcon className="size-4" />
             Filters
-            {filters.badgeCount > 0 && (
+            {hasFilters && (
               <Badge
                 className="ml-1 flex size-5 items-center justify-center rounded-full p-0 text-xs"
                 variant="outline"
               >
-                {filters.badgeCount}
+                {badgeCount}
               </Badge>
             )}
           </Button>
@@ -37,18 +44,15 @@ const VanFilters = () => {
         className="w-56 border-neutral-300 bg-white p-0 text-neutral-900 shadow-md"
       >
         <VanTypeFilterSection
-          baseId={filters.baseId}
-          onToggle={filters.toggleType}
-          types={filters.optimisticTypes}
+          baseId={baseId}
+          onToggle={toggleType}
+          types={optimisticTypes}
         />
         <Separator className="bg-neutral-300" />
         <VanStateFilterSection
-          baseId={filters.baseId}
-          onlyOnSale={filters.onlyOnSale}
-          onSetExcludeInRepair={filters.setExcludeInRepair}
-          onSetOnlyOnSale={filters.setOnlyOnSale}
-          optimisticExcludeInRepair={filters.optimisticExcludeInRepair}
-          optimisticOnlyOnSale={filters.optimisticOnlyOnSale}
+          baseId={baseId}
+          facets={stateFacets}
+          onCheckedChange={setStateFilter}
         />
       </PopoverContent>
     </Popover>

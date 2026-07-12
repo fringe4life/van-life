@@ -53,3 +53,23 @@ export type HostVanListItem = VanModel | PendingVan;
 export function isPendingVan(item: HostVanListItem): item is PendingVan {
   return "status" in item && item.status === "pending";
 }
+
+/** Van columns the add-van form actually edits (HTML string values). */
+export const VAN_FORM_FIELDS = [
+  "name",
+  "price",
+  "description",
+  "imageUrl",
+  "type",
+  "discount",
+] as const satisfies ReadonlyArray<keyof VanModel>;
+
+export type VanFormFieldKey = (typeof VAN_FORM_FIELDS)[number];
+
+export type VanFormValues = {
+  [K in VanFormFieldKey]?: string;
+};
+
+export type VanFormFieldErrors = {
+  [K in VanFormFieldKey]?: string;
+};

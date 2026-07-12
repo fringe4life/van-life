@@ -36,9 +36,15 @@ const StyledCard = withVanCardStyles(Card);
 const hostVanDetailNavClassName = ({
   isActive,
   isPending,
-}: NavLinkClassNameProps) =>
-  // biome-ignore lint/style/noNestedTernary: simply related to react routers nav links
-  isPending ? "text-green-500" : isActive ? "underline" : "";
+}: NavLinkClassNameProps) => {
+  if (isPending) {
+    return "text-green-500";
+  }
+  if (isActive) {
+    return "underline";
+  }
+  return "";
+};
 
 const renderHostVanDetailNavProps = <T extends Id>(item: T) => ({
   className: hostVanDetailNavClassName,

@@ -1,9 +1,13 @@
 import { useQueryStates } from "nuqs";
-import { startTransition, useCallback, useId } from "react";
+import { startTransition, useId } from "react";
 import {
   DEFAULT_CURSOR,
   DEFAULT_DIRECTION,
 } from "~/features/pagination/pagination-constants";
+import {
+  VAN_STATE_FILTERS,
+  type VanStateFilterKey,
+} from "~/features/vans/components/van-filters/van-state-filter-config";
 import { useOptimisticBooleanFilter } from "~/features/vans/hooks/use-optimistic-boolean-filter";
 import { useOptimisticTypesFilter } from "~/features/vans/hooks/use-optimistic-types-filter";
 import type { LowercaseVanType } from "~/features/vans/types";
@@ -31,75 +35,71 @@ const useVanFilters = () => {
   const [optimisticOnlyOnSale, toggleOptimisticOnlyOnSale] =
     useOptimisticBooleanFilter(onlyOnSale ?? false);
 
-  const getCurrentState = useCallback(
-    () => snapshotFilterState(urlState),
-    [urlState]
-  );
+  const optimisticByKey = {
+    excludeInRepair: optimisticExcludeInRepair,
+    onlyOnSale: optimisticOnlyOnSale,
+  } as const;
 
-  const commitChange = useCallback(
-    (
-      next: VanFilterUrlState,
-      urlPatch: Partial<
-        Pick<VanFilterUrlState, "types" | "excludeInRepair" | "onlyOnSale">
-      >,
-      optimisticUpdate: () => void
-    ) => {
-      const current = getCurrentState();
-      const removing = isRemovingFilter(current, next);
+  const committedByKey = {
+    excludeInRepair: excludeInRepair ?? false,
+    onlyOnSale: onlyOnSale ?? false,
+  } as const;
 
-      startTransition(async () => {
-        optimisticUpdate();
-        await setUrlState(
-          {
-            ...urlPatch,
-            cursor: DEFAULT_CURSOR,
-            direction: DEFAULT_DIRECTION,
-          },
-          { limitUrlUpdates: getLimitUrlUpdates(removing) }
-        );
-      });
-    },
-    [getCurrentState, setUrlState]
-  );
+  const toggleOptimisticByKey = {
+    excludeInRepair: toggleOptimisticExcludeInRepair,
+    onlyOnSale: toggleOptimisticOnlyOnSale,
+  } as const;
 
-  const toggleType = useCallback(
-    (type: LowercaseVanType) => {
-      const current = getCurrentState();
-      const newTypes = current.types.includes(type)
-        ? current.types.filter((t) => t !== type)
-        : [...current.types, type];
-      const next: VanFilterUrlState = { ...current, types: newTypes };
+  const getCurrentState = () => snapshotFilterState(urlState);
 
-      commitChange(next, { types: next.types }, () =>
-        toggleOptimisticType(type)
+  const commitChange = (
+    next: VanFilterUrlState,
+    urlPatch: Partial<
+      Pick<VanFilterUrlState, "types" | "excludeInRepair" | "onlyOnSale">
+    >,
+    optimisticUpdate: () => void
+  ) => {
+    const current = getCurrentState();
+    const removing = isRemovingFilter(current, next);
+
+    startTransition(async () => {
+      optimisticUpdate();
+      await setUrlState(
+        {
+          ...urlPatch,
+          cursor: DEFAULT_CURSOR,
+          direction: DEFAULT_DIRECTION,
+        },
+        { limitUrlUpdates: getLimitUrlUpdates(removing) }
       );
-    },
-    [commitChange, getCurrentState, toggleOptimisticType]
-  );
+    });
+  };
 
-  const setExcludeInRepair = useCallback(
-    (checked: boolean) => {
-      const current = getCurrentState();
-      const next: VanFilterUrlState = { ...current, excludeInRepair: checked };
+  const toggleType = (type: LowercaseVanType) => {
+    const current = getCurrentState();
+    const newTypes = current.types.includes(type)
+      ? current.types.filter((t) => t !== type)
+      : [...current.types, type];
+    const next: VanFilterUrlState = { ...current, types: newTypes };
 
-      commitChange(next, { excludeInRepair: checked }, () =>
-        toggleOptimisticExcludeInRepair({ type: "toggle" })
-      );
-    },
-    [commitChange, getCurrentState, toggleOptimisticExcludeInRepair]
-  );
+    commitChange(next, { types: next.types }, () => toggleOptimisticType(type));
+  };
 
-  const setOnlyOnSale = useCallback(
-    (checked: boolean) => {
-      const current = getCurrentState();
-      const next: VanFilterUrlState = { ...current, onlyOnSale: checked };
+  const setStateFilter = (key: VanStateFilterKey, checked: boolean) => {
+    const current = getCurrentState();
+    const next: VanFilterUrlState = { ...current, [key]: checked };
 
-      commitChange(next, { onlyOnSale: checked }, () =>
-        toggleOptimisticOnlyOnSale({ type: "toggle" })
-      );
-    },
-    [commitChange, getCurrentState, toggleOptimisticOnlyOnSale]
-  );
+    commitChange(next, { [key]: checked }, () =>
+      toggleOptimisticByKey[key]({ type: "toggle" })
+    );
+  };
+
+  const stateFacets = VAN_STATE_FILTERS.map(({ key, label }) => ({
+    checked: optimisticByKey[key],
+    isPending: optimisticByKey[key] !== committedByKey[key],
+    key,
+    label,
+  }));
 
   const badgeCount = activeFilterCount({
     excludeInRepair: optimisticExcludeInRepair,
@@ -110,12 +110,9 @@ const useVanFilters = () => {
   return {
     badgeCount,
     baseId,
-    onlyOnSale,
-    optimisticExcludeInRepair,
-    optimisticOnlyOnSale,
     optimisticTypes,
-    setExcludeInRepair,
-    setOnlyOnSale,
+    setStateFilter,
+    stateFacets,
     toggleType,
   } as const;
 };

@@ -1,15 +1,17 @@
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
+import type { Id, Prettify } from "~/types";
 import { cn } from "~/utils/utils";
 
-interface FilterCheckboxRowProps {
-  checked: boolean;
-  className?: string;
-  id: string;
-  label: string;
-  labelClassName?: string;
-  onCheckedChange: (checked: boolean) => void;
-}
+type FilterCheckboxRowProps = Prettify<
+  Id & {
+    checked: boolean;
+    className?: string;
+    label: string;
+    labelClassName?: string;
+    onCheckedChange: (checked: boolean) => void;
+  }
+>;
 
 const FilterCheckboxRow = ({
   id,

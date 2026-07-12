@@ -21,12 +21,13 @@ interface StarProps {
 }
 
 const Star = ({ fillPercent }: StarProps): ReactNode => {
+  const hasFill = fillPercent > 0;
   return (
     <div aria-hidden="true" className="relative size-(--star-size)">
       {/* Background star (empty state) */}
       <StarIcon className="size-(--star-size) stroke-orange-400" />
       {/* Overlay star (filled state) clipped to the fill percentage */}
-      {fillPercent > 0 && (
+      {hasFill && (
         <div
           className="absolute inset-0 overflow-hidden text-orange-400"
           style={{ clipPath: `inset(0 ${100 - fillPercent}% 0 0)` }}

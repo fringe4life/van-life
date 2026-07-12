@@ -38,6 +38,12 @@ export default function VanDetail({
   van,
 }: VanDetailProps) {
   const vanIsAvailable = isVanAvailable(van);
+  const rentLabel = vanIsAvailable ? "Rent this van" : "Van not available";
+  const rentTo = vanIsAvailable
+    ? href("/host/rentals/rent/:vanSlug", { vanSlug })
+    : href("/vans/:vanSlug", { vanSlug });
+  const rentVariant = vanIsAvailable ? toLowercaseVanType(type) : "unavailable";
+  const rentClassName = badgeVariants({ variant: rentVariant });
   const srcSet = createWebPSrcSet(imageUrl, {
     aspectRatio: "1:1",
     quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for detail view
@@ -70,20 +76,12 @@ export default function VanDetail({
             </CardTitle>
             <CustomLink
               className={cn(
-                badgeVariants({
-                  variant: vanIsAvailable
-                    ? toLowercaseVanType(type)
-                    : "unavailable",
-                }),
+                rentClassName,
                 "@max-xl/card-full:hidden @min-xl/card-full:shrink-0"
               )}
-              to={
-                vanIsAvailable
-                  ? href("/host/rentals/rent/:vanSlug", { vanSlug })
-                  : href("/vans/:vanSlug", { vanSlug })
-              }
+              to={rentTo}
             >
-              {vanIsAvailable ? "Rent this van" : "Van not available"}
+              {rentLabel}
             </CustomLink>
           </div>
 
@@ -110,21 +108,10 @@ export default function VanDetail({
         {/* Mobile/Tablet Footer - hidden on desktop */}
         <CardFooter className="@max-lg/card-full:row-span-1 @min-xl/card-full:hidden">
           <CustomLink
-            className={cn(
-              badgeVariants({
-                variant: vanIsAvailable
-                  ? (type.toLowerCase() as "simple" | "luxury" | "rugged")
-                  : "unavailable",
-              }),
-              "@max-lg/card-full:w-full"
-            )}
-            to={
-              vanIsAvailable
-                ? href("/host/rentals/rent/:vanSlug", { vanSlug })
-                : href("/vans/:vanSlug", { vanSlug })
-            }
+            className={cn(rentClassName, "@max-lg/card-full:w-full")}
+            to={rentTo}
           >
-            {vanIsAvailable ? "Rent this van" : "Van not available"}
+            {rentLabel}
           </CustomLink>
         </CardFooter>
       </StyledCard>

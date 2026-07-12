@@ -14,6 +14,7 @@ import {
 import { GenericComponent } from "~/components/generic-component";
 import { PendingUI } from "~/components/pending-ui";
 import { VanForm } from "~/features/host/components/van-form";
+import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
 import { CustomLink } from "~/features/navigation/components/custom-link";
@@ -31,11 +32,15 @@ import {
   loadHostVansPage,
 } from "~/features/vans/services/host-vans.server";
 import type { HostVanListItem, VanCardProps } from "~/features/vans/types";
-import { isPendingVan } from "~/features/vans/types";
+import { isPendingVan, VAN_FORM_FIELDS } from "~/features/vans/types";
 import { pendingVanFromFormData } from "~/features/vans/utils/pending-van-from-form-data";
 import { toVanCardModel } from "~/features/vans/utils/to-van-card-model";
+import { toVanFormValues } from "~/features/vans/utils/to-van-form-values";
 import { hostPaginationParsers } from "~/lib/parsers";
-import { validateArkType } from "~/utils/parse-arktype.server";
+import {
+  arkErrorsToFieldErrors,
+  validateArkType,
+} from "~/utils/parse-arktype.server";
 import type { Route } from "./+types/host-vans";
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
@@ -62,13 +67,14 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   rawFormData.delete("clientKey");
 
   const formData = Object.fromEntries(rawFormData);
+  const formValues = toVanFormValues(formData);
 
   const validation = validateArkType(addVanSchema, formData);
 
   if (!validation.success) {
     return {
-      errors: validation.errors.summary,
-      formData,
+      fieldErrors: arkErrorsToFieldErrors(validation.errors, VAN_FORM_FIELDS),
+      formData: formValues,
     };
   }
 
@@ -76,8 +82,8 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 
   if (result2.error || !result2.data) {
     return {
-      errors: "Something went wrong please try again later",
-      formData,
+      formData: formValues,
+      formError: "Something went wrong please try again later",
     };
   }
 
@@ -188,10 +194,11 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
         </h2>
         <Activity mode={onFirstPage ? "visible" : "hidden"}>
           <VanForm
-            errors={fetcher.data?.errors}
+            fieldErrors={fetcher.data?.fieldErrors}
             formDataDefaults={formDataDefaults}
-            handleSubmit={handleSubmit}
+            formError={fetcher.data?.formError}
             isPending={isPending}
+            onSubmit={handleSubmit}
           />
         </Activity>
         {onFirstPage ? null : (
@@ -212,7 +219,7 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
           as="div"
           Component={VanCard}
           className="grid-max mt-6"
-          emptyStateMessage="You are currently not renting any vans."
+          emptyStateMessage={HOST_VANS_EMPTY_MESSAGE}
           errorStateMessage="Something went wrong"
           items={displayItems}
           renderProps={renderHostVanCardProps}

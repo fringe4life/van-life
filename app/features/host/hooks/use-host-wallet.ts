@@ -32,7 +32,10 @@ const useHostWallet = (
 
     const formData = new FormData(event.currentTarget);
     const amount = Number(formData.get("amount"));
-    const transactionType = formData.get("type") as string;
+    const transactionType = String(formData.get("type") ?? "");
+    if (!transactionType) {
+      return;
+    }
 
     startTransition(() => {
       addOptimisticBalance({ amount, type: transactionType });

@@ -12,6 +12,12 @@
       "sourceType": "github",
       "skillPath": "skills/react-router-framework-mode/SKILL.md",
       "computedHash": "26c5bdac2f686c47eb4c4b48b6cb52401cde1dc833e6d26408ddfb22ea83c5ca"
+    },
+    "react-stinky": {
+      "source": "saschb2b/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/react-stinky/SKILL.md",
+      "computedHash": "421938779db2f941c299f76bf6de6d83716a878229bf0fc3ea4c9d8bcfa3dec5"
     }
   }
 }

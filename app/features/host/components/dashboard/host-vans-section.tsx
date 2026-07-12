@@ -3,6 +3,7 @@ import { Await, href } from "react-router";
 import { GenericComponent } from "~/components/generic-component";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
 import type { VanModel } from "~/db/client.server";
+import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
 import { VanCard } from "~/features/vans/components/van-card";
 import { VanCardSkeleton } from "~/features/vans/components/van-card-skeleton";
 
@@ -37,7 +38,7 @@ const HostVansSection = ({ vansPromise }: HostVansSectionProps) => (
         <GenericComponent
           Component={VanCard}
           className="grid-max mt-11"
-          emptyStateMessage="You are not currently renting any vans"
+          emptyStateMessage={HOST_VANS_EMPTY_MESSAGE}
           errorStateMessage="Something went wrong"
           items={vans}
           renderProps={renderHostVanCardProps}

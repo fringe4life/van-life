@@ -1,12 +1,17 @@
 import { useMemo } from "react";
 import type { VanModel } from "~/db/client.server";
-import type { HostVanListItem } from "~/features/vans/types";
+import type {
+  HostVanListItem,
+  VanFormFieldErrors,
+  VanFormValues,
+} from "~/features/vans/types";
 import { isPendingVan } from "~/features/vans/types";
 
 interface CreateVanFetcherData {
   clientKey?: string;
-  errors?: string;
-  formData?: Record<string, FormDataEntryValue>;
+  fieldErrors?: VanFormFieldErrors;
+  formData?: VanFormValues;
+  formError?: string;
   skipListRevalidation?: boolean;
   van?: VanModel;
 }

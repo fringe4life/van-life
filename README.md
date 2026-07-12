@@ -13,7 +13,7 @@
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.9.3-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
-[![Vite](https://img.shields.io/badge/Vite-8.1.3-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8.1.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.2.3-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
@@ -47,7 +47,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🔒 **Authentication** with better-auth (sign up, login, session management, safe `redirectTo` return URLs)
 - ⚛️ **React 19 (canary) & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
-- 🔍 **Advanced Van Filtering** (modular filter panel, `useVanFilters` hook, multi-select types, state toggles, optimistic UI, debounced nuqs updates)
+- 🔍 **Advanced Van Filtering** (modular filter panel, facet-based state filters, `useVanFilters` hook, multi-select types, optimistic UI, debounced nuqs updates)
 - 📱 **Mobile Navigation** (Base UI Dialog drawer, animated hamburger, slide-in overlay)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
@@ -87,7 +87,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **TypeScript 7.0.2** with strict configuration
 - **TailwindCSS 4.3.2** with modern CSS features
 - **@base-ui/react 1.6.0** + **shadcn/ui** (`base-nova` style) for dialog, popover, checkbox, label, and mobile nav
-- **Lucide React 1.23.0** for icons (direct imports for performance)
+- **Lucide React 1.24.0** for icons (direct imports for performance)
 - **Recharts 3.9.2** for data visualization (lazy-loaded)
 - **nuqs 2.9.0** for type-safe URL state management via shared parsers
 
@@ -102,13 +102,13 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 ### Development Tools
 
-- **Vite 8.1.3** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports
+- **Vite 8.1.4** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler 1.0** (stable) - Automatic memoization via `@rolldown/plugin-babel` + `reactCompilerPreset`
 - **Biome 2.5.2** for linting and formatting with Ultracite integration
 - **Ultracite 7.9.3** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock 1.10.0** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.107.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
+- **Wrangler 4.110.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` driver for remote)
 - **react-doctor 0.7.1** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
@@ -117,7 +117,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 ### Build System
 
-- **Vite 8.1.3** - Rolldown pipeline, `build.target: "esnext"`, `server.forwardConsole`
+- **Vite 8.1.4** - Rolldown pipeline, `build.target: "esnext"`, `server.forwardConsole`
 - **React Compiler** - `@rolldown/plugin-babel` + `reactCompilerPreset()` from `@vitejs/plugin-react` (import preset only — not `react()`; see `docs/babel-react-compiler.md`)
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Path aliases** - Native Vite `resolve.tsconfigPaths` (no `vite-tsconfig-paths` plugin)
@@ -159,14 +159,14 @@ app/
 │   │   └── dal/        # SEO Drizzle reads (sitemap.server.ts)
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, VanDetail, HostVanDetail*, van-filters/, etc.)
-│       │   └── van-filters/  # VanFilters, type/state filter sections, filter-checkbox-row
+│       │   └── van-filters/  # VanFilters, type/state sections, facet config, shared filter types
 │       ├── constants/  # Van-related constants (van-types.ts for client-safe constants)
 │       ├── dal/        # Van Drizzle repositories (*.server.ts)
 │       ├── services/   # catalog, host-vans, van-detail
 │       ├── hooks/      # use-van-filters, host-vans list reducer, display hooks, optimistic filter hooks
 │       ├── schemas.server.ts  # Van form/search ArkType schemas
-│       ├── types.ts    # Van-specific TypeScript types
-│       └── utils/      # Van helpers (pricing, van-filter-url, pending-van-from-form-data)
+│       ├── types.ts    # Van-specific TypeScript types (incl. VanFormValues / field errors)
+│       └── utils/      # pricing, van-filter-url, to-van-form-values, pending-van-from-form-data
 ├── db/                 # Drizzle schema, client, seed, migrations
 │   ├── client.server.ts    # createDb(d1) → drizzle-orm/d1
 │   ├── d1-http.server.ts   # Remote D1 HTTP client for seed/studio
@@ -212,6 +212,7 @@ docs/
 ├── d1-setup.md             # Cloudflare D1 create/migrate/seed guide
 ├── react-router-audit.md   # Framework-mode audit and middleware notes
 ├── babel-react-compiler.md # React Compiler via @rolldown/plugin-babel (Vite 8)
+├── react-stinky-report.md  # React Stinky smell sweep + fixes
 └── fallow-health-backlog.md # Code health backlog from fallow analysis
 ```
 
@@ -302,7 +303,7 @@ const [transactions, avgRating] = await Promise.all([
 - **Van validators** (`app/features/vans/utils/validators.ts`) — VanType / VanState guards
 - **Pagination validators** (`app/features/pagination/utils/validators.ts`) — limit, direction, sort, cursor
 - **Shared UUID schema** (`app/dal/schemas.server.ts`) — `uuidv7Schema`
-- **Server-side ArkType schemas** in feature `schemas.server.ts` files with `app/utils/parse-arktype.server.ts`
+- **Server-side ArkType schemas** in feature `schemas.server.ts` files with `app/utils/parse-arktype.server.ts` (`validateArkType`, `arkErrorsToFieldErrors` for per-field form UI)
 
 ---
 
@@ -333,7 +334,7 @@ The application uses **nuqs 2.9.0** for type-safe URL state management:
 - **Bidirectional cursor pagination** with forward/backward navigation
 - **Pagination with sorting** on Reviews, Income, and Transfers pages
 - **Van search functionality** with case-insensitive `LIKE` across name and description (word-split), debounced input (250ms), immediate Enter key submission
-- **Advanced van filtering** via `vansFilterUrlParsers` — multi-select types, exclude in repair, only on sale; debounced adds, immediate removes (`van-filter-url.ts`)
+- **Advanced van filtering** via `vansFilterUrlParsers` — multi-select types plus facet-driven state filters (`van-state-filter-config.ts`); debounced adds, immediate removes (`van-filter-url.ts`)
 - **Automatic URL synchronization** with proper type handling
 - **View transitions support** for smooth navigation
 - **Pagination state preservation** - All search params (cursor, limit, types, excludeInRepair, onlyOnSale, search) preserved when navigating to detail pages and back via `buildVanSearchParams` utility
