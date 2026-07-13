@@ -27,7 +27,8 @@
     "tailwindcss",
     // Build-time only: route/vite config (app/routes.ts, vite.config.ts, react-router.config.ts)
     "@react-router/dev",
-    "wrangler"
+    "wrangler",
+    "rolldown"
   ],
   "duplicates": {
     "enabled": true,

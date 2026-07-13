@@ -3,7 +3,7 @@ import type { ReactDoctorConfig } from "react-doctor/api";
 export default {
   deadCode: false,
   ignore: {
-    files: ["build", "app/generated/**"],
+    files: ["build", "app/generated/**", "docs"],
     overrides: [
       {
         files: ["app/root.tsx", "app/components/ui/**"],

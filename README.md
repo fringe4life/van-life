@@ -103,6 +103,8 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Development Tools
 
 - **Vite 8.1.4** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports
+- **@vitejs/devtools 0.3.4** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
+- **rollup-plugin-visualizer 7.0.1** - Client/server bundle treemaps (`VITE_ANALYZE=true`)
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler 1.0** (stable) - Automatic memoization via `@rolldown/plugin-babel` + `reactCompilerPreset`
 - **Biome 2.5.2** for linting and formatting with Ultracite integration
@@ -121,6 +123,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **React Compiler** - `@rolldown/plugin-babel` + `reactCompilerPreset()` from `@vitejs/plugin-react` (import preset only — not `react()`; see `docs/babel-react-compiler.md`)
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Path aliases** - Native Vite `resolve.tsconfigPaths` (no `vite-tsconfig-paths` plugin)
+- **Bundle analysis** - Per-environment Rolldown plugins: visualizer → `build/client|server/stats.html`; DevTools capture → `build/devtools/` when `VITE_ANALYZE=true`
 - **Type-safe configuration** - Full TypeScript support in Vite config
 
 ---
@@ -897,8 +900,10 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 
 ## Scripts
 
-- `bun run dev` – Start development server with HMR (Varlock loads env)
+- `bun run dev` – Start development server with HMR (Varlock loads env; Vite DevTools dock available)
 - `bun run build` – Build for production (Cloudflare Workers + client assets)
+- `bun run analyze` – Production build with bundle analysis (`VITE_ANALYZE=true`; visualizer + DevTools capture)
+- `bun run devtools` – Open standalone Vite DevTools UI (`vite-devtools`)
 - `bun run preview` – Preview the production build locally
 - `bun run deploy:project` – Deploy to Cloudflare Workers via Varlock + Wrangler (upload + go live)
 - `bun run deploy:upload` – Upload a Worker version only (preview URL; prod traffic unchanged)
@@ -1048,6 +1053,10 @@ Set production secrets (`BETTER_AUTH_SECRET`, `SITE_URL`, etc.) via Varlock/Bitw
 ```bash
 # Production build
 bun run build
+
+# Bundle analysis (client/server stats.html + DevTools capture)
+bun run analyze
+bun run devtools
 
 # Type checking
 bun run typecheck
