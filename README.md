@@ -1000,8 +1000,10 @@ Configuration in `lint-staged.config.ts`.
 
 ### GitHub Actions
 
-- **CodeQL** (`.github/workflows/codeql.yml`) - Security and quality scanning on push/PR to `master`
-- **React Doctor** (`.github/workflows/react-doctor.yml`, `doctor.config.ts`, `.cursor/hooks/react-doctor.mjs`) - React diagnostics on PRs, locally, and after Cursor edits
+- **CI** (`.github/workflows/ci.yml`) — shared checkout + Bun install; Varlock env validation (Bitwarden), Ultracite `check`, `typecheck`, `test`; React Doctor on PRs (`doctor.config.ts`, `.cursor/hooks/react-doctor.mjs` still local)
+- **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master` (own runner; do not fold into CI)
+- **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` so CI can resolve `bitwarden()` refs in `.env.schema`
+- **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability; bump via Dependabot `github-actions` or periodic SHA refresh
 
 ### Ultracite Integration
 
