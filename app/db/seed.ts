@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/performance/noAwaitInLoops: d1 limitation */
 import { asc, inArray } from "drizzle-orm";
 import { getPlatformProxy } from "wrangler";
 import type { VanInsert } from "~/db/client.server";
@@ -26,7 +25,6 @@ import {
   isVanRentable,
   randomTrueOrFalse,
 } from "./seed-fns";
-import type { RentModel } from "./types";
 
 const HOST_COUNT = 3;
 /** Bound params per row for D1 chunking (must stay under ~100/statement). */
@@ -91,30 +89,33 @@ const main = async () => {
       };
     });
 
-    for (const chunk of chunksOf(vansWithHosts, VAN_COLS)) {
-      await db.insert(van).values(chunk);
-    }
+    await Promise.all(
+      [...chunksOf(vansWithHosts, VAN_COLS)].map((chunk) =>
+        db.insert(van).values(chunk)
+      )
+    );
 
     const vanRecords = await db.select().from(van);
+    const vanById = new Map(vanRecords.map((v) => [v.id, v]));
 
-    const vansRented: UUIDv7[] = [];
+    const vansRented = new Set<UUIDv7>();
     const vansReturned: UUIDv7[] = [];
 
     const rentsWithIds = rents.map((seedRent) => {
       let vanId = getRandomId(vanRecords);
 
-      while (vansRented.includes(vanId)) {
+      while (vansRented.has(vanId)) {
         vanId = getRandomId(vanRecords);
       }
 
-      let selectedVan = vanRecords.find((vanItem) => vanItem.id === vanId);
+      let selectedVan = vanById.get(vanId);
       if (!selectedVan) {
         throw new Error(`Van ${vanId} not found`);
       }
 
       if (!isVanRentable(selectedVan.state)) {
-        vanId = findRentableVan(vanRecords, vansRented);
-        selectedVan = vanRecords.find((v) => v.id === vanId);
+        vanId = findRentableVan(vanRecords, vanById, vansRented);
+        selectedVan = vanById.get(vanId);
         if (!selectedVan) {
           throw new Error(`Rentable van ${vanId} not found`);
         }
@@ -134,7 +135,7 @@ const main = async () => {
       if (rentedTo) {
         vansReturned.push(vanId);
       } else {
-        vansRented.push(vanId);
+        vansRented.add(vanId);
       }
 
       return {
@@ -147,52 +148,57 @@ const main = async () => {
       };
     });
 
-    const createdRents: RentModel[] = [];
-    for (const chunk of chunksOf(rentsWithIds, RENT_COLS)) {
-      const inserted = await db.insert(rent).values(chunk).returning();
-      createdRents.push(...inserted);
-    }
+    const createdRents = (
+      await Promise.all(
+        [...chunksOf(rentsWithIds, RENT_COLS)].map((chunk) =>
+          db.insert(rent).values(chunk).returning()
+        )
+      )
+    ).flat();
 
-    if (vansRented.length > 0) {
+    if (vansRented.size > 0) {
       await db
         .update(van)
         .set({ isRented: true })
-        .where(inArray(van.id, vansRented));
+        .where(inArray(van.id, [...vansRented]));
     }
 
-    const rentalTransactions = createdRents
-      .filter((r) => r.rentedTo !== null)
-      .flatMap((r) => {
-        const rentedVan = vanRecords.find((v) => v.id === r.vanId);
-        if (!rentedVan) {
-          throw new Error(`Van ${r.vanId} not found for rental transaction`);
-        }
-        const rentedTo = r.rentedTo as Date;
-        const amount = getCost(r.rentedAt, rentedTo, rentedVan.price);
+    const rentalTransactions = createdRents.flatMap((r) => {
+      if (r.rentedTo === null) {
+        return [];
+      }
 
-        return [
-          {
-            amount: -amount,
-            createdAt: rentedTo,
-            description: `Payment for van rental ${r.vanId}`,
-            rentId: r.id,
-            type: TransactionType.RENTAL_RETURN,
-            userId: r.renterId,
-          },
-          {
-            amount,
-            createdAt: rentedTo,
-            description: `Received payment for van ${r.vanId}`,
-            rentId: r.id,
-            type: TransactionType.RENTAL_PAYMENT,
-            userId: r.hostId,
-          },
-        ];
-      });
+      const rentedVan = vanById.get(r.vanId);
+      if (!rentedVan) {
+        throw new Error(`Van ${r.vanId} not found for rental transaction`);
+      }
+      const amount = getCost(r.rentedAt, r.rentedTo, rentedVan.price);
 
-    for (const chunk of chunksOf(rentalTransactions, TX_COLS)) {
-      await db.insert(transaction).values(chunk);
-    }
+      return [
+        {
+          amount: -amount,
+          createdAt: r.rentedTo,
+          description: `Payment for van rental ${r.vanId}`,
+          rentId: r.id,
+          type: TransactionType.RENTAL_RETURN,
+          userId: r.renterId,
+        },
+        {
+          amount,
+          createdAt: r.rentedTo,
+          description: `Received payment for van ${r.vanId}`,
+          rentId: r.id,
+          type: TransactionType.RENTAL_PAYMENT,
+          userId: r.hostId,
+        },
+      ];
+    });
+
+    await Promise.all(
+      [...chunksOf(rentalTransactions, TX_COLS)].map((chunk) =>
+        db.insert(transaction).values(chunk)
+      )
+    );
 
     const completedRents = createdRents.filter((r) => r.rentedTo !== null);
 
@@ -202,18 +208,22 @@ const main = async () => {
       userId: getRandomId(users),
     }));
 
-    for (const chunk of chunksOf(reviewsWithIds, REVIEW_COLS)) {
-      await db.insert(review).values(chunk);
-    }
+    await Promise.all(
+      [...chunksOf(reviewsWithIds, REVIEW_COLS)].map((chunk) =>
+        db.insert(review).values(chunk)
+      )
+    );
 
     const transactionsWithIds = transactions.map((seedTx) => ({
       ...seedTx,
       userId: getRandomId(users),
     }));
 
-    for (const chunk of chunksOf(transactionsWithIds, TX_COLS)) {
-      await db.insert(transaction).values(chunk);
-    }
+    await Promise.all(
+      [...chunksOf(transactionsWithIds, TX_COLS)].map((chunk) =>
+        db.insert(transaction).values(chunk)
+      )
+    );
 
     const vansPerHost = hosts.map(
       (host) => vansWithHosts.filter((v) => v.hostId === host.id).length

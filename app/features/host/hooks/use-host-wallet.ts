@@ -1,26 +1,32 @@
 import {
   type ChangeEventHandler,
   type SubmitEventHandler,
-  useId,
   useOptimistic,
   useState,
   useTransition,
 } from "react";
 import { useFetcher } from "react-router";
 import { balanceReducer } from "~/features/host/hooks/balance-reducer";
+import type { MoneyFormFieldErrors } from "~/features/host/types";
 import { DEPOSIT, WITHDRAW } from "~/features/vans/constants/vans-constants";
 
-const useHostWallet = (
-  transactionSummary: number,
-  initialTransactionType?: string
-) => {
-  const [isDepositing, setIsDepositing] = useState(
-    () => initialTransactionType !== WITHDRAW
-  );
+interface HostWalletActionData {
+  fieldErrors?: MoneyFormFieldErrors;
+  formData?: {
+    amount: string;
+    type: string;
+  };
+  formError?: string;
+}
 
-  const fetcher = useFetcher();
+const useHostWallet = (transactionSummary: number) => {
+  const fetcher = useFetcher<HostWalletActionData>();
   const [isPending, startTransition] = useTransition();
-  const amountInputId = useId();
+  const [typeOverride, setTypeOverride] = useState<string | null>(null);
+
+  const submittedType = fetcher.data?.formData?.type;
+  const activeType = typeOverride ?? submittedType ?? DEPOSIT;
+  const isDepositing = activeType !== WITHDRAW;
 
   const [optimisticBalance, addOptimisticBalance] = useOptimistic(
     transactionSummary,
@@ -46,13 +52,10 @@ const useHostWallet = (
   };
 
   const handleChangeType: ChangeEventHandler<HTMLInputElement> = (event) => {
-    startTransition(() =>
-      setIsDepositing(event.currentTarget.value === DEPOSIT)
-    );
+    startTransition(() => setTypeOverride(event.currentTarget.value));
   };
 
   return {
-    amountInputId,
     fetcher,
     handleChangeType,
     handleSubmit,
