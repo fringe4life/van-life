@@ -1,4 +1,5 @@
 import { asc, inArray } from "drizzle-orm";
+import { ENV } from "varlock/env";
 import { getPlatformProxy } from "wrangler";
 import type { VanInsert } from "~/db/client.server";
 import { createDb } from "~/db/client.server";
@@ -33,16 +34,6 @@ const RENT_COLS = 6;
 const REVIEW_COLS = 7;
 const TX_COLS = 7;
 
-function requireEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(
-      `Missing ${name}. Set CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_DATABASE_ID, and CLOUDFLARE_D1_TOKEN for remote seed (D1 edit token).`
-    );
-  }
-  return value;
-}
-
 const main = async () => {
   const remote = process.argv.includes("--remote");
 
@@ -56,9 +47,9 @@ const main = async () => {
 
   const db = remote
     ? createD1HttpDb({
-        accountId: requireEnv("CLOUDFLARE_ACCOUNT_ID"),
-        databaseId: requireEnv("CLOUDFLARE_DATABASE_ID"),
-        token: requireEnv("CLOUDFLARE_D1_TOKEN"),
+        accountId: ENV.CLOUDFLARE_ACCOUNT_ID,
+        databaseId: ENV.CLOUDFLARE_DATABASE_ID,
+        token: ENV.CLOUDFLARE_D1_TOKEN,
       })
     : createDb(proxy?.env.DB as D1Database);
 
