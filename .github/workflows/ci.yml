@@ -16,15 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    # Plain CI env — overrides bitwarden() defaults so typecheck/test never need the machine token.
+    # Loads committed .env.test via Varlock (no Bitwarden init)
     env:
       VARLOCK_ENV: test
-      BETTER_AUTH_SECRET: ci-placeholder-secret-20
-      BETTER_AUTH_URL: http://localhost:5173
-      SITE_URL: http://localhost:5173
-      CLOUDFLARE_ACCOUNT_ID: "00000000000000000000000000000000"
-      CLOUDFLARE_DATABASE_ID: 72a2a3ad-7768-4a39-99de-ce609c8c79b8
-      CLOUDFLARE_D1_TOKEN: ci-placeholder-d1-token
     steps:
       - name: Checkout
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
@@ -44,8 +38,8 @@ jobs:
       - name: Test
         run: bun run test
 
-  # Real Bitwarden resolve — master push only (not PR). Action installs varlock CLI;
-  # bun install still needed so @varlock/bitwarden-plugin resolves from the lockfile.
+  # Real Bitwarden resolve — master push only (not PR).
+  # VARLOCK_ENV=development enables .env.bitwarden import.
   varlock:
     name: Varlock
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -65,7 +59,7 @@ jobs:
       - name: Load and validate env (Varlock)
         uses: dmno-dev/varlock-action@7141115d0060616e398c5fa9035e67d7820ab2b6 # v1.0.5
         env:
-          VARLOCK_ENV: test
+          VARLOCK_ENV: development
           BITWARDEN_ACCESS_TOKEN: ${{ secrets.BITWARDEN_ACCESS_TOKEN }}
 
   react-doctor:

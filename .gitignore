@@ -10,6 +10,8 @@
 # env files (can opt-in for committing if needed)
 .env*
 !.env.schema
+!.env.bitwarden
+!.env.test
 /app/generated/
 
 # Local Netlify folder

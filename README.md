@@ -876,26 +876,32 @@ bun run deploy:project
 
 ## Environment Variables
 
-Environment variables are defined in `.env.schema` (Varlock) and validated at runtime. Only `.env.schema` is committed; use `.env.local` for local overrides or Bitwarden via Varlock in deploy.
+Environment variables are defined in `.env.schema` (Varlock) and validated at runtime. Committed env files:
+
+- `.env.schema` — schema + non-secret defaults
+- `.env.bitwarden` — Bitwarden plugin init + `bitwarden()` resolvers (imported when `VARLOCK_ENV` is `development` | `preview` | `production`)
+- `.env.test` — plain placeholders for CI / `VARLOCK_ENV=test` (no Bitwarden)
+
+Use `.env.local` (gitignored) for local overrides. Bitwarden machine token via env / GH secret `BITWARDEN_ACCESS_TOKEN`.
 
 ```env
 # Environment (development | preview | production | test)
 VARLOCK_ENV=development
 
-# Authentication
-BETTER_AUTH_SECRET=your-secret-key-here-min-20-chars
+# Authentication (resolved via Bitwarden when not test)
+BETTER_AUTH_SECRET=
 BETTER_AUTH_URL=http://localhost:5173
 
 # SEO (canonical URLs, Open Graph)
 SITE_URL=http://localhost:5173
 
-# Optional: Bitwarden (Varlock plugin for production secrets)
-# BITWARDEN_ACCESS_TOKEN=your-bitwarden-token
-
 # Optional: drizzle-kit d1-http / remote seed
 # CLOUDFLARE_ACCOUNT_ID=
 # CLOUDFLARE_DATABASE_ID=
 # CLOUDFLARE_D1_TOKEN=
+
+# Bitwarden (required for non-test envs)
+# BITWARDEN_ACCESS_TOKEN=
 ```
 
 Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app code through `app/lib/env.server.ts`. Runtime DB is the Wrangler D1 binding `env.DB` (not a connection string).
@@ -1001,11 +1007,11 @@ Configuration in `lint-staged.config.ts`.
 ### GitHub Actions
 
 - **CI** (`.github/workflows/ci.yml`) — three jobs with least-privilege permissions:
-  - **Quality** (`contents: read`) — Bun install, Ultracite `check`, `typecheck`, `test` using plain CI env stubs (no Bitwarden)
-  - **Varlock** (`contents: read`, `push` to `master` only) — validates `.env.schema` with `BITWARDEN_ACCESS_TOKEN`; needs lockfile for `@varlock/bitwarden-plugin` (Action self-installs the `varlock` CLI)
+  - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
+  - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
   - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — self-contained Action, no Bun install
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
-- **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (used only by the Varlock job on `master`)
+- **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability; bump via Dependabot `github-actions` or periodic SHA refresh
 
 ### Ultracite Integration
