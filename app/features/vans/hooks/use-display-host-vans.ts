@@ -37,12 +37,12 @@ export function useDisplayHostVans({
 
   const clientKey = fetcherData?.clientKey;
 
+  const isMatchingPending = (item: HostVanListItem) =>
+    isPendingVan(item) &&
+    (item.clientKey === clientKey || item.slug === created.slug);
+
   const withoutPending = optimisticItems.filter(
-    (item) =>
-      !(
-        isPendingVan(item) &&
-        (item.clientKey === clientKey || item.slug === created.slug)
-      )
+    (item) => !isMatchingPending(item)
   );
 
   const hasCreated = withoutPending.some(
