@@ -6,19 +6,55 @@ on:
   pull_request:
     branches: [master]
 
+# Default: least privilege. Jobs that need more declare their own permissions.
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   quality:
     name: Quality
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    # Plain CI env — overrides bitwarden() defaults so typecheck/test never need the machine token.
+    env:
+      VARLOCK_ENV: test
+      BETTER_AUTH_SECRET: ci-placeholder-secret-20
+      BETTER_AUTH_URL: http://localhost:5173
+      SITE_URL: http://localhost:5173
+      CLOUDFLARE_ACCOUNT_ID: "00000000000000000000000000000000"
+      CLOUDFLARE_DATABASE_ID: 72a2a3ad-7768-4a39-99de-ce609c8c79b8
+      CLOUDFLARE_D1_TOKEN: ci-placeholder-d1-token
     steps:
       - name: Checkout
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
-        with:
-          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Ultracite check
+        run: bun run check
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Test
+        run: bun run test
+
+  # Real Bitwarden resolve — master push only (not PR). Action installs varlock CLI;
+  # bun install still needed so @varlock/bitwarden-plugin resolves from the lockfile.
+  varlock:
+    name: Varlock
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
@@ -32,17 +68,20 @@ jobs:
           VARLOCK_ENV: test
           BITWARDEN_ACCESS_TOKEN: ${{ secrets.BITWARDEN_ACCESS_TOKEN }}
 
-      - name: Ultracite check
-        run: bun run check
-
-      - name: Typecheck
-        run: bun run typecheck
-
-      - name: Test
-        run: bun run test
+  react-doctor:
+    name: React Doctor
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      statuses: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
 
       - name: React Doctor
-        if: github.event_name == 'pull_request'
         uses: millionco/react-doctor@938008119a288f2fb47c66a69cd9279a21f31784 # v2
         with:
           scope: changed

@@ -1000,9 +1000,12 @@ Configuration in `lint-staged.config.ts`.
 
 ### GitHub Actions
 
-- **CI** (`.github/workflows/ci.yml`) — shared checkout + Bun install; Varlock env validation (Bitwarden), Ultracite `check`, `typecheck`, `test`; React Doctor on PRs (`doctor.config.ts`, `.cursor/hooks/react-doctor.mjs` still local)
-- **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master` (own runner; do not fold into CI)
-- **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` so CI can resolve `bitwarden()` refs in `.env.schema`
+- **CI** (`.github/workflows/ci.yml`) — three jobs with least-privilege permissions:
+  - **Quality** (`contents: read`) — Bun install, Ultracite `check`, `typecheck`, `test` using plain CI env stubs (no Bitwarden)
+  - **Varlock** (`contents: read`, `push` to `master` only) — validates `.env.schema` with `BITWARDEN_ACCESS_TOKEN`; needs lockfile for `@varlock/bitwarden-plugin` (Action self-installs the `varlock` CLI)
+  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — self-contained Action, no Bun install
+- **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
+- **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (used only by the Varlock job on `master`)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability; bump via Dependabot `github-actions` or periodic SHA refresh
 
 ### Ultracite Integration
