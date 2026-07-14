@@ -44,7 +44,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ## Features
 
 - 🚀 **Modern React Router 8** with server-side rendering and file-based routing
-- 🔒 **Authentication** with better-auth (sign up, login, session management, safe `redirectTo` return URLs)
+- 🔒 **Authentication** with better-auth (sign up, login, session management, safe `redirectTo` return URLs, per-field form errors)
 - ⚛️ **React 19 (canary) & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🔍 **Advanced Van Filtering** (modular filter panel, facet-based state filters, `useVanFilters` hook, multi-select types, optimistic UI, debounced nuqs updates)
@@ -135,15 +135,17 @@ app/
 ├── components/          # Reusable UI components
 │   ├── ui/             # shadcn base-nova (@base-ui/react): button, dialog, popover, checkbox, badge, etc.
 │   │                   # Variant tokens in button-variants.ts, badge-variants.ts
-│   ├── types.ts        # Shared component prop types (AsProps, EmptyState, ErrorState)
-│   └── [common]        # Generic components (forms, lists, sortable, etc.)
+│   ├── form/           # Shared Field + FormError (a11y labels, aria-invalid, ViewTransition)
+│   ├── types.ts        # Shared prop types (AsProps, EmptyState, ErrorState, ViewTransitionTune)
+│   └── [common]        # Generic components (lists, sortable, etc.)
 ├── constants/          # App-wide constants and enums
 ├── dal/                # Global data access helpers
 │   ├── schemas.server.ts      # Shared UUID v7 ArkType schema (branded)
 │   └── parse-uuidv7.server.ts # Parse/string → UUIDv7 at trust boundaries
 ├── features/
 │   ├── auth/
-│   │   └── schemas.server.ts  # Login/sign-up ArkType schemas
+│   │   ├── schemas.server.ts  # Login/sign-up ArkType schemas
+│   │   └── types.ts           # Login/sign-up field keys + field-error types
 │   ├── host/
 │   │   ├── components/ # Host UI (van-form, charts, dashboard sections, reviews)
 │   │   │   └── dashboard/  # host-income-section, host-review-section, host-vans-section, host-wallet-form
@@ -318,6 +320,8 @@ const [transactions, avgRating] = await Promise.all([
 - **Host auth middleware** runs once on `host-layout.tsx` (stub loader ensures `.data` requests on client navigations)
 - **`redirectTo` query param** on login — returns users to the page they tried to visit (open-redirect safe)
 - **ArkType validation** (`app/features/auth/schemas.server.ts`) for login/sign-up forms
+- **Per-field errors** — `arkErrorsToFieldErrors` + `LOGIN_FORM_FIELDS` / `SIGN_UP_FORM_FIELDS` (`app/features/auth/types.ts`); UI via shared `Field` / `FormError`
+- **Accessible auth forms** — `useFetcher` + `useTransition`, labeled inputs, `aria-invalid` / `aria-describedby`, form-level `role="alert"`
 - **View transitions** on login/sign-up — named `viewTransitionName` on card, title, fields, submit, footer with CSS morph animations
 - **Server-side session handling** in loaders
 - **Better-auth config** in `app/lib/auth.server.ts`; **`AuthenticatedUser`** type in `app/types/auth.server.ts`

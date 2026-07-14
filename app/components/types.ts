@@ -1,4 +1,4 @@
-import type { ElementType } from "react";
+import type { ComponentProps, ElementType, ViewTransition } from "react";
 
 export interface AsProps<T extends ElementType = "div"> {
   as?: T;
@@ -11,3 +11,8 @@ export interface EmptyState {
 export interface ErrorState {
   errorStateMessage: string;
 }
+
+export type ViewTransitionTune = Omit<
+  ComponentProps<typeof ViewTransition>,
+  "children"
+>;

@@ -9,6 +9,7 @@ import { useHostWallet } from "~/features/host/hooks/use-host-wallet";
 import { moneySchema } from "~/features/host/schemas.server";
 import { loadHostDashboard } from "~/features/host/services/dashboard.server";
 import { depositOrWithdraw } from "~/features/host/services/wallet.server";
+import { MONEY_FORM_FIELDS } from "~/features/host/types";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
 import {
@@ -19,7 +20,10 @@ import { DEPOSIT } from "~/features/vans/constants/vans-constants";
 import { calculateTotalIncome } from "~/utils/calculate-income";
 import { getElapsedTime } from "~/utils/get-elapsed-time";
 import { getRouteErrorMessage } from "~/utils/get-route-error-message";
-import { validateArkType } from "~/utils/parse-arktype.server";
+import {
+  arkErrorsToFieldErrors,
+  validateArkType,
+} from "~/utils/parse-arktype.server";
 import { tryCatch } from "~/utils/try-catch.server";
 import type { Route } from "./+types/host";
 
@@ -55,7 +59,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 
   if (!validation.success) {
     return {
-      errors: validation.errors.summary,
+      fieldErrors: arkErrorsToFieldErrors(validation.errors, MONEY_FORM_FIELDS),
       formData: submittedValues,
     };
   }
@@ -68,8 +72,8 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 
   if (error) {
     return {
-      errors: "Something went wrong please try again later",
       formData: submittedValues,
+      formError: "Something went wrong please try again later",
     };
   }
 
@@ -79,11 +83,11 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   }
 };
 
-const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
+const Host = ({ loaderData }: Route.ComponentProps) => {
   const { vansPromise, avgRating, name, transactions, transactionSummary } =
     loaderData;
 
-  const wallet = useHostWallet(transactionSummary, actionData?.formData?.type);
+  const wallet = useHostWallet(transactionSummary);
   const sumIncome = calculateTotalIncome(transactions);
   const { elapsedDays } = getElapsedTime(transactions);
 
@@ -102,11 +106,7 @@ const Host = ({ loaderData, actionData }: Route.ComponentProps) => {
         sumIncome={sumIncome}
       />
       <HostReviewSection avgRating={avgRating} />
-      <HostWalletForm
-        defaultAmount={actionData?.formData?.amount}
-        error={actionData?.errors}
-        wallet={wallet}
-      />
+      <HostWalletForm wallet={wallet} />
       <HostVansSection vansPromise={vansPromise} />
     </PendingUI>
   );

@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import type { VanModel } from "~/db/client.server";
 import type {
   HostVanListItem,
@@ -29,35 +28,33 @@ export function useDisplayHostVans({
   fetcherState,
   limit,
 }: UseDisplayHostVansParams): HostVanListItem[] {
-  return useMemo(() => {
-    const created =
-      fetcherState === "idle" && fetcherData?.van ? fetcherData.van : undefined;
+  const created =
+    fetcherState === "idle" && fetcherData?.van ? fetcherData.van : undefined;
 
-    if (!created) {
-      return optimisticItems;
-    }
+  if (!created) {
+    return optimisticItems;
+  }
 
-    const clientKey = fetcherData?.clientKey;
+  const clientKey = fetcherData?.clientKey;
 
-    const withoutPending = optimisticItems.filter(
-      (item) =>
-        !(
-          isPendingVan(item) &&
-          (item.clientKey === clientKey || item.slug === created.slug)
-        )
-    );
+  const withoutPending = optimisticItems.filter(
+    (item) =>
+      !(
+        isPendingVan(item) &&
+        (item.clientKey === clientKey || item.slug === created.slug)
+      )
+  );
 
-    const hasCreated = withoutPending.some(
-      (item) => !isPendingVan(item) && item.id === created.id
-    );
+  const hasCreated = withoutPending.some(
+    (item) => !isPendingVan(item) && item.id === created.id
+  );
 
-    if (hasCreated) {
-      return withoutPending.slice(0, limit);
-    }
+  if (hasCreated) {
+    return withoutPending.slice(0, limit);
+  }
 
-    return [
-      created,
-      ...withoutPending.filter((item) => !isPendingVan(item)),
-    ].slice(0, limit);
-  }, [optimisticItems, fetcherData, fetcherState, limit]);
+  return [
+    created,
+    ...withoutPending.filter((item) => !isPendingVan(item)),
+  ].slice(0, limit);
 }

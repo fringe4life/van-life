@@ -147,7 +147,7 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
   const [isPending, startTransition] = useTransition();
 
   const [optimisticItems, addOptimisticItem] = useOptimistic(
-    (vans ?? []) as HostVanListItem[],
+    vans ?? [],
     hostVansListReducer
   );
 

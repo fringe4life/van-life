@@ -22,3 +22,7 @@ export type Replace<T, K extends keyof T, U> = Prettify<
 export interface Search {
   search?: string;
 }
+
+export interface Message {
+  message: string;
+}

@@ -1,4 +1,5 @@
-import { ViewTransition } from "react";
+import { Field } from "~/components/form/field";
+import { FormError } from "~/components/form/form-error";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
@@ -8,24 +9,21 @@ import type { useHostWallet } from "~/features/host/hooks/use-host-wallet";
 import { DEPOSIT, WITHDRAW } from "~/features/vans/constants/vans-constants";
 
 interface HostWalletFormProps {
-  defaultAmount?: string;
-  error?: string;
   wallet: ReturnType<typeof useHostWallet>;
 }
 
-const HostWalletForm = ({
-  defaultAmount = "",
-  error,
-  wallet,
-}: HostWalletFormProps) => {
+const HostWalletForm = ({ wallet }: HostWalletFormProps) => {
   const {
-    amountInputId,
     fetcher,
     handleChangeType,
     handleSubmit,
     isDepositing,
     optimisticBalance,
   } = wallet;
+
+  const fieldErrors = fetcher.data?.fieldErrors;
+  const formError = fetcher.data?.formError;
+  const defaultAmount = fetcher.data?.formData?.amount ?? "";
 
   return (
     <Card className="mt-11 py-6 sm:py-9 md:w-1/2">
@@ -60,19 +58,20 @@ const HostWalletForm = ({
             />
           </Label>
         </div>
-        <Label htmlFor={amountInputId}>Amount</Label>
-        <Input
-          defaultValue={defaultAmount}
-          id={amountInputId}
-          max={isDepositing ? MAX_ADD : optimisticBalance}
-          min={isDepositing ? MIN_ADD : MIN_WITHDRAW}
-          name="amount"
-          placeholder="2000"
-          type="number"
-        />
-        <ViewTransition>
-          {error ? <p className="text-red-500">{error}</p> : null}
-        </ViewTransition>
+        <Field error={fieldErrors?.amount} label="Amount">
+          {(a11y) => (
+            <Input
+              {...a11y}
+              defaultValue={defaultAmount}
+              max={isDepositing ? MAX_ADD : optimisticBalance}
+              min={isDepositing ? MIN_ADD : MIN_WITHDRAW}
+              name="amount"
+              placeholder="2000"
+              type="number"
+            />
+          )}
+        </Field>
+        <FormError message={formError} />
         <Button type="submit">Complete transaction</Button>
       </fetcher.Form>
     </Card>

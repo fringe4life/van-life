@@ -61,17 +61,21 @@ function getRandomId<T extends { id: UUIDv7 }>(ids: T[]): UUIDv7 {
   return ids[randomIndex].id;
 }
 
-function findRentableVan(vanIds: VanModel[], excludedIds: UUIDv7[]): UUIDv7 {
+function findRentableVan(
+  vans: VanModel[],
+  vanById: ReadonlyMap<UUIDv7, VanModel>,
+  excludedIds: ReadonlySet<UUIDv7>
+): UUIDv7 {
   const MaxAttempts = 100;
-  let candidateId = getRandomId(vanIds);
+  let candidateId = getRandomId(vans);
   let attempts = 0;
 
   while (
-    (vanIds.find((v) => v.id === candidateId)?.state === VanState.IN_REPAIR ||
-      excludedIds.includes(candidateId)) &&
+    (vanById.get(candidateId)?.state === VanState.IN_REPAIR ||
+      excludedIds.has(candidateId)) &&
     attempts < MaxAttempts
   ) {
-    candidateId = getRandomId(vanIds);
+    candidateId = getRandomId(vans);
     attempts += 1;
   }
 

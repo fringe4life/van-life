@@ -1,20 +1,23 @@
 // app/utils/collection-state.ts
 
 import type { EmptyState, ErrorState } from "~/components/types";
-import type { List, Prettify } from "~/types";
+import type { List, Message, Prettify } from "~/types";
 
 type NonEmptyArray<T> = [T, ...T[]];
 
 type CollectionMessages = Prettify<EmptyState & ErrorState>;
 
-interface Error {
-  kind: "error";
-  message: string;
-}
-interface Empty {
-  kind: "empty";
-  message: string;
-}
+type Error = Prettify<
+  {
+    kind: "error";
+  } & Message
+>;
+type Empty = Prettify<
+  {
+    kind: "empty";
+  } & Message
+>;
+
 interface Ok<T> {
   items: NonEmptyArray<T>;
   kind: "ok";
