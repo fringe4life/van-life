@@ -67,14 +67,13 @@ function findRentableVan(
   excludedIds: ReadonlySet<UUIDv7>
 ): UUIDv7 {
   const MaxAttempts = 100;
+  const isUnavailable = (id: UUIDv7) =>
+    !isVanRentable(vanById.get(id)?.state) || excludedIds.has(id);
+
   let candidateId = getRandomId(vans);
   let attempts = 0;
 
-  while (
-    (vanById.get(candidateId)?.state === VanState.IN_REPAIR ||
-      excludedIds.has(candidateId)) &&
-    attempts < MaxAttempts
-  ) {
+  while (isUnavailable(candidateId) && attempts < MaxAttempts) {
     candidateId = getRandomId(vans);
     attempts += 1;
   }
