@@ -45,5 +45,5 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: millionco/react-doctor@938008119a288f2fb47c66a69cd9279a21f31784 # v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          diff: master
+          scope: changed
+          blocking: warning
