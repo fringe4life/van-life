@@ -1,10 +1,7 @@
 export const LOGIN_FORM_FIELDS = ["email", "password"] as const;
 
-type LoginFormFieldKey = (typeof LOGIN_FORM_FIELDS)[number];
-
-export type LoginFormFieldErrors = {
-  [K in LoginFormFieldKey]?: string;
-};
+/** Safe subset replayed to the client (never password). */
+export const LOGIN_ECHO_FIELDS = ["email"] as const;
 
 export const SIGN_UP_FORM_FIELDS = [
   "confirmPassword",
@@ -13,8 +10,5 @@ export const SIGN_UP_FORM_FIELDS = [
   "password",
 ] as const;
 
-type SignUpFormFieldKey = (typeof SIGN_UP_FORM_FIELDS)[number];
-
-export type SignUpFormFieldErrors = {
-  [K in SignUpFormFieldKey]?: string;
-};
+/** Safe subset replayed to the client (never passwords). */
+export const SIGN_UP_ECHO_FIELDS = ["email", "name"] as const;

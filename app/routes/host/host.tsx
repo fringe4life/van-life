@@ -1,4 +1,6 @@
 import { data, redirect } from "react-router";
+import type { FormActionResultFrom } from "~/components/form/form-action-result";
+import { pickFormValues } from "~/components/form/pick-form-values";
 import { PendingUI } from "~/components/pending-ui";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
 import { HostIncomeSection } from "~/features/host/components/dashboard/host-income-section";
@@ -9,7 +11,7 @@ import { useHostWallet } from "~/features/host/hooks/use-host-wallet";
 import { moneySchema } from "~/features/host/schemas.server";
 import { loadHostDashboard } from "~/features/host/services/dashboard.server";
 import { depositOrWithdraw } from "~/features/host/services/wallet.server";
-import { MONEY_FORM_FIELDS } from "~/features/host/types";
+import { MONEY_ECHO_FIELDS, MONEY_FORM_FIELDS } from "~/features/host/types";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
 import {
@@ -17,6 +19,7 @@ import {
   getSafeRedirectPath,
 } from "~/features/middleware/utils/auth-redirect";
 import { DEPOSIT } from "~/features/vans/constants/vans-constants";
+import { badRequest } from "~/utils/bad-request";
 import { calculateTotalIncome } from "~/utils/calculate-income";
 import { getElapsedTime } from "~/utils/get-elapsed-time";
 import { getRouteErrorMessage } from "~/utils/get-route-error-message";
@@ -26,6 +29,12 @@ import {
 } from "~/utils/parse-arktype.server";
 import { tryCatch } from "~/utils/try-catch.server";
 import type { Route } from "./+types/host";
+
+type HostWalletActionData = FormActionResultFrom<
+  object,
+  typeof MONEY_FORM_FIELDS,
+  typeof MONEY_ECHO_FIELDS
+>;
 
 export const loader = async ({ context }: Route.LoaderArgs) => {
   const user = context.get(authContext);
@@ -51,17 +60,15 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   const db = context.get(dbContext);
 
   const formData = Object.fromEntries(await request.formData());
-  const submittedValues = {
-    amount: String(formData.amount ?? ""),
-    type: String(formData.type ?? DEPOSIT),
-  };
+  const echoValues = pickFormValues(formData, MONEY_ECHO_FIELDS);
   const validation = validateArkType(moneySchema, formData);
 
   if (!validation.success) {
-    return {
+    return badRequest({
       fieldErrors: arkErrorsToFieldErrors(validation.errors, MONEY_FORM_FIELDS),
-      formData: submittedValues,
-    };
+      formData: echoValues,
+      ok: false,
+    } satisfies HostWalletActionData);
   }
 
   const { amount, type: transactionType } = validation.data;
@@ -71,16 +78,19 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   );
 
   if (error) {
-    return {
-      formData: submittedValues,
+    return badRequest({
+      formData: echoValues,
       formError: "Something went wrong please try again later",
-    };
+      ok: false,
+    } satisfies HostWalletActionData);
   }
 
   const redirectParam = getRedirectParamFromRequest(request);
   if (transactionType === DEPOSIT && redirectParam) {
     throw redirect(getSafeRedirectPath(redirectParam));
   }
+
+  return { ok: true } satisfies HostWalletActionData;
 };
 
 const Host = ({ loaderData }: Route.ComponentProps) => {

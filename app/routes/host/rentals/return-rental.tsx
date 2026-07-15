@@ -1,6 +1,17 @@
-import { createContext, data, href, redirect } from "react-router";
+import {
+  createContext,
+  data,
+  href,
+  redirect,
+  useNavigation,
+} from "react-router";
 import { CustomForm } from "~/components/custom-form";
-import { Button } from "~/components/ui/button";
+import type { FormActionFailure } from "~/components/form/form-action-result";
+import { FormError } from "~/components/form/form-error";
+import { getNavigationFormStatus } from "~/components/form/get-fetcher-status";
+import { readActionFormData } from "~/components/form/read-action-form-data";
+import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
+import { StatusButton } from "~/components/status-button";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
 import { parseUuidV7 } from "~/dal/parse-uuidv7.server";
 import {
@@ -14,6 +25,7 @@ import { getHostRedirectUrl } from "~/features/middleware/utils/auth-redirect";
 import { CustomLink } from "~/features/navigation/components/custom-link";
 import { VanCard } from "~/features/vans/components/van-card";
 import { getCost } from "~/features/vans/utils/get-cost";
+import { badRequest } from "~/utils/bad-request";
 import { getRouteErrorMessage } from "~/utils/get-route-error-message";
 import { notFound } from "~/utils/not-found";
 import type { Route } from "./+types/return-rental";
@@ -22,6 +34,8 @@ interface SharedRentalData {
   money: number;
   rent: HostRentedVan;
 }
+
+type ReturnRentalActionData = FormActionFailure<string>;
 
 const sharedRentalDataContext = createContext<SharedRentalData>();
 
@@ -80,7 +94,10 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
   });
 
   if (!result.success) {
-    return { errors: result.errors };
+    return badRequest({
+      formError: result.errors,
+      ok: false,
+    } satisfies ReturnRentalActionData);
   }
 
   throw redirect(href("/host"));
@@ -92,6 +109,15 @@ const ReturnRental = ({
   params,
 }: Route.ComponentProps) => {
   const { rent, money } = loaderData;
+  const navigation = useNavigation();
+  const isFormNavigation = Boolean(navigation.formMethod);
+  const status = useAutoIdleStatus(
+    getNavigationFormStatus(navigation.state, actionData, {
+      isFormNavigation,
+    })
+  );
+
+  const { formError } = readActionFormData(actionData);
 
   const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
   const isUnableToPay = money < amountToPay;
@@ -129,10 +155,10 @@ const ReturnRental = ({
         </article>
       )}
       <CustomForm method="POST">
-        <Button disabled={isUnableToPay} type="submit">
+        <StatusButton disabled={isUnableToPay} status={status} type="submit">
           Return
-        </Button>
-        {!!actionData?.errors && <p>{actionData.errors}</p>}
+        </StatusButton>
+        <FormError message={formError} />
       </CustomForm>
     </section>
   );

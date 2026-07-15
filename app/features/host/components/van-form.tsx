@@ -2,19 +2,27 @@ import { type SubmitEventHandler, useId } from "react";
 import { Form } from "react-router";
 import { Field } from "~/components/form/field";
 import { FormError } from "~/components/form/form-error";
-import { Button } from "~/components/ui/button";
+import { getFetcherStatus } from "~/components/form/get-fetcher-status";
+import type { FetcherStateObject } from "~/components/form/types";
+import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
+import { StatusButton } from "~/components/status-button";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import type { VanFormFieldErrors, VanFormValues } from "~/features/vans/types";
+import type { Ok, Prettify } from "~/types";
 import { cn } from "~/utils/utils";
 
-export interface VanFormProps {
-  fieldErrors?: VanFormFieldErrors;
-  formDataDefaults?: VanFormValues;
-  formError?: string;
-  isPending: boolean;
-  onSubmit: SubmitEventHandler<HTMLFormElement>;
-}
+type VanFormProps = Prettify<
+  Partial<Ok> &
+    FetcherStateObject & {
+      fieldErrors?: VanFormFieldErrors;
+      formDataDefaults?: VanFormValues;
+      formError?: string;
+      isPending: boolean;
+
+      onSubmit: SubmitEventHandler<HTMLFormElement>;
+    }
+>;
 
 const VanForm = ({
   onSubmit,
@@ -22,8 +30,15 @@ const VanForm = ({
   formDataDefaults,
   fieldErrors,
   formError,
+  fetcherState,
+  ok,
 }: VanFormProps) => {
   const formErrorId = useId();
+  const status = useAutoIdleStatus(
+    getFetcherStatus(fetcherState, ok === undefined ? undefined : { ok }, {
+      isTransitionPending: isPending,
+    })
+  );
 
   return (
     <div className="@container/form">
@@ -125,13 +140,13 @@ const VanForm = ({
           message={formError}
         />
         <div className="col-span-full grid grid-cols-subgrid">
-          <Button
+          <StatusButton
             className="col-span-full @min-xl/form:col-start-2"
-            disabled={isPending}
+            status={status}
             type="submit"
           >
             Add your van
-          </Button>
+          </StatusButton>
         </div>
       </Form>
     </div>

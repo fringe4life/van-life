@@ -1,5 +1,6 @@
 import type { List, Maybe, Prettify } from "~/types";
 import type { UUIDv7 } from "~/types/ids.server";
+import type { LIMITS } from "./pagination-constants";
 
 export type Direction = "forward" | "backward";
 
@@ -28,11 +29,18 @@ export interface CursorMetadata {
   take: number;
 }
 
-export interface BasePaginationParams {
-  cursor: Maybe<UUIDv7>;
-  direction?: Direction;
+export interface Limit {
   limit: number;
 }
+
+export type Limits = (typeof LIMITS)[number];
+
+export type BasePaginationParams = Prettify<
+  Limit & {
+    cursor: Maybe<UUIDv7>;
+    direction?: Direction;
+  }
+>;
 
 export type ToPaginationParams<T> = Prettify<Items<T> & BasePaginationParams>;
 

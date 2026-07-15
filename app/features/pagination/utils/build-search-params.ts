@@ -5,7 +5,8 @@ import {
   searchParser,
   vanFiltersParser,
 } from "~/lib/parsers";
-import type { Maybe } from "~/types";
+import type { List, Maybe, Prettify } from "~/types";
+import type { Limit } from "../types";
 
 const combinedVanParsers = {
   ...paginationParsers,
@@ -14,14 +15,15 @@ const combinedVanParsers = {
 };
 const serializeVanParams = createSerializer(combinedVanParsers);
 
-export interface VanSearchParams {
-  cursor: string;
-  excludeInRepair?: Maybe<boolean>;
-  limit: number;
-  onlyOnSale?: Maybe<boolean>;
-  search?: Maybe<string>;
-  types?: Maybe<string[]>;
-}
+type VanSearchParams = Prettify<
+  Limit & {
+    cursor: string;
+    excludeInRepair?: Maybe<boolean>;
+    onlyOnSale?: Maybe<boolean>;
+    search?: Maybe<string>;
+    types?: List<string>;
+  }
+>;
 
 type VanQueryParams = Record<string, string | number | string[] | boolean>;
 

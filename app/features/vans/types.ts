@@ -66,6 +66,9 @@ export const VAN_FORM_FIELDS = [
 
 export type VanFormFieldKey = (typeof VAN_FORM_FIELDS)[number];
 
+/** Van form has no secrets — echo = all form fields. */
+export const VAN_ECHO_FIELDS = VAN_FORM_FIELDS;
+
 export type VanFormValues = {
   [K in VanFormFieldKey]?: string;
 };

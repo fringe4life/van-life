@@ -1,20 +1,40 @@
-import { data, href, redirect } from "react-router";
+import { data, href, redirect, useNavigation } from "react-router";
 import { CustomForm } from "~/components/custom-form";
-import { Button } from "~/components/ui/button";
+import { Field } from "~/components/form/field";
+import type { FormActionFailureFrom } from "~/components/form/form-action-result";
+import { FormError } from "~/components/form/form-error";
+import { getNavigationFormStatus } from "~/components/form/get-fetcher-status";
+import { pickFormValues } from "~/components/form/pick-form-values";
+import { readActionFormData } from "~/components/form/read-action-form-data";
+import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
+import { StatusButton } from "~/components/status-button";
 import { Input } from "~/components/ui/input";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
 import { rentVanSchema } from "~/features/host/rentals/schemas.server";
+import {
+  RENT_ECHO_FIELDS,
+  RENT_FORM_FIELDS,
+} from "~/features/host/rentals/types";
 import { rentVan } from "~/features/host/services/rental.server";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
 import { VanCard } from "~/features/vans/components/van-card";
 import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
+import { badRequest } from "~/utils/bad-request";
 import { getRouteErrorMessage } from "~/utils/get-route-error-message";
 import { notFound } from "~/utils/not-found";
-import { validateArkType } from "~/utils/parse-arktype.server";
+import {
+  arkErrorsToFieldErrors,
+  validateArkType,
+} from "~/utils/parse-arktype.server";
 import { serverError } from "~/utils/server-error";
 import { tryCatch } from "~/utils/try-catch.server";
 import type { Route } from "./+types/rental-detail";
+
+type RentActionData = FormActionFailureFrom<
+  typeof RENT_FORM_FIELDS,
+  typeof RENT_ECHO_FIELDS
+>;
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const db = context.get(dbContext);
@@ -49,6 +69,7 @@ export const action = async ({
   const db = context.get(dbContext);
 
   const formData = Object.fromEntries(await request.formData());
+  const echoValues = pickFormValues(formData, RENT_ECHO_FIELDS);
 
   const hostId = formData.hostId as string;
 
@@ -59,10 +80,20 @@ export const action = async ({
   });
 
   if (!validation.success) {
-    return {
-      errors: validation.errors.summary,
-      formData,
-    };
+    const fieldErrors = arkErrorsToFieldErrors(
+      validation.errors,
+      RENT_FORM_FIELDS
+    );
+    const hasHostIdError = Boolean(fieldErrors.hostId);
+
+    return badRequest({
+      fieldErrors,
+      formData: echoValues,
+      formError: hasHostIdError
+        ? undefined
+        : validation.errors.summary || "Invalid rental request",
+      ok: false,
+    } satisfies RentActionData);
   }
 
   const result2 = await tryCatch(() =>
@@ -75,16 +106,29 @@ export const action = async ({
   );
 
   if (result2.error || !result2.data) {
-    return {
-      errors: "Something went wrong try again later!",
-      formData,
-    };
+    return badRequest({
+      fieldErrors: undefined,
+      formData: echoValues,
+      formError: "Something went wrong try again later!",
+      ok: false,
+    } satisfies RentActionData);
   }
   throw redirect(href("/host/rentals"));
 };
 
 const AddVan = ({ actionData, loaderData, params }: Route.ComponentProps) => {
   const { rental } = loaderData;
+  const navigation = useNavigation();
+  const isFormNavigation = Boolean(navigation.formMethod);
+  const status = useAutoIdleStatus(
+    getNavigationFormStatus(navigation.state, actionData, {
+      isFormNavigation,
+    })
+  );
+
+  const { fieldErrors, formData, formError } = readActionFormData(actionData, {
+    defaults: { hostId: rental.hostId },
+  });
 
   return (
     <section>
@@ -97,14 +141,20 @@ const AddVan = ({ actionData, loaderData, params }: Route.ComponentProps) => {
       />
       <h2 className="font-bold text-4xl text-neutral-900">Return Van</h2>
       <CustomForm className="mt-6 grid max-w-102 gap-4" method="POST">
-        <Input
-          aria-hidden="true"
-          className="hidden"
-          defaultValue={rental.hostId}
-          type="text"
-        />
-        {actionData?.errors ? <p>{actionData.errors}</p> : null}
-        <Button type="submit">Rent {rental.name}</Button>
+        <Field error={fieldErrors?.hostId} label="Host ID">
+          {(a11y) => (
+            <Input
+              {...a11y}
+              defaultValue={formData.hostId}
+              name="hostId"
+              type="text"
+            />
+          )}
+        </Field>
+        <FormError message={formError} />
+        <StatusButton status={status} type="submit">
+          Rent {rental.name}
+        </StatusButton>
       </CustomForm>
     </section>
   );

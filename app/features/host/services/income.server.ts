@@ -3,17 +3,19 @@ import {
   getHostTransactionsChartData,
   getHostTransactionsPaginated,
 } from "~/features/host/dal/transaction.server";
-import type { Direction, SortOption } from "~/features/pagination/types";
+import type { Direction, Limit, SortOption } from "~/features/pagination/types";
 import { toPagination } from "~/features/pagination/utils/to-pagination.server";
+import type { Prettify } from "~/types";
 import type { UUIDv7 } from "~/types/ids.server";
 import { tryCatch } from "~/utils/try-catch.server";
 
-export interface HostPaginatedPageParams {
-  cursor: UUIDv7 | undefined;
-  direction: Direction;
-  limit: number;
-  sort: SortOption;
-}
+export type HostPaginatedPageParams = Prettify<
+  Limit & {
+    cursor: UUIDv7 | undefined;
+    direction: Direction;
+    sort: SortOption;
+  }
+>;
 
 export async function loadIncomePage(
   db: AppDb,

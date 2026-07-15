@@ -1,4 +1,5 @@
-import { VAN_FORM_FIELDS, type VanFormValues } from "~/features/vans/types";
+import { pickFormValues } from "~/components/form/pick-form-values";
+import { VAN_ECHO_FIELDS, type VanFormValues } from "~/features/vans/types";
 
 /**
  * Picks known van-form string fields from a FormData / Object.fromEntries bag.
@@ -6,14 +7,5 @@ import { VAN_FORM_FIELDS, type VanFormValues } from "~/features/vans/types";
 export function toVanFormValues(
   data: Record<string, FormDataEntryValue>
 ): VanFormValues {
-  const values: VanFormValues = {};
-
-  for (const field of VAN_FORM_FIELDS) {
-    const value = data[field];
-    if (typeof value === "string") {
-      values[field] = value;
-    }
-  }
-
-  return values;
+  return pickFormValues(data, VAN_ECHO_FIELDS);
 }

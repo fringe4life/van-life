@@ -1,6 +1,4 @@
 {
-  "biome.lsp.bin": "/home/linuxbrew/.linuxbrew/bin/biome",
-  "biome.configurationPath": "./biome.jsonc",
   "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
@@ -113,6 +111,6 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "js/ts.experimental.useTsgo": true,
-  "js/ts.tsdk.path": "./node_modules/typescript",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "js/ts.tsdk.promptToUseWorkspaceVersion": true
 }

@@ -73,4 +73,5 @@ Please update README.md based on the codebase. Keep sections accurate and concis
 ## Post-update
 
 - Run Biome format: `bun fix`
-- Generate commit message: see `git-commit-msg.md` and run AI to produce message under 140 chars.
+- Generate commit message: see `git-commit-msg.md`
+- Optional full ship (branch, commit, push, PR): see `git-pull-request.md` (uses commit format above)

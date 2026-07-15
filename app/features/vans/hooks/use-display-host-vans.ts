@@ -1,26 +1,31 @@
+import type { FetcherStateObject } from "~/components/form/types";
 import type { VanModel } from "~/db/client.server";
+import type { Limit } from "~/features/pagination/types";
 import type {
   HostVanListItem,
   VanFormFieldErrors,
   VanFormValues,
 } from "~/features/vans/types";
 import { isPendingVan } from "~/features/vans/types";
+import type { Ok, Prettify } from "~/types";
 
-interface CreateVanFetcherData {
-  clientKey?: string;
-  fieldErrors?: VanFormFieldErrors;
-  formData?: VanFormValues;
-  formError?: string;
-  skipListRevalidation?: boolean;
-  van?: VanModel;
-}
+type CreateVanFetcherData = Prettify<
+  Partial<Ok> & {
+    clientKey?: string;
+    fieldErrors?: VanFormFieldErrors;
+    formData?: VanFormValues;
+    formError?: string;
+    van?: VanModel;
+  }
+>;
 
-interface UseDisplayHostVansParams {
-  fetcherData: CreateVanFetcherData | undefined;
-  fetcherState: "idle" | "submitting" | "loading";
-  limit: number;
-  optimisticItems: HostVanListItem[];
-}
+type UseDisplayHostVansParams = Prettify<
+  FetcherStateObject &
+    Limit & {
+      fetcherData: CreateVanFetcherData | undefined;
+      optimisticItems: HostVanListItem[];
+    }
+>;
 
 export function useDisplayHostVans({
   optimisticItems,
@@ -29,7 +34,9 @@ export function useDisplayHostVans({
   limit,
 }: UseDisplayHostVansParams): HostVanListItem[] {
   const created =
-    fetcherState === "idle" && fetcherData?.van ? fetcherData.van : undefined;
+    fetcherState === "idle" && fetcherData?.ok === true && fetcherData.van
+      ? fetcherData.van
+      : undefined;
 
   if (!created) {
     return optimisticItems;
