@@ -32,9 +32,6 @@ export const van = sqliteTable(
     type: text("type", { enum: ["SIMPLE", "LUXURY", "RUGGED"] }).notNull(),
   },
   (table) => [
-    index("Van_slug_idx").on(table.slug),
-    index("Van_hostId_idx").on(table.hostId),
-    index("Van_type_idx").on(table.type),
     index("Van_hostId_id_idx").on(table.hostId, table.id),
     index("Van_type_id_idx").on(table.type, table.id),
   ]
@@ -59,12 +56,13 @@ export const rent = sqliteTable(
       .references(() => van.id),
   },
   (table) => [
-    index("Rent_rentedTo_idx").on(table.rentedTo),
     index("Rent_vanId_idx").on(table.vanId),
-    index("Rent_renterId_idx").on(table.renterId),
     index("Rent_hostId_idx").on(table.hostId),
-    index("Rent_renterId_rentedTo_idx").on(table.renterId, table.rentedTo),
-    index("Rent_hostId_rentedTo_idx").on(table.hostId, table.rentedTo),
+    index("Rent_renterId_rentedTo_id_idx").on(
+      table.renterId,
+      table.rentedTo,
+      table.id
+    ),
   ]
 );
 
@@ -89,8 +87,8 @@ export const review = sqliteTable(
       .references(() => user.id),
   },
   (table) => [
-    index("Review_rating_idx").on(table.rating),
-    index("Review_createdAt_idx").on(table.createdAt),
+    index("Review_rentId_idx").on(table.rentId),
+    index("Review_userId_idx").on(table.userId),
   ]
 );
 
@@ -112,10 +110,6 @@ export const transaction = sqliteTable(
       .references(() => user.id),
   },
   (table) => [
-    index("Transaction_userId_idx").on(table.userId),
-    index("Transaction_rentId_idx").on(table.rentId),
-    index("Transaction_createdAt_idx").on(table.createdAt),
-    index("Transaction_userId_type_idx").on(table.userId, table.type),
     index("Transaction_userId_createdAt_idx").on(table.userId, table.createdAt),
     index("Transaction_userId_amount_idx").on(table.userId, table.amount),
     index("Transaction_userId_type_createdAt_idx").on(

@@ -9,8 +9,8 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.2-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.0--rc.1-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.9.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.5.2-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.9.3-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Biome](https://img.shields.io/badge/Biome-2.5.3-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.9.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
 [![Vite](https://img.shields.io/badge/Vite-8.1.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
@@ -45,6 +45,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 - 🚀 **Modern React Router 8** with server-side rendering and file-based routing
 - 🔒 **Authentication** with better-auth (sign up, login, session management, safe `redirectTo` return URLs, per-field form errors)
+- 📤 **Shared form actions** (`FormActionResult`, `StatusButton`, fetcher status helpers) for pending/success/error submit UX across auth and host forms
 - ⚛️ **React 19 (canary) & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🔍 **Advanced Van Filtering** (modular filter panel, facet-based state filters, `useVanFilters` hook, multi-select types, optimistic UI, debounced nuqs updates)
@@ -107,12 +108,12 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **rollup-plugin-visualizer 7.0.1** - Client/server bundle treemaps (`VITE_ANALYZE=true`)
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler 1.0** (stable) - Automatic memoization via `@rolldown/plugin-babel` + `reactCompilerPreset`
-- **Biome 2.5.2** for linting and formatting with Ultracite integration
-- **Ultracite 7.9.3** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.5.3** for linting and formatting with Ultracite integration
+- **Ultracite 7.9.4** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock 1.10.0** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.110.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
-- **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` driver for remote)
-- **react-doctor 0.7.1** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
+- **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
+- **react-doctor 0.7.5** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **Bun** for fast package management and runtime
@@ -135,7 +136,8 @@ app/
 ├── components/          # Reusable UI components
 │   ├── ui/             # shadcn base-nova (@base-ui/react): button, dialog, popover, checkbox, badge, etc.
 │   │                   # Variant tokens in button-variants.ts, badge-variants.ts
-│   ├── form/           # Shared Field + FormError (a11y labels, aria-invalid, ViewTransition)
+│   ├── form/           # Field, FormError, FormActionResult types, fetcher status → StatusButton helpers
+│   ├── status-button.tsx  # Pending/success/error submit button (idle auto-reset via useAutoIdleStatus)
 │   ├── types.ts        # Shared prop types (AsProps, EmptyState, ErrorState, ViewTransitionTune)
 │   └── [common]        # Generic components (lists, sortable, etc.)
 ├── constants/          # App-wide constants and enums
@@ -205,7 +207,7 @@ app/
 │       ├── robots.txt.ts   # Dynamic robots.txt
 │       ├── sitemap.xml.ts  # Dynamic sitemap
 │       └── 404.tsx     # Not found page
-├── utils/              # Shared utilities (parse-arktype, try-catch, not-found, server-error, get-route-error-message, get-collection-state)
+├── utils/              # Shared utilities (parse-arktype, try-catch, not-found, server-error, bad-request, get-route-error-message, get-collection-state)
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
@@ -226,7 +228,7 @@ docs/
 ## Database
 
 - **Cloudflare D1** (SQLite) with **Drizzle ORM** (`drizzle-orm/d1`)
-- **Schema** in `app/db/schema/` (`auth.ts`, `van.ts`); config via `drizzle.config.ts` (`d1-http` driver)
+- **Schema** in `app/db/schema/` (`auth.ts`, `van.ts`); remote via `drizzle.config.ts` (`d1-http`); local Studio via `drizzle.local.config.ts` (Miniflare SQLite)
 - **Setup guide:** [`docs/d1-setup.md`](docs/d1-setup.md)
 - **Main tables:**
   - `user`, `session`, `account`, `verification` — Authentication (better-auth)
@@ -238,7 +240,7 @@ docs/
   - **UUID v7** primary keys via `uuidv7PrimaryKey` / `createId`
   - **Drizzle relations** (`app/db/relations.ts`) for typed relational queries
   - **Van search** — case-insensitive `LIKE` on name/description (word-split)
-  - **Indexes** for slug, host, type, and pagination composites
+  - **Indexes** for host/type composites, rent pagination (`renterId`/`rentedTo`/`id`), review FKs; unique `van.slug`
   - **Van state** — NEW is client-derived; IN_REPAIR / ON_SALE / AVAILABLE stored
   - **Slug-based routing** with ArkType regex validation
   - **Branded UUID v7 types** via ArkType (`#UUIDv7`) and `parseUuidV7` at trust boundaries
@@ -259,16 +261,20 @@ bun run db:migrate:remote
 # Seed (needs ≥3 users via sign-up first)
 bun run db:seed          # local
 bun run db:seed:remote   # remote D1 HTTP
+
+# Drizzle Studio (local Miniflare SQLite / remote D1 HTTP)
+bun run db:studio:local
+bun run db:studio:remote
 ```
 
 ### Drizzle Configuration
 
 ```ts
-// drizzle.config.ts
+// drizzle.config.ts (remote d1-http)
 export default defineConfig({
   dialect: "sqlite",
   driver: "d1-http",
-  schema: "./app/db/schema/index.ts",
+  schema: ["./app/db/schema/auth.ts", "./app/db/schema/van.ts"],
   out: "./app/db/migrations",
   dbCredentials: {
     accountId: process.env.CLOUDFLARE_ACCOUNT_ID ?? "",
@@ -281,8 +287,9 @@ export default defineConfig({
 Notes:
 
 - Runtime uses `createDb(env.DB)` — no `DATABASE_URL`.
-- Optional `CLOUDFLARE_*` vars for drizzle-kit Studio / remote seed only.
-- Nested drizzle-kit folders are flattened by `scripts/flatten-d1-migrations.ts` before Wrangler apply.
+- `CLOUDFLARE_*` vars required in `.env.schema` (drizzle-kit Studio / remote seed).
+- Local Studio: `drizzle.local.config.ts` resolves Miniflare SQLite under `.wrangler/state/...`.
+- Nested drizzle-kit folders flattened by `scripts/flatten-d1-migrations.ts` before Wrangler apply; `snapshot.json` kept nested for next `db:generate` diffs.
 - Hyperdrive is **not** used (Postgres/MySQL only).
 
 ### Data access and services
@@ -321,6 +328,7 @@ const [transactions, avgRating] = await Promise.all([
 - **`redirectTo` query param** on login — returns users to the page they tried to visit (open-redirect safe)
 - **ArkType validation** (`app/features/auth/schemas.server.ts`) for login/sign-up forms
 - **Per-field errors** — `arkErrorsToFieldErrors` + `LOGIN_FORM_FIELDS` / `SIGN_UP_FORM_FIELDS` (`app/features/auth/types.ts`); UI via shared `Field` / `FormError`
+- **Form action results** — `FormActionResult` / `badRequest` return typed `ok`/`fieldErrors`/`formData`; `getFetcherStatus` + `useAutoIdleStatus` drive `StatusButton`
 - **Accessible auth forms** — `useFetcher` + `useTransition`, labeled inputs, `aria-invalid` / `aria-describedby`, form-level `role="alert"`
 - **View transitions** on login/sign-up — named `viewTransitionName` on card, title, fields, submit, footer with CSS morph animations
 - **Server-side session handling** in loaders
@@ -844,8 +852,7 @@ bun install
 
 # Environment: edit .env.schema defaults or add .env.local (gitignored)
 # Secrets resolve via Varlock; Bitwarden optional in production
-# Required: BETTER_AUTH_SECRET (see .env.schema)
-# Optional for remote seed/studio: CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_DATABASE_ID, CLOUDFLARE_D1_TOKEN
+# Required: BETTER_AUTH_SECRET, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_DATABASE_ID, CLOUDFLARE_D1_TOKEN (see .env.schema)
 
 # Set up D1 (create DB + paste database_id into wrangler.jsonc first)
 bun run db:generate
@@ -895,10 +902,10 @@ BETTER_AUTH_URL=http://localhost:5173
 # SEO (canonical URLs, Open Graph)
 SITE_URL=http://localhost:5173
 
-# Optional: drizzle-kit d1-http / remote seed
-# CLOUDFLARE_ACCOUNT_ID=
-# CLOUDFLARE_DATABASE_ID=
-# CLOUDFLARE_D1_TOKEN=
+# drizzle-kit d1-http / remote seed (required in .env.schema)
+CLOUDFLARE_ACCOUNT_ID=
+CLOUDFLARE_DATABASE_ID=
+CLOUDFLARE_D1_TOKEN=
 
 # Bitwarden (required for non-test envs)
 # BITWARDEN_ACCESS_TOKEN=
@@ -925,6 +932,8 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run db:migrate:remote` – Flatten + apply D1 migrations remotely
 - `bun run db:seed` – Seed local Miniflare D1
 - `bun run db:seed:remote` – Seed remote D1 via HTTP API
+- `bun run db:studio:local` – Drizzle Studio against local Miniflare SQLite
+- `bun run db:studio:remote` – Drizzle Studio against remote D1 (`d1-http`)
 - `bun run fix` – Auto-fix issues with Ultracite (format + lint)
 - `bun run check` – Run Ultracite checks (no fix)
 - `bun run doctor` – Run Ultracite doctor
@@ -989,8 +998,8 @@ Configuration in `lint-staged.config.ts`.
 
 ## Code Quality
 
-- **Biome 2.5.2** for linting and formatting with Ultracite integration
-- **Ultracite 7.9.3** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.5.3** for linting and formatting with Ultracite integration
+- **Ultracite 7.9.4** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 7.0.2** with strict configuration
 - **ArkType 2.2.3** for runtime validation with regex support for slug validation
 - **Consistent code style:**
@@ -999,7 +1008,7 @@ Configuration in `lint-staged.config.ts`.
   - Sorted CSS classes
   - Organized imports
 - **Type safety** throughout the application
-- **Error handling** with `notFound` / `serverError` helpers, `getRouteErrorMessage` for boundaries, and `getCollectionState` for list empty/error states
+- **Error handling** with `notFound` / `serverError` / `badRequest` helpers, `getRouteErrorMessage` for boundaries, and `getCollectionState` for list empty/error states
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
 - **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization

@@ -26,3 +26,15 @@ export interface Search {
 export interface Message {
   message: string;
 }
+
+export interface Ok {
+  ok: boolean;
+}
+
+export interface Success extends Ok {
+  ok: true;
+}
+
+export interface Failure extends Ok {
+  ok: false;
+}

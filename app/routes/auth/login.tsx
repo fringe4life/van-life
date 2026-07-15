@@ -1,8 +1,13 @@
 import { type SubmitEventHandler, useTransition } from "react";
 import { href, redirect, replace, useFetcher } from "react-router";
+import type { FormActionFailureFrom } from "~/components/form/form-action-result";
 import { Field } from "~/components/form/field";
 import { FormError } from "~/components/form/form-error";
-import { Button } from "~/components/ui/button";
+import { getFetcherStatus } from "~/components/form/get-fetcher-status";
+import { pickFormValues } from "~/components/form/pick-form-values";
+import { readActionFormData } from "~/components/form/read-action-form-data";
+import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
+import { StatusButton } from "~/components/status-button";
 import {
   Card,
   CardContent,
@@ -13,8 +18,8 @@ import {
 import { Input } from "~/components/ui/input";
 import { loginSchema } from "~/features/auth/schemas.server";
 import {
+  LOGIN_ECHO_FIELDS,
   LOGIN_FORM_FIELDS,
-  type LoginFormFieldErrors,
 } from "~/features/auth/types";
 import { hasAuthContext } from "~/features/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/features/middleware/functions/has-auth-middleware";
@@ -24,6 +29,7 @@ import {
 } from "~/features/middleware/utils/auth-redirect";
 import { CustomLink } from "~/features/navigation/components/custom-link";
 import { auth } from "~/lib/auth.server";
+import { badRequest } from "~/utils/bad-request";
 import {
   arkErrorsToFieldErrors,
   validateArkType,
@@ -34,11 +40,10 @@ import type { Route } from "./+types/login";
 
 export const middleware: Route.MiddlewareFunction[] = [hasAuthMiddleware];
 
-interface LoginActionData {
-  email?: string;
-  fieldErrors?: LoginFormFieldErrors;
-  formError?: string;
-}
+type LoginActionData = FormActionFailureFrom<
+  typeof LOGIN_FORM_FIELDS,
+  typeof LOGIN_ECHO_FIELDS
+>;
 
 export function loader({ context, request }: Route.LoaderArgs) {
   const hasAuth = context.get(hasAuthContext);
@@ -53,15 +58,16 @@ export function loader({ context, request }: Route.LoaderArgs) {
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = Object.fromEntries(await request.formData());
-  const email = String(formData.email ?? "");
+  const echoValues = pickFormValues(formData, LOGIN_ECHO_FIELDS);
 
   const validation = validateArkType(loginSchema, formData);
 
   if (!validation.success) {
-    return {
-      email,
+    return badRequest({
       fieldErrors: arkErrorsToFieldErrors(validation.errors, LOGIN_FORM_FIELDS),
-    } satisfies LoginActionData;
+      formData: echoValues,
+      ok: false,
+    } satisfies LoginActionData);
   }
 
   const { data: login, error } = await tryCatch(() =>
@@ -72,10 +78,11 @@ export async function action({ request }: Route.ActionArgs) {
   );
 
   if (!login?.response?.token || error) {
-    return {
-      email,
+    return badRequest({
+      formData: echoValues,
       formError: "Your email or password is incorrect",
-    } satisfies LoginActionData;
+      ok: false,
+    } satisfies LoginActionData);
   }
 
   const redirectTo = getSafeRedirectPath(formData.redirectTo);
@@ -88,10 +95,16 @@ export async function action({ request }: Route.ActionArgs) {
 export default function Login({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher<LoginActionData>();
   const [isPending, startTransition] = useTransition();
-  const isSubmitting = isPending || fetcher.state !== "idle";
 
   const { data } = fetcher;
-  const { fieldErrors, formError, email: emailDefault = "" } = data ?? {};
+  const { fieldErrors, formData, formError } = readActionFormData(data, {
+    defaults: { email: "" },
+  });
+
+  const status = useAutoIdleStatus(
+    getFetcherStatus(fetcher.state, data, { isTransitionPending: isPending })
+  );
+  const isSubmitting = status === "pending";
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -146,7 +159,7 @@ export default function Login({ loaderData }: Route.ComponentProps) {
                   <Input
                     {...a11y}
                     autoFocus
-                    defaultValue={emailDefault}
+                    defaultValue={formData.email}
                     name="email"
                     placeholder="john.doe@email.com"
                     style={{ viewTransitionName: "auth-email" }}
@@ -173,12 +186,13 @@ export default function Login({ loaderData }: Route.ComponentProps) {
                 )}
               </Field>
               <FormError message={formError} />
-              <Button
+              <StatusButton
+                status={status}
                 style={{ viewTransitionName: "auth-submit" }}
                 type="submit"
               >
                 Sign in
-              </Button>
+              </StatusButton>
             </fieldset>
           </fetcher.Form>
         </CardContent>

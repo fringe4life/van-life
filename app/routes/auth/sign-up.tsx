@@ -1,8 +1,13 @@
 import { type SubmitEventHandler, useTransition } from "react";
 import { href, redirect, replace, useFetcher } from "react-router";
+import type { FormActionFailureFrom } from "~/components/form/form-action-result";
 import { Field } from "~/components/form/field";
 import { FormError } from "~/components/form/form-error";
-import { Button } from "~/components/ui/button";
+import { getFetcherStatus } from "~/components/form/get-fetcher-status";
+import { pickFormValues } from "~/components/form/pick-form-values";
+import { readActionFormData } from "~/components/form/read-action-form-data";
+import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
+import { StatusButton } from "~/components/status-button";
 import {
   Card,
   CardContent,
@@ -13,13 +18,14 @@ import {
 import { Input } from "~/components/ui/input";
 import { signUpScheme } from "~/features/auth/schemas.server";
 import {
+  SIGN_UP_ECHO_FIELDS,
   SIGN_UP_FORM_FIELDS,
-  type SignUpFormFieldErrors,
 } from "~/features/auth/types";
 import { hasAuthContext } from "~/features/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/features/middleware/functions/has-auth-middleware";
 import { CustomLink } from "~/features/navigation/components/custom-link";
 import { auth } from "~/lib/auth.server";
+import { badRequest } from "~/utils/bad-request";
 import {
   arkErrorsToFieldErrors,
   validateArkType,
@@ -30,12 +36,10 @@ import type { Route } from "./+types/sign-up";
 
 export const middleware: Route.MiddlewareFunction[] = [hasAuthMiddleware];
 
-interface SignUpActionData {
-  email?: string;
-  fieldErrors?: SignUpFormFieldErrors;
-  formError?: string;
-  name?: string;
-}
+type SignUpActionData = FormActionFailureFrom<
+  typeof SIGN_UP_FORM_FIELDS,
+  typeof SIGN_UP_ECHO_FIELDS
+>;
 
 export const loader = ({ context }: Route.LoaderArgs) => {
   const session = context.get(hasAuthContext);
@@ -47,21 +51,19 @@ export const loader = ({ context }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const formData = Object.fromEntries(await request.formData());
-
-  const name = String(formData.name ?? "");
-  const email = String(formData.email ?? "");
+  const echoValues = pickFormValues(formData, SIGN_UP_ECHO_FIELDS);
 
   const validation = validateArkType(signUpScheme, formData);
 
   if (!validation.success) {
-    return {
-      email,
+    return badRequest({
       fieldErrors: arkErrorsToFieldErrors(
         validation.errors,
         SIGN_UP_FORM_FIELDS
       ),
-      name,
-    } satisfies SignUpActionData;
+      formData: echoValues,
+      ok: false,
+    } satisfies SignUpActionData);
   }
 
   const { data: signUp, error } = await tryCatch(() =>
@@ -72,11 +74,11 @@ export const action = async ({ request }: Route.ActionArgs) => {
   );
 
   if (!signUp?.response?.token || error) {
-    return {
-      email,
+    return badRequest({
+      formData: echoValues,
       formError: "Sign up failed please try again later",
-      name,
-    } satisfies SignUpActionData;
+      ok: false,
+    } satisfies SignUpActionData);
   }
 
   throw replace("/host", {
@@ -87,14 +89,15 @@ export const action = async ({ request }: Route.ActionArgs) => {
 export default function SignUp() {
   const fetcher = useFetcher<SignUpActionData>();
   const [isPending, startTransition] = useTransition();
-  const isSubmitting = isPending || fetcher.state !== "idle";
   const { data } = fetcher;
-  const {
-    fieldErrors,
-    formError,
-    name: nameDefault = "",
-    email: emailDefault = "",
-  } = data ?? {};
+  const { fieldErrors, formData, formError } = readActionFormData(data, {
+    defaults: { email: "", name: "" },
+  });
+
+  const status = useAutoIdleStatus(
+    getFetcherStatus(fetcher.state, data, { isTransitionPending: isPending })
+  );
+  const isSubmitting = status === "pending";
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -143,7 +146,7 @@ export default function SignUp() {
                 {(a11y) => (
                   <Input
                     {...a11y}
-                    defaultValue={emailDefault}
+                    defaultValue={formData.email}
                     name="email"
                     placeholder="your.email@email.com"
                     style={{ viewTransitionName: "auth-email" }}
@@ -155,7 +158,7 @@ export default function SignUp() {
                 {(a11y) => (
                   <Input
                     {...a11y}
-                    defaultValue={nameDefault}
+                    defaultValue={formData.name}
                     name="name"
                     placeholder="John Doe"
                     type="text"
@@ -193,13 +196,14 @@ export default function SignUp() {
                 )}
               </Field>
               <FormError message={formError} />
-              <Button
+              <StatusButton
+                status={status}
                 style={{ viewTransitionName: "auth-submit" }}
                 type="submit"
                 variant="default"
               >
                 Sign up
-              </Button>
+              </StatusButton>
             </fieldset>
           </fetcher.Form>
         </CardContent>

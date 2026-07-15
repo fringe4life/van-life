@@ -1,6 +1,9 @@
 import { Field } from "~/components/form/field";
 import { FormError } from "~/components/form/form-error";
-import { Button } from "~/components/ui/button";
+import { getFetcherStatus } from "~/components/form/get-fetcher-status";
+import { readActionFormData } from "~/components/form/read-action-form-data";
+import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
+import { StatusButton } from "~/components/status-button";
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -18,12 +21,23 @@ const HostWalletForm = ({ wallet }: HostWalletFormProps) => {
     handleChangeType,
     handleSubmit,
     isDepositing,
+    isPending,
     optimisticBalance,
   } = wallet;
 
-  const fieldErrors = fetcher.data?.fieldErrors;
-  const formError = fetcher.data?.formError;
-  const defaultAmount = fetcher.data?.formData?.amount ?? "";
+  const { fieldErrors, formData, formError, ok } = readActionFormData(
+    fetcher.data,
+    { defaults: { amount: "" } }
+  );
+  // Remount amount input after success so the field clears (uncontrolled).
+  const amountInputKey =
+    ok === true ? `ok-${fetcher.state}` : `echo-${formData.amount}`;
+
+  const status = useAutoIdleStatus(
+    getFetcherStatus(fetcher.state, fetcher.data, {
+      isTransitionPending: isPending,
+    })
+  );
 
   return (
     <Card className="mt-11 py-6 sm:py-9 md:w-1/2">
@@ -61,8 +75,9 @@ const HostWalletForm = ({ wallet }: HostWalletFormProps) => {
         <Field error={fieldErrors?.amount} label="Amount">
           {(a11y) => (
             <Input
+              key={amountInputKey}
               {...a11y}
-              defaultValue={defaultAmount}
+              defaultValue={formData.amount}
               max={isDepositing ? MAX_ADD : optimisticBalance}
               min={isDepositing ? MIN_ADD : MIN_WITHDRAW}
               name="amount"
@@ -72,7 +87,9 @@ const HostWalletForm = ({ wallet }: HostWalletFormProps) => {
           )}
         </Field>
         <FormError message={formError} />
-        <Button type="submit">Complete transaction</Button>
+        <StatusButton status={status} type="submit">
+          Complete transaction
+        </StatusButton>
       </fetcher.Form>
     </Card>
   );
