@@ -1,6 +1,6 @@
 import { type UUIDv7, uuidv7Schema } from "~/dal/schemas.server";
 import type { Maybe } from "~/types";
-import { DomainError } from "~/utils/domain-error.server";
+import { DomainError, isDomainError } from "~/utils/domain-error.server";
 import { validateArkType } from "~/utils/parse-arktype.server";
 
 /**
@@ -18,12 +18,20 @@ export function parseUuidV7(value: string, message = "Invalid id"): UUIDv7 {
 }
 
 /**
- * Parse cursor string when non-empty; undefined for empty/missing cursors.
+ * Parse cursor string when non-empty; undefined for empty/missing/malformed cursors.
  */
 export function parseOptionalUuidV7(value: Maybe<string>): UUIDv7 | undefined {
   if (!value || value === "") {
     return;
   }
 
-  return parseUuidV7(value);
+  try {
+    return parseUuidV7(value);
+  } catch (error) {
+    if (isDomainError(error) && error.code === "INVALID_ID") {
+      return;
+    }
+
+    throw error;
+  }
 }

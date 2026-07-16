@@ -41,7 +41,16 @@ export async function listActiveRentals(
 }
 
 export async function rentVan(db: AppDb, vanSlug: string, renterId: UUIDv7) {
-  const van = await getVanForRentBySlug(db, vanSlug);
+  const { data: van, error: lookupError } = await tryCatch(() =>
+    getVanForRentBySlug(db, vanSlug)
+  );
+
+  if (lookupError) {
+    return caughtErrorToServiceResult(
+      lookupError,
+      "Something went wrong try again later"
+    );
+  }
 
   if (!van) {
     return err({ kind: "not_found", message: "Van not found" });

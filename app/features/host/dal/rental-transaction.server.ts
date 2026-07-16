@@ -70,7 +70,14 @@ export async function executeRentVanTransaction(
           )
         )
       );
-    throw error;
+
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    throw new Error("Failed to insert rent after claiming van", {
+      cause: error,
+    });
   }
 }
 
