@@ -46,6 +46,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🚀 **Modern React Router 8** with server-side rendering and file-based routing
 - 🔒 **Authentication** with better-auth (sign up, login, session management, safe `redirectTo` return URLs, per-field form errors)
 - 📤 **Shared form actions** (`FormActionResult`, `StatusButton`, fetcher status helpers) for pending/success/error submit UX across auth and host forms
+- 🧱 **Typed service results** (`ServiceResult` + `DomainError` → `toActionResultOrThrow`) map host rentals/wallet failures to `badRequest` / `conflict` / `internalError` / `notFound`
 - ⚛️ **React 19 (canary) & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🔍 **Advanced Van Filtering** (modular filter panel, facet-based state filters, `useVanFilters` hook, multi-select types, optimistic UI, debounced nuqs updates)
@@ -104,7 +105,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Development Tools
 
 - **Vite 8.1.4** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports
-- **@vitejs/devtools 0.3.4** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
+- **@vitejs/devtools 0.4.0** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
 - **rollup-plugin-visualizer 7.0.1** - Client/server bundle treemaps (`VITE_ANALYZE=true`)
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler 1.0** (stable) - Automatic memoization via `@rolldown/plugin-babel` + `reactCompilerPreset`
@@ -113,7 +114,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **Varlock 1.10.0** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.110.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
-- **react-doctor 0.7.5** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
+- **react-doctor 0.7.6** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **Bun** for fast package management and runtime
@@ -207,7 +208,7 @@ app/
 │       ├── robots.txt.ts   # Dynamic robots.txt
 │       ├── sitemap.xml.ts  # Dynamic sitemap
 │       └── 404.tsx     # Not found page
-├── utils/              # Shared utilities (parse-arktype, try-catch, not-found, server-error, bad-request, get-route-error-message, get-collection-state)
+├── utils/              # Shared utilities (parse-arktype, try-catch, not-found, server-error, bad-request, conflict, internal-error, service-result, domain-error, to-action-result, get-route-error-message, get-collection-state)
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
@@ -294,20 +295,21 @@ Notes:
 
 ### Data access and services
 
-- **`app/dal/`** — global UUID branding and parsing only
+- **`app/dal/`** — global UUID branding and parsing only (`parseUuidV7` throws `DomainError` `INVALID_ID`)
 - **`features/*/dal/*.server.ts`** — Drizzle repositories (persistence, no `tryCatch`)
-- **`features/*/services/*.server.ts`** — use-case orchestration, pagination DTOs, `tryCatch` where UI tolerates partial failure
-- **Routes** — HTTP only: auth, form validation, call services, map errors to `data()` / redirects
+- **`features/*/services/*.server.ts`** — use-case orchestration; return `ServiceResult` (`ok` / `err`) for mutating flows; `tryCatch` where UI tolerates partial failure
+- **Routes** — HTTP only: auth, form validation, call services, map via `toActionResultOrThrow` (or `throwDomainHttp` in loaders/middleware)
 
 ```typescript
-// Route
-const dashboard = await loadHostDashboard(user.id);
+// Route action
+const result = await completeReturnRental(db, args);
+const actionFailure = toActionResultOrThrow(result);
+if (actionFailure) {
+  return actionFailure;
+}
 
-// Service (owns tryCatch policy)
-const [transactions, avgRating] = await Promise.all([
-  tryCatch(() => getHostTransactions(userId)),
-  tryCatch(() => getAverageReviewRating(userId)),
-]);
+// Service (typed failure kinds)
+return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 ```
 
 ### Feature-Specific Validators
@@ -328,7 +330,7 @@ const [transactions, avgRating] = await Promise.all([
 - **`redirectTo` query param** on login — returns users to the page they tried to visit (open-redirect safe)
 - **ArkType validation** (`app/features/auth/schemas.server.ts`) for login/sign-up forms
 - **Per-field errors** — `arkErrorsToFieldErrors` + `LOGIN_FORM_FIELDS` / `SIGN_UP_FORM_FIELDS` (`app/features/auth/types.ts`); UI via shared `Field` / `FormError`
-- **Form action results** — `FormActionResult` / `badRequest` return typed `ok`/`fieldErrors`/`formData`; `getFetcherStatus` + `useAutoIdleStatus` drive `StatusButton`
+- **Form action results** — `FormActionResult` + `toActionResultOrThrow` map `ServiceResult` kinds to `badRequest` / `conflict` / `internalError` / `notFound`; `getFetcherStatus` + `useAutoIdleStatus` drive `StatusButton`
 - **Accessible auth forms** — `useFetcher` + `useTransition`, labeled inputs, `aria-invalid` / `aria-describedby`, form-level `role="alert"`
 - **View transitions** on login/sign-up — named `viewTransitionName` on card, title, fields, submit, footer with CSS morph animations
 - **Server-side session handling** in loaders
@@ -1008,7 +1010,7 @@ Configuration in `lint-staged.config.ts`.
   - Sorted CSS classes
   - Organized imports
 - **Type safety** throughout the application
-- **Error handling** with `notFound` / `serverError` / `badRequest` helpers, `getRouteErrorMessage` for boundaries, and `getCollectionState` for list empty/error states
+- **Error handling** with `DomainError` / `ServiceResult` / `toActionResultOrThrow`, plus `notFound` / `serverError` / `badRequest` / `conflict` / `internalError`, `getRouteErrorMessage` for boundaries, and `getCollectionState` for list empty/error states
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
 - **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization

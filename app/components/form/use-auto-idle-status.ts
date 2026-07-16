@@ -23,12 +23,12 @@ interface UseAutoIdleStatusOptions {
    * Pass `["success"]` if you want errors to stay until the next submit.
    * Note: keeping `error` sticky leaves StatusButton disabled until resubmit clears it.
    */
-  reset?: TerminalStatus[];
+  reset?: readonly TerminalStatus[];
   /** Override success → idle delay (ms). Default {@link STATUS_SUCCESS_IDLE_MS}. */
   successMs?: number;
 }
 
-const DEFAULT_RESET: TerminalStatus[] = ["success", "error"];
+const DEFAULT_RESET = ["success", "error"] as const;
 
 /**
  * Show `success` / `error` briefly, then coerce display status back to `idle`.
@@ -53,8 +53,11 @@ const useAutoIdleStatus = (
   const [settledIdle, setSettledIdle] = useState(false);
   const [prevStatus, setPrevStatus] = useState(status);
 
-  // Reset coerced idle when the source status changes — during render, not in
-  // an effect, so we avoid a cascading render that blocks React Compiler.
+  // Adjust state during render when `status` changes (React-endorsed pattern).
+  // Do not move this into an effect: sync setState there is a cascading render
+  // and blocks React Compiler. Do not use a ref for the settle flag: Compiler
+  // forbids reading/writing refs during render for values that affect output.
+  // @see https://react.dev/reference/react/useState#storing-information-from-previous-renders
   if (status !== prevStatus) {
     setPrevStatus(status);
     setSettledIdle(false);

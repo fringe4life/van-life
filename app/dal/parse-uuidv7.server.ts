@@ -1,16 +1,17 @@
-import { INVALID_ID_ERROR } from "~/constants/constants";
 import { type UUIDv7, uuidv7Schema } from "~/dal/schemas.server";
 import type { Maybe } from "~/types";
+import { DomainError } from "~/utils/domain-error.server";
 import { validateArkType } from "~/utils/parse-arktype.server";
 
 /**
- * Parse and brand a string as UUIDv7. Throws INVALID_ID_ERROR on failure.
+ * Parse and brand a string as UUIDv7.
+ * Throws {@link DomainError} with code `INVALID_ID` on failure.
  */
-export function parseUuidV7(value: string): UUIDv7 {
+export function parseUuidV7(value: string, message = "Invalid id"): UUIDv7 {
   const result = validateArkType(uuidv7Schema, value);
 
   if (!result.success) {
-    throw new Error(INVALID_ID_ERROR);
+    throw new DomainError("INVALID_ID", message);
   }
 
   return result.data;

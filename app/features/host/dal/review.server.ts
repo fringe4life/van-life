@@ -72,14 +72,8 @@ export async function getHostReviewsPaginated(
     .limit(take);
 
   return rows.map((r) => ({
-    createdAt: r.createdAt,
-    id: r.id,
-    rating: r.rating,
-    rentId: r.rentId,
-    text: r.text,
-    updatedAt: r.updatedAt,
+    ...r,
     user: { name: r.userName },
-    userId: r.userId,
   }));
 }
 

@@ -3,32 +3,30 @@ import type { AppDb } from "~/db/client.server";
 import {
   getHostRentedVan,
   getHostRentedVans,
+  getVanForRentBySlug,
 } from "~/features/host/dal/rental.server";
 import {
-  createRent,
+  executeRentVanTransaction,
   executeReturnVanTransaction,
 } from "~/features/host/dal/rental-transaction.server";
 import { getAccountSummary } from "~/features/host/dal/transaction.server";
-import type { HostPaginatedPageParams } from "~/features/host/services/income.server";
+import type { BasePaginationParams } from "~/features/pagination/types";
 import { toPagination } from "~/features/pagination/utils/to-pagination.server";
-import { getVanBySlug } from "~/features/vans/dal/van.server";
 import { getCost } from "~/features/vans/utils/get-cost";
-import type { Prettify } from "~/types";
+import { isVanAvailable } from "~/features/vans/utils/van-state-helpers";
 import type { UUIDv7 } from "~/types/ids.server";
+import { caughtErrorToServiceResult } from "~/utils/domain-error.server";
+import { err, ok } from "~/utils/service-result.server";
 import { tryCatch } from "~/utils/try-catch.server";
 
-export type HostRentedVan = Prettify<
-  NonNullable<Exclude<Awaited<ReturnType<typeof getHostRentedVan>>, string>>
+export type HostRentedVan = NonNullable<
+  Awaited<ReturnType<typeof getHostRentedVan>>
 >;
 
 export async function listActiveRentals(
   db: AppDb,
   renterId: UUIDv7,
-  {
-    cursor,
-    limit,
-    direction,
-  }: Prettify<Pick<HostPaginatedPageParams, "cursor" | "limit" | "direction">>
+  { cursor, limit, direction }: BasePaginationParams
 ) {
   const { data: vans } = await tryCatch(() =>
     getHostRentedVans(db, renterId, { cursor, direction, limit })
@@ -42,23 +40,43 @@ export async function listActiveRentals(
   });
 }
 
-export async function rentVan(
-  db: AppDb,
-  vanSlug: string,
-  renterId: UUIDv7,
-  hostId: UUIDv7
-) {
-  const van = await getVanBySlug(db, vanSlug);
+export async function rentVan(db: AppDb, vanSlug: string, renterId: UUIDv7) {
+  const van = await getVanForRentBySlug(db, vanSlug);
 
   if (!van) {
-    throw new Error("Van not found");
+    return err({ kind: "not_found", message: "Van not found" });
   }
 
-  return createRent(db, {
-    hostId,
-    renterId,
-    vanId: parseUuidV7(van.id),
-  });
+  if (van.hostId === renterId) {
+    return err({
+      kind: "forbidden",
+      message: "You cannot rent your own van",
+    });
+  }
+
+  if (!isVanAvailable(van)) {
+    return err({
+      kind: "unavailable",
+      message: "This van is not available to rent",
+    });
+  }
+
+  const { data, error } = await tryCatch(() =>
+    executeRentVanTransaction(db, {
+      hostId: van.hostId,
+      renterId,
+      vanId: van.id,
+    })
+  );
+
+  if (error || !data) {
+    return caughtErrorToServiceResult(
+      error,
+      "Something went wrong try again later"
+    );
+  }
+
+  return ok(data);
 }
 
 export async function loadReturnRentalContext(
@@ -91,10 +109,10 @@ export async function completeReturnRental(
   const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
 
   if (money < amountToPay) {
-    return {
-      errors: "Cannot afford to return this rental",
-      success: false as const,
-    };
+    return err({
+      kind: "insufficient_funds",
+      message: "Cannot afford to return this rental",
+    });
   }
 
   const { data, error } = await tryCatch(() =>
@@ -108,11 +126,11 @@ export async function completeReturnRental(
   );
 
   if (error || !data) {
-    return {
-      errors: "Something went wrong try again later",
-      success: false as const,
-    };
+    return caughtErrorToServiceResult(
+      error,
+      "Something went wrong try again later"
+    );
   }
 
-  return { data, success: true as const };
+  return ok(data);
 }
