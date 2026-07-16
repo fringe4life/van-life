@@ -5,6 +5,21 @@ import type { BasePaginationParams } from "~/features/pagination/types";
 import { getCursorMetadata } from "~/features/pagination/utils/get-cursor-metadata.server";
 import type { UUIDv7 } from "~/types/ids.server";
 
+/** Lean van lookup for rent creation — ownership + availability fields. */
+export async function getVanForRentBySlug(db: AppDb, slug: string) {
+  const [result] = await db
+    .select({
+      hostId: van.hostId,
+      id: van.id,
+      isRented: van.isRented,
+      state: van.state,
+    })
+    .from(van)
+    .where(eq(van.slug, slug))
+    .limit(1);
+  return result ?? null;
+}
+
 export async function getHostRentedVan(
   db: AppDb,
   rentId: UUIDv7,

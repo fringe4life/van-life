@@ -1,20 +1,13 @@
 import { data, href, redirect, useNavigation } from "react-router";
 import { CustomForm } from "~/components/custom-form";
-import { Field } from "~/components/form/field";
-import type { FormActionFailureFrom } from "~/components/form/form-action-result";
+import type { FormActionFailure } from "~/components/form/form-action-result";
 import { FormError } from "~/components/form/form-error";
 import { getNavigationFormStatus } from "~/components/form/get-fetcher-status";
-import { pickFormValues } from "~/components/form/pick-form-values";
 import { readActionFormData } from "~/components/form/read-action-form-data";
 import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
 import { StatusButton } from "~/components/status-button";
-import { Input } from "~/components/ui/input";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
 import { rentVanSchema } from "~/features/host/rentals/schemas.server";
-import {
-  RENT_ECHO_FIELDS,
-  RENT_FORM_FIELDS,
-} from "~/features/host/rentals/types";
 import { rentVan } from "~/features/host/services/rental.server";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
@@ -23,18 +16,12 @@ import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
 import { badRequest } from "~/utils/bad-request";
 import { getRouteErrorMessage } from "~/utils/get-route-error-message";
 import { notFound } from "~/utils/not-found";
-import {
-  arkErrorsToFieldErrors,
-  validateArkType,
-} from "~/utils/parse-arktype.server";
+import { validateArkType } from "~/utils/parse-arktype.server";
 import { serverError } from "~/utils/server-error";
-import { tryCatch } from "~/utils/try-catch.server";
+import { toActionResultOrThrow } from "~/utils/to-action-result.server";
 import type { Route } from "./+types/rental-detail";
 
-type RentActionData = FormActionFailureFrom<
-  typeof RENT_FORM_FIELDS,
-  typeof RENT_ECHO_FIELDS
->;
+type RentActionData = FormActionFailure<string>;
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const db = context.get(dbContext);
@@ -60,59 +47,33 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
   );
 };
 
-export const action = async ({
-  request,
-  params,
-  context,
-}: Route.ActionArgs) => {
+export const action = async ({ params, context }: Route.ActionArgs) => {
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
-  const formData = Object.fromEntries(await request.formData());
-  const echoValues = pickFormValues(formData, RENT_ECHO_FIELDS);
-
-  const hostId = formData.hostId as string;
-
   const validation = validateArkType(rentVanSchema, {
-    hostId,
     renterId: user.id,
     vanSlug: params.vanSlug,
   });
 
   if (!validation.success) {
-    const fieldErrors = arkErrorsToFieldErrors(
-      validation.errors,
-      RENT_FORM_FIELDS
-    );
-    const hasHostIdError = Boolean(fieldErrors.hostId);
-
     return badRequest({
-      fieldErrors,
-      formData: echoValues,
-      formError: hasHostIdError
-        ? undefined
-        : validation.errors.summary || "Invalid rental request",
+      formError: validation.errors.summary || "Invalid rental request",
       ok: false,
     } satisfies RentActionData);
   }
 
-  const result2 = await tryCatch(() =>
-    rentVan(
-      db,
-      validation.data.vanSlug,
-      validation.data.renterId,
-      validation.data.hostId
-    )
+  const result = await rentVan(
+    db,
+    validation.data.vanSlug,
+    validation.data.renterId
   );
 
-  if (result2.error || !result2.data) {
-    return badRequest({
-      fieldErrors: undefined,
-      formData: echoValues,
-      formError: "Something went wrong try again later!",
-      ok: false,
-    } satisfies RentActionData);
+  const actionFailure = toActionResultOrThrow(result);
+  if (actionFailure) {
+    return actionFailure;
   }
+
   throw redirect(href("/host/rentals"));
 };
 
@@ -126,9 +87,7 @@ const AddVan = ({ actionData, loaderData, params }: Route.ComponentProps) => {
     })
   );
 
-  const { fieldErrors, formData, formError } = readActionFormData(actionData, {
-    defaults: { hostId: rental.hostId },
-  });
+  const { formError } = readActionFormData(actionData);
 
   return (
     <section>
@@ -141,16 +100,6 @@ const AddVan = ({ actionData, loaderData, params }: Route.ComponentProps) => {
       />
       <h2 className="font-bold text-4xl text-neutral-900">Return Van</h2>
       <CustomForm className="mt-6 grid max-w-102 gap-4" method="POST">
-        <Field error={fieldErrors?.hostId} label="Host ID">
-          {(a11y) => (
-            <Input
-              {...a11y}
-              defaultValue={formData.hostId}
-              name="hostId"
-              type="text"
-            />
-          )}
-        </Field>
         <FormError message={formError} />
         <StatusButton status={status} type="submit">
           Rent {rental.name}

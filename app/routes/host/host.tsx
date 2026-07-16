@@ -27,7 +27,7 @@ import {
   arkErrorsToFieldErrors,
   validateArkType,
 } from "~/utils/parse-arktype.server";
-import { tryCatch } from "~/utils/try-catch.server";
+import { toActionResultOrThrow } from "~/utils/to-action-result.server";
 import type { Route } from "./+types/host";
 
 type HostWalletActionData = FormActionResultFrom<
@@ -73,16 +73,13 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 
   const { amount, type: transactionType } = validation.data;
 
-  const { error } = await tryCatch(() =>
-    depositOrWithdraw(db, user.id, amount, transactionType)
-  );
+  const result = await depositOrWithdraw(db, user.id, amount, transactionType);
 
-  if (error) {
-    return badRequest({
-      formData: echoValues,
-      formError: "Something went wrong please try again later",
-      ok: false,
-    } satisfies HostWalletActionData);
+  const actionFailure = toActionResultOrThrow(result, {
+    formData: echoValues,
+  });
+  if (actionFailure) {
+    return actionFailure;
   }
 
   const redirectParam = getRedirectParamFromRequest(request);

@@ -3,16 +3,17 @@ import {
   getHostTransactionsChartData,
   getHostTransactionsPaginated,
 } from "~/features/host/dal/transaction.server";
-import type { Direction, Limit, SortOption } from "~/features/pagination/types";
+import type {
+  BasePaginationParams,
+  SortOption,
+} from "~/features/pagination/types";
 import { toPagination } from "~/features/pagination/utils/to-pagination.server";
 import type { Prettify } from "~/types";
 import type { UUIDv7 } from "~/types/ids.server";
 import { tryCatch } from "~/utils/try-catch.server";
 
 export type HostPaginatedPageParams = Prettify<
-  Limit & {
-    cursor: UUIDv7 | undefined;
-    direction: Direction;
+  BasePaginationParams & {
     sort: SortOption;
   }
 >;

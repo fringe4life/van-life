@@ -2,6 +2,7 @@ import type {
   FormActionFailure,
   FormActionResult,
 } from "~/components/form/form-action-result";
+import type { Maybe } from "~/types";
 
 interface ReadActionFormDataOptions<
   TValueFields extends string,
@@ -15,11 +16,13 @@ interface ReadActionFormDataOptions<
   defaults?: TDefaults;
 }
 
-type ActionDataLike<TFields extends string, TValueFields extends string> =
+type ActionDataLike<
+  TFields extends string,
+  TValueFields extends string,
+> = Maybe<
   | FormActionResult<object, TFields, TValueFields>
   | FormActionFailure<TFields, TValueFields>
-  | null
-  | undefined;
+>;
 
 type MergedFormData<
   TValueFields extends string,
@@ -66,5 +69,4 @@ const readActionFormData = <
   };
 };
 
-export type { ReadActionFormDataOptions };
 export { readActionFormData };

@@ -49,10 +49,18 @@ Decide:
 
 ### 2. Create / switch branch
 
+Prefer `git switch` over `git checkout` (branch moves only — safer, no path/restore confusion).
+
 If still on `master` (or user asks for a new branch):
 
 ```bash
-git checkout -b <type>/<short-kebab-description>
+git switch -c <type>/<short-kebab-description>
+```
+
+If switching onto an existing topic branch (no create):
+
+```bash
+git switch <type>/<short-kebab-description>
 ```
 
 Branch naming:
@@ -62,6 +70,8 @@ Branch naming:
 - Match the `type:` that will lead the commit message
 
 If already on a good topic branch, keep it.
+
+Do **not** use `git checkout -b` / bare `git checkout <branch>` here. Use `git restore` / `git restore --staged` only if discarding or unstaging file changes (rare in this workflow; never confuse with branch switch).
 
 ### 3. Commit (use `git-commit-msg.md`)
 
@@ -98,10 +108,11 @@ If multiple logical commits already exist on the branch, keep them; do not squas
 git push -u origin HEAD
 ```
 
-- First push on a branch: always `-u`
-- Later pushes on same branch: `git push` is enough
+- First push on a branch: always `-u` / `--set-upstream` (same thing)
+- Later pushes on same branch: `git push` is enough (upstream already set)
+- Prefer `HEAD` over hard-coding the branch name — tracks whatever is checked out
 - Never force-push to `master`/`main`
-- Never `--force` unless user explicitly requests
+- Never `--force` / `--force-with-lease` unless user explicitly requests
 
 ### 5. Create PR title and description
 
@@ -235,6 +246,7 @@ PR body Summary:
 - Do not force-push `master`/`main`
 - Do not open a PR with an empty Summary or empty Test plan
 - Do not use Interactive git (`-i`)
+- Do not use `git checkout` for branch create/switch — use `git switch` / `git switch -c`
 - Do not rewrite published history unless user asks
 - If push/PR fails on auth/network: report error; do not invent a “successful” URL
 
@@ -245,7 +257,7 @@ PR body Summary:
 Copy into chat with `git-commit-msg.md` + this file attached:
 
 ```
-Follow git-commit-msg.md and git-pull-request.md: inspect changes, create a topic branch if on master, commit using the emoji commit format, push -u to origin, and open a gh PR. Derive the PR title (type: summary, no emoji) and Summary bullets from the commit message(s); add a concrete Test plan. Return the PR URL.
+Follow git-commit-msg.md and git-pull-request.md: inspect changes, git switch -c a topic branch if on master, commit using the emoji commit format, push -u to origin, and open a gh PR. Derive the PR title (type: summary, no emoji) and Summary bullets from the commit message(s); add a concrete Test plan. Return the PR URL.
 ```
 
 Partial prompts:

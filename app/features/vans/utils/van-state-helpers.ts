@@ -59,6 +59,8 @@ export function lowercaseVanStateWithProcessor<T>(
  * Determines whether a van is currently available for rent.
  * A van is available when it's not rented and not in repair.
  */
-export function isVanAvailable(van: VanModel): boolean {
+export function isVanAvailable(
+  van: Pick<VanModel, "isRented" | "state">
+): boolean {
   return !van.isRented && van.state !== VanState.IN_REPAIR;
 }

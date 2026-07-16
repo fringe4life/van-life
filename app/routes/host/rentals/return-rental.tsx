@@ -6,7 +6,6 @@ import {
   useNavigation,
 } from "react-router";
 import { CustomForm } from "~/components/custom-form";
-import type { FormActionFailure } from "~/components/form/form-action-result";
 import { FormError } from "~/components/form/form-error";
 import { getNavigationFormStatus } from "~/components/form/get-fetcher-status";
 import { readActionFormData } from "~/components/form/read-action-form-data";
@@ -25,17 +24,20 @@ import { getHostRedirectUrl } from "~/features/middleware/utils/auth-redirect";
 import { CustomLink } from "~/features/navigation/components/custom-link";
 import { VanCard } from "~/features/vans/components/van-card";
 import { getCost } from "~/features/vans/utils/get-cost";
-import { badRequest } from "~/utils/bad-request";
+import {
+  domainErrorToServiceResult,
+  isDomainError,
+  throwDomainHttp,
+} from "~/utils/domain-error.server";
 import { getRouteErrorMessage } from "~/utils/get-route-error-message";
 import { notFound } from "~/utils/not-found";
+import { toActionResultOrThrow } from "~/utils/to-action-result.server";
 import type { Route } from "./+types/return-rental";
 
 interface SharedRentalData {
   money: number;
   rent: HostRentedVan;
 }
-
-type ReturnRentalActionData = FormActionFailure<string>;
 
 const sharedRentalDataContext = createContext<SharedRentalData>();
 
@@ -45,7 +47,13 @@ const fetchSharedDataMiddleware: Route.MiddlewareFunction = async (
 ) => {
   const user = context.get(authContext);
   const db = context.get(dbContext);
-  const rentId = parseUuidV7(params.rentId);
+
+  let rentId: ReturnType<typeof parseUuidV7>;
+  try {
+    rentId = parseUuidV7(params.rentId, "Invalid rental id");
+  } catch (error) {
+    throwDomainHttp(error);
+  }
 
   const { rent, money } = await loadReturnRentalContext(db, rentId, user.id);
 
@@ -86,18 +94,31 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
   const db = context.get(dbContext);
   const { rent, money } = context.get(sharedRentalDataContext);
 
+  let rentId: ReturnType<typeof parseUuidV7>;
+  try {
+    rentId = parseUuidV7(params.rentId, "Invalid rental id");
+  } catch (error) {
+    if (isDomainError(error)) {
+      const actionFailure = toActionResultOrThrow(
+        domainErrorToServiceResult(error)
+      );
+      if (actionFailure) {
+        return actionFailure;
+      }
+    }
+    throw error;
+  }
+
   const result = await completeReturnRental(db, {
     money,
     rent,
-    rentId: parseUuidV7(params.rentId),
+    rentId,
     userId: user.id,
   });
 
-  if (!result.success) {
-    return badRequest({
-      formError: result.errors,
-      ok: false,
-    } satisfies ReturnRentalActionData);
+  const actionFailure = toActionResultOrThrow(result);
+  if (actionFailure) {
+    return actionFailure;
   }
 
   throw redirect(href("/host"));

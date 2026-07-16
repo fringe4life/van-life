@@ -37,7 +37,7 @@ export type Limits = (typeof LIMITS)[number];
 
 export type BasePaginationParams = Prettify<
   Limit & {
-    cursor: Maybe<UUIDv7>;
+    cursor: UUIDv7 | undefined;
     direction?: Direction;
   }
 >;

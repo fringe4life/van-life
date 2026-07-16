@@ -32,7 +32,7 @@ export async function getTransactionSummary(db: AppDb, userId: UUIDv7) {
     .select({ total: sum(transaction.amount) })
     .from(transaction)
     .where(eq(transaction.userId, userId));
-  return Number(result?.total ?? 0);
+  return Number(result?.total ?? "0");
 }
 
 export function getHostTransactions(

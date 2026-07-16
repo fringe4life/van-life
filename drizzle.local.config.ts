@@ -1,16 +1,20 @@
-import { readdirSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { defineConfig } from "drizzle-kit";
 
+const LOCAL_D1_MISSING_ERROR =
+  "No local D1 database found. Run `bun run db:migrate:local` first.";
+
 function localD1SqliteUrl() {
   const dir = path.resolve(".wrangler/state/v3/d1/miniflare-D1DatabaseObject");
+  if (!existsSync(dir)) {
+    throw new Error(LOCAL_D1_MISSING_ERROR);
+  }
   const file = readdirSync(dir).find(
     (name) => name.endsWith(".sqlite") && name !== "metadata.sqlite"
   );
   if (!file) {
-    throw new Error(
-      "No local D1 database found. Run `bun run db:migrate:local` first."
-    );
+    throw new Error(LOCAL_D1_MISSING_ERROR);
   }
   return path.join(dir, file);
 }

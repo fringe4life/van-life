@@ -11,10 +11,10 @@ import { uuidv7Schema } from "~/dal/schemas.server";
 const slugSchema = type("/^[a-z0-9](?:[a-z0-9-]{0,68}[a-z0-9])?$/");
 
 /**
- * Schema for renting a van (vanSlug, hostId, renterId).
+ * Schema for renting a van (vanSlug, renterId).
+ * hostId is derived server-side from the van record.
  */
 export const rentVanSchema = type({
-  hostId: uuidv7Schema,
   renterId: uuidv7Schema,
   vanSlug: slugSchema,
 });
