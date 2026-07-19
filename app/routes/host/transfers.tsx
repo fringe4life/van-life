@@ -43,7 +43,8 @@ const renderTransferItemProps = (
   item: Pick<TransactionModel, "amount" | "createdAt" | "type" | "id">
 ) => ({
   ...item,
-  amount: item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
+  // WITHDRAW stored positive → flip for display; RENTAL_RETURN already negative
+  amount: item.type === TransactionType.WITHDRAW ? -item.amount : item.amount,
 });
 
 const HostTransfers = ({ loaderData }: Route.ComponentProps) => {

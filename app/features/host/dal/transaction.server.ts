@@ -47,16 +47,22 @@ function userTransactionsWhere(userId: UUIDv7) {
   return eq(transaction.userId, userId);
 }
 
-/** Deposit positive; all other types negative (matches transfers list UI). */
-const signedTransferAmountSql = sql<number>`sum(case when ${transaction.type} = ${TransactionType.DEPOSIT} then ${transaction.amount} else -${transaction.amount} end)`;
+/**
+ * Canonical transfer signs for chart/stats/balance:
+ * - DEPOSIT / RENTAL_PAYMENT: keep stored amount (positive)
+ * - RENTAL_RETURN: keep stored amount (already negative at insert)
+ * - WITHDRAW: negate (stored positive; represents outflow)
+ */
+const signedTransferAmountSql = sql<number>`sum(case when ${transaction.type} = ${TransactionType.WITHDRAW} then -${transaction.amount} else ${transaction.amount} end)`;
 
 function signedTransferAmount(amount: number, type: string) {
-  return type === TransactionType.DEPOSIT ? amount : -amount;
+  return type === TransactionType.WITHDRAW ? -amount : amount;
 }
 
+/** Signed wallet balance — same WITHDRAW rule as transfer stats / balanceReducer. */
 export async function getAccountSummary(db: AppDb, userId: UUIDv7) {
   const [result] = await db
-    .select({ total: sum(transaction.amount) })
+    .select({ total: signedTransferAmountSql.mapWith(Number) })
     .from(transaction)
     .where(eq(transaction.userId, userId));
   return Number(result?.total ?? 0);
@@ -86,7 +92,7 @@ export async function getHostIncomeStats(db: AppDb, userId: UUIDv7) {
 
 /**
  * Single-pass user transfer aggregates (signed total, span, count).
- * Signed total: deposits +, everything else − (same as transfers page reduce).
+ * Signed total: negate WITHDRAW only; other types keep persisted amount.
  */
 export async function getUserTransferStats(db: AppDb, userId: UUIDv7) {
   const [result] = await db
