@@ -1,14 +1,18 @@
 import { data } from "react-router";
-import { GenericComponent } from "~/components/generic-component";
+import { DeferredPaginated } from "~/components/deferred-paginated";
 import { PendingUI } from "~/components/pending-ui";
 import { Sortable } from "~/components/sortable";
+import {
+  forwardDataHeaders,
+  PRIVATE_NO_STORE_HEADERS,
+} from "~/constants/cache-headers";
 import type { ReviewModel, UserModel } from "~/db/client.server";
 import { LazyBarChart } from "~/features/host/components/bar-chart/lazy-bar-chart";
-import Review from "~/features/host/components/review/review";
+import { Review } from "~/features/host/components/review/review";
+import { ReviewListSkeleton } from "~/features/host/components/review/review-list-skeleton";
 import { loadReviewsPage } from "~/features/host/services/reviews.server";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
-import { Pagination } from "~/features/pagination/components/pagination";
 import { VanHeader } from "~/features/vans/components/van-header";
 import {
   loadHostSearchParams,
@@ -17,11 +21,12 @@ import {
 import type { Prettify } from "~/types";
 import type { Route } from "./+types/reviews";
 
+export const headers = forwardDataHeaders;
+
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
-  // Parse search parameters for pagination and sorting
   const { cursor, limit, direction, sort } = loadHostSearchParams(request);
   const page = await loadReviewsPage(db, user.id, {
     cursor: parsePaginationCursor(cursor),
@@ -30,11 +35,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     sort,
   });
 
-  return data(page, {
-    headers: {
-      "Cache-Control": "max-age=259200",
-    },
-  });
+  return data(page, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
 type ReviewListItem = Prettify<ReviewModel & { user: Pick<UserModel, "name"> }>;
@@ -54,21 +55,9 @@ const renderReviewProps = ({
   // TODO: UTC→viewer-TZ in loader; toLocaleDateString() can mismatch SSR vs client
   timestamp: updatedAt?.toLocaleDateString() ?? createdAt.toLocaleDateString(),
 });
-const HostReviews = ({ loaderData }: Route.ComponentProps) => {
-  const { chartData, items: paginatedReviews, paginationMetadata } = loaderData;
 
-  const result = chartData
-    ?.reduce(
-      (acc, cur) => {
-        acc[cur.rating - 1] += 1;
-        return acc;
-      },
-      [0, 0, 0, 0, 0]
-    )
-    .map((res, index) => ({
-      amount: res,
-      name: `${index + 1}`,
-    }));
+const HostReviews = ({ loaderData }: Route.ComponentProps) => {
+  const { chartData, pagePromise, reviewCount } = loaderData;
 
   return (
     <PendingUI
@@ -82,25 +71,27 @@ const HostReviews = ({ loaderData }: Route.ComponentProps) => {
       />
       <VanHeader>Your Reviews</VanHeader>
 
+      {/*
+        Option: defer chart like the list — return chartPromise from loader (don't await),
+        wrap with DeferredAwait + BarChartSkeleton fallback, then LazyBarChart inside.
+        Unblocks TTFB when aggregation is slow; list defer alone already feels fast.
+      */}
       <LazyBarChart
-        data={result}
+        data={chartData}
         emptyStateMessage="You have no reviews"
         errorStateMessage="Something went wrong please try again"
       />
-      <Sortable itemCount={chartData?.length} title="Reviews" />
+      <Sortable itemCount={reviewCount} title="Reviews" />
 
-      <GenericComponent
+      <DeferredPaginated
         as="div"
         Component={Review}
-        className="grid-max mt-6"
+        className="grid-max v-host-list mt-6"
         emptyStateMessage="You have received no reviews"
         errorStateMessage="Something went wrong"
-        items={paginatedReviews}
+        fallback={<ReviewListSkeleton />}
         renderProps={renderReviewProps}
-      />
-      <Pagination
-        items={paginatedReviews}
-        paginationMetadata={paginationMetadata}
+        resolve={pagePromise}
       />
     </PendingUI>
   );

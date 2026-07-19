@@ -13,7 +13,7 @@
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.9.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
-[![Vite](https://img.shields.io/badge/Vite-8.1.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8.1.5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0--canary-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![ArkType](https://img.shields.io/badge/ArkType-2.2.3-000000?logo=arktype&logoColor=white)](https://arktype.io/)
 
@@ -69,14 +69,15 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🧩 **Compound Components** with React 19's modern context API (no `.Provider`, uses `use()`)
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
-- ⚡ **Performance Optimized** with lazy loading, code splitting, direct icon imports, and immutable array methods
+- ⚡ **Performance Optimized** with deferred loader promises (`DeferredAwait` / `DeferredPaginated`), lazy charts, code splitting, and immutable array methods
+- 🧊 **HTTP cache headers** — `PRIVATE_NO_STORE` for host/auth; `PUBLIC_SHORT_CACHE` + `Vary: Cookie` for catalog; leaf `headers` exports via `forwardDataHeaders`
 - 🔗 **URL State Management** with nuqs 2.9.0 for type-safe search parameters
-- 🌐 **View Transitions** for smooth navigation (auth login/sign-up title, footer, and form field morphs)
+- 🌐 **View Transitions** for smooth navigation (auth login/sign-up, host chart pages, footer, and form field morphs)
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router 8 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
 - 🔐 **Consolidated host auth middleware** on `host-layout.tsx` (no duplicate session lookups on leaf routes)
 - 🔍 **SEO Infrastructure** (canonical URLs, Open Graph/Twitter meta, `robots.txt`, dynamic `sitemap.xml` via `@forge42/seo-tools`)
-- ☁️ **Cloudflare Workers** deployment with Varlock-managed secrets and D1 binding (`env.DB`)
+- ☁️ **Cloudflare Workers** deployment with Varlock-managed secrets, D1 binding (`env.DB`), and Workers Cache enabled
 
 ---
 
@@ -104,24 +105,24 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 ### Development Tools
 
-- **Vite 8.1.4** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports
-- **@vitejs/devtools 0.4.0** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
+- **Vite 8.1.5** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports
+- **@vitejs/devtools 0.4.1** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
 - **rollup-plugin-visualizer 7.0.1** - Client/server bundle treemaps (`VITE_ANALYZE=true`)
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler 1.0** (stable) - Automatic memoization via `@rolldown/plugin-babel` + `reactCompilerPreset`
 - **Biome 2.5.3** for linting and formatting with Ultracite integration
 - **Ultracite 7.9.4** - AI-friendly linting rules for maximum type safety and accessibility
-- **Varlock 1.10.0** - Typed env schema (`.env.schema`) with Cloudflare integration
+- **Varlock 1.11.0** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.110.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
-- **react-doctor 0.7.6** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
+- **react-doctor 0.7.8** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **Bun** for fast package management and runtime
 
 ### Build System
 
-- **Vite 8.1.4** - Rolldown pipeline, `build.target: "esnext"`, `server.forwardConsole`
+- **Vite 8.1.5** - Rolldown pipeline, `build.target: "esnext"`, `server.forwardConsole`
 - **React Compiler** - `@rolldown/plugin-babel` + `reactCompilerPreset()` from `@vitejs/plugin-react` (import preset only — not `react()`; see `docs/babel-react-compiler.md`)
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Path aliases** - Native Vite `resolve.tsconfigPaths` (no `vite-tsconfig-paths` plugin)
@@ -138,10 +139,11 @@ app/
 │   ├── ui/             # shadcn base-nova (@base-ui/react): button, dialog, popover, checkbox, badge, etc.
 │   │                   # Variant tokens in button-variants.ts, badge-variants.ts
 │   ├── form/           # Field, FormError, FormActionResult types, fetcher status → StatusButton helpers
+│   ├── deferred-*.tsx  # DeferredAwait / DeferredItems / DeferredPaginated (Suspense + Await)
 │   ├── status-button.tsx  # Pending/success/error submit button (idle auto-reset via useAutoIdleStatus)
 │   ├── types.ts        # Shared prop types (AsProps, EmptyState, ErrorState, ViewTransitionTune)
 │   └── [common]        # Generic components (lists, sortable, etc.)
-├── constants/          # App-wide constants and enums
+├── constants/          # App-wide constants (cache-headers, time-constants, enums)
 ├── dal/                # Global data access helpers
 │   ├── schemas.server.ts      # Shared UUID v7 ArkType schema (branded)
 │   └── parse-uuidv7.server.ts # Parse/string → UUIDv7 at trust boundaries
@@ -158,11 +160,11 @@ app/
 │   │   ├── rentals/
 │   │   │   └── schemas.server.ts  # Rental action schemas
 │   │   ├── schemas.server.ts  # Host action schemas (deposit/withdraw)
-│   │   └── utils/      # Route determination helpers
+│   │   └── utils/      # Chart period/points, pickChartGranularity, resolveChartContext
 │   ├── image/          # Image optimization utilities
 │   ├── middleware/     # Auth, Cloudflare, db context, auth-redirect helpers
 │   ├── navigation/     # Nav, mobile-nav (Base UI Dialog), hamburger-icon
-│   ├── pagination/     # Shared pagination UI + utils (toPagination, getCursorMetadata, build-search-params)
+│   ├── pagination/     # Shared pagination UI + utils (toPagination, getCursorMetadata, resolveSortedCursor, build-search-params)
 │   ├── seo/            # SEO helpers (canonical URLs, SeoHead, sitemap)
 │   │   └── dal/        # SEO Drizzle reads (sitemap.server.ts)
 │   └── vans/
@@ -208,7 +210,7 @@ app/
 │       ├── robots.txt.ts   # Dynamic robots.txt
 │       ├── sitemap.xml.ts  # Dynamic sitemap
 │       └── 404.tsx     # Not found page
-├── utils/              # Shared utilities (parse-arktype, try-catch, not-found, server-error, bad-request, conflict, internal-error, service-result, domain-error, to-action-result, get-route-error-message, get-collection-state)
+├── utils/              # Shared utilities (parse-arktype, try-catch, not-found, server-error, bad-request, conflict, internal-error, service-result, domain-error, to-action-result, get-elapsed-time.server, get-route-error-message, get-collection-state)
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
@@ -262,6 +264,10 @@ bun run db:migrate:remote
 # Seed (needs ≥3 users via sign-up first)
 bun run db:seed          # local
 bun run db:seed:remote   # remote D1 HTTP
+
+# Optional: run SQLite PRAGMA optimize after heavy seed/migrate
+bun run db:optimize:local
+bun run db:optimize:remote
 
 # Drizzle Studio (local Miniflare SQLite / remote D1 HTTP)
 bun run db:studio:local
@@ -608,6 +614,7 @@ The application features **generic pagination utilities** for consistent cursor-
 
 - **Generic `toPagination` utility** (`app/features/pagination/utils/to-pagination.server.ts`) - Processes database results and returns items with pagination metadata
 - **`getCursorMetadata` utility** (`app/features/pagination/utils/get-cursor-metadata.server.ts`) - Provides `cursorId`, sort order, and `take` for Drizzle `lt`/`gt` + `limit` queries
+- **`resolveSortedCursor` helper** (`app/features/pagination/utils/resolve-sorted-cursor.server.ts`) - Shared cursor + `orderBy` prelude for host income/reviews/transfers DALs
 - **Bidirectional pagination support** - Handles both forward and backward pagination with correct logic
 - **Automatic result reversal** - Reverses results for backward pagination to maintain correct display order
 - **Type-safe** - Full TypeScript support with generic types
@@ -822,14 +829,27 @@ const BarChartComponent = lazy(() => import("./bar-chart.client"));
 </Suspense>;
 ```
 
-Host income/review date labels use `suppressHydrationWarning` where SSR (Workers UTC) and browser TZ can disagree; prefer UTC→viewer-TZ formatting in loaders long-term.
+### Deferred loader streaming
+
+Host income / reviews / transfers return critical summary data immediately and defer paginated lists via promises. UI wraps with `DeferredAwait` / `DeferredPaginated` + route skeletons (`IncomeListSkeleton`, `ReviewListSkeleton`, `PaginatedItemsSkeleton`).
+
+```tsx
+<DeferredPaginated
+  Component={Income}
+  fallback={<IncomeListSkeleton />}
+  resolve={pagePromise}
+  renderProps={renderIncomeItemProps}
+/>
+```
+
+Chart series use server SQL aggregations (`resolveChartContext`, `pickChartGranularity`, period/points helpers) so clients receive buckets — not raw transaction rows.
 
 ### Benefits
 
-- **Better Performance** - Instant navigation, smaller bundles, automatic optimizations
+- **Better Performance** - Faster TTFB via deferred lists, smaller payloads, automatic optimizations
 - **Improved SEO** - Proper meta tags, social sharing support
 - **Simpler Code** - Native elements, automatic memoization, no manual optimization
-- **Enhanced UX** - Smooth transitions, progressive enhancement
+- **Enhanced UX** - Skeletons while deferred promises resolve; smooth view transitions
 
 ---
 
@@ -837,7 +857,7 @@ Host income/review date labels use `suppressHydrationWarning` where SSR (Workers
 
 ### Prerequisites
 
-- Node.js 22+ (or Bun)
+- Node.js 24+ (or Bun)
 - Bun (recommended)
 - Cloudflare account + D1 database (see [`docs/d1-setup.md`](docs/d1-setup.md))
 - Bitwarden access token (optional; for Varlock secret resolution in production)
@@ -932,6 +952,8 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run db:generate` – Generate Drizzle SQL migrations to `app/db/migrations`
 - `bun run db:migrate:local` – Flatten + apply D1 migrations locally
 - `bun run db:migrate:remote` – Flatten + apply D1 migrations remotely
+- `bun run db:optimize:local` – `PRAGMA optimize` on local Miniflare D1
+- `bun run db:optimize:remote` – `PRAGMA optimize` on remote D1
 - `bun run db:seed` – Seed local Miniflare D1
 - `bun run db:seed:remote` – Seed remote D1 via HTTP API
 - `bun run db:studio:local` – Drizzle Studio against local Miniflare SQLite
@@ -979,7 +1001,9 @@ Configuration in `lint-staged.config.ts`.
 - **TailwindCSS 4.3.2** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — overlay fade and slide-in/out (`app/app.css`)
-- **Auth view transitions** — login/sign-up title slide, footer drop/fade morphs (`::view-transition-old/new` in `app/app.css`)
+- **Reusable keyframes** — parameterized `--fade` / `--scale` / `--slide-x` / `--slide-y` with CSS custom properties
+- **Auth + host view transitions** — login/sign-up and chart-page morphs (`::view-transition-old/new` in `app/app.css`)
+- **Scroll-driven host nav hint** — `mask-scroll-hint` utility with `animation-timeline: scroll(x self)`
 - **Responsive design** with mobile-first approach and CSS Grid layouts
 - **Biome configuration** for CSS at-rules support
 
@@ -994,6 +1018,7 @@ Configuration in `lint-staged.config.ts`.
 
 - **Utility-first approach** with custom CSS utilities for specific needs
 - **CSS custom properties** for dynamic theming and reusable values
+- **`bg-skeleton`** shimmer utility for deferred-list / chart skeletons
 - **Pseudo-random heights** using CSS trigonometric functions for skeleton loaders
 
 ---
@@ -1054,7 +1079,8 @@ This project uses **Ultracite** for enhanced code quality and AI-friendly develo
 The application deploys to **Cloudflare Workers** with static client assets:
 
 - **Worker entry** - `workers/app.ts` with React Router SSR request handler
-- **Wrangler config** - `wrangler.jsonc` (assets from `./build/client`, `nodejs_compat`, D1 binding `DB`)
+- **Wrangler config** - `wrangler.jsonc` (assets from `./build/client`, `nodejs_compat`, D1 binding `DB`, `cache.enabled`)
+- **Workers Cache** - edge caching for public GETs; host/auth use `private, no-store` via `app/constants/cache-headers.ts`
 - **Varlock deploy** - `bun run deploy:project` runs `varlock-wrangler deploy` for typed secrets
 - **Cloudflare D1** - SQLite via `env.DB`; Drizzle `createDb(d1)` in middleware/`auth.server.ts`
 - **Cloudflare context** - `cloudflareContext` + `dbContext` middleware share `env` / `AppDb` with routes

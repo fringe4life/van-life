@@ -1,6 +1,10 @@
-import { href } from "react-router";
+import { data, href } from "react-router";
 import { PendingUI } from "~/components/pending-ui";
 import { buttonVariants } from "~/components/ui/button-variants";
+import {
+  forwardDataHeaders,
+  PUBLIC_SHORT_CACHE_HEADERS,
+} from "~/constants/cache-headers";
 import { Image } from "~/features/image/component/image";
 import {
   HIGH_QUALITY_IMAGE_QUALITY,
@@ -31,9 +35,13 @@ const srcSet = createWebPSrcSet(
 );
 const sizes = "(max-width: 1024px) 100vw";
 
-export const loader = ({ request }: Route.LoaderArgs) => ({
-  seo: buildHomePageSeo(request),
-});
+export const headers = forwardDataHeaders;
+
+export const loader = ({ request }: Route.LoaderArgs) =>
+  data(
+    { seo: buildHomePageSeo(request) },
+    { headers: PUBLIC_SHORT_CACHE_HEADERS }
+  );
 
 const Home = ({ loaderData }: Route.ComponentProps) => {
   return (

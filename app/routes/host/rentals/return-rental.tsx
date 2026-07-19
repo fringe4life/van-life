@@ -12,6 +12,10 @@ import { readActionFormData } from "~/components/form/read-action-form-data";
 import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
 import { StatusButton } from "~/components/status-button";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
+import {
+  forwardDataHeaders,
+  PRIVATE_NO_STORE_HEADERS,
+} from "~/constants/cache-headers";
 import { parseUuidV7 } from "~/dal/parse-uuidv7.server";
 import {
   completeReturnRental,
@@ -74,6 +78,8 @@ export const middleware: Route.MiddlewareFunction[] = [
   fetchSharedDataMiddleware,
 ];
 
+export const headers = forwardDataHeaders;
+
 export const loader = ({ context }: Route.LoaderArgs) => {
   const rentalData = context.get(sharedRentalDataContext);
 
@@ -81,11 +87,7 @@ export const loader = ({ context }: Route.LoaderArgs) => {
     {
       ...rentalData,
     },
-    {
-      headers: {
-        "Cache-Control": "max-age=259200",
-      },
-    }
+    { headers: PRIVATE_NO_STORE_HEADERS }
   );
 };
 

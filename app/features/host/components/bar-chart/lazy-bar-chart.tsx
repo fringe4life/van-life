@@ -22,10 +22,12 @@ const LazyBarChart = ({
   });
   if (collectionState.kind !== "ok") {
     return (
-      <UnsuccesfulState
-        isError={collectionState.kind === "error"}
-        message={collectionState.message}
-      />
+      <div className="v-host-chart">
+        <UnsuccesfulState
+          isError={collectionState.kind === "error"}
+          message={collectionState.message}
+        />
+      </div>
     );
   }
   return (

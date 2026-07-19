@@ -32,4 +32,4 @@ const Review = ({ name, rating, text, timestamp }: ReviewProps) => (
   </Card>
 );
 
-export default Review;
+export { Review };

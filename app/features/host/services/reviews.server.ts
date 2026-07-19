@@ -13,28 +13,33 @@ export async function loadReviewsPage(
   userId: UUIDv7,
   { cursor, limit, direction, sort }: HostPaginatedPageParams
 ) {
-  const [{ data: chartData }, { data: paginatedReviews }] = await Promise.all([
-    tryCatch(() => getHostReviewsChartData(db, userId)),
-    tryCatch(() =>
-      getHostReviewsPaginated(db, {
-        cursor,
-        direction,
-        limit,
-        sort,
-        userId,
-      })
-    ),
-  ]);
-
-  const pagination = toPagination({
+  // Start list immediately; do not await — streamed via DeferredPaginated
+  const pagePromise = getHostReviewsPaginated(db, {
     cursor,
     direction,
-    items: paginatedReviews,
     limit,
-  });
+    sort,
+    userId,
+  }).then((items) =>
+    toPagination({
+      cursor,
+      direction,
+      items,
+      limit,
+    })
+  );
+
+  const { data: chartData } = await tryCatch(() =>
+    getHostReviewsChartData(db, userId)
+  );
+
+  const points = chartData ?? [];
+  // Sum of histogram bars = total reviews (avoids a second COUNT query)
+  const reviewCount = points.reduce((sum, point) => sum + point.amount, 0);
 
   return {
-    chartData,
-    ...pagination,
+    chartData: points,
+    pagePromise,
+    reviewCount,
   };
 }

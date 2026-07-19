@@ -1,6 +1,10 @@
 import { data, href } from "react-router";
 import { GenericComponent } from "~/components/generic-component";
 import { PendingUI } from "~/components/pending-ui";
+import {
+  forwardDataHeaders,
+  PRIVATE_NO_STORE_HEADERS,
+} from "~/constants/cache-headers";
 import { listActiveRentals } from "~/features/host/services/rental.server";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
@@ -41,6 +45,8 @@ const renderRentalVanCardProps = (rental: ActiveRental) => ({
   van: rental.van,
 });
 
+export const headers = forwardDataHeaders;
+
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const user = context.get(authContext);
   const db = context.get(dbContext);
@@ -53,11 +59,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     limit,
   });
 
-  return data(pagination, {
-    headers: {
-      "Cache-Control": "max-age=259200",
-    },
-  });
+  return data(pagination, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
 const Host = ({ loaderData }: Route.ComponentProps) => {

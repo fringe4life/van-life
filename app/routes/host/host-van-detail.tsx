@@ -1,6 +1,10 @@
 import { Activity } from "react";
 import { data, href } from "react-router";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
+import {
+  forwardDataHeaders,
+  PRIVATE_NO_STORE_HEADERS,
+} from "~/constants/cache-headers";
 import { determineHostVansRoute } from "~/features/host/utils/determine-host-vans-route";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
@@ -13,6 +17,8 @@ import { getRouteErrorMessage } from "~/utils/get-route-error-message";
 import { notFound } from "~/utils/not-found";
 import { tryCatch } from "~/utils/try-catch.server";
 import type { Route } from "./+types/host-van-detail";
+
+export const headers = forwardDataHeaders;
 
 export const loader = async ({
   params,
@@ -33,10 +39,7 @@ export const loader = async ({
     notFound("Van not found");
   }
 
-  return data(
-    { cursor, limit, van },
-    { headers: { "Cache-Control": "max-age=259200" } }
-  );
+  return data({ cursor, limit, van }, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
 const HostVanDetailPage = ({ loaderData, params }: Route.ComponentProps) => {
