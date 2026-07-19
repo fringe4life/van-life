@@ -1,5 +1,9 @@
 import { data, href } from "react-router";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
+import {
+  forwardDataHeaders,
+  PUBLIC_SHORT_CACHE_HEADERS,
+} from "~/constants/cache-headers";
 import { dbContext } from "~/features/middleware/contexts/db";
 import { CustomLink } from "~/features/navigation/components/custom-link";
 import { buildVanUrl } from "~/features/pagination/utils/build-search-params";
@@ -16,6 +20,8 @@ import { getRouteErrorMessage } from "~/utils/get-route-error-message";
 import { notFound } from "~/utils/not-found";
 import { serverError } from "~/utils/server-error";
 import type { Route } from "./+types/van-detail";
+
+export const headers = forwardDataHeaders;
 
 export const loader = async ({
   params,
@@ -47,7 +53,7 @@ export const loader = async ({
       types,
       van: result.data,
     },
-    { headers: { "Cache-Control": "max-age=259200" } }
+    { headers: PUBLIC_SHORT_CACHE_HEADERS }
   );
 };
 

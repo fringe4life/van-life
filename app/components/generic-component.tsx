@@ -5,7 +5,7 @@ import { getCollectionState } from "~/utils/get-collection-state";
 import type { AsProps, EmptyState, ErrorState } from "./types";
 import { UnsuccesfulState } from "./unsuccesful-state";
 
-type GenericComponentProps<
+export type GenericComponentProps<
   T extends Id,
   P,
   E extends React.ElementType = "div",

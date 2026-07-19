@@ -7,6 +7,10 @@ import { readActionFormData } from "~/components/form/read-action-form-data";
 import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
 import { StatusButton } from "~/components/status-button";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
+import {
+  forwardDataHeaders,
+  PRIVATE_NO_STORE_HEADERS,
+} from "~/constants/cache-headers";
 import { rentVanSchema } from "~/features/host/rentals/schemas.server";
 import { rentVan } from "~/features/host/services/rental.server";
 import { authContext } from "~/features/middleware/contexts/auth";
@@ -22,6 +26,8 @@ import { toActionResultOrThrow } from "~/utils/to-action-result.server";
 import type { Route } from "./+types/rental-detail";
 
 type RentActionData = FormActionFailure<string>;
+
+export const headers = forwardDataHeaders;
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const db = context.get(dbContext);
@@ -39,11 +45,7 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     {
       rental: result.data,
     },
-    {
-      headers: {
-        "Cache-Control": "max-age=259200",
-      },
-    }
+    { headers: PRIVATE_NO_STORE_HEADERS }
   );
 };
 

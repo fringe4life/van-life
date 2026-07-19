@@ -1,29 +1,33 @@
 import { data } from "react-router";
-import { GenericComponent } from "~/components/generic-component";
+import { DeferredPaginated } from "~/components/deferred-paginated";
 import { PendingUI } from "~/components/pending-ui";
 import { Sortable } from "~/components/sortable";
+import {
+  forwardDataHeaders,
+  PRIVATE_NO_STORE_HEADERS,
+} from "~/constants/cache-headers";
 import type { TransactionModel } from "~/db/client.server";
 import { TransactionType } from "~/db/enums";
 import { LazyBarChart } from "~/features/host/components/bar-chart/lazy-bar-chart";
-import Income from "~/features/host/components/income";
+import { Income } from "~/features/host/components/income";
+import { IncomeListSkeleton } from "~/features/host/components/income-list-skeleton";
 import { loadTransfersPage } from "~/features/host/services/transfers.server";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
-import { Pagination } from "~/features/pagination/components/pagination";
 import { VanHeader } from "~/features/vans/components/van-header";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import {
   loadHostSearchParams,
   parsePaginationCursor,
 } from "~/lib/search-params.server";
-import { getElapsedTime } from "~/utils/get-elapsed-time";
 import type { Route } from "./+types/transfers";
+
+export const headers = forwardDataHeaders;
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
-  // Parse search parameters for pagination and sorting
   const { cursor, limit, direction, sort } = loadHostSearchParams(request);
   const page = await loadTransfersPage(db, user.id, {
     cursor: parsePaginationCursor(cursor),
@@ -32,50 +36,20 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     sort,
   });
 
-  return data(page, {
-    headers: {
-      "Cache-Control": "max-age=259200",
-    },
-  });
+  return data(page, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
 const renderTransferItemProps = (
   item: Pick<TransactionModel, "amount" | "createdAt" | "type" | "id">
 ) => ({
   ...item,
-  amount: item.type === TransactionType.DEPOSIT ? item.amount : -item.amount,
-  rentedAt: item.createdAt,
+  // WITHDRAW stored positive → flip for display; RENTAL_RETURN already negative
+  amount: item.type === TransactionType.WITHDRAW ? -item.amount : item.amount,
 });
 
 const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
-  const {
-    chartData,
-    items: paginatedTransactions,
-    paginationMetadata,
-  } = loaderData;
-
-  // Calculate total amount and elapsed time from chart data (all transactions)
-  const sumAmount =
-    chartData?.reduce(
-      (total, transaction) =>
-        transaction.type === TransactionType.DEPOSIT
-          ? total + transaction.amount
-          : -transaction.amount,
-      0
-    ) ?? 0;
-
-  const elapsedTime = getElapsedTime(
-    chartData?.map((t) => ({
-      amount: t.amount,
-      rentedAt: t.createdAt,
-    }))
-  );
-
-  // TODO: UTC→viewer-TZ labels (toDateString() is local; SSR Workers UTC ≠ browser)
-  const mappedData = chartData?.map((transaction) => ({
-    amount: Math.round(transaction.amount),
-    name: transaction.createdAt.toDateString(),
-  }));
+  const { chartData, elapsedDays, pagePromise, sumAmount, txnCount } =
+    loaderData;
 
   return (
     <PendingUI
@@ -92,31 +66,33 @@ const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
       <p className="mt-6">
         Last{" "}
         <span className="font-bold text-neutral-600 underline">
-          {elapsedTime.elapsedDays} days
+          {elapsedDays} days
         </span>
       </p>
       <p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
         {displayPrice(sumAmount)}
       </p>
+      {/*
+        Option: defer chart like the list — return chartPromise from loader (don't await),
+        wrap with DeferredAwait + BarChartSkeleton fallback, then LazyBarChart inside.
+        Unblocks TTFB when aggregation is slow; list defer alone already feels fast.
+      */}
       <LazyBarChart
-        data={mappedData}
+        data={chartData}
         emptyStateMessage="No transfers Yet"
         errorStateMessage="Something went wrong"
       />
-      <Sortable itemCount={chartData?.length} title="Transaction History" />
+      <Sortable itemCount={txnCount} title="Transaction History" />
 
-      <GenericComponent
+      <DeferredPaginated
         as="div"
         Component={Income}
-        className="grid-max mt-6"
+        className="grid-max v-host-list mt-6"
         emptyStateMessage="Make some transactions and they will appear here."
         errorStateMessage="Something went wrong"
-        items={paginatedTransactions}
+        fallback={<IncomeListSkeleton />}
         renderProps={renderTransferItemProps}
-      />
-      <Pagination
-        items={paginatedTransactions}
-        paginationMetadata={paginationMetadata}
+        resolve={pagePromise}
       />
     </PendingUI>
   );

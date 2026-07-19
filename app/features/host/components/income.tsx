@@ -25,4 +25,4 @@ const Income = ({ amount, createdAt }: IncomeProps) => (
   </Card>
 );
 
-export default Income;
+export { Income };

@@ -26,7 +26,7 @@ const HostLayout = () => (
       <GenericComponent
         as="ul"
         Component={CustomNavLink}
-        className="mask-r-from-95% no-scrollbar mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-3 overflow-x-auto overscroll-x-contain py-3"
+        className="mask-scroll-hint scrollbar-none mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-3 overflow-x-auto overscroll-x-contain py-3"
         emptyStateMessage="No nav links"
         errorStateMessage="Something went wrong"
         items={hostNavItems}

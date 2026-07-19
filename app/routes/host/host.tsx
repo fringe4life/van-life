@@ -3,6 +3,10 @@ import type { FormActionResultFrom } from "~/components/form/form-action-result"
 import { pickFormValues } from "~/components/form/pick-form-values";
 import { PendingUI } from "~/components/pending-ui";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
+import {
+  forwardDataHeaders,
+  PRIVATE_NO_STORE_HEADERS,
+} from "~/constants/cache-headers";
 import { HostIncomeSection } from "~/features/host/components/dashboard/host-income-section";
 import { HostReviewSection } from "~/features/host/components/dashboard/host-review-section";
 import { HostVansSection } from "~/features/host/components/dashboard/host-vans-section";
@@ -20,8 +24,6 @@ import {
 } from "~/features/middleware/utils/auth-redirect";
 import { DEPOSIT } from "~/features/vans/constants/vans-constants";
 import { badRequest } from "~/utils/bad-request";
-import { calculateTotalIncome } from "~/utils/calculate-income";
-import { getElapsedTime } from "~/utils/get-elapsed-time";
 import { getRouteErrorMessage } from "~/utils/get-route-error-message";
 import {
   arkErrorsToFieldErrors,
@@ -36,6 +38,8 @@ type HostWalletActionData = FormActionResultFrom<
   typeof MONEY_ECHO_FIELDS
 >;
 
+export const headers = forwardDataHeaders;
+
 export const loader = async ({ context }: Route.LoaderArgs) => {
   const user = context.get(authContext);
   const db = context.get(dbContext);
@@ -47,11 +51,7 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
       ...dashboard,
       name: user.name,
     },
-    {
-      headers: {
-        "Cache-Control": "max-age=259200",
-      },
-    }
+    { headers: PRIVATE_NO_STORE_HEADERS }
   );
 };
 
@@ -91,12 +91,16 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 };
 
 const Host = ({ loaderData }: Route.ComponentProps) => {
-  const { vansPromise, avgRating, name, transactions, transactionSummary } =
-    loaderData;
+  const {
+    vansPromise,
+    avgRating,
+    elapsedDays,
+    name,
+    sumIncome,
+    transactionSummary,
+  } = loaderData;
 
   const wallet = useHostWallet(transactionSummary);
-  const sumIncome = calculateTotalIncome(transactions);
-  const { elapsedDays } = getElapsedTime(transactions);
 
   return (
     <PendingUI as="section">

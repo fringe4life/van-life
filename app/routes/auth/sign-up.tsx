@@ -1,5 +1,5 @@
 import { type SubmitEventHandler, useTransition } from "react";
-import { href, redirect, replace, useFetcher } from "react-router";
+import { data, href, redirect, replace, useFetcher } from "react-router";
 import type { FormActionFailureFrom } from "~/components/form/form-action-result";
 import { Field } from "~/components/form/field";
 import { FormError } from "~/components/form/form-error";
@@ -21,6 +21,10 @@ import {
   SIGN_UP_ECHO_FIELDS,
   SIGN_UP_FORM_FIELDS,
 } from "~/features/auth/types";
+import {
+  forwardDataHeaders,
+  PRIVATE_NO_STORE_HEADERS,
+} from "~/constants/cache-headers";
 import { hasAuthContext } from "~/features/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/features/middleware/functions/has-auth-middleware";
 import { CustomLink } from "~/features/navigation/components/custom-link";
@@ -41,12 +45,16 @@ type SignUpActionData = FormActionFailureFrom<
   typeof SIGN_UP_ECHO_FIELDS
 >;
 
+export const headers = forwardDataHeaders;
+
 export const loader = ({ context }: Route.LoaderArgs) => {
   const session = context.get(hasAuthContext);
 
   if (session) {
     throw redirect(href("/host"));
   }
+
+  return data(null, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
 export const action = async ({ request }: Route.ActionArgs) => {

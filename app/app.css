@@ -1,3 +1,4 @@
+/* ─── IMPORTS & FONTS ────────────────────────────────────────────────────── */
 @import "tailwindcss";
 
 @font-face {
@@ -9,6 +10,7 @@
     format("woff2-variations");
 }
 
+/* ─── CONFIGURATION ───────────────────────────────────────────────────────── */
 /* Van state custom variants for cleaner component styling */
 @custom-variant van-new (&[data-slot*="van-card-new"]);
 @custom-variant van-sale (&[data-slot*="van-card-sale"]);
@@ -131,10 +133,12 @@
   --chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
 
   /* Mobile nav dialog animations — spring on entry, plain ease-in on exit */
-  --animate-slide-in-right: --slideInRight 500ms var(--ease-spring-soft) both;
-  --animate-slide-out-right: --slideOutRight 250ms ease-in both;
-  --animate-overlay-fade-in: --overlayFadeIn 300ms ease both;
-  --animate-overlay-fade-out: --overlayFadeOut 300ms ease both;
+  --animate-slide-in-right: --slide-x 500ms var(--ease-spring-soft) both;
+  --animate-slide-out-right: --slide-x 250ms ease-in both;
+  --animate-overlay-fade-in:
+    --fade 300ms ease both, --bg-opacity 300ms ease both;
+  --animate-overlay-fade-out:
+    --fade 300ms ease reverse both, --bg-opacity 300ms ease reverse both;
 
   /* shadcn semantic tokens (light only) */
   --color-background: hsl(0 0% 100%);
@@ -167,7 +171,7 @@
   --radius-xl: 0.75rem;
 }
 
-/* BASE STYLES */
+/* ─── BASE STYLES ────────────────────────────────────────────────────────── */
 /* part of josh comeaus css reset */
 @layer base {
   p,
@@ -197,7 +201,7 @@
   }
 }
 
-/* UTILITIES */
+/* ─── LAYOUT ─────────────────────────────────────────────────────────────── */
 @utility grid-max {
   --_gap: 2rem;
   --_max-columns: 2;
@@ -222,23 +226,6 @@
   gap: var(--_gap);
 }
 
-/* Custom utility for pseudo-random bar heights using CSS trig functions */
-@utility bar-height {
-  block-size: clamp(
-    50px,
-    calc(150px + 100px * sin((pi / 2) * var(--bar-index))),
-    var(--chart-content-height)
-  );
-}
-
-@utility no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none;
-  } /* Firefox */
-}
-
 @utility full-layout {
   inline-size: calc(100% + (2 * var(--padding-inline)));
   padding-inline-start: var(--padding-inline);
@@ -251,109 +238,276 @@
   @apply grid grid-cols-[var(--padding-inline)_1fr_var(--padding-inline)] grid-rows-[var(--header-height)_1fr_100px];
 }
 
-/* ANIMATIONS */
-@keyframes --fade-in {
+/* ─── CUSTOM UTILITIES ───────────────────────────────────────────────────── */
+@utility bg-skeleton {
+  background-color: var(--color-gray-300);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-gray-300) 25%,
+    var(--color-gray-200) 50%,
+    var(--color-gray-300) 75%
+  );
+  background-size: 200% 100%;
+  animation: --shimmer 2s infinite linear;
+}
+
+/* Custom utility for pseudo-random bar heights using CSS trig functions */
+@utility bar-height {
+  block-size: clamp(
+    50px,
+    calc(150px + 100px * sin((pi / 2) * var(--bar-index))),
+    var(--chart-content-height)
+  );
+}
+
+@utility mask-scroll-hint {
+  /* Fallback: Hint at the end (right side) as content can be scrolled right */
+  mask-image: linear-gradient(
+    to right,
+    black 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+  mask-repeat: no-repeat;
+
+  /* Scroll-driven animation for dynamic hints */
+  @supports (animation-timeline: scroll()) {
+    animation: --scroll-mask auto linear;
+    animation-timeline: scroll(x self);
+  }
+}
+
+/* ─── KEYFRAMES ──────────────────────────────────────────────────────────── */
+@keyframes --fade {
   from {
-    opacity: 0;
-    scale: 0;
+    opacity: var(--fade-from, 0);
   }
   to {
-    opacity: 1;
-    scale: 1;
+    opacity: var(--fade-to, 1);
   }
 }
 
-@keyframes --scale-out {
-  to {
-    opacity: 0;
-    scale: 0;
-  }
-}
-
-@keyframes --fade-to-right {
+@keyframes --scale {
   from {
-    translate: 0 0;
-    opacity: 1;
-    scale: 1;
+    scale: var(--scale-from, 0);
   }
   to {
-    translate: 100vh 0;
-    opacity: 0.5;
-    scale: 0.5;
+    scale: var(--scale-to, 1);
   }
 }
 
-@keyframes --fade-in-from-left {
+@keyframes --slide-x {
   from {
-    translate: -100vh 0;
-    scale: 0.5;
-    opacity: 0.5;
+    translate: var(--slide-x-from, 0) 0;
   }
   to {
-    translate: 0 0;
-    scale: 1;
-    opacity: 1;
+    translate: var(--slide-x-to, 0) 0;
   }
 }
 
-@keyframes --fade-in-from-right {
+@keyframes --slide-y {
   from {
-    translate: 100vh 0;
-    scale: 0.5;
-    opacity: 0.5;
+    translate: 0 var(--slide-y-from, 0);
   }
   to {
-    translate: 0 0;
-    scale: 1;
-    opacity: 1;
+    translate: 0 var(--slide-y-to, 0);
   }
 }
 
-@keyframes --slideInRight {
+@keyframes --shimmer {
   from {
-    transform: translateX(100%);
+    background-position: -200% 0;
   }
   to {
-    transform: translateX(0);
+    background-position: 200% 0;
   }
 }
 
-@keyframes --slideOutRight {
+@keyframes --bg-opacity {
   from {
-    transform: translateX(0);
+    background-color: var(--bg-from, transparent);
   }
   to {
-    transform: translateX(100%);
+    background-color: var(--bg-to, rgb(0 0 0 / 0.6));
   }
 }
 
-@keyframes --overlayFadeIn {
-  from {
-    opacity: 0;
-    background-color: rgba(0, 0, 0, 0);
+@keyframes --scroll-mask {
+  0% {
+    /* Scroll at start: only hint at the end */
+    mask-image: linear-gradient(
+      to right,
+      black 0%,
+      black 5%,
+      black 95%,
+      transparent 100%
+    );
   }
-  to {
-    opacity: 1;
-    background-color: rgba(0, 0, 0, 0.6);
+  5%,
+  95% {
+    /* Scroll in middle: hints at both start and end */
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 5%,
+      black 95%,
+      transparent 100%
+    );
+  }
+  100% {
+    /* Scroll at end: only hint at the start */
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 5%,
+      black 95%,
+      black 100%
+    );
   }
 }
 
-@keyframes --overlayFadeOut {
-  from {
-    opacity: 1;
-    background-color: rgba(0, 0, 0, 0.6);
-  }
-  to {
-    opacity: 0;
-    background-color: rgba(0, 0, 0, 0);
-  }
+/* ─── VIEW TRANSITIONS ───────────────────────────────────────────────────── */
+@view-transition {
+  navigation: auto;
 }
 
-/* ─── SIDEBAR DIALOG ──────────────────────────────────────────────────────
+/* Set the shared infrastructure for all transition elements */
+::view-transition-group(*) {
+  animation-duration: 300ms;
+  animation-fill-mode: both;
+}
+
+/* Children inherit the duration and fill-mode, so we only need the names */
+/* only-child means there is not an after snapshot */
+/* i.e. the card is no longer on the page after being filtered out */
+::view-transition-old(*):only-child {
+  --fade-to: 0;
+  --scale-to: 0;
+  animation-name: --fade, --scale;
+}
+
+/* only-child means there is not a before snapshot */
+/* i.e. the card is new to being on the page */
+::view-transition-new(*):only-child {
+  animation-name: --fade, --scale;
+}
+
+::view-transition-new(about-image):only-child,
+::view-transition-new(home-image):only-child,
+::view-transition-new(host-chart):only-child {
+  --fade-from: 0.5;
+  --scale-from: 0.5;
+  --slide-x-from: -100vh;
+  animation-name: --fade, --scale, --slide-x;
+}
+
+/* view transition for home page of hero section */
+::view-transition-old(about-image):only-child,
+::view-transition-old(home-image):only-child,
+::view-transition-old(host-chart):only-child {
+  --fade-to: 0.5;
+  --scale-to: 0.5;
+  --slide-x-to: 100vh;
+  animation-name: --fade, --scale, --slide-x;
+}
+
+/* Rising Deck transition for lists */
+::view-transition-new(host-list):only-child {
+  --fade-from: 0;
+  --slide-y-from: 4rem;
+  --scale-from: 0.95;
+  animation:
+    --fade 400ms ease-out both,
+    --slide-y 600ms var(--ease-spring-soft) both,
+    --scale 600ms var(--ease-spring-soft) both;
+}
+
+::view-transition-old(host-list):only-child {
+  --fade-to: 0;
+  --slide-y-to: 2rem;
+  --scale-to: 0.98;
+  animation:
+    --fade 300ms ease-in both,
+    --slide-y 300ms ease-in both,
+    --scale 300ms ease-in both;
+}
+
+@utility v-host-chart {
+  view-transition-name: host-chart;
+}
+
+@utility v-host-list {
+  view-transition-name: host-list;
+}
+
+/* AUTH FOOTER: old drops down + fades out, new drops in from top + fades in */
+::view-transition-old(auth-footer) {
+  --fade-to: 0;
+  --slide-y-to: 1rem;
+  animation-name: --fade, --slide-y;
+}
+
+::view-transition-new(auth-footer) {
+  --fade-from: 0;
+  --slide-y-from: -1rem;
+  animation-name: --fade, --slide-y;
+}
+
+/* AUTH TITLE: old slides right + fades out, new fades in from the left */
+::view-transition-old(auth-title) {
+  --fade-to: 0;
+  --slide-x-to: 1rem;
+  animation-name: --fade, --slide-x;
+}
+
+::view-transition-new(auth-title) {
+  --fade-from: 0;
+  --slide-x-from: -1rem;
+  animation-name: --fade, --slide-x;
+}
+
+/* ─── SCROLL DRIVEN ANIMATIONS ───────────────────────────────────────────── */
+.scroll-sm,
+.scroll-md,
+.scroll-lg {
+  animation-timeline: view();
+  animation-range: entry;
+  animation-fill-mode: both;
+}
+
+.scroll-md {
+  animation-range: entry 0% cover 10%;
+}
+
+/* Base scroll reveal setup */
+@utility scroll-reveal {
+  --fade-from: 0.5;
+  --scale-from: 0.5;
+  animation-name: --fade, --scale, --slide-x;
+  animation-duration: 1ms;
+  animation-fill-mode: both;
+}
+
+.scroll-sm:nth-child(n + 3),
+.scroll-md:nth-child(n + 5),
+.scroll-lg:nth-child(n + 7) {
+  --slide-x-from: -100vh;
+  @apply scroll-reveal;
+}
+
+.scroll-sm:nth-child(2n):nth-child(n + 3),
+.scroll-md:nth-child(2n):nth-child(n + 6),
+.scroll-lg:nth-child(2n):nth-child(n + 8) {
+  --slide-x-from: 100vh;
+}
+
+/* ─── COMPONENT STYLES ───────────────────────────────────────────────────── */
+/* SIDEBAR DIALOG
    Entry: panel slides in from right via @starting-style (fires on showPopover).
    Exit:  panel slides out to right; `allow-discrete` delays display:none on
           both the popover and ::backdrop until the 300 ms transition finishes.
-   ──────────────────────────────────────────────────────────────────────── */
+*/
 
 /* Keep popover visible during exit so the slide-out can play */
 .sidebar-dialog {
@@ -362,16 +516,16 @@
 
 /* Panel: off-screen right by default, slides to 0 when popover is open */
 .sidebar-dialog [data-sidebar-panel] {
-  transform: translateX(100%);
-  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  translate: 100% 0;
+  transition: translate 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .sidebar-dialog:popover-open [data-sidebar-panel] {
-  transform: translateX(0);
+  translate: 0 0;
 }
 /* No-flash guard: ensure panel starts off-screen on the very first open */
 @starting-style {
   .sidebar-dialog:popover-open [data-sidebar-panel] {
-    transform: translateX(100%);
+    translate: 100% 0;
   }
 }
 
@@ -390,143 +544,4 @@
   .sidebar-dialog:popover-open::backdrop {
     opacity: 0;
   }
-}
-
-/* VIEW TRANSITIONS */
-
-@view-transition {
-  navigation: auto;
-}
-/* sets speed for view transitions */
-::view-transition-group(*) {
-  animation-duration: 500ms;
-}
-
-/* only-child means there is not an after snapshot */
-/* i.e. the card is no longer on the page after being filtered out */
-::view-transition-old(*):only-child {
-  animation-name: --scale-out;
-}
-
-/* only-child means there is not a before snapshot */
-/* i.e. the card is new to being on the page */
-::view-transition-new(*):only-child {
-  animation-name: --fade-in;
-}
-
-::view-transition-group(*) {
-  animation-duration: 300ms;
-}
-
-::view-transition-new(about-image):only-child {
-  animation-name: --fade-in-from-left;
-}
-
-/* view transition for home page of hero section */
-::view-transition-old(about-image):only-child {
-  animation-name: --fade-to-right;
-}
-
-::view-transition-new(home-image):only-child {
-  animation-name: --fade-in-from-left;
-}
-
-/* view transition for home page of hero section */
-::view-transition-old(home-image):only-child {
-  animation-name: --fade-to-right;
-}
-
-/* AUTH FOOTER: old drops down + fades out, new drops in from top + fades in */
-@keyframes --fade-out-down {
-  from {
-    translate: 0 0;
-    opacity: 1;
-  }
-  to {
-    translate: 0 1rem;
-    opacity: 0;
-  }
-}
-
-@keyframes --fade-in-from-top {
-  from {
-    translate: 0 -1rem;
-    opacity: 0;
-  }
-  to {
-    translate: 0 0;
-    opacity: 1;
-  }
-}
-
-::view-transition-old(auth-footer) {
-  animation-name: --fade-out-down;
-}
-
-::view-transition-new(auth-footer) {
-  animation-name: --fade-in-from-top;
-}
-
-/* AUTH TITLE: old slides right + fades out, new fades in from the left */
-@keyframes --fade-out-right-sm {
-  from {
-    translate: 0 0;
-    opacity: 1;
-  }
-  to {
-    translate: 1rem 0;
-    opacity: 0;
-  }
-}
-
-@keyframes --fade-in-from-left-sm {
-  from {
-    translate: -1rem 0;
-    opacity: 0;
-  }
-  to {
-    translate: 0 0;
-    opacity: 1;
-  }
-}
-
-::view-transition-old(auth-title) {
-  animation-name: --fade-out-right-sm;
-}
-
-::view-transition-new(auth-title) {
-  animation-name: --fade-in-from-left-sm;
-}
-
-/* SCROLL DRIVEN ANIMATIONS */
-.scroll-sm,
-.scroll-md,
-.scroll-lg {
-  animation-timeline: view();
-  animation-range: entry;
-}
-
-.scroll-md {
-  animation-range: entry 0% cover 10%;
-}
-
-.scroll-sm:nth-child(2n + 3) {
-  animation-name: --fade-in-from-left;
-}
-.scroll-sm:nth-child(2n):nth-child(n + 3) {
-  animation-name: --fade-in-from-right;
-}
-
-.scroll-md:nth-child(2n + 5) {
-  animation-name: --fade-in-from-left;
-}
-.scroll-md:nth-child(2n):nth-child(n + 6) {
-  animation-name: --fade-in-from-right;
-}
-
-.scroll-lg:nth-child(2n + 7) {
-  animation-name: --fade-in-from-left;
-}
-.scroll-lg:nth-child(2n):nth-child(n + 8) {
-  animation-name: --fade-in-from-right;
 }

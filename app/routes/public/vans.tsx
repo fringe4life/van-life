@@ -5,6 +5,10 @@ import { GenericComponent } from "~/components/generic-component";
 import { PendingUI } from "~/components/pending-ui";
 import { SearchInput } from "~/components/search-input";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
+import {
+  forwardDataHeaders,
+  PUBLIC_SHORT_CACHE_HEADERS,
+} from "~/constants/cache-headers";
 import type { VanModel } from "~/db/client.server";
 import { dbContext } from "~/features/middleware/contexts/db";
 import { Pagination } from "~/features/pagination/components/pagination";
@@ -23,15 +27,13 @@ import {
 import { getRouteErrorMessage } from "~/utils/get-route-error-message";
 import type { Route } from "./+types/vans";
 
+export const headers = forwardDataHeaders;
+
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const db = context.get(dbContext);
   const loaderData = await loadVanCatalog(db, request);
 
-  return data(loaderData, {
-    headers: {
-      "Cache-Control": "max-age=259200",
-    },
-  });
+  return data(loaderData, { headers: PUBLIC_SHORT_CACHE_HEADERS });
 };
 
 const Vans = ({ loaderData }: Route.ComponentProps) => {

@@ -18,6 +18,10 @@ import { readActionFormData } from "~/components/form/read-action-form-data";
 import type { VanModel } from "~/db/client.server";
 import { VanForm } from "~/features/host/components/van-form";
 import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
+import {
+  forwardDataHeaders,
+  PRIVATE_NO_STORE_HEADERS,
+} from "~/constants/cache-headers";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
 import { CustomLink } from "~/features/navigation/components/custom-link";
@@ -61,17 +65,15 @@ type HostVansActionData = FormActionResult<
   VanFormFieldKey
 >;
 
+export const headers = forwardDataHeaders;
+
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
   const pagination = await loadHostVansPage(db, user.id, request);
 
-  return data(pagination, {
-    headers: {
-      "Cache-Control": "max-age=259200",
-    },
-  });
+  return data(pagination, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
 export const action = async ({ request, context }: Route.ActionArgs) => {

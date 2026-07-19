@@ -1,8 +1,10 @@
 import type { AppDb } from "~/db/client.server";
 import {
-  getHostTransactionsChartData,
+  getHostIncomeChartData,
+  getHostIncomeStats,
   getHostTransactionsPaginated,
 } from "~/features/host/dal/transaction.server";
+import { resolveChartContext } from "~/features/host/utils/resolve-chart-context.server";
 import type {
   BasePaginationParams,
   SortOption,
@@ -23,29 +25,40 @@ export async function loadIncomePage(
   userId: UUIDv7,
   { cursor, limit, direction, sort }: HostPaginatedPageParams
 ) {
-  const [{ data: chartData }, { data: paginatedTransactions }] =
-    await Promise.all([
-      tryCatch(() => getHostTransactionsChartData(db, userId)),
-      tryCatch(() =>
-        getHostTransactionsPaginated(db, {
-          cursor,
-          direction,
-          limit,
-          sort,
-          userId,
-        })
-      ),
-    ]);
-
-  const pagination = toPagination({
+  // Start list immediately; do not await — streamed via DeferredPaginated
+  const pagePromise = getHostTransactionsPaginated(db, {
     cursor,
     direction,
-    items: paginatedTransactions,
     limit,
+    sort,
+    userId,
+  }).then((items) =>
+    toPagination({
+      cursor,
+      direction,
+      items,
+      limit,
+    })
+  );
+
+  const { data: stats } = await tryCatch(() => getHostIncomeStats(db, userId));
+
+  const { count, elapsedDays, granularity } = resolveChartContext({
+    count: stats?.count ?? 0,
+    firstAt: stats?.firstAt,
+    lastAt: stats?.lastAt,
   });
 
+  const { data: chartData } = await tryCatch(() =>
+    getHostIncomeChartData(db, userId, granularity)
+  );
+
   return {
-    chartData,
-    ...pagination,
+    chartData: chartData ?? [],
+    elapsedDays,
+    granularity,
+    pagePromise,
+    sumIncome: stats?.total ?? 0,
+    txnCount: count,
   };
 }

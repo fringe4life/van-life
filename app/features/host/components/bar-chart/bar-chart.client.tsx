@@ -15,7 +15,7 @@ import {
 import type { Data, DataArray } from "~/features/host/types";
 
 const BarChartComponent = <T extends Data<DataArray>>({ data }: T) => (
-  <div className="h-full w-full text-orange-400">
+  <div className="v-host-chart h-full w-full text-orange-400">
     <BarChart data={data} height="100%" responsive width="100%">
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" />

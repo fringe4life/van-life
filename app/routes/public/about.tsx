@@ -1,6 +1,10 @@
-import { href } from "react-router";
+import { data, href } from "react-router";
 import { PendingUI } from "~/components/pending-ui";
 import { buttonVariants } from "~/components/ui/button-variants";
+import {
+  forwardDataHeaders,
+  PUBLIC_SHORT_CACHE_HEADERS,
+} from "~/constants/cache-headers";
 import { Image } from "~/features/image/component/image";
 import {
   ABOUT_IMG,
@@ -22,9 +26,13 @@ const srcSet = createWebPSrcSet(ABOUT_IMG, {
   sizes: ABOUT_IMG_SIZES,
 });
 
-export const loader = ({ request }: Route.LoaderArgs) => ({
-  seo: buildAboutPageSeo(request),
-});
+export const headers = forwardDataHeaders;
+
+export const loader = ({ request }: Route.LoaderArgs) =>
+  data(
+    { seo: buildAboutPageSeo(request) },
+    { headers: PUBLIC_SHORT_CACHE_HEADERS }
+  );
 
 const About = ({ loaderData }: Route.ComponentProps) => {
   return (
