@@ -45,8 +45,12 @@ export type BasePaginationParams = Prettify<
 export type ToPaginationParams<T> = Prettify<Items<T> & BasePaginationParams>;
 
 export type PaginationParams = Prettify<
-  BasePaginationParams & {
-    sort?: SortOption;
-    userId: UUIDv7;
-  }
+  BasePaginationParams &
+    Partial<SortObject> & {
+      userId: UUIDv7;
+    }
 >;
+
+export interface SortObject {
+  sort: SortOption;
+}

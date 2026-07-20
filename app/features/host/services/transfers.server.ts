@@ -5,7 +5,10 @@ import {
   getUserTransferStats,
 } from "~/features/host/dal/transaction.server";
 import type { HostPaginatedPageParams } from "~/features/host/services/income.server";
-import { resolveChartContext } from "~/features/host/utils/resolve-chart-context.server";
+import {
+  resolveChartContext,
+  toTransactionAggStats,
+} from "~/features/host/utils/resolve-chart-context.server";
 import { toPagination } from "~/features/pagination/utils/to-pagination.server";
 import type { UUIDv7 } from "~/types/ids.server";
 import { tryCatch } from "~/utils/try-catch.server";
@@ -31,14 +34,14 @@ export async function loadTransfersPage(
     })
   );
 
-  const { data: stats } = await tryCatch(() =>
+  const { data: rawStats } = await tryCatch(() =>
     getUserTransferStats(db, userId)
   );
 
+  const { total, ...stats } = toTransactionAggStats(rawStats);
+
   const { count, elapsedDays, granularity } = resolveChartContext({
-    count: stats?.count ?? 0,
-    firstAt: stats?.firstAt,
-    lastAt: stats?.lastAt,
+    ...stats,
   });
 
   const { data: chartData } = await tryCatch(() =>
@@ -50,7 +53,7 @@ export async function loadTransfersPage(
     elapsedDays,
     granularity,
     pagePromise,
-    sumAmount: stats?.total ?? 0,
+    sumAmount: total,
     txnCount: count,
   };
 }

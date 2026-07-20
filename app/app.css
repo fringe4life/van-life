@@ -240,12 +240,13 @@
 
 /* ─── CUSTOM UTILITIES ───────────────────────────────────────────────────── */
 @utility bg-skeleton {
-  background-color: var(--color-gray-300);
+  --_sk-color: var(--skeleton-color, var(--color-gray-300));
+  background-color: var(--_sk-color);
   background-image: linear-gradient(
     90deg,
-    var(--color-gray-300) 25%,
-    var(--color-gray-200) 50%,
-    var(--color-gray-300) 75%
+    var(--_sk-color) 25%,
+    var(--skeleton-highlight, var(--color-gray-200)) 50%,
+    var(--_sk-color) 75%
   );
   background-size: 200% 100%;
   animation: --shimmer 2s infinite linear;

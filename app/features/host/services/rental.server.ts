@@ -101,19 +101,15 @@ export async function loadReturnRentalContext(
   return { money, rent };
 }
 
+interface CompleteReturnRentalParams {
+  money: number;
+  rent: HostRentedVan;
+  rentId: UUIDv7;
+  userId: UUIDv7;
+}
 export async function completeReturnRental(
   db: AppDb,
-  {
-    rentId,
-    userId,
-    rent,
-    money,
-  }: {
-    rentId: UUIDv7;
-    userId: UUIDv7;
-    rent: HostRentedVan;
-    money: number;
-  }
+  { rentId, userId, rent, money }: CompleteReturnRentalParams
 ) {
   const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
 

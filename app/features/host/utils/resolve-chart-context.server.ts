@@ -1,11 +1,28 @@
 import { pickChartGranularity } from "~/features/host/utils/pick-chart-granularity.server";
-import type { Maybe } from "~/types";
+import type { Maybe, Prettify } from "~/types";
 import { elapsedDaysFromRange } from "~/utils/get-elapsed-time.server";
 
-export interface TransactionSpanStats {
+interface TransactionSpanStats {
   count: number;
   firstAt: Maybe<Date>;
   lastAt: Maybe<Date>;
+}
+
+type RawTransactionAggStats = Prettify<
+  Partial<TransactionSpanStats> & { total: Maybe<number> }
+>;
+type TransactionAggStats = Prettify<TransactionSpanStats & { total: number }>;
+
+/** Normalize optional aggregate row with nullish defaults. */
+export function toTransactionAggStats(
+  row: Maybe<RawTransactionAggStats>
+): TransactionAggStats {
+  return {
+    count: row?.count ?? 0,
+    firstAt: row?.firstAt ?? null,
+    lastAt: row?.lastAt ?? null,
+    total: Number(row?.total ?? 0),
+  };
 }
 
 /**
