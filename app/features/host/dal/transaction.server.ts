@@ -77,17 +77,12 @@ export async function getHostIncomeStats(db: AppDb, userId: UUIDv7) {
       count: count(),
       firstAt: min(transaction.createdAt),
       lastAt: max(transaction.createdAt),
-      total: sum(transaction.amount),
+      total: sum(transaction.amount).mapWith(Number),
     })
     .from(transaction)
     .where(hostIncomeWhere(userId));
 
-  return {
-    count: result?.count ?? 0,
-    firstAt: result?.firstAt ?? null,
-    lastAt: result?.lastAt ?? null,
-    total: Number(result?.total ?? 0),
-  };
+  return result;
 }
 
 /**
@@ -105,12 +100,7 @@ export async function getUserTransferStats(db: AppDb, userId: UUIDv7) {
     .from(transaction)
     .where(userTransactionsWhere(userId));
 
-  return {
-    count: result?.count ?? 0,
-    firstAt: result?.firstAt ?? null,
-    lastAt: result?.lastAt ?? null,
-    total: Number(result?.total ?? 0),
-  };
+  return result;
 }
 
 /**

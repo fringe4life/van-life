@@ -1,6 +1,6 @@
 import type {
   BasePaginationParams,
-  SortOption,
+  SortObject,
 } from "~/features/pagination/types";
 import {
   createGenericOrderBy,
@@ -12,9 +12,7 @@ import { getCursorMetadata } from "./get-cursor-metadata.server";
 import { reverseSortOption } from "./reverse-sort-order";
 
 type ResolveSortedCursorParams = Prettify<
-  BasePaginationParams & {
-    sort?: SortOption;
-  }
+  BasePaginationParams & Partial<SortObject>
 >;
 
 interface ResolvedSortedCursor {
