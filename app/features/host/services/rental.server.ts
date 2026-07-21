@@ -15,9 +15,9 @@ import { toPagination } from "~/features/pagination/utils/to-pagination.server";
 import { getCost } from "~/features/vans/utils/get-cost";
 import { isVanAvailable } from "~/features/vans/utils/van-state-helpers";
 import type { UUIDv7 } from "~/types/ids.server";
-import { caughtErrorToServiceResult } from "~/utils/domain-error.server";
-import { err, ok } from "~/utils/service-result.server";
-import { tryCatch } from "~/utils/try-catch.server";
+import { caughtErrorToServiceResult } from "~/utils/errors/domain-error.server";
+import { err, ok } from "~/utils/errors/service-result.server";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 
 export type HostRentedVan = NonNullable<
   Awaited<ReturnType<typeof getHostRentedVan>>

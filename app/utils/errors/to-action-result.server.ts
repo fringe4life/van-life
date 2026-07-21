@@ -1,10 +1,10 @@
 /** biome-ignore-all lint/suspicious/noUnnecessaryConditions: ServiceErrorKind cases reachable; biome mis-narrows after ok discriminant */
 import type { FormActionFailure } from "~/components/form/form-action-result";
-import { badRequest } from "~/utils/bad-request";
-import { conflict } from "~/utils/conflict";
-import { internalError } from "~/utils/internal-error";
-import { notFound } from "~/utils/not-found";
-import type { ServiceResult } from "~/utils/service-result.server";
+import { badRequest } from "~/utils/errors/bad-request";
+import { conflict } from "~/utils/errors/conflict";
+import { internalError } from "~/utils/errors/internal-error";
+import { notFound } from "~/utils/errors/not-found";
+import type { ServiceResult } from "~/utils/errors/service-result.server";
 
 type ActionFailureExtras<
   TFields extends string,

@@ -10,7 +10,7 @@ import {
   loadVanFiltersParams,
   parsePaginationCursor,
 } from "~/lib/search-params.server";
-import { tryCatch } from "~/utils/try-catch.server";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 
 export async function loadVanCatalog(db: AppDb, request: Request) {
   const badges = VAN_TYPE_LOWERCASE;

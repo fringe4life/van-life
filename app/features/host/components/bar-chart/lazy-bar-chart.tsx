@@ -3,7 +3,7 @@ import type { EmptyState, ErrorState } from "~/components/types";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
 import type { Data, DataArray } from "~/features/host/types";
 import type { Maybe, Prettify } from "~/types";
-import { getCollectionState } from "~/utils/get-collection-state";
+import { getCollectionState } from "~/utils/errors/get-collection-state";
 import { BarChartSkeleton } from "./bar-chart-skeleton";
 
 type LazyBarChartProps = Prettify<

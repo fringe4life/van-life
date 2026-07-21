@@ -6,7 +6,7 @@ import {
 import type { HostPaginatedPageParams } from "~/features/host/services/income.server";
 import { toPagination } from "~/features/pagination/utils/to-pagination.server";
 import type { UUIDv7 } from "~/types/ids.server";
-import { tryCatch } from "~/utils/try-catch.server";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 
 export async function loadReviewsPage(
   db: AppDb,

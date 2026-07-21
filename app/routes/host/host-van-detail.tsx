@@ -13,9 +13,9 @@ import { buildVanUrl } from "~/features/pagination/utils/build-search-params";
 import { VanDetailCard } from "~/features/vans/components/host detail";
 import { getHostVanBySlug } from "~/features/vans/dal/host-van.server";
 import { loadHostSearchParams } from "~/lib/search-params.server";
-import { getRouteErrorMessage } from "~/utils/get-route-error-message";
-import { notFound } from "~/utils/not-found";
-import { tryCatch } from "~/utils/try-catch.server";
+import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
+import { notFound } from "~/utils/errors/not-found";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 import type { Route } from "./+types/host-van-detail";
 
 export const headers = forwardDataHeaders;

@@ -3,7 +3,7 @@ import type { AppDb } from "~/db/client.server";
 import { TransactionType, VanState } from "~/db/enums";
 import { rent, transaction, van } from "~/db/schema/van";
 import type { UUIDv7 } from "~/types/ids.server";
-import { DomainError } from "~/utils/domain-error.server";
+import { DomainError } from "~/utils/errors/domain-error.server";
 
 /**
  * Atomically claim a van (`isRented`) then insert the rent row.

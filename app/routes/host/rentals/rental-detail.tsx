@@ -17,12 +17,12 @@ import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
 import { VanCard } from "~/features/vans/components/van-card";
 import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
-import { badRequest } from "~/utils/bad-request";
-import { getRouteErrorMessage } from "~/utils/get-route-error-message";
-import { notFound } from "~/utils/not-found";
-import { validateArkType } from "~/utils/parse-arktype.server";
-import { serverError } from "~/utils/server-error";
-import { toActionResultOrThrow } from "~/utils/to-action-result.server";
+import { badRequest } from "~/utils/errors/bad-request";
+import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
+import { notFound } from "~/utils/errors/not-found";
+import { validateArkType } from "~/utils/errors/parse-arktype.server";
+import { serverError } from "~/utils/errors/server-error";
+import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/rental-detail";
 
 type RentActionData = FormActionFailure<string>;

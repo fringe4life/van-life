@@ -50,12 +50,23 @@ export function createD1HttpDb(credentials: D1HttpCredentials) {
       },
       method: "POST",
     });
-    const data = (await response.json()) as D1HttpResponse;
-    if (!data.success) {
-      const message = data.errors
-        .map((error) => `${error.code}: ${error.message}`)
+    const text = await response.text().catch(() => "");
+    let data: D1HttpResponse;
+    try {
+      data = JSON.parse(text) as D1HttpResponse;
+    } catch (cause) {
+      throw new Error(
+        `D1 HTTP API error: ${response.status} ${response.statusText}\n${text}`,
+        { cause }
+      );
+    }
+    if (!(response.ok && data.success)) {
+      const details = data.errors
+        .map((e) => `${e.code}: ${e.message}`)
         .join("\n");
-      throw new Error(message);
+      throw new Error(
+        `D1 HTTP API error: ${response.status} ${response.statusText}${details ? `\n${details}` : ""}`
+      );
     }
 
     const rows = extractRows(data.result[0]?.results);

@@ -29,12 +29,12 @@ import { hasAuthContext } from "~/features/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/features/middleware/functions/has-auth-middleware";
 import { CustomLink } from "~/features/navigation/components/custom-link";
 import { auth } from "~/lib/auth.server";
-import { badRequest } from "~/utils/bad-request";
+import { badRequest } from "~/utils/errors/bad-request";
 import {
   arkErrorsToFieldErrors,
   validateArkType,
-} from "~/utils/parse-arktype.server";
-import { tryCatch } from "~/utils/try-catch.server";
+} from "~/utils/errors/parse-arktype.server";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 import { cn } from "~/utils/utils";
 import type { Route } from "./+types/sign-up";
 
