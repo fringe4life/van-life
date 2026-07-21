@@ -149,8 +149,8 @@ jobs:
         uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # v7.0.9
         with:
           branch: chore/fallow-health-badge
-          commit-message: chore: update fallow health badge
-          title: chore: update fallow health badge
+          commit-message: "chore: update fallow health badge"
+          title: "chore: update fallow health badge"
           body: |
             Automated fallow health badge refresh from CI on `master`.
 
