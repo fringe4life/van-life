@@ -5,8 +5,9 @@
 [![React Router](https://img.shields.io/badge/React%20Router-8.2.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
+[![fallow health](.github/badges/health.svg)](https://docs.fallow.tools)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.2-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.3-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.0--rc.1-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.9.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.3-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
@@ -113,9 +114,10 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **Biome 2.5.3** for linting and formatting with Ultracite integration
 - **Ultracite 7.9.4** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock 1.11.0** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.110.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
+- **Wrangler 4.112.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
 - **react-doctor 0.7.8** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
+- **fallow 3.6.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **Bun** for fast package management and runtime
@@ -224,6 +226,9 @@ docs/
 ├── babel-react-compiler.md # React Compiler via @rolldown/plugin-babel (Vite 8)
 ├── react-stinky-report.md  # React Stinky smell sweep + fixes
 └── fallow-health-backlog.md # Code health backlog from fallow analysis
+
+.fallowrc.jsonc             # Fallow config (boundaries, health thresholds, security categories)
+.github/badges/health.svg   # Fallow health score badge (A/88; refreshed on master push)
 ```
 
 ---
@@ -962,6 +967,9 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run check` – Run Ultracite checks (no fix)
 - `bun run doctor` – Run Ultracite doctor
 - `bun run react-doctor` – Run React Doctor diagnostics (`doctor.config.ts`)
+- `bun run fallow` – Full fallow analysis (dead code + dupes + health)
+- `bun run fallow:audit` – PR-style audit (dead code, complexity, duplication on changed files)
+- `bun run fallow:badge` – Regenerate `.github/badges/health.svg`
 - `bun run test` – Run Bun test suite
 - `bun run prepare` – Install Husky hooks
 - `bun run ultracite:upgrade` – Upgrade Ultracite and re-init (Bun, Biome, Cursor)
@@ -977,7 +985,7 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 This project uses **Husky** with **lint-staged** for automated pre-commit checks:
 
 - **Pre-commit hook** (`bunx lint-staged`) runs automatically before each commit
-- **lint-staged** runs Ultracite, react-doctor, and typecheck on staged files
+- **lint-staged** runs Ultracite, react-doctor, typecheck, tests, and fallow on staged files
 - **Automatic formatting** with Ultracite on staged files
 - **Commit blocking** if any checks fail
 
@@ -985,8 +993,9 @@ The pre-commit hook ensures code quality by:
 
 1. Running `bun fix` (Ultracite) on staged files via lint-staged
 2. Running `react-doctor --staged` on JS/TS files
-3. Running `bun typecheck` on TypeScript files
-4. Blocking the commit if any step fails
+3. Running `bun typecheck` and `bun test` on TypeScript files
+4. Running `fallow dead-code --file …` on staged TS/TSX files (boundaries + dead code)
+5. Blocking the commit if any step fails
 
 Configuration in `lint-staged.config.ts`.
 
@@ -998,7 +1007,7 @@ Configuration in `lint-staged.config.ts`.
 
 ### TailwindCSS 4 & Modern CSS
 
-- **TailwindCSS 4.3.2** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
+- **TailwindCSS 4.3.3** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — overlay fade and slide-in/out (`app/app.css`)
 - **Reusable keyframes** — parameterized `--fade` / `--scale` / `--slide-x` / `--slide-y` with CSS custom properties
@@ -1039,13 +1048,16 @@ Configuration in `lint-staged.config.ts`.
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
 - **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization
+- **fallow 3.6.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
 
 ### GitHub Actions
 
-- **CI** (`.github/workflows/ci.yml`) — three jobs with least-privilege permissions:
+- **CI** (`.github/workflows/ci.yml`) — least-privilege permissions:
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
   - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — self-contained Action, no Bun install
+  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.6.0`; audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`)
+  - **Fallow badge** (`contents: write`, `pull-requests: write`, `push` to `master` only) — regenerates `.github/badges/health.svg`, uploads CI artifact, opens/updates PR `chore/fallow-health-badge` (no direct push to `master`)
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability; bump via Dependabot `github-actions` or periodic SHA refresh

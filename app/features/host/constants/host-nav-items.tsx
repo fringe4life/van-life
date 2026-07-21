@@ -8,6 +8,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { href } from "react-router";
+import type { CustomNavLinkProps } from "~/features/navigation/components/custom-nav-link";
 
 const hostNavItems = [
   {
@@ -81,6 +82,6 @@ const hostNavItems = [
     id: "Rentals",
     to: href("/host/rentals"),
   },
-];
+] satisfies CustomNavLinkProps[];
 
 export { hostNavItems };

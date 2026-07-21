@@ -1,12 +1,18 @@
 import { Outlet } from "react-router";
 import { GenericComponent } from "~/components/generic-component";
+// Host nav lives in features/host; layout zone intentionally excludes that domain
+// feature so only this host shell may reach it.
+// fallow-ignore-next-line boundary-violation
 import { hostNavItems } from "~/features/host/constants/host-nav-items";
 import { authMiddleware } from "~/features/middleware/functions/auth-middleware";
-import { CustomNavLink } from "~/features/navigation/components/custom-nav-link";
+import {
+  CustomNavLink,
+  type CustomNavLinkProps,
+} from "~/features/navigation/components/custom-nav-link";
 import { navLinkClassName } from "~/features/navigation/utils/nav-link-class-name";
 import type { Route } from "./+types/host-layout";
 
-const renderHostNavItemProps = (item: (typeof hostNavItems)[number]) => ({
+const renderHostNavItemProps = (item: CustomNavLinkProps) => ({
   ...item,
   className: navLinkClassName,
 });

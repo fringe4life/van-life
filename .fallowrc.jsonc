@@ -7,7 +7,19 @@
     ".env.schema"
   ],
   "rules": {
+    // Soft gate while boundaries + cleanup iron out — audit warn ≠ CI fail
+    "unused-files": "warn",
+    "unused-exports": "warn",
+    "unused-types": "warn",
     "unused-dependencies": "warn",
+    "unused-enum-members": "warn",
+    "unused-class-members": "warn",
+    "unresolved-imports": "warn",
+    "unlisted-dependencies": "warn",
+    "duplicate-exports": "warn",
+    "circular-dependencies": "warn",
+    "re-export-cycle": "warn",
+    "boundary-violation": "warn",
     "prop-drilling": "warn",
     "thin-wrapper": "warn",
     "duplicate-prop-shape": "warn"
@@ -59,6 +71,147 @@
         "maxCognitive": 100,
         "maxCyclomatic": 100,
         "maxCrap": 300
+      }
+    ]
+  },
+  // Feature↔route pairing: domain features (auth/host/vans) only from matching routes.
+  // Cross-cuts (image/middleware/navigation/pagination/seo) shared across surfaces.
+  // host-layout host import: inline fallow-ignore (layout zone does not allow features/host).
+  "boundaries": {
+    "zones": [
+      {
+        "name": "features",
+        "patterns": ["app/features/**"],
+        "autoDiscover": ["app/features"]
+      },
+      {
+        "name": "routes",
+        "patterns": ["app/routes/**"],
+        "autoDiscover": ["app/routes"]
+      },
+      {
+        "name": "shared",
+        "patterns": [
+          "app/components/**",
+          "app/lib/**",
+          "app/utils/**",
+          "app/hooks/**",
+          "app/constants/**",
+          "app/types/**"
+        ]
+      },
+      {
+        "name": "db",
+        "patterns": ["app/db/**"]
+      },
+      {
+        "name": "app-root",
+        "patterns": ["app/root.tsx", "app/entry.server.tsx", "workers/**"]
+      }
+    ],
+    "rules": [
+      {
+        "from": "features/auth",
+        "allow": ["shared", "db", "features/middleware"]
+      },
+      {
+        "from": "features/host",
+        "allow": [
+          "shared",
+          "db",
+          "features/image",
+          "features/middleware",
+          "features/navigation",
+          "features/pagination",
+          "features/vans"
+        ]
+      },
+      {
+        "from": "features/vans",
+        "allow": [
+          "shared",
+          "db",
+          "features/image",
+          "features/navigation",
+          "features/pagination",
+          "features/seo"
+        ]
+      },
+      {
+        "from": "features/seo",
+        "allow": ["shared", "db", "features/image", "features/vans"]
+      },
+      {
+        "from": "features/navigation",
+        "allow": ["shared", "features/pagination"]
+      },
+      {
+        "from": "features/pagination",
+        "allow": ["shared"]
+      },
+      {
+        "from": "features/image",
+        "allow": ["shared"]
+      },
+      {
+        "from": "features/middleware",
+        "allow": ["shared", "db"]
+      },
+      {
+        "from": "routes/host",
+        "allow": [
+          "shared",
+          "db",
+          "features/host",
+          "features/vans",
+          "features/image",
+          "features/middleware",
+          "features/navigation",
+          "features/pagination"
+        ]
+      },
+      {
+        "from": "routes/public",
+        "allow": [
+          "shared",
+          "db",
+          "features/vans",
+          "features/image",
+          "features/middleware",
+          "features/navigation",
+          "features/pagination",
+          "features/seo"
+        ]
+      },
+      {
+        "from": "routes/auth",
+        "allow": [
+          "shared",
+          "db",
+          "features/auth",
+          "features/middleware",
+          "features/navigation"
+        ]
+      },
+      {
+        "from": "routes/layout",
+        "allow": ["shared", "db", "features/middleware", "features/navigation"]
+      },
+      {
+        "from": "routes/api",
+        "allow": ["shared", "db", "features/middleware"]
+      },
+      {
+        "from": "shared",
+        "allow": ["db", "features/pagination", "features/vans"]
+      },
+      {
+        "from": "db",
+        "allow": ["shared"]
+      },
+      {
+        "from": "app-root",
+        "allow": ["shared", "db", "features/middleware"]
       }
     ]
   }
