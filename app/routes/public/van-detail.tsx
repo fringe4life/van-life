@@ -16,9 +16,9 @@ import {
   loadSearchParams,
   loadVanFiltersParams,
 } from "~/lib/search-params.server";
-import { getRouteErrorMessage } from "~/utils/get-route-error-message";
-import { notFound } from "~/utils/not-found";
-import { serverError } from "~/utils/server-error";
+import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
+import { notFound } from "~/utils/errors/not-found";
+import { serverError } from "~/utils/errors/server-error";
 import type { Route } from "./+types/van-detail";
 
 export const headers = forwardDataHeaders;

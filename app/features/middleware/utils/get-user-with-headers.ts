@@ -3,7 +3,7 @@ import type { UserAndHeaders } from "~/features/middleware/types";
 import { auth } from "~/lib/auth.server";
 import type { AuthenticatedUser } from "~/types/auth.server";
 import type { User } from "~/types/index.server";
-import { tryCatch } from "~/utils/try-catch.server";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 
 const toAuthenticatedUser = (user: User): AuthenticatedUser => ({
   ...user,

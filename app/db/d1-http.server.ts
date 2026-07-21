@@ -50,6 +50,11 @@ export function createD1HttpDb(credentials: D1HttpCredentials) {
       },
       method: "POST",
     });
+    if (!response.ok) {
+      throw new Error(
+        `D1 HTTP API error: ${response.status} ${response.statusText}`
+      );
+    }
     const data = (await response.json()) as D1HttpResponse;
     if (!data.success) {
       const message = data.errors

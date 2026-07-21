@@ -8,8 +8,8 @@ import {
   parsePaginationCursor,
 } from "~/lib/search-params.server";
 import type { UUIDv7 } from "~/types/ids.server";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 import { getSlug } from "~/utils/get-slug";
-import { tryCatch } from "~/utils/try-catch.server";
 
 type AddVanInput = typeof addVanSchema.infer;
 

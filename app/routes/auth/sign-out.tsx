@@ -1,9 +1,9 @@
 import { href, replace } from "react-router";
 import { UnsuccesfulState } from "~/components/unsuccesful-state";
 import { auth } from "~/lib/auth.server";
-import { getRouteErrorMessage } from "~/utils/get-route-error-message";
-import { serverError } from "~/utils/server-error";
-import { tryCatch } from "~/utils/try-catch.server";
+import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
+import { serverError } from "~/utils/errors/server-error";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 import type { Route } from "./+types/sign-out";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {

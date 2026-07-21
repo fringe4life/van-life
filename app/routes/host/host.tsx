@@ -23,13 +23,13 @@ import {
   getSafeRedirectPath,
 } from "~/features/middleware/utils/auth-redirect";
 import { DEPOSIT } from "~/features/vans/constants/vans-constants";
-import { badRequest } from "~/utils/bad-request";
-import { getRouteErrorMessage } from "~/utils/get-route-error-message";
+import { badRequest } from "~/utils/errors/bad-request";
+import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import {
   arkErrorsToFieldErrors,
   validateArkType,
-} from "~/utils/parse-arktype.server";
-import { toActionResultOrThrow } from "~/utils/to-action-result.server";
+} from "~/utils/errors/parse-arktype.server";
+import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/host";
 
 type HostWalletActionData = FormActionResultFrom<

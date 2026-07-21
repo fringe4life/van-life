@@ -24,7 +24,7 @@ import {
   searchParser,
   vanFiltersParser,
 } from "~/lib/parsers";
-import { getRouteErrorMessage } from "~/utils/get-route-error-message";
+import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import type { Route } from "./+types/vans";
 
 export const headers = forwardDataHeaders;

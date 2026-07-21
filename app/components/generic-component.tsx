@@ -1,7 +1,7 @@
 import type React from "react";
 import type { Items } from "~/features/pagination/types";
 import type { Id, Prettify } from "~/types";
-import { getCollectionState } from "~/utils/get-collection-state";
+import { getCollectionState } from "~/utils/errors/get-collection-state";
 import type { AsProps, EmptyState, ErrorState } from "./types";
 import { UnsuccesfulState } from "./unsuccesful-state";
 

@@ -32,10 +32,10 @@ import {
   domainErrorToServiceResult,
   isDomainError,
   throwDomainHttp,
-} from "~/utils/domain-error.server";
-import { getRouteErrorMessage } from "~/utils/get-route-error-message";
-import { notFound } from "~/utils/not-found";
-import { toActionResultOrThrow } from "~/utils/to-action-result.server";
+} from "~/utils/errors/domain-error.server";
+import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
+import { notFound } from "~/utils/errors/not-found";
+import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/return-rental";
 
 interface SharedRentalData {

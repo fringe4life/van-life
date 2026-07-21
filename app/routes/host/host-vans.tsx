@@ -48,11 +48,11 @@ import { pendingVanFromFormData } from "~/features/vans/utils/pending-van-from-f
 import { toVanCardModel } from "~/features/vans/utils/to-van-card-model";
 import { toVanFormValues } from "~/features/vans/utils/to-van-form-values";
 import { hostPaginationParsers } from "~/lib/parsers";
-import { badRequest } from "~/utils/bad-request";
+import { badRequest } from "~/utils/errors/bad-request";
 import {
   arkErrorsToFieldErrors,
   validateArkType,
-} from "~/utils/parse-arktype.server";
+} from "~/utils/errors/parse-arktype.server";
 import type { Route } from "./+types/host-vans";
 
 type HostVansActionSuccess = {

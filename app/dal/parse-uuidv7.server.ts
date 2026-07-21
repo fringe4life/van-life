@@ -1,7 +1,7 @@
 import { type UUIDv7, uuidv7Schema } from "~/dal/schemas.server";
 import type { Maybe } from "~/types";
-import { DomainError, isDomainError } from "~/utils/domain-error.server";
-import { validateArkType } from "~/utils/parse-arktype.server";
+import { DomainError, isDomainError } from "~/utils/errors/domain-error.server";
+import { validateArkType } from "~/utils/errors/parse-arktype.server";
 
 /**
  * Parse and brand a string as UUIDv7.

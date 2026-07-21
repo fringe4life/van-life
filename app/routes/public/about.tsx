@@ -55,7 +55,7 @@ const About = ({ loaderData }: Route.ComponentProps) => {
         width="1600"
       />
 
-      <h2 className="mx-2 font-bold text-2xl starting:opacity-50 duration-1000 sm:mx-4 sm:text-3xl/normal md:text-4xl lg:max-w-3/4">
+      <h2 className="mx-2 font-bold text-2xl starting:opacity-50 transition-opacity duration-1000 sm:mx-4 sm:text-3xl/normal md:text-4xl lg:max-w-3/4">
         Don&apos;t{" "}
         <span className="underline decoration-4 decoration-red-500 underline-offset-2">
           squeeze
@@ -66,14 +66,14 @@ const About = ({ loaderData }: Route.ComponentProps) => {
         </span>{" "}
         in a van.
       </h2>
-      <div className="flex flex-col gap-y-4 starting:opacity-50 duration-1000 md:gap-x-2 lg:flex-row">
+      <div className="flex flex-col gap-y-4 starting:opacity-50 transition-opacity duration-1000 md:gap-x-2 lg:flex-row">
         <p className="mx-2 grow basis-1/2 sm:mx-4 sm:text-xl">
           Our mission is to enliven your road trip with the perfect travel van
           rental. Our vans are recertified before each trip to ensure your
           travel plans can go off without a hitch. (Hitch costs extra 😉)
         </p>
 
-        <p className="mx-2 grow basis-1/2 starting:opacity-50 duration-1000 sm:mx-4 sm:text-xl">
+        <p className="mx-2 grow basis-1/2 starting:opacity-50 transition-opacity duration-1000 sm:mx-4 sm:text-xl">
           Our team is full of vanlife enthusiasts who know firsthand the magic
           of touring the world on 4 wheels. So dive into our vast catalog today
           and make your own magic in the great outdoors 🌳!

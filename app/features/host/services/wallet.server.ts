@@ -2,8 +2,8 @@ import type { AppDb } from "~/db/client.server";
 import type { TransactionType } from "~/db/enums";
 import { addMoney } from "~/features/host/dal/payment.server";
 import type { UUIDv7 } from "~/types/ids.server";
-import { err, ok } from "~/utils/service-result.server";
-import { tryCatch } from "~/utils/try-catch.server";
+import { err, ok } from "~/utils/errors/service-result.server";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 
 export async function depositOrWithdraw(
   db: AppDb,

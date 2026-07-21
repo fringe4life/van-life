@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
-import { err, ok } from "~/utils/service-result.server";
-import { toActionResultOrThrow } from "~/utils/to-action-result.server";
+import { err, ok } from "~/utils/errors/service-result.server";
+import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 
 interface FailurePayload {
   fieldErrors?: Partial<Record<string, string>>;

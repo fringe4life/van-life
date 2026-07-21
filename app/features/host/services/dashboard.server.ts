@@ -7,8 +7,8 @@ import {
 import { toTransactionAggStats } from "~/features/host/utils/resolve-chart-context.server";
 import { getHostVans } from "~/features/vans/dal/host-van.server";
 import type { UUIDv7 } from "~/types/ids.server";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 import { elapsedDaysFromRange } from "~/utils/get-elapsed-time.server";
-import { tryCatch } from "~/utils/try-catch.server";
 
 const HOST_VANS_LIMIT = 2;
 

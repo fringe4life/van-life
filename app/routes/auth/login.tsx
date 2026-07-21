@@ -17,10 +17,7 @@ import {
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { loginSchema } from "~/features/auth/schemas.server";
-import {
-  LOGIN_ECHO_FIELDS,
-  LOGIN_FORM_FIELDS,
-} from "~/features/auth/types";
+import { LOGIN_ECHO_FIELDS, LOGIN_FORM_FIELDS } from "~/features/auth/types";
 import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
@@ -33,12 +30,12 @@ import {
 } from "~/features/middleware/utils/auth-redirect";
 import { CustomLink } from "~/features/navigation/components/custom-link";
 import { auth } from "~/lib/auth.server";
-import { badRequest } from "~/utils/bad-request";
+import { badRequest } from "~/utils/errors/bad-request";
 import {
   arkErrorsToFieldErrors,
   validateArkType,
-} from "~/utils/parse-arktype.server";
-import { tryCatch } from "~/utils/try-catch.server";
+} from "~/utils/errors/parse-arktype.server";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 import { cn } from "~/utils/utils";
 import type { Route } from "./+types/login";
 
