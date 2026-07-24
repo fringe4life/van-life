@@ -1,4 +1,5 @@
 import { drizzle } from "drizzle-orm/sqlite-proxy";
+import { tryCatch } from "~/utils/errors/try-catch.server";
 import { relations } from "./relations";
 
 interface D1HttpCredentials {
@@ -18,6 +19,8 @@ interface D1HttpResponse {
   success: boolean;
 }
 
+type SqliteProxyMethod = "run" | "all" | "values" | "get";
+
 function extractRows(results: unknown[] | D1RawResults | undefined): unknown[] {
   if (!results) {
     return [];
@@ -27,6 +30,73 @@ function extractRows(results: unknown[] | D1RawResults | undefined): unknown[] {
     return results;
   }
   return results.rows ?? [];
+}
+
+function d1HttpError(response: Response, body: string, cause?: unknown): Error {
+  return new Error(
+    `D1 HTTP API error: ${response.status} ${response.statusText}${body ? `\n${body}` : ""}`,
+    cause === undefined ? undefined : { cause }
+  );
+}
+
+function assertD1HttpSuccess(response: Response, data: D1HttpResponse): void {
+  if (response.ok && data.success) {
+    return;
+  }
+  const details = data.errors.map((e) => `${e.code}: ${e.message}`).join("\n");
+  throw d1HttpError(response, details);
+}
+
+function parseD1HttpResponse(response: Response, text: string): D1HttpResponse {
+  try {
+    return JSON.parse(text) as D1HttpResponse;
+  } catch (cause) {
+    throw d1HttpError(response, text, cause);
+  }
+}
+
+async function fetchD1Raw(
+  baseUrl: string,
+  token: string,
+  sql: string,
+  params: unknown[]
+): Promise<D1HttpResponse> {
+  const { data: response, error: fetchError } = await tryCatch(() =>
+    fetch(`${baseUrl}/raw`, {
+      body: JSON.stringify({ params, sql }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    })
+  );
+
+  if (fetchError || !response) {
+    throw new Error("D1 HTTP API error: network request failed", {
+      cause: fetchError,
+    });
+  }
+
+  const text = await response.text().catch(() => "");
+  const data = parseD1HttpResponse(response, text);
+  assertD1HttpSuccess(response, data);
+  return data;
+}
+
+function toProxyRows(
+  data: D1HttpResponse,
+  method: SqliteProxyMethod
+): { rows: unknown[] } {
+  const rows = extractRows(data.result[0]?.results);
+
+  // `get` expects a single row array; everything else expects row arrays.
+  if (method === "get") {
+    // biome-ignore lint/suspicious/noUnnecessaryConditions: way to seed d1 in production
+    return { rows: (rows[0] as unknown[]) ?? [] };
+  }
+
+  return { rows };
 }
 
 /**
@@ -40,44 +110,10 @@ export function createD1HttpDb(credentials: D1HttpCredentials) {
   const remoteCallback = async (
     sql: string,
     params: unknown[],
-    method: "run" | "all" | "values" | "get"
+    method: SqliteProxyMethod
   ) => {
-    const response = await fetch(`${baseUrl}/raw`, {
-      body: JSON.stringify({ params, sql }),
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    });
-    const text = await response.text().catch(() => "");
-    let data: D1HttpResponse;
-    try {
-      data = JSON.parse(text) as D1HttpResponse;
-    } catch (cause) {
-      throw new Error(
-        `D1 HTTP API error: ${response.status} ${response.statusText}\n${text}`,
-        { cause }
-      );
-    }
-    if (!(response.ok && data.success)) {
-      const details = data.errors
-        .map((e) => `${e.code}: ${e.message}`)
-        .join("\n");
-      throw new Error(
-        `D1 HTTP API error: ${response.status} ${response.statusText}${details ? `\n${details}` : ""}`
-      );
-    }
-
-    const rows = extractRows(data.result[0]?.results);
-
-    // `get` expects a single row array; everything else expects row arrays.
-    if (method === "get") {
-      // biome-ignore lint/suspicious/noUnnecessaryConditions: way to seed d1 in production
-      return { rows: (rows[0] as unknown[]) ?? [] };
-    }
-
-    return { rows };
+    const data = await fetchD1Raw(baseUrl, token, sql, params);
+    return toProxyRows(data, method);
   };
 
   return drizzle(remoteCallback, { relations });

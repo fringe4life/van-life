@@ -9,7 +9,7 @@ import { useFetcher } from "react-router";
 import type { FormActionResultFrom } from "~/components/form/form-action-result";
 import { readActionFormData } from "~/components/form/read-action-form-data";
 import { balanceReducer } from "~/features/host/hooks/balance-reducer";
-import {
+import type {
   MONEY_ECHO_FIELDS,
   MONEY_FORM_FIELDS,
 } from "~/features/host/types";

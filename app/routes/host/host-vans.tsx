@@ -11,17 +11,17 @@ import {
   type ShouldRevalidateFunctionArgs,
   useFetcher,
 } from "react-router";
-import { GenericComponent } from "~/components/generic-component";
 import type { FormActionResult } from "~/components/form/form-action-result";
-import { PendingUI } from "~/components/pending-ui";
 import { readActionFormData } from "~/components/form/read-action-form-data";
-import type { VanModel } from "~/db/client.server";
-import { VanForm } from "~/features/host/components/van-form";
-import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
+import { GenericComponent } from "~/components/generic-component";
+import { PendingUI } from "~/components/pending-ui";
 import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
+import type { VanModel } from "~/db/client.server";
+import { VanForm } from "~/features/host/components/van-form";
+import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
 import { CustomLink } from "~/features/navigation/components/custom-link";
@@ -224,13 +224,13 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
         </h2>
         <Activity mode={onFirstPage ? "visible" : "hidden"}>
           <VanForm
+            fetcherState={fetcher.state}
             fieldErrors={fieldErrors}
             formDataDefaults={formDataDefaults}
             formError={formError}
-            fetcherState={fetcher.state}
             isPending={isPending}
-            onSubmit={handleSubmit}
             ok={ok}
+            onSubmit={handleSubmit}
           />
         </Activity>
         {onFirstPage ? null : (

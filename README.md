@@ -5,11 +5,10 @@
 [![React Router](https://img.shields.io/badge/React%20Router-8.2.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
-[![fallow health](.github/badges/health.svg)](https://docs.fallow.tools)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.3-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.0--rc.1-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.9.0-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.9.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.3-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.9.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
@@ -181,7 +180,7 @@ app/
 │       └── utils/      # pricing, van-filter-url, to-van-form-values, pending-van-from-form-data
 ├── db/                 # Drizzle schema, client, seed, migrations
 │   ├── client.server.ts    # createDb(d1) → drizzle-orm/d1
-│   ├── d1-http.server.ts   # Remote D1 HTTP client for seed/studio
+│   ├── d1-http.server.ts   # Remote D1 HTTP (`/raw`) for seed; tryCatch + split helpers
 │   ├── migrations/         # SQL migrations (flattened for Wrangler D1)
 │   ├── schema/             # auth.ts, van.ts, index.ts
 │   ├── seed-data/          # Modular seed data files
@@ -212,7 +211,8 @@ app/
 │       ├── robots.txt.ts   # Dynamic robots.txt
 │       ├── sitemap.xml.ts  # Dynamic sitemap
 │       └── 404.tsx     # Not found page
-├── utils/              # Shared utilities (parse-arktype, try-catch, not-found, server-error, bad-request, conflict, internal-error, service-result, domain-error, to-action-result, get-elapsed-time.server, get-route-error-message, get-collection-state)
+├── utils/              # Shared utilities
+│   └── errors/         # tryCatch, ServiceResult, DomainError, toActionResultOrThrow, HTTP helpers
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
@@ -228,7 +228,6 @@ docs/
 └── fallow-health-backlog.md # Code health backlog from fallow analysis
 
 .fallowrc.jsonc             # Fallow config (boundaries, health thresholds, security categories)
-.github/badges/health.svg   # Fallow health score badge (A/88; refreshed on master push)
 ```
 
 ---
@@ -299,6 +298,7 @@ export default defineConfig({
 Notes:
 
 - Runtime uses `createDb(env.DB)` — no `DATABASE_URL`.
+- Remote seed uses `createD1HttpDb` (`app/db/d1-http.server.ts`): sqlite-proxy → Cloudflare D1 `/raw`; `tryCatch` on fetch; helpers for parse, success assert, and row shaping (keeps fallow CRAP under threshold).
 - `CLOUDFLARE_*` vars required in `.env.schema` (drizzle-kit Studio / remote seed).
 - Local Studio: `drizzle.local.config.ts` resolves Miniflare SQLite under `.wrangler/state/...`.
 - Nested drizzle-kit folders flattened by `scripts/flatten-d1-migrations.ts` before Wrangler apply; `snapshot.json` kept nested for next `db:generate` diffs.
@@ -969,7 +969,6 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run react-doctor` – Run React Doctor diagnostics (`doctor.config.ts`)
 - `bun run fallow` – Full fallow analysis (dead code + dupes + health)
 - `bun run fallow:audit` – PR-style audit (dead code, complexity, duplication on changed files)
-- `bun run fallow:badge` – Regenerate `.github/badges/health.svg`
 - `bun run test` – Run Bun test suite
 - `bun run prepare` – Install Husky hooks
 - `bun run ultracite:upgrade` – Upgrade Ultracite and re-init (Bun, Biome, Cursor)
@@ -1057,7 +1056,6 @@ Configuration in `lint-staged.config.ts`.
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
   - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — self-contained Action, no Bun install
   - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.6.0`; audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`)
-  - **Fallow badge** (`contents: write`, `pull-requests: write`, `push` to `master` only) — regenerates `.github/badges/health.svg`, uploads CI artifact, opens/updates PR `chore/fallow-health-badge` (no direct push to `master`)
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability; bump via Dependabot `github-actions` or periodic SHA refresh
