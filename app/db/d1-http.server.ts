@@ -78,8 +78,8 @@ async function fetchD1Raw(
     });
   }
 
-  const text = await response.text().catch(() => "");
-  const data = parseD1HttpResponse(response, text);
+  const { data: text } = await tryCatch(() => response.text());
+  const data = parseD1HttpResponse(response, text ?? "");
   assertD1HttpSuccess(response, data);
   return data;
 }
