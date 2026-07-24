@@ -6,7 +6,6 @@
 /build/
 /dist/
 
-
 # env files (can opt-in for committing if needed)
 .env*
 !.env.schema
@@ -14,12 +13,11 @@
 !.env.test
 /app/generated/
 
-# Local Netlify folder
-.netlify
+# Local cloudflare things
 .wrangler
 env.d.ts
 worker-configuration.d.ts
 
-
 .agents
 .fallow/
+fallow-viz.html

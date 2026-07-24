@@ -12,7 +12,7 @@
     "defaultBranch": "main"
   },
   "files": {
-    "includes": ["app/**/*", "!!.cursor/hooks/*"],
+    "includes": ["app/**/*", "!!.cursor/hooks/*", "!fallow-viz.html"],
     "ignoreUnknown": false
   },
   "css": {
