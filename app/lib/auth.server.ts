@@ -17,6 +17,7 @@ export const auth = betterAuth({
   advanced: {
     database: {
       generateId: createId,
+      joins: true,
     },
   },
   baseURL: env.BETTER_AUTH_URL,
@@ -28,7 +29,6 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false,
   },
-  experimental: { joins: true },
   secret: env.BETTER_AUTH_SECRET,
   session: {
     cookieCache: { enabled: true, maxAge: FIVE_MINUTES_IN_SECONDS },
