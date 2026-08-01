@@ -468,6 +468,19 @@
   animation-name: --fade, --slide-x;
 }
 
+/* SORTABLE TITLE: old fades out downward, new fades in from top */
+::view-transition-old(sortable-title) {
+  --fade-to: 0;
+  --slide-y-to: 1rem;
+  animation-name: --fade, --slide-y;
+}
+
+::view-transition-new(sortable-title) {
+  --fade-from: 0;
+  --slide-y-from: -1rem;
+  animation-name: --fade, --slide-y;
+}
+
 /* ─── SCROLL DRIVEN ANIMATIONS ───────────────────────────────────────────── */
 .scroll-sm,
 .scroll-md,

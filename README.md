@@ -8,7 +8,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.3-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.0--rc.2-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.9.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.9.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.3-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.9.4-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
@@ -71,8 +71,8 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with deferred loader promises (`DeferredAwait` / `DeferredPaginated`), lazy charts, code splitting, and immutable array methods
 - 🧊 **HTTP cache headers** — `PRIVATE_NO_STORE` for host/auth; `PUBLIC_SHORT_CACHE` + `Vary: Cookie` for catalog; leaf `headers` exports via `forwardDataHeaders`
-- 🔗 **URL State Management** with nuqs 2.9.1 for type-safe search parameters
-- 🌐 **View Transitions** for smooth navigation (auth login/sign-up, host chart pages, footer, and form field morphs)
+- 🔗 **URL State Management** with nuqs 2.9.2 for type-safe search parameters
+- 🌐 **View Transitions** for smooth navigation (auth login/sign-up, host income/transfers/dashboard amounts, sortable titles, chart pages, footer, and form field morphs)
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router 8 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
 - 🔐 **Consolidated host auth middleware** on `host-layout.tsx` (no duplicate session lookups on leaf routes)
@@ -90,9 +90,9 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **TypeScript 7.0.2** with strict configuration
 - **TailwindCSS 4.3.3** with modern CSS features
 - **@base-ui/react 1.6.0** + **shadcn/ui** (`base-nova` style) for dialog, popover, checkbox, label, and mobile nav
-- **Lucide React 1.25.0** for icons (direct imports for performance)
-- **Recharts 3.10.0** for data visualization (lazy-loaded)
-- **nuqs 2.9.1** for type-safe URL state management via shared parsers
+- **Lucide React 1.27.0** for icons (direct imports for performance)
+- **Recharts 3.10.1** for data visualization (lazy-loaded; SSR-safe without `.client`)
+- **nuqs 2.9.2** for type-safe URL state management via shared parsers
 
 ### Backend & Database
 
@@ -106,17 +106,17 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Development Tools
 
 - **Vite 8.2.0-beta.0** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports
-- **@vitejs/devtools 0.4.3** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
+- **@vitejs/devtools 0.4.10** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
 - **rollup-plugin-visualizer 7.0.1** - Client/server bundle treemaps (`VITE_ANALYZE=true`)
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler 1.0** (stable) - Automatic memoization via `@rolldown/plugin-babel` + `reactCompilerPreset`
 - **Biome 2.5.3** for linting and formatting with Ultracite integration
 - **Ultracite 7.9.4** - AI-friendly linting rules for maximum type safety and accessibility
-- **Varlock 1.13.0** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.112.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
+- **Varlock 1.14.1** - Typed env schema (`.env.schema`) with Cloudflare integration
+- **Wrangler 4.114.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
-- **react-doctor 0.8.1** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
-- **fallow 3.8.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
+- **react-doctor 0.9.2** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
+- **fallow 3.10.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **Bun** for fast package management and runtime
@@ -340,6 +340,7 @@ return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 - **Account identity** keyed by `(issuer, providerAccountId)` — not legacy `accountId`
 - **Session management** with cookie cache + `preserveSessionInDatabase`
 - **Protected routes** with automatic redirects via `getLoginRedirectUrl` / `getSafeRedirectPath` (`app/features/middleware/utils/auth-redirect.ts`)
+- **Return path** from React Router’s normalized middleware `url` (`getReturnPathFromUrl`) — strips `.data` / `_.data` / `_routes` (do not use raw `request.url`)
 - **Host auth middleware** runs once on `host-layout.tsx` (stub loader ensures `.data` requests on client navigations)
 - **`redirectTo` query param** on login — returns users to the page they tried to visit (open-redirect safe)
 - **ArkType validation** (`app/features/auth/schemas.server.ts`) for login/sign-up forms
@@ -355,7 +356,7 @@ return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 
 ## URL State Management with nuqs
 
-The application uses **nuqs 2.9.1** for type-safe URL state management:
+The application uses **nuqs 2.9.2** for type-safe URL state management:
 
 ### Features
 
@@ -827,10 +828,10 @@ toggleOptimistic({ type: 'toggle' });
 
 ### Lazy Loading with React.lazy()
 
-Heavy components like charts are code-split using `React.lazy()` and `Suspense`. Recharts lives in `bar-chart.client.tsx` (`.client` suffix) so `es-toolkit` stays out of the SSR graph:
+Heavy components like charts are code-split using `React.lazy()` and `Suspense` via `LazyBarChart` → `bar-chart.tsx` (SSR-safe; no `.client` suffix required after Varlock/Vite TLA fixes):
 
 ```tsx
-const BarChartComponent = lazy(() => import("./bar-chart.client"));
+const BarChartComponent = lazy(() => import("./bar-chart"));
 
 <Suspense fallback={<Skeleton />}>
   <BarChartComponent data={chartData} />
@@ -1013,7 +1014,7 @@ Configuration in `lint-staged.config.ts`.
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — overlay fade and slide-in/out (`app/app.css`)
 - **Reusable keyframes** — parameterized `--fade` / `--scale` / `--slide-x` / `--slide-y` with CSS custom properties
-- **Auth + host view transitions** — login/sign-up and chart-page morphs (`::view-transition-old/new` in `app/app.css`)
+- **Auth + host view transitions** — login/sign-up, income/balance/elapsed-days, sortable-title, and chart-page morphs (`::view-transition-old/new` in `app/app.css`)
 - **Scroll-driven host nav hint** — `mask-scroll-hint` utility with `animation-timeline: scroll(x self)`
 - **Responsive design** with mobile-first approach and CSS Grid layouts
 - **Biome configuration** for CSS at-rules support
@@ -1050,7 +1051,8 @@ Configuration in `lint-staged.config.ts`.
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
 - **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization
-- **fallow 3.8.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
+- **fallow 3.10.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
+- **Bun `overrides`** — pin transitive audit fixes (`@remix-run/server-runtime`, `brace-expansion`, `fast-uri`, `picomatch`, `turbo-stream`, …) while `bunfig.toml` keeps `minimumReleaseAge`
 
 ### GitHub Actions
 
@@ -1058,7 +1060,7 @@ Configuration in `lint-staged.config.ts`.
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
   - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — self-contained Action, no Bun install
-  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.6.0` Action (CLI package is `fallow` 3.8.0); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`)
+  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.6.0` Action (CLI package is `fallow` 3.10.0); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`)
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability; bump via Dependabot `github-actions` or periodic SHA refresh

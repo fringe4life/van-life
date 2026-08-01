@@ -11,9 +11,13 @@ const AUTH_PATH_PREFIXES = [
 const DEFAULT_REDIRECT = href("/host");
 
 const PATH_SEPARATOR_REGEX = /[?#]/;
-export function getReturnPathFromRequest(request: Request): string {
-  const { pathname, search } = new URL(request.url);
-  return pathname + search;
+
+/**
+ * Build a return path from React Router's normalized `url` arg
+ * (`.data` / `_.data` / `_routes` already stripped — do not use `request.url`).
+ */
+export function getReturnPathFromUrl(url: URL): string {
+  return url.pathname + url.search;
 }
 
 export function getSafeRedirectPath(

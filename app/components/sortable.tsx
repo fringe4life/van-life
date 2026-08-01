@@ -45,9 +45,6 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
   // Use nuqs for client-side state management
   const [{ sort }, setSearchParams] = useQueryStates(hostPaginationParsers);
 
-  // Derive state to check if sort filter is active (not default)
-  // const hasActiveSortFilter = sort !== DEFAULT_SORT;
-
   const handleSortChange = (sortOption: SortOption) => {
     startTransition(async () => {
       await setSearchParams({
@@ -79,7 +76,10 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
         className
       )}
     >
-      <h3 className="font-bold text-lg text-neutral-900">
+      <h3
+        className="font-bold text-lg text-neutral-900"
+        style={{ viewTransitionName: "sortable-title" }}
+      >
         {title} ({itemCount})
       </h3>
 

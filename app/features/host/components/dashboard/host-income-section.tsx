@@ -19,7 +19,10 @@ const HostIncomeSection = ({
   isBalancePending,
 }: HostIncomeSectionProps) => (
   <div className="full-layout grid grid-cols-min items-center justify-between gap-x-2 bg-orange-100 py-6 sm:py-9">
-    <h2 className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
+    <h2
+      className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl"
+      style={{ viewTransitionName: "van-header" }}
+    >
       Welcome, {name ? name : "User"}!
     </h2>
     <div className="col-start-1 my-4 grid grid-cols-[1fr_min-content] grid-rows-2 items-center justify-between gap-4 font-light text-base text-neutral-600">
@@ -27,7 +30,10 @@ const HostIncomeSection = ({
         Income last{" "}
         <span className="underline sm:font-medium">{elapsedDays} days</span>
       </p>
-      <p className="justify-self-end font-semibold text-neutral-900 text-xl xs:text-3xl sm:font-bold sm:text-4xl md:font-extrabold md:text-5xl">
+      <p
+        className="justify-self-end font-semibold text-neutral-900 text-xl xs:text-3xl sm:font-bold sm:text-4xl md:font-extrabold md:text-5xl"
+        style={{ viewTransitionName: "income-amount" }}
+      >
         {displayPrice(sumIncome)}
       </p>
 
@@ -37,6 +43,7 @@ const HostIncomeSection = ({
           "justify-self-end font-semibold text-neutral-90 text-xl0 xs:text-3xl sm:font-bold sm:text-4xl md:font-extrabold md:text-5xl",
           !!isBalancePending && "opacity-75"
         )}
+        style={{ viewTransitionName: "balance-amount" }}
       >
         {displayPrice(optimisticBalance)}
       </p>
