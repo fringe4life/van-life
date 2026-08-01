@@ -15,38 +15,39 @@ import { Input } from "./ui/input";
 const SearchInput = () => {
   const [urlState, setUrlState] = useQueryStates(searchUrlParsers);
 
-  const handleSearch: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const search = e.currentTarget.value.trim();
-    // Send immediate update if clearing the input, otherwise debounce
+  const startSearch = (
+    searchString: string,
+    debounceMS: typeof defaultRateLimit
+  ) => {
     startTransition(async () => {
       await setUrlState(
         {
           cursor: DEFAULT_CURSOR,
           direction: DEFAULT_DIRECTION,
-          search: search || "",
+          search: searchString,
         },
         {
-          limitUrlUpdates:
-            search === "" ? defaultRateLimit : debounce(DEFAULT_DEBOUNCE),
+          limitUrlUpdates: debounceMS,
         }
       );
     });
   };
 
+  const handleSearch: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const search = e.currentTarget.value.trim().toLowerCase() || "";
+    const isEmpty = search === "";
+    // Send immediate update if clearing the input, otherwise debounce
+    const debounceTime = isEmpty
+      ? defaultRateLimit
+      : debounce(DEFAULT_DEBOUNCE);
+    startSearch(search, debounceTime);
+  };
+
   const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === "Enter") {
       // Send immediate update on Enter key press
-      const search = e.currentTarget.value;
-      startTransition(async () => {
-        await setUrlState(
-          {
-            cursor: DEFAULT_CURSOR,
-            direction: DEFAULT_DIRECTION,
-            search: search || "",
-          },
-          { limitUrlUpdates: undefined }
-        );
-      });
+      const search = e.currentTarget.value.trim().toLowerCase() || "";
+      startSearch(search, defaultRateLimit);
     }
   };
 
@@ -57,7 +58,7 @@ const SearchInput = () => {
       onKeyDown={handleKeyPress}
       placeholder="Modest Explorer"
       type="search"
-      value={urlState.search || ""}
+      value={urlState.search}
     />
   );
 };

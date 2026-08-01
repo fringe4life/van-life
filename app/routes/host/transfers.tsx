@@ -63,13 +63,19 @@ const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
       />
       <VanHeader>Transfers</VanHeader>
 
-      <p className="mt-6">
+      <p className="my-3" style={{ viewTransitionName: "elapsed-days" }}>
         Last{" "}
-        <span className="font-bold text-neutral-600 underline">
+        <span
+          className="font-bold text-neutral-600 underline"
+          style={{ viewTransitionName: "elapsed-days-value" }}
+        >
           {elapsedDays} days
         </span>
       </p>
-      <p className="mt-8 mb-13 font-extrabold text-3xl sm:text-4xl md:text-5xl">
+      <p
+        className="mb-6 font-extrabold text-3xl sm:text-4xl md:text-5xl"
+        style={{ viewTransitionName: "balance-amount" }}
+      >
         {displayPrice(sumAmount)}
       </p>
       {/*

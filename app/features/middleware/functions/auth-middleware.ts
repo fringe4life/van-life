@@ -2,19 +2,20 @@ import { type MiddlewareFunction, redirect } from "react-router";
 import { authContext } from "~/features/middleware/contexts/auth";
 import {
   getLoginRedirectUrl,
-  getReturnPathFromRequest,
+  getReturnPathFromUrl,
 } from "~/features/middleware/utils/auth-redirect";
 import { getUserWithHeaders } from "~/features/middleware/utils/get-user-with-headers";
 import { setCookieHeaders } from "~/features/middleware/utils/set-cookie-headers";
 
 const authMiddleware: MiddlewareFunction<Response> = async (
-  { request, context },
+  { request, context, url },
   next
 ) => {
   const { user, headers } = await getUserWithHeaders(request);
 
   if (!user) {
-    const returnPath = getReturnPathFromRequest(request);
+    // `url` is RR-normalized (no `.data` / `_.data` / `_routes`) — not `request.url`
+    const returnPath = getReturnPathFromUrl(url);
     throw redirect(getLoginRedirectUrl(returnPath));
   }
 

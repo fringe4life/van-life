@@ -1,3 +1,2 @@
 [install]
 minimumReleaseAge = 259200
-minimumReleaseAgeExcludes = ["ultracite"]
