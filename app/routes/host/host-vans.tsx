@@ -219,10 +219,7 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
         name="description"
       />
       <section>
-        <h2
-          className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl"
-          style={{ viewTransitionName: "van-header" }}
-        >
+        <h2 className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
           Add Van
         </h2>
         <Activity mode={onFirstPage ? "visible" : "hidden"}>
