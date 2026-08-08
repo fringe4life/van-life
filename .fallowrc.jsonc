@@ -22,7 +22,8 @@
     "boundary-violation": "warn",
     "prop-drilling": "warn",
     "thin-wrapper": "warn",
-    "duplicate-prop-shape": "warn"
+    "duplicate-prop-shape": "warn",
+    "unused-dependency-overrides": "off"
   },
   "ignorePatterns": ["worker-configuration.d.ts", "doctor.config.ts"],
   "ignoreDependencies": [

@@ -55,10 +55,10 @@ import {
 } from "~/utils/errors/parse-arktype.server";
 import type { Route } from "./+types/host-vans";
 
-type HostVansActionSuccess = {
+interface HostVansActionSuccess {
   clientKey?: string;
   van: VanModel;
-};
+}
 
 type HostVansActionData = FormActionResult<
   HostVansActionSuccess,

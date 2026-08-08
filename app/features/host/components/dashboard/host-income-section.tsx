@@ -1,12 +1,13 @@
 import { href } from "react-router";
 import { CustomLink } from "~/features/navigation/components/custom-link";
 import { displayPrice } from "~/features/vans/utils/display-price";
+import type { Maybe } from "~/types";
 import { cn } from "~/utils/utils";
 
 interface HostIncomeSectionProps {
   elapsedDays: number;
   isBalancePending: boolean;
-  name: string | null | undefined;
+  name: Maybe<string>;
   optimisticBalance: number;
   sumIncome: number;
 }

@@ -99,21 +99,23 @@ export default function Login({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher<LoginActionData>();
   const [isPending, startTransition] = useTransition();
 
-  const { data } = fetcher;
-  const { fieldErrors, formData, formError } = readActionFormData(data, {
+  const { data: fetcherData } = fetcher;
+  const { fieldErrors, formData, formError } = readActionFormData(fetcherData, {
     defaults: { email: "" },
   });
 
   const status = useAutoIdleStatus(
-    getFetcherStatus(fetcher.state, data, { isTransitionPending: isPending })
+    getFetcherStatus(fetcher.state, fetcherData, {
+      isTransitionPending: isPending,
+    })
   );
   const isSubmitting = status === "pending";
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    const fieldValues = new FormData(event.currentTarget);
     startTransition(async () => {
-      await fetcher.submit(formData, { method: "POST" });
+      await fetcher.submit(fieldValues, { method: "POST" });
     });
   };
 

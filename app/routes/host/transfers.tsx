@@ -65,10 +65,7 @@ const HostTransfers = ({ loaderData }: Route.ComponentProps) => {
 
       <p className="my-3" style={{ viewTransitionName: "elapsed-days" }}>
         Last{" "}
-        <span
-          className="font-bold text-neutral-600 underline"
-          style={{ viewTransitionName: "elapsed-days-value" }}
-        >
+        <span className="font-bold text-neutral-600 underline">
           {elapsedDays} days
         </span>
       </p>
