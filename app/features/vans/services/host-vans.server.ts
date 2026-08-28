@@ -1,3 +1,4 @@
+import type { InferOutput } from "valibot";
 import type { AppDb } from "~/db/client.server";
 import { toPagination } from "~/features/pagination/utils/to-pagination.server";
 import { getHostVans } from "~/features/vans/dal/host-van.server";
@@ -11,7 +12,7 @@ import type { UUIDv7 } from "~/types/ids.server";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import { getSlug } from "~/utils/get-slug";
 
-type AddVanInput = typeof addVanSchema.infer;
+type AddVanInput = InferOutput<typeof addVanSchema>;
 
 export async function loadHostVansPage(
   db: AppDb,

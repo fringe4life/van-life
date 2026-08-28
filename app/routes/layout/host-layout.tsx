@@ -28,18 +28,24 @@ export const loader = () => null;
 const HostLayout = () => (
   <>
     <meta content="noindex, nofollow" name="robots" />
-    <div className="grid grid-cols-1 contain-content">
-      <GenericComponent
-        as="ul"
-        Component={CustomNavLink}
-        className="mask-scroll-hint scrollbar-none mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-3 overflow-x-auto overscroll-x-contain py-3"
-        emptyStateMessage="No nav links"
-        errorStateMessage="Something went wrong"
-        items={hostNavItems}
-        renderProps={renderHostNavItemProps}
-      />
+    <div className="grid grid-cols-1 items-start gap-6 contain-content lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-8">
+      <aside className="min-w-0 lg:sticky lg:top-6 lg:max-h-[calc(100dvh-3rem)] lg:self-start lg:overflow-y-auto">
+        <nav aria-label="Host navigation">
+          <GenericComponent
+            as="ul"
+            Component={CustomNavLink}
+            className="mask-scroll-hint scrollbar-none lg:mask-none mb-5 grid auto-cols-max grid-flow-col grid-rows-1 items-center gap-3 overflow-x-auto overscroll-x-contain py-3 lg:mb-0 lg:animate-none lg:auto-cols-auto lg:grid-flow-row lg:grid-cols-1 lg:gap-2 lg:overflow-x-visible lg:overscroll-x-auto lg:py-0"
+            emptyStateMessage="No nav links"
+            errorStateMessage="Something went wrong"
+            items={hostNavItems}
+            renderProps={renderHostNavItemProps}
+          />
+        </nav>
+      </aside>
+      <div className="min-w-0">
+        <Outlet />
+      </div>
     </div>
-    <Outlet />
   </>
 );
 export default HostLayout;

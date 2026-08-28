@@ -6,6 +6,7 @@ import { getFetcherStatus } from "~/components/form/get-fetcher-status";
 import type { FetcherStateObject } from "~/components/form/types";
 import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
 import { StatusButton } from "~/components/status-button";
+import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import type { VanFormFieldErrors, VanFormValues } from "~/features/vans/types";
@@ -33,7 +34,9 @@ const VanForm = ({
   fetcherState,
   ok,
 }: VanFormProps) => {
-  const formErrorId = useId();
+  const formId = useId();
+  const formErrorId = `${formId}-error`;
+  const formTitleId = `${formId}-title`;
   const status = useAutoIdleStatus(
     getFetcherStatus(fetcherState, ok === undefined ? undefined : { ok }, {
       isTransitionPending: isPending,
@@ -41,115 +44,126 @@ const VanForm = ({
   );
 
   return (
-    <div className="@container/form">
-      <Form
-        aria-describedby={formError ? formErrorId : undefined}
-        className={cn(
-          "mt-6 grid gap-x-6 gap-y-4",
-          "@min-xl/form:max-w-4xl @min-xl/form:grid-cols-2"
-        )}
-        method="POST"
-        onSubmit={onSubmit}
-      >
-        <Field error={fieldErrors?.name} label="Name">
-          {(a11y) => (
-            <Input
-              {...a11y}
-              defaultValue={formDataDefaults?.name ?? ""}
-              name="name"
-              placeholder="Silver Bullet"
-              type="text"
-            />
-          )}
-        </Field>
-        <Field error={fieldErrors?.price} label="Price ($/day)">
-          {(a11y) => (
-            <Input
-              {...a11y}
-              defaultValue={formDataDefaults?.price ?? ""}
-              name="price"
-              placeholder="100"
-              type="number"
-            />
-          )}
-        </Field>
-        <Field
-          className="@min-xl/form:col-span-2"
-          error={fieldErrors?.description}
-          label="Description"
+    <Card className="@container/form border-border bg-card">
+      <CardHeader className="border-border border-b pb-4">
+        <h2
+          className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl"
+          id={formTitleId}
         >
-          {(a11y) => (
-            <Textarea
-              {...a11y}
-              defaultValue={formDataDefaults?.description ?? ""}
-              name="description"
-              placeholder="The silver bullet can take you on an amazing adventure..."
-            />
+          Add Van
+        </h2>
+      </CardHeader>
+      <CardContent className="pt-6">
+        <Form
+          aria-describedby={formError ? formErrorId : undefined}
+          aria-labelledby={formTitleId}
+          className={cn(
+            "grid gap-x-6 gap-y-4",
+            "@min-xl/form:max-w-4xl @min-xl/form:grid-cols-2"
           )}
-        </Field>
-        <Field error={fieldErrors?.imageUrl} label="Image URL">
-          {(a11y) => (
-            <Input
-              {...a11y}
-              defaultValue={formDataDefaults?.imageUrl ?? ""}
-              name="imageUrl"
-              placeholder="https://images.unsplash.com/"
-              type="url"
-            />
-          )}
-        </Field>
-        <Field error={fieldErrors?.type} label="Type">
-          {(a11y) => (
-            <>
+          method="POST"
+          onSubmit={onSubmit}
+        >
+          <Field error={fieldErrors?.name} label="Name">
+            {(a11y) => (
               <Input
                 {...a11y}
-                defaultValue={formDataDefaults?.type ?? ""}
-                list={`${a11y.id}-list`}
-                name="type"
-                placeholder="simple or luxury or rugged"
+                defaultValue={formDataDefaults?.name ?? ""}
+                name="name"
+                placeholder="Silver Bullet"
                 type="text"
               />
-              {/* react-doctor-disable-next-line*/}
-              <datalist id={`${a11y.id}-list`}>
-                {/* react-doctor-disable-next-line*/}
-                <option value="luxury" />
-                {/* react-doctor-disable-next-line*/}
-                <option value="simple" />
-                {/* react-doctor-disable-next-line*/}
-                <option value="rugged" />
-              </datalist>
-            </>
-          )}
-        </Field>
-        <Field error={fieldErrors?.discount} label="Discount (%)">
-          {(a11y) => (
-            <Input
-              {...a11y}
-              defaultValue={formDataDefaults?.discount ?? "0"}
-              max={50}
-              min={0}
-              name="discount"
-              placeholder="0"
-              type="number"
-            />
-          )}
-        </Field>
-        <FormError
-          className="col-span-full"
-          id={formErrorId}
-          message={formError}
-        />
-        <div className="col-span-full grid grid-cols-subgrid">
-          <StatusButton
-            className="col-span-full @min-xl/form:col-start-2"
-            status={status}
-            type="submit"
+            )}
+          </Field>
+          <Field error={fieldErrors?.price} label="Price ($/day)">
+            {(a11y) => (
+              <Input
+                {...a11y}
+                defaultValue={formDataDefaults?.price ?? ""}
+                name="price"
+                placeholder="100"
+                type="number"
+              />
+            )}
+          </Field>
+          <Field
+            className="@min-xl/form:col-span-2"
+            error={fieldErrors?.description}
+            label="Description"
           >
-            Add your van
-          </StatusButton>
-        </div>
-      </Form>
-    </div>
+            {(a11y) => (
+              <Textarea
+                {...a11y}
+                defaultValue={formDataDefaults?.description ?? ""}
+                name="description"
+                placeholder="The silver bullet can take you on an amazing adventure..."
+              />
+            )}
+          </Field>
+          <Field error={fieldErrors?.imageUrl} label="Image URL">
+            {(a11y) => (
+              <Input
+                {...a11y}
+                defaultValue={formDataDefaults?.imageUrl ?? ""}
+                name="imageUrl"
+                placeholder="https://images.unsplash.com/"
+                type="url"
+              />
+            )}
+          </Field>
+          <Field error={fieldErrors?.type} label="Type">
+            {(a11y) => (
+              <>
+                <Input
+                  {...a11y}
+                  defaultValue={formDataDefaults?.type ?? ""}
+                  list={`${a11y.id}-list`}
+                  name="type"
+                  placeholder="simple or luxury or rugged"
+                  type="text"
+                />
+                {/* react-doctor-disable-next-line*/}
+                <datalist id={`${a11y.id}-list`}>
+                  {/* react-doctor-disable-next-line*/}
+                  <option value="luxury" />
+                  {/* react-doctor-disable-next-line*/}
+                  <option value="simple" />
+                  {/* react-doctor-disable-next-line*/}
+                  <option value="rugged" />
+                </datalist>
+              </>
+            )}
+          </Field>
+          <Field error={fieldErrors?.discount} label="Discount (%)">
+            {(a11y) => (
+              <Input
+                {...a11y}
+                defaultValue={formDataDefaults?.discount ?? "0"}
+                max={50}
+                min={0}
+                name="discount"
+                placeholder="0"
+                type="number"
+              />
+            )}
+          </Field>
+          <FormError
+            className="col-span-full"
+            id={formErrorId}
+            message={formError}
+          />
+          <div className="col-span-full grid grid-cols-subgrid">
+            <StatusButton
+              className="col-span-full @min-xl/form:col-start-2"
+              status={status}
+              type="submit"
+            >
+              Add your van
+            </StatusButton>
+          </div>
+        </Form>
+      </CardContent>
+    </Card>
   );
 };
 

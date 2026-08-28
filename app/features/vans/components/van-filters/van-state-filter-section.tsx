@@ -29,7 +29,7 @@ const VanStateFilterRow = ({
       className={cn(facet.isPending && "opacity-75")}
       id={`${baseId}-van-filter-${facet.key}`}
       label={facet.label}
-      onCheckedChange={handleCheckedChange}
+      onChange={handleCheckedChange}
     />
   );
 };
@@ -46,8 +46,8 @@ const VanStateFilterSection = ({
   facets,
   onCheckedChange,
 }: VanStateFilterSectionProps) => (
-  <div className="p-1">
-    <p className="px-2 py-1.5 font-medium text-sm">State Filters</p>
+  <fieldset className="grid gap-1 p-1 pt-3 sm:grid-cols-2 lg:grid-cols-1">
+    <legend className="px-2 py-1.5 font-medium text-sm">State Filters</legend>
     {facets.map((facet) => (
       <VanStateFilterRow
         baseId={baseId}
@@ -56,7 +56,7 @@ const VanStateFilterSection = ({
         onCheckedChange={onCheckedChange}
       />
     ))}
-  </div>
+  </fieldset>
 );
 
 export { VanStateFilterSection };

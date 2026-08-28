@@ -19,21 +19,19 @@ import { SeoHead } from "~/features/seo/seo-head";
 import { cn } from "~/utils/utils";
 import type { Route } from "./+types/home";
 
-// Use only mobile images for now to fix the aspect ratio issue
-const srcSet = createWebPSrcSet(
-  HOME_IMG_URL,
-  {
-    aspectRatio: "2:3",
-    quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for home page
-    sizes: HOME_MOBILE_IMG_SIZES,
-  }, // mobile aspect ratio (2:3)
-  {
-    aspectRatio: "16:9",
-    quality: HIGH_QUALITY_IMAGE_QUALITY, // Higher quality for home page
-    sizes: HOME_DESKTOP_IMG_SIZES,
-  } // desktop aspect ratio (16:9)
-);
-const sizes = "(max-width: 1024px) 100vw";
+// Art-direct portrait and landscape crops independently so the mask and hero
+// layout always receive the intended aspect ratio at each breakpoint.
+const mobileSrcSet = createWebPSrcSet(HOME_IMG_URL, {
+  aspectRatio: "2:3",
+  quality: HIGH_QUALITY_IMAGE_QUALITY,
+  sizes: HOME_MOBILE_IMG_SIZES,
+});
+const desktopSrcSet = createWebPSrcSet(HOME_IMG_URL, {
+  aspectRatio: "16:9",
+  quality: HIGH_QUALITY_IMAGE_QUALITY,
+  sizes: HOME_DESKTOP_IMG_SIZES,
+});
+const sizes = "100vw";
 
 export const headers = forwardDataHeaders;
 
@@ -55,16 +53,30 @@ const Home = ({ loaderData }: Route.ComponentProps) => {
         <div className="absolute inset-0 z-10 bg-linear-45 from-0% from-indigo-300/40 via-33% via-green-300/40 to-66% to-yellow-200/40 bg-blend-darken" />
         <Image
           alt="Camper van on scenic road"
-          classesForContainer="absolute inset-0 w-full h-full"
-          className="[view-transition-name:home-image]"
+          className="w-full [view-transition-name:home-image]"
           decoding="sync"
           fetchPriority="high"
-          height={1500}
+          height={900}
           loading="eager"
+          pictureClassName="absolute inset-0 w-full h-full"
           sizes={sizes}
+          sources={[
+            {
+              media: "(max-width: 767px)",
+              sizes,
+              srcSet: mobileSrcSet,
+              type: "image/webp",
+            },
+            {
+              media: "(min-width: 768px)",
+              sizes,
+              srcSet: desktopSrcSet,
+              type: "image/webp",
+            },
+          ]}
           src={HOME_IMG_URL}
-          srcSet={srcSet}
-          width={1000}
+          srcSet={desktopSrcSet}
+          width={1600}
         />
       </div>
 

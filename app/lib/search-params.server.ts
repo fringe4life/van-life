@@ -8,7 +8,7 @@ import {
 } from "~/lib/parsers";
 import type { UUIDv7 } from "~/types/ids.server";
 
-// Create loaders for React Router v7
+// Create loaders for React Router v8
 export const loadPaginationParams = createLoader(paginationParsers);
 export const loadHostSearchParams = createLoader(hostPaginationParsers);
 export const loadSearchParams = createLoader(searchParser);

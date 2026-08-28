@@ -9,7 +9,11 @@
         "!eslint",
         "..."
       ],
-      "formatter": { "language_server": { "name": "biome" } },
+      "formatter": {
+        "language_server": {
+          "name": "biome"
+        }
+      },
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true
@@ -24,7 +28,11 @@
         "!eslint",
         "..."
       ],
-      "formatter": { "language_server": { "name": "biome" } },
+      "formatter": {
+        "language_server": {
+          "name": "biome"
+        }
+      },
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true
@@ -39,7 +47,11 @@
         "!eslint",
         "..."
       ],
-      "formatter": { "language_server": { "name": "biome" } },
+      "formatter": {
+        "language_server": {
+          "name": "biome"
+        }
+      },
       "code_actions_on_format": {
         "source.fixAll.biome": true,
         "source.organizeImports.biome": true
@@ -47,11 +59,19 @@
     },
     "JSON": {
       "language_servers": ["biome", "..."],
-      "formatter": { "language_server": { "name": "biome" } }
+      "formatter": {
+        "language_server": {
+          "name": "biome"
+        }
+      }
     },
     "JSONC": {
       "language_servers": ["biome", "..."],
-      "formatter": { "language_server": { "name": "biome" } }
+      "formatter": {
+        "language_server": {
+          "name": "biome"
+        }
+      }
     },
     "CSS": {
       "language_servers": [
@@ -59,7 +79,11 @@
         "tailwindcss-intellisense-css",
         "!vscode-css-language-server"
       ],
-      "formatter": { "language_server": { "name": "biome" } }
+      "formatter": {
+        "language_server": {
+          "name": "biome"
+        }
+      }
     }
   },
   "lsp": {
@@ -85,6 +109,17 @@
           ]
         }
       }
+    },
+    "typescript-language-server": {
+      "settings": {
+        "typescript": {
+          "preferences": {
+            "includePackageJsonAutoImports": "on"
+          }
+        }
+      }
     }
-  }
+  },
+  "format_on_save": "on",
+  "formatter": "language_server"
 }

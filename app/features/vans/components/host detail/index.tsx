@@ -19,10 +19,11 @@ import { CustomNavLink } from "~/features/navigation/components/custom-nav-link"
 import type { NavLinkClassNameProps } from "~/features/navigation/types";
 import type { VanProps } from "~/features/vans/types";
 import { toLowercaseVanType } from "~/features/vans/utils/validators";
-import { withVanCardStyles } from "~/features/vans/utils/with-van-card-styles";
+import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
 import type { Id } from "~/types";
 import { cn } from "~/utils/utils";
 import { VanBadge } from "../van-badge";
+import { vanCard } from "../van-card-recipe";
 import { VanPrice } from "../van-price";
 import { VanDetailCardContext } from "./context";
 import { Details } from "./details";
@@ -30,8 +31,6 @@ import { Photos } from "./photos";
 import { Pricing } from "./pricing";
 
 type VanDetailCardProps = VanProps & ComponentPropsWithoutRef<"div">;
-
-const StyledCard = withVanCardStyles(Card);
 
 const hostVanDetailNavClassName = ({
   isActive,
@@ -93,17 +92,20 @@ const VanDetailCardRoot = ({
           className
         )}
       >
-        <StyledCard van={van}>
+        <Card
+          className={vanCard({ state: lowercaseVanState(van) })}
+          style={{ viewTransitionName: `card-${van.id}` }}
+        >
           <CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] grid-cols-1 @min-md/detail:grid-rows-[200px_1fr] @min-xl/detail:grid-rows-[300px_1fr] @min-md/detail:gap-x-4">
             <div className="relative">
               <VanBadge van={van} />
               <Image
                 alt={name}
-                classesForContainer="aspect-square"
                 className="aspect-square @min-md/detail:w-auto w-full rounded-sm"
                 decoding="sync"
                 height="300"
                 loading="eager"
+                pictureClassName="aspect-square"
                 sizes="(min-width: 1280px) 300px, (min-width: 768px) 200px, 400px"
                 src={imageUrl}
                 srcSet={srcSet}
@@ -134,7 +136,7 @@ const VanDetailCardRoot = ({
             />
           </CardContent>
           <CardFooter className="contain-inline-size">{children}</CardFooter>
-        </StyledCard>
+        </Card>
       </div>
     </VanDetailCardContext>
   );

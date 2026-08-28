@@ -12,13 +12,25 @@ import { cn } from "~/utils/utils";
 type Size = string | number;
 
 /**
+ * Responsive art-direction source for the optional picture element.
+ */
+interface ImageSource {
+  media: string;
+  sizes?: string;
+  srcSet: string;
+  type?: string;
+}
+
+/**
  * Extended props for the Image component, extending native img element props
  */
 interface ImgProps extends React.ComponentProps<"img"> {
-  /** Additional CSS classes for the container div */
-  classesForContainer?: string;
   /** The height of the image (string or number) */
   height: Size;
+  /** Additional CSS classes for the picture element */
+  pictureClassName?: string;
+  /** Optional art-directed sources rendered before the fallback img */
+  sources?: readonly ImageSource[];
   /** The source URL of the image */
   src: string;
   /** Optional srcSet for responsive images */
@@ -42,7 +54,8 @@ interface ImgProps extends React.ComponentProps<"img"> {
  * @param props.src - The source URL of the image
  * @param props.alt - Alt text for accessibility
  * @param props.className - Additional CSS classes for the img element
- * @param props.classesForContainer - Additional CSS classes for the container div
+ * @param props.pictureClassName - Additional CSS classes for the picture element
+ * @param props.sources - Optional media-specific source sets for art direction
  * @param props.rest - All other native img element props
  *
  * @example
@@ -63,7 +76,8 @@ const Image = ({
   src,
   alt,
   className,
-  classesForContainer = "",
+  pictureClassName = "",
+  sources,
   ...rest
 }: ImgProps) => {
   /** Low-resolution placeholder image width constant */
@@ -107,7 +121,18 @@ const Image = ({
 
   // Always render the lowRes image initially, swap to fullSrc after load
   return (
-    <div className={cn("m-0 p-0", classesForContainer)}>
+    <picture className={cn("block", pictureClassName)}>
+      {sources?.map(
+        ({ media, sizes: sourceSizes, srcSet: sourceSet, type }) => (
+          <source
+            key={`${media}-${sourceSet}`}
+            media={media}
+            sizes={sourceSizes}
+            srcSet={sourceSet}
+            type={type}
+          />
+        )
+      )}
       {/** biome-ignore lint/correctness/useImageSize: passed in as {...rest} */}
       <img
         className={cn(
@@ -121,7 +146,7 @@ const Image = ({
         alt={alt}
         src={fullSrc ?? lowRes}
       />
-    </div>
+    </picture>
   );
 };
 

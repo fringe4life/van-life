@@ -1,12 +1,3 @@
 {
-  "mcpServers": {
-    "ultracite": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://www.ultracite.ai/api/mcp/mcp"]
-    },
-    "shadcn": {
-      "command": "npx",
-      "args": ["shadcn@latest", "mcp"]
-    }
-  }
+  "mcpServers": {}
 }

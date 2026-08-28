@@ -1,4 +1,5 @@
 import { data, href, redirect, useNavigation } from "react-router";
+import { summarize } from "valibot";
 import { CustomForm } from "~/components/custom-form";
 import type { FormActionFailure } from "~/components/form/form-action-result";
 import { FormError } from "~/components/form/form-error";
@@ -20,7 +21,7 @@ import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
 import { badRequest } from "~/utils/errors/bad-request";
 import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import { notFound } from "~/utils/errors/not-found";
-import { validateArkType } from "~/utils/errors/parse-arktype.server";
+import { validateSchema } from "~/utils/errors/parse-schema.server";
 import { serverError } from "~/utils/errors/server-error";
 import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/rental-detail";
@@ -53,23 +54,19 @@ export const action = async ({ params, context }: Route.ActionArgs) => {
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
-  const validation = validateArkType(rentVanSchema, {
+  const validation = validateSchema(rentVanSchema, {
     renterId: user.id,
     vanSlug: params.vanSlug,
   });
 
   if (!validation.success) {
     return badRequest({
-      formError: validation.errors.summary || "Invalid rental request",
+      formError: summarize(validation.errors) || "Invalid rental request",
       ok: false,
     } satisfies RentActionData);
   }
 
-  const result = await rentVan(
-    db,
-    validation.data.vanSlug,
-    validation.data.renterId
-  );
+  const result = await rentVan(db, validation.data.vanSlug, user.id);
 
   const actionFailure = toActionResultOrThrow(result);
   if (actionFailure) {

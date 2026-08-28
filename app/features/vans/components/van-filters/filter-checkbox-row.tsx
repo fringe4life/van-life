@@ -1,3 +1,4 @@
+import type { ChangeEvent } from "react";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import type { Id, Prettify } from "~/types";
@@ -9,7 +10,7 @@ type FilterCheckboxRowProps = Prettify<
     className?: string;
     label: string;
     labelClassName?: string;
-    onCheckedChange: (checked: boolean) => void;
+    onChange: (checked: boolean) => void;
   }
 >;
 
@@ -17,26 +18,22 @@ const FilterCheckboxRow = ({
   id,
   label,
   checked,
-  onCheckedChange,
+  onChange,
   className,
   labelClassName,
 }: FilterCheckboxRowProps) => {
-  const handleCheckedChange = (value: boolean | "indeterminate") => {
-    onCheckedChange(value === true);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onChange(event.currentTarget.checked);
   };
 
   return (
     <div
       className={cn(
-        "flex items-center gap-2 rounded-sm px-2 py-1.5",
+        "flex min-h-11 items-center gap-2 rounded-md px-3 py-2 transition-colors focus-within:bg-orange-100/70 hover:bg-orange-100",
         className
       )}
     >
-      <Checkbox
-        checked={checked}
-        id={id}
-        onCheckedChange={handleCheckedChange}
-      />
+      <Checkbox checked={checked} id={id} onChange={handleChange} />
       <Label
         className={cn("cursor-pointer font-normal", labelClassName)}
         htmlFor={id}

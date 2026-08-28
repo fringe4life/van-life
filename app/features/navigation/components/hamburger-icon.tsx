@@ -1,63 +1,64 @@
-import type { CSSProperties } from "react";
+import { cva } from "cva";
 
 interface HamburgerIconProps {
   className?: string;
-  isOpen: boolean;
   size?: number;
 }
 
 /**
- * Animated SVG hamburger icon — 2 bars morph to an X and back.
+ * Two bars morph to an X while the mobile-nav dialog is open.
  *
- * Transform math (all values in SVG user units — px lengths in CSS
- * transforms on SVG child elements resolve against the user coordinate
- * system, so no size-derived scaling is needed; the icon stays correct
- * at any rendered `size`):
- *   viewBox is 24×24; top line y=8, bottom line y=16, centre y=12.
- *   Transform functions compose right-to-left, so with
- *   `rotate(...) translateY(...)` each line is first translated 4 units
- *   onto the centre line, then rotated ±45° in place about the view-box
- *   centre (12,12) — producing a symmetric X. (The reverse order rotates
- *   first about (12,12), sweeping the off-centre bars sideways.)
+ * `group-has-open/hamburger` is enough for both icons: outer
+ * `.group/hamburger` `:has([open])` matches open-button (sibling of dialog)
+ * and close-button (inside dialog). No `group-open/mobile-nav` on the bars.
+ *
+ * Close icon first-paints inside an already-open dialog, so
+ * `starting:rotate-0 starting:translate-y-0` give a bars frame to ease from.
+ *
+ * Transform math (SVG user units — `4px` on SVG children maps to 4 viewBox
+ * units, so any rendered `size` stays correct):
+ *   viewBox 24×24; top y=8, bottom y=16, centre y=12.
+ *   Independent `translate` then `rotate`: each line moves 4 units onto the
+ *   centre, then ±45° about view-box centre (12,12).
  */
-const ROTATION_DEG = 45;
-const LINE_OFFSET = 4; // user units from each line (y=8 / y=16) to centre (y=12)
+const hamburgerBar = cva({
+  base: "transform-view origin-center transition-[translate,rotate] duration-(--duration-dialog) ease-spring group-has-open/hamburger:starting:translate-y-0 group-has-open/hamburger:starting:rotate-0",
+  variants: {
+    position: {
+      bottom:
+        "group-has-open/hamburger:-translate-y-[2px] group-has-open/hamburger:-rotate-45",
+      top: "group-has-open/hamburger:translate-y-[4px] group-has-open/hamburger:rotate-45",
+    },
+  },
+});
 
-const HamburgerIcon = ({
-  isOpen,
-  size = 20,
-  className,
-}: HamburgerIconProps) => {
-  const lineStyle = (direction: 1 | -1): CSSProperties => ({
-    transform: isOpen
-      ? `rotate(${direction * ROTATION_DEG}deg) translateY(${direction * LINE_OFFSET}px)`
-      : "none",
-    transformBox: "view-box",
-    transformOrigin: "center",
-    // Spring on open (settle time needs the longer duration); quick ease on close
-    transition: isOpen
-      ? "transform 500ms var(--ease-spring)"
-      : "transform 250ms ease",
-  });
-
-  return (
-    <svg
-      aria-hidden="true"
-      className={className}
-      fill="none"
-      height={size}
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      width={size}
-    >
-      {/* Top line: moves down to centre, rotates +45° in place */}
-      <line style={lineStyle(1)} x1="3" x2="21" y1="8" y2="8" />
-      {/* Bottom line: moves up to centre, rotates -45° in place */}
-      <line style={lineStyle(-1)} x1="3" x2="21" y1="16" y2="16" />
-    </svg>
-  );
-};
+const HamburgerIcon = ({ size = 20, className }: HamburgerIconProps) => (
+  <svg
+    aria-hidden="true"
+    className={className}
+    fill="none"
+    height={size}
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+    width={size}
+  >
+    <line
+      className={hamburgerBar({ position: "top" })}
+      x1="3"
+      x2="21"
+      y1="8"
+      y2="8"
+    />
+    <line
+      className={hamburgerBar({ position: "bottom" })}
+      x1="3"
+      x2="21"
+      y1="16"
+      y2="16"
+    />
+  </svg>
+);
 
 export { HamburgerIcon };

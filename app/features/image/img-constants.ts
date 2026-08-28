@@ -12,9 +12,9 @@ export const ABOUT_IMG =
 export const ABOUT_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
 
 // Separate sizes for mobile (portrait) and desktop (landscape) aspect ratios
-// Mobile sizes go up to 790w, desktop starts at 800w to avoid overlap
+// Mobile sizes cover the portrait hero; desktop includes the wider shell and a DPR candidate.
 export const HOME_MOBILE_IMG_SIZES = [300, 450, 600, 750] as const;
-export const HOME_DESKTOP_IMG_SIZES = [800, 1000] as const;
+export const HOME_DESKTOP_IMG_SIZES = [800, 1000, 1200, 1400] as const;
 
 export const HOME_IMG_URL =
   "https://images.unsplash.com/photo-1671783181591-55f8e18fbb21?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2FtcGVydmFuJTIwc2l0ZXxlbnwwfDB8MHx8fDI%3D";

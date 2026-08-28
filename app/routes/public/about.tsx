@@ -38,18 +38,18 @@ const About = ({ loaderData }: Route.ComponentProps) => {
   return (
     <PendingUI
       as="section"
-      className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-10"
+      className="mx-auto grid w-full max-w-content grid-cols-1 gap-4 sm:gap-6 md:gap-10"
     >
       <SeoHead {...loaderData.seo} />
       <Image
         alt="a couple enjoying their adventure"
-        classesForContainer="full-layout"
         className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:about-image]"
         decoding="sync"
         fetchPriority="high"
         height="890"
         // sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
         loading="eager"
+        pictureClassName="full-layout p-0"
         src={ABOUT_IMG}
         srcSet={srcSet}
         width="1600"

@@ -1,6 +1,4 @@
-import { Button as ButtonPrimitive } from "@base-ui/react/button";
-
-import { cn } from "~/utils/utils";
+import type { ComponentProps } from "react";
 
 import { type ButtonVariantProps, buttonVariants } from "./button-variants";
 
@@ -8,12 +6,13 @@ function Button({
   className,
   variant = "default",
   size = "default",
+  type = "button",
   ...props
-}: ButtonPrimitive.Props & ButtonVariantProps) {
+}: ComponentProps<"button"> & ButtonVariantProps) {
   return (
-    <ButtonPrimitive
-      className={cn(buttonVariants({ className, size, variant }))}
-      data-slot="button"
+    <button
+      className={buttonVariants({ className, size, variant })}
+      type={type}
       {...props}
     />
   );

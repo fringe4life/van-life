@@ -154,7 +154,19 @@ const ReturnRental = ({
       <h2>Return this van:</h2>
       <div className="max-w-lg">
         <VanCard
-          action={<p />}
+          action={
+            <CustomForm method="POST">
+              <StatusButton
+                className="justify-self-end"
+                disabled={isUnableToPay}
+                status={status}
+                type="submit"
+              >
+                Return
+              </StatusButton>
+              <FormError message={formError} />
+            </CustomForm>
+          }
           link={href("/host/rentals/returnRental/:rentId", {
             rentId: params.rentId,
           })}
@@ -177,12 +189,6 @@ const ReturnRental = ({
           </CustomLink>
         </article>
       )}
-      <CustomForm method="POST">
-        <StatusButton disabled={isUnableToPay} status={status} type="submit">
-          Return
-        </StatusButton>
-        <FormError message={formError} />
-      </CustomForm>
     </section>
   );
 };

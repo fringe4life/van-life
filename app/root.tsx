@@ -24,7 +24,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => (
       <Links />
     </head>
     <body>
-      <div className="layout-grid mx-auto min-h-dvh w-full max-w-layout bg-orange-50">
+      <div className="layout-grid mx-auto min-h-dvh w-full max-w-shell bg-orange-50">
         {children}
       </div>
       <ScrollRestoration />

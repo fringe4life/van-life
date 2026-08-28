@@ -19,7 +19,7 @@ const HostIncomeSection = ({
   optimisticBalance,
   isBalancePending,
 }: HostIncomeSectionProps) => (
-  <div className="full-layout grid grid-cols-min items-center justify-between gap-x-2 bg-orange-100 py-6 sm:py-9">
+  <div className="grid w-full grid-cols-min items-center justify-between gap-x-2 bg-orange-100 px-(--padding-inline) py-6 sm:py-9">
     <h2
       className="col-start-1 font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl"
       style={{ viewTransitionName: "van-header" }}

@@ -17,6 +17,13 @@ export default {
         files: ["app/components/ui/**"],
         rules: ["react-doctor/label-has-associated-control"],
       },
+      {
+        files: [
+          "app/features/navigation/components/mobile-nav.tsx",
+          "app/features/vans/components/van-filters/van-filters.tsx",
+        ],
+        rules: ["react-doctor/no-unknown-property"],
+      },
     ],
     rules: [
       "react-doctor/only-export-components",

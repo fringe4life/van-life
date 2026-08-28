@@ -40,58 +40,60 @@ const HostWalletForm = ({ wallet }: HostWalletFormProps) => {
   );
 
   return (
-    <Card className="mt-11 py-6 sm:py-9 md:w-1/2">
-      <h3 className="mb-4 font-bold text-lg text-neutral-900 sm:text-xl">
-        Add or Withdraw Money
-      </h3>
-      <fetcher.Form
-        className="grid max-w-102 gap-4"
-        method="POST"
-        onSubmit={handleSubmit}
-      >
-        <div className="flex gap-4">
-          <Label>
-            Deposit
-            <Input
-              checked={isDepositing}
-              name="type"
-              onChange={handleChangeType}
-              required
-              type="radio"
-              value={DEPOSIT}
-            />
-          </Label>
-          <Label>
-            Withdraw
-            <Input
-              checked={!isDepositing}
-              name="type"
-              onChange={handleChangeType}
-              type="radio"
-              value={WITHDRAW}
-            />
-          </Label>
-        </div>
-        <Field error={fieldErrors?.amount} label="Amount">
-          {(a11y) => (
-            <Input
-              key={amountInputKey}
-              {...a11y}
-              defaultValue={formData.amount}
-              max={isDepositing ? MAX_ADD : optimisticBalance}
-              min={isDepositing ? MIN_ADD : MIN_WITHDRAW}
-              name="amount"
-              placeholder="2000"
-              type="number"
-            />
-          )}
-        </Field>
-        <FormError message={formError} />
-        <StatusButton status={status} type="submit">
-          Complete transaction
-        </StatusButton>
-      </fetcher.Form>
-    </Card>
+    <div className="@container/wallet mt-11 w-full">
+      <Card className="grid w-full @lg/wallet:grid-cols-[minmax(220px,0.85fr)_minmax(0,1.15fr)] grid-cols-1 @lg/wallet:items-center gap-6 @lg/wallet:gap-x-18 @lg/wallet:gap-y-0 p-6 sm:gap-9 sm:p-9">
+        <h3 className="@lg/wallet:mb-0 mb-4 font-bold @lg/wallet:text-lg text-md text-neutral-900">
+          Add or Withdraw Money
+        </h3>
+        <fetcher.Form
+          className="grid w-full min-w-0 gap-4"
+          method="POST"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex gap-4">
+            <Label>
+              Deposit
+              <Input
+                checked={isDepositing}
+                name="type"
+                onChange={handleChangeType}
+                required
+                type="radio"
+                value={DEPOSIT}
+              />
+            </Label>
+            <Label>
+              Withdraw
+              <Input
+                checked={!isDepositing}
+                name="type"
+                onChange={handleChangeType}
+                type="radio"
+                value={WITHDRAW}
+              />
+            </Label>
+          </div>
+          <Field error={fieldErrors?.amount} label="Amount">
+            {(a11y) => (
+              <Input
+                key={amountInputKey}
+                {...a11y}
+                defaultValue={formData.amount}
+                max={isDepositing ? MAX_ADD : optimisticBalance}
+                min={isDepositing ? MIN_ADD : MIN_WITHDRAW}
+                name="amount"
+                placeholder="2000"
+                type="number"
+              />
+            )}
+          </Field>
+          <FormError message={formError} />
+          <StatusButton status={status} type="submit">
+            Complete transaction
+          </StatusButton>
+        </fetcher.Form>
+      </Card>
+    </div>
   );
 };
 

@@ -32,7 +32,7 @@ const VanTypeFilterRow = ({
       id={`${baseId}-van-filter-type-${type}`}
       label={type}
       labelClassName="capitalize"
-      onCheckedChange={handleCheckedChange}
+      onChange={handleCheckedChange}
     />
   );
 };
@@ -46,8 +46,8 @@ const VanTypeFilterSection = ({
   types,
   onToggle,
 }: VanTypeFilterSectionProps) => (
-  <div className="p-1">
-    <p className="px-2 py-1.5 font-medium text-sm">Van Types</p>
+  <fieldset className="grid gap-1 border-border border-b p-1 pb-3 sm:grid-cols-3 lg:grid-cols-1">
+    <legend className="px-2 py-1.5 font-medium text-sm">Van Types</legend>
     {VAN_TYPE_LOWERCASE.map((type) => (
       <VanTypeFilterRow
         baseId={baseId}
@@ -57,7 +57,7 @@ const VanTypeFilterSection = ({
         types={types}
       />
     ))}
-  </div>
+  </fieldset>
 );
 
 export { VanTypeFilterSection };
