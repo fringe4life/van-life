@@ -54,12 +54,13 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
     ? "No vans found matching your filters."
     : "There are no vans on our site.";
 
-  const renderVanCardProps = (van: VanModel) => ({
+  const renderVanCardProps = (van: VanModel, index: number) => ({
     action: (
       <div className="grid justify-end">
         <VanPrice van={van} />
       </div>
     ),
+    imageIndex: index,
     link: buildVanUrl({
       baseUrl: href("/vans/:vanSlug", {
         vanSlug: van.slug,

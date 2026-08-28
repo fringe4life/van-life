@@ -138,7 +138,7 @@ export function shouldRevalidate({
   return defaultShouldRevalidate;
 }
 
-const renderHostVanCardProps = (item: HostVanListItem) => {
+const renderHostVanCardProps = (item: HostVanListItem, index: number) => {
   const van = toVanCardModel(item);
   const pending = isPendingVan(item);
 
@@ -157,6 +157,7 @@ const renderHostVanCardProps = (item: HostVanListItem) => {
         </CustomLink>
       </p>
     ),
+    imageIndex: index,
     link: pending
       ? "#"
       : href("/host/vans/:vanSlug/:action?", {

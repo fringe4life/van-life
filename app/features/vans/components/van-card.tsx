@@ -1,8 +1,9 @@
 import { Badge } from "~/components/ui/badge";
 import { Card, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
-import { Image } from "~/features/image/component/image";
+import { ProgressiveImage } from "~/features/image/component/progressive-image";
 import { VAN_CARD_IMG_SIZES } from "~/features/image/img-constants";
 import { createWebPSrcSet } from "~/features/image/utils/create-optimized-src-set";
+import { listImagePriorityProps } from "~/features/image/utils/list-image-priority-props";
 import { CustomLink } from "~/features/navigation/components/custom-link";
 import type { VanCardProps } from "~/features/vans/types";
 import { toLowercaseVanType } from "~/features/vans/utils/validators";
@@ -14,6 +15,7 @@ const VanCard = ({
   van,
   link,
   action,
+  imageIndex = 0,
   linkCoversCard = true,
   state,
 }: VanCardProps) => {
@@ -36,14 +38,16 @@ const VanCard = ({
       >
         <CardHeader className="relative @min-md/card:col-start-1 @min-md/card:row-span-2">
           <VanBadge van={van} />
-          <Image
+          <ProgressiveImage
             alt={description}
             className="aspect-square w-full rounded-md"
             height="200"
+            key={imageUrl}
             sizes="(max-width: 300px) 250px, (max-width: 400px) 300px, 350px"
             src={imageUrl}
             srcSet={srcSet}
             width="200"
+            {...listImagePriorityProps(imageIndex)}
           />
         </CardHeader>
         <CardFooter className="@min-md/card:col-span-2 @min-md/card:col-start-2 @min-md/card:row-span-2 grid-cols-subgrid grid-rows-subgrid @min-md/card:content-center">

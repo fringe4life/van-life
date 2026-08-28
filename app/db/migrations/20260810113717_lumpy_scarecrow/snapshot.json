@@ -1111,7 +1111,7 @@
     {
       "columns": ["issuer", "account_id"],
       "nameExplicit": true,
-      "name": "account_issuer_accountId_uidx",
+      "name": "account_issuer_providerAccountId_uidx",
       "entityType": "uniques",
       "table": "account"
     },

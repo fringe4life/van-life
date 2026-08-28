@@ -23,7 +23,7 @@ type ActiveRental = Prettify<
   NonNullable<Awaited<ReturnType<typeof listActiveRentals>>["items"]>[number]
 >;
 
-const renderRentalVanCardProps = (rental: ActiveRental) => ({
+const renderRentalVanCardProps = (rental: ActiveRental, index: number) => ({
   action: (
     <div className="justify-self-end text-right">
       <CustomLink
@@ -38,6 +38,7 @@ const renderRentalVanCardProps = (rental: ActiveRental) => ({
       </CustomLink>
     </div>
   ),
+  imageIndex: index,
   link: href("/host/vans/:vanSlug/:action?", {
     vanSlug: rental.van.slug,
   }),

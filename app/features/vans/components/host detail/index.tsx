@@ -103,6 +103,7 @@ const VanDetailCardRoot = ({
                 alt={name}
                 className="aspect-square @min-md/detail:w-auto w-full rounded-sm"
                 decoding="sync"
+                fetchPriority="high"
                 height="300"
                 loading="eager"
                 pictureClassName="aspect-square"

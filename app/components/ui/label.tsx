@@ -1,8 +1,7 @@
-import type * as React from "react";
-
+import type { ComponentProps } from "react";
 import { cn } from "~/utils/utils";
 
-function Label({ className, ...props }: React.ComponentProps<"label">) {
+function Label({ className, ...props }: ComponentProps<"label">) {
   return (
     // biome-ignore lint/a11y/noLabelWithoutControl: primitive wrapper — htmlFor supplied by consumer
     <label

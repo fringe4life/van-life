@@ -1,19 +1,7 @@
-import { useEffect, useState } from "react";
-import {
-  DEFAULT_IMAGE_QUALITY,
-  PLACEHOLDER_IMAGE_WIDTH,
-} from "~/features/image/img-constants";
-import { createNewImageSizeWithAspectRatio } from "~/features/image/utils/create-new-image-size";
-import type { Maybe } from "~/types";
-import { canUseDOM } from "~/utils/can-use-dom";
 import { cn } from "~/utils/utils";
 
-/** The size of the image (string or number) */
 type Size = string | number;
 
-/**
- * Responsive art-direction source for the optional picture element.
- */
 interface ImageSource {
   media: string;
   sizes?: string;
@@ -21,133 +9,49 @@ interface ImageSource {
   type?: string;
 }
 
-/**
- * Extended props for the Image component, extending native img element props
- */
 interface ImgProps extends React.ComponentProps<"img"> {
-  /** The height of the image (string or number) */
   height: Size;
-  /** Additional CSS classes for the picture element */
   pictureClassName?: string;
-  /** Optional art-directed sources rendered before the fallback img */
   sources?: readonly ImageSource[];
-  /** The source URL of the image */
   src: string;
-  /** Optional srcSet for responsive images */
   srcSet?: string;
-  /** The width of the image (string or number) */
   width: Size;
 }
 
-/**
- * A progressive image loading component that displays a low-resolution placeholder
- * while the full-resolution image loads in the background.
- *
- * Features:
- * - Progressive loading with low-res placeholder
- * - Smooth opacity transition when full image loads
- * - Pulse animation and blur effect during loading
- * - Lazy loading and async decoding for performance
- * - SSR-safe with client-side hydration
- *
- * @param props - The component props
- * @param props.src - The source URL of the image
- * @param props.alt - Alt text for accessibility
- * @param props.className - Additional CSS classes for the img element
- * @param props.pictureClassName - Additional CSS classes for the picture element
- * @param props.sources - Optional media-specific source sets for art direction
- * @param props.rest - All other native img element props
- *
- * @example
- * ```tsx
- * <Image
- *   src="https://example.com/image.jpg"
- *   alt="Description"
- *   width={400}
- *   height={300}
- *   className="rounded-lg"
- *   classesForContainer="p-4"
- * />
- * ```
- *
- * @returns A React component that renders a progressively loading image
- */
 const Image = ({
   src,
   alt,
   className,
   pictureClassName = "",
   sources,
+  decoding = "async",
+  loading = "lazy",
   ...rest
-}: ImgProps) => {
-  /** Low-resolution placeholder image width constant */
-
-  /** Low-resolution placeholder image (20px width, square aspect ratio) with WebP format and optimized quality */
-  const lowRes = createNewImageSizeWithAspectRatio(
-    src,
-    PLACEHOLDER_IMAGE_WIDTH,
-    "1:1",
-    DEFAULT_IMAGE_QUALITY
-  );
-  /** State to track if the full-resolution image has loaded */
-  const [loaded, setLoaded] = useState(false);
-  /** State to store the full-resolution image source */
-  const [fullSrc, setFullSrc] = useState<Maybe<string>>(null);
-
-  /**
-   * Effect to load the full-resolution image in the background
-   * Only runs on the client side to avoid SSR issues
-   */
-  useEffect(() => {
-    if (!canUseDOM) {
-      return;
-    }
-
-    let isCancelled = false;
-    const img = new window.Image();
-    img.src = src;
-
-    img.onload = () => {
-      if (!isCancelled) {
-        setFullSrc(src);
-        setLoaded(true);
-      }
-    };
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [src]);
-
-  // Always render the lowRes image initially, swap to fullSrc after load
-  return (
-    <picture className={cn("block", pictureClassName)}>
-      {sources?.map(
-        ({ media, sizes: sourceSizes, srcSet: sourceSet, type }) => (
-          <source
-            key={`${media}-${sourceSet}`}
-            media={media}
-            sizes={sourceSizes}
-            srcSet={sourceSet}
-            type={type}
-          />
-        )
-      )}
-      {/** biome-ignore lint/correctness/useImageSize: passed in as {...rest} */}
-      <img
-        className={cn(
-          "h-full max-w-full bg-cover bg-no-repeat object-cover object-center align-middle text-none italic leading-0 decoration-0 transition-opacity duration-200 ease-in-out contain-strict",
-          !loaded && "animate-pulse blur-sm",
-          className
-        )}
-        decoding="async"
-        loading="lazy"
-        {...rest}
-        alt={alt}
-        src={fullSrc ?? lowRes}
+}: ImgProps) => (
+  <picture className={cn("block", pictureClassName)}>
+    {sources?.map(({ media, sizes: sourceSizes, srcSet: sourceSet, type }) => (
+      <source
+        key={`${media}-${sourceSet}`}
+        media={media}
+        sizes={sourceSizes}
+        srcSet={sourceSet}
+        type={type}
       />
-    </picture>
-  );
-};
+    ))}
+    {/** biome-ignore lint/correctness/useImageSize: passed in as {...rest} */}
+    <img
+      className={cn(
+        "h-full max-w-full bg-cover bg-no-repeat object-cover object-center align-middle text-none italic leading-0 decoration-0 transition-opacity duration-200 ease-in-out contain-strict",
+        className
+      )}
+      decoding={decoding}
+      loading={loading}
+      {...rest}
+      alt={alt}
+      src={src}
+    />
+  </picture>
+);
 
+export type { ImageSource, ImgProps };
 export { Image };

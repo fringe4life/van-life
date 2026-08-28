@@ -37,6 +37,9 @@ function Dialog({
       className={cn(dialogVariants({ className, variant }))}
       {...props}
       closedby={closedby}
+      // Native showModal / invokers set the `open` content attr before hydrate.
+      // React VDOM has no `open`; `open={false}` would slam a live modal shut.
+      suppressHydrationWarning
     />
   );
 }

@@ -24,7 +24,9 @@ export const HOST_VAN_DETAIL_IMG_SIZES = [200, 250, 300, 400] as const;
 // Image quality constants for better compression and performance
 export const DEFAULT_IMAGE_QUALITY = 50; // Optimized for better compression
 export const HIGH_QUALITY_IMAGE_QUALITY = 75; // For cases where higher quality is needed
-export const PLACEHOLDER_IMAGE_WIDTH = 20;
+
+/** First N list thumbs load eager with high fetch priority. */
+export const LIST_EAGER_IMAGE_COUNT = 2;
 
 // REGEXES
 

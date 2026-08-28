@@ -66,7 +66,10 @@ export default function VanDetail({
           <Image
             alt={description}
             className="aspect-square rounded-md"
+            decoding="sync"
+            fetchPriority="high"
             height="600"
+            loading="eager"
             sizes="(min-width: 1024px) 500px, (min-width: 768px) 400px, 300px"
             src={imageUrl}
             srcSet={srcSet}
