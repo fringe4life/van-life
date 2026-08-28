@@ -12,7 +12,9 @@ const VanPrice = ({ van: { price, discount } }: VanPriceProps) => {
   if (hasDiscount) {
     return (
       <div className="flex items-baseline gap-2">
-        <span className="text-neutral-500 line-through">{priceToDisplay}</span>
+        <span className="text-muted-foreground line-through">
+          {priceToDisplay}
+        </span>
         <span className="font-bold text-xl">
           {displayPrice(discountedPrice)}
         </span>

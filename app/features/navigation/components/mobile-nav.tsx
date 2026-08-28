@@ -1,23 +1,36 @@
-import { useState } from "react";
+import type { MouseEvent } from "react";
 import { GenericComponent } from "~/components/generic-component";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
+import { Dialog } from "~/components/ui/dialog";
 import type { Items } from "~/features/pagination/types";
 import type { NavItem as NavItemType } from "../types";
 import { HamburgerIcon } from "./hamburger-icon";
 import { NavItem } from "./nav-item";
 
+const MOBILE_NAV_DIALOG_ID = "mobile-nav-dialog";
+
 interface MobileNavProps extends Items<NavItemType> {}
-const renderMobileNavItemProps = (item: NavItemType, onClose: () => void) => {
+
+const closeMobileNavDialog = () => {
+  const dialog = document.getElementById(MOBILE_NAV_DIALOG_ID);
+
+  if (dialog instanceof HTMLDialogElement) {
+    dialog.close();
+  }
+};
+
+const withDialogClose =
+  (onClick?: (event: MouseEvent<HTMLAnchorElement>) => void) =>
+  (event: MouseEvent<HTMLAnchorElement>) => {
+    closeMobileNavDialog();
+    onClick?.(event);
+  };
+
+const renderMobileNavItemProps = (item: NavItemType) => {
   if (item.type === "link") {
     return {
       item: {
         ...item,
-        props: { ...item.props, onClick: onClose },
+        props: { ...item.props, onClick: withDialogClose(item.props.onClick) },
       },
     };
   }
@@ -25,56 +38,53 @@ const renderMobileNavItemProps = (item: NavItemType, onClose: () => void) => {
   return {
     item: {
       ...item,
-      props: { ...item.props, onClick: onClose },
+      props: { ...item.props, onClick: withDialogClose(item.props.onClick) },
     },
   };
 };
 
-const MobileNav = ({ items }: MobileNavProps) => {
-  const [open, setOpen] = useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const renderProps = (item: NavItemType) =>
-    renderMobileNavItemProps(item, handleClose);
-
-  return (
-    <Dialog onOpenChange={setOpen} open={open}>
-      <DialogTrigger
-        render={
-          <button
-            aria-label={open ? "Close navigation menu" : "Open navigation menu"}
-            className="relative z-50 cursor-pointer rounded p-1 transition-colors duration-250 hover:bg-orange-100 md:hidden"
-            type="button"
-          />
-        }
+const MobileNav = ({ items }: MobileNavProps) => (
+  <div className="group/hamburger mobile-nav md:hidden">
+    <button
+      aria-label="Open navigation menu"
+      className="cursor-pointer rounded p-1 transition-colors duration-250 hover:bg-orange-100"
+      command="show-modal"
+      commandfor={MOBILE_NAV_DIALOG_ID}
+      type="button"
+    >
+      <HamburgerIcon size={24} />
+    </button>
+    <Dialog
+      aria-labelledby="mobile-nav-title"
+      className="@container/mobile-nav group/mobile-nav flex-col items-center justify-center open:flex"
+      id={MOBILE_NAV_DIALOG_ID}
+      variant="fullscreen"
+    >
+      <button
+        aria-label="Close navigation menu"
+        className="absolute top-9 right-(--padding-inline) translate-x-[-100cqi] cursor-pointer rounded p-1 transition-[translate,color,background-color] duration-(--duration-dialog) ease-glide hover:bg-orange-100 group-open/mobile-nav:starting:translate-x-[-100cqi] group-open/mobile-nav:translate-x-0"
+        command="close"
+        commandfor={MOBILE_NAV_DIALOG_ID}
+        type="button"
       >
-        <HamburgerIcon isOpen={open} size={24} />
-      </DialogTrigger>
-
-      <DialogContent
-        className="fixed top-(--header-height) right-0 bottom-0 left-auto flex w-(--mobile-menu-width) max-w-none translate-x-0 translate-y-0 flex-col items-center justify-center rounded-none bg-white p-0 shadow-2xl ring-0 data-closed:animate-slide-out-right data-open:animate-slide-in-right"
-        overlayClassName="top-(--header-height) z-40 bg-black/60 data-closed:animate-overlay-fade-out data-open:animate-overlay-fade-in"
-        showCloseButton={false}
-      >
-        <DialogTitle className="sr-only">Navigation</DialogTitle>
-
-        <nav>
-          <GenericComponent
-            as="ul"
-            Component={NavItem}
-            className="flex flex-col items-center gap-6 text-lg"
-            emptyStateMessage="No nav items"
-            errorStateMessage="Something went wrong"
-            items={items}
-            renderProps={renderProps}
-          />
-        </nav>
-      </DialogContent>
+        <HamburgerIcon size={24} />
+      </button>
+      <h2 className="sr-only" id="mobile-nav-title">
+        Navigation
+      </h2>
+      <nav>
+        <GenericComponent
+          as="ul"
+          Component={NavItem}
+          className="flex flex-col items-center gap-6 text-lg"
+          emptyStateMessage="No nav items"
+          errorStateMessage="Something went wrong"
+          items={items}
+          renderProps={renderMobileNavItemProps}
+        />
+      </nav>
     </Dialog>
-  );
-};
+  </div>
+);
 
 export { MobileNav };

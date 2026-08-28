@@ -1,20 +1,20 @@
-import "~/lib/arktype.config";
-import { type } from "arktype";
+import { maxLength, object, pipe, regex, string } from "valibot";
 import { uuidv7Schema } from "~/dal/schemas.server";
 
 /**
- * Schema for validating URL slugs.
- * - Must be lowercase alphanumeric with hyphens
- * - Must be 1-70 characters
- * - Cannot start or end with hyphen
+ * URL slug: lowercase alphanumeric words joined by single hyphens, max 70 chars.
  */
-const slugSchema = type("/^[a-z0-9](?:[a-z0-9-]{0,68}[a-z0-9])?$/");
+const slugSchema = pipe(
+  string(),
+  regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Lowercase letters, numbers, hyphens"),
+  maxLength(70)
+);
 
 /**
  * Schema for renting a van (vanSlug, renterId).
  * hostId is derived server-side from the van record.
  */
-export const rentVanSchema = type({
+export const rentVanSchema = object({
   renterId: uuidv7Schema,
   vanSlug: slugSchema,
 });

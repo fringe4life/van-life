@@ -1,43 +1,53 @@
-import "~/lib/arktype.config";
-import { type } from "arktype";
+import {
+  decimal,
+  finite,
+  forward,
+  gtValue,
+  maxValue,
+  number,
+  object,
+  partialCheck,
+  picklist,
+  pipe,
+  string,
+  toNumber,
+} from "valibot";
 import { MAX_ADD, MIN_ADD, MIN_WITHDRAW } from "~/constants/constants";
 import { DEPOSIT, WITHDRAW } from "~/features/vans/constants/vans-constants";
 
-const moneyTransactionType = type.or(`"${DEPOSIT}"`, `"${WITHDRAW}"`);
+const parsedAmountSchema = pipe(
+  string(),
+  decimal(),
+  toNumber(),
+  number(),
+  finite(),
+  gtValue(0, "greater than 0"),
+  maxValue(MAX_ADD, `at most ${MAX_ADD}`)
+);
 
 /**
  * Money form: deposit/withdraw type + positive amount.
  * Persist absolute amounts; DAL signs WITHDRAW at read/aggregate time.
  */
-export const moneySchema = type({
-  amount: "string.numeric.parse",
-  type: moneyTransactionType,
-}).narrow((data, ctx) => {
-  if (data.amount <= 0) {
-    return ctx.reject({
-      actual: String(data.amount),
-      expected: "greater than 0",
-      path: ["amount"],
-    });
-  }
-
-  if (data.amount > MAX_ADD) {
-    return ctx.reject({
-      actual: String(data.amount),
-      expected: `at most ${MAX_ADD}`,
-      path: ["amount"],
-    });
-  }
-
-  const minAmount = data.type === DEPOSIT ? MIN_ADD : MIN_WITHDRAW;
-
-  if (data.amount < minAmount) {
-    return ctx.reject({
-      actual: String(data.amount),
-      expected: `at least ${minAmount}`,
-      path: ["amount"],
-    });
-  }
-
-  return true;
-});
+export const moneySchema = pipe(
+  object({
+    amount: parsedAmountSchema,
+    type: picklist([DEPOSIT, WITHDRAW]),
+  }),
+  forward(
+    partialCheck(
+      [["amount"], ["type"]],
+      (input) => input.type !== DEPOSIT || input.amount >= MIN_ADD,
+      `at least ${MIN_ADD}`
+    ),
+    ["amount"]
+  ),
+  forward(
+    partialCheck(
+      [["amount"], ["type"]],
+      (input) => input.type !== WITHDRAW || input.amount >= MIN_WITHDRAW,
+      `at least ${MIN_WITHDRAW}`
+    ),
+    ["amount"]
+  )
+);

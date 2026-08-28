@@ -26,6 +26,16 @@
       "linter": {
         "enabled": false
       }
+    },
+    {
+      "includes": ["app/features/navigation/components/mobile-nav.tsx"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noUnknownAttribute": "off"
+          }
+        }
+      }
     }
   ],
   "assist": {

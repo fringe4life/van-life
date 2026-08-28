@@ -19,17 +19,17 @@ const Layout = ({ loaderData }: Route.ComponentProps) => {
       <main className="col-start-2 col-end-3 row-start-2 mb-6">
         <Outlet />
       </main>
-      <footer className="col-span-full row-start-3 grid place-content-center bg-neutral-800 py-6.25 contain-strict">
+      <footer className="col-span-full row-start-3 grid place-content-center bg-surface-inverse py-6.25 contain-strict">
         {/* react-doctor-disable-next-line 
 				react-doctor/rendering-hydration-mismatch-time */}
         <p
-          className="text-center text-gray-400 text-sm uppercase"
+          className="text-center text-sm text-surface-inverse-foreground uppercase"
           suppressHydrationWarning
         >
           &copy;{new Date().getFullYear()} #vanlife
         </p>
         <a
-          className="wrap-break-word inline-block w-full text-center text-[.5rem] text-gray-400 xs:text-xs"
+          className="wrap-break-word inline-block w-full text-center text-[.5rem] text-surface-inverse-foreground xs:text-xs"
           href="https://www.flaticon.com/free-icons/camper-van"
           title="camper van icons"
         >

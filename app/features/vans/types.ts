@@ -29,6 +29,7 @@ export interface VanProps {
 export type VanCardProps = Prettify<
   VanProps & {
     action: React.ReactElement;
+    imageIndex?: number;
     link: string;
     linkCoversCard?: boolean;
     state?: Record<string, unknown>;

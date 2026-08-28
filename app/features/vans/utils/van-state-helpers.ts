@@ -25,7 +25,7 @@ function isVanNew(createdAt: VanModel["createdAt"]): boolean {
  * @param van - The van model
  * @returns The lowercase state string
  */
-function lowercaseVanState(van: VanModel): LowercaseVanState {
+export function lowercaseVanState(van: VanModel): LowercaseVanState {
   const isNew = isVanNew(van.createdAt);
 
   // Determine the state
@@ -39,20 +39,6 @@ function lowercaseVanState(van: VanModel): LowercaseVanState {
     return "sale";
   }
   return "available";
-}
-
-/**
- * Gets the lowercase van state with processing callback
- * @param van - The van model
- * @param processor - Callback to process the state (e.g., add data-* prefix)
- * @returns The processed state
- */
-export function lowercaseVanStateWithProcessor<T>(
-  van: VanModel,
-  processor: (state: LowercaseVanState) => T
-): T {
-  const state = lowercaseVanState(van);
-  return processor(state);
 }
 
 /**

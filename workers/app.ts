@@ -1,5 +1,3 @@
-// Must be first: Workers ban `new Function`; ArkType JIT must be jitless before any `type()`.
-import "~/lib/arktype.config";
 import { createRequestHandler, RouterContextProvider } from "react-router";
 import { createDb } from "~/db/client.server";
 import { cloudflareContext } from "~/features/middleware/contexts/cloudflare";

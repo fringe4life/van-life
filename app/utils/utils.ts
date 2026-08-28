@@ -1,2 +1,2 @@
-// biome-ignore lint/performance/noBarrelFile: shadcn way to do it
+// biome-ignore lint/performance/noBarrelFile: shared cn re-export
 export { cn } from "cnfast";

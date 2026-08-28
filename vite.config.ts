@@ -18,7 +18,7 @@ function bundleVisualizer(filename: string, title: string): RolldownPlugin {
     gzipSize: true,
     open: true,
     title,
-  }) as RolldownPlugin;
+  }) satisfies RolldownPlugin;
 }
 
 function environmentRolldownOptions(

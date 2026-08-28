@@ -26,9 +26,9 @@ import { DEPOSIT } from "~/features/vans/constants/vans-constants";
 import { badRequest } from "~/utils/errors/bad-request";
 import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import {
-  arkErrorsToFieldErrors,
-  validateArkType,
-} from "~/utils/errors/parse-arktype.server";
+  schemaErrorsToFieldErrors,
+  validateSchema,
+} from "~/utils/errors/parse-schema.server";
 import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/host";
 
@@ -61,11 +61,14 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 
   const formData = Object.fromEntries(await request.formData());
   const echoValues = pickFormValues(formData, MONEY_ECHO_FIELDS);
-  const validation = validateArkType(moneySchema, formData);
+  const validation = validateSchema(moneySchema, formData);
 
   if (!validation.success) {
     return badRequest({
-      fieldErrors: arkErrorsToFieldErrors(validation.errors, MONEY_FORM_FIELDS),
+      fieldErrors: schemaErrorsToFieldErrors(
+        validation.errors,
+        MONEY_FORM_FIELDS
+      ),
       formData: echoValues,
       ok: false,
     } satisfies HostWalletActionData);

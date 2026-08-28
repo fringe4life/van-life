@@ -54,12 +54,13 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
     ? "No vans found matching your filters."
     : "There are no vans on our site.";
 
-  const renderVanCardProps = (van: VanModel) => ({
+  const renderVanCardProps = (van: VanModel, index: number) => ({
     action: (
       <div className="grid justify-end">
         <VanPrice van={van} />
       </div>
     ),
+    imageIndex: index,
     link: buildVanUrl({
       baseUrl: href("/vans/:vanSlug", {
         vanSlug: van.slug,
@@ -75,29 +76,36 @@ const Vans = ({ loaderData }: Route.ComponentProps) => {
   });
 
   return (
-    <ViewTransition>
-      <SeoHead {...seo} />
-      <PendingUI
-        as="section"
-        className="grid h-full w-full! grid-rows-[min-content_min-content_1fr_min-content] gap-y-6 contain-content"
-      >
-        <VanHeader>Explore our van options</VanHeader>
-
-        <div className="grid grid-cols-[1fr_min-content] items-center gap-2">
+    <section className="grid h-full w-full! contain-content">
+      <div className="grid min-h-0 min-w-0 grid-rows-[min-content_1fr] gap-y-6 lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start lg:gap-x-8">
+        <div className="grid min-w-0 gap-y-6 lg:col-start-2 lg:row-start-1">
+          <VanHeader>Explore our van options</VanHeader>
           <SearchInput />
+        </div>
+        <div className="min-w-0 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-stretch">
           <VanFilters />
         </div>
-        <GenericComponent
-          Component={VanCard}
-          className="grid-max"
-          emptyStateMessage={emptyMessage}
-          errorStateMessage="Something went wrong"
-          items={vans}
-          renderProps={renderVanCardProps}
-        />
-        <Pagination items={vans} paginationMetadata={paginationMetadata} />
-      </PendingUI>
-    </ViewTransition>
+        <div className="h-full min-h-0 min-w-0 lg:col-start-2 lg:row-start-2">
+          <SeoHead {...seo} />
+          <ViewTransition>
+            <PendingUI className="grid h-full min-h-0 grid-rows-[1fr_min-content] gap-y-6">
+              <GenericComponent
+                Component={VanCard}
+                className="grid-max"
+                emptyStateMessage={emptyMessage}
+                errorStateMessage="Something went wrong"
+                items={vans}
+                renderProps={renderVanCardProps}
+              />
+              <Pagination
+                items={vans}
+                paginationMetadata={paginationMetadata}
+              />
+            </PendingUI>
+          </ViewTransition>
+        </div>
+      </div>
+    </section>
   );
 };
 export default Vans;

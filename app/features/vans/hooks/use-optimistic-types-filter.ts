@@ -12,7 +12,11 @@ const useOptimisticTypesFilter = (initialTypes: LowercaseVanType[]) => {
     addOptimisticType({ type });
   };
 
-  return [optimisticTypes, toggleType] as const;
+  const resetTypes = () => {
+    addOptimisticType({ type: "reset" });
+  };
+
+  return [optimisticTypes, toggleType, resetTypes] as const;
 };
 
 export { useOptimisticTypesFilter };

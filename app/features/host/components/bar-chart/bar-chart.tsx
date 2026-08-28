@@ -1,29 +1,49 @@
 /**
- * Recharts bar chart. Use `LazyBarChart` from `./lazy-bar-chart` so recharts is code-split via React.lazy().
+ * TanStack Charts bar chart. Use `LazyBarChart` from `./lazy-bar-chart` so
+ * `@tanstack/charts` is code-split via React.lazy().
  */
 // react-doctor-disable-next-line react-doctor/prefer-dynamic-import
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { barY, defineChart } from "@tanstack/charts";
+import { Chart } from "@tanstack/charts/react";
+import { scaleBand } from "@tanstack/charts/scales/band";
+import { scaleLinear } from "@tanstack/charts/scales/linear";
+import { tooltip } from "@tanstack/charts/tooltip";
 import type { Data, DataArray } from "~/features/host/types";
 
-const BarChartComponent = <T extends Data<DataArray>>({ data }: T) => (
-  <div className="v-host-chart h-full w-full text-orange-400">
-    <BarChart data={data} height="100%" responsive width="100%">
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="amount" fill="currentColor" />
-    </BarChart>
-  </div>
-);
+/** Matches `--chart-height` in `app.css`. Scene size is a number, not CSS %. */
+const CHART_HEIGHT_PX = 350;
+
+const BarChartComponent = <T extends Data<DataArray>>({ data }: T) => {
+  const definition = defineChart({
+    marks: [
+      barY(data, {
+        fill: "var(--color-orange-400)",
+        x: "name",
+        y: "amount",
+      }),
+    ],
+    scales: {
+      x: {
+        scale: () => scaleBand<string>().padding(0.18),
+      },
+      y: {
+        grid: true,
+        nice: true,
+        scale: scaleLinear,
+      },
+    },
+    tooltip,
+  });
+
+  return (
+    <div className="v-host-chart h-full w-full">
+      <Chart
+        ariaLabel="Amount by period"
+        definition={definition}
+        height={CHART_HEIGHT_PX}
+      />
+    </div>
+  );
+};
 
 export default BarChartComponent;

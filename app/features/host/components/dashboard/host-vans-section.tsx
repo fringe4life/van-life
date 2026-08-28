@@ -6,8 +6,9 @@ import { PaginatedItemsSkeleton } from "~/features/pagination/components/paginat
 import { VanCard } from "~/features/vans/components/van-card";
 import { VanCardSkeleton } from "~/features/vans/components/van-card-skeleton";
 
-const renderHostVanCardProps = (item: VanModel) => ({
+const renderHostVanCardProps = (item: VanModel, index: number) => ({
   action: <p className="justify-self-end text-right">Edit</p>,
+  imageIndex: index,
   link: href("/host/vans/:vanSlug/:action?", {
     action: "edit",
     vanSlug: item.slug,

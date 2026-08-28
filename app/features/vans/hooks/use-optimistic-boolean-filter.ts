@@ -2,12 +2,20 @@ import { useOptimistic } from "react";
 import { booleanFilterReducer } from "./boolean-filter-reducer";
 
 const useOptimisticBooleanFilter = (initialValue: boolean) => {
-  const [optimisticValue, toggleOptimistic] = useOptimistic(
+  const [optimisticValue, addOptimistic] = useOptimistic(
     initialValue,
     booleanFilterReducer
   );
 
-  return [optimisticValue, toggleOptimistic] as const;
+  const toggleOptimistic = () => {
+    addOptimistic({ type: "toggle" });
+  };
+
+  const resetOptimistic = () => {
+    addOptimistic({ type: "reset" });
+  };
+
+  return [optimisticValue, toggleOptimistic, resetOptimistic] as const;
 };
 
 export { useOptimisticBooleanFilter };

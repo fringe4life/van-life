@@ -12,10 +12,6 @@
 
 /* ─── CONFIGURATION ───────────────────────────────────────────────────────── */
 /* Van state custom variants for cleaner component styling */
-@custom-variant van-new (&[data-slot*="van-card-new"]);
-@custom-variant van-sale (&[data-slot*="van-card-sale"]);
-@custom-variant van-repair (&[data-slot*="van-card-repair"]);
-@custom-variant van-available (&[data-slot*="van-card-available"]);
 @custom-variant error (&[data-error="true"]);
 @custom-variant link-covers-card (&[data-link-covers-card="true"]);
 @custom-variant unsuccessful (&[data-unsuccessful="true"]);
@@ -30,6 +26,8 @@
   --container-lg: 36rem;
 
   --container-2xl: 44rem;
+  --container-content: 64rem;
+  --container-shell: 80rem;
 
   --breakpoint-xs: 26rem;
 
@@ -44,8 +42,6 @@
   --color-van-new: oklch(30% 0 0); /* even darker gray for better visibility */
   --color-van-sale: oklch(40% 0.3 142); /* more saturated green */
   --color-van-repair: oklch(60% 0.3 85); /* more saturated yellow */
-
-  --container-layout: min(var(--container-5xl), 100svw - var(--padding-inline));
 
   /* Responsive padding inline - updates automatically */
   --padding-inline: 0.75rem; /* Mobile default */
@@ -101,6 +97,26 @@
     1.001 100%
   );
 
+  --ease-glide: linear(
+    0,
+    0.013 1%,
+    0.051 2.2%,
+    0.404 9.8%,
+    0.51 12.6%,
+    0.602 15.5%,
+    0.683 18.7%,
+    0.754 22.2%,
+    0.813 26%,
+    0.861 30.2%,
+    0.9 34.8%,
+    0.931 40%,
+    0.972 52.7%,
+    0.992 70.2%,
+    1
+  );
+
+  --duration-dialog: 500ms;
+
   /* Chart dimensions */
   --chart-height: 350px;
 
@@ -132,43 +148,67 @@
 
   --chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
 
-  /* Mobile nav dialog animations — spring on entry, plain ease-in on exit */
-  --animate-slide-in-right: --slide-x 500ms var(--ease-spring-soft) both;
-  --animate-slide-out-right: --slide-x 250ms ease-in both;
-  --animate-overlay-fade-in:
-    --fade 300ms ease both, --bg-opacity 300ms ease both;
-  --animate-overlay-fade-out:
-    --fade 300ms ease reverse both, --bg-opacity 300ms ease reverse both;
-
-  /* shadcn semantic tokens (light only) */
-  --color-background: hsl(0 0% 100%);
-  --color-foreground: hsl(0 0% 3.9%);
-  --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(0 0% 3.9%);
-  --color-popover: hsl(0 0% 100%);
-  --color-popover-foreground: hsl(0 0% 3.9%);
-  --color-primary: hsl(0 0% 9%);
-  --color-primary-foreground: hsl(0 0% 98%);
-  --color-secondary: hsl(0 0% 96.1%);
-  --color-secondary-foreground: hsl(0 0% 9%);
-  --color-muted: hsl(0 0% 96.1%);
-  --color-muted-foreground: hsl(0 0% 45.1%);
-  --color-accent: hsl(0 0% 96.1%);
-  --color-accent-foreground: hsl(0 0% 9%);
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(0 0% 98%);
-  --color-border: hsl(0 0% 89.8%);
-  --color-input: hsl(0 0% 89.8%);
-  --color-ring: hsl(0 0% 3.9%);
-  --color-chart-1: hsl(12 76% 61%);
-  --color-chart-2: hsl(173 58% 39%);
-  --color-chart-3: hsl(197 37% 24%);
-  --color-chart-4: hsl(43 74% 66%);
-  --color-chart-5: hsl(27 87% 67%);
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.625rem;
   --radius-xl: 0.75rem;
+
+  /* Semantic color roles — light theme foundation */
+  --color-background: oklch(98% 0.012 75);
+  --color-foreground: var(--color-neutral-900);
+
+  --color-surface: oklch(97.7% 0.019 74);
+  --color-surface-muted: var(--color-orange-100);
+  --color-surface-accent: var(--color-orange-200);
+  --color-surface-inverse: oklch(27.4% 0 0);
+  --color-surface-inverse-foreground: oklch(82% 0 0);
+
+  --color-card: oklch(100% 0 0);
+  --color-card-foreground: var(--color-foreground);
+  --color-popover: oklch(100% 0 0);
+  --color-popover-foreground: var(--color-foreground);
+
+  /* Form controls use a visible neutral gray so they remain distinct on cards. */
+  --color-input-background: oklch(92.2% 0 0);
+  --color-input-foreground: var(--color-foreground);
+
+  /* White text clears 4.5:1 on this darker brand orange. */
+  --color-primary: oklch(52% 0.16 38);
+  --color-primary-foreground: oklch(100% 0 0);
+
+  --color-secondary: var(--color-neutral-900);
+  --color-secondary-foreground: oklch(100% 0 0);
+  --color-muted: var(--color-surface-muted);
+  --color-muted-foreground: var(--color-neutral-600);
+  --color-accent: var(--color-surface-accent);
+  --color-accent-foreground: var(--color-foreground);
+
+  /* Strong feedback colors are paired with white foreground text. */
+  --color-destructive: oklch(50% 0.18 25);
+  --color-destructive-foreground: oklch(100% 0 0);
+  --color-success: oklch(50% 0.14 150);
+  --color-success-foreground: oklch(100% 0 0);
+  --color-warning: oklch(52% 0.12 85);
+  --color-warning-foreground: oklch(100% 0 0);
+
+  /* Domain statuses stay distinct from generic feedback roles. */
+  --color-status-new: var(--color-van-new);
+  --color-status-sale: var(--color-van-sale);
+  --color-status-repair: var(--color-van-repair);
+
+  --color-border: oklch(20.02% 0 0 / 0.15);
+  --color-border-strong: oklch(42.02% 0 0 / 0.45);
+  --color-input: oklch(42.02% 0 0 / 0.8);
+  --color-ring: var(--color-primary);
+
+  /* Decorative accents keep the original, lighter orange. */
+  --color-brand-decorative: var(--color-orange-400);
+  --color-rating: var(--color-orange-400);
+  --color-chart-1: var(--color-brand-decorative);
+  --color-chart-2: var(--color-success);
+  --color-chart-3: oklch(37% 0.08 220);
+  --color-chart-4: var(--color-warning);
+  --color-chart-5: var(--color-orange-600);
 }
 
 /* ─── BASE STYLES ────────────────────────────────────────────────────────── */
@@ -199,6 +239,12 @@
     scrollbar-gutter: stable;
     scrollbar-width: thin;
   }
+}
+
+/* Native popover UA uses inset:0; margin:auto — fights CSS anchor positioning */
+[popover] {
+  inset: unset;
+  margin: unset;
 }
 
 /* ─── LAYOUT ─────────────────────────────────────────────────────────────── */
@@ -514,48 +560,4 @@
 .scroll-md:nth-child(2n):nth-child(n + 6),
 .scroll-lg:nth-child(2n):nth-child(n + 8) {
   --slide-x-from: 100vh;
-}
-
-/* ─── COMPONENT STYLES ───────────────────────────────────────────────────── */
-/* SIDEBAR DIALOG
-   Entry: panel slides in from right via @starting-style (fires on showPopover).
-   Exit:  panel slides out to right; `allow-discrete` delays display:none on
-          both the popover and ::backdrop until the 300 ms transition finishes.
-*/
-
-/* Keep popover visible during exit so the slide-out can play */
-.sidebar-dialog {
-  transition: display 300ms allow-discrete;
-}
-
-/* Panel: off-screen right by default, slides to 0 when popover is open */
-.sidebar-dialog [data-sidebar-panel] {
-  translate: 100% 0;
-  transition: translate 300ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-.sidebar-dialog:popover-open [data-sidebar-panel] {
-  translate: 0 0;
-}
-/* No-flash guard: ensure panel starts off-screen on the very first open */
-@starting-style {
-  .sidebar-dialog:popover-open [data-sidebar-panel] {
-    translate: 100% 0;
-  }
-}
-
-/* Backdrop: fades in when open, fades out on close */
-.sidebar-dialog::backdrop {
-  background-color: rgb(0 0 0 / 0.4);
-  opacity: 0;
-  transition:
-    opacity 300ms,
-    display 300ms allow-discrete;
-}
-.sidebar-dialog:popover-open::backdrop {
-  opacity: 1;
-}
-@starting-style {
-  .sidebar-dialog:popover-open::backdrop {
-    opacity: 0;
-  }
 }

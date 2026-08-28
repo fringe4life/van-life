@@ -12,9 +12,9 @@ export const ABOUT_IMG =
 export const ABOUT_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
 
 // Separate sizes for mobile (portrait) and desktop (landscape) aspect ratios
-// Mobile sizes go up to 790w, desktop starts at 800w to avoid overlap
+// Mobile sizes cover the portrait hero; desktop includes the wider shell and a DPR candidate.
 export const HOME_MOBILE_IMG_SIZES = [300, 450, 600, 750] as const;
-export const HOME_DESKTOP_IMG_SIZES = [800, 1000] as const;
+export const HOME_DESKTOP_IMG_SIZES = [800, 1000, 1200, 1400] as const;
 
 export const HOME_IMG_URL =
   "https://images.unsplash.com/photo-1671783181591-55f8e18fbb21?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2FtcGVydmFuJTIwc2l0ZXxlbnwwfDB8MHx8fDI%3D";
@@ -24,7 +24,9 @@ export const HOST_VAN_DETAIL_IMG_SIZES = [200, 250, 300, 400] as const;
 // Image quality constants for better compression and performance
 export const DEFAULT_IMAGE_QUALITY = 50; // Optimized for better compression
 export const HIGH_QUALITY_IMAGE_QUALITY = 75; // For cases where higher quality is needed
-export const PLACEHOLDER_IMAGE_WIDTH = 20;
+
+/** First N list thumbs load eager with high fetch priority. */
+export const LIST_EAGER_IMAGE_COUNT = 2;
 
 // REGEXES
 

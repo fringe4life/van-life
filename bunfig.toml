@@ -1,3 +1,4 @@
 [install]
+linker = "isolated"
 minimumReleaseAge = 259200
-minimumReleaseAgeExceptions=["miniflare"]
+minimumReleaseAgeExcludes = ["miniflare", "@tanstack/charts"]

@@ -8,18 +8,12 @@ import { pickFormValues } from "~/components/form/pick-form-values";
 import { readActionFormData } from "~/components/form/read-action-form-data";
 import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
 import { StatusButton } from "~/components/status-button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
+import { AUTH_VT, AuthCard } from "~/features/auth/components/auth-card";
 import { loginSchema } from "~/features/auth/schemas.server";
 import { LOGIN_ECHO_FIELDS, LOGIN_FORM_FIELDS } from "~/features/auth/types";
 import { hasAuthContext } from "~/features/middleware/contexts/has-auth";
@@ -32,9 +26,9 @@ import { CustomLink } from "~/features/navigation/components/custom-link";
 import { auth } from "~/lib/auth.server";
 import { badRequest } from "~/utils/errors/bad-request";
 import {
-  arkErrorsToFieldErrors,
-  validateArkType,
-} from "~/utils/errors/parse-arktype.server";
+  schemaErrorsToFieldErrors,
+  validateSchema,
+} from "~/utils/errors/parse-schema.server";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import { cn } from "~/utils/utils";
 import type { Route } from "./+types/login";
@@ -63,11 +57,14 @@ export async function action({ request }: Route.ActionArgs) {
   const formData = Object.fromEntries(await request.formData());
   const echoValues = pickFormValues(formData, LOGIN_ECHO_FIELDS);
 
-  const validation = validateArkType(loginSchema, formData);
+  const validation = validateSchema(loginSchema, formData);
 
   if (!validation.success) {
     return badRequest({
-      fieldErrors: arkErrorsToFieldErrors(validation.errors, LOGIN_FORM_FIELDS),
+      fieldErrors: schemaErrorsToFieldErrors(
+        validation.errors,
+        LOGIN_FORM_FIELDS
+      ),
       formData: echoValues,
       ok: false,
     } satisfies LoginActionData);
@@ -126,90 +123,78 @@ export default function Login({ loaderData }: Route.ComponentProps) {
         content="Sign in to your Van Life account to manage your van rentals and bookings"
         name="description"
       />
-      <Card
-        className="grid gap-y-4"
-        style={{ viewTransitionName: "auth-card" }}
-      >
-        <CardHeader>
-          <CardTitle style={{ viewTransitionName: "auth-title" }}>
-            Sign into your account
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <fetcher.Form
-            className={cn(
-              "grid items-center gap-4",
-              isSubmitting && "opacity-75"
-            )}
-            method="POST"
-            onSubmit={handleSubmit}
-          >
-            <fieldset
-              className="grid items-center gap-4"
-              disabled={isSubmitting}
-            >
-              <input
-                name="redirectTo"
-                type="hidden"
-                value={loaderData.redirectTo}
-              />
-              <Field
-                error={fieldErrors?.email}
-                label="Email"
-                labelProps={{
-                  style: { viewTransitionName: "auth-email-label" },
-                }}
-              >
-                {(a11y) => (
-                  <Input
-                    {...a11y}
-                    autoFocus
-                    defaultValue={formData.email}
-                    name="email"
-                    placeholder="john.doe@email.com"
-                    style={{ viewTransitionName: "auth-email" }}
-                    type="email"
-                  />
-                )}
-              </Field>
-              <Field
-                error={fieldErrors?.password}
-                label="Password"
-                labelProps={{
-                  style: { viewTransitionName: "auth-password-label" },
-                }}
-              >
-                {(a11y) => (
-                  <Input
-                    {...a11y}
-                    defaultValue=""
-                    name="password"
-                    placeholder="password"
-                    style={{ viewTransitionName: "auth-password" }}
-                    type="password"
-                  />
-                )}
-              </Field>
-              <FormError message={formError} />
-              <StatusButton
-                status={status}
-                style={{ viewTransitionName: "auth-submit" }}
-                type="submit"
-              >
-                Sign in
-              </StatusButton>
-            </fieldset>
-          </fetcher.Form>
-        </CardContent>
-        <CardFooter>
-          <p style={{ viewTransitionName: "auth-footer" }}>
+      <AuthCard
+        footer={
+          <>
             <span>Don't have an account?</span>{" "}
             <CustomLink className="text-orange-400" to={href("/signup")}>
               Create one now
             </CustomLink>
-          </p>
-        </CardFooter>
-      </Card>
+          </>
+        }
+        title="Sign into your account"
+      >
+        <fetcher.Form
+          className={cn(
+            "grid items-center gap-4",
+            isSubmitting && "opacity-75"
+          )}
+          method="POST"
+          onSubmit={handleSubmit}
+        >
+          <fieldset className="grid items-center gap-4" disabled={isSubmitting}>
+            <input
+              name="redirectTo"
+              type="hidden"
+              value={loaderData.redirectTo}
+            />
+            <Field
+              error={fieldErrors?.email}
+              label="Email"
+              labelProps={{
+                style: { viewTransitionName: AUTH_VT.emailLabel },
+              }}
+            >
+              {(a11y) => (
+                <Input
+                  {...a11y}
+                  defaultValue={formData.email}
+                  name="email"
+                  placeholder="john.doe@email.com"
+                  style={{ viewTransitionName: AUTH_VT.email }}
+                  type="email"
+                />
+              )}
+            </Field>
+            <Field
+              error={fieldErrors?.password}
+              label="Password"
+              labelProps={{
+                style: { viewTransitionName: AUTH_VT.passwordLabel },
+              }}
+            >
+              {(a11y) => (
+                <Input
+                  {...a11y}
+                  defaultValue=""
+                  name="password"
+                  placeholder="password"
+                  style={{ viewTransitionName: AUTH_VT.password }}
+                  type="password"
+                />
+              )}
+            </Field>
+            <FormError message={formError} />
+            <StatusButton
+              status={status}
+              style={{ viewTransitionName: AUTH_VT.submit }}
+              type="submit"
+            >
+              Sign in
+            </StatusButton>
+          </fieldset>
+        </fetcher.Form>
+      </AuthCard>
     </>
   );
 }

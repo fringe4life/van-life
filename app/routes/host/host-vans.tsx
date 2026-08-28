@@ -50,9 +50,9 @@ import { toVanFormValues } from "~/features/vans/utils/to-van-form-values";
 import { hostPaginationParsers } from "~/lib/parsers";
 import { badRequest } from "~/utils/errors/bad-request";
 import {
-  arkErrorsToFieldErrors,
-  validateArkType,
-} from "~/utils/errors/parse-arktype.server";
+  schemaErrorsToFieldErrors,
+  validateSchema,
+} from "~/utils/errors/parse-schema.server";
 import type { Route } from "./+types/host-vans";
 
 interface HostVansActionSuccess {
@@ -87,11 +87,14 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   const formData = Object.fromEntries(rawFormData);
   const formValues = toVanFormValues(formData);
 
-  const validation = validateArkType(addVanSchema, formData);
+  const validation = validateSchema(addVanSchema, formData);
 
   if (!validation.success) {
     return badRequest({
-      fieldErrors: arkErrorsToFieldErrors(validation.errors, VAN_FORM_FIELDS),
+      fieldErrors: schemaErrorsToFieldErrors(
+        validation.errors,
+        VAN_FORM_FIELDS
+      ),
       formData: formValues,
       ok: false,
     } satisfies HostVansActionData);
@@ -135,13 +138,13 @@ export function shouldRevalidate({
   return defaultShouldRevalidate;
 }
 
-const renderHostVanCardProps = (item: HostVanListItem) => {
+const renderHostVanCardProps = (item: HostVanListItem, index: number) => {
   const van = toVanCardModel(item);
   const pending = isPendingVan(item);
 
   return {
     action: pending ? (
-      <p className="text-right text-neutral-500 text-sm italic">Saving…</p>
+      <p className="text-right text-muted-foreground text-sm italic">Saving…</p>
     ) : (
       <p className="text-right">
         <CustomLink
@@ -154,6 +157,7 @@ const renderHostVanCardProps = (item: HostVanListItem) => {
         </CustomLink>
       </p>
     ),
+    imageIndex: index,
     link: pending
       ? "#"
       : href("/host/vans/:vanSlug/:action?", {
@@ -219,9 +223,6 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
         name="description"
       />
       <section>
-        <h2 className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl">
-          Add Van
-        </h2>
         <Activity mode={onFirstPage ? "visible" : "hidden"}>
           <VanForm
             fetcherState={fetcher.state}
@@ -244,7 +245,7 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
       </section>
       <PendingUI
         as="section"
-        className="grid grid-rows-[min-content_1fr_min-content] contain-content"
+        className="mt-6 grid grid-rows-[min-content_1fr_min-content] contain-content"
       >
         <VanHeader>Your listed vans</VanHeader>
         <GenericComponent<HostVanListItem, VanCardProps>

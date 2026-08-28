@@ -21,13 +21,14 @@ import {
   toLowercaseVanType,
   validateLowercaseVanType,
 } from "~/features/vans/utils/validators";
-import { isVanAvailable } from "~/features/vans/utils/van-state-helpers";
-import { withVanCardStyles } from "~/features/vans/utils/with-van-card-styles";
+import {
+  isVanAvailable,
+  lowercaseVanState,
+} from "~/features/vans/utils/van-state-helpers";
 import { cn } from "~/utils/utils";
 import { VanBadge } from "./van-badge";
+import { vanCard } from "./van-card-recipe";
 import { VanPrice } from "./van-price";
-
-const StyledCard = withVanCardStyles(Card);
 
 interface VanDetailProps {
   van: VanModel;
@@ -52,16 +53,23 @@ export default function VanDetail({
 
   return (
     <div className="@container/card-full contain-content">
-      <StyledCard
-        className="grid @min-xl/card-full:grid-cols-2 @min-xl/card-full:grid-rows-[auto_auto_1fr] @max-xl/card-full:gap-x-4 @min-xl/card-full:gap-x-4 gap-y-2"
-        van={van}
+      <Card
+        className={vanCard({
+          className:
+            "grid @min-xl/card-full:grid-cols-2 @min-xl/card-full:grid-rows-[auto_auto_1fr] @max-xl/card-full:gap-x-4 @min-xl/card-full:gap-x-4 gap-y-2",
+          state: lowercaseVanState(van),
+        })}
+        style={{ viewTransitionName: `card-${van.id}` }}
       >
         <CardHeader className="relative @min-xl/card-full:col-span-1 @min-xl/card-full:row-span-3 row-span-1">
           <VanBadge van={van} />
           <Image
             alt={description}
             className="aspect-square rounded-md"
+            decoding="sync"
+            fetchPriority="high"
             height="600"
+            loading="eager"
             sizes="(min-width: 1024px) 500px, (min-width: 768px) 400px, 300px"
             src={imageUrl}
             srcSet={srcSet}
@@ -114,7 +122,7 @@ export default function VanDetail({
             {rentLabel}
           </CustomLink>
         </CardFooter>
-      </StyledCard>
+      </Card>
     </div>
   );
 }

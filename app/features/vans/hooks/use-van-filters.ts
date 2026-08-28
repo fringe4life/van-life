@@ -1,4 +1,4 @@
-import { useQueryStates } from "nuqs";
+import { defaultRateLimit, useQueryStates } from "nuqs";
 import { startTransition, useId } from "react";
 import {
   DEFAULT_CURSOR,
@@ -28,12 +28,18 @@ const useVanFilters = () => {
   const { types, excludeInRepair, onlyOnSale } = urlState;
   const validTypes = toValidTypes(types);
 
-  const [optimisticTypes, toggleOptimisticType] =
+  const [optimisticTypes, toggleOptimisticType, resetOptimisticTypes] =
     useOptimisticTypesFilter(validTypes);
-  const [optimisticExcludeInRepair, toggleOptimisticExcludeInRepair] =
-    useOptimisticBooleanFilter(excludeInRepair ?? false);
-  const [optimisticOnlyOnSale, toggleOptimisticOnlyOnSale] =
-    useOptimisticBooleanFilter(onlyOnSale ?? false);
+  const [
+    optimisticExcludeInRepair,
+    toggleOptimisticExcludeInRepair,
+    resetOptimisticExcludeInRepair,
+  ] = useOptimisticBooleanFilter(excludeInRepair ?? false);
+  const [
+    optimisticOnlyOnSale,
+    toggleOptimisticOnlyOnSale,
+    resetOptimisticOnlyOnSale,
+  ] = useOptimisticBooleanFilter(onlyOnSale ?? false);
 
   const optimisticByKey = {
     excludeInRepair: optimisticExcludeInRepair,
@@ -89,9 +95,25 @@ const useVanFilters = () => {
     const current = getCurrentState();
     const next: VanFilterUrlState = { ...current, [key]: checked };
 
-    commitChange(next, { [key]: checked }, () =>
-      toggleOptimisticByKey[key]({ type: "toggle" })
-    );
+    commitChange(next, { [key]: checked }, () => toggleOptimisticByKey[key]());
+  };
+
+  const clearFilters = () => {
+    startTransition(async () => {
+      resetOptimisticTypes();
+      resetOptimisticExcludeInRepair();
+      resetOptimisticOnlyOnSale();
+      await setUrlState(
+        {
+          cursor: DEFAULT_CURSOR,
+          direction: DEFAULT_DIRECTION,
+          excludeInRepair: false,
+          onlyOnSale: false,
+          types: [],
+        },
+        { limitUrlUpdates: defaultRateLimit }
+      );
+    });
   };
 
   const stateFacets = VAN_STATE_FILTERS.map(({ key, label }) => ({
@@ -110,6 +132,7 @@ const useVanFilters = () => {
   return {
     badgeCount,
     baseId,
+    clearFilters,
     optimisticTypes,
     setStateFilter,
     stateFacets,
