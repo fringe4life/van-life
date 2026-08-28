@@ -23,7 +23,7 @@ Named imports from `"lucide-react"` only:
 
 **Not lucide:** [`app/features/navigation/components/hamburger-icon.tsx`](../app/features/navigation/components/hamburger-icon.tsx) — two `<line>`s, Tailwind `transform-view` (`transform-box: view-box`), `origin-center`, `group-has-open` translate+rotate to X. Lucide `Menu` / `X` cannot do independent bar morph without custom SVG (see below).
 
-**Not icons:** [`public/rvMask.min.svg`](../public/rvMask.min.svg) (~58 KB SVGO’d mask, `md:mask-[url(/rvMask.min.svg)]` on home) and [`public/cloud-5.svg`](../public/cloud-5.svg) (~1.5 KB, potrace metadata + filled path, about-page mask). Illustrations / masks, not 24×24 stroke UI icons. An icon pack will never replace them.
+**Not icons:** [`public/rvMask.min.svg`](../public/rvMask.min.svg) (~58 KB SVGO’d mask, `md:mask-[url(/rvMask.min.svg)]` on home) and [`public/cloud-5.svg`](../public/cloud-5.svg) (~1.2 KB, `viewBox` + one minified path, about-page mask). Illustrations / masks, not 24×24 stroke UI icons. An icon pack will never replace them.
 
 ---
 
@@ -144,7 +144,7 @@ Typical **used-icon** payload: small SVG path data + one React wrapper (`createE
 Different problem from icon-grid stroke icons.
 
 - **`rvMask.min.svg`:** ~58 KB in `public/` (was ~181 KB editor export: `enable-background`, `xml:space="preserve"`, high-precision decimals). SVGO got it; home CSS mask fetches this file.
-- **`cloud-5.svg`:** ~1.5 KB, `metadata` “Created by potrace 1.15”, `preserveAspectRatio`, filled `#000000` path, `translate`+`scale(0.100000,-0.100000)`. Tiny vs rvMask; still illustration, not a 24×24 icon.
+- **`cloud-5.svg`:** ~1.2 KB in `public/` — `viewBox="0 0 1280 717"`, single transformed/minified `<path>` (no potrace `<metadata>`, no `preserveAspectRatio`, no `<g translate/scale>`). Tiny vs rvMask; still illustration, not a 24×24 icon.
 
 Why SVG files bloat ([SVGO](https://github.com/svg/svgo) `preset-default`): editor metadata (`removeMetadata`, `removeEditorsNSData`, `removeDoctype`, `removeComments`), unused groups (`collapseGroups`, `removeEmptyContainers`), extra precision (`cleanupNumericValues`, `convertPathData`), unused IDs, hidden elems. Inkscape/Illustrator namespaces. Embedded rasters (`<image>`) if present. Path **count** and **decimal places** dominate.
 
