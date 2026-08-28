@@ -43,7 +43,7 @@ const About = ({ loaderData }: Route.ComponentProps) => {
       <SeoHead {...loaderData.seo} />
       <Image
         alt="a couple enjoying their adventure"
-        className="xs:mask-[url(/app/assets/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:about-image]"
+        className="xs:mask-[url(/cloud-5.svg)] mask-cover mask-no-repeat mask-center aspect-video [view-transition-name:about-image]"
         decoding="sync"
         fetchPriority="high"
         height="890"
