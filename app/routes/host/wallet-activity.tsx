@@ -7,7 +7,7 @@ import {
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
 import { LazyBarChart } from "~/features/host/components/bar-chart/lazy-bar-chart";
-import { IncomeListSkeleton } from "~/features/host/components/income-list-skeleton";
+import { TransactionListSkeleton } from "~/features/host/components/transaction/transaction-list-skeleton";
 import type { WalletTransactionProps } from "~/features/host/components/transaction/transaction-types";
 import { WalletTransaction } from "~/features/host/components/transaction/wallet-transaction";
 import { loadTransfersPage } from "~/features/host/services/transfers.server";
@@ -86,7 +86,7 @@ const HostWalletActivity = ({ loaderData }: Route.ComponentProps) => {
         className="grid-max v-host-list mt-6"
         emptyStateMessage="Add or withdraw funds and your wallet movements will appear here."
         errorStateMessage="Something went wrong"
-        fallback={<IncomeListSkeleton />}
+        fallback={<TransactionListSkeleton />}
         renderProps={renderTransferItemProps}
         resolve={pagePromise}
       />

@@ -832,12 +832,12 @@ const BarChartComponent = lazy(() => import("./bar-chart"));
 
 ### Deferred loader streaming
 
-Host rental-activity / reviews / wallet-activity return critical summary data immediately and defer paginated lists via promises. UI wraps with `DeferredAwait` / `DeferredPaginated` + route skeletons (`IncomeListSkeleton`, `ReviewListSkeleton`, `PaginatedItemsSkeleton`).
+Host rental-activity / reviews / wallet-activity return critical summary data immediately and defer paginated lists via promises. UI wraps with `DeferredAwait` / `DeferredPaginated` + route skeletons (`TransactionListSkeleton`, `ReviewListSkeleton`, `PaginatedItemsSkeleton`).
 
 ```tsx
 <DeferredPaginated
-  Component={Income}
-  fallback={<IncomeListSkeleton />}
+  Component={Transaction}
+  fallback={<TransactionListSkeleton />}
   resolve={pagePromise}
   renderProps={renderIncomeItemProps}
 />

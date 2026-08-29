@@ -7,8 +7,8 @@ import {
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
 import { LazyBarChart } from "~/features/host/components/bar-chart/lazy-bar-chart";
-import { IncomeListSkeleton } from "~/features/host/components/income-list-skeleton";
 import { RentalTransaction } from "~/features/host/components/transaction/rental-transaction";
+import { TransactionListSkeleton } from "~/features/host/components/transaction/transaction-list-skeleton";
 import type { RentalTransactionProps } from "~/features/host/components/transaction/transaction-types";
 import { loadIncomePage } from "~/features/host/services/income.server";
 import { authContext } from "~/features/middleware/contexts/auth";
@@ -85,7 +85,7 @@ const HostRentalActivity = ({ loaderData }: Route.ComponentProps) => {
         className="grid-max v-host-list mt-6"
         emptyStateMessage="Complete a rental and its payment activity will appear here."
         errorStateMessage="Something went wrong"
-        fallback={<IncomeListSkeleton />}
+        fallback={<TransactionListSkeleton />}
         renderProps={renderIncomeItemProps}
         resolve={pagePromise}
       />
