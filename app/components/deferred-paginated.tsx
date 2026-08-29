@@ -5,7 +5,7 @@ import {
   type GenericComponentProps,
 } from "~/components/generic-component";
 import { Pagination } from "~/features/pagination/components/pagination";
-import type { PaginationProps } from "~/features/pagination/types";
+import type { InitialPaginationProps } from "~/features/pagination/types";
 import type { Id, Prettify } from "~/types";
 
 export type DeferredPaginatedProps<
@@ -16,7 +16,7 @@ export type DeferredPaginatedProps<
   Omit<GenericComponentProps<T, P, E>, "items"> & {
     errorElement?: ReactNode;
     fallback: ReactNode;
-    resolve: Promise<PaginationProps<T>>;
+    resolve: Promise<InitialPaginationProps<T>>;
   }
 >;
 

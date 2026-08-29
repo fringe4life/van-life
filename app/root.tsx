@@ -9,11 +9,11 @@ import {
 import type { Route } from "./+types/root";
 import { HTTP_MESSAGES, HTTP_STATUS } from "./constants/http-constants";
 import "./app.css";
-import type { Maybe } from "./types";
+import type { Children, Maybe } from "./types";
 
-export const Layout = ({ children }: { children: React.ReactNode }) => (
+export const Layout = ({ children }: Children) => (
   <html
-    className="bg-neutral-50 md:[--padding-inline:3rem]"
+    className="bg-background md:[--padding-inline:3rem]"
     dir="ltr"
     lang="en"
   >
@@ -24,7 +24,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => (
       <Links />
     </head>
     <body>
-      <div className="layout-grid mx-auto min-h-dvh w-full max-w-shell bg-orange-50">
+      <div className="layout-grid mx-auto min-h-dvh w-full max-w-shell bg-surface">
         {children}
       </div>
       <ScrollRestoration />

@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import type { Children, Prettify } from "~/types";
 
 /** Shared view-transition names for login ↔ signup morph. */
 export const AUTH_VT = {
@@ -19,11 +20,12 @@ export const AUTH_VT = {
   title: "auth-title",
 } as const;
 
-interface AuthCardProps {
-  children: ReactNode;
-  footer: ReactNode;
-  title: string;
-}
+type AuthCardProps = Prettify<
+  Children & {
+    footer: ReactNode;
+    title: string;
+  }
+>;
 
 export const AuthCard = ({ children, footer, title }: AuthCardProps) => (
   <Card className="grid gap-y-4" style={{ viewTransitionName: AUTH_VT.card }}>

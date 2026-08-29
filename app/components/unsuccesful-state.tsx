@@ -5,7 +5,7 @@ export interface UnsuccesfulStateProps {
 
 const UnsuccesfulState = ({ message, isError }: UnsuccesfulStateProps) => (
   <div
-    className="grid h-full w-full items-center error:text-red-500"
+    className="grid h-full w-full items-center error:text-destructive"
     data-error={isError}
     data-unsuccessful
   >

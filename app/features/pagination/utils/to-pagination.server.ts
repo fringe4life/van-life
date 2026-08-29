@@ -1,5 +1,5 @@
 import type {
-  PaginationProps,
+  InitialPaginationProps,
   ToPaginationParams,
 } from "~/features/pagination/types";
 import type { Id } from "~/types";
@@ -19,7 +19,7 @@ export function toPagination<T extends Id>({
   limit,
   cursor,
   direction = "forward",
-}: ToPaginationParams<T>): PaginationProps<T> {
+}: ToPaginationParams<T>): InitialPaginationProps<T> {
   // If items is null, return as-is with no pagination
   if (!items) {
     return NO_PAGINATION;

@@ -9,7 +9,7 @@ import {
   executeRentVanTransaction,
   executeReturnVanTransaction,
 } from "~/features/host/dal/rental-transaction.server";
-import { getAccountSummary } from "~/features/host/dal/transaction.server";
+import { getAccountSummary } from "~/features/host/dal/wallet-movement.server";
 import type { BasePaginationParams } from "~/features/pagination/types";
 import { toPagination } from "~/features/pagination/utils/to-pagination.server";
 import { getCost } from "~/features/vans/utils/get-cost";

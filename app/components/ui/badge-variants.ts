@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from "cva";
 
 export const badgeVariants = cva({
-  base: "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-md font-medium text-xs transition-opacity focus-visible:border-red-500/50 focus-visible:ring-[3px] [&>svg]:pointer-events-none [&>svg]:size-3",
+  base: "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-md font-medium text-xs transition-opacity focus-visible:border-destructive/50 focus-visible:ring-[3px] [&>svg]:pointer-events-none [&>svg]:size-3",
   defaultVariants: {
     size: "default",
     variant: "outline",
@@ -12,16 +12,18 @@ export const badgeVariants = cva({
       small: "px-1 py-0.5",
     },
     variant: {
-      luxury: "bg-neutral-900 text-white hover:bg-neutral-900/90",
-      new: "bg-gray-500 text-white hover:bg-gray-500/90",
-      outline: "bg-orange-100 hover:bg-orange/80",
-      repair: "bg-yellow-500 text-black hover:bg-yellow-500/90",
+      luxury: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+      new: "bg-status-new text-status-new-foreground hover:bg-status-new/90",
+      outline: "bg-surface-muted text-foreground hover:bg-surface-accent",
+      repair:
+        "bg-status-repair text-status-repair-foreground hover:bg-status-repair/90",
       rugged:
-        "bg-teal-800 text-white hover:bg-teal-800/90 focus-visible:ring-teal-800/20",
-      sale: "bg-green-500 text-white hover:bg-green-500/90",
-      simple: "bg-orange-600 text-white hover:bg-orange-600/90",
+        "bg-type-rugged text-type-rugged-foreground hover:bg-type-rugged/90 focus-visible:ring-type-rugged/20",
+      sale: "bg-status-sale text-status-sale-foreground hover:bg-status-sale/90",
+      simple:
+        "bg-type-simple text-type-simple-foreground hover:bg-type-simple/90",
       unavailable:
-        "disabled cursor-not-allowed bg-red-500 text-white hover:bg-red-500/90",
+        "disabled cursor-not-allowed bg-status-unavailable text-status-unavailable-foreground hover:bg-status-unavailable/90",
     },
   },
 });

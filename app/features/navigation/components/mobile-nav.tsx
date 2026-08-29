@@ -47,7 +47,7 @@ const MobileNav = ({ items }: MobileNavProps) => (
   <div className="group/hamburger mobile-nav md:hidden">
     <button
       aria-label="Open navigation menu"
-      className="cursor-pointer rounded p-1 transition-colors duration-250 hover:bg-orange-100"
+      className="cursor-pointer rounded p-1 transition-colors duration-250 hover:bg-surface-muted"
       command="show-modal"
       commandfor={MOBILE_NAV_DIALOG_ID}
       type="button"
@@ -62,7 +62,7 @@ const MobileNav = ({ items }: MobileNavProps) => (
     >
       <button
         aria-label="Close navigation menu"
-        className="absolute top-9 right-(--padding-inline) translate-x-[-100cqi] cursor-pointer rounded p-1 transition-[translate,color,background-color] duration-(--duration-dialog) ease-glide hover:bg-orange-100 group-open/mobile-nav:starting:translate-x-[-100cqi] group-open/mobile-nav:translate-x-0"
+        className="absolute top-9 right-(--padding-inline) translate-x-[-100cqi] cursor-pointer rounded p-1 transition-[translate,color,background-color] duration-(--duration-dialog) ease-glide hover:bg-surface-muted group-open/mobile-nav:starting:translate-x-[-100cqi] group-open/mobile-nav:translate-x-0"
         command="close"
         commandfor={MOBILE_NAV_DIALOG_ID}
         type="button"

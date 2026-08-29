@@ -47,7 +47,7 @@ const VanForm = ({
     <Card className="@container/form border-border bg-card">
       <CardHeader className="border-border border-b pb-4">
         <h2
-          className="font-bold text-2xl text-neutral-900 sm:text-3xl md:text-4xl"
+          className="font-bold text-2xl text-foreground sm:text-3xl md:text-4xl"
           id={formTitleId}
         >
           Add Van

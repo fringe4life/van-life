@@ -4,7 +4,7 @@ import { CustomLink } from "~/features/navigation/components/custom-link";
 
 const NotFound = () => (
   <section className="place-self-center">
-    <h2 className="font-bold text-2xl text-neutral-900 sm:text-3xl">
+    <h2 className="font-bold text-2xl text-foreground sm:text-3xl">
       Sorry, the page you were looking for was not found.
     </h2>
     <CustomLink

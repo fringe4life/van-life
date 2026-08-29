@@ -29,7 +29,7 @@ const Layout = ({ loaderData }: Route.ComponentProps) => {
           &copy;{new Date().getFullYear()} #vanlife
         </p>
         <a
-          className="wrap-break-word inline-block w-full text-center text-[.5rem] text-surface-inverse-foreground xs:text-xs"
+          className="wrap-break-word inline-block w-full text-center text-2xs text-surface-inverse-foreground xs:text-xs"
           href="https://www.flaticon.com/free-icons/camper-van"
           title="camper van icons"
         >

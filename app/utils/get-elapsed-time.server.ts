@@ -16,3 +16,16 @@ export const elapsedDaysFromRange = (
 
   return differenceInDays(lastAt, firstAt) + 1;
 };
+
+/**
+ * THIS LOGIC SHOULD BE RECONSIDERED
+ * formatDuration({ days: 0 }, { zero: true }); // "0 days"
+ */
+
+const SINGULAR_DAY_COUNT = 1;
+
+export const formatElapsedDaysLabel = (days: number) =>
+  days === SINGULAR_DAY_COUNT ? "1 day" : `${days} days`;
+
+export const rentDurationLabel = (from: Maybe<Date>, to: Maybe<Date>) =>
+  formatElapsedDaysLabel(elapsedDaysFromRange(from, to));

@@ -7,7 +7,7 @@ interface HostReviewSectionProps {
 }
 
 const HostReviewSection = ({ avgRating }: HostReviewSectionProps) => (
-  <div className="flex w-full items-center justify-between bg-orange-200 px-(--padding-inline) py-6 sm:py-9">
+  <div className="flex w-full items-center justify-between bg-surface-accent px-(--padding-inline) py-6 sm:py-9">
     <div className="font-bold text-lg text-shadow-text sm:text-2xl">
       Your Avg Review <RatingStars rating={avgRating} />
     </div>

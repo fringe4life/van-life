@@ -92,6 +92,7 @@ export async function getHostReviewsChartData(
     const rating = index + 1;
     return {
       amount: byRating.get(rating) ?? 0,
+      id: String(rating),
       name: String(rating),
     };
   });

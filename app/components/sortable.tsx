@@ -59,7 +59,7 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
     children: item.id,
     className: cn(
       "w-full cursor-pointer text-center sm:w-fit sm:text-left",
-      sort === item.value && "bg-orange-400 font-semibold text-white"
+      sort === item.value && "bg-primary font-semibold text-primary-foreground"
     ),
     onClick: () => handleSortChange(item.value),
     variant: "ghost" as const,
@@ -77,7 +77,7 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
       )}
     >
       <h3
-        className="font-bold text-lg text-neutral-900"
+        className="font-bold text-foreground text-lg"
         style={{ viewTransitionName: "sortable-title" }}
       >
         {title} ({itemCount})

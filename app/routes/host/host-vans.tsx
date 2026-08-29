@@ -235,7 +235,7 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
           />
         </Activity>
         {onFirstPage ? null : (
-          <p className="mt-6 text-neutral-600">
+          <p className="mt-6 text-muted-foreground">
             New vans appear at the top of your list.{" "}
             <CustomLink to={href("/host/vans")}>
               Go to first page to add a van

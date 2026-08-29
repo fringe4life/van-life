@@ -1,5 +1,5 @@
+import type { ReactNode } from "react";
 import type { TransactionModel } from "~/db/client.server";
-
 export type Maybe<T> = T | null | undefined;
 
 export type List<T> = Maybe<T[]>;
@@ -37,4 +37,8 @@ export interface Success extends Ok {
 
 export interface Failure extends Ok {
   ok: false;
+}
+
+export interface Children {
+  children: ReactNode;
 }

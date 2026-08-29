@@ -127,7 +127,7 @@ export default function Login({ loaderData }: Route.ComponentProps) {
         footer={
           <>
             <span>Don't have an account?</span>{" "}
-            <CustomLink className="text-orange-400" to={href("/signup")}>
+            <CustomLink className="text-primary" to={href("/signup")}>
               Create one now
             </CustomLink>
           </>

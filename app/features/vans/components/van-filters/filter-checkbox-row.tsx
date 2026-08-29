@@ -29,7 +29,7 @@ const FilterCheckboxRow = ({
   return (
     <div
       className={cn(
-        "flex min-h-11 items-center gap-2 rounded-md px-3 py-2 transition-colors focus-within:bg-orange-100/70 hover:bg-orange-100",
+        "flex min-h-11 items-center gap-2 rounded-md px-3 py-2 transition-colors focus-within:bg-surface-muted/70 hover:bg-surface-muted",
         className
       )}
     >

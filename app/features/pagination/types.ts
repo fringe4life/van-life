@@ -17,11 +17,18 @@ export interface Items<T> {
   items: List<T>;
 }
 
-export type PaginationProps<T> = Prettify<
+/** Loader / toolbar: items may be null, undefined, or empty. */
+export type InitialPaginationProps<T> = Prettify<
   Items<T> & {
     paginationMetadata: PaginationMetadata;
   }
 >;
+
+/** After empty check: at least one item (cursor page). */
+export type PaginationProps<T> = Prettify<{
+  items: [T, ...T[]];
+  paginationMetadata: PaginationMetadata;
+}>;
 
 export interface CursorMetadata {
   cursorId: Maybe<UUIDv7>;
