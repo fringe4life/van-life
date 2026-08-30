@@ -18,7 +18,7 @@ const transactionMeta = {
     label: "Withdrawal",
     title: "Payout sent",
   },
-} satisfies Record<TransactionType, { label: string; title: string }>;
+} as const satisfies Record<TransactionType, { label: string; title: string }>;
 
 const transactionCard = cva({
   base: "transaction-card grid min-w-0 @min-md/transaction:grid-cols-[minmax(0,1.4fr)_minmax(10rem,0.6fr)] grid-cols-1 items-start @min-md/transaction:items-center @min-md/transaction:gap-x-6 @min-md/transaction:gap-y-0 gap-y-4 self-start border-l-4",

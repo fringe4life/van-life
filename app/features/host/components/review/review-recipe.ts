@@ -9,7 +9,7 @@ const reviewMeta = {
   3: { label: "Average rating" },
   4: { label: "Good rating" },
   5: { label: "Excellent rating" },
-} satisfies Record<ReviewScore, { label: string }>;
+} as const satisfies Record<ReviewScore, { label: string }>;
 
 const reviewBadge = cva({
   base: "rounded-full border px-2.5 py-1 font-semibold text-xs",
