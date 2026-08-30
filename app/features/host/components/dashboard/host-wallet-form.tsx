@@ -42,7 +42,7 @@ const HostWalletForm = ({ wallet }: HostWalletFormProps) => {
   return (
     <div className="@container/wallet mt-11 w-full">
       <Card className="grid w-full @lg/wallet:grid-cols-[minmax(220px,0.85fr)_minmax(0,1.15fr)] grid-cols-1 @lg/wallet:items-center gap-6 @lg/wallet:gap-x-18 @lg/wallet:gap-y-0 p-6 sm:gap-9 sm:p-9">
-        <h3 className="@lg/wallet:mb-0 mb-4 font-bold @lg/wallet:text-lg text-md text-neutral-900">
+        <h3 className="@lg/wallet:mb-0 mb-4 font-bold @lg/wallet:text-lg text-foreground text-md">
           Add or Withdraw Money
         </h3>
         <fetcher.Form

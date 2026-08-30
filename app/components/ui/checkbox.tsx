@@ -6,7 +6,7 @@ function Checkbox({ className, ...props }: ComponentProps<"input">) {
   return (
     <input
       className={cn(
-        "size-4 shrink-0 rounded-[4px] border border-neutral-600 accent-primary",
+        "size-4 shrink-0 rounded-control border border-input accent-primary",
         className
       )}
       {...props}

@@ -9,9 +9,9 @@ const vanCard = cva({
   variants: {
     state: {
       available: "",
-      new: "border-2 border-van-new bg-van-new/10",
-      repair: "border-2 border-van-repair bg-van-repair/10",
-      sale: "border-2 border-van-sale bg-van-sale/10",
+      new: "border-2 border-status-new bg-status-new/10",
+      repair: "border-2 border-status-repair bg-status-repair/10",
+      sale: "border-2 border-status-sale bg-status-sale/10",
     } satisfies Record<LowercaseVanState, string>,
   },
 });

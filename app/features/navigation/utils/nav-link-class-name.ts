@@ -6,8 +6,8 @@ export const navLinkClassName = ({
   isPending,
 }: NavLinkClassNameProps) =>
   [
-    "flex items-center gap-2 transition-colors duration-250 px-2 py-1 rounded hover:bg-orange-400 hover:text-white",
-    isPending ? "text-green-500" : "",
+    "flex items-center gap-2 transition-colors duration-250 px-2 py-1 rounded hover:bg-primary hover:text-primary-foreground",
+    isPending ? "text-success" : "",
     isActive && !isPending ? "underline" : "",
   ]
     .filter(Boolean)

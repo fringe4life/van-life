@@ -6,10 +6,10 @@ import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
-import type { TransactionModel } from "~/db/client.server";
 import { LazyBarChart } from "~/features/host/components/bar-chart/lazy-bar-chart";
-import { Income } from "~/features/host/components/income";
-import { IncomeListSkeleton } from "~/features/host/components/income-list-skeleton";
+import { RentalTransaction } from "~/features/host/components/transaction/rental-transaction";
+import { TransactionListSkeleton } from "~/features/host/components/transaction/transaction-list-skeleton";
+import type { RentalTransactionProps } from "~/features/host/components/transaction/transaction-types";
 import { loadIncomePage } from "~/features/host/services/income.server";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
@@ -19,7 +19,7 @@ import {
   loadHostSearchParams,
   parsePaginationCursor,
 } from "~/lib/search-params.server";
-import type { Route } from "./+types/income";
+import type { Route } from "./+types/rental-activity";
 
 export const headers = forwardDataHeaders;
 
@@ -38,11 +38,9 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   return data(page, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
-const renderIncomeItemProps = (
-  item: Pick<TransactionModel, "amount" | "createdAt" | "id">
-) => item;
+const renderIncomeItemProps = (item: RentalTransactionProps) => item;
 
-const HostIncome = ({ loaderData }: Route.ComponentProps) => {
+const HostRentalActivity = ({ loaderData }: Route.ComponentProps) => {
   const { chartData, elapsedDays, pagePromise, sumIncome, txnCount } =
     loaderData;
 
@@ -51,16 +49,16 @@ const HostIncome = ({ loaderData }: Route.ComponentProps) => {
       as="section"
       className="grid grid-rows-[min-content_min-content_min-content_var(--chart-height)_min-content_1fr_min-content] contain-content"
     >
-      <title>Your Income | Van Life</title>
+      <title>Rental Activity | Van Life</title>
       <meta
-        content="View your income from van rentals and track earnings"
+        content="View rental payments and adjustments from completed rentals"
         name="description"
       />
-      <VanHeader>Income</VanHeader>
+      <VanHeader>Rental activity</VanHeader>
 
       <p className="my-3" style={{ viewTransitionName: "elapsed-days" }}>
-        Last{" "}
-        <span className="font-bold text-neutral-600 underline">
+        Rental activity, last{" "}
+        <span className="font-bold text-muted-foreground underline">
           {elapsedDays} days
         </span>
       </p>
@@ -77,21 +75,21 @@ const HostIncome = ({ loaderData }: Route.ComponentProps) => {
       */}
       <LazyBarChart
         data={chartData}
-        emptyStateMessage="No income yet"
+        emptyStateMessage="No rental earnings yet"
         errorStateMessage="Something went wrong"
       />
-      <Sortable itemCount={txnCount} title="Income Transactions" />
+      <Sortable itemCount={txnCount} title="Rental activity" />
       <DeferredPaginated
         as="div"
-        Component={Income}
+        Component={RentalTransaction}
         className="grid-max v-host-list mt-6"
-        emptyStateMessage="Rent some vans and your income will appear here."
+        emptyStateMessage="Complete a rental and its payment activity will appear here."
         errorStateMessage="Something went wrong"
-        fallback={<IncomeListSkeleton />}
+        fallback={<TransactionListSkeleton />}
         renderProps={renderIncomeItemProps}
         resolve={pagePromise}
       />
     </PendingUI>
   );
 };
-export default HostIncome;
+export default HostRentalActivity;

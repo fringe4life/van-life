@@ -24,7 +24,7 @@ const FormError = ({
     <ViewTransition {...errorTransition}>
       {message ? (
         <p
-          className={cn("font-medium text-red-500 text-sm", className)}
+          className={cn("font-medium text-destructive text-sm", className)}
           id={id}
           role="alert"
         >

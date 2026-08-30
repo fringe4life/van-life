@@ -17,7 +17,8 @@ const BarChartComponent = <T extends Data<DataArray>>({ data }: T) => {
   const definition = defineChart({
     marks: [
       barY(data, {
-        fill: "var(--color-orange-400)",
+        fill: "var(--color-chart-1)",
+        key: "id",
         x: "name",
         y: "amount",
       }),

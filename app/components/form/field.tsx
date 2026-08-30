@@ -26,7 +26,7 @@ type FieldErrorProps = Prettify<
 const FieldError = ({ errorTransition, id, message }: FieldErrorProps) => (
   <ViewTransition {...errorTransition}>
     {message ? (
-      <p className="font-medium text-red-500 text-sm" id={id}>
+      <p className="font-medium text-destructive text-sm" id={id}>
         {message}
       </p>
     ) : null}

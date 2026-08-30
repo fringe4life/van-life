@@ -1,9 +1,9 @@
 import type { AppDb } from "~/db/client.server";
 import {
-  getHostIncomeChartData,
-  getHostIncomeStats,
   getHostTransactionsPaginated,
-} from "~/features/host/dal/transaction.server";
+  getRentalActivityChartData,
+  getRentalActivityStats,
+} from "~/features/host/dal/rental-activity.server";
 import {
   resolveChartContext,
   toTransactionAggStats,
@@ -43,7 +43,7 @@ export async function loadIncomePage(
   );
 
   const { data: rawStats } = await tryCatch(() =>
-    getHostIncomeStats(db, userId)
+    getRentalActivityStats(db, userId)
   );
 
   const { total, ...stats } = toTransactionAggStats(rawStats);
@@ -53,7 +53,7 @@ export async function loadIncomePage(
   });
 
   const { data: chartData } = await tryCatch(() =>
-    getHostIncomeChartData(db, userId, granularity)
+    getRentalActivityChartData(db, userId, granularity)
   );
 
   return {

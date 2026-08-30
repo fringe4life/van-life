@@ -7,7 +7,7 @@
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.3-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.1-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.2-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.9-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.10.6-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
@@ -53,26 +53,26 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 📱 **Mobile Navigation** (native `<dialog>` + Invoker `show-modal`/`close`, CSS `:has(dialog[open])` hamburger morph, `starting-style` + `transition-discrete`)
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
-- ⭐ **Review System** (rate and review rentals with analytics)
+- ⭐ **Review System** (rate and review rentals; `reviewRecipe` / `ReviewBadge` + container-query layout)
 - 📈 **Host Dashboard** (modular sections — income, reviews, vans, wallet — with TanStack Charts bars; wallet form uses `@container/wallet` two-column layout)
-- 💰 **Financial Management** (deposit/withdraw funds, transaction tracking with pagination)
+- 💰 **Financial Management** — `/host/rental-activity` (rental pay/return) vs `/host/wallet-activity` (deposit/withdraw); typed transaction rows + pagination
 - 🏷️ **Van State System** (NEW, IN_REPAIR, ON_SALE, AVAILABLE with discount pricing)
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
-- 🎨 **Modern UI/UX** with responsive design, custom Tailwind variants, and smooth animations
+- 🎨 **Semantic design system** (`DESIGN.md` + `@theme` in `app/app.css`) — roles (`bg-primary`, `text-muted-foreground`, `border-subtle`) not raw palette at call sites
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **Valibot** for runtime schema validation (named imports, server schemas)
 - 🗄️ **Time-sortable database IDs** with UUID v7 (text columns on D1/SQLite)
 - 🎨 **TailwindCSS 4** with modern CSS features
 - 📦 **Drizzle ORM** with Cloudflare D1 (SQLite) and relational queries
 - 🔧 **Generic Components** for reusability and maintainability
-- 🎭 **Van card CVA recipe** (`vanCard`) for NEW / ON_SALE / IN_REPAIR chrome
+- 🎭 **CVA recipes** — `vanCard` (van state chrome); `transactionRecipe` / `reviewRecipe` (deposit, income, payment, rating variants)
 - 🧩 **Compound Components** with React 19's modern context API (no `.Provider`, uses `use()`)
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with deferred loader promises (`DeferredAwait` / `DeferredPaginated`), lazy charts, code splitting, and immutable array methods
 - 🧊 **HTTP cache headers** — `PRIVATE_NO_STORE` for host/auth; `PUBLIC_SHORT_CACHE` + `Vary: Cookie` for catalog; leaf `headers` exports via `forwardDataHeaders`
 - 🔗 **URL State Management** with nuqs 2.10.1 for type-safe search parameters
-- 🌐 **View Transitions** for smooth navigation (auth login/sign-up, host income/transfers/dashboard amounts, sortable titles, chart pages, footer, and form field morphs; no nested `viewTransitionName`s)
+- 🌐 **View Transitions** for smooth navigation (auth login/sign-up, host rental/wallet/dashboard amounts, sortable titles, chart pages, footer, and form field morphs; no nested `viewTransitionName`s)
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router 8 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
 - 🔐 **Consolidated host auth middleware** on `host-layout.tsx` (no duplicate session lookups on leaf routes)
@@ -98,7 +98,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 - **Cloudflare Workers** with React Router SSR via `workers/app.ts`
 - **Drizzle ORM 1.0.0-rc.4** with **Cloudflare D1** (SQLite; `drizzle-orm/d1`)
-- **better-auth 1.7.1** with **@better-auth/drizzle-adapter** (`relations-v2`) for authentication
+- **better-auth 1.7.2** with **@better-auth/drizzle-adapter** (`relations-v2`) for authentication
 - **Valibot 1.4.2** for schema validation (Cloudflare Workers–friendly; no JIT)
 - **uuidv7** for app-generated IDs (`createId` / `uuidv7PrimaryKey` helpers)
 - **Varlock** for typed, validated environment variables (Bitwarden integration in production)
@@ -116,7 +116,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **Wrangler 4.125.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
 - **react-doctor 0.9.12** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
-- **fallow 3.18.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
+- **fallow 3.19.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **Bun** for fast package management and runtime
@@ -153,9 +153,11 @@ app/
 │   │   ├── schemas.server.ts  # Login/sign-up Valibot schemas
 │   │   └── types.ts           # Login/sign-up field keys + field-error types
 │   ├── host/
-│   │   ├── components/ # Host UI (van-form, charts, dashboard sections, reviews)
-│   │   │   └── dashboard/  # host-income-section, host-review-section, host-vans-section, host-wallet-form
-│   │   ├── dal/        # Host Drizzle repositories (*.server.ts)
+│   │   ├── components/ # Host UI (van-form, charts, dashboard, reviews, transaction/)
+│   │   │   ├── dashboard/  # host-income-section, host-review-section, host-vans-section, host-wallet-form
+│   │   │   ├── review/     # Review + review-recipe / review-badge
+│   │   │   └── transaction/ # Transaction, rental/wallet rows, transaction-recipe / badge
+│   │   ├── dal/        # rental-activity, wallet-movement, review, transaction-sort
 │   │   ├── services/   # dashboard, income, rental, reviews, transfers, wallet
 │   │   ├── hooks/      # use-host-wallet, balance-reducer
 │   │   ├── rentals/
@@ -165,7 +167,7 @@ app/
 │   ├── image/          # Image optimization utilities
 │   ├── middleware/     # Auth, Cloudflare, db context, auth-redirect helpers
 │   ├── navigation/     # Nav, mobile-nav (native dialog + invoker), hamburger-icon
-│   ├── pagination/     # Shared pagination UI + utils (toPagination, getCursorMetadata, resolveSortedCursor, build-search-params)
+│   ├── pagination/     # Pagination + PaginationLimitControl / PaginationControl; parsers (limit vs cursor)
 │   ├── seo/            # SEO helpers (canonical URLs, SeoHead, sitemap)
 │   │   └── dal/        # SEO Drizzle reads (sitemap.server.ts)
 │   └── vans/
@@ -200,7 +202,7 @@ app/
 ├── routes/             # Route modules (Activity-based single routes)
 │   ├── api/            # better-auth handler (auth.ts)
 │   ├── auth/           # login, sign-up, sign-out
-│   ├── host/           # Dashboard, income, transfers, reviews, vans, rentals
+│   ├── host/           # Dashboard, rental-activity, wallet-activity, reviews, vans, rentals
 │   │   └── rentals/    # rentals list, rent/:vanSlug, returnRental/:rentId
 │   ├── layout/         # Layout components
 │   └── public/         # Public routes
@@ -221,11 +223,15 @@ app/
 workers/
 └── app.ts              # Cloudflare Workers entry (React Router SSR)
 
+DESIGN.md                   # Semantic design system (tokens, roles, usage)
+
 docs/
 ├── react-router-audit.md   # Framework-mode audit and middleware notes
 ├── babel-react-compiler.md # React Compiler via @rolldown/plugin-babel (Vite 8)
 ├── react-stinky-report.md  # React Stinky smell sweep + fixes
-└── fallow-health-backlog.md # Code health backlog from fallow analysis
+├── fallow-health-backlog.md # Code health backlog from fallow analysis
+├── financial-display-routing.md # Host rental vs wallet activity IA
+└── cursor-pagination-limit-and-component-split.md # Pagination limit vs cursor split
 
 .fallowrc.jsonc             # Fallow config (boundaries, health thresholds, security categories)
 ```
@@ -332,7 +338,7 @@ return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 
 ## Authentication
 
-- **better-auth 1.7.1** with **@better-auth/drizzle-adapter/relations-v2** (SQLite / D1)
+- **better-auth 1.7.2** with **@better-auth/drizzle-adapter/relations-v2** (SQLite / D1)
 - **Joins** via `advanced.database.joins: true` (session/user fetched with relational queries)
 - **Account identity** keyed by `(issuer, accountId)` — `issuer` is new in 1.7
 - **Session management** with cookie cache + `preserveSessionInDatabase`
@@ -361,7 +367,8 @@ The application uses **nuqs 2.10.1** for type-safe URL state management:
 - **Server-side loaders** with `createLoader` for efficient data fetching
 - **Client-side state management** with `useQueryStates`
 - **Bidirectional cursor pagination** with forward/backward navigation
-- **Pagination with sorting** on Reviews, Income, and Transfers pages
+- **Pagination with sorting** on Reviews, rental-activity, and wallet-activity pages
+- **Split pagination parsers** — `limitParsers` vs `cursorPaginationParsers` (`app/features/pagination/parsers.ts`); limit change does not reset cursor
 - **Van search functionality** with case-insensitive `LIKE` across name and description (word-split), debounced input (250ms), immediate Enter key submission
 - **Advanced van filtering** via `vansFilterUrlParsers` — multi-select types plus facet-driven state filters (`van-state-filter-config.ts`); debounced adds, immediate removes (`van-filter-url.ts`)
 - **Automatic URL synchronization** with proper type handling
@@ -371,12 +378,15 @@ The application uses **nuqs 2.10.1** for type-safe URL state management:
 ### Implementation
 
 ```typescript
-// Shared parsers (app/lib/parsers.ts)
-export const paginationParsers = {
-  cursor: parseAsString.withDefault(DEFAULT_CURSOR),
-  limit: parseAsNumberLiteral(LIMITS).withDefault(DEFAULT_LIMIT),
-  direction: parseAsStringEnum(DIRECTIONS).withDefault(DEFAULT_DIRECTION),
-  type: parseAsVanType,
+// Cursor vs limit (app/features/pagination/parsers.ts)
+export const limitParsers = { limit: parseAsLimit };
+export const cursorPaginationParsers = { cursor, direction };
+
+// Host lists compose both + sort (app/lib/parsers.ts)
+export const hostPaginationParsers = {
+  ...cursorPaginationParsers,
+  ...limitParsers,
+  sort: parseAsSortOption,
 };
 
 // Server-side loaders (app/lib/search-params.server.ts)
@@ -601,8 +611,8 @@ const orderBy = createGenericOrderBy(sort, {
 ### Usage
 
 - **Reviews page**: Sort by newest/oldest date or highest/lowest rating (with pagination)
-- **Income page**: Sort by newest/oldest date or highest/lowest amount (with pagination)
-- **Transfers page**: Sort by newest/oldest date or highest/lowest amount (with pagination)
+- **Rental activity** (`/host/rental-activity`): Sort by date or amount (rental pay/return)
+- **Wallet activity** (`/host/wallet-activity`): Sort by date or amount (deposit/withdraw)
 - **Extensible**: Easy to add sorting to any new data table
 
 ### Backward Pagination with Sorting
@@ -624,7 +634,8 @@ The application features **generic pagination utilities** for consistent cursor-
 
 - **Generic `toPagination` utility** (`app/features/pagination/utils/to-pagination.server.ts`) - Processes database results and returns items with pagination metadata
 - **`getCursorMetadata` utility** (`app/features/pagination/utils/get-cursor-metadata.server.ts`) - Provides `cursorId`, sort order, and `take` for Drizzle `lt`/`gt` + `limit` queries
-- **`resolveSortedCursor` helper** (`app/features/pagination/utils/resolve-sorted-cursor.server.ts`) - Shared cursor + `orderBy` prelude for host income/reviews/transfers DALs
+- **`resolveSortedCursor` helper** (`app/features/pagination/utils/resolve-sorted-cursor.server.ts`) - Shared cursor + `orderBy` prelude for host rental-activity / reviews / wallet-activity DALs
+- **Split UI** — `PaginationLimitControl` (limit only) + `PaginationControl` (cursor pages); compose in `Pagination`
 - **Bidirectional pagination support** - Handles both forward and backward pagination with correct logic
 - **Automatic result reversal** - Reverses results for backward pagination to maintain correct display order
 - **Type-safe** - Full TypeScript support with generic types
@@ -678,7 +689,7 @@ The `toPagination` utility implements correct cursor pagination logic:
 
 ### Benefits
 
-- **Consistent pagination** - Same logic used across all paginated pages (Reviews, Income, Transfers, Vans)
+- **Consistent pagination** - Same logic used across all paginated pages (Reviews, rental-activity, wallet-activity, Vans)
 - **Correct bidirectional navigation** - Proper handling of forward/backward pagination
 - **Type safety** - Generic utility works with any data type
 - **Maintainability** - Single source of truth for pagination logic
@@ -821,12 +832,12 @@ const BarChartComponent = lazy(() => import("./bar-chart"));
 
 ### Deferred loader streaming
 
-Host income / reviews / transfers return critical summary data immediately and defer paginated lists via promises. UI wraps with `DeferredAwait` / `DeferredPaginated` + route skeletons (`IncomeListSkeleton`, `ReviewListSkeleton`, `PaginatedItemsSkeleton`).
+Host rental-activity / reviews / wallet-activity return critical summary data immediately and defer paginated lists via promises. UI wraps with `DeferredAwait` / `DeferredPaginated` + route skeletons (`TransactionListSkeleton`, `ReviewListSkeleton`, `PaginatedItemsSkeleton`).
 
 ```tsx
 <DeferredPaginated
-  Component={Income}
-  fallback={<IncomeListSkeleton />}
+  Component={Transaction}
+  fallback={<TransactionListSkeleton />}
   resolve={pagePromise}
   renderProps={renderIncomeItemProps}
 />
@@ -995,14 +1006,15 @@ Configuration in `lint-staged.config.ts`.
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — native `<dialog>` panel/fullscreen variants (`starting-style`, `transition-discrete`, Invoker Commands)
 - **Reusable keyframes** — parameterized `--fade` / `--scale` / `--slide-x` / `--slide-y` with CSS custom properties
-- **Auth + host view transitions** — login/sign-up, income/balance/elapsed-days, sortable-title, and chart-page morphs (`::view-transition-old/new` in `app/app.css`); avoid nested named elements (breaks one-direction morphs)
+- **Auth + host view transitions** — login/sign-up, rental/wallet/balance/elapsed-days, sortable-title, and chart-page morphs (`::view-transition-old/new` in `app/app.css`); avoid nested named elements (breaks one-direction morphs)
+- **Semantic tokens** — `DESIGN.md`; consume roles (`bg-primary`, `text-muted-foreground`) not `--color-orange-*` at call sites
 - **Scroll-driven host nav hint** — `mask-scroll-hint` utility with `animation-timeline: scroll(x self)`
 - **Responsive design** with mobile-first approach and CSS Grid layouts
 - **Biome configuration** for CSS at-rules support
 
 ### Custom Design System
 
-- **Theme tokens** in `@theme` (`app/app.css`) — semantic roles (`--color-primary`, `--color-surface-*`, `--color-destructive`, status) plus a few leftover palette tokens (`--color-orange-*`)
+- **Theme tokens** in `@theme` (`app/app.css`) — palette primitives + semantic roles (`--color-primary`, `--color-surface-*`, `--color-destructive`, domain van/status); see `DESIGN.md`
 - **Component variants** using `cva` (`button-variants.ts`, `badge-variants.ts`, `vanCard`, `dialogVariants`)
 - **Van card chrome** — `vanCard` CVA in `van-card-recipe.ts` (not an HOC / `getVanStateStyles`)
 - **Named container queries** — host wallet form `@container/wallet` two-column layout at `@lg/wallet`
@@ -1033,7 +1045,7 @@ Configuration in `lint-staged.config.ts`.
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
 - **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization
-- **fallow 3.18.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
+- **fallow 3.19.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
 - **Bun `overrides`** — pin transitive audit fixes (`@remix-run/server-runtime`, `brace-expansion`, `fast-uri`, `picomatch`, `turbo-stream`, …) while `bunfig.toml` keeps `minimumReleaseAge`
 
 ### GitHub Actions

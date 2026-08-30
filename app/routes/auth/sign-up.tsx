@@ -122,7 +122,7 @@ export default function SignUp() {
         footer={
           <>
             <span>Already have an account?</span>{" "}
-            <CustomLink className="text-orange-400" to={href("/login")}>
+            <CustomLink className="text-primary" to={href("/login")}>
               Sign in now
             </CustomLink>
           </>

@@ -175,7 +175,7 @@ const ReturnRental = ({
       </div>
       {!!isUnableToPay && (
         <article>
-          <p className="text-lg text-red-400">
+          <p className="text-destructive text-lg">
             You cannot afford to return this van.
           </p>
           <CustomLink

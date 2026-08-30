@@ -37,7 +37,7 @@ const hostVanDetailNavClassName = ({
   isPending,
 }: NavLinkClassNameProps) => {
   if (isPending) {
-    return "text-green-500";
+    return "text-success";
   }
   if (isActive) {
     return "underline";

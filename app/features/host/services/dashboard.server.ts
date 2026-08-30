@@ -1,9 +1,7 @@
 import type { AppDb } from "~/db/client.server";
+import { getRentalActivityStats } from "~/features/host/dal/rental-activity.server";
 import { getAverageReviewRating } from "~/features/host/dal/review-analytics.server";
-import {
-  getAccountSummary,
-  getHostIncomeStats,
-} from "~/features/host/dal/transaction.server";
+import { getAccountSummary } from "~/features/host/dal/wallet-movement.server";
 import { toTransactionAggStats } from "~/features/host/utils/resolve-chart-context.server";
 import { getHostVans } from "~/features/vans/dal/host-van.server";
 import type { UUIDv7 } from "~/types/ids.server";
@@ -28,7 +26,7 @@ export async function loadHostDashboard(db: AppDb, userId: UUIDv7) {
   ] = await Promise.all([
     tryCatch(() => getAverageReviewRating(db, userId)),
     tryCatch(() => getAccountSummary(db, userId)),
-    tryCatch(() => getHostIncomeStats(db, userId)),
+    tryCatch(() => getRentalActivityStats(db, userId)),
   ]);
 
   const { firstAt, lastAt, total } = toTransactionAggStats(rawIncomeStats);

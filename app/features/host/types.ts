@@ -1,6 +1,6 @@
-import type { Amount, Maybe, Prettify } from "~/types";
+import type { Amount, Id, Maybe, Prettify } from "~/types";
 
-export type DataArray = Prettify<{ name: string } & Amount>[];
+export type DataArray = Prettify<{ name: string } & Amount & Id>[];
 
 export interface Data<T> {
   data: T;

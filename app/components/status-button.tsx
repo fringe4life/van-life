@@ -22,9 +22,9 @@ const getStatusIcon = (status: Status): ReactElement | null => {
     case "pending":
       return <Loader2 className="size-4 animate-spin" />;
     case "success":
-      return <Check className="size-4 text-green-500" />;
+      return <Check className="size-4 text-success" />;
     case "error":
-      return <X className="size-4 text-red-500" />;
+      return <X className="size-4 text-destructive" />;
     default:
       return null;
   }

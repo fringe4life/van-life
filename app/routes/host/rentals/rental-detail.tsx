@@ -97,7 +97,7 @@ const AddVan = ({ actionData, loaderData, params }: Route.ComponentProps) => {
         link={href("/host/rentals/rent/:vanSlug", { vanSlug: params.vanSlug })}
         van={rental}
       />
-      <h2 className="font-bold text-4xl text-neutral-900">Return Van</h2>
+      <h2 className="font-bold text-4xl text-foreground">Return Van</h2>
       <CustomForm className="mt-6 grid max-w-102 gap-4" method="POST">
         <FormError message={formError} />
         <StatusButton status={status} type="submit">

@@ -3,7 +3,7 @@ import {
   getUserTransactionsPaginated,
   getUserTransferChartData,
   getUserTransferStats,
-} from "~/features/host/dal/transaction.server";
+} from "~/features/host/dal/wallet-movement.server";
 import type { HostPaginatedPageParams } from "~/features/host/services/income.server";
 import {
   resolveChartContext,

@@ -53,5 +53,5 @@ const Image = ({
   </picture>
 );
 
-export type { ImageSource, ImgProps };
+export type { ImgProps };
 export { Image };

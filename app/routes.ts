@@ -22,8 +22,8 @@ export default [
     layout("./routes/layout/host-layout.tsx", [
       ...prefix("host", [
         index("./routes/host/host.tsx"),
-        route("income", "./routes/host/income.tsx"),
-        route("transfers", "./routes/host/transfers.tsx"),
+        route("rental-activity", "./routes/host/rental-activity.tsx"),
+        route("wallet-activity", "./routes/host/wallet-activity.tsx"),
         route("review", "./routes/host/reviews.tsx"),
         ...prefix("rentals", [
           index("./routes/host/rentals/rentals.tsx"),

@@ -57,11 +57,11 @@ const About = ({ loaderData }: Route.ComponentProps) => {
 
       <h2 className="mx-2 font-bold text-2xl starting:opacity-50 transition-opacity duration-1000 sm:mx-4 sm:text-3xl/normal md:text-4xl lg:max-w-3/4">
         Don&apos;t{" "}
-        <span className="underline decoration-4 decoration-red-500 underline-offset-2">
+        <span className="underline decoration-4 decoration-destructive underline-offset-2">
           squeeze
         </span>{" "}
         in a sedan when you could{" "}
-        <span className="underline decoration-4 decoration-green-500 underline-offset-2">
+        <span className="underline decoration-4 decoration-success underline-offset-2">
           relax
         </span>{" "}
         in a van.
@@ -79,7 +79,7 @@ const About = ({ loaderData }: Route.ComponentProps) => {
           and make your own magic in the great outdoors 🌳!
         </p>
       </div>
-      <article className="grid max-w-full content-between gap-y-5 rounded-md bg-orange-200 px-4 py-3 sm:px-8 md:max-w-max md:px-12 md:py-6">
+      <article className="grid max-w-full content-between gap-y-5 rounded-md bg-surface-accent px-4 py-3 sm:px-8 md:max-w-max md:px-12 md:py-6">
         <h3 className="font-bold text-xl xs:text-2xl">
           Your destination is waiting.{" "}
           <span className="block">Your van is ready.</span>

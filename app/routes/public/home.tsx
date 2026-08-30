@@ -45,12 +45,12 @@ const Home = ({ loaderData }: Route.ComponentProps) => {
   return (
     <PendingUI
       as="section"
-      className="full-layout relative grid aspect-1/1.5 h-full text-white contain-strict sm:pl-6 md:aspect-video md:place-content-center md:self-center"
+      className="full-layout relative grid aspect-1/1.5 h-full text-on-image contain-strict sm:pl-6 md:aspect-video md:place-content-center md:self-center"
     >
       <SeoHead {...loaderData.seo} />
       {/* Background Image with gradient overlay */}
       <div className="mask-cover mask-no-repeat mask-right md:mask-[url(/rvMask.min.svg)] absolute inset-0">
-        <div className="absolute inset-0 z-10 bg-linear-45 from-0% from-indigo-300/40 via-33% via-green-300/40 to-66% to-yellow-200/40 bg-blend-darken" />
+        <div className="absolute inset-0 z-10 bg-linear-45 from-0% from-hero-gradient-start/40 via-33% via-hero-gradient-via/40 to-66% to-hero-gradient-end/40 bg-blend-darken" />
         <Image
           alt="Camper van on scenic road"
           className="w-full [view-transition-name:home-image]"

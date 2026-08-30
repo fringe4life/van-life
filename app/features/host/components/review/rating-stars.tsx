@@ -1,55 +1,47 @@
 import { StarIcon } from "lucide-react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { ReviewModel } from "~/db/client.server";
-import {
-  MAX_RATING,
-  PERCENTAGE_MULTIPLIER,
-} from "~/features/host/constants/constants";
+import { MAX_RATING } from "~/features/host/constants/constants";
 import type { Prettify } from "~/types";
+
+type RatingStyles = CSSProperties & {
+  "--rating": number;
+  "--star-index"?: number;
+};
 
 type RatingStarsProps = Prettify<Pick<ReviewModel, "rating">>;
 
 const TRANSPARENT_PIXEL =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E";
 
-/**
- * Individual star component that handles partial filling using clip-path.
- * @param fillPercent - The percentage (0-100) to fill the star.
- */
 interface StarProps {
-  fillPercent: number;
+  rating: number;
+  starIndex: number;
 }
 
-const Star = ({ fillPercent }: StarProps): ReactNode => {
-  const hasFill = fillPercent > 0;
+const Star = ({ rating, starIndex }: StarProps): ReactNode => {
+  const starStyle: RatingStyles = {
+    "--rating": rating,
+    "--star-index": starIndex,
+  };
+
   return (
     <div aria-hidden="true" className="relative size-(--star-size)">
-      {/* Background star (empty state) */}
-      <StarIcon className="size-(--star-size) stroke-orange-400" />
-      {/* Overlay star (filled state) clipped to the fill percentage */}
-      {hasFill && (
-        <div
-          className="absolute inset-0 overflow-hidden text-orange-400"
-          style={{ clipPath: `inset(0 ${100 - fillPercent}% 0 0)` }}
-        >
-          <StarIcon className="size-(--star-size) fill-current stroke-current" />
-        </div>
-      )}
+      <StarIcon className="size-(--star-size) stroke-rating" />
+      <div className="rating-star-fill text-rating" style={starStyle}>
+        <StarIcon className="size-(--star-size) fill-current stroke-current" />
+      </div>
     </div>
   );
 };
 
 const RatingStars = ({ rating }: RatingStarsProps): ReactNode => {
-  const stars = Array.from({ length: MAX_RATING }, (_, i) => {
-    const starIndex = i + 1;
-    // Calculate fill percentage for each star:
-    // Clamps (rating - i) * 100 between 0 and 100.
-    const fillPercent = Math.max(
-      0,
-      Math.min(100, (rating - i) * PERCENTAGE_MULTIPLIER)
-    );
+  const stars = Array.from({ length: MAX_RATING }, (_, index) => {
+    const starIndex = index + 1;
 
-    return <Star fillPercent={fillPercent} key={`star-${starIndex}`} />;
+    return (
+      <Star key={`star-${starIndex}`} rating={rating} starIndex={starIndex} />
+    );
   });
 
   return (

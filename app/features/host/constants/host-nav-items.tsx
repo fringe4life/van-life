@@ -25,22 +25,22 @@ const hostNavItems = [
   {
     children: (
       <>
-        <Wallet className="aspect-square" />
-        <span>Income</span>
+        <ArrowRightLeft className="aspect-square" />
+        <span>Rentals</span>
       </>
     ),
-    id: "Income",
-    to: href("/host/income"),
+    id: "rental-activity",
+    to: href("/host/rental-activity"),
   },
   {
     children: (
       <>
-        <ArrowRightLeft className="aspect-square" />
-        <span>Transfers</span>
+        <Wallet className="aspect-square" />
+        <span>Wallet</span>
       </>
     ),
-    id: "Transfers",
-    to: href("/host/transfers"),
+    id: "Wallet",
+    to: href("/host/wallet-activity"),
   },
   {
     children: (
@@ -76,10 +76,10 @@ const hostNavItems = [
     children: (
       <>
         <KeySquare className="aspect-square" />
-        <span>Rentals</span>
+        <span>Your rentals</span>
       </>
     ),
-    id: "Rentals",
+    id: "host-rentals",
     to: href("/host/rentals"),
   },
 ] satisfies CustomNavLinkProps[];
