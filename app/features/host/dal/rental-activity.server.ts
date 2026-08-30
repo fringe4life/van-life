@@ -4,9 +4,7 @@ import {
   count,
   desc,
   eq,
-  gt,
   inArray,
-  lt,
   max,
   min,
   type SQL,
@@ -18,7 +16,10 @@ import type { AppDb } from "~/db/client.server";
 import { user } from "~/db/schema/auth";
 import { rent, transaction } from "~/db/schema/van";
 import { RENTAL_ACTIVITY_TYPES } from "~/features/host/components/transaction/transaction-types";
-import { mapTransactionOrderBy } from "~/features/host/dal/transaction-sort.server";
+import {
+  mapTransactionOrderBy,
+  transactionKeysetPredicate,
+} from "~/features/host/dal/transaction-sort.server";
 import { periodSqlFor } from "~/features/host/utils/chart-period.server";
 import {
   toBucketChartPoints,
@@ -97,7 +98,7 @@ export async function getRentalActivityChartData(
   return toBucketChartPoints(rows);
 }
 
-export function getHostTransactionsPaginated(
+export async function getHostTransactionsPaginated(
   db: AppDb,
   { userId, ...pagination }: PaginationParams
 ) {
@@ -111,19 +112,21 @@ export function getHostTransactionsPaginated(
     inArray(transaction.type, RENTAL_ACTIVITY_TYPES),
   ];
 
-  if (cursorId) {
-    conditions.push(
-      orderBy.id === "desc"
-        ? lt(transaction.id, cursorId)
-        : gt(transaction.id, cursorId)
-    );
+  const keyset = await transactionKeysetPredicate(
+    db,
+    cursorId,
+    orderByClause,
+    orderBy.id
+  );
+  if (keyset) {
+    conditions.push(keyset);
   }
 
   const idOrder =
     orderBy.id === "desc" ? desc(transaction.id) : asc(transaction.id);
   const sortCols = mapTransactionOrderBy(orderByClause);
 
-  return db
+  const rows = await db
     .select({
       amount: transaction.amount,
       createdAt: transaction.createdAt,
@@ -139,6 +142,7 @@ export function getHostTransactionsPaginated(
     .innerJoin(hostUser, eq(rent.hostId, hostUser.id))
     .where(and(...conditions))
     .orderBy(...sortCols, idOrder)
-    .limit(take)
-    .then((rows) => rows.map(toRentalTransactionListItem));
+    .limit(take);
+
+  return rows.map(toRentalTransactionListItem);
 }

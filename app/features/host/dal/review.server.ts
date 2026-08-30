@@ -1,9 +1,10 @@
-import { and, asc, count, desc, eq, gt, lt, type SQL } from "drizzle-orm";
+import { and, asc, count, desc, eq, type SQL } from "drizzle-orm";
 import type { AppDb } from "~/db/client.server";
 import { user } from "~/db/schema/auth";
 import { rent, review } from "~/db/schema/van";
 import type { ChartPoint } from "~/features/host/utils/chart-points.server";
 import type { PaginationParams } from "~/features/pagination/types";
+import { createKeysetCursorPredicate } from "~/features/pagination/utils/create-keyset-cursor.server";
 import { resolveSortedCursor } from "~/features/pagination/utils/resolve-sorted-cursor.server";
 import {
   COMMON_SORT_CONFIGS,
@@ -35,9 +36,31 @@ export async function getHostReviewsPaginated(
   const conditions: SQL[] = [hostReviewsWhere(userId)];
 
   if (cursorId) {
-    conditions.push(
-      orderBy.id === "desc" ? lt(review.id, cursorId) : gt(review.id, cursorId)
-    );
+    const [cursorRow] = await db
+      .select({
+        createdAt: review.createdAt,
+        rating: review.rating,
+      })
+      .from(review)
+      .where(eq(review.id, cursorId))
+      .limit(1);
+
+    if (cursorRow) {
+      const sortField = Object.hasOwn(orderByClause, "rating")
+        ? "rating"
+        : "createdAt";
+      const sortDirection = orderByClause[sortField] ?? "desc";
+      conditions.push(
+        createKeysetCursorPredicate({
+          cursorId,
+          idColumn: review.id,
+          idDirection: orderBy.id,
+          sortColumn: sortField === "rating" ? review.rating : review.createdAt,
+          sortDirection,
+          sortValue: cursorRow[sortField],
+        })
+      );
+    }
   }
 
   const idOrder = orderBy.id === "desc" ? desc(review.id) : asc(review.id);

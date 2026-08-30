@@ -34,7 +34,7 @@ export function resolveSortedCursor(
   }: ResolveSortedCursorParams,
   sortConfig: SortConfig
 ): ResolvedSortedCursor {
-  const { cursorId, orderBy, take } = getCursorMetadata({
+  const { cursorId, take } = getCursorMetadata({
     cursor,
     direction,
     limit,
@@ -42,6 +42,12 @@ export function resolveSortedCursor(
 
   const effectiveSort = reverseSortOption(sort, direction);
   const orderByClause = createGenericOrderBy(effectiveSort, sortConfig);
+  const primaryDirection = Object.values(orderByClause)[0] ?? "desc";
 
-  return { cursorId, orderBy, orderByClause, take };
+  return {
+    cursorId,
+    orderBy: { id: primaryDirection },
+    orderByClause,
+    take,
+  };
 }

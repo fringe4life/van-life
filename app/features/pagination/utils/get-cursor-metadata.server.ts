@@ -4,8 +4,10 @@ import type {
 } from "~/features/pagination/types";
 
 /**
- * Cursor pagination metadata for Drizzle queries.
+ * Cursor metadata for queries whose primary ORDER BY is `id`.
  * Use cursorId with lt/gt on id + limit(take).
+ * Sorted lists (date/amount/rating) must use a keyset tuple instead —
+ * see createKeysetCursorPredicate + resolveSortedCursor.
  */
 export const getCursorMetadata = ({
   cursor,
