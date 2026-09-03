@@ -4,12 +4,12 @@ import type { OutcomeStateConfig } from "~/components/outcome-state/types";
 export const VANS_LIST_EMPTY_STATE = {
   description: "There are no vans on our site.",
   title: "No vans available yet",
-} satisfies OutcomeStateConfig;
+} as const satisfies OutcomeStateConfig;
 
 export const VANS_LIST_ERROR_STATE = {
   description: "We couldn't load the van catalogue. Please try again.",
   title: "Catalogue unavailable",
-} satisfies OutcomeStateConfig;
+} as const satisfies OutcomeStateConfig;
 
 export const VANS_LIST_NO_MATCH_STATE = {
   description:
@@ -19,6 +19,6 @@ export const VANS_LIST_NO_MATCH_STATE = {
     to: href("/vans"),
   },
   title: "No vans found matching your filters.",
-} satisfies OutcomeStateConfig;
+} as const satisfies OutcomeStateConfig;
 
 export const VANS_LIST_RETRY_LABEL = "Try again";

@@ -20,7 +20,12 @@ import {
   toLowercaseVanType,
   validateLowercaseVanType,
 } from "~/features/vans/utils/validators";
-import { isVanAvailable } from "~/features/vans/utils/van-state-helpers";
+import {
+  isVanAvailable,
+  lowercaseVanState,
+} from "~/features/vans/utils/van-state-helpers";
+import { VanBadge } from "./van-badge";
+import { vanCard } from "./van-card-recipe";
 import { VanPrice } from "./van-price";
 
 const VAN_DETAIL_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
@@ -50,6 +55,7 @@ export default function VanDetail({
     <div className={cx(cq({ name: "card-full" }), css({ contain: "content" }))}>
       <Card
         className={cx(
+          vanCard({ state: lowercaseVanState(van) }),
           grid({
             columnGap: "4",
             gridTemplateAreas: {
@@ -74,6 +80,7 @@ export default function VanDetail({
             position: "relative",
           })}
         >
+          <VanBadge van={van} />
           <Image
             alt={name}
             className={css({ aspectRatio: "square", borderRadius: "md" })}
