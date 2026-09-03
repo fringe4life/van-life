@@ -12,8 +12,7 @@
       "node",
       "vite/client",
       "react/canary",
-      "react-dom/canary",
-      "bun"
+      "react-dom/canary"
     ],
     "target": "es2023",
     "module": "es2022",
