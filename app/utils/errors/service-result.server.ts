@@ -1,4 +1,5 @@
-import type { Failure, Prettify, Success } from "~/types";
+import type { Prettify } from "~/types";
+import type { Result, ResultFailure } from "~/utils/result";
 
 type ServiceErrorKind =
   | "not_found"
@@ -14,18 +15,10 @@ interface ServiceError {
   message: string;
 }
 
-type ServiceSuccess<T> = Prettify<Success & { data: T }>;
+// type ServiceSuccess<T> = Prettify<ResultSuccess<T>>;
 
-type ServiceFailure = Prettify<Failure & ServiceError>;
+type ServiceFailure = Prettify<ResultFailure<ServiceError>>;
 
-export type ServiceResult<T> = ServiceSuccess<T> | ServiceFailure;
+export type ServiceResult<T> = Result<T, ServiceError>;
 
-export type { ServiceError, ServiceErrorKind, ServiceFailure, ServiceSuccess };
-
-export function ok<T>(data: T): ServiceSuccess<T> {
-  return { data, ok: true };
-}
-
-export function err(error: ServiceError): ServiceFailure {
-  return { kind: error.kind, message: error.message, ok: false };
-}
+export type { ServiceFailure };

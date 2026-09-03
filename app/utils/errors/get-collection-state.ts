@@ -1,42 +1,50 @@
-// app/utils/collection-state.ts
-
-import type { EmptyState, ErrorState } from "~/components/types";
-import type { List, Message, Prettify } from "~/types";
+import type {
+  CollectionOutcome,
+  CollectionOutcomeProps,
+} from "~/components/types";
+import type { List } from "~/types";
+import { err, ok, type Result } from "~/utils/result";
 
 type NonEmptyArray<T> = [T, ...T[]];
 
-type CollectionMessages = Prettify<EmptyState & ErrorState>;
+type CollectionFailure =
+  | {
+      config: CollectionOutcome;
+      kind: "error";
+    }
+  | {
+      config: CollectionOutcome | null;
+      kind: "empty";
+    }
+  | {
+      config: CollectionOutcome | null;
+      kind: "no-match";
+    };
 
-type Error = Prettify<
-  {
-    kind: "error";
-  } & Message
->;
-type Empty = Prettify<
-  {
-    kind: "empty";
-  } & Message
->;
-
-interface Ok<T> {
-  items: NonEmptyArray<T>;
-  kind: "ok";
-}
-
-type CollectionState<T> = Error | Empty | Ok<T>;
+type CollectionState<T> = Result<NonEmptyArray<T>, CollectionFailure>;
 
 function getCollectionState<T>(
   items: List<T>,
-  { emptyStateMessage, errorStateMessage }: CollectionMessages
+  {
+    emptyState,
+    errorState,
+    noMatchState,
+    noMatchWhen = false,
+  }: CollectionOutcomeProps
 ): CollectionState<T> {
-  if (!items) {
-    return { kind: "error", message: errorStateMessage };
+  if (items === null || items === undefined) {
+    return err({ config: errorState, kind: "error" });
   }
+
   if (items.length === 0) {
-    return { kind: "empty", message: emptyStateMessage };
+    if (noMatchWhen) {
+      return err({ config: noMatchState, kind: "no-match" });
+    }
+    return err({ config: emptyState, kind: "empty" });
   }
+
   // length > 0 proven; tuple assertion is safe
-  return { items: items as NonEmptyArray<T>, kind: "ok" };
+  return ok(items as NonEmptyArray<T>);
 }
 
 export { getCollectionState };

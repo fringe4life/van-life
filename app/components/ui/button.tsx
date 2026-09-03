@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-
+import { cx } from "../../../styled-system/css";
 import { type ButtonVariantProps, buttonVariants } from "./button-variants";
 
 function Button({
@@ -11,7 +11,7 @@ function Button({
 }: ComponentProps<"button"> & ButtonVariantProps) {
   return (
     <button
-      className={buttonVariants({ className, size, variant })}
+      className={cx(buttonVariants({ size, variant }), className)}
       type={type}
       {...props}
     />

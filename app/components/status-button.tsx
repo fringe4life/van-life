@@ -1,7 +1,8 @@
 import { Check, Loader2, X } from "lucide-react";
 import type { ReactElement } from "react";
 import { Button } from "~/components/ui/button";
-import { cn } from "~/utils/utils";
+import { css, cx } from "../../styled-system/css";
+import { center, hstack, square } from "../../styled-system/patterns";
 
 /**
  * Status of the button action
@@ -16,15 +17,28 @@ interface StatusButtonProps extends React.ComponentProps<typeof Button> {
   /** The current status of the button action */
   status: Status;
 }
+
 // Component selection for status icons
 const getStatusIcon = (status: Status): ReactElement | null => {
   switch (status) {
     case "pending":
-      return <Loader2 className="size-4 animate-spin" />;
+      return (
+        <Loader2
+          className={cx(square({ size: "4" }), css({ animation: "spin" }))}
+        />
+      );
     case "success":
-      return <Check className="size-4 text-success" />;
+      return (
+        <Check
+          className={cx(square({ size: "4" }), css({ color: "success" }))}
+        />
+      );
     case "error":
-      return <X className="size-4 text-destructive" />;
+      return (
+        <X
+          className={cx(square({ size: "4" }), css({ color: "destructive" }))}
+        />
+      );
     default:
       return null;
   }
@@ -53,7 +67,14 @@ const StatusButton = ({
   return (
     <Button
       aria-busy={status === "pending"}
-      className={cn("relative transition-all duration-200", className)}
+      className={cx(
+        css({
+          position: "relative",
+          transitionDuration: "normal",
+          transitionProperty: "all",
+        }),
+        className
+      )}
       // Button is disabled when not idle to prevent double submission
       // status is used as a proxy for disabled as requested
       disabled={disabled || !isIdle}
@@ -61,13 +82,18 @@ const StatusButton = ({
       {...props}
     >
       {/* Render children with invisible class when not idle to maintain button width */}
-      <span className={cn("flex items-center gap-2", !isIdle && "invisible")}>
+      <span
+        className={cx(
+          hstack({ gap: 2 }),
+          !isIdle && css({ visibility: "hidden" })
+        )}
+      >
         {children}
       </span>
 
       {/* Overlay for status icons */}
       {IconComponent ? (
-        <span className="absolute inset-0 flex items-center justify-center">
+        <span className={center({ inset: "0", position: "absolute" })}>
           {IconComponent}
         </span>
       ) : null}
@@ -75,5 +101,5 @@ const StatusButton = ({
   );
 };
 
-export type { Status, StatusButtonProps };
+export type { Status };
 export { StatusButton };

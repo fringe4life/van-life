@@ -1,7 +1,12 @@
 import type { MouseEvent } from "react";
+import { href } from "react-router";
 import { GenericComponent } from "~/components/generic-component";
 import { Dialog } from "~/components/ui/dialog";
 import type { Items } from "~/features/pagination/types";
+import { css, cx } from "../../../../styled-system/css";
+import { cq, visuallyHidden, vstack } from "../../../../styled-system/patterns";
+import { CustomLink } from "../../../components/links/custom-link";
+import { brandClassName } from "../styles";
 import type { NavItem as NavItemType } from "../types";
 import { HamburgerIcon } from "./hamburger-icon";
 import { NavItem } from "./nav-item";
@@ -25,6 +30,8 @@ const withDialogClose =
     onClick?.(event);
   };
 
+const closeBrandLink = withDialogClose();
+
 const renderMobileNavItemProps = (item: NavItemType) => {
   if (item.type === "link") {
     return {
@@ -43,11 +50,51 @@ const renderMobileNavItemProps = (item: NavItemType) => {
   };
 };
 
+const mobileNavButton = css({
+  _hover: {
+    backgroundColor: "surface.muted",
+  },
+  cursor: "pointer",
+  padding: "1",
+  rounded: "md",
+  transitionDuration: "normal",
+  transitionProperty: "colors",
+});
+
+const mobileNavDrawer = css({
+  _groupOpenMobileNav: {
+    _starting: {
+      opacity: "0",
+      translate: "-100% 0",
+    },
+    opacity: "1",
+    translate: "0 0",
+  },
+  alignItems: "center",
+  backgroundColor: "accent",
+  blockSize: "full",
+  display: "flex",
+  flexDirection: "column",
+  inlineSize: "full",
+  inset: "0",
+  justifyContent: "center",
+  opacity: "0",
+  overflowY: "auto",
+  position: "absolute",
+  textAlign: "center",
+  transitionDuration: "var(--duration-dialog)",
+  transitionProperty: "translate,opacity",
+  transitionTimingFunction: "glide",
+  translate: "100% 0",
+});
+
 const MobileNav = ({ items }: MobileNavProps) => (
-  <div className="group/hamburger mobile-nav md:hidden">
+  <div className={cx("group/hamburger", css({ display: { md: "none" } }))}>
     <button
+      aria-controls={MOBILE_NAV_DIALOG_ID}
+      aria-haspopup="dialog"
       aria-label="Open navigation menu"
-      className="cursor-pointer rounded p-1 transition-colors duration-250 hover:bg-surface-muted"
+      className={mobileNavButton}
       command="show-modal"
       commandfor={MOBILE_NAV_DIALOG_ID}
       type="button"
@@ -56,33 +103,63 @@ const MobileNav = ({ items }: MobileNavProps) => (
     </button>
     <Dialog
       aria-labelledby="mobile-nav-title"
-      className="@container/mobile-nav group/mobile-nav flex-col items-center justify-center open:flex"
+      className={cx(cq({ name: "mobile-nav" }), "group/mobile-nav")}
       id={MOBILE_NAV_DIALOG_ID}
       variant="fullscreen"
     >
+      {/* The host stays fixed; only the drawer moves during open/close. */}
+      <CustomLink
+        className={cx(
+          brandClassName,
+          css({
+            insetBlockStart: "9",
+            insetInlineStart: "padding-inline",
+            position: "absolute",
+            zIndex: 1,
+          })
+        )}
+        onClick={closeBrandLink}
+        to={href("/")}
+      >
+        #vanlife
+      </CustomLink>
+      <div className={mobileNavDrawer}>
+        <nav>
+          <GenericComponent
+            as="ul"
+            Component={NavItem}
+            className={vstack({ fontSize: "lg", gap: "6" })}
+            emptyState={{ title: "No nav items" }}
+            errorState={{ title: "Something went wrong" }}
+            items={items}
+            noMatchState={null}
+            renderProps={renderMobileNavItemProps}
+          />
+        </nav>
+      </div>
+      {/* Brand link is first tabbable; autofocus lands keyboard on close instead. */}
+      {/* react-doctor-disable-next-line react-doctor/no-autofocus */}
       <button
         aria-label="Close navigation menu"
-        className="absolute top-9 right-(--padding-inline) translate-x-[-100cqi] cursor-pointer rounded p-1 transition-[translate,color,background-color] duration-(--duration-dialog) ease-glide hover:bg-surface-muted group-open/mobile-nav:starting:translate-x-[-100cqi] group-open/mobile-nav:translate-x-0"
+        autoFocus
+        className={cx(
+          mobileNavButton,
+          css({
+            insetBlockStart: "9",
+            insetInlineEnd: "padding-inline",
+            position: "absolute",
+            zIndex: 1,
+          })
+        )}
         command="close"
         commandfor={MOBILE_NAV_DIALOG_ID}
         type="button"
       >
         <HamburgerIcon size={24} />
       </button>
-      <h2 className="sr-only" id="mobile-nav-title">
+      <h2 className={visuallyHidden()} id="mobile-nav-title">
         Navigation
       </h2>
-      <nav>
-        <GenericComponent
-          as="ul"
-          Component={NavItem}
-          className="flex flex-col items-center gap-6 text-lg"
-          emptyStateMessage="No nav items"
-          errorStateMessage="Something went wrong"
-          items={items}
-          renderProps={renderMobileNavItemProps}
-        />
-      </nav>
     </Dialog>
   </div>
 );

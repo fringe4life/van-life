@@ -7,7 +7,7 @@ import {
 } from "~/features/pagination/pagination-constants";
 import { limitParsers } from "~/features/pagination/parsers";
 import { validateLimit } from "~/features/pagination/utils/validators";
-import { cn } from "~/utils/utils";
+import { css, cx } from "../../../../styled-system/css";
 
 export const PaginationLimitControl = () => {
   const [{ limit }, setSearchParams] = useQueryStates(limitParsers);
@@ -23,9 +23,9 @@ export const PaginationLimitControl = () => {
   return (
     <select
       aria-label="Pagination amount control"
-      className={cn(
+      className={cx(
         buttonVariants({ size: "icon", variant: "outline" }),
-        "w-20"
+        css({ width: "20" })
       )}
       onChange={handleLimitChange}
       value={limit?.toString() ?? DEFAULT_LIMIT.toString()}

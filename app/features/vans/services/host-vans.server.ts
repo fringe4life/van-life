@@ -1,13 +1,13 @@
 import type { InferOutput } from "valibot";
 import type { AppDb } from "~/db/client.server";
+import {
+  loadHostSearchParams,
+  parsePaginationCursor,
+} from "~/features/pagination/loaders.server";
 import { toPagination } from "~/features/pagination/utils/to-pagination.server";
 import { getHostVans } from "~/features/vans/dal/host-van.server";
 import { createVan } from "~/features/vans/dal/van.server";
 import type { addVanSchema } from "~/features/vans/schemas.server";
-import {
-  loadHostSearchParams,
-  parsePaginationCursor,
-} from "~/lib/search-params.server";
 import type { UUIDv7 } from "~/types/ids.server";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import { getSlug } from "~/utils/get-slug";

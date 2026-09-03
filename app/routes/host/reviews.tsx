@@ -1,5 +1,5 @@
 import { data } from "react-router";
-import { DeferredPaginated } from "~/components/deferred-paginated";
+import { DeferredPaginated } from "~/components/deferred/paginated";
 import { PendingUI } from "~/components/pending-ui";
 import { Sortable } from "~/components/sortable";
 import {
@@ -11,14 +11,18 @@ import { LazyBarChart } from "~/features/host/components/bar-chart/lazy-bar-char
 import { Review } from "~/features/host/components/review/review";
 import { ReviewListSkeleton } from "~/features/host/components/review/review-list-skeleton";
 import { loadReviewsPage } from "~/features/host/services/reviews.server";
+import { vHostList } from "~/features/host/styles";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
-import { VanHeader } from "~/features/vans/components/van-header";
 import {
   loadHostSearchParams,
   parsePaginationCursor,
-} from "~/lib/search-params.server";
+} from "~/features/pagination/loaders.server";
+import { VanHeader } from "~/features/vans/components/van-header";
+import { gridMax } from "~/styles";
 import type { Prettify } from "~/types";
+import { css, cx } from "../../../styled-system/css";
+import { grid } from "../../../styled-system/patterns";
 import type { Route } from "./+types/reviews";
 
 export const headers = forwardDataHeaders;
@@ -62,7 +66,15 @@ const HostReviews = ({ loaderData }: Route.ComponentProps) => {
   return (
     <PendingUI
       as="section"
-      className="grid grid-rows-[min-content_var(--chart-height)_min-content_1fr_min-content] contain-content"
+      className={cx(
+        grid({
+          contain: "content",
+          gap: "0",
+          gridTemplateRows:
+            // biome-ignore assist/source/noDuplicateClasses: grid template rows
+            "min-content var(--chart-height) min-content 1fr min-content",
+        })
+      )}
     >
       <title>Reviews | Van Life</title>
       <meta
@@ -78,18 +90,23 @@ const HostReviews = ({ loaderData }: Route.ComponentProps) => {
       */}
       <LazyBarChart
         data={chartData}
-        emptyStateMessage="You have no reviews"
-        errorStateMessage="Something went wrong please try again"
+        emptyState={{ title: "You have no reviews" }}
+        errorState={{
+          description: "Please try again.",
+          title: "Something went wrong",
+        }}
+        noMatchState={null}
       />
       <Sortable itemCount={reviewCount} title="Reviews" />
 
       <DeferredPaginated
         as="div"
         Component={Review}
-        className="grid-max v-host-list mt-6"
-        emptyStateMessage="You have received no reviews"
-        errorStateMessage="Something went wrong"
+        className={cx(gridMax, vHostList, css({ marginBlockStart: "6" }))}
+        emptyState={{ title: "You have received no reviews" }}
+        errorState={{ title: "Something went wrong" }}
         fallback={<ReviewListSkeleton />}
+        noMatchState={null}
         renderProps={renderReviewProps}
         resolve={pagePromise}
       />

@@ -1,38 +1,47 @@
 import { lazy, Suspense } from "react";
-import type { EmptyState, ErrorState } from "~/components/types";
-import { UnsuccesfulState } from "~/components/unsuccesful-state";
+import { OutcomeState } from "~/components/outcome-state";
+import type { CollectionOutcomeProps } from "~/components/types";
 import type { Data, DataArray } from "~/features/host/types";
 import type { Maybe, Prettify } from "~/types";
 import { getCollectionState } from "~/utils/errors/get-collection-state";
+import { css } from "../../../../../styled-system/css";
 import { BarChartSkeleton } from "./bar-chart-skeleton";
 
 type LazyBarChartProps = Prettify<
-  Data<Maybe<DataArray>> & EmptyState & ErrorState
+  Data<Maybe<DataArray>> & CollectionOutcomeProps
 >;
 
 const BarChartComponent = lazy(() => import("./bar-chart"));
 const LazyBarChart = ({
   data,
-  errorStateMessage,
-  emptyStateMessage,
+  emptyState,
+  errorState,
+  noMatchState,
+  noMatchWhen,
 }: LazyBarChartProps) => {
   const collectionState = getCollectionState(data, {
-    emptyStateMessage,
-    errorStateMessage,
+    emptyState,
+    errorState,
+    noMatchState,
+    noMatchWhen,
   });
-  if (collectionState.kind !== "ok") {
+  if (!collectionState.ok) {
     return (
-      <div className="v-host-chart">
-        <UnsuccesfulState
-          isError={collectionState.kind === "error"}
-          message={collectionState.message}
-        />
+      <div className={css({ viewTransitionName: "host-chart" })}>
+        {collectionState.config ? (
+          <OutcomeState
+            kind={collectionState.kind}
+            {...collectionState.config}
+          />
+        ) : (
+          <div aria-hidden="true" />
+        )}
       </div>
     );
   }
   return (
     <Suspense fallback={<BarChartSkeleton />}>
-      <BarChartComponent data={collectionState.items} />
+      <BarChartComponent data={collectionState.data} />
     </Suspense>
   );
 };

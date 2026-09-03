@@ -1,6 +1,13 @@
 import { Card, CardContent } from "~/components/ui/card";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import type { Children, Prettify } from "~/types";
+import { css, cx } from "../../../../../styled-system/css";
+import {
+  cq,
+  grid,
+  visuallyHidden,
+  wrap,
+} from "../../../../../styled-system/patterns";
 import { TransactionBadge } from "./transaction-badge";
 import { transactionCard, transactionMeta } from "./transaction-recipe";
 import type { TransactionProps } from "./transaction-types";
@@ -26,36 +33,84 @@ const Transaction = ({
   const headingId = `transaction-${id}-title`;
 
   return (
-    <div className="@container/transaction min-w-0 self-start">
+    <div
+      className={cx(
+        cq({ name: "transaction" }),
+        css({ alignSelf: "start", minInlineSize: "0" })
+      )}
+    >
       <Card
         aria-labelledby={headingId}
         className={transactionCard({ type })}
         role="article"
       >
-        <CardContent className="contents">
-          <div className={"min-w-0"}>
-            <div className="flex min-w-0 flex-wrap items-center gap-2 border-border-subtle border-b pb-4">
+        <CardContent className={css({ display: "contents" })}>
+          <div className={css({ gridArea: "details", minInlineSize: "0" })}>
+            <div
+              className={cx(
+                wrap({ alignItems: "center", gap: "2" }),
+                css({
+                  borderBottomWidth: "thin",
+                  borderColor: "border.subtle",
+                  paddingBlockEnd: "4",
+                })
+              )}
+            >
               <TransactionBadge type={type} />
               <h3
-                className="wrap-break-words min-w-0 font-bold text-lg tracking-tight"
+                className={css({
+                  fontSize: "lg",
+                  fontWeight: "bold",
+                  letterSpacing: "tight",
+                  minInlineSize: "0",
+                  wordBreak: "break-word",
+                })}
                 id={headingId}
               >
                 {title}
               </h3>
             </div>
-            <div className="mt-3 min-w-0">{children}</div>
+
+            <div className={css({ marginBlockStart: "3", minInlineSize: "0" })}>
+              {children}
+            </div>
           </div>
           <div
-            className={
-              "grid min-w-0 @max-sm/transaction:grid-cols-1 @min-md/transaction:grid-cols-1 grid-cols-[minmax(0,1fr)_auto] items-baseline @max-sm/transaction:justify-items-start @min-md/transaction:justify-items-end gap-x-4 @min-md/transaction:gap-y-1 gap-y-2"
-            }
+            className={cx(
+              grid({
+                "@transaction/sm": {
+                  justifyItems: "end",
+                },
+                alignItems: "baseline",
+                columnGap: { "@transaction/sm": "1", base: "4" },
+                columns: { "@transaction/sm": 1, base: 2 },
+                gridArea: "amount",
+                rowGap: "2",
+              })
+            )}
           >
-            <p className="whitespace-nowrap font-extrabold text-2xl text-foreground lining-nums tabular-nums tracking-tighter">
-              <span className="sr-only">Transaction amount: </span>
+            <p
+              className={cx(
+                css({
+                  color: "foreground",
+                  fontSize: "2xl",
+                  fontVariantNumeric: "tabular-nums",
+                  fontWeight: "extrabold",
+                  letterSpacing: "tighter",
+                  textTransform: "uppercase",
+                })
+              )}
+            >
+              <span className={visuallyHidden()}>Transaction amount: </span>
               {displayPrice(amount)}
             </p>
             <time
-              className="whitespace-nowrap text-muted-foreground text-sm"
+              className={css({
+                color: "muted.foreground",
+                fontSize: "sm",
+                textAlign: "right",
+                whiteSpace: "nowrap",
+              })}
               dateTime={createdAt.toISOString()}
               suppressHydrationWarning
             >

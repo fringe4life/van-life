@@ -1,22 +1,21 @@
 import { NuqsAdapter } from "nuqs/adapters/react-router/v8";
-import {
-  isRouteErrorResponse,
-  Links,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "react-router";
+import { Links, Outlet, Scripts, ScrollRestoration } from "react-router";
 import type { Route } from "./+types/root";
-import { HTTP_MESSAGES, HTTP_STATUS } from "./constants/http-constants";
+import { RouteErrorBoundary } from "./components/route-error-boundary";
 import "./app.css";
-import type { Children, Maybe } from "./types";
+import { css, cx } from "../styled-system/css";
+import { grid } from "../styled-system/patterns";
+import type { Children } from "./types";
+
+const layoutGrid = grid({
+  gap: "0",
+  gridTemplateAreas: '". nav ." ". content ." "footer footer footer"',
+  gridTemplateColumns: "{spacing.padding-inline} 1fr {spacing.padding-inline}",
+  gridTemplateRows: "var(--header-height) 1fr var(--footer-height)",
+});
 
 export const Layout = ({ children }: Children) => (
-  <html
-    className="bg-background md:[--padding-inline:3rem]"
-    dir="ltr"
-    lang="en"
-  >
+  <html className={css({ backgroundColor: "background" })} dir="ltr" lang="en">
     <head>
       <meta charSet="utf-8" />
       <link href="/camper-van.png" rel="icon" type="image/png" />
@@ -24,7 +23,18 @@ export const Layout = ({ children }: Children) => (
       <Links />
     </head>
     <body>
-      <div className="layout-grid mx-auto min-h-dvh w-full max-w-shell bg-surface">
+      <div
+        className={cx(
+          layoutGrid,
+          css({
+            backgroundColor: "surface",
+            inlineSize: "full",
+            marginInline: "auto",
+            maxInlineSize: "shell",
+            minBlockSize: "100dvh",
+          })
+        )}
+      >
         {children}
       </div>
       <ScrollRestoration />
@@ -34,42 +44,12 @@ export const Layout = ({ children }: Children) => (
 );
 
 const App = () => (
-  <NuqsAdapter defaultOptions={{ clearOnDefault: true, shallow: false }}>
+  <NuqsAdapter>
     <Outlet />
   </NuqsAdapter>
 );
 export default App;
 
-// fallow-ignore-next-line complexity
-export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
-  let stack: Maybe<string>;
-
-  if (isRouteErrorResponse(error)) {
-    message =
-      error.status === HTTP_STATUS.NOT_FOUND
-        ? HTTP_MESSAGES.NOT_FOUND
-        : HTTP_MESSAGES.ERROR;
-    details =
-      error.status === HTTP_STATUS.NOT_FOUND
-        ? HTTP_MESSAGES.NOT_FOUND_DETAILS
-        : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
-    const { message: errorMessage, stack: errorStack } = error;
-    details = errorMessage;
-    stack = errorStack;
-  }
-
-  return (
-    <main className="container col-start-2 mx-auto p-4 pt-16">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {!!stack && (
-        <pre className="w-full overflow-x-auto p-4">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
-  );
-};
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
+  <RouteErrorBoundary error={error} />
+);

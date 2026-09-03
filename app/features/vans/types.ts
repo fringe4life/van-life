@@ -32,7 +32,6 @@ export type VanCardProps = Prettify<
     imageIndex?: number;
     link: string;
     linkCoversCard?: boolean;
-    state?: Record<string, unknown>;
   }
 >;
 

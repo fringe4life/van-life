@@ -15,11 +15,6 @@
     "includes": ["app/**/*", "!!.cursor/hooks/*", "!fallow-viz.html"],
     "ignoreUnknown": false
   },
-  "css": {
-    "parser": {
-      "tailwindDirectives": true
-    }
-  },
   "overrides": [
     {
       "includes": ["env.d.ts"],

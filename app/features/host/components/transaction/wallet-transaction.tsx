@@ -1,8 +1,17 @@
+import { css } from "../../../../../styled-system/css";
 import { Transaction } from "./transaction";
 import type { WalletTransactionProps } from "./transaction-types";
 
 const WalletTransactionDetails = () => (
-  <p className="font-semibold text-foreground text-sm">Wallet movement</p>
+  <p
+    className={css({
+      color: "foreground",
+      fontSize: "sm",
+      fontWeight: "semibold",
+    })}
+  >
+    Wallet movement
+  </p>
 );
 
 const WalletTransaction = ({

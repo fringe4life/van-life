@@ -1,5 +1,5 @@
-import { cva } from "cva";
 import { TransactionType } from "~/db/enums";
+import { cva } from "../../../../../styled-system/css";
 
 const transactionMeta = {
   [TransactionType.DEPOSIT]: {
@@ -21,17 +21,45 @@ const transactionMeta = {
 } as const satisfies Record<TransactionType, { label: string; title: string }>;
 
 const transactionCard = cva({
-  base: "transaction-card grid min-w-0 @min-md/transaction:grid-cols-[minmax(0,1.4fr)_minmax(10rem,0.6fr)] grid-cols-1 items-start @min-md/transaction:items-center @min-md/transaction:gap-x-6 @min-md/transaction:gap-y-0 gap-y-4 self-start border-l-4",
+  base: {
+    alignItems: { "@transaction/sm": "center", base: "start" },
+    alignSelf: "start",
+    borderLeftWidth: "4",
+    columnGap: { "@transaction/sm": "6" },
+    display: "grid",
+    gridTemplateAreas: {
+      "@transaction/sm": '"details amount"',
+      base: '"details" "amount"',
+    },
+    gridTemplateColumns: {
+      "@transaction/sm": "minmax(0,1.4fr) minmax(10rem,0.6fr)",
+      base: "1fr",
+    },
+    minInlineSize: "0",
+    rowGap: { "@transaction/sm": "0", base: "4" },
+  },
   defaultVariants: {
-    type: TransactionType.RENTAL_PAYMENT,
+    type: "RENTAL_PAYMENT",
   },
   variants: {
     type: {
-      [TransactionType.DEPOSIT]: "border-border-accent bg-surface-accent/40",
-      [TransactionType.RENTAL_PAYMENT]: "border-primary bg-primary/10",
-      [TransactionType.RENTAL_RETURN]: "border-secondary bg-secondary/5",
-      [TransactionType.WITHDRAW]: "border-border-strong bg-surface-muted/50",
-    } satisfies Record<TransactionType, string>,
+      DEPOSIT: {
+        backgroundColor: "surface.accent/40",
+        borderColor: "border.accent",
+      },
+      RENTAL_PAYMENT: {
+        backgroundColor: "primary/10",
+        borderColor: "primary",
+      },
+      RENTAL_RETURN: {
+        backgroundColor: "secondary/5",
+        borderColor: "secondary",
+      },
+      WITHDRAW: {
+        backgroundColor: "surface.muted/50",
+        borderColor: "border.strong",
+      },
+    },
   },
 });
 

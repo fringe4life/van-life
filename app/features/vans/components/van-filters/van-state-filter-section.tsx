@@ -1,5 +1,7 @@
 import type { Prettify } from "~/types";
-import { cn } from "~/utils/utils";
+import { css, cx } from "../../../../../styled-system/css";
+import { grid } from "../../../../../styled-system/patterns";
+
 import { FilterCheckboxRow } from "./filter-checkbox-row";
 import type {
   FilterBaseId,
@@ -26,7 +28,7 @@ const VanStateFilterRow = ({
   return (
     <FilterCheckboxRow
       checked={facet.checked}
-      className={cn(facet.isPending && "opacity-75")}
+      className={cx(facet.isPending && css({ opacity: 0.75 }))}
       id={`${baseId}-van-filter-${facet.key}`}
       label={facet.label}
       onChange={handleCheckedChange}
@@ -46,8 +48,28 @@ const VanStateFilterSection = ({
   facets,
   onCheckedChange,
 }: VanStateFilterSectionProps) => (
-  <fieldset className="grid gap-1 p-1 pt-3 sm:grid-cols-2 lg:grid-cols-1">
-    <legend className="px-2 py-1.5 font-medium text-sm">State Filters</legend>
+  <fieldset
+    className={cx(
+      grid({
+        columns: { lg: 1, sm: 2 },
+        gap: "1",
+      }),
+      css({
+        padding: "1",
+        paddingBlockStart: "3",
+      })
+    )}
+  >
+    <legend
+      className={css({
+        fontSize: "sm",
+        fontWeight: "medium",
+        paddingBlock: "1.5",
+        paddingInline: "2",
+      })}
+    >
+      State Filters
+    </legend>
     {facets.map((facet) => (
       <VanStateFilterRow
         baseId={baseId}

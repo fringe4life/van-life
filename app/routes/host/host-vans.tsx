@@ -14,6 +14,7 @@ import {
 import type { FormActionResult } from "~/components/form/form-action-result";
 import { readActionFormData } from "~/components/form/read-action-form-data";
 import { GenericComponent } from "~/components/generic-component";
+import { CustomLink } from "~/components/links/custom-link";
 import { PendingUI } from "~/components/pending-ui";
 import {
   forwardDataHeaders,
@@ -24,8 +25,8 @@ import { VanForm } from "~/features/host/components/van-form";
 import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
-import { CustomLink } from "~/features/navigation/components/custom-link";
 import { Pagination } from "~/features/pagination/components/pagination";
+import { hostPaginationParsers } from "~/features/pagination/parsers";
 import { VanCard } from "~/features/vans/components/van-card";
 import { VanHeader } from "~/features/vans/components/van-header";
 import {
@@ -47,12 +48,14 @@ import { isPendingVan, VAN_FORM_FIELDS } from "~/features/vans/types";
 import { pendingVanFromFormData } from "~/features/vans/utils/pending-van-from-form-data";
 import { toVanCardModel } from "~/features/vans/utils/to-van-card-model";
 import { toVanFormValues } from "~/features/vans/utils/to-van-form-values";
-import { hostPaginationParsers } from "~/lib/parsers";
+import { gridMax } from "~/styles";
 import { badRequest } from "~/utils/errors/bad-request";
 import {
   schemaErrorsToFieldErrors,
   validateSchema,
 } from "~/utils/errors/parse-schema.server";
+import { css, cx } from "../../../styled-system/css";
+import { grid } from "../../../styled-system/patterns";
 import type { Route } from "./+types/host-vans";
 
 interface HostVansActionSuccess {
@@ -144,9 +147,17 @@ const renderHostVanCardProps = (item: HostVanListItem, index: number) => {
 
   return {
     action: pending ? (
-      <p className="text-right text-muted-foreground text-sm italic">Saving…</p>
+      <p
+        className={css({
+          color: "muted.foreground",
+          fontSize: "sm",
+          fontStyle: "italic",
+        })}
+      >
+        Saving…
+      </p>
     ) : (
-      <p className="text-right">
+      <p className={css({ textAlign: "right" })}>
         <CustomLink
           to={href("/host/vans/:vanSlug/:action?", {
             action: "edit",
@@ -235,7 +246,12 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
           />
         </Activity>
         {onFirstPage ? null : (
-          <p className="mt-6 text-muted-foreground">
+          <p
+            className={css({
+              color: "muted.foreground",
+              marginBlockStart: "6",
+            })}
+          >
             New vans appear at the top of your list.{" "}
             <CustomLink to={href("/host/vans")}>
               Go to first page to add a van
@@ -245,16 +261,23 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
       </section>
       <PendingUI
         as="section"
-        className="mt-6 grid grid-rows-[min-content_1fr_min-content] contain-content"
+        className={grid({
+          contain: "content",
+          gap: "0",
+          // biome-ignore assist/source/noDuplicateClasses: grid definition
+          gridTemplateRows: "min-content 1fr min-content",
+          marginBlockStart: "6",
+        })}
       >
         <VanHeader>Your listed vans</VanHeader>
         <GenericComponent<HostVanListItem, VanCardProps>
           as="div"
           Component={VanCard}
-          className="grid-max mt-6"
-          emptyStateMessage={HOST_VANS_EMPTY_MESSAGE}
-          errorStateMessage="Something went wrong"
+          className={cx(gridMax, css({ marginBlockStart: "6" }))}
+          emptyState={{ title: HOST_VANS_EMPTY_MESSAGE }}
+          errorState={{ title: "Something went wrong" }}
           items={displayItems}
+          noMatchState={null}
           renderProps={renderHostVanCardProps}
         />
         <Pagination items={vans} paginationMetadata={paginationMetadata} />

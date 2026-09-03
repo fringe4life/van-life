@@ -1,18 +1,43 @@
 import { href } from "react-router";
+import { CustomLink } from "~/components/links/custom-link";
 import { RatingStars } from "~/features/host/components/review/rating-stars";
-import { CustomLink } from "~/features/navigation/components/custom-link";
+import { css, cx } from "../../../../../styled-system/css";
+import { hstack } from "../../../../../styled-system/patterns";
 
 interface HostReviewSectionProps {
   avgRating: number;
 }
 
 const HostReviewSection = ({ avgRating }: HostReviewSectionProps) => (
-  <div className="flex w-full items-center justify-between bg-surface-accent px-(--padding-inline) py-6 sm:py-9">
-    <div className="font-bold text-lg text-shadow-text sm:text-2xl">
+  <div
+    className={cx(
+      hstack({
+        gap: "0",
+        justifyContent: "space-between",
+      }),
+      css({
+        backgroundColor: "surface.accent",
+        inlineSize: "full",
+        paddingBlock: { base: "6", sm: "9" },
+        paddingInline: "padding-inline",
+      })
+    )}
+  >
+    <div
+      className={css({
+        fontSize: { base: "lg", sm: "2xl" },
+        fontWeight: "bold",
+        textShadow: "sm",
+      })}
+    >
       Your Avg Review <RatingStars rating={avgRating} />
     </div>
     <CustomLink
-      className="font-medium text-base text-shadow-text"
+      className={css({
+        fontSize: "md",
+        fontWeight: "medium",
+        textShadow: "sm",
+      })}
       to={href("/host/review")}
     >
       Details

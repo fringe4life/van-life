@@ -20,10 +20,10 @@
         "command": "bun fix"
       }
     ],
-    "postToolUse": [
+    "postToolUse": [],
+    "stop": [
       {
         "command": "node .cursor/hooks/react-doctor.mjs",
-        "matcher": "Write|Edit|MultiEdit|ApplyPatch",
         "timeout": 120
       }
     ]

@@ -6,8 +6,8 @@ import { FormError } from "~/components/form/form-error";
 import { getNavigationFormStatus } from "~/components/form/get-fetcher-status";
 import { readActionFormData } from "~/components/form/read-action-form-data";
 import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
+import { RouteErrorBoundary } from "~/components/route-error-boundary";
 import { StatusButton } from "~/components/status-button";
-import { UnsuccesfulState } from "~/components/unsuccesful-state";
 import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
@@ -19,11 +19,12 @@ import { dbContext } from "~/features/middleware/contexts/db";
 import { VanCard } from "~/features/vans/components/van-card";
 import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
 import { badRequest } from "~/utils/errors/bad-request";
-import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import { notFound } from "~/utils/errors/not-found";
 import { validateSchema } from "~/utils/errors/parse-schema.server";
 import { serverError } from "~/utils/errors/server-error";
 import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
+import { css, cx } from "../../../../styled-system/css";
+import { grid } from "../../../../styled-system/patterns";
 import type { Route } from "./+types/rental-detail";
 
 type RentActionData = FormActionFailure<string>;
@@ -90,15 +91,30 @@ const AddVan = ({ actionData, loaderData, params }: Route.ComponentProps) => {
 
   return (
     <section>
-      <title>Rent {rental.name} | Vanlife</title>
+      <title>{`Rent ${rental.name} | Vanlife`}</title>
       <meta content="The van you might rent" name="description" />
       <VanCard
         action={<p />}
         link={href("/host/rentals/rent/:vanSlug", { vanSlug: params.vanSlug })}
         van={rental}
       />
-      <h2 className="font-bold text-4xl text-foreground">Return Van</h2>
-      <CustomForm className="mt-6 grid max-w-102 gap-4" method="POST">
+
+      <h2
+        className={css({
+          color: "foreground",
+          fontSize: "4xl",
+          fontWeight: "bold",
+        })}
+      >
+        Return Van
+      </h2>
+      <CustomForm
+        className={cx(
+          grid({ gap: "4" }),
+          css({ marginBlockStart: "6", maxInlineSize: "25.5rem" })
+        )}
+        method="POST"
+      >
         <FormError message={formError} />
         <StatusButton status={status} type="submit">
           Rent {rental.name}
@@ -111,5 +127,5 @@ const AddVan = ({ actionData, loaderData, params }: Route.ComponentProps) => {
 export default AddVan;
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
-  <UnsuccesfulState isError message={getRouteErrorMessage(error)} />
+  <RouteErrorBoundary error={error} />
 );

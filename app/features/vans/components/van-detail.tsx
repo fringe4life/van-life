@@ -1,4 +1,8 @@
 import { href } from "react-router";
+import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
+import { Image } from "~/components/image/image";
+import { HIGH_QUALITY_IMAGE_QUALITY } from "~/components/image/img-constants";
+import { CustomLink } from "~/components/links/custom-link";
 import { Badge } from "~/components/ui/badge";
 import { badgeVariants } from "~/components/ui/badge-variants";
 import {
@@ -10,25 +14,16 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import type { VanModel } from "~/db/client.server";
-import { Image } from "~/features/image/component/image";
-import {
-  HIGH_QUALITY_IMAGE_QUALITY,
-  VAN_DETAIL_IMG_SIZES,
-} from "~/features/image/img-constants";
-import { createWebPSrcSet } from "~/features/image/utils/create-optimized-src-set";
-import { CustomLink } from "~/features/navigation/components/custom-link";
 import {
   toLowercaseVanType,
   validateLowercaseVanType,
 } from "~/features/vans/utils/validators";
-import {
-  isVanAvailable,
-  lowercaseVanState,
-} from "~/features/vans/utils/van-state-helpers";
-import { cn } from "~/utils/utils";
-import { VanBadge } from "./van-badge";
-import { vanCard } from "./van-card-recipe";
+import { isVanAvailable } from "~/features/vans/utils/van-state-helpers";
+import { css, cx } from "../../../../styled-system/css";
+import { cq, grid, hstack } from "../../../../styled-system/patterns";
 import { VanPrice } from "./van-price";
+
+const VAN_DETAIL_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
 
 interface VanDetailProps {
   van: VanModel;
@@ -52,20 +47,36 @@ export default function VanDetail({
   });
 
   return (
-    <div className="@container/card-full contain-content">
+    <div className={cx(cq({ name: "card-full" }), css({ contain: "content" }))}>
       <Card
-        className={vanCard({
-          className:
-            "grid @min-xl/card-full:grid-cols-2 @min-xl/card-full:grid-rows-[auto_auto_1fr] @max-xl/card-full:gap-x-4 @min-xl/card-full:gap-x-4 gap-y-2",
-          state: lowercaseVanState(van),
-        })}
+        className={cx(
+          grid({
+            columnGap: "4",
+            gridTemplateAreas: {
+              "@card-full/xl":
+                // biome-ignore assist/source/noDuplicateClasses: repeated areas intentionally span detail tracks
+                '"media content" "media content" "media content"',
+              base: '"media" "content" "footer"',
+            },
+            gridTemplateColumns: {
+              "@card-full/xl": "repeat(2, minmax(0, 1fr))",
+            },
+            // biome-ignore assist/source/noDuplicateClasses: repeated auto rows intentionally define detail tracks
+            gridTemplateRows: { "@card-full/xl": "auto auto 1fr" },
+            rowGap: "2",
+          })
+        )}
         style={{ viewTransitionName: `card-${van.id}` }}
       >
-        <CardHeader className="relative @min-xl/card-full:col-span-1 @min-xl/card-full:row-span-3 row-span-1">
-          <VanBadge van={van} />
+        <CardHeader
+          className={css({
+            gridArea: "media",
+            position: "relative",
+          })}
+        >
           <Image
-            alt={description}
-            className="aspect-square rounded-md"
+            alt={name}
+            className={css({ aspectRatio: "square", borderRadius: "md" })}
             decoding="sync"
             fetchPriority="high"
             height="600"
@@ -76,16 +87,50 @@ export default function VanDetail({
             width="600"
           />
         </CardHeader>
-        <CardContent className="@min-xl/card-full:col-start-2 @max-xl/card-full:row-span-4 @min-xl/card-full:row-span-3 @max-xl/card-full:row-start-2 @min-xl/card-full:row-start-1 flex @min-xl/card-full:grid @min-xl/card-full:grid-rows-[auto_auto_1fr] flex-col gap-x-4 gap-y-2 @min-xl/card-full:self-center">
+
+        <CardContent
+          className={cx(
+            grid({
+              alignItems: "stretch",
+              columnGap: "4",
+              gridArea: "content",
+              gridTemplateAreas: '"heading" "metadata" "description"',
+              // biome-ignore assist/source/noDuplicateClasses: repeated auto rows intentionally define detail tracks
+              gridTemplateRows: { "@card-full/xl": "auto auto 1fr" },
+              rowGap: "2",
+            }),
+            css({
+              alignSelf: { "@card-full/xl": "center" },
+              minInlineSize: "0",
+            })
+          )}
+        >
           {/* First row: Name and Rent button */}
-          <div className="@min-xl/card-full:row-start-1 @min-xl/card-full:flex @min-xl/card-full:items-center @min-xl/card-full:justify-between">
-            <CardTitle className="@min-xl/card-full:m-0 @min-xl/card-full:text-xl">
+          <div
+            className={css({
+              alignItems: { "@card-full/xl": "center" },
+              display: { "@card-full/xl": "flex" },
+              gridArea: "heading",
+              justifyContent: { "@card-full/xl": "space-between" },
+            })}
+          >
+            <CardTitle
+              className={css({
+                "@card-full/xl": {
+                  fontSize: "xl",
+                  margin: "0",
+                },
+              })}
+            >
               {name}
             </CardTitle>
             <CustomLink
-              className={cn(
+              className={cx(
                 rentClassName,
-                "@max-xl/card-full:hidden @min-xl/card-full:shrink-0"
+                css({
+                  "@card-full/xl": { flexShrink: 0 },
+                  "@card-full/xlDown": { display: "none" },
+                })
               )}
               to={rentTo}
             >
@@ -94,29 +139,57 @@ export default function VanDetail({
           </div>
 
           {/* Second row: Badge and Price */}
-          <div className="@min-xl/card-full:row-start-2 flex items-center justify-between gap-4">
+          <div
+            className={cx(
+              css({ gridArea: "metadata" }),
+              hstack({ gap: "4", justifyContent: "space-between" })
+            )}
+          >
             <Badge
-              className="@min-xl/card-full:m-0"
+              className={css({ "@card-full/xl": { margin: "0" } })}
               size="small"
               variant={validateLowercaseVanType(type.toLowerCase())}
             >
               {type}
             </Badge>
-            <div className="@min-xl/card-full:m-0 @min-xl/card-full:text-xl">
+
+            <div
+              className={css({
+                "@card-full/xl": { fontSize: "xl", margin: "0" },
+              })}
+            >
               <VanPrice van={van} />
             </div>
           </div>
 
           {/* Third row: Description */}
-          <CardDescription className="@min-xl/card-full:row-start-3 @min-xl/card-full:m-0 @min-xl/card-full:text-base">
+          <CardDescription
+            className={css({
+              "@card-full/xl": {
+                fontSize: "unset",
+                margin: "0",
+              },
+              gridArea: "description",
+            })}
+          >
             {description}
           </CardDescription>
         </CardContent>
 
         {/* Mobile/Tablet Footer - hidden on desktop */}
-        <CardFooter className="@max-lg/card-full:row-span-1 @min-xl/card-full:hidden">
+        <CardFooter
+          className={css({
+            "@card-full/xl": {
+              display: "none",
+            },
+            gridArea: "footer",
+          })}
+        >
           <CustomLink
-            className={cn(rentClassName, "@max-lg/card-full:w-full")}
+            className={cx(
+              rentClassName,
+              css({ "@card-full/lg": { inlineSize: "full" } })
+            )}
             to={rentTo}
           >
             {rentLabel}

@@ -1,5 +1,6 @@
 import { data, href } from "react-router";
 import { GenericComponent } from "~/components/generic-component";
+import { CustomLink } from "~/components/links/custom-link";
 import { PendingUI } from "~/components/pending-ui";
 import {
   forwardDataHeaders,
@@ -8,15 +9,16 @@ import {
 import { listActiveRentals } from "~/features/host/services/rental.server";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
-import { CustomLink } from "~/features/navigation/components/custom-link";
 import { Pagination } from "~/features/pagination/components/pagination";
-import { VanCard } from "~/features/vans/components/van-card";
-import { VanHeader } from "~/features/vans/components/van-header";
 import {
   loadHostSearchParams,
   parsePaginationCursor,
-} from "~/lib/search-params.server";
+} from "~/features/pagination/loaders.server";
+import { VanCard } from "~/features/vans/components/van-card";
+import { VanHeader } from "~/features/vans/components/van-header";
+import { gridMax } from "~/styles";
 import type { Prettify } from "~/types";
+import { grid } from "../../../../styled-system/patterns";
 import type { Route } from "./+types/rentals";
 
 type ActiveRental = Prettify<
@@ -25,18 +27,16 @@ type ActiveRental = Prettify<
 
 const renderRentalVanCardProps = (rental: ActiveRental, index: number) => ({
   action: (
-    <div className="justify-self-end text-right">
-      <CustomLink
-        state={{
-          van: rental,
-        }}
-        to={href("/host/rentals/returnRental/:rentId", {
-          rentId: rental.id,
-        })}
-      >
-        Return
-      </CustomLink>
-    </div>
+    <CustomLink
+      state={{
+        van: rental,
+      }}
+      to={href("/host/rentals/returnRental/:rentId", {
+        rentId: rental.id,
+      })}
+    >
+      Return
+    </CustomLink>
   ),
   imageIndex: index,
   link: href("/host/vans/:vanSlug/:action?", {
@@ -69,7 +69,12 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
   return (
     <PendingUI
       as="section"
-      className="grid grid-rows-[min-content_min-content_1fr_min-content] gap-y-6 contain-content"
+      className={grid({
+        contain: "content",
+        // biome-ignore assist/source/noDuplicateClasses: grid definition
+        gridTemplateRows: "min-content min-content 1fr min-content",
+        rowGap: "6",
+      })}
     >
       <title>Rentals | Van Life</title>
       <meta content="View and manage your van rentals" name="description" />
@@ -78,10 +83,11 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
       <GenericComponent
         as="div"
         Component={VanCard}
-        className="grid-max"
-        emptyStateMessage="You are currently not renting any vans."
-        errorStateMessage="Something went wrong"
+        className={gridMax}
+        emptyState={{ title: "You are currently not renting any vans." }}
+        errorState={{ title: "Something went wrong" }}
         items={vans}
+        noMatchState={null}
         renderProps={renderRentalVanCardProps}
       />
       <Pagination items={vans} paginationMetadata={paginationMetadata} />

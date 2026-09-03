@@ -1,9 +1,4 @@
-import { ABOUT_IMG } from "~/features/image/img-constants";
-import {
-  loadPaginationParams,
-  loadSearchParams,
-  loadVanFiltersParams,
-} from "~/lib/search-params.server";
+import { loadVansSearchParams } from "~/features/vans/loaders.server";
 import {
   buildPathCanonicalUrl,
   buildVanDetailCanonicalUrl,
@@ -17,24 +12,26 @@ import {
 } from "./constants";
 import type { PageSeo } from "./types";
 
-export const buildHomePageSeo = (request: Request): PageSeo => ({
+export const buildHomePageSeo = (request: Request, image: string): PageSeo => ({
   description: DEFAULT_DESCRIPTION,
-  image: DEFAULT_OG_IMAGE,
+  image,
   title: "Home | Van Life",
   url: buildPathCanonicalUrl(request, "/"),
 });
 
-export const buildAboutPageSeo = (request: Request): PageSeo => ({
+export const buildAboutPageSeo = (
+  request: Request,
+  image: string
+): PageSeo => ({
   description: ABOUT_DESCRIPTION,
-  image: ABOUT_IMG,
+  image,
   title: "About | Van Life",
   url: buildPathCanonicalUrl(request, "/about"),
 });
 
 export const buildVansPageSeo = (request: Request): PageSeo => {
-  const { search } = loadSearchParams(request);
-  const { types, excludeInRepair, onlyOnSale } = loadVanFiltersParams(request);
-  const { type, vanFilter } = loadPaginationParams(request);
+  const { search, types, excludeInRepair, onlyOnSale, type, vanFilter } =
+    loadVansSearchParams(request);
 
   return {
     description: VANS_DESCRIPTION,

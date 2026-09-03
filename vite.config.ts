@@ -1,6 +1,5 @@
 import { reactRouter } from "@react-router/dev/vite";
 import babel from "@rolldown/plugin-babel";
-import tailwindcss from "@tailwindcss/vite";
 import { varlockCloudflareVitePlugin } from "@varlock/cloudflare-integration";
 import { DevTools } from "@vitejs/devtools";
 import { reactCompilerPreset } from "@vitejs/plugin-react";
@@ -69,7 +68,6 @@ export default defineConfig(async () => {
       ...devtoolsPlugins,
       varlockCloudflareVitePlugin({ viteEnvironment: { name: "ssr" } }),
       // reactRouterDevTools(),
-      tailwindcss(),
       // React Router owns JSX/HMR — import only reactCompilerPreset, not react()
       reactRouter(),
       babel({ presets: [reactCompilerPreset()] }),

@@ -1,3 +1,4 @@
+import { css } from "../../../../../styled-system/css";
 import { VanPrice } from "../van-price";
 import { useVanDetailCard } from "./context";
 
@@ -8,7 +9,7 @@ function Pricing() {
   const van = useVanDetailCard();
 
   return (
-    <div className="my-4 sm:my-6">
+    <div className={css({ marginBlock: { base: "4", sm: "6" } })}>
       <VanPrice van={van} />
     </div>
   );

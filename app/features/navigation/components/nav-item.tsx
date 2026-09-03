@@ -1,6 +1,6 @@
+import { CustomLink } from "../../../components/links/custom-link";
+import { CustomNavLink } from "../../../components/links/custom-nav-link";
 import type { NavItem as NavItemData } from "../types";
-import { CustomLink } from "./custom-link";
-import { CustomNavLink } from "./custom-nav-link";
 
 interface NavItemComponentProps {
   item: NavItemData;

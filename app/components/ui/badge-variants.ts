@@ -1,31 +1,80 @@
-import { cva, type VariantProps } from "cva";
+import { cva, type RecipeVariantProps } from "../../../styled-system/css";
 
-export const badgeVariants = cva({
-  base: "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-md font-medium text-xs transition-opacity focus-visible:border-destructive/50 focus-visible:ring-[3px] [&>svg]:pointer-events-none [&>svg]:size-3",
+const badgeVariants = cva({
+  base: {
+    "& > svg": {
+      aspectRatio: "1",
+      inlineSize: "3",
+      pointerEvents: "none",
+    },
+    alignItems: "center",
+    borderRadius: "md",
+    display: "inline-flex",
+    flexShrink: "0",
+    focusRingColor: "ring",
+    focusRingOffset: "0",
+    focusRingWidth: "2px",
+    focusVisibleRing: "outside",
+    fontSize: "xs",
+    fontWeight: "medium",
+    gap: "1",
+    inlineSize: "fit-content",
+    justifyContent: "center",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+  },
   defaultVariants: {
     size: "default",
     variant: "outline",
   },
   variants: {
     size: {
-      default: "px-4 py-2",
-      small: "px-1 py-0.5",
+      default: {
+        paddingBlock: "2",
+        paddingInline: "4",
+      },
+      small: {
+        paddingBlock: "1",
+        paddingInline: "2",
+      },
     },
     variant: {
-      luxury: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-      new: "bg-status-new text-status-new-foreground hover:bg-status-new/90",
-      outline: "bg-surface-muted text-foreground hover:bg-surface-accent",
-      repair:
-        "bg-status-repair text-status-repair-foreground hover:bg-status-repair/90",
-      rugged:
-        "bg-type-rugged text-type-rugged-foreground hover:bg-type-rugged/90 focus-visible:ring-type-rugged/20",
-      sale: "bg-status-sale text-status-sale-foreground hover:bg-status-sale/90",
-      simple:
-        "bg-type-simple text-type-simple-foreground hover:bg-type-simple/90",
-      unavailable:
-        "disabled cursor-not-allowed bg-status-unavailable text-status-unavailable-foreground hover:bg-status-unavailable/90",
+      luxury: {
+        backgroundColor: "secondary",
+        color: "secondary.foreground",
+      },
+      new: {
+        backgroundColor: "status.new",
+        color: "status.new.foreground",
+      },
+      outline: {
+        backgroundColor: "surface.muted",
+        color: "foreground",
+      },
+      repair: {
+        backgroundColor: "status.repair",
+        color: "status.repair.foreground",
+      },
+      rugged: {
+        backgroundColor: "type.rugged",
+        color: "type.rugged.foreground",
+      },
+      sale: {
+        backgroundColor: "status.sale",
+        color: "status.sale.foreground",
+      },
+      simple: {
+        backgroundColor: "type.simple",
+        color: "type.simple.foreground",
+      },
+      unavailable: {
+        backgroundColor: "status.unavailable",
+        color: "status.unavailable.foreground",
+        cursor: "not-allowed",
+      },
     },
   },
 });
 
-export type BadgeVariantProps = VariantProps<typeof badgeVariants>;
+export { badgeVariants };
+export type BadgeVariantProps = RecipeVariantProps<typeof badgeVariants>;

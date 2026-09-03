@@ -1,35 +1,51 @@
 import type { ComponentProps } from "react";
 
-import { cn } from "~/utils/utils";
+import { css, cx } from "../../../styled-system/css";
 
 const Card = ({ className, ...props }: ComponentProps<"div">) => (
   <div
-    className={cn(
-      "rounded-xl border bg-card p-6 text-card-foreground shadow-sm",
+    className={cx(
+      css({
+        backgroundColor: "card",
+        borderStyle: "solid",
+        borderWidth: "1",
+        color: "card.foreground",
+        padding: "6",
+        rounded: "xl",
+        shadow: "sm",
+      }),
       className
     )}
     {...props}
   />
 );
-
 const CardHeader = ({ className, ...props }: ComponentProps<"div">) => (
-  <div className={cn("[.border-b]:pb-6", className)} {...props} />
+  <div
+    className={cx(css({ "&.bd-b_1": { paddingBlockEnd: "6" } }), className)}
+    {...props}
+  />
 );
-
 const CardTitle = ({ className, ...props }: ComponentProps<"div">) => (
-  <div className={cn("text-balance font-semibold", className)} {...props} />
+  <div
+    className={cx(
+      css({ fontWeight: "semibold", textAlign: "balance" }),
+      className
+    )}
+    {...props}
+  />
 );
-
 const CardDescription = ({ className, ...props }: ComponentProps<"div">) => (
-  <div className={cn("text-sm", className)} {...props} />
+  <div className={cx(css({ fontSize: "sm" }), className)} {...props} />
 );
 
 const CardContent = ({ className, ...props }: ComponentProps<"div">) => (
-  <div className={cn("", className)} {...props} />
+  <div className={cx(css({}), className)} {...props} />
 );
-
 const CardFooter = ({ className, ...props }: ComponentProps<"div">) => (
-  <div className={cn("[.border-t]:pt-6", className)} {...props} />
+  <div
+    className={cx(css({ "&.bd-t_1": { paddingBlockStart: "6" } }), className)}
+    {...props}
+  />
 );
 
 export {

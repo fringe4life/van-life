@@ -8,13 +8,16 @@ import {
   Wallet,
 } from "lucide-react";
 import { href } from "react-router";
-import type { CustomNavLinkProps } from "~/features/navigation/components/custom-nav-link";
+import type { CustomNavLinkProps } from "~/components/links/custom-nav-link";
+import { css } from "../../../../styled-system/css";
+
+const navIconClassName = css({ aspectRatio: "square" });
 
 const hostNavItems = [
   {
     children: (
       <>
-        <LayoutDashboard className="aspect-square" />
+        <LayoutDashboard className={navIconClassName} />
         <span>Dashboard</span>
       </>
     ),
@@ -25,7 +28,7 @@ const hostNavItems = [
   {
     children: (
       <>
-        <ArrowRightLeft className="aspect-square" />
+        <ArrowRightLeft className={navIconClassName} />
         <span>Rentals</span>
       </>
     ),
@@ -35,7 +38,7 @@ const hostNavItems = [
   {
     children: (
       <>
-        <Wallet className="aspect-square" />
+        <Wallet className={navIconClassName} />
         <span>Wallet</span>
       </>
     ),
@@ -45,7 +48,7 @@ const hostNavItems = [
   {
     children: (
       <>
-        <Car className="aspect-square" />
+        <Car className={navIconClassName} />
         <span>Vans</span>
       </>
     ),
@@ -55,7 +58,7 @@ const hostNavItems = [
   {
     children: (
       <>
-        <Star className="aspect-square" />
+        <Star className={navIconClassName} />
         <span>Reviews</span>
       </>
     ),
@@ -65,7 +68,7 @@ const hostNavItems = [
   {
     children: (
       <>
-        <SquarePlus className="aspect-square" />
+        <SquarePlus className={navIconClassName} />
         <span>Add Van</span>
       </>
     ),
@@ -75,7 +78,7 @@ const hostNavItems = [
   {
     children: (
       <>
-        <KeySquare className="aspect-square" />
+        <KeySquare className={navIconClassName} />
         <span>Your rentals</span>
       </>
     ),

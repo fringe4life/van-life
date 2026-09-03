@@ -1,3 +1,9 @@
 {
-  "mcpServers": {}
+  "mcpServers": {
+    "panda": {
+      "command": "bun",
+      "args": ["x", "@pandacss/mcp", "--config", "./panda.config.ts"],
+      "cwd": "${workspaceFolder}"
+    }
+  }
 }

@@ -1,7 +1,8 @@
 import { useId, ViewTransition } from "react";
 import type { ViewTransitionTune } from "~/components/types";
 import type { Id, Message, Prettify } from "~/types";
-import { cn } from "~/utils/utils";
+
+import { css, cx } from "../../../styled-system/css";
 
 type FormErrorProps = Prettify<
   {
@@ -19,12 +20,14 @@ const FormError = ({
 }: FormErrorProps) => {
   const generatedId = useId();
   const id = idProp ?? generatedId;
-
   return (
     <ViewTransition {...errorTransition}>
       {message ? (
         <p
-          className={cn("font-medium text-destructive text-sm", className)}
+          className={cx(
+            css({ color: "destructive", fontSize: "sm" }),
+            className
+          )}
           id={id}
           role="alert"
         >

@@ -1,5 +1,5 @@
-import { cva } from "cva";
 import { MAX_RATING } from "~/features/host/constants/constants";
+import { cva } from "../../../../../styled-system/css";
 
 type ReviewScore = 1 | 2 | 3 | 4 | 5;
 
@@ -12,15 +12,43 @@ const reviewMeta = {
 } as const satisfies Record<ReviewScore, { label: string }>;
 
 const reviewBadge = cva({
-  base: "rounded-full border px-2.5 py-1 font-semibold text-xs",
+  base: {
+    borderRadius: "full",
+    borderStyle: "solid",
+    borderWidth: "1",
+    fontSize: "xs",
+    fontWeight: "semibold",
+    paddingBlock: "1",
+    paddingInline: "2.5",
+  },
   variants: {
     rating: {
-      1: "border-border-accent bg-surface-accent text-foreground",
-      2: "border-border-accent/70 bg-surface-muted text-foreground",
-      3: "border-border-strong/50 bg-surface-muted text-foreground",
-      4: "border-success/35 bg-success/10 text-success",
-      5: "border-success/50 bg-success/10 text-success",
-    } satisfies Record<ReviewScore, string>,
+      1: {
+        backgroundColor: "surface.accent",
+        borderColor: "border.accent",
+        color: "foreground",
+      },
+      2: {
+        backgroundColor: "surface.muted",
+        borderColor: "border.accent/70",
+        color: "foreground",
+      },
+      3: {
+        backgroundColor: "surface.muted",
+        borderColor: "border.strong/50",
+        color: "foreground",
+      },
+      4: {
+        backgroundColor: "success/10",
+        borderColor: "success/35",
+        color: "success",
+      },
+      5: {
+        backgroundColor: "success/10",
+        borderColor: "success/50",
+        color: "success",
+      },
+    },
   },
 });
 
@@ -36,5 +64,4 @@ const normalizeReviewRating = (rating: number): ReviewScore => {
 const formatReviewRating = (rating: number) =>
   String(normalizeReviewRating(rating));
 
-export type { ReviewScore };
 export { formatReviewRating, normalizeReviewRating, reviewBadge, reviewMeta };

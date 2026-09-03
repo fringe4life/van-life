@@ -5,6 +5,10 @@ import { Button } from "~/components/ui/button";
 import { cursorPaginationParsers } from "~/features/pagination/parsers";
 import type { Direction, PaginationProps } from "~/features/pagination/types";
 import type { Id } from "~/types";
+import { css } from "../../../../styled-system/css";
+import { hstack } from "../../../../styled-system/patterns";
+
+const pageIconClassName = css({ aspectRatio: "square", inlineSize: "4" });
 
 export const PaginationControl = <T extends Id>({
   items,
@@ -35,7 +39,7 @@ export const PaginationControl = <T extends Id>({
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className={hstack({ gap: "2" })}>
       <Button
         aria-label="Previous page"
         disabled={!hasPreviousPage}
@@ -43,7 +47,7 @@ export const PaginationControl = <T extends Id>({
         size="icon"
         variant="outline"
       >
-        <ChevronLeftIcon className="aspect-square w-4" />
+        <ChevronLeftIcon className={pageIconClassName} />
       </Button>
       <Button
         aria-label="Next page"
@@ -52,7 +56,7 @@ export const PaginationControl = <T extends Id>({
         size="icon"
         variant="outline"
       >
-        <ChevronRightIcon className="aspect-square w-4" />
+        <ChevronRightIcon className={pageIconClassName} />
       </Button>
     </div>
   );

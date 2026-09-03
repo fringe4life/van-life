@@ -1,5 +1,5 @@
 /* ─── IMPORTS & FONTS ────────────────────────────────────────────────────── */
-@import "tailwindcss";
+@layer reset, base, tokens, recipes, utilities;
 
 @font-face {
   font-family: Inter;
@@ -8,471 +8,6 @@
   font-weight: 100 900;
   src: url("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2")
     format("woff2-variations");
-}
-
-/* ─── CONFIGURATION ───────────────────────────────────────────────────────── */
-/* Van state custom variants for cleaner component styling */
-@custom-variant error (&[data-error="true"]);
-@custom-variant link-covers-card (&[data-link-covers-card="true"]);
-@custom-variant unsuccessful (&[data-unsuccessful="true"]);
-
-@theme {
-  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
-
-  --header-height: 104px;
-
-  --container-sm: 12rem;
-  --container-md: 26rem;
-  --container-lg: 36rem;
-
-  --container-2xl: 44rem;
-  --container-content: 64rem;
-  --container-shell: 80rem;
-
-  --breakpoint-xs: 26rem;
-
-  /* Authored palette primitives used by the app's semantic roles. */
-  --color-orange-100: oklch(94.72% 0.041 73.17);
-  --color-orange-200: oklch(91.55% 0.067 73.33);
-  --color-orange-400: oklch(75.76% 0.159 55.93);
-  --color-orange-600: oklch(68.11% 0.142 38.3);
-  --color-neutral-400: oklch(70.8% 0 0);
-  --color-neutral-600: oklch(42.02% 0 0);
-  --color-neutral-900: oklch(20.02% 0 0);
-  --color-gray-200: oklch(92.8% 0.006 264.531);
-  --color-gray-300: oklch(87.2% 0.01 258.338);
-  --color-indigo-300: oklch(78.5% 0.115 274.713);
-  --color-green-300: oklch(87.1% 0.15 154.449);
-  --color-teal-800: oklch(43.7% 0.078 188.216);
-  --color-yellow-200: oklch(94.5% 0.129 101.54);
-
-  /* Van state colors remain domain primitives so card treatments stay tunable. */
-  --color-van-new: oklch(30% 0 0);
-  --color-van-sale: oklch(40% 0.3 142);
-  --color-van-repair: oklch(60% 0.3 85);
-
-  /* Responsive padding inline - updates automatically */
-  --padding-inline: 0.75rem; /* Mobile default */
-
-  --mobile-menu-width: min(100vw, 25rem);
-
-  /* Spring easings (Open Props presets) */
-  /* Playful spring, ~16% overshoot — for the icon morph */
-  --ease-spring: linear(
-    0,
-    0.009,
-    0.035 2.1%,
-    0.141 4.4%,
-    0.281 6.7%,
-    0.723 12.9%,
-    0.938 16.7%,
-    1.017,
-    1.077,
-    1.121,
-    1.149 24.3%,
-    1.159,
-    1.163,
-    1.161,
-    1.154 29.9%,
-    1.129 32.8%,
-    1.051 39.6%,
-    1.017 43.1%,
-    0.991,
-    0.977 51%,
-    0.974 53.8%,
-    0.975 57.1%,
-    0.997 69.8%,
-    1.003 76.9%,
-    1.004 83.8%,
-    1 100%
-  );
-
-  /* Gentle spring, barely overshoots — for the panel slide */
-  --ease-spring-soft: linear(
-    0,
-    0.006,
-    0.025 2.8%,
-    0.101 6.1%,
-    0.539 18.9%,
-    0.721 25.3%,
-    0.849 31.5%,
-    0.937 38.1%,
-    0.968 41.8%,
-    0.991 45.7%,
-    1.006 50.1%,
-    1.015 55%,
-    1.017 63.9%,
-    1.001 100%
-  );
-
-  --ease-glide: linear(
-    0,
-    0.013 1%,
-    0.051 2.2%,
-    0.404 9.8%,
-    0.51 12.6%,
-    0.602 15.5%,
-    0.683 18.7%,
-    0.754 22.2%,
-    0.813 26%,
-    0.861 30.2%,
-    0.9 34.8%,
-    0.931 40%,
-    0.972 52.7%,
-    0.992 70.2%,
-    1
-  );
-
-  --duration-dialog: 500ms;
-
-  /* Chart dimensions */
-  --chart-height: 350px;
-
-  /* Rating stars dimensions */
-  --star-size: --spacing(5); /* size-5 = 1.25rem = 20px */
-  --star-gap: --spacing(2); /* gap-2 = 0.5rem = 8px */
-  --star-count: 5;
-  --rating-stars-width: calc(
-    var(--star-size) *
-    var(--star-count) +
-    var(--star-gap) *
-    (var(--star-count) - 1)
-  );
-
-  /* Chart text area components - aliases for Tailwind spacing scale */
-  /* Instead of referencing non-existent --spacing-N vars: */
-  --chart-text-top-margin: --spacing(4); /* 1rem */
-  --chart-text-first-height: --spacing(4); /* 1rem */
-  --chart-text-gap: --spacing(2); /* 0.5rem */
-  --chart-text-second-height: --spacing(3); /* 0.75rem */
-
-  /* Total text area height (16 + 16 + 8 + 12 = 52px) */
-  --chart-text-height: calc(
-    var(--chart-text-top-margin) +
-    var(--chart-text-first-height) +
-    var(--chart-text-gap) +
-    var(--chart-text-second-height)
-  );
-
-  --chart-content-height: calc(var(--chart-height) - var(--chart-text-height));
-
-  --text-2xs: 0.5rem;
-
-  --radius-control: 4px;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.625rem;
-  --radius-xl: 0.75rem;
-
-  /* Semantic color roles — light theme foundation. */
-  --color-background: oklch(98% 0.012 75);
-  --color-foreground: var(--color-neutral-900);
-
-  --color-surface: oklch(97.7% 0.019 74);
-  --color-surface-muted: var(--color-orange-100);
-  --color-surface-accent: var(--color-orange-200);
-  --color-surface-overlay: rgb(255 255 255 / 0.702);
-  --color-surface-overlay-muted: rgb(255 255 255 / 0.549);
-  --color-surface-inverse: oklch(27.4% 0 0);
-  --color-surface-inverse-foreground: oklch(82% 0 0);
-
-  --color-card: oklch(100% 0 0);
-  --color-card-foreground: var(--color-foreground);
-  --color-popover: oklch(100% 0 0);
-  --color-popover-foreground: var(--color-foreground);
-
-  /* Form controls use a visible neutral gray so they remain distinct on cards. */
-  --color-input-background: oklch(92.2% 0 0);
-  --color-input-foreground: var(--color-foreground);
-  --color-placeholder: var(--color-neutral-400);
-
-  /*
- * Primary actions retain the original light brand orange for visual consistency.
- * White text provides insufficient WCAG contrast on this background (~2.3:1);
- * pair primary actions with a verified dark foreground such as neutral-900 (~8:1).
- */
-  --color-primary: var(--color-orange-400);
-  --color-primary-foreground: oklch(100% 0 0);
-  --color-on-image: var(--color-primary-foreground);
-
-  --color-secondary: var(--color-neutral-900);
-  --color-secondary-foreground: oklch(100% 0 0);
-  --color-muted: var(--color-surface-muted);
-  --color-muted-foreground: var(--color-neutral-600);
-  --color-accent: var(--color-surface-accent);
-  --color-accent-foreground: var(--color-foreground);
-
-  /* Strong feedback colors are paired with explicit foreground roles. */
-  --color-destructive: oklch(50% 0.18 25);
-  --color-destructive-foreground: oklch(100% 0 0);
-  --color-success: oklch(50% 0.14 150);
-  --color-success-foreground: oklch(100% 0 0);
-  --color-warning: oklch(52% 0.12 85);
-  --color-warning-foreground: oklch(100% 0 0);
-
-  /* Domain status roles stay distinct from generic feedback roles. */
-  --color-status-new: var(--color-van-new);
-  --color-status-new-foreground: var(--color-primary-foreground);
-  --color-status-sale: var(--color-van-sale);
-  --color-status-sale-foreground: var(--color-primary-foreground);
-  --color-status-repair: var(--color-van-repair);
-  --color-status-repair-foreground: var(--color-foreground);
-  --color-status-unavailable: var(--color-destructive);
-  --color-status-unavailable-foreground: var(--color-destructive-foreground);
-
-  /* Van type roles are separate from availability and feedback status. */
-  --color-type-rugged: var(--color-teal-800);
-  --color-type-rugged-foreground: var(--color-primary-foreground);
-  --color-type-simple: var(--color-orange-600);
-  --color-type-simple-foreground: var(--color-primary-foreground);
-
-  --color-border: oklch(20.02% 0 0 / 0.15);
-  --color-border-subtle: oklch(20.02% 0 0 / 0.1);
-  --color-border-strong: oklch(42.02% 0 0 / 0.45);
-  --color-border-accent: oklch(75.76% 0.159 55.93 / 0.6);
-  --color-input: oklch(42.02% 0 0 / 0.8);
-  --color-ring: var(--color-primary);
-
-  /* The home hero keeps its original diagonal color story behind a named overlay. */
-  --color-hero-gradient-start: var(--color-indigo-300);
-  --color-hero-gradient-via: var(--color-green-300);
-  --color-hero-gradient-end: var(--color-yellow-200);
-
-  /* Loading and decorative roles avoid leaking palette primitives into consumers. */
-  --color-skeleton: var(--color-gray-300);
-  --color-skeleton-highlight: var(--color-gray-200);
-  --color-brand-decorative: var(--color-orange-400);
-  --color-rating: var(--color-orange-400);
-  --color-chart-1: var(--color-brand-decorative);
-  --color-chart-2: var(--color-success);
-  --color-chart-3: oklch(37% 0.08 220);
-  --color-chart-4: var(--color-warning);
-  --color-chart-5: var(--color-orange-600);
-}
-
-/* ─── BASE STYLES ────────────────────────────────────────────────────────── */
-/* part of josh comeaus css reset */
-@layer base {
-  p,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    overflow-wrap: break-word;
-  }
-  /* 9. Improve line wrapping */
-  p {
-    text-wrap: pretty;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    text-wrap: balance;
-  }
-  html {
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-  }
-}
-
-/* ─── LAYOUT ─────────────────────────────────────────────────────────────── */
-@utility grid-max {
-  --_gap: 2rem;
-  --_max-columns: 2;
-  --_min-column-size: 300px;
-  display: grid;
-  grid-template-columns: repeat(
-      auto-fit,
-      minmax(
-        min(
-          max(
-            var(--_min-column-size),
-            calc(
-              (100% - var(--_gap) * var(--_max-columns)) /
-              var(--_max-columns)
-            )
-          ),
-          100%
-        ),
-        1fr
-      )
-    );
-  gap: var(--_gap);
-}
-
-@utility full-layout {
-  inline-size: calc(100% + (2 * var(--padding-inline)));
-  padding-inline-start: var(--padding-inline);
-  padding-inline-end: var(--padding-inline);
-  margin-inline-start: calc(var(--padding-inline) * -1);
-  margin-inline-end: calc(var(--padding-inline) * -1);
-}
-
-@utility layout-grid {
-  @apply grid grid-cols-[var(--padding-inline)_1fr_var(--padding-inline)] grid-rows-[var(--header-height)_1fr_100px];
-}
-
-/* ─── CUSTOM UTILITIES ───────────────────────────────────────────────────── */
-@utility bg-skeleton {
-  --_sk-color: var(--skeleton-color, var(--color-skeleton));
-  background-color: var(--_sk-color);
-  background-image: linear-gradient(
-    90deg,
-    var(--_sk-color) 25%,
-    var(--skeleton-highlight, var(--color-skeleton-highlight)) 50%,
-    var(--_sk-color) 75%
-  );
-  background-size: 200% 100%;
-  animation: --shimmer 2s infinite linear;
-}
-
-/* CSS owns the presentational percentage math for review rating visuals. */
-@utility rating-star-fill {
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 0;
-  inline-size: clamp(
-    0%,
-    calc((var(--rating) - var(--star-index) + 1) * 100%),
-    100%
-  );
-  overflow: hidden;
-}
-
-@utility rating-rail {
-  --_rating-percent: clamp(
-    0%,
-    calc(var(--rating) / var(--star-count) * 100%),
-    100%
-  );
-  background: linear-gradient(
-    to top,
-    var(--color-rating) 0%,
-    var(--color-rating) var(--_rating-percent),
-    var(--color-surface-muted) var(--_rating-percent),
-    var(--color-surface-muted) 100%
-  );
-}
-
-/* Custom utility for pseudo-random bar heights using CSS trig functions */
-@utility bar-height {
-  block-size: clamp(
-    50px,
-    calc(150px + 100px * sin((pi / 2) * var(--bar-index))),
-    var(--chart-content-height)
-  );
-}
-
-@utility mask-scroll-hint {
-  /* Fallback: Hint at the end (right side) as content can be scrolled right */
-  mask-image: linear-gradient(
-    to right,
-    black 0%,
-    black 5%,
-    black 95%,
-    transparent 100%
-  );
-  mask-repeat: no-repeat;
-
-  /* Scroll-driven animation for dynamic hints */
-  @supports (animation-timeline: scroll()) {
-    animation: --scroll-mask auto linear;
-    animation-timeline: scroll(x self);
-  }
-}
-
-/* ─── KEYFRAMES ──────────────────────────────────────────────────────────── */
-@keyframes --fade {
-  from {
-    opacity: var(--fade-from, 0);
-  }
-  to {
-    opacity: var(--fade-to, 1);
-  }
-}
-
-@keyframes --scale {
-  from {
-    scale: var(--scale-from, 0);
-  }
-  to {
-    scale: var(--scale-to, 1);
-  }
-}
-
-@keyframes --slide-x {
-  from {
-    translate: var(--slide-x-from, 0) 0;
-  }
-  to {
-    translate: var(--slide-x-to, 0) 0;
-  }
-}
-
-@keyframes --slide-y {
-  from {
-    translate: 0 var(--slide-y-from, 0);
-  }
-  to {
-    translate: 0 var(--slide-y-to, 0);
-  }
-}
-
-@keyframes --shimmer {
-  from {
-    background-position: -200% 0;
-  }
-  to {
-    background-position: 200% 0;
-  }
-}
-
-@keyframes --bg-opacity {
-  from {
-    background-color: var(--bg-from, transparent);
-  }
-  to {
-    background-color: var(--bg-to, rgb(0 0 0 / 0.6));
-  }
-}
-
-@keyframes --scroll-mask {
-  0% {
-    /* Scroll at start: only hint at the end */
-    mask-image: linear-gradient(
-      to right,
-      black 0%,
-      black 5%,
-      black 95%,
-      transparent 100%
-    );
-  }
-  5%,
-  95% {
-    /* Scroll in middle: hints at both start and end */
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 5%,
-      black 95%,
-      transparent 100%
-    );
-  }
-  100% {
-    /* Scroll at end: only hint at the start */
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 5%,
-      black 95%,
-      black 100%
-    );
-  }
 }
 
 /* ─── VIEW TRANSITIONS ───────────────────────────────────────────────────── */
@@ -492,32 +27,32 @@
 ::view-transition-old(*):only-child {
   --fade-to: 0;
   --scale-to: 0;
-  animation-name: --fade, --scale;
+  animation-name: fade, scale;
 }
 
 /* only-child means there is not a before snapshot */
 /* i.e. the card is new to being on the page */
 ::view-transition-new(*):only-child {
-  animation-name: --fade, --scale;
+  animation-name: fade, scale;
 }
 
-::view-transition-new(about-image):only-child,
 ::view-transition-new(home-image):only-child,
+::view-transition-new(about-image):only-child,
 ::view-transition-new(host-chart):only-child {
   --fade-from: 0.5;
   --scale-from: 0.5;
   --slide-x-from: -100vh;
-  animation-name: --fade, --scale, --slide-x;
+  animation-name: fade, scale, slide-x;
 }
 
-/* view transition for home page of hero section */
-::view-transition-old(about-image):only-child,
+/* view transition for hero elements entering and leaving a route */
 ::view-transition-old(home-image):only-child,
+::view-transition-old(about-image):only-child,
 ::view-transition-old(host-chart):only-child {
   --fade-to: 0.5;
   --scale-to: 0.5;
   --slide-x-to: 100vh;
-  animation-name: --fade, --scale, --slide-x;
+  animation-name: fade, scale, slide-x;
 }
 
 /* Rising Deck transition for lists */
@@ -526,9 +61,9 @@
   --slide-y-from: 4rem;
   --scale-from: 0.95;
   animation:
-    --fade 400ms ease-out both,
-    --slide-y 600ms var(--ease-spring-soft) both,
-    --scale 600ms var(--ease-spring-soft) both;
+    fade 400ms ease-out both,
+    slide-y 600ms var(--easings-spring-soft) both,
+    scale 600ms var(--easings-spring-soft) both;
 }
 
 ::view-transition-old(host-list):only-child {
@@ -536,56 +71,9 @@
   --slide-y-to: 2rem;
   --scale-to: 0.98;
   animation:
-    --fade 300ms ease-in both,
-    --slide-y 300ms ease-in both,
-    --scale 300ms ease-in both;
-}
-
-@utility v-host-chart {
-  view-transition-name: host-chart;
-}
-
-@utility v-host-list {
-  view-transition-name: host-list;
-}
-
-/* AUTH FOOTER: old drops down + fades out, new drops in from top + fades in */
-::view-transition-old(auth-footer) {
-  --fade-to: 0;
-  --slide-y-to: 1rem;
-  animation-name: --fade, --slide-y;
-}
-
-::view-transition-new(auth-footer) {
-  --fade-from: 0;
-  --slide-y-from: -1rem;
-  animation-name: --fade, --slide-y;
-}
-
-/* AUTH TITLE: old slides right + fades out, new fades in from the left */
-::view-transition-old(auth-title) {
-  --fade-to: 0;
-  --slide-x-to: 1rem;
-  animation-name: --fade, --slide-x;
-}
-
-::view-transition-new(auth-title) {
-  --fade-from: 0;
-  --slide-x-from: -1rem;
-  animation-name: --fade, --slide-x;
-}
-
-/* SORTABLE TITLE: old fades out downward, new fades in from top */
-::view-transition-old(sortable-title) {
-  --fade-to: 0;
-  --slide-y-to: 1rem;
-  animation-name: --fade, --slide-y;
-}
-
-::view-transition-new(sortable-title) {
-  --fade-from: 0;
-  --slide-y-from: -1rem;
-  animation-name: --fade, --slide-y;
+    fade 300ms ease-in both,
+    slide-y 300ms ease-in both,
+    scale 300ms ease-in both;
 }
 
 /* ─── SCROLL DRIVEN ANIMATIONS ───────────────────────────────────────────── */
@@ -601,20 +89,23 @@
   animation-range: entry 0% cover 10%;
 }
 
-/* Base scroll reveal setup */
-@utility scroll-reveal {
+/* @utility scroll-reveal {
   --fade-from: 0.5;
   --scale-from: 0.5;
-  animation-name: --fade, --scale, --slide-x;
+  animation-name: fade, scale, slide-x;
   animation-duration: 1ms;
   animation-fill-mode: both;
-}
+} */
 
 .scroll-sm:nth-child(n + 3),
 .scroll-md:nth-child(n + 5),
 .scroll-lg:nth-child(n + 7) {
+  --fade-from: 0.5;
+  --scale-from: 0.5;
   --slide-x-from: -100vh;
-  @apply scroll-reveal;
+  animation-name: fade, scale, slide-x;
+  animation-duration: 1ms;
+  animation-fill-mode: both;
 }
 
 .scroll-sm:nth-child(2n):nth-child(n + 3),

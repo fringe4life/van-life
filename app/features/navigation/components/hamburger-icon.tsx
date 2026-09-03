@@ -1,5 +1,35 @@
-import { cva } from "cva";
+import { cva } from "../../../../styled-system/css";
 
+const hamburgerBar = cva({
+  base: {
+    _groupHasOpenHamburger: {
+      _starting: {
+        rotate: "0",
+        translate: "0",
+      },
+    },
+    transformOrigin: "center",
+    transitionDuration: "var(--duration-dialog)",
+    transitionProperty: "translate,rotate",
+    transitionTimingFunction: "ease-spring",
+  },
+  variants: {
+    position: {
+      bottom: {
+        _groupHasOpenHamburger: {
+          rotate: "-45deg",
+          translate: "0 -2px",
+        },
+      },
+      top: {
+        _groupHasOpenHamburger: {
+          rotate: "45deg",
+          translate: "0 4px",
+        },
+      },
+    },
+  },
+});
 interface HamburgerIconProps {
   className?: string;
   size?: number;
@@ -21,16 +51,6 @@ interface HamburgerIconProps {
  *   Independent `translate` then `rotate`: each line moves 4 units onto the
  *   centre, then ±45° about view-box centre (12,12).
  */
-const hamburgerBar = cva({
-  base: "transform-view origin-center transition-[translate,rotate] duration-(--duration-dialog) ease-spring group-has-open/hamburger:starting:translate-y-0 group-has-open/hamburger:starting:rotate-0",
-  variants: {
-    position: {
-      bottom:
-        "group-has-open/hamburger:-translate-y-[2px] group-has-open/hamburger:-rotate-45",
-      top: "group-has-open/hamburger:translate-y-[4px] group-has-open/hamburger:rotate-45",
-    },
-  },
-});
 
 const HamburgerIcon = ({ size = 20, className }: HamburgerIconProps) => (
   <svg
