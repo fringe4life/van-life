@@ -2,15 +2,15 @@
 
 <div align="center">
 
-[![React Router](https://img.shields.io/badge/React%20Router-8.3.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-8.3.1-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.3.3-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.0.0--beta.15-F6E05E?logoColor=black)](https://panda-css.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.2-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.9-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.10.6-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.10.7-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
 [![Vite](https://img.shields.io/badge/Vite-8.2.2-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
@@ -58,18 +58,19 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 💰 **Financial Management** — `/host/rental-activity` (rental pay/return) vs `/host/wallet-activity` (deposit/withdraw); typed transaction rows + pagination
 - 🏷️ **Van State System** (NEW, IN_REPAIR, ON_SALE, AVAILABLE with discount pricing)
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
-- 🎨 **Semantic design system** (`DESIGN.md` + `@theme` in `app/app.css`) — roles (`bg-primary`, `text-muted-foreground`, `border-subtle`) not raw palette at call sites
+- 🎨 **Semantic design system** (`DESIGN.md` + `panda.config.ts`) — token paths (`surface`, `muted.foreground`, `border.subtle`) not raw palette at call sites
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **Valibot** for runtime schema validation (named imports, server schemas)
 - 🗄️ **Time-sortable database IDs** with UUID v7 (text columns on D1/SQLite)
-- 🎨 **TailwindCSS 4** with modern CSS features
+- 🎨 **PandaCSS 2** (typed `css` / patterns / recipes; PostCSS + `panda build`)
 - 📦 **Drizzle ORM** with Cloudflare D1 (SQLite) and relational queries
 - 🔧 **Generic Components** for reusability and maintainability
-- 🎭 **CVA recipes** — `vanCard` (van state chrome); `transactionRecipe` / `reviewRecipe` (deposit, income, payment, rating variants)
+- 🎭 **Panda recipes** (`cva` from `styled-system/css`) — `vanCard`, `transactionRecipe`, `reviewRecipe`, `outcomeState`
 - 🧩 **Compound Components** with React 19's modern context API (no `.Provider`, uses `use()`)
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
-- ⚡ **Performance Optimized** with deferred loader promises (`DeferredAwait` / `DeferredPaginated`), lazy charts, code splitting, and immutable array methods
+- ⚡ **Performance Optimized** with deferred loader promises (`app/components/deferred/*`), lazy charts, code splitting, and immutable array methods
+- 🧯 **Outcome + route errors** — shared `OutcomeState` empty/error chrome; `RouteErrorBoundary`; nested public/host `*` 404s keep layout chrome
 - 🧊 **HTTP cache headers** — `PRIVATE_NO_STORE` for host/auth; `PUBLIC_SHORT_CACHE` + `Vary: Cookie` for catalog; leaf `headers` exports via `forwardDataHeaders`
 - 🔗 **URL State Management** with nuqs 2.10.1 for type-safe search parameters
 - 🌐 **View Transitions** for smooth navigation (auth login/sign-up, host rental/wallet/dashboard amounts, sortable titles, chart pages, footer, and form field morphs; no nested `viewTransitionName`s)
@@ -86,10 +87,10 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Frontend
 
 - **React canary** builds with stable Activity component for prerendering
-- **React Router 8.3.0** (file-based routing, SSR, optional route parameters, middleware)
+- **React Router 8.3.1** (file-based routing, SSR, optional route parameters, middleware)
 - **TypeScript 7.0.2** with strict configuration
-- **TailwindCSS 4.3.3** with modern CSS features
-- **Native HTML** (`<dialog>`, Popover + CSS Anchor + Invoker Commands) with local CVA wrappers (button, badge, card, checkbox, dialog, input, label, textarea)
+- **PandaCSS 2.0.0-beta.15** — tokens, recipes, patterns (`css`, `cx`, `cva` from `styled-system`)
+- **Native HTML** (`<dialog>`, Popover + CSS Anchor + Invoker Commands) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea)
 - **Lucide React 1.34.0** for icons (direct imports for performance)
 - **TanStack Charts 0.16.0** for host income/review bars (lazy-loaded via `LazyBarChart`)
 - **nuqs 2.10.1** for type-safe URL state management via shared parsers
@@ -106,17 +107,17 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Development Tools
 
 - **Vite 8.2.2** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports
-- **@vitejs/devtools 0.6.1** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
+- **@vitejs/devtools 0.6.2** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
 - **rollup-plugin-visualizer 7.1.1** - Client/server bundle treemaps (`VITE_ANALYZE=true`)
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler 1.0** (stable) - Automatic memoization via `@rolldown/plugin-babel` + `reactCompilerPreset`
 - **Biome 2.5.9** for linting and formatting with Ultracite integration
-- **Ultracite 7.10.6** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.10.7** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock 1.17.1** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.125.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
+- **Wrangler 4.127.1** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
 - **react-doctor 0.9.12** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
-- **fallow 3.19.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
+- **fallow 3.21.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **Bun** for fast package management and runtime
@@ -137,9 +138,13 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ```
 app/
 ├── components/          # Reusable UI components
-│   ├── ui/             # Local CVA wrappers: button, dialog, checkbox, badge, card, input, label, textarea
+│   ├── ui/             # Panda recipe wrappers: button, dialog, checkbox, badge, card, input, label, textarea
 │   ├── form/           # Field, FormError, FormActionResult types, fetcher status → StatusButton helpers
-│   ├── deferred-*.tsx  # DeferredAwait / DeferredItems / DeferredPaginated (Suspense + Await)
+│   ├── deferred/       # Await / Items / Paginated (Suspense + Await)
+│   ├── image/          # Progressive image primitive (moved from features/image)
+│   ├── links/          # CustomLink / CustomNavLink
+│   ├── outcome-state/  # Empty/error chrome (`OutcomeState` + recipe)
+│   ├── route-error-boundary.tsx  # Shared route ErrorBoundary
 │   ├── status-button.tsx  # Pending/success/error submit button (idle auto-reset via useAutoIdleStatus)
 │   ├── types.ts        # Shared prop types (AsProps, EmptyState, ErrorState, ViewTransitionTune)
 │   └── [common]        # Generic components (lists, sortable, etc.)
@@ -149,7 +154,8 @@ app/
 │   └── parse-uuidv7.server.ts # Parse/string → UUIDv7 at trust boundaries
 ├── features/
 │   ├── auth/
-│   │   ├── components/        # AuthCard + AUTH_VT view-transition names
+│   │   ├── components/        # AuthCard, AuthForm + AUTH_VT view-transition names
+│   │   ├── hooks/             # use-auth-form
 │   │   ├── schemas.server.ts  # Login/sign-up Valibot schemas
 │   │   └── types.ts           # Login/sign-up field keys + field-error types
 │   ├── host/
@@ -164,15 +170,15 @@ app/
 │   │   │   └── schemas.server.ts  # Rental action schemas
 │   │   ├── schemas.server.ts  # Host action schemas (deposit/withdraw)
 │   │   └── utils/      # Chart period/points, pickChartGranularity, resolveChartContext
-│   ├── image/          # Image optimization utilities
 │   ├── middleware/     # Auth, Cloudflare, db context, auth-redirect helpers
 │   ├── navigation/     # Nav, mobile-nav (native dialog + invoker), hamburger-icon
-│   ├── pagination/     # Pagination + PaginationLimitControl / PaginationControl; parsers (limit vs cursor)
+│   ├── pagination/     # Pagination + PaginationLimitControl / PaginationControl; parsers + loaders.server.ts
 │   ├── seo/            # SEO helpers (canonical URLs, SeoHead, sitemap)
 │   │   └── dal/        # SEO Drizzle reads (sitemap.server.ts)
 │   └── vans/
-│       ├── components/ # Van UI (VanCard, van-card-recipe, VanDetail, HostVanDetail*, van-filters/, etc.)
-│       │   └── van-filters/  # VanFilters, type/state sections, facet config, shared filter types
+│       ├── components/ # Van UI (VanCard, van-card-recipe, VanDetail, HostVanDetail*, van-filters/, vans-list/)
+│       │   ├── van-filters/  # VanFilters, type/state sections, facet config, shared filter types
+│       │   └── vans-list/    # Public catalog list + metadata/state helpers
 │       ├── constants/  # Van-related constants (van-types.ts for client-safe constants)
 │       ├── dal/        # Van Drizzle repositories (*.server.ts)
 │       ├── services/   # catalog, host-vans, van-detail
@@ -193,8 +199,7 @@ app/
 │   ├── auth.server.ts      # Better-auth + drizzle-adapter/relations-v2
 │   ├── env.server.ts       # Varlock env re-export
 │   ├── id.server.ts        # UUID v7 ID generator for Better Auth
-│   ├── parsers.ts          # nuqs search parameter parsers
-│   ├── search-params.server.ts  # Server-side search param loaders
+│   ├── nuqs-options.ts     # Shared nuqs default options
 │   └── generic-sorting.server.ts  # Generic Drizzle orderBy utilities
 ├── types/              # Shared utility types (Maybe, List, Id, Prettify, Replace, Search)
 │   ├── auth.server.ts      # AuthenticatedUser (UUIDv7 id)
@@ -203,6 +208,7 @@ app/
 │   ├── api/            # better-auth handler (auth.ts)
 │   ├── auth/           # login, sign-up, sign-out
 │   ├── host/           # Dashboard, rental-activity, wallet-activity, reviews, vans, rentals
+│   │   ├── 404.tsx     # Host catch-all (keeps host chrome)
 │   │   └── rentals/    # rentals list, rent/:vanSlug, returnRental/:rentId
 │   ├── layout/         # Layout components
 │   └── public/         # Public routes
@@ -212,9 +218,10 @@ app/
 │       ├── about.tsx   # About page
 │       ├── robots.txt.ts   # Dynamic robots.txt
 │       ├── sitemap.xml.ts  # Dynamic sitemap
-│       └── 404.tsx     # Not found page
+│       └── 404.tsx     # Public catch-all
+├── styles.ts           # Shared Panda helpers (gridMax, fullBleed, bgSkeleton)
 ├── utils/              # Shared utilities
-│   ├── utils.ts        # `cn` via cnfast
+│   ├── result.ts       # Tiny Result helper
 │   └── errors/         # tryCatch, ServiceResult, DomainError, toActionResultOrThrow, parse-schema.server.ts, HTTP helpers
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
@@ -223,10 +230,15 @@ app/
 workers/
 └── app.ts              # Cloudflare Workers entry (React Router SSR)
 
-DESIGN.md                   # Semantic design system (tokens, roles, usage)
+DESIGN.md                   # Semantic design system (Panda tokens, roles, usage)
+panda.config.ts             # Panda tokens, recipes, conditions, view transitions
+postcss.config.cjs          # Panda PostCSS plugin
+styled-system/              # Generated Panda helpers (do not edit; import `styled-system/*` via tsconfig path)
 
 docs/
 ├── react-router-audit.md   # Framework-mode audit and middleware notes
+├── react-router-framework-to-data-mode.md # Framework → data-mode notes
+├── octane-compatibility.md # Octane / React Compiler notes
 ├── babel-react-compiler.md # React Compiler via @rolldown/plugin-babel (Vite 8)
 ├── react-stinky-report.md  # React Stinky smell sweep + fixes
 ├── fallow-health-backlog.md # Code health backlog from fallow analysis
@@ -382,14 +394,14 @@ The application uses **nuqs 2.10.1** for type-safe URL state management:
 export const limitParsers = { limit: parseAsLimit };
 export const cursorPaginationParsers = { cursor, direction };
 
-// Host lists compose both + sort (app/lib/parsers.ts)
+// Host lists compose both + sort (feature parsers)
 export const hostPaginationParsers = {
   ...cursorPaginationParsers,
   ...limitParsers,
   sort: parseAsSortOption,
 };
 
-// Server-side loaders (app/lib/search-params.server.ts)
+// Server-side loaders (app/features/pagination/loaders.server.ts)
 export const loadSearchParams = createLoader(paginationParsers);
 
 // Client-side usage
@@ -698,7 +710,7 @@ The `toPagination` utility implements correct cursor pagination logic:
 
 ## Van card recipe
 
-`vanCard` CVA in `app/features/vans/components/van-card-recipe.ts` maps van state to border/wash classes. Call sites pass `viewTransitionName` separately (`card-${van.id}`).
+`vanCard` Panda recipe in `app/features/vans/components/van-card-recipe.ts` maps van state to border/wash tokens. Call sites pass `viewTransitionName` separately (`card-${van.id}`).
 
 ```tsx
 <Card
@@ -832,7 +844,7 @@ const BarChartComponent = lazy(() => import("./bar-chart"));
 
 ### Deferred loader streaming
 
-Host rental-activity / reviews / wallet-activity return critical summary data immediately and defer paginated lists via promises. UI wraps with `DeferredAwait` / `DeferredPaginated` + route skeletons (`TransactionListSkeleton`, `ReviewListSkeleton`, `PaginatedItemsSkeleton`).
+Host rental-activity / reviews / wallet-activity return critical summary data immediately and defer paginated lists via promises. UI wraps with `app/components/deferred` (`Await` / `Paginated`) + route skeletons (`TransactionListSkeleton`, `ReviewListSkeleton`, `PaginatedItemsSkeleton`).
 
 ```tsx
 <DeferredPaginated
@@ -966,7 +978,7 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run fallow` – Full fallow analysis (dead code + dupes + health)
 - `bun run fallow:audit` – PR-style audit (dead code, complexity, duplication on changed files)
 - `bun run test` – Run Bun test suite
-- `bun run prepare` – Install Husky hooks
+- `bun run prepare` – Install Husky hooks and run `panda build`
 - `bun run ultracite:upgrade` – Upgrade Ultracite and re-init (Bun, Biome, Cursor)
 
 ### Ultracite Commands
@@ -1000,39 +1012,33 @@ Configuration in `lint-staged.config.ts`.
 
 ## Styling
 
-### TailwindCSS 4 & Modern CSS
+### PandaCSS 2 & Modern CSS
 
-- **TailwindCSS 4.3.3** with modern features (container queries, view transitions, scroll-driven animations, CSS containment)
+- **PandaCSS 2.0.0-beta.15** — typed `css` / `cx` / `cva` / patterns from `styled-system` (generated; do not edit)
+- **Tokens + recipes** in `panda.config.ts`; PostCSS via `postcss.config.cjs`; `bun run prepare` runs `panda build`
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — native `<dialog>` panel/fullscreen variants (`starting-style`, `transition-discrete`, Invoker Commands)
-- **Reusable keyframes** — parameterized `--fade` / `--scale` / `--slide-x` / `--slide-y` with CSS custom properties
-- **Auth + host view transitions** — login/sign-up, rental/wallet/balance/elapsed-days, sortable-title, and chart-page morphs (`::view-transition-old/new` in `app/app.css`); avoid nested named elements (breaks one-direction morphs)
-- **Semantic tokens** — `DESIGN.md`; consume roles (`bg-primary`, `text-muted-foreground`) not `--color-orange-*` at call sites
-- **Scroll-driven host nav hint** — `mask-scroll-hint` utility with `animation-timeline: scroll(x self)`
-- **Responsive design** with mobile-first approach and CSS Grid layouts
-- **Biome configuration** for CSS at-rules support
+- **Reusable keyframes** — parameterized fade / scale / slide in `panda.config.ts` + leftover `::view-transition-*` in `app/app.css`
+- **Auth + host view transitions** — named bags via `defineViewTransitions`; unique `view-transition-name` stays on the element
+- **Semantic tokens** — `DESIGN.md`; consume paths (`surface`, `muted.foreground`, `border.subtle`) not palette primitives at call sites
+- **Scroll-driven host nav hint** — `supportsScroll` condition + scroll-driven classes in `app/app.css`
+- **Responsive design** with mobile-first approach and Panda `grid` / `cq` patterns
+- **Shared helpers** — `app/styles.ts` (`gridMax`, `fullBleed`, `fullLayout`, `bgSkeleton`)
 
 ### Custom Design System
 
-- **Theme tokens** in `@theme` (`app/app.css`) — palette primitives + semantic roles (`--color-primary`, `--color-surface-*`, `--color-destructive`, domain van/status); see `DESIGN.md`
-- **Component variants** using `cva` (`button-variants.ts`, `badge-variants.ts`, `vanCard`, `dialogVariants`)
-- **Van card chrome** — `vanCard` CVA in `van-card-recipe.ts` (not an HOC / `getVanStateStyles`)
-- **Named container queries** — host wallet form `@container/wallet` two-column layout at `@lg/wallet`
-- **Type-safe styling** with TypeScript support throughout
-
-### Custom Utilities
-
-- **Utility-first approach** with custom CSS utilities for specific needs
-- **CSS custom properties** for dynamic theming and reusable values
-- **`bg-skeleton`** shimmer utility for deferred-list / chart skeletons
-- **Pseudo-random heights** using CSS trigonometric functions for skeleton loaders
+- **Theme tokens** in `panda.config.ts` — palette primitives + semantic roles; see `DESIGN.md`
+- **Component variants** using Panda `cva` (`button-variants.ts`, `badge-variants.ts`, `vanCard`, `dialogVariants`, `outcomeState`)
+- **Van card chrome** — `vanCard` recipe in `van-card-recipe.ts`
+- **Named container queries** — host wallet / outcome-state layouts via Panda `cq` and `gridTemplateAreas`
+- **Type-safe styling** with TypeScript token paths throughout
 
 ---
 
 ## Code Quality
 
 - **Biome 2.5.9** for linting and formatting with Ultracite integration
-- **Ultracite 7.10.6** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.10.7** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 7.0.2** with strict configuration
 - **Valibot 1.4.2** for runtime validation with regex support for slug validation
 - **Consistent code style:**
@@ -1045,7 +1051,7 @@ Configuration in `lint-staged.config.ts`.
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
 - **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization
-- **fallow 3.19.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
+- **fallow 3.21.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
 - **Bun `overrides`** — pin transitive audit fixes (`@remix-run/server-runtime`, `brace-expansion`, `fast-uri`, `picomatch`, `turbo-stream`, …) while `bunfig.toml` keeps `minimumReleaseAge`
 
 ### GitHub Actions
@@ -1053,8 +1059,8 @@ Configuration in `lint-staged.config.ts`.
 - **CI** (`.github/workflows/ci.yml`) — least-privilege permissions:
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
-  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — self-contained Action, no Bun install
-  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.6.0` Action (CLI package is `fallow` 3.18.0); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`)
+  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.12`, same as `package.json`); self-contained, no Bun install
+  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.22.0` Action (CLI `version: 3.21.0`, same as `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`)
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability; bump via Dependabot `github-actions` or periodic SHA refresh
@@ -1073,7 +1079,7 @@ This project uses **Ultracite** for enhanced code quality and AI-friendly develo
 ### Biome Configuration
 
 - **Ultracite integration** via `extends: ["ultracite/biome/react", "ultracite/biome/core", "ultracite/biome/remix"]` in `biome.jsonc`
-- **CSS at-rules support** for TailwindCSS 4 features
+- **CSS at-rules support** for Panda layers (`reset`, `base`, `tokens`, `recipes`, `utilities`)
 - **Sorted CSS classes** for consistency
 - **TypeScript strict mode** enabled
 - **Import organization** and sorting

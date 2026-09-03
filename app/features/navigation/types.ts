@@ -1,7 +1,7 @@
 import type { NavLinkRenderProps } from "react-router";
 import type { Children, Id, Prettify } from "~/types";
-import type { CustomLinkProps } from "./components/custom-link";
-import type { CustomNavLinkProps } from "./components/custom-nav-link";
+import type { CustomLinkProps } from "../../components/links/custom-link";
+import type { CustomNavLinkProps } from "../../components/links/custom-nav-link";
 
 /** Props passed to NavLink `className`, `style`, and `children` render functions. */
 export type NavLinkClassNameProps = NavLinkRenderProps;

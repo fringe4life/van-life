@@ -1,5 +1,7 @@
 import { StarIcon } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
+import { css, cx } from "styled-system/css";
+import { flex, visuallyHidden } from "styled-system/patterns";
 import type { ReviewModel } from "~/db/client.server";
 import { MAX_RATING } from "~/features/host/constants/constants";
 import type { Prettify } from "~/types";
@@ -26,10 +28,34 @@ const Star = ({ rating, starIndex }: StarProps): ReactNode => {
   };
 
   return (
-    <div aria-hidden="true" className="relative size-(--star-size)">
-      <StarIcon className="size-(--star-size) stroke-rating" />
-      <div className="rating-star-fill text-rating" style={starStyle}>
-        <StarIcon className="size-(--star-size) fill-current stroke-current" />
+    <div
+      aria-hidden="true"
+      className={css({
+        blockSize: "var(--star-size)",
+        inlineSize: "var(--star-size)",
+        position: "relative",
+      })}
+    >
+      <StarIcon
+        className={css({
+          blockSize: "var(--star-size)",
+          inlineSize: "var(--star-size)",
+          stroke: "rating",
+        })}
+      />
+
+      <div
+        className={cx("rating-star-fill", css({ color: "rating" }))}
+        style={starStyle}
+      >
+        <StarIcon
+          className={css({
+            blockSize: "var(--star-size)",
+            fill: "currentColor",
+            inlineSize: "var(--star-size)",
+            stroke: "currentColor",
+          })}
+        />
       </div>
     </div>
   );
@@ -45,17 +71,31 @@ const RatingStars = ({ rating }: RatingStarsProps): ReactNode => {
   });
 
   return (
-    <span className="relative inline-flex h-(--star-size) w-(--rating-stars-width) contain-strict">
+    <span
+      className={css({
+        blockSize: "var(--star-size)",
+        contain: "strict",
+        display: "inline-flex",
+        inlineSize: "var(--rating-stars-width)",
+        position: "relative",
+      })}
+    >
       <img
         alt={`Rating: ${rating} out of ${MAX_RATING} stars`}
-        className="sr-only"
+        className={visuallyHidden()}
         height={1}
         src={TRANSPARENT_PIXEL}
         width={1}
       />
       <span
         aria-hidden="true"
-        className="absolute inset-0 flex gap-(--star-gap)"
+        className={cx(
+          flex({ gap: "var(--star-gap)" }),
+          css({
+            inset: "0",
+            position: "absolute",
+          })
+        )}
       >
         {stars}
       </span>

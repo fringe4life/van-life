@@ -1,12 +1,31 @@
 import type { ComponentProps } from "react";
-import { cn } from "~/utils/utils";
+
+import { css, cx } from "styled-system/css";
+import { hstack } from "styled-system/patterns";
 
 function Label({ className, ...props }: ComponentProps<"label">) {
   return (
     // biome-ignore lint/a11y/noLabelWithoutControl: primitive wrapper — htmlFor supplied by consumer
     <label
-      className={cn(
-        "flex select-none items-center gap-2 font-medium text-foreground text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50 group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50",
+      className={cx(
+        hstack({
+          gap: "2",
+          userSelect: "none",
+        }),
+        css({
+          _groupDisabled: {
+            opacity: 0.5,
+            pointerEvents: "none",
+          },
+          _peerDisabled: {
+            cursor: "not-allowed",
+            opacity: 0.5,
+          },
+          color: "foreground",
+          fontSize: "sm",
+          fontWeight: "medium",
+          lineHeight: "none",
+        }),
         className
       )}
       {...props}

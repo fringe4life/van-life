@@ -1,15 +1,17 @@
 import { Info, LogIn, LogOut, Truck, User } from "lucide-react";
 import { href } from "react-router";
+import { css } from "styled-system/css";
+import { linkClassName, navLinkClassName } from "../styles";
 import type { NavItem } from "../types";
-import { linkClassName } from "./link-class-name";
-import { navLinkClassName } from "./nav-link-class-name";
+
+const navIconClassName = css({ aspectRatio: "square" });
 
 export function getNavItems(hasToken: boolean): NavItem[] {
   const items = [
     {
       children: (
         <>
-          <Info className="aspect-square" />
+          <Info className={navIconClassName} />
           <span>About</span>
         </>
       ),
@@ -21,7 +23,7 @@ export function getNavItems(hasToken: boolean): NavItem[] {
     {
       children: (
         <>
-          <User className="aspect-square" />
+          <User className={navIconClassName} />
           <span>Host</span>
         </>
       ),
@@ -33,7 +35,7 @@ export function getNavItems(hasToken: boolean): NavItem[] {
     {
       children: (
         <>
-          <Truck className="aspect-square" />
+          <Truck className={navIconClassName} />
           <span>Vans</span>
         </>
       ),
@@ -45,7 +47,7 @@ export function getNavItems(hasToken: boolean): NavItem[] {
     {
       children: (
         <>
-          <LogIn className="aspect-square" />
+          <LogIn className={navIconClassName} />
           <span>Login</span>
         </>
       ),
@@ -57,7 +59,7 @@ export function getNavItems(hasToken: boolean): NavItem[] {
     {
       children: (
         <>
-          <LogOut className="aspect-square" />
+          <LogOut className={navIconClassName} />
           <span>Sign out</span>
         </>
       ),

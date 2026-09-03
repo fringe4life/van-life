@@ -1,6 +1,9 @@
 import { Activity } from "react";
 import { data, href } from "react-router";
-import { UnsuccesfulState } from "~/components/unsuccesful-state";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
+import { CustomLink } from "~/components/links/custom-link";
+import { RouteErrorBoundary } from "~/components/route-error-boundary";
 import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
@@ -8,12 +11,10 @@ import {
 import { determineHostVansRoute } from "~/features/host/utils/determine-host-vans-route";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
-import { CustomLink } from "~/features/navigation/components/custom-link";
+import { loadHostSearchParams } from "~/features/pagination/loaders.server";
 import { buildVanUrl } from "~/features/pagination/utils/build-search-params";
 import { VanDetailCard } from "~/features/vans/components/host detail";
 import { getHostVanBySlug } from "~/features/vans/dal/host-van.server";
-import { loadHostSearchParams } from "~/lib/search-params.server";
-import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import { notFound } from "~/utils/errors/not-found";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import type { Route } from "./+types/host-van-detail";
@@ -57,12 +58,26 @@ const HostVanDetailPage = ({ loaderData, params }: Route.ComponentProps) => {
   });
 
   return (
-    <div className="grid min-h-full grid-rows-[min-content_1fr]">
-      <title>{van.name} | Van Life</title>
+    <div
+      className={cx(
+        grid({
+          gap: "0",
+          gridTemplateAreas: '"back" "detail"',
+          gridTemplateRows: "min-content 1fr",
+        }),
+        css({
+          minBlockSize: "full",
+        })
+      )}
+    >
+      <title>{`${van.name} | Van Life`}</title>
       <meta content={`${van.name} - ${van.description}`} name="description" />
 
-      <CustomLink to={backLink}>&larr; Back to Your Vans</CustomLink>
-      <div className="self-center">
+      <CustomLink className={css({ gridArea: "back" })} to={backLink}>
+        &larr; Back to Your Vans
+      </CustomLink>
+
+      <div className={css({ alignSelf: "center", gridArea: "detail" })}>
         <VanDetailCard van={van}>
           <Activity mode={isDetailsView ? "visible" : "hidden"}>
             <VanDetailCard.Details />
@@ -81,10 +96,8 @@ const HostVanDetailPage = ({ loaderData, params }: Route.ComponentProps) => {
 export default HostVanDetailPage;
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
-  <UnsuccesfulState
-    isError
-    message={getRouteErrorMessage(error, {
-      errorFallback: "This van could not be found.",
-    })}
+  <RouteErrorBoundary
+    error={error}
+    errorFallback="This van could not be found."
   />
 );

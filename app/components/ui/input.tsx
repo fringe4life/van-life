@@ -1,12 +1,45 @@
 import type { ComponentProps } from "react";
-
-import { cn } from "~/utils/utils";
+import { css, cx } from "styled-system/css";
 
 const Input = ({ className, type, ...props }: ComponentProps<"input">) => (
   <input
-    className={cn(
-      "flex h-9 w-full min-w-0 rounded-md border border-input bg-input-background px-3 py-1 text-input-foreground outline-none transition-[color] file:inline-flex file:h-7 file:border-0 file:bg-transparent file:font-medium file:text-muted-foreground file:text-sm placeholder:text-placeholder disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-      "focus-visible:border-input focus-visible:ring-2 focus-visible:ring-ring",
+    className={cx(
+      css({
+        _disabled: {
+          cursor: "not-allowed",
+          opacity: 0.5,
+          pointerEvents: "none",
+        },
+        _file: {
+          background: "transparent",
+          blockSize: "7",
+          borderWidth: "0",
+          color: "muted.foreground",
+          fontSize: "sm",
+          fontWeight: "medium",
+        },
+        _placeholder: { color: "placeholder" },
+        backgroundColor: "input.background",
+        blockSize: "9",
+        borderColor: "input",
+        borderRadius: "md",
+        borderStyle: "solid",
+        borderWidth: "1",
+        color: "input.foreground",
+        display: { _file: "inline-flex", base: "flex" },
+        focusRingColor: "ring",
+        focusRingOffset: "0",
+        focusRingWidth: "2px",
+        focusVisibleRing: "outside",
+        fontSize: { md: "sm" },
+        inlineSize: "full",
+        minInlineSize: "0",
+        outline: "none",
+        paddingBlock: "1",
+        paddingInline: "3",
+        transitionDuration: "normal",
+        transitionProperty: "color",
+      }),
       className
     )}
     type={type}

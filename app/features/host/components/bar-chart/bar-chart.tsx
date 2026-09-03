@@ -8,6 +8,7 @@ import { Chart } from "@tanstack/charts/react";
 import { scaleBand } from "@tanstack/charts/scales/band";
 import { scaleLinear } from "@tanstack/charts/scales/linear";
 import { tooltip } from "@tanstack/charts/tooltip";
+import { css } from "styled-system/css";
 import type { Data, DataArray } from "~/features/host/types";
 
 /** Matches `--chart-height` in `app.css`. Scene size is a number, not CSS %. */
@@ -17,7 +18,7 @@ const BarChartComponent = <T extends Data<DataArray>>({ data }: T) => {
   const definition = defineChart({
     marks: [
       barY(data, {
-        fill: "var(--color-chart-1)",
+        fill: "currentColor",
         key: "id",
         x: "name",
         y: "amount",
@@ -37,7 +38,14 @@ const BarChartComponent = <T extends Data<DataArray>>({ data }: T) => {
   });
 
   return (
-    <div className="v-host-chart h-full w-full">
+    <div
+      className={css({
+        blockSize: "full",
+        color: "chart.1",
+        inlineSize: "full",
+        viewTransitionName: "host-chart",
+      })}
+    >
       <Chart
         ariaLabel="Amount by period"
         definition={definition}

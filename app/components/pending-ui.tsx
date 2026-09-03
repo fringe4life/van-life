@@ -1,7 +1,8 @@
-import type { Prettify } from "better-auth";
 import type { ElementType, ReactNode } from "react";
+import { css, cx } from "styled-system/css";
 import useIsNavigating from "~/hooks/use-is-navigating";
-import { cn } from "~/utils/utils";
+import type { Prettify } from "~/types";
+
 import type { AsProps } from "./types";
 
 type PendingUIProps<T extends ElementType = "div"> = Prettify<
@@ -66,9 +67,9 @@ const PendingUI = <T extends ElementType = "div">({
 
   return (
     <Component
-      className={cn(
-        "transition-opacity duration-200",
-        isCurrentlyPending && "opacity-75",
+      className={cx(
+        css({ transitionDuration: "normal", transitionProperty: "opacity" }),
+        isCurrentlyPending && css({ opacity: 0.75 }),
         className
       )}
       {...rest}

@@ -15,176 +15,182 @@ Smell-check of Van Life against [React Stinky](https://saschb2b.com/ai/skills/re
 - No array-index `key` on reorderable/editable lists
 - No nontrivial component defined inside another component
 - No leaked `{count && …}` rendering `0`
+- Image preload `useEffect` gone; only remaining effect is `useAutoIdleStatus` (timer + cleanup — legitimate sync)
+
+**Resolved since last sweep:**
+
+| Old finding | Status |
+|-------------|--------|
+| `useHostWallet` props-in-state + `formData.get("type") as string` | **Gone.** Type derived: `typeOverride ?? formData.type ?? DEPOSIT`; `String(...)` on submit. |
+| `host-vans.tsx` `(vans ?? []) as HostVanListItem[]` | **Gone.** |
+| `UnsuccesfulState` typo | **Gone.** Replaced by `outcome-state/`. |
+| Auth page Card shell | **Gone.** Shared `AuthCard`. |
+| Auth form fetcher/status wiring | **Gone.** `useAuthForm` + `AuthForm`. |
+| Public vans `VanCard` `renderProps` | **Gone from route.** `createVansListCardProps` in `vans-list-card.tsx`. |
+| VanDetail rent CTA dup + lying cast | Still fixed. |
+| VanForm callback/cast soup | Still fixed. |
+| Van state-filter boolean pile | Still fixed (facet API). |
+| PendingUI dynamic `opacity-${…}` | Still fixed. |
+| Host van-detail nested ternary | Still fixed. |
+| Listed-vans empty copy drift | Still fixed (`HOST_VANS_EMPTY_MESSAGE`). |
+| `SearchInput` unlabeled + `handleKeyPress` | **Gone.** `aria-label="Search vans"`; handler `handleKeyDown`. |
+| Van-detail broken `sizes` + `alt={description}` | **Gone.** Valid `sizes`; `alt={name}` on detail + card. |
+| `VanCardProps.state` loose location state | **Gone.** Prop dropped (no call site used it). |
+| Wallet form hook-shaped props + ungrouped radios | **Gone.** Behavior props; `<fieldset>` + visually-hidden legend. |
+| `PendingUI` `Prettify` from `better-auth` | **Gone.** Import from `~/types`. |
 
 ---
 
 ## Per-file findings
 
-### `app/features/vans/components/van-detail.tsx`
+### `app/components/search-input.tsx` — **fixed**
 
-**[Funky] duplicate-jsx + lying-cast** — **fixed**
-
-- Was: Rent CTA duplicated (desktop + mobile); mobile arm had a lying cast.
-- Now: shared `rentLabel` / `rentTo` / `rentVariant` / `rentClassName` vars; both links reuse them. No new component (only 2 call sites).
+- Was: unlabeled search; `handleKeyPress` on `onKeyDown`.
+- Now: `aria-label="Search vans"`; `handleKeyDown`. Rescan: no leftover a11y/naming smell.
 
 ---
 
-### `app/features/host/components/van-form.tsx`
+### `app/features/vans/components/van-detail.tsx` — **fixed**
 
-**[Funky] callback-naming + prop-specificity / cast soup** — **fixed**
-
-- Was: `handleSubmit`; `formDataDefaults?: Record<string, unknown>` + `as string` casts; summary `errors` string.
-- Now: `onSubmit`; `VanFormValues` / `VanFormFieldErrors` from `Pick`-style `VAN_FORM_FIELDS` on `VanModel`; action returns per-field issues via `arkErrorsToFieldErrors`; inline `FieldError` under inputs (ready to extract shared component).
-
----
-
-### `app/features/host/hooks/use-host-wallet.ts`
-
-**[Funky] props-in-state (state and data flow), lines 17–19**
-
-- **Smell:** `initialTransactionType` only seeds `useState`; later changes to that argument do not update `isDepositing`.
-- **Cost:** Looks like restore-from-action API, but seed is one-shot unless parent remounts with `key`.
-- **Fix:** Drive radios from prop/`actionData` directly, or remount with `key` when restore identity changes; name prop `defaultTransactionType` if seed-only is intentional.
-- **Source:** [React — Don't mirror props in state](https://react.dev/learn/choosing-the-state-structure#don-t-mirror-props-in-state).
-
-**[Whiff] cast (TypeScript), line 35**
-
-- **Smell:** `formData.get("type") as string`.
-- **Cost:** `FormDataEntryValue | null` forced without narrowing.
-- **Fix:** Narrow with `typeof … === "string"` or a small parser.
-- **Source:** TypeScript handbook — type assertions.
-
----
-
-### `app/features/vans/components/van-filters/van-state-filter-section.tsx`
-
-**[Funky] enumerated-variants / prop-organization** — **fixed**
-
-- Was: flat boolean pile (`onlyOnSale`, optimistic twins, two setters).
-- Now: facet API — `facets: VanStateFilterFacet[]` + `onCheckedChange(key, checked)`. Config in `van-state-filter-config.ts`; hook builds facets. Add filter = one config row + optimistic wire.
-
----
-
-### `app/components/pending-ui.tsx`
-
-**[Funky] fragile dynamic Tailwind class (rendering / styling)** — **fixed**
-
-- Was: runtime `opacity-${…}` via unused `pendingOpacity` prop.
-- Now: hardcoded `opacity-75` (only value ever used at call sites).
-
----
-
-### `app/features/image/component/image.tsx`
-
-**[Whiff] default-values `||`** — **fixed / N/A**
-
-- Progressive loader: `fullSrc` is `Maybe<string>` (`null` until load). `?? lowRes` is the right nullish fallback; empty string never a valid loaded src here.
-
----
-
-### `app/features/vans/components/host detail/index.tsx`
-
-**[Whiff] nested-ternary** — **fixed**
-
-- Was: nested ternary + biome-ignore.
-- Now: early returns in `hostVanDetailNavClassName`.
-
----
-
-### `app/routes/host/host-vans.tsx`
-
-**[Whiff] cast (TypeScript), ~line 144**
-
-- **Smell:** `(vans ?? []) as HostVanListItem[]`.
-- **Cost:** Masks loader typing gaps.
-- **Fix:** Type loader return so `vans` is already `HostVanListItem[] | undefined` and drop the cast.
-- **Source:** TypeScript handbook — type assertions.
+- Was: broken `sizes` paren; `alt={description}`.
+- Now: `"(min-width: 1024px) 500px, (min-width: 768px) 400px, 300px"`; `alt={name}` (same on `van-card.tsx`). Rescan: no leftover sizes/alt smell.
 
 ---
 
 ### `app/components/custom-form.tsx`
 
-**[Whiff] prop-organization (component API)**
+**[Whiff] prop-organization (component API), lines 15–18**
 
 - **Smell:** Same `className` applied to both `<Form>` and inner `<fieldset>`.
 - **Cost:** Layout/opacity classes applied twice; confusing ownership.
-- **Fix:** Split `className` / `fieldsetClassName`, or apply layout only on one element.
+- **Fix:** Split `className` / `fieldsetClassName`, or layout on Form only (`fieldset` unstyled / `display: contents`).
 - **Source:** React Stinky catalog — prop-organization (category 5).
 
 ---
 
-### `app/components/unsuccesful-state.tsx`
+### `app/features/vans/types.ts` — **fixed**
 
-**[Whiff] component-naming (component API)**
-
-- **Smell:** Typo in name: `Unsuccesful` → should be `Unsuccessful`.
-- **Cost:** Search/autocomplete friction; looks unfinished.
-- **Fix:** Rename component + exports + imports.
-- **Source:** React Stinky catalog — component-naming (category 3).
+- Was: unused `state?: Record<string, unknown>` (report had wrongly blamed `rentals.tsx` — that `state` sat on Return `CustomLink`, not `VanCard`).
+- Now: prop removed from `VanCardProps` / `VanCard`. Rescan: no location-state on card.
 
 ---
 
-### `app/features/vans/types.ts`
+### `app/components/outcome-state/types.ts`
 
-**[Whiff] prop-specificity (component API), ~line 34**
+**[Funky] discriminated-unions (component API), lines 9–21**
 
-- **Smell:** `state?: Record<string, unknown>` on `VanCardProps`.
-- **Cost:** Location state is opaque; consumers get no autocomplete.
-- **Fix:** Tighten to known location-state shape used by the app.
-- **Source:** React Stinky catalog — prop-specificity (category 4).
+- **Smell:** `LinkedOutcomeAction.kind?` optional; `ReloadOutcomeAction.kind` required. `to` types differ (`CustomLinkProps["to"]` vs `string`) but `kind` does not force the arm.
+- **Cost:** `"reload"` vs default-link arms ambiguous; exhaustiveness weaker.
+- **Fix:** Required `kind: "link" | "reload"` on both arms; narrow `to` per arm.
+- **Source:** [TypeScript — Discriminated Unions](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions).
+
+---
+
+### `app/features/host/components/dashboard/host-wallet-form.tsx` — **fixed**
+
+- Was: `wallet: ReturnType<typeof useHostWallet>`; radios with no group.
+- Now: `fetcher` / `isDepositing` / `isPending` / `onChangeType` / `onSubmit` / `optimisticBalance`. Radios in `<fieldset>` + visually-hidden `Transaction type` legend. Dashboard maps hook → those props. Rescan: no hook-shaped prop, no ungrouped radios.
+
+---
+
+### `app/components/pending-ui.tsx` — **fixed**
+
+- Was: `Prettify` from `"better-auth"`.
+- Now: `import type { Prettify } from "~/types"`. Rescan: no auth-package type coupling.
+
+---
+
+### `app/components/image/progressive-image.tsx` — **documented (accepted)**
+
+- `loaded` still instance state (`loading === "eager"` seed). No auto-reset on `src`.
+- **Contract (JSDoc):** remount when `src` changes — pass `key={src}` / `key={imageUrl}`. `VanCard` already does. Not a code change.
+
+---
+
+
+### `app/routes/host/host-vans.tsx`
+
+**[Whiff] semantic-html, lines 174–175**
+
+- **Smell:** Pending cards use `link: "#"`.
+- **Cost:** Junk focus target if overlay still focusable.
+- **Fix:** `linkCoversCard: false` and no href, or non-link pending chrome.
 
 ---
 
 ## Cross-file duplication
 
-### **[Rancid] duplicate-implementation — empty-state copy** — **fixed**
+### **[Funky] duplicate-implementation — auth form wiring** — **fixed**
 
-- Was: listed-vans screens reused rental “not renting” copy (and drifted).
-- Now: `HOST_VANS_EMPTY_MESSAGE` in `app/features/host/constants/constants.ts`; used by `host-vans.tsx` + `host-vans-section.tsx`. Rentals keep own renting copy.
-
----
-
-### **[Funky] duplicate-implementation — auth pages**
-
-- **Smell:** `app/routes/auth/login.tsx` (~L84–131) ≈ `app/routes/auth/sign-up.tsx` (~L75–132): Card + CustomForm + viewTransition names + footer swap.
-- **Cost:** Auth UX changes must be applied twice.
-- **Fix:** Shared `<AuthCard title footer>` (or similar) shell.
-- **Source:** React Stinky duplication-pass (category 57).
+- Was: `login.tsx` ≈ `sign-up.tsx` after `AuthCard`: fetcher + transition + `readActionFormData` + status flash + fieldset grid.
+- Now: `useAuthForm` + `<AuthForm>`. Routes keep field lists, echo defaults, titles, and submit labels.
 
 ---
 
 ### **[Funky] duplicate-implementation — CustomLink / CustomNavLink**
 
-- **Smell:** `custom-link.tsx` and `custom-nav-link.tsx` both: `useIsPage`, `prefetch="intent"`, disable pointer events on current page, `viewTransition`.
+- **Smell:** Both: `useIsPage`, `prefetch="intent"`, disable pointer events on current page, `viewTransition`. Styling already drifted (`className` merge vs inline `style`).
 - **Cost:** Behavior drift between Link and NavLink wrappers.
-- **Fix:** Shared hook/helper for “disable when current” + shared base class constants if any.
+- **Fix:** Shared hook/helper for “disable when current” + shared prefetch/VT defaults.
 - **Source:** React Stinky duplication-pass (category 57).
 
 ---
 
-### **[Funky] duplicate-implementation — VanCard `renderProps` factories**
+### **[Funky] duplicate-implementation — host VanCard `renderProps`**
 
-- **Smell:** Near-same map-to-`VanCardProps` pattern in `host-vans.tsx`, `host-vans-section.tsx`, `rentals.tsx`, `vans.tsx`.
-- **Cost:** Card prop wiring drifts per screen (section already diverged: Edit text vs link).
-- **Fix:** Small helpers `toHostVanCardProps` / `toCatalogVanCardProps` where shapes still match.
+- **Smell:** Near-same map-to-`VanCardProps` in `host-vans.tsx`, `host-vans-section.tsx`, `rentals.tsx`. Public catalog path extracted (`createVansListCardProps`).
+- **Cost:** Dashboard “Edit” is inert `<p>` text; list page uses `CustomLink`. Already drifted.
+- **Fix:** `toHostVanCardProps` / `toRentalVanCardProps` helpers; dashboard should use the link.
 - **Source:** React Stinky duplication-pass (category 57).
 
 ---
 
 ### **[Funky] duplicate-implementation — collection empty/error gate**
 
-- **Smell:** `generic-component.tsx` and `lazy-bar-chart.tsx` both: `getCollectionState` + `UnsuccesfulState` empty/error gate.
-- **Cost:** Gate behavior can diverge.
-- **Fix:** Shared `<CollectionGate>` or always route charts through `GenericComponent`.
+- **Smell:** `generic-component.tsx` and `lazy-bar-chart.tsx` both: `getCollectionState` + `OutcomeState` / hidden placeholder.
+- **Cost:** Gate behavior can diverge (already slightly: chart wraps view-transition).
+- **Fix:** Shared `<CollectionGate>` (optional wrapper class) or always route charts through the same gate.
 - **Source:** React Stinky duplication-pass (category 57).
+
+---
+
+### **[Funky] duplicate-implementation — rental vs wallet activity pages**
+
+- **Smell:** `rental-activity.tsx` ≈ `wallet-activity.tsx`: same PendingUI grid, elapsed-days line, sum, `LazyBarChart`, `Sortable`, `DeferredPaginated`.
+- **Cost:** Layout / defer / chart wiring changes twice.
+- **Fix:** Shared `HostActivityPage` with slots/config (title, sum label, `Transaction`, empty copy).
+- **Don't flag:** Different loaders / item types — that split is correct.
+- **Source:** React Stinky duplication-pass (category 57).
+
+---
+
+### **[Funky] duplicate-implementation — public vs host 404**
+
+- **Smell:** `routes/public/404.tsx` ≈ `routes/host/404.tsx`; only action targets differ. `NOT_FOUND_DESCRIPTION` copy-pasted.
+- **Cost:** Copy/layout drift.
+- **Fix:** Shared `NotFoundPage({ primaryAction, secondaryAction })` + thin route wrappers; one description constant.
+- **Source:** React Stinky duplication-pass (category 57).
+
+---
+
+### **[Funky] GenericComponent on static lists**
+
+- **Smell:** `GenericComponent` + `errorState={{ title: "Something went wrong" }}` used where items cannot fail or empty:
+  - `nav.tsx`, `mobile-nav.tsx`, `host-layout.tsx` (nav items)
+  - `sortable.tsx` (4 hardcoded sort buttons)
+  - `host detail/index.tsx` (3 tabs)
+- **Cost:** Fake empty/error/no-match paths; collection API on config arrays.
+- **Fix:** Direct `.map` to `NavItem` / `Button` / `CustomNavLink`. Keep `GenericComponent` for fetched collections.
+- **Bonus:** `mobile-nav.tsx` `renderMobileNavItemProps` `link` vs default arms are identical — delete the branch.
+- **Source:** React Stinky catalog — children-pattern / duplicate-implementation (10, 57).
 
 ---
 
 ### **[Whiff] duplicate-implementation — generic error strings**
 
-- **Smell:** `"Something went wrong"` repeated across routes.
+- **Smell:** `"Something went wrong"` (and close variants) across routes, `deferred/await.tsx`, `RouteErrorBoundary`, services.
 - **Cost:** Low — framework-ish boilerplate.
-- **Fix (optional):** `ERROR_GENERIC` constant.
+- **Fix (optional):** `ERROR_GENERIC` / shared `errorState` constant.
 - **Don't flag heavily:** intentional repeated shell copy is fine.
 
 ### Parallel hooks (not flagged)
@@ -198,19 +204,21 @@ Smell-check of Van Life against [React Stinky](https://saschb2b.com/ai/skills/re
 | Rating | Count |
 |--------|------:|
 | Rancid | 0 |
-| Funky | 4 (PendingUI + van-detail + VanForm + state-filters fixed) |
-| Whiff | 6 |
+| Funky | 7 |
+| Whiff | 3 |
 
-Across ~15 files with findings; rest of scanned surface smells relatively fresh for a React Router framework app this size.
+Open leftovers: outcome-action union; CustomLink/NavLink; host VanCard factories; collection gate; activity pages; 404 shell; `GenericComponent` on static lists; `CustomForm` className; pending `link: "#"`; generic error strings.
 
 ### Priority fix order
 
-1. **Funky:** Clarify `useHostWallet` seed vs live prop.
-2. **Optional:** Auth card shell, link-wrapper helper, VanCard prop factories, rename `UnsuccesfulState`.
+1. **Funky:** CustomLink guard helper; host VanCard prop factories (dashboard Edit link); `HostActivityPage`; stop `GenericComponent` on static nav/sort.
+2. **Optional:** Split `CustomForm` classNames; require `kind` on outcome actions; `ERROR_GENERIC`.
 
 ### Notes
 
-- Image preload `useEffect` treated as legitimate external sync — not flagged.
+- `useAutoIdleStatus` render-time `prevStatus` sync is the documented React pattern — not flagged.
 - Index/`star-${n}` keys on static star list — allowed by catalog.
 - `!!x &&` / `fillPercent > 0 &&` patterns — no zero-leak.
+- Filter checkbox `onChange` — native HTML; not flagged.
 - Memoization density in filter hooks deferred to `react-compiler` skill.
+- `ProgressiveImage`: `key={src}` remount contract in JSDoc; `VanCard` uses `key={imageUrl}`.

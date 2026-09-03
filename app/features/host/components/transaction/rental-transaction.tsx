@@ -1,3 +1,4 @@
+import { css } from "styled-system/css";
 import { Transaction } from "./transaction";
 import type { RentalTransactionProps } from "./transaction-types";
 
@@ -10,9 +11,20 @@ const RentalTransactionDetails = ({
   rentDuration,
   rentName,
 }: RentalTransactionDetailsProps) => (
-  <p className="font-semibold text-foreground text-sm">
+  <p
+    className={css({
+      color: "foreground",
+      fontSize: "sm",
+      fontWeight: "semibold",
+    })}
+  >
     {rentName}
-    <span className="font-normal text-muted-foreground">
+    <span
+      className={css({
+        color: "muted.foreground",
+        fontWeight: "normal",
+      })}
+    >
       {` · ${rentDuration}`}
     </span>
   </p>

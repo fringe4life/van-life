@@ -1,3 +1,4 @@
+import { css } from "styled-system/css";
 import { useVanDetailCard } from "./context";
 
 /**
@@ -9,14 +10,32 @@ function Details() {
 
   return (
     <article>
-      <p className="font-bold">
-        Name: <span className="font-normal">{name}</span>
+      <p className={css({ fontWeight: "bold" })}>
+        Name:
+        <span className={css({ fontWeight: "normal" })}>{name}</span>
       </p>
-      <p className="my-4 font-bold">
-        Category: <span className="font-normal capitalize">{type}</span>
+
+      <p className={css({ fontWeight: "bold", marginBlock: "4" })}>
+        Category:
+        <span
+          className={css({
+            fontWeight: "normal",
+            textTransform: "capitalize",
+          })}
+        >
+          {type}
+        </span>
       </p>
-      <p className="min-w-full max-w-3xs font-bold">
-        Description: <span className="font-normal">{description}</span>
+
+      <p
+        className={css({
+          fontWeight: "bold",
+          maxInlineSize: "3xs", // 16rem
+          minInlineSize: "full",
+        })}
+      >
+        Description:
+        <span className={css({ fontWeight: "normal" })}>{description}</span>
       </p>
     </article>
   );

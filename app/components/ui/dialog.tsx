@@ -1,25 +1,83 @@
-import { cva, type VariantProps } from "cva";
 import type { ComponentProps } from "react";
 
-import { cn } from "~/utils/utils";
+import { cva, cx, type RecipeVariantProps } from "styled-system/css";
 
 const dialogVariants = cva({
-  base: "max-h-none opacity-0 starting:opacity-0 outline-none transition-[opacity,translate,display,overlay] transition-discrete duration-(--duration-dialog) ease-glide backdrop:transition-[background-color,display,overlay] backdrop:transition-discrete backdrop:duration-(--duration-dialog) backdrop:ease-glide open:opacity-100",
-  defaultVariants: {
-    variant: "panel",
+  base: {
+    _backdrop: {
+      _open: {
+        backgroundColor: "accent",
+      },
+      transitionBehavior: "allow-discrete",
+      transitionDuration: "var(--duration-dialog)",
+      transitionProperty: "background-color,display,overlay",
+      transitionTimingFunction: "glide",
+    },
+    _open: {
+      opacity: "1",
+    },
+    _starting: {
+      _open: {
+        opacity: "1",
+      },
+      opacity: "0",
+    },
+    maxBlockSize: "none",
+    opacity: "0",
+    outline: "none",
+    transitionBehavior: "allow-discrete",
+    transitionDuration: "var(--duration-dialog)",
+    transitionProperty: "opacity,translate,display,overlay",
+    transitionTimingFunction: "glide",
   },
   variants: {
     variant: {
-      fullscreen:
-        "m-0 h-full w-full max-w-none translate-x-full backdrop:bg-transparent open:starting:translate-x-full open:translate-x-0 open:bg-accent open:starting:bg-transparent open:backdrop:bg-surface-inverse/60",
-      panel:
-        "m-auto max-w-sm -translate-y-4 starting:-translate-y-4 rounded-xl p-4 shadow-md backdrop:bg-transparent open:translate-y-0 open:bg-accent open:starting:bg-transparent open:backdrop:bg-surface-inverse/40",
+      fullscreen: {
+        _open: {
+          _backdrop: {
+            backgroundColor: "surface.inverse/60",
+          },
+        },
+        backdrop: {
+          backgroundColor: "transparent",
+        },
+        backgroundColor: "transparent",
+        blockSize: "full",
+        inlineSize: "full",
+        inset: "0",
+        margin: "0",
+        maxBlockSize: "none",
+        maxInlineSize: "none",
+        overflow: "clip",
+        padding: "0",
+        position: "fixed",
+      },
+      panel: {
+        _open: {
+          _backdrop: {
+            backgroundColor: "surface.inverse/40",
+          },
+          _starting: {
+            backgroundColor: "transparent",
+            translate: "0 -1rem",
+          },
+          translate: "0 0",
+        },
+        blockSize: "full",
+        inlineSize: "full",
+        margin: "auto",
+        maxInlineSize: "sm",
+        padding: "4",
+        rounded: "xl",
+        shadow: "md",
+        translate: "0 -1rem",
+      },
     },
   },
 });
 
 type DialogProps = ComponentProps<"dialog"> &
-  VariantProps<typeof dialogVariants>;
+  RecipeVariantProps<typeof dialogVariants>;
 
 /**
  * Consumers must scope layout display utilities to the open state (`open:flex`,
@@ -34,7 +92,7 @@ function Dialog({
 }: DialogProps) {
   return (
     <dialog
-      className={cn(dialogVariants({ className, variant }))}
+      className={cx(dialogVariants({ variant }), className)}
       {...props}
       closedby={closedby}
       // Native showModal / invokers set the `open` content attr before hydrate.

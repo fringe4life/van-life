@@ -1,8 +1,9 @@
 import type { ChangeEvent } from "react";
+import { css, cx } from "styled-system/css";
+import { hstack } from "styled-system/patterns";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import type { Id, Prettify } from "~/types";
-import { cn } from "~/utils/utils";
 
 type FilterCheckboxRowProps = Prettify<
   Id & {
@@ -28,14 +29,29 @@ const FilterCheckboxRow = ({
 
   return (
     <div
-      className={cn(
-        "flex min-h-11 items-center gap-2 rounded-md px-3 py-2 transition-colors focus-within:bg-surface-muted/70 hover:bg-surface-muted",
+      className={cx(
+        hstack({ gap: "2" }),
+        css({
+          backgroundColor: {
+            _focusWithin: "surface.muted/70",
+            _hover: "surface.muted",
+          },
+          borderRadius: "md",
+          minBlockSize: "11",
+          paddingBlock: "2",
+          paddingInline: "3",
+          transitionDuration: "fast",
+          transitionProperty: "colors",
+        }),
         className
       )}
     >
       <Checkbox checked={checked} id={id} onChange={handleChange} />
       <Label
-        className={cn("cursor-pointer font-normal", labelClassName)}
+        className={cx(
+          css({ cursor: "pointer", fontWeight: "normal" }),
+          labelClassName
+        )}
         htmlFor={id}
       >
         {label}

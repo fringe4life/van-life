@@ -1,32 +1,114 @@
-import { cva, type VariantProps } from "cva";
+import { cva, type RecipeVariantProps } from "styled-system/css";
 
 export const buttonVariants = cva({
-  base: "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  base: {
+    _disabled: {
+      cursor: "not-allowed",
+      opacity: 0.5,
+      pointerEvents: "none",
+    },
+    "& > svg": {
+      flexShrink: "0",
+      pointerEvents: "none",
+    },
+    "& > svg:not([class*='size-'])": {
+      blockSize: "4",
+      inlineSize: "4",
+    },
+    alignItems: "center",
+    borderRadius: "md",
+    display: "inline-flex",
+    flexShrink: "0",
+    focusRingColor: "ring",
+    focusRingOffset: "0",
+    focusRingWidth: "2px",
+    focusVisibleRing: "outside",
+    fontSize: "sm",
+    fontWeight: "medium",
+    gap: "2",
+    justifyContent: "center",
+    outline: "none",
+    transitionDuration: "normal",
+    transitionProperty: "all",
+    whiteSpace: "nowrap",
+  },
   defaultVariants: {
     size: "default",
     variant: "default",
   },
-
   variants: {
     size: {
-      default: "h-9 px-4 py-2 has-[>svg]:px-3",
-      icon: "size-9",
-      lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-      sm: "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
+      default: {
+        "&:has(> svg)": {
+          paddingInline: "3",
+        },
+        blockSize: "9",
+        paddingBlock: "2",
+        paddingInline: "4",
+      },
+      icon: {
+        blockSize: "9",
+        inlineSize: "9",
+      },
+      lg: {
+        "&:has(> svg)": {
+          paddingInline: "4",
+        },
+        blockSize: "10",
+        borderRadius: "md",
+        paddingInline: "6",
+      },
+      sm: {
+        "&:has(> svg)": {
+          paddingInline: "2",
+        },
+        blockSize: "8",
+        gap: "2",
+        paddingInline: "3",
+      },
     },
     variant: {
-      default:
-        "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
-      destructive:
-        "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 focus-visible:bg-destructive/20",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
-      link: "underline-offset-4 hover:underline",
-      outline:
-        "border border-foreground bg-card text-card-foreground shadow-xs hover:border-foreground/90",
-      secondary:
-        "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+      default: {
+        backgroundColor: { _hover: "primary/90", base: "primary" },
+        color: "primary.foreground",
+        shadow: "xs",
+      },
+      destructive: {
+        backgroundColor: {
+          _focusVisible: "destructive/20",
+          _hover: "destructive/90",
+          base: "destructive",
+        },
+        color: "destructive.foreground",
+        shadow: "xs",
+      },
+      ghost: {
+        _hover: {
+          backgroundColor: "accent",
+          color: "accent.foreground",
+        },
+      },
+      link: {
+        _hover: {
+          textDecoration: "underline",
+          textUnderlineOffset: "4",
+        },
+      },
+      outline: {
+        backgroundColor: "card",
+        borderColor: { _hover: "foreground/90", base: "foreground" },
+        borderWidth: "1",
+        color: "card.foreground",
+        shadow: "xs",
+      },
+      secondary: {
+        backgroundColor: { _hover: "secondary/80", base: "secondary" },
+
+        color: "secondary.foreground",
+        shadow: "xs",
+      },
     },
   },
 });
 
-export type ButtonVariantProps = VariantProps<typeof buttonVariants>;
+export type ButtonVariantProps = RecipeVariantProps<typeof buttonVariants>;

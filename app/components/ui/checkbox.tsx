@@ -1,12 +1,20 @@
 import type { ComponentProps } from "react";
-
-import { cn } from "~/utils/utils";
+import { css, cx } from "styled-system/css";
 
 function Checkbox({ className, ...props }: ComponentProps<"input">) {
   return (
     <input
-      className={cn(
-        "size-4 shrink-0 rounded-control border border-input accent-primary",
+      className={cx(
+        css({
+          accentColor: "primary",
+          aspectRatio: "1",
+          borderColor: "input",
+          borderRadius: "control",
+          borderStyle: "solid",
+          borderWidth: "1",
+          flexShrink: "0",
+          inlineSize: 4,
+        }),
         className
       )}
       {...props}

@@ -16,8 +16,8 @@ import { getCost } from "~/features/vans/utils/get-cost";
 import { isVanAvailable } from "~/features/vans/utils/van-state-helpers";
 import type { UUIDv7 } from "~/types/ids.server";
 import { caughtErrorToServiceResult } from "~/utils/errors/domain-error.server";
-import { err, ok } from "~/utils/errors/service-result.server";
 import { tryCatch } from "~/utils/errors/try-catch.server";
+import { err, ok } from "~/utils/result";
 
 export type HostRentedVan = NonNullable<
   Awaited<ReturnType<typeof getHostRentedVan>>

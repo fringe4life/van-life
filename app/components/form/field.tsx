@@ -4,10 +4,11 @@ import {
   useId,
   ViewTransition,
 } from "react";
+import { css, cx } from "styled-system/css";
+import { vstack } from "styled-system/patterns";
 import type { ViewTransitionTune } from "~/components/types";
 import { Label } from "~/components/ui/label";
 import type { Id, Message, Prettify } from "~/types";
-import { cn } from "~/utils/utils";
 
 type FieldA11y = Prettify<
   {
@@ -26,7 +27,14 @@ type FieldErrorProps = Prettify<
 const FieldError = ({ errorTransition, id, message }: FieldErrorProps) => (
   <ViewTransition {...errorTransition}>
     {message ? (
-      <p className="font-medium text-destructive text-sm" id={id}>
+      <p
+        className={css({
+          color: "destructive",
+          fontSize: "sm",
+          fontWeight: "medium",
+        })}
+        id={id}
+      >
         {message}
       </p>
     ) : null}
@@ -57,9 +65,10 @@ const Field = ({
     "aria-invalid": error ? true : undefined,
     id,
   };
-
   return (
-    <div className={cn("flex flex-col gap-1.5", className)}>
+    <div
+      className={cx(vstack({ alignItems: "stretch", gap: "1.5" }), className)}
+    >
       <Label htmlFor={id} {...labelProps}>
         {label}
       </Label>

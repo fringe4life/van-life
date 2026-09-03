@@ -1,5 +1,7 @@
 import { type SubmitEventHandler, useId } from "react";
 import { Form } from "react-router";
+import { css, cx } from "styled-system/css";
+import { cq, grid } from "styled-system/patterns";
 import { Field } from "~/components/form/field";
 import { FormError } from "~/components/form/form-error";
 import { getFetcherStatus } from "~/components/form/get-fetcher-status";
@@ -11,7 +13,6 @@ import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import type { VanFormFieldErrors, VanFormValues } from "~/features/vans/types";
 import type { Ok, Prettify } from "~/types";
-import { cn } from "~/utils/utils";
 
 type VanFormProps = Prettify<
   Partial<Ok> &
@@ -44,27 +45,56 @@ const VanForm = ({
   );
 
   return (
-    <Card className="@container/form border-border bg-card">
-      <CardHeader className="border-border border-b pb-4">
+    <Card
+      className={cx(
+        cq({ name: "form" }),
+        css({ backgroundColor: "card", borderColor: "border" })
+      )}
+    >
+      <CardHeader
+        className={css({
+          borderBottom: "1",
+          borderColor: "border",
+          paddingBlockEnd: "4",
+        })}
+      >
         <h2
-          className="font-bold text-2xl text-foreground sm:text-3xl md:text-4xl"
+          className={css({
+            color: "foreground",
+            fontSize: { base: "2xl", md: "4xl", sm: "3xl" },
+            fontWeight: "bold",
+          })}
           id={formTitleId}
         >
           Add Van
         </h2>
       </CardHeader>
-      <CardContent className="pt-6">
+
+      <CardContent>
         <Form
           aria-describedby={formError ? formErrorId : undefined}
           aria-labelledby={formTitleId}
-          className={cn(
-            "grid gap-x-6 gap-y-4",
-            "@min-xl/form:max-w-4xl @min-xl/form:grid-cols-2"
+          className={cx(
+            grid({
+              columnGap: "6",
+              gridTemplateAreas: {
+                "@form/xl":
+                  '"name price" "description description" "image type" "discount discount" "error error" "submit submit"',
+                base: '"name" "price" "description" "image" "type" "discount" "error" "submit"',
+              },
+              gridTemplateColumns: { "@form/xl": "repeat(2, minmax(0, 1fr))" },
+              maxInlineSize: { "@form/xl": "4xl" },
+              rowGap: "4",
+            })
           )}
           method="POST"
           onSubmit={onSubmit}
         >
-          <Field error={fieldErrors?.name} label="Name">
+          <Field
+            className={css({ gridArea: "name" })}
+            error={fieldErrors?.name}
+            label="Name"
+          >
             {(a11y) => (
               <Input
                 {...a11y}
@@ -75,7 +105,11 @@ const VanForm = ({
               />
             )}
           </Field>
-          <Field error={fieldErrors?.price} label="Price ($/day)">
+          <Field
+            className={css({ gridArea: "price" })}
+            error={fieldErrors?.price}
+            label="Price ($/day)"
+          >
             {(a11y) => (
               <Input
                 {...a11y}
@@ -87,7 +121,7 @@ const VanForm = ({
             )}
           </Field>
           <Field
-            className="@min-xl/form:col-span-2"
+            className={css({ gridArea: "description" })}
             error={fieldErrors?.description}
             label="Description"
           >
@@ -100,7 +134,11 @@ const VanForm = ({
               />
             )}
           </Field>
-          <Field error={fieldErrors?.imageUrl} label="Image URL">
+          <Field
+            className={css({ gridArea: "image" })}
+            error={fieldErrors?.imageUrl}
+            label="Image URL"
+          >
             {(a11y) => (
               <Input
                 {...a11y}
@@ -111,7 +149,11 @@ const VanForm = ({
               />
             )}
           </Field>
-          <Field error={fieldErrors?.type} label="Type">
+          <Field
+            className={css({ gridArea: "type" })}
+            error={fieldErrors?.type}
+            label="Type"
+          >
             {(a11y) => (
               <>
                 <Input
@@ -134,7 +176,11 @@ const VanForm = ({
               </>
             )}
           </Field>
-          <Field error={fieldErrors?.discount} label="Discount (%)">
+          <Field
+            className={css({ gridArea: "discount" })}
+            error={fieldErrors?.discount}
+            label="Discount (%)"
+          >
             {(a11y) => (
               <Input
                 {...a11y}
@@ -148,13 +194,21 @@ const VanForm = ({
             )}
           </Field>
           <FormError
-            className="col-span-full"
+            className={css({ gridArea: "error" })}
             id={formErrorId}
             message={formError}
           />
-          <div className="col-span-full grid grid-cols-subgrid">
+
+          <div
+            className={css({
+              display: "grid",
+              gridArea: "submit",
+              gridTemplateAreas: { "@form/xl": '". button"', base: '"button"' },
+              gridTemplateColumns: { "@form/xl": "subgrid", base: "1fr" },
+            })}
+          >
             <StatusButton
-              className="col-span-full @min-xl/form:col-start-2"
+              className={css({ gridArea: "button", inlineSize: "full" })}
               status={status}
               type="submit"
             >

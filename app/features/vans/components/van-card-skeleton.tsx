@@ -1,28 +1,127 @@
-import { Card, CardFooter, CardHeader } from "~/components/ui/card";
+import { css, cx } from "styled-system/css";
+import { cq, grid } from "styled-system/patterns";
+import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import { bgSkeleton } from "~/styles";
 
 const VanCardSkeleton = () => (
-  <div className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content contain-inline-size [contain-intrinsic-size:auto_300px_auto_200px] [content-visibility:auto]">
-    <Card className="relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4">
-      <CardHeader className="relative @min-md/card:col-start-1 @min-md/card:row-span-2">
+  <div
+    className={cx(
+      cq({ name: "card" }),
+      css({
+        contain: "content",
+        // biome-ignore assist/source/noDuplicateClasses: css styles
+        containIntrinsicSize: "auto 300px auto 200px",
+        contentVisibility: "auto",
+      }),
+      "scroll-md"
+    )}
+  >
+    <Card
+      className={cx(
+        css({
+          position: "relative",
+        }),
+        grid({
+          "@card/md": { gap: "4" },
+          gap: "0",
+          gridTemplateAreas: {
+            "@card/md": '"image details"',
+            base: '"image" "details"',
+          },
+          gridTemplateColumns: {
+            "@card/md": "200px minmax(0, 1fr)",
+          },
+        })
+      )}
+    >
+      <CardHeader
+        className={css({
+          gridArea: "image",
+          position: "relative",
+        })}
+      >
         {/* Van Badge Skeleton */}
-        <div className="absolute top-2 right-2 z-10 h-6 w-16 rounded-full bg-skeleton" />
+        <div
+          className={cx(
+            css({
+              blockSize: "6",
+              borderRadius: "full",
+              inlineSize: "16",
+              insetBlockStart: "2",
+              insetInlineEnd: "2",
+              position: "absolute",
+              zIndex: "10",
+            }),
+            bgSkeleton
+          )}
+        />
 
         {/* Image Skeleton */}
-        <div className="aspect-square w-full rounded-md bg-skeleton" />
+        <div
+          className={cx(
+            css({
+              aspectRatio: "square",
+              borderRadius: "md",
+              inlineSize: "full",
+            }),
+            bgSkeleton
+          )}
+        />
       </CardHeader>
-
-      <CardFooter className="@min-md/card:col-span-2 @min-md/card:col-start-2 @min-md/card:row-span-2 grid-cols-subgrid grid-rows-subgrid @min-md/card:content-center">
+      <CardContent
+        className={grid({
+          alignContent: "center",
+          gap: "0",
+          gridArea: "details",
+          gridTemplateAreas: '"title" "action" "type"',
+          minInlineSize: "0",
+        })}
+      >
         {/* Title Skeleton */}
-        <div className="@min-md/card:col-start-2 @min-md/card:row-end-2 @min-md/card:self-start">
-          <div className="h-8 w-3/4 rounded bg-skeleton" />
+        <div
+          className={css({
+            gridArea: "title",
+          })}
+        >
+          <div
+            className={cx(
+              css({
+                blockSize: "8",
+                borderRadius: "sm",
+                inlineSize: "3/4",
+              }),
+              bgSkeleton
+            )}
+          />
         </div>
 
         {/* Action Skeleton */}
-        <div className="h-8 w-16 rounded bg-skeleton" />
+        <div
+          className={cx(
+            css({
+              blockSize: "8",
+              borderRadius: "sm",
+              gridArea: "action",
+              inlineSize: "16",
+              justifySelf: "end",
+            }),
+            bgSkeleton
+          )}
+        />
 
         {/* Badge Skeleton */}
-        <div className="@min-md/card:-row-end-1 h-6 w-20 rounded-full bg-skeleton" />
-      </CardFooter>
+        <div
+          className={cx(
+            css({
+              blockSize: "6",
+              borderRadius: "full",
+              gridArea: "type",
+              inlineSize: "20",
+            }),
+            bgSkeleton
+          )}
+        />
+      </CardContent>
     </Card>
   </div>
 );

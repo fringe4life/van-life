@@ -1,7 +1,8 @@
 /** biome-ignore-all lint/suspicious/noUnnecessaryConditions: DomainErrorCode cases reachable; biome mis-narrows after isDomainError */
 import { data } from "react-router";
 import { notFound } from "~/utils/errors/not-found";
-import { err, type ServiceFailure } from "~/utils/errors/service-result.server";
+import type { ServiceFailure } from "~/utils/errors/service-result.server";
+import { err } from "~/utils/result";
 
 type DomainErrorCode = "NOT_FOUND" | "CONFLICT" | "INVALID_ID";
 

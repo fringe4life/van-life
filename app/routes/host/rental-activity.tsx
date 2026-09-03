@@ -1,5 +1,7 @@
 import { data } from "react-router";
-import { DeferredPaginated } from "~/components/deferred-paginated";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
+import { DeferredPaginated } from "~/components/deferred/paginated";
 import { PendingUI } from "~/components/pending-ui";
 import { Sortable } from "~/components/sortable";
 import {
@@ -11,16 +13,17 @@ import { RentalTransaction } from "~/features/host/components/transaction/rental
 import { TransactionListSkeleton } from "~/features/host/components/transaction/transaction-list-skeleton";
 import type { RentalTransactionProps } from "~/features/host/components/transaction/transaction-types";
 import { loadIncomePage } from "~/features/host/services/income.server";
+import { vHostList } from "~/features/host/styles";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
-import { VanHeader } from "~/features/vans/components/van-header";
-import { displayPrice } from "~/features/vans/utils/display-price";
 import {
   loadHostSearchParams,
   parsePaginationCursor,
-} from "~/lib/search-params.server";
+} from "~/features/pagination/loaders.server";
+import { VanHeader } from "~/features/vans/components/van-header";
+import { displayPrice } from "~/features/vans/utils/display-price";
+import { gridMax } from "~/styles";
 import type { Route } from "./+types/rental-activity";
-
 export const headers = forwardDataHeaders;
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
@@ -47,7 +50,13 @@ const HostRentalActivity = ({ loaderData }: Route.ComponentProps) => {
   return (
     <PendingUI
       as="section"
-      className="grid grid-rows-[min-content_min-content_min-content_var(--chart-height)_min-content_1fr_min-content] contain-content"
+      className={grid({
+        contain: "content",
+        gap: "0",
+        gridTemplateRows:
+          // biome-ignore assist/source/noDuplicateClasses: css styles
+          "repeat(3, min-content) var(--chart-height) min-content 1fr min-content",
+      })}
     >
       <title>Rental Activity | Van Life</title>
       <meta
@@ -56,18 +65,34 @@ const HostRentalActivity = ({ loaderData }: Route.ComponentProps) => {
       />
       <VanHeader>Rental activity</VanHeader>
 
-      <p className="my-3" style={{ viewTransitionName: "elapsed-days" }}>
+      <p
+        className={css({
+          marginBlock: "3",
+          viewTransitionName: "elapsed-days",
+        })}
+      >
         Rental activity, last{" "}
-        <span className="font-bold text-muted-foreground underline">
+        <span
+          className={css({
+            color: "muted.foreground",
+            fontWeight: "bold",
+            textDecoration: "underline",
+          })}
+        >
           {elapsedDays} days
         </span>
       </p>
       <p
-        className="mb-6 font-extrabold text-3xl sm:text-4xl md:text-5xl"
-        style={{ viewTransitionName: "income-amount" }}
+        className={css({
+          fontSize: { base: "3xl", md: "5xl", sm: "4xl" },
+          fontWeight: "extrabold",
+          marginBlockEnd: "6",
+          viewTransitionName: "income-amount",
+        })}
       >
         {displayPrice(sumIncome)}
       </p>
+
       {/*
         Option: defer chart like the list — return chartPromise from loader (don't await),
         wrap with DeferredAwait + BarChartSkeleton fallback, then LazyBarChart inside.
@@ -75,17 +100,23 @@ const HostRentalActivity = ({ loaderData }: Route.ComponentProps) => {
       */}
       <LazyBarChart
         data={chartData}
-        emptyStateMessage="No rental earnings yet"
-        errorStateMessage="Something went wrong"
+        emptyState={{ title: "No rental earnings yet" }}
+        errorState={{ title: "Something went wrong" }}
+        noMatchState={null}
       />
       <Sortable itemCount={txnCount} title="Rental activity" />
       <DeferredPaginated
         as="div"
         Component={RentalTransaction}
-        className="grid-max v-host-list mt-6"
-        emptyStateMessage="Complete a rental and its payment activity will appear here."
-        errorStateMessage="Something went wrong"
+        className={cx(gridMax, vHostList, css({ marginBlockStart: "6" }))}
+        emptyState={{
+          description:
+            "Complete a rental and its payment activity will appear here.",
+          title: "No rental earnings yet",
+        }}
+        errorState={{ title: "Something went wrong" }}
         fallback={<TransactionListSkeleton />}
+        noMatchState={null}
         renderProps={renderIncomeItemProps}
         resolve={pagePromise}
       />

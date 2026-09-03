@@ -1,18 +1,31 @@
-import { href } from "react-router";
-import { buttonVariants } from "~/components/ui/button-variants";
-import { CustomLink } from "~/features/navigation/components/custom-link";
+import { data, href, useLocation } from "react-router";
+import { OutcomeState } from "~/components/outcome-state";
+import { HTTP_STATUS } from "~/constants/http-constants";
 
-const NotFound = () => (
-  <section className="place-self-center">
-    <h2 className="font-bold text-2xl text-foreground sm:text-3xl">
-      Sorry, the page you were looking for was not found.
-    </h2>
-    <CustomLink
-      className={buttonVariants({ variant: "secondary" })}
-      to={href("/")}
-    >
-      Return to home
-    </CustomLink>
-  </section>
-);
+const NOT_FOUND_DESCRIPTION =
+  "We couldn’t find this page. The address may be incorrect, or the page may have moved.";
+
+export const loader = () => data(null, { status: HTTP_STATUS.NOT_FOUND });
+
+const NotFound = () => {
+  const { pathname } = useLocation();
+
+  return (
+    <OutcomeState
+      description={NOT_FOUND_DESCRIPTION}
+      headingLevel="h1"
+      kind="empty"
+      metadata={
+        <span>
+          <strong>Path:</strong>{" "}
+          <bdi dir="auto">{pathname || "unavailable"}</bdi>
+        </span>
+      }
+      primaryAction={{ label: "Return home", to: href("/") }}
+      secondaryAction={{ label: "Browse vans", to: href("/vans") }}
+      title="Page not found"
+    />
+  );
+};
+
 export default NotFound;

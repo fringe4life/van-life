@@ -2,7 +2,7 @@ import { data, redirect } from "react-router";
 import type { FormActionResultFrom } from "~/components/form/form-action-result";
 import { pickFormValues } from "~/components/form/pick-form-values";
 import { PendingUI } from "~/components/pending-ui";
-import { UnsuccesfulState } from "~/components/unsuccesful-state";
+import { RouteErrorBoundary } from "~/components/route-error-boundary";
 import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
@@ -24,7 +24,6 @@ import {
 } from "~/features/middleware/utils/auth-redirect";
 import { DEPOSIT } from "~/features/vans/constants/vans-constants";
 import { badRequest } from "~/utils/errors/bad-request";
-import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import {
   schemaErrorsToFieldErrors,
   validateSchema,
@@ -120,7 +119,14 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
         sumIncome={sumIncome}
       />
       <HostReviewSection avgRating={avgRating} />
-      <HostWalletForm wallet={wallet} />
+      <HostWalletForm
+        fetcher={wallet.fetcher}
+        isDepositing={wallet.isDepositing}
+        isPending={wallet.isPending}
+        onChangeType={wallet.handleChangeType}
+        onSubmit={wallet.handleSubmit}
+        optimisticBalance={wallet.optimisticBalance}
+      />
       <HostVansSection vansPromise={vansPromise} />
     </PendingUI>
   );
@@ -128,10 +134,15 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
 export default Host;
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
-  <UnsuccesfulState
-    isError
-    message={getRouteErrorMessage(error, {
-      errorFallback: "Something went wrong loading your dashboard.",
-    })}
+  <RouteErrorBoundary
+    emptyState={{
+      primaryAction: { label: "Return to dashboard", to: "/host" },
+      secondaryAction: { label: "View your vans", to: "/host/vans" },
+    }}
+    error={error}
+    errorFallback="Something went wrong loading your dashboard."
+    errorState={{
+      secondaryAction: { label: "Return to dashboard", to: "/host" },
+    }}
   />
 );

@@ -1,5 +1,8 @@
 import { FilterIcon } from "lucide-react";
+import { css, cx } from "styled-system/css";
+import { flex, grid, hstack } from "styled-system/patterns";
 import { Badge } from "~/components/ui/badge";
+import { Button } from "~/components/ui/button";
 import { useVanFilters } from "~/features/vans/hooks/use-van-filters";
 import { VanStateFilterSection } from "./van-state-filter-section";
 import { VanTypeFilterSection } from "./van-type-filter-section";
@@ -19,42 +22,147 @@ const VanFilters = () => {
   return (
     <aside
       aria-label="Van filters"
-      className="grid min-w-0 gap-4 rounded-xl border border-border bg-surface-overlay p-4 shadow-xs lg:sticky lg:top-6 lg:max-h-[calc(100dvh-3rem)] lg:self-start lg:overflow-y-auto lg:rounded-none lg:border-0 lg:border-border-accent lg:border-l-2 lg:bg-transparent lg:p-0 lg:pl-5 lg:shadow-none"
+      className={cx(
+        grid({
+          alignSelf: { lg: "start" },
+          gap: "4",
+        }),
+        css({
+          backgroundColor: { base: "surface.overlay", lg: "transparent" },
+          borderColor: { base: "border", lg: "border.accent" },
+          borderLeftWidth: { lg: "2" },
+          borderRadius: { base: "xl", lg: "0" },
+          borderWidth: { base: "1", lg: "0" },
+          insetBlockStart: { lg: "6" },
+          maxBlockSize: { lg: "calc(100dvh - 3rem)" },
+          minInlineSize: "0",
+          overflowY: { lg: "auto" },
+          padding: { base: "4", lg: "0" },
+          paddingInlineStart: { lg: "5" },
+          position: { lg: "sticky" },
+          shadow: { base: "xs", lg: "none" },
+        })
+      )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="grid gap-1">
-          <p className="flex items-center gap-2 font-semibold text-muted-foreground text-xs uppercase tracking-[0.14em]">
-            <FilterIcon aria-hidden className="size-4 text-primary" />
+      <header className={grid({ gap: "1" })}>
+        <div
+          className={cx(
+            flex({
+              alignItems: "center",
+              gap: "3",
+              justifyContent: "space-between",
+            }),
+            css({ minInlineSize: "0" })
+          )}
+        >
+          <p
+            className={cx(
+              hstack({ gap: "2" }),
+              css({
+                color: "muted.foreground",
+                fontSize: "xs",
+                fontWeight: "semibold",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+              })
+            )}
+          >
+            <FilterIcon
+              aria-hidden
+              className={css({
+                blockSize: "4",
+                color: "primary",
+                inlineSize: "4",
+              })}
+            />
             Roadbook
           </p>
-          <h3 className="font-bold text-xl tracking-tight">Narrow the route</h3>
-          <p className="max-w-[18ch] text-muted-foreground text-xs leading-5">
-            Pick a van character, then keep the road open.
-          </p>
+          <Badge
+            aria-live="polite"
+            className={css({
+              flexShrink: "0",
+              whiteSpace: "nowrap",
+            })}
+            size="small"
+            variant={hasFilters ? "luxury" : "outline"}
+          >
+            {hasFilters ? `${badgeCount} active` : "All vans"}
+          </Badge>
         </div>
-        <Badge
-          aria-live="polite"
-          className="shrink-0 whitespace-nowrap"
-          size="small"
-          variant={hasFilters ? "luxury" : "outline"}
+
+        <h3
+          className={css({
+            fontSize: "xl",
+            fontWeight: "bold",
+            letterSpacing: "tight",
+          })}
         >
-          {hasFilters ? `${badgeCount} active` : "All vans"}
-        </Badge>
-      </div>
-      <div className="flex items-center justify-between gap-3 border-border-subtle border-b pb-3">
-        <span className="text-muted-foreground text-xs">
+          Narrow the route
+        </h3>
+
+        <p
+          className={css({
+            color: "muted.foreground",
+            fontSize: "xs",
+            lineHeight: "5",
+          })}
+        >
+          Pick a van character, then keep the road open.
+        </p>
+      </header>
+
+      <div
+        className={cx(
+          flex({
+            alignItems: "center",
+            gap: "3",
+            justifyContent: "space-between",
+          }),
+          css({
+            borderBottomWidth: "thin",
+            borderColor: "border.subtle",
+            paddingBlockEnd: "3",
+          })
+        )}
+      >
+        <span
+          className={css({
+            color: "muted.foreground",
+            fontSize: "xs",
+          })}
+        >
           All available paths
         </span>
-        <button
-          className="rounded-sm text-primary text-xs underline decoration-primary/35 underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-40"
+        <Button
+          className={css({
+            blockSize: "auto",
+            color: { _hover: "foreground", base: "primary" },
+            fontSize: "xs",
+            padding: "0",
+            textDecoration: "underline",
+            textDecorationColor: "primary/35",
+            textUnderlineOffset: "4",
+            transitionDuration: "fast",
+            transitionProperty: "colors",
+          })}
           disabled={!hasFilters}
           onClick={clearFilters}
-          type="button"
+          size="sm"
+          variant="link"
         >
           Clear all
-        </button>
+        </Button>
       </div>
-      <div className="rounded-lg border border-border-subtle bg-surface-overlay-muted p-1 lg:border-0 lg:bg-transparent lg:p-0">
+
+      <div
+        className={css({
+          backgroundColor: { base: "surface.overlay.muted", lg: "transparent" },
+          borderColor: "border.subtle",
+          borderRadius: "lg",
+          borderWidth: { base: "1", lg: "0" },
+          padding: { base: "1", lg: "0" },
+        })}
+      >
         <VanTypeFilterSection
           baseId={baseId}
           onToggle={toggleType}
@@ -66,7 +174,18 @@ const VanFilters = () => {
           onCheckedChange={setStateFilter}
         />
       </div>
-      <p className="hidden border-border-subtle border-t pt-4 text-muted-foreground text-xs leading-5 lg:block">
+
+      <p
+        className={css({
+          borderColor: "border.subtle",
+          borderTopWidth: "thin",
+          color: "muted.foreground",
+          display: { base: "none", lg: "block" },
+          fontSize: "xs",
+          lineHeight: "5",
+          paddingBlockStart: "4",
+        })}
+      >
         Your selected route stays in the URL while the catalog updates.
       </p>
     </aside>

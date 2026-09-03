@@ -1,3 +1,5 @@
+import { css } from "styled-system/css";
+import { flex } from "styled-system/patterns";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import { getDiscountedPrice } from "~/utils/pricing";
 import type { VanProps } from "../types";
@@ -11,11 +13,17 @@ const VanPrice = ({ van: { price, discount } }: VanPriceProps) => {
 
   if (hasDiscount) {
     return (
-      <div className="flex items-baseline gap-2">
-        <span className="text-muted-foreground line-through">
+      <div className={flex({ alignItems: "baseline", gap: "2" })}>
+        <span
+          className={css({
+            color: "muted.foreground",
+            textDecoration: "line-through",
+          })}
+        >
           {priceToDisplay}
         </span>
-        <span className="font-bold text-xl">
+
+        <span className={css({ fontSize: "xl", fontWeight: "bold" })}>
           {displayPrice(discountedPrice)}
         </span>
         <span>/day</span>
@@ -24,7 +32,7 @@ const VanPrice = ({ van: { price, discount } }: VanPriceProps) => {
   }
 
   return (
-    <span className="@min-xl/card-full:text-xl">
+    <span className={css({ "@card-full/xl": { fontSize: "xl" } })}>
       {priceToDisplay} <span>/day</span>
     </span>
   );

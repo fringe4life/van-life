@@ -1,4 +1,6 @@
 import { data, Outlet } from "react-router";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import { hasAuthContext } from "~/features/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/features/middleware/functions/has-auth-middleware";
 import { Nav } from "~/features/navigation/components/nav";
@@ -16,20 +18,52 @@ const Layout = ({ loaderData }: Route.ComponentProps) => {
   return (
     <>
       <Nav hasToken={hasToken} />
-      <main className="col-start-2 col-end-3 row-start-2 mb-6">
+
+      <main
+        className={css({
+          gridArea: "content",
+          marginBlockEnd: "6",
+        })}
+      >
         <Outlet />
       </main>
-      <footer className="col-span-full row-start-3 grid place-content-center bg-surface-inverse py-6.25 contain-strict">
-        {/* react-doctor-disable-next-line 
+
+      <footer
+        className={cx(
+          grid({
+            gap: "0",
+            placeContent: "center",
+          }),
+          css({
+            backgroundColor: "surface.inverse",
+            contain: "strict",
+            gridArea: "footer",
+            paddingBlock: "6",
+          })
+        )}
+      >
+        {/* react-doctor-disable-next-line
 				react-doctor/rendering-hydration-mismatch-time */}
         <p
-          className="text-center text-sm text-surface-inverse-foreground uppercase"
+          className={css({
+            color: "surface.inverse.foreground",
+            fontSize: "sm",
+            textAlign: "center",
+            textTransform: "uppercase",
+          })}
           suppressHydrationWarning
         >
           &copy;{new Date().getFullYear()} #vanlife
         </p>
         <a
-          className="wrap-break-word inline-block w-full text-center text-2xs text-surface-inverse-foreground xs:text-xs"
+          className={css({
+            color: "surface.inverse.foreground",
+            display: "inline-block",
+            fontSize: { base: "2xs", xs: "xs" },
+            inlineSize: "full",
+            textAlign: "center",
+            wordBreak: "break-word",
+          })}
           href="https://www.flaticon.com/free-icons/camper-van"
           title="camper van icons"
         >

@@ -1,11 +1,39 @@
 import type { ComponentProps } from "react";
 
-import { cn } from "~/utils/utils";
+import { css, cx } from "styled-system/css";
 
 const Textarea = ({ className, ...props }: ComponentProps<"textarea">) => (
   <textarea
-    className={cn(
-      "field-sizing-content flex min-h-16 w-full rounded-md border border-input bg-input-background px-3 py-2 text-base text-input-foreground shadow-xs outline-none transition-[color,box-shadow] placeholder:text-placeholder focus-visible:border-input focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+    className={cx(
+      css({
+        _disabled: {
+          cursor: "not-allowed",
+          opacity: 0.5,
+        },
+        _placeholder: {
+          color: "placeholder",
+        },
+        backgroundColor: "input.background",
+        borderColor: "input",
+        borderRadius: "md",
+        borderStyle: "solid",
+        borderWidth: "1",
+        boxShadow: "xs",
+        color: "input.foreground",
+        display: "flex",
+        fieldSizing: "content",
+        focusRingColor: "ring",
+        focusRingOffset: "0",
+        focusRingWidth: "2px",
+        focusVisibleRing: "outside",
+        fontSize: "base",
+        inlineSize: "full",
+        minBlockSize: "16",
+        paddingBlock: "2",
+        paddingInline: "3",
+        transitionDuration: "normal",
+        transitionProperty: "color,box-shadow",
+      }),
       className
     )}
     {...props}

@@ -1,29 +1,15 @@
 import { createSerializer } from "nuqs/server";
 import { href } from "react-router";
-import {
-  paginationParsers,
-  searchParser,
-  vanFiltersParser,
-} from "~/lib/parsers";
+import { vansParsers } from "~/features/vans/parsers";
 import type { LowercaseVanType } from "../vans/types";
 import { getSiteOrigin } from "./get-site-origin.server";
 
-const canonicalVanListParsers = {
-  ...searchParser,
-  ...vanFiltersParser,
-  type: paginationParsers.type,
-  vanFilter: paginationParsers.vanFilter,
-};
-
-const serializeCanonicalVanListParams = createSerializer(
-  canonicalVanListParsers,
-  {
-    processUrlSearchParams: (searchParams) => {
-      searchParams.sort();
-      return searchParams;
-    },
-  }
-);
+const serializeCanonicalVanListParams = createSerializer(vansParsers, {
+  processUrlSearchParams: (searchParams) => {
+    searchParams.sort();
+    return searchParams;
+  },
+});
 
 interface VanListCanonicalParams {
   excludeInRepair: boolean;

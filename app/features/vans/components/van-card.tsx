@@ -1,15 +1,18 @@
+import { css, cx } from "styled-system/css";
+import { cq, grid } from "styled-system/patterns";
+import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
+import { listImagePriorityProps } from "~/components/image/list-image-priority-props";
+import { ProgressiveImage } from "~/components/image/progressive-image";
+import { CustomLink } from "~/components/links/custom-link";
 import { Badge } from "~/components/ui/badge";
-import { Card, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
-import { ProgressiveImage } from "~/features/image/component/progressive-image";
-import { VAN_CARD_IMG_SIZES } from "~/features/image/img-constants";
-import { createWebPSrcSet } from "~/features/image/utils/create-optimized-src-set";
-import { listImagePriorityProps } from "~/features/image/utils/list-image-priority-props";
-import { CustomLink } from "~/features/navigation/components/custom-link";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import type { VanCardProps } from "~/features/vans/types";
 import { toLowercaseVanType } from "~/features/vans/utils/validators";
 import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
 import { VanBadge } from "./van-badge";
 import { vanCard } from "./van-card-recipe";
+
+const VAN_CARD_IMG_SIZES = [200, 250, 300, 350] as const;
 
 const VanCard = ({
   van,
@@ -17,9 +20,8 @@ const VanCard = ({
   action,
   imageIndex = 0,
   linkCoversCard = true,
-  state,
 }: VanCardProps) => {
-  const { type, name, description, imageUrl } = van;
+  const { type, name, imageUrl } = van;
 
   const srcSet = createWebPSrcSet(imageUrl, {
     aspectRatio: "1:1",
@@ -27,22 +29,55 @@ const VanCard = ({
   });
 
   return (
-    <div className="@container/card xs:scroll-sm scroll-md md:scroll-lg contain-content contain-inline-size [contain-intrinsic-size:auto_300px_auto_200px] [content-visibility:auto]">
+    <div
+      className={cx(
+        cq({ name: "card" }),
+        css({
+          contain: "content",
+          // biome-ignore assist/source/noDuplicateClasses: css
+          containIntrinsicSize: "auto 300px auto 200px",
+          contentVisibility: "auto",
+        })
+      )}
+    >
       <Card
-        className={vanCard({
-          className:
-            "relative grid @min-md/card:grid-cols-[200px_1fr_min-content] @min-md/card:grid-rows-2 @min-md/card:gap-4",
-          state: lowercaseVanState(van),
-        })}
+        className={cx(
+          vanCard({
+            state: lowercaseVanState(van),
+          }),
+          css({
+            position: "relative",
+          }),
+          grid({
+            "@card/md": { gap: "4" },
+            gap: "0",
+            gridTemplateAreas: {
+              "@card/md": '"image details"',
+              base: '"image" "details"',
+            },
+            gridTemplateColumns: {
+              "@card/md": "200px minmax(0, 1fr)",
+            },
+          })
+        )}
         style={{ viewTransitionName: `card-${van.id}` }}
       >
-        <CardHeader className="relative @min-md/card:col-start-1 @min-md/card:row-span-2">
+        <CardHeader
+          className={css({
+            gridArea: "image",
+            position: "relative",
+          })}
+        >
           <VanBadge van={van} />
           <ProgressiveImage
-            alt={description}
-            className="aspect-square w-full rounded-md"
+            alt={name}
+            className={css({
+              aspectRatio: "square",
+              borderRadius: "md",
+              inlineSize: "full",
+            })}
             height="200"
-            key={imageUrl}
+            key={imageUrl} // remount ProgressiveImage when src changes
             sizes="(max-width: 300px) 250px, (max-width: 400px) 300px, 350px"
             src={imageUrl}
             srcSet={srcSet}
@@ -50,24 +85,60 @@ const VanCard = ({
             {...listImagePriorityProps(imageIndex)}
           />
         </CardHeader>
-        <CardFooter className="@min-md/card:col-span-2 @min-md/card:col-start-2 @min-md/card:row-span-2 grid-cols-subgrid grid-rows-subgrid @min-md/card:content-center">
-          <CardTitle className="@min-md/card:col-start-2 @min-md/card:row-end-2 @min-md/card:self-start text-2xl">
-            <CustomLink state={state} title={name} to={link}>
+
+        <CardContent
+          className={grid({
+            alignContent: "center",
+            gap: "0",
+            gridArea: "details",
+            gridTemplateAreas: '"title" "action" "type"',
+            minInlineSize: "0",
+          })}
+        >
+          <CardTitle
+            className={css({
+              fontSize: "2xl",
+              gridArea: "title",
+            })}
+          >
+            <CustomLink title={name} to={link}>
               {name}
+
               <span
-                className="link-covers-card:absolute link-covers-card:inset-0 link-covers-card:h-full link-covers-card:w-full link-covers-card:overflow-hidden"
-                data-link-covers-card={linkCoversCard}
+                className={
+                  linkCoversCard
+                    ? css({
+                        blockSize: "full",
+                        inlineSize: "full",
+                        inset: 0,
+                        overflow: "hidden",
+                        position: "absolute",
+                      })
+                    : undefined
+                }
               />
             </CustomLink>
           </CardTitle>
-          {action}
+          <div
+            className={css({
+              gridArea: "action",
+              justifySelf: "end",
+              maxInlineSize: "full",
+              minInlineSize: "0",
+              position: "relative",
+              textAlign: "end",
+              zIndex: "1",
+            })}
+          >
+            {action}
+          </div>
           <Badge
-            className="@min-md/card:-row-end-1"
+            className={css({ gridArea: "type", justifySelf: "start" })}
             variant={toLowercaseVanType(type)}
           >
             {type}
           </Badge>
-        </CardFooter>
+        </CardContent>
       </Card>
     </div>
   );

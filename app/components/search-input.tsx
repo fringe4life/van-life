@@ -9,7 +9,7 @@ import {
   DEFAULT_CURSOR,
   DEFAULT_DIRECTION,
 } from "~/features/pagination/pagination-constants";
-import { searchUrlParsers } from "~/lib/parsers";
+import { searchUrlParsers } from "~/features/pagination/parsers";
 import { Input } from "./ui/input";
 
 const SearchInput = () => {
@@ -43,7 +43,7 @@ const SearchInput = () => {
     startSearch(search, debounceTime);
   };
 
-  const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = (e) => {
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === "Enter") {
       // Send immediate update on Enter key press
       const search = e.currentTarget.value.trim().toLowerCase() || "";
@@ -53,9 +53,10 @@ const SearchInput = () => {
 
   return (
     <Input
+      aria-label="Search vans"
       name="search"
       onChange={handleSearch}
-      onKeyDown={handleKeyPress}
+      onKeyDown={handleKeyDown}
       placeholder="Modest Explorer"
       type="search"
       value={urlState.search}

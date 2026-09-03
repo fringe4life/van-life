@@ -1,7 +1,14 @@
 import { Outlet } from "react-router";
+import { grid } from "styled-system/patterns";
 
 const AuthLayout = () => (
-  <div className="grid h-full place-content-center gap-4 sm:gap-6 md:gap-12">
+  <div
+    className={grid({
+      blockSize: "full",
+      gap: { base: "4", md: "12", sm: "6" },
+      placeContent: "center",
+    })}
+  >
     <meta content="noindex, nofollow" name="robots" />
     <Outlet />
   </div>

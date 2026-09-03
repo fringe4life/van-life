@@ -1,4 +1,9 @@
+import type { ChangeEventHandler, SubmitEventHandler } from "react";
+import type { FetcherWithComponents } from "react-router";
+import { css, cx } from "styled-system/css";
+import { cq, grid, hstack, visuallyHidden } from "styled-system/patterns";
 import { Field } from "~/components/form/field";
+import type { FormActionResultFrom } from "~/components/form/form-action-result";
 import { FormError } from "~/components/form/form-error";
 import { getFetcherStatus } from "~/components/form/get-fetcher-status";
 import { readActionFormData } from "~/components/form/read-action-form-data";
@@ -8,23 +13,35 @@ import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { MAX_ADD, MIN_ADD, MIN_WITHDRAW } from "~/constants/constants";
-import type { useHostWallet } from "~/features/host/hooks/use-host-wallet";
+import type {
+  MONEY_ECHO_FIELDS,
+  MONEY_FORM_FIELDS,
+} from "~/features/host/types";
 import { DEPOSIT, WITHDRAW } from "~/features/vans/constants/vans-constants";
 
+type HostWalletActionData = FormActionResultFrom<
+  object,
+  typeof MONEY_FORM_FIELDS,
+  typeof MONEY_ECHO_FIELDS
+>;
+
 interface HostWalletFormProps {
-  wallet: ReturnType<typeof useHostWallet>;
+  fetcher: FetcherWithComponents<HostWalletActionData>;
+  isDepositing: boolean;
+  isPending: boolean;
+  onChangeType: ChangeEventHandler<HTMLInputElement>;
+  onSubmit: SubmitEventHandler<HTMLFormElement>;
+  optimisticBalance: number;
 }
 
-const HostWalletForm = ({ wallet }: HostWalletFormProps) => {
-  const {
-    fetcher,
-    handleChangeType,
-    handleSubmit,
-    isDepositing,
-    isPending,
-    optimisticBalance,
-  } = wallet;
-
+const HostWalletForm = ({
+  fetcher,
+  isDepositing,
+  isPending,
+  onChangeType,
+  onSubmit,
+  optimisticBalance,
+}: HostWalletFormProps) => {
   const { fieldErrors, formData, formError, ok } = readActionFormData(
     fetcher.data,
     { defaults: { amount: "" } }
@@ -40,39 +57,85 @@ const HostWalletForm = ({ wallet }: HostWalletFormProps) => {
   );
 
   return (
-    <div className="@container/wallet mt-11 w-full">
-      <Card className="grid w-full @lg/wallet:grid-cols-[minmax(220px,0.85fr)_minmax(0,1.15fr)] grid-cols-1 @lg/wallet:items-center gap-6 @lg/wallet:gap-x-18 @lg/wallet:gap-y-0 p-6 sm:gap-9 sm:p-9">
-        <h3 className="@lg/wallet:mb-0 mb-4 font-bold @lg/wallet:text-lg text-foreground text-md">
+    <div
+      className={cx(
+        cq({ name: "wallet" }),
+        css({ inlineSize: "full", marginBlockStart: "11" })
+      )}
+    >
+      <Card
+        className={cx(
+          grid({
+            "@wallet/lg": {
+              alignItems: "center",
+              columnGap: "4.5rem",
+              gridTemplateAreas: '"heading form"',
+              gridTemplateColumns: "minmax(220px, 0.85fr) minmax(0, 1.15fr)",
+              rowGap: "0",
+            },
+            columns: 1,
+            gap: { base: "6", sm: "9" },
+            gridTemplateAreas: '"heading" "form"',
+          }),
+          css({
+            inlineSize: "full",
+            padding: { base: "6", sm: "9" },
+          })
+        )}
+      >
+        <h3
+          className={css({
+            color: "foreground",
+            fontSize: { "@wallet/lg": "lg", base: "md" },
+            fontWeight: "bold",
+            gridArea: "heading",
+            marginBlockEnd: { "@wallet/lg": "0", base: "4" },
+          })}
+        >
           Add or Withdraw Money
         </h3>
         <fetcher.Form
-          className="grid w-full min-w-0 gap-4"
+          className={cx(
+            grid({ gap: "4" }),
+            css({ gridArea: "form", inlineSize: "full", minInlineSize: "0" })
+          )}
           method="POST"
-          onSubmit={handleSubmit}
+          onSubmit={onSubmit}
         >
-          <div className="flex gap-4">
-            <Label>
-              Deposit
-              <Input
-                checked={isDepositing}
-                name="type"
-                onChange={handleChangeType}
-                required
-                type="radio"
-                value={DEPOSIT}
-              />
-            </Label>
-            <Label>
-              Withdraw
-              <Input
-                checked={!isDepositing}
-                name="type"
-                onChange={handleChangeType}
-                type="radio"
-                value={WITHDRAW}
-              />
-            </Label>
-          </div>
+          <fieldset
+            className={css({
+              border: "none",
+              margin: "0",
+              minInlineSize: "0",
+              padding: "0",
+            })}
+          >
+            <legend className={visuallyHidden()}>Transaction type</legend>
+
+            <div className={hstack({ gap: "4" })}>
+              <Label>
+                Deposit
+                <Input
+                  checked={isDepositing}
+                  name="type"
+                  onChange={onChangeType}
+                  required
+                  type="radio"
+                  value={DEPOSIT}
+                />
+              </Label>
+              <Label>
+                Withdraw
+                <Input
+                  checked={!isDepositing}
+                  name="type"
+                  onChange={onChangeType}
+                  type="radio"
+                  value={WITHDRAW}
+                />
+              </Label>
+            </div>
+          </fieldset>
           <Field error={fieldErrors?.amount} label="Amount">
             {(a11y) => (
               <Input

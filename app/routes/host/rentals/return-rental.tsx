@@ -5,13 +5,16 @@ import {
   redirect,
   useNavigation,
 } from "react-router";
+import { css } from "styled-system/css";
+import { vstack } from "styled-system/patterns";
 import { CustomForm } from "~/components/custom-form";
 import { FormError } from "~/components/form/form-error";
 import { getNavigationFormStatus } from "~/components/form/get-fetcher-status";
 import { readActionFormData } from "~/components/form/read-action-form-data";
 import { useAutoIdleStatus } from "~/components/form/use-auto-idle-status";
+import { CustomLink } from "~/components/links/custom-link";
+import { RouteErrorBoundary } from "~/components/route-error-boundary";
 import { StatusButton } from "~/components/status-button";
-import { UnsuccesfulState } from "~/components/unsuccesful-state";
 import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
@@ -25,7 +28,6 @@ import {
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
 import { getHostRedirectUrl } from "~/features/middleware/utils/auth-redirect";
-import { CustomLink } from "~/features/navigation/components/custom-link";
 import { VanCard } from "~/features/vans/components/van-card";
 import { getCost } from "~/features/vans/utils/get-cost";
 import {
@@ -33,7 +35,6 @@ import {
   isDomainError,
   throwDomainHttp,
 } from "~/utils/errors/domain-error.server";
-import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import { notFound } from "~/utils/errors/not-found";
 import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/return-rental";
@@ -145,19 +146,20 @@ const ReturnRental = ({
   const amountToPay = getCost(rent.rentedAt, new Date(), rent.van);
   const isUnableToPay = money < amountToPay;
   return (
-    <section className="flex flex-col gap-4">
-      <title>Return {rent.van.name} | Vanlife</title>
+    <section className={vstack({ alignItems: "stretch", gap: "4" })}>
+      <title>{`Return ${rent.van.name} | Vanlife`}</title>
       <meta
         content="The van you might return to it's owner"
         name="description"
       />
       <h2>Return this van:</h2>
-      <div className="max-w-lg">
+
+      <div className={css({ maxInlineSize: "lg" })}>
         <VanCard
           action={
             <CustomForm method="POST">
               <StatusButton
-                className="justify-self-end"
+                className={css({ justifySelf: "end" })}
                 disabled={isUnableToPay}
                 status={status}
                 type="submit"
@@ -175,7 +177,7 @@ const ReturnRental = ({
       </div>
       {!!isUnableToPay && (
         <article>
-          <p className="text-destructive text-lg">
+          <p className={css({ color: "destructive", fontSize: "lg" })}>
             You cannot afford to return this van.
           </p>
           <CustomLink
@@ -185,7 +187,8 @@ const ReturnRental = ({
               })
             )}
           >
-            Top up your account <span className="underline">here</span>
+            Top up your account
+            <span className={css({ textDecoration: "underline" })}>here</span>
           </CustomLink>
         </article>
       )}
@@ -195,5 +198,5 @@ const ReturnRental = ({
 export default ReturnRental;
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
-  <UnsuccesfulState isError message={getRouteErrorMessage(error)} />
+  <RouteErrorBoundary error={error} />
 );

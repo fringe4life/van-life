@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import { css, cx, viewTransition } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import {
   Card,
   CardContent,
@@ -27,16 +29,45 @@ type AuthCardProps = Prettify<
   }
 >;
 
+/**
+ * ::view-transition-old(auth-title) {
+  --fade-to: 0;
+  --slide-x-to: 1rem;
+  animation-name: --fade, --slide-x;
+}
+
+::view-transition-new(auth-title) {
+  --fade-from: 0;
+  --slide-x-from: -1rem;
+  animation-name: --fade, --slide-x;
+}
+ */
+
 export const AuthCard = ({ children, footer, title }: AuthCardProps) => (
-  <Card className="grid gap-y-4" style={{ viewTransitionName: AUTH_VT.card }}>
+  <Card
+    className={grid({ rowGap: "4" })}
+    style={{ viewTransitionName: AUTH_VT.card }}
+  >
     <CardHeader>
-      <CardTitle style={{ viewTransitionName: AUTH_VT.title }}>
+      <CardTitle
+        className={cx(
+          viewTransition("authTitle"),
+          css({ viewTransitionName: AUTH_VT.title })
+        )}
+      >
         {title}
       </CardTitle>
     </CardHeader>
     <CardContent>{children}</CardContent>
     <CardFooter>
-      <p style={{ viewTransitionName: AUTH_VT.footer }}>{footer}</p>
+      <p
+        className={cx(
+          viewTransition("authFooter"),
+          css({ viewTransitionName: AUTH_VT.footer })
+        )}
+      >
+        {footer}
+      </p>
     </CardFooter>
   </Card>
 );

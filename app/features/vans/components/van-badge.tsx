@@ -1,3 +1,4 @@
+import { css } from "styled-system/css";
 import { Badge } from "~/components/ui/badge";
 import { formatEnumLabel } from "~/features/vans/utils/format-enum";
 import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
@@ -16,7 +17,12 @@ const VanBadge = ({ van }: VanBadgeProps) => {
 
   return (
     <Badge
-      className="van-badge absolute top-4 right-4 z-10"
+      className={css({
+        insetBlockStart: "4",
+        insetInlineEnd: "4",
+        position: "absolute",
+        zIndex: "10",
+      })}
       title={label}
       variant={state}
     >

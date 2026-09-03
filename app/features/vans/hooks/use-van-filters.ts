@@ -10,6 +10,7 @@ import {
 } from "~/features/vans/components/van-filters/van-state-filter-config";
 import { useOptimisticBooleanFilter } from "~/features/vans/hooks/use-optimistic-boolean-filter";
 import { useOptimisticTypesFilter } from "~/features/vans/hooks/use-optimistic-types-filter";
+import { vansFilterUrlParsers } from "~/features/vans/parsers";
 import type { LowercaseVanType } from "~/features/vans/types";
 import {
   activeFilterCount,
@@ -19,7 +20,6 @@ import {
   toValidTypes,
   type VanFilterUrlState,
 } from "~/features/vans/utils/van-filter-url";
-import { vansFilterUrlParsers } from "~/lib/parsers";
 
 const useVanFilters = () => {
   const [urlState, setUrlState] = useQueryStates(vansFilterUrlParsers);

@@ -6,6 +6,12 @@
     "workers/app.ts",
     ".env.schema"
   ],
+  "dynamicallyLoaded": ["app/features/host/components/bar-chart/bar-chart.tsx"],
+  "typeAware": {
+    "enabled": true,
+    "require": "complete",
+    "projects": ["tsconfig.json"]
+  },
   "rules": {
     // Soft gate while boundaries + cleanup iron out — audit warn ≠ CI fail
     "unused-files": "warn",
@@ -23,7 +29,8 @@
     "prop-drilling": "warn",
     "thin-wrapper": "warn",
     "duplicate-prop-shape": "warn",
-    "unused-dependency-overrides": "off"
+    "unused-dependency-overrides": "off",
+    "private-type-leaks": "off"
   },
   "ignorePatterns": ["worker-configuration.d.ts", "doctor.config.ts"],
   "ignoreDependencies": [
@@ -36,8 +43,7 @@
     "@varlock/bitwarden-plugin",
     "@cloudflare/vite-plugin",
     "@fontsource-variable/inter",
-    // Build-time only: CSS `@import "tailwindcss"` compiled by @tailwindcss/vite, never runtime
-    "tailwindcss",
+    "@pandacss/mcp",
     // Build-time only: route/vite config (app/routes.ts, vite.config.ts, react-router.config.ts)
     "@react-router/dev",
     "wrangler",
@@ -76,7 +82,7 @@
     ]
   },
   // Feature↔route pairing: domain features (auth/host/vans) only from matching routes.
-  // Cross-cuts (image/middleware/navigation/pagination/seo) shared across surfaces.
+  // Cross-cuts (middleware/navigation/pagination/seo) shared across surfaces.
   // host-layout host import: inline fallow-ignore (layout zone does not allow features/host).
   "boundaries": {
     "zones": [
@@ -120,7 +126,6 @@
         "allow": [
           "shared",
           "db",
-          "features/image",
           "features/middleware",
           "features/navigation",
           "features/pagination",
@@ -132,7 +137,6 @@
         "allow": [
           "shared",
           "db",
-          "features/image",
           "features/navigation",
           "features/pagination",
           "features/seo"
@@ -140,7 +144,7 @@
       },
       {
         "from": "features/seo",
-        "allow": ["shared", "db", "features/image", "features/vans"]
+        "allow": ["shared", "db", "features/vans"]
       },
       {
         "from": "features/navigation",
@@ -148,10 +152,6 @@
       },
       {
         "from": "features/pagination",
-        "allow": ["shared"]
-      },
-      {
-        "from": "features/image",
         "allow": ["shared"]
       },
       {
@@ -165,7 +165,6 @@
           "db",
           "features/host",
           "features/vans",
-          "features/image",
           "features/middleware",
           "features/navigation",
           "features/pagination"
@@ -177,7 +176,6 @@
           "shared",
           "db",
           "features/vans",
-          "features/image",
           "features/middleware",
           "features/navigation",
           "features/pagination",

@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import type { Configuration } from "lint-staged";
 
 /** Keep each fallow invocation under OS argv limits (esp. Windows ~8191). */
-const FALLOW_FILE_CHUNK_SIZE = 40;
+const FALLOW_FILE_CHUNK_SIZE = 120;
 
 const runCommand = (command: string, args: readonly string[]): void => {
   const result = spawnSync(command, args, { stdio: "inherit" });

@@ -28,6 +28,8 @@ export default {
     rules: [
       "react-doctor/only-export-components",
       "react-doctor/server-auth-actions",
+      // Panda public API is generated barrels (`styled-system/css`, `styled-system/patterns`).
+      "react-doctor/no-barrel-import",
     ],
   },
   rules: {

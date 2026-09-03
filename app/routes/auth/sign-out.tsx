@@ -1,7 +1,6 @@
 import { href, replace } from "react-router";
-import { UnsuccesfulState } from "~/components/unsuccesful-state";
+import { RouteErrorBoundary } from "~/components/route-error-boundary";
 import { auth } from "~/lib/auth.server";
-import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import { serverError } from "~/utils/errors/server-error";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import type { Route } from "./+types/sign-out";
@@ -32,11 +31,9 @@ export default function Signout() {
 const SIGN_OUT_ERROR = "Your signout failed, please try again.";
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
-  <UnsuccesfulState
-    isError
-    message={getRouteErrorMessage(error, {
-      errorFallback: SIGN_OUT_ERROR,
-      fallback: SIGN_OUT_ERROR,
-    })}
+  <RouteErrorBoundary
+    error={error}
+    errorFallback={SIGN_OUT_ERROR}
+    fallback={SIGN_OUT_ERROR}
   />
 );

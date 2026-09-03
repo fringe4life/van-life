@@ -1,4 +1,5 @@
-import { Image } from "~/features/image/component/image";
+import { css } from "styled-system/css";
+import { Image } from "~/components/image/image";
 import { useVanDetailCard } from "./context";
 
 /**
@@ -10,7 +11,10 @@ function Photos() {
   return (
     <Image
       alt={van.name}
-      className="aspect-square rounded-md"
+      className={css({
+        aspectRatio: "square",
+        borderRadius: "md",
+      })}
       height="100"
       src={van.imageUrl}
       srcSet=""

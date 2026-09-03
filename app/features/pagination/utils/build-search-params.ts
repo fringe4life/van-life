@@ -1,19 +1,11 @@
 import { createSerializer } from "nuqs/server";
 import { validateLimit } from "~/features/pagination/utils/validators";
-import {
-  paginationParsers,
-  searchParser,
-  vanFiltersParser,
-} from "~/lib/parsers";
+// fallow-ignore-next-line
+import { vansParsers } from "~/features/vans/parsers";
 import type { List, Maybe, Prettify } from "~/types";
 import type { Limit } from "../types";
 
-const combinedVanParsers = {
-  ...paginationParsers,
-  ...vanFiltersParser,
-  ...searchParser,
-};
-const serializeVanParams = createSerializer(combinedVanParsers);
+const serializeVanParams = createSerializer(vansParsers);
 
 type VanSearchParams = Prettify<
   Limit & {

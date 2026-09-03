@@ -1,6 +1,12 @@
 import type { ComponentPropsWithoutRef } from "react";
 import { href } from "react-router";
+import { css, cx } from "styled-system/css";
+import { cq, flex, grid } from "styled-system/patterns";
 import { GenericComponent } from "~/components/generic-component";
+import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
+import { Image } from "~/components/image/image";
+import { HIGH_QUALITY_IMAGE_QUALITY } from "~/components/image/img-constants";
+import { CustomNavLink } from "~/components/links/custom-nav-link";
 import { Badge } from "~/components/ui/badge";
 import {
   Card,
@@ -9,19 +15,11 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Image } from "~/features/image/component/image";
-import {
-  HIGH_QUALITY_IMAGE_QUALITY,
-  HOST_VAN_DETAIL_IMG_SIZES,
-} from "~/features/image/img-constants";
-import { createWebPSrcSet } from "~/features/image/utils/create-optimized-src-set";
-import { CustomNavLink } from "~/features/navigation/components/custom-nav-link";
 import type { NavLinkClassNameProps } from "~/features/navigation/types";
 import type { VanProps } from "~/features/vans/types";
 import { toLowercaseVanType } from "~/features/vans/utils/validators";
 import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
 import type { Id } from "~/types";
-import { cn } from "~/utils/utils";
 import { VanBadge } from "../van-badge";
 import { vanCard } from "../van-card-recipe";
 import { VanPrice } from "../van-price";
@@ -30,6 +28,8 @@ import { Details } from "./details";
 import { Photos } from "./photos";
 import { Pricing } from "./pricing";
 
+const HOST_VAN_DETAIL_IMG_SIZES = [200, 250, 300, 400] as const;
+
 type VanDetailCardProps = VanProps & ComponentPropsWithoutRef<"div">;
 
 const hostVanDetailNavClassName = ({
@@ -37,10 +37,10 @@ const hostVanDetailNavClassName = ({
   isPending,
 }: NavLinkClassNameProps) => {
   if (isPending) {
-    return "text-success";
+    return css({ color: "success" });
   }
   if (isActive) {
-    return "underline";
+    return css({ textDecoration: "underline" });
   }
   return "";
 };
@@ -82,13 +82,13 @@ const VanDetailCardRoot = ({
     sizes: HOST_VAN_DETAIL_IMG_SIZES,
   });
   // Create optimized WebP srcSet with 1:1 aspect ratio for both mobile and desktop
-  // since the HostVanDetailCard uses aspect-square
 
   return (
     <VanDetailCardContext value={van}>
       <div
-        className={cn(
-          "@container/detail w-full max-w-xl contain-content",
+        className={cx(
+          cq({ name: "detail" }),
+          css({ contain: "content", inlineSize: "full", maxInlineSize: "xl" }),
           className
         )}
       >
@@ -96,31 +96,68 @@ const VanDetailCardRoot = ({
           className={vanCard({ state: lowercaseVanState(van) })}
           style={{ viewTransitionName: `card-${van.id}` }}
         >
-          <CardHeader className="grid @min-md/detail:grid-cols-[200px_1fr] @min-xl/detail:grid-cols-[300px_1fr] grid-cols-1 @min-md/detail:grid-rows-[200px_1fr] @min-xl/detail:grid-rows-[300px_1fr] @min-md/detail:gap-x-4">
-            <div className="relative">
+          <CardHeader
+            className={grid({
+              "@detail/md": {
+                columnGap: "4",
+                // biome-ignore assist/source/noDuplicateClasses: repeated areas intentionally span detail tracks
+                gridTemplateAreas: '"media content" "media content"',
+                gridTemplateColumns: "200px 1fr",
+                gridTemplateRows: "200px 1fr",
+              },
+              "@detail/xl": {
+                // biome-ignore assist/source/noDuplicateClasses: repeated areas intentionally span detail tracks
+                gridTemplateAreas: '"media content" "media content"',
+                gridTemplateColumns: "300px 1fr",
+                gridTemplateRows: "300px 1fr",
+              },
+              gap: "0",
+              gridTemplateAreas: '"media" "content"',
+            })}
+          >
+            <div className={css({ gridArea: "media", position: "relative" })}>
               <VanBadge van={van} />
               <Image
                 alt={name}
-                className="aspect-square @min-md/detail:w-auto w-full rounded-sm"
+                className={css({
+                  aspectRatio: "square",
+                  borderRadius: "sm",
+                  inlineSize: { "@detail/md": "auto", base: "full" },
+                })}
                 decoding="sync"
                 fetchPriority="high"
                 height="300"
                 loading="eager"
-                pictureClassName="aspect-square"
+                pictureClassName={css({ aspectRatio: "square" })}
                 sizes="(min-width: 1280px) 300px, (min-width: 768px) 200px, 400px"
                 src={imageUrl}
                 srcSet={srcSet}
                 width="300"
               />
             </div>
-            <div className="@min-md/detail:col-span-1 @min-md/detail:col-start-2 content-center">
+
+            <div
+              className={css({
+                alignContent: "center",
+                gridArea: "content",
+                minInlineSize: "0",
+              })}
+            >
               <Badge
-                className="@max-md/detail:mt-4"
+                className={css({ "@detail/md": { marginBlockStart: "4" } })}
                 variant={toLowercaseVanType(type)}
               >
                 {type}
               </Badge>
-              <CardTitle className="my-6 text-balance font-bold text-2xl">
+
+              <CardTitle
+                className={css({
+                  fontSize: "2xl",
+                  fontWeight: "bold",
+                  my: "6",
+                  textAlign: "balance",
+                })}
+              >
                 {name}
               </CardTitle>
               <VanPrice van={van} />
@@ -129,14 +166,16 @@ const VanDetailCardRoot = ({
           <CardContent>
             <GenericComponent
               Component={CustomNavLink}
-              className="my-6 flex gap-6"
-              emptyStateMessage=""
-              errorStateMessage="Something went wrong"
+              className={flex({ gap: "6", marginBlock: "6" })}
+              emptyState={null}
+              errorState={{ title: "Something went wrong" }}
               items={navLinks}
+              noMatchState={null}
               renderProps={renderHostVanDetailNavProps}
             />
           </CardContent>
-          <CardFooter className="contain-inline-size">{children}</CardFooter>
+
+          <CardFooter>{children}</CardFooter>
         </Card>
       </div>
     </VanDetailCardContext>

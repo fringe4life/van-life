@@ -1,3 +1,5 @@
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import { VAN_TYPE_LOWERCASE } from "~/features/vans/constants/van-types";
 import type { LowercaseVanType } from "~/features/vans/types";
 import type { Prettify } from "~/types";
@@ -31,7 +33,8 @@ const VanTypeFilterRow = ({
       checked={types.includes(type)}
       id={`${baseId}-van-filter-type-${type}`}
       label={type}
-      labelClassName="capitalize"
+      // labelClassName="capitalize"
+      labelClassName={css({ textTransform: "capitalize" })}
       onChange={handleCheckedChange}
     />
   );
@@ -46,8 +49,30 @@ const VanTypeFilterSection = ({
   types,
   onToggle,
 }: VanTypeFilterSectionProps) => (
-  <fieldset className="grid gap-1 border-border border-b p-1 pb-3 sm:grid-cols-3 lg:grid-cols-1">
-    <legend className="px-2 py-1.5 font-medium text-sm">Van Types</legend>
+  <fieldset
+    className={cx(
+      grid({
+        columns: { lg: 1, sm: 3 },
+        gap: "1",
+      }),
+      css({
+        borderBottomWidth: "thin",
+        borderColor: "border",
+        padding: "1",
+        paddingBlockEnd: "3",
+      })
+    )}
+  >
+    <legend
+      className={css({
+        fontSize: "sm",
+        fontWeight: "medium",
+        paddingBlock: "1.5",
+        paddingInline: "2",
+      })}
+    >
+      Van Types
+    </legend>
     {VAN_TYPE_LOWERCASE.map((type) => (
       <VanTypeFilterRow
         baseId={baseId}

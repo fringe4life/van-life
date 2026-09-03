@@ -1,18 +1,29 @@
-import { cva } from "cva";
-import type { LowercaseVanState } from "../types";
+import { cva } from "styled-system/css";
 
 const vanCard = cva({
-  base: "",
-  defaultVariants: {
-    state: "available",
-  },
+  base: {},
   variants: {
     state: {
-      available: "",
-      new: "border-2 border-status-new bg-status-new/10",
-      repair: "border-2 border-status-repair bg-status-repair/10",
-      sale: "border-2 border-status-sale bg-status-sale/10",
-    } satisfies Record<LowercaseVanState, string>,
+      available: {},
+      new: {
+        backgroundColor: "status.new/10",
+        borderColor: "status.new",
+        borderStyle: "solid",
+        borderWidth: "2",
+      },
+      repair: {
+        backgroundColor: "status.repair/10",
+        borderColor: "status.repair",
+        borderStyle: "solid",
+        borderWidth: "2",
+      },
+      sale: {
+        backgroundColor: "status.sale/10",
+        borderColor: "status.sale",
+        borderStyle: "solid",
+        borderWidth: "2",
+      },
+    },
   },
 });
 

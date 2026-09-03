@@ -1,15 +1,16 @@
 import { useQueryStates } from "nuqs";
 import { startTransition } from "react";
+import { css, cx, viewTransition } from "styled-system/css";
+import { flex, grid } from "styled-system/patterns";
 import { GenericComponent } from "~/components/generic-component";
 import { Button } from "~/components/ui/button";
 import {
   DEFAULT_CURSOR,
   DEFAULT_DIRECTION,
 } from "~/features/pagination/pagination-constants";
+import { hostPaginationParsers } from "~/features/pagination/parsers";
 import type { SortOption } from "~/features/pagination/types";
-import { hostPaginationParsers } from "~/lib/parsers";
 import type { Maybe } from "~/types";
-import { cn } from "~/utils/utils";
 
 interface SortableProps {
   /** Optional className for the container */
@@ -19,6 +20,19 @@ interface SortableProps {
   /** Title to display above the sort buttons */
   title: string;
 }
+/** 
+ * ::view-transition-old(sortable-title) {
+  --fade-to: 0;
+  --slide-y-to: 1rem;
+  animation-name: --fade, --slide-y;
+}
+
+::view-transition-new(sortable-title) {
+  --fade-from: 0;
+  --slide-y-from: -1rem;
+  animation-name: --fade, --slide-y;
+}
+*/
 
 /**
  * Reusable sorting component that provides sort buttons and clear filters functionality
@@ -57,9 +71,18 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
 
   const renderSortButtonProps = (item: SortOptionItem) => ({
     children: item.id,
-    className: cn(
-      "w-full cursor-pointer text-center sm:w-fit sm:text-left",
-      sort === item.value && "bg-primary font-semibold text-primary-foreground"
+    className: cx(
+      css({
+        cursor: "pointer",
+        inlineSize: { base: "full", sm: "fit" },
+        textAlign: { base: "center", sm: "left" },
+      }),
+      sort === item.value &&
+        css({
+          backgroundColor: "primary",
+          color: "primary.foreground",
+          fontWeight: "semibold",
+        })
     ),
     onClick: () => handleSortChange(item.value),
     variant: "ghost" as const,
@@ -71,24 +94,49 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
 
   return (
     <div
-      className={cn(
-        "mb-6 flex max-w-dvw flex-col gap-4 sm:flex-row sm:items-center sm:justify-between",
+      className={cx(
+        flex({
+          direction: { base: "column", sm: "row" },
+          gap: 4,
+          sm: {
+            alignItems: "center",
+            justifyContent: "space-between",
+          },
+        }),
+        css({
+          marginBlockEnd: 6,
+          maxInlineSize: "100dvw",
+        }),
         className
       )}
     >
       <h3
-        className="font-bold text-foreground text-lg"
-        style={{ viewTransitionName: "sortable-title" }}
+        className={cx(
+          viewTransition("sortableTitle"),
+          css({
+            color: "foreground",
+            fontSize: "lg",
+            fontWeight: "bold",
+            viewTransitionName: "sortable-title",
+          })
+        )}
       >
         {title} ({itemCount})
       </h3>
 
       <GenericComponent
         Component={Button}
-        className="grid grid-cols-2 items-center gap-2 overflow-x-auto sm:grid-flow-col sm:grid-cols-4 sm:gap-4"
-        emptyStateMessage=""
-        errorStateMessage="Something went wrong"
+        className={grid({
+          alignItems: "center",
+          columns: { base: 2, sm: 4 },
+          gap: { base: 2, sm: 4 },
+          gridAutoFlow: { sm: "column" },
+          overflowX: "auto",
+        })}
+        emptyState={null}
+        errorState={{ title: "Something went wrong" }}
         items={sortOptions}
+        noMatchState={null}
         renderProps={renderSortButtonProps}
       />
     </div>
