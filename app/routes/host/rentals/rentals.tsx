@@ -1,4 +1,5 @@
 import { data, href } from "react-router";
+import { grid } from "styled-system/patterns";
 import { GenericComponent } from "~/components/generic-component";
 import { CustomLink } from "~/components/links/custom-link";
 import { PendingUI } from "~/components/pending-ui";
@@ -18,7 +19,6 @@ import { VanCard } from "~/features/vans/components/van-card";
 import { VanHeader } from "~/features/vans/components/van-header";
 import { gridMax } from "~/styles";
 import type { Prettify } from "~/types";
-import { grid } from "../../../../styled-system/patterns";
 import type { Route } from "./+types/rentals";
 
 type ActiveRental = Prettify<

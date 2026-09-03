@@ -1,4 +1,4 @@
-import { css } from "../../../../../styled-system/css";
+import { css } from "styled-system/css";
 import { VanPrice } from "../van-price";
 import { useVanDetailCard } from "./context";
 

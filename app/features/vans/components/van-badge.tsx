@@ -1,7 +1,7 @@
+import { css } from "styled-system/css";
 import { Badge } from "~/components/ui/badge";
 import { formatEnumLabel } from "~/features/vans/utils/format-enum";
 import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
-import { css } from "../../../../styled-system/css";
 import type { VanProps } from "../types";
 
 interface VanBadgeProps extends VanProps {}

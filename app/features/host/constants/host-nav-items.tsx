@@ -8,8 +8,8 @@ import {
   Wallet,
 } from "lucide-react";
 import { href } from "react-router";
+import { css } from "styled-system/css";
 import type { CustomNavLinkProps } from "~/components/links/custom-nav-link";
-import { css } from "../../../../styled-system/css";
 
 const navIconClassName = css({ aspectRatio: "square" });
 

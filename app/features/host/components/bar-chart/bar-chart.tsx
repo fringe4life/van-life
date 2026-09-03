@@ -8,8 +8,8 @@ import { Chart } from "@tanstack/charts/react";
 import { scaleBand } from "@tanstack/charts/scales/band";
 import { scaleLinear } from "@tanstack/charts/scales/linear";
 import { tooltip } from "@tanstack/charts/tooltip";
+import { css } from "styled-system/css";
 import type { Data, DataArray } from "~/features/host/types";
-import { css } from "../../../../../styled-system/css";
 
 /** Matches `--chart-height` in `app.css`. Scene size is a number, not CSS %. */
 const CHART_HEIGHT_PX = 350;

@@ -1,5 +1,5 @@
+import { cva } from "styled-system/css";
 import { TransactionType } from "~/db/enums";
-import { cva } from "../../../../../styled-system/css";
 
 const transactionMeta = {
   [TransactionType.DEPOSIT]: {

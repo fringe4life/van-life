@@ -1,4 +1,4 @@
-import { css } from "../../../../../styled-system/css";
+import { css } from "styled-system/css";
 import { Transaction } from "./transaction";
 import type { WalletTransactionProps } from "./transaction-types";
 

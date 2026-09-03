@@ -1,6 +1,6 @@
 import { Info, LogIn, LogOut, Truck, User } from "lucide-react";
 import { href } from "react-router";
-import { css } from "../../../../styled-system/css";
+import { css } from "styled-system/css";
 import { linkClassName, navLinkClassName } from "../styles";
 import type { NavItem } from "../types";
 

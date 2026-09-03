@@ -1,7 +1,7 @@
 import { href } from "react-router";
+import { css, cx } from "styled-system/css";
+import { hstack } from "styled-system/patterns";
 import { GenericComponent } from "~/components/generic-component";
-import { css, cx } from "../../../../styled-system/css";
-import { hstack } from "../../../../styled-system/patterns";
 import { CustomLink } from "../../../components/links/custom-link";
 import { brandClassName } from "../styles";
 import type { NavItem as NavItemType } from "../types";

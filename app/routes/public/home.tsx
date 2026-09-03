@@ -1,4 +1,6 @@
 import { data, href } from "react-router";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
 import { Image } from "~/components/image/image";
 import { HIGH_QUALITY_IMAGE_QUALITY } from "~/components/image/img-constants";
@@ -12,8 +14,6 @@ import {
 import { buildHomePageSeo } from "~/features/seo/build-page-seo.server";
 import { SeoHead } from "~/features/seo/seo-head";
 import { fullLayout } from "~/styles";
-import { css, cx } from "../../../styled-system/css";
-import { grid } from "../../../styled-system/patterns";
 
 import type { Route } from "./+types/home";
 

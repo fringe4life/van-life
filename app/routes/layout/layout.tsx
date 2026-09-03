@@ -1,9 +1,9 @@
 import { data, Outlet } from "react-router";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import { hasAuthContext } from "~/features/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/features/middleware/functions/has-auth-middleware";
 import { Nav } from "~/features/navigation/components/nav";
-import { css, cx } from "../../../styled-system/css";
-import { grid } from "../../../styled-system/patterns";
 import type { Route } from "./+types/layout";
 
 export const middleware: Route.MiddlewareFunction[] = [hasAuthMiddleware];

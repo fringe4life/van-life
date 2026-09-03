@@ -233,7 +233,7 @@ workers/
 DESIGN.md                   # Semantic design system (Panda tokens, roles, usage)
 panda.config.ts             # Panda tokens, recipes, conditions, view transitions
 postcss.config.cjs          # Panda PostCSS plugin
-styled-system/              # Generated Panda helpers (do not edit)
+styled-system/              # Generated Panda helpers (do not edit; import `styled-system/*` via tsconfig path)
 
 docs/
 ├── react-router-audit.md   # Framework-mode audit and middleware notes

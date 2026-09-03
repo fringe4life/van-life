@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { grid } from "../../../styled-system/patterns";
+import { grid } from "styled-system/patterns";
 
 const AuthLayout = () => (
   <div

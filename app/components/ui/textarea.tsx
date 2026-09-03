@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 
-import { css, cx } from "../../../styled-system/css";
+import { css, cx } from "styled-system/css";
 
 const Textarea = ({ className, ...props }: ComponentProps<"textarea">) => (
   <textarea

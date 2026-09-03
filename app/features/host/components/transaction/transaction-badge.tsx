@@ -4,10 +4,10 @@ import {
   ArrowUpFromLine,
   RotateCcw,
 } from "lucide-react";
+import { css, cva, cx } from "styled-system/css";
+import { square } from "styled-system/patterns";
 import { Badge } from "~/components/ui/badge";
 import { TransactionType } from "~/db/enums";
-import { css, cva, cx } from "../../../../../styled-system/css";
-import { square } from "../../../../../styled-system/patterns";
 import { transactionMeta } from "./transaction-recipe";
 
 const transactionBadge = cva({

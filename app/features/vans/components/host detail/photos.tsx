@@ -1,5 +1,5 @@
+import { css } from "styled-system/css";
 import { Image } from "~/components/image/image";
-import { css } from "../../../../../styled-system/css";
 import { useVanDetailCard } from "./context";
 
 /**

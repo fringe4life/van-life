@@ -1,4 +1,6 @@
 import { data, href } from "react-router";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import { CustomLink } from "~/components/links/custom-link";
 import { RouteErrorBoundary } from "~/components/route-error-boundary";
 import {
@@ -14,8 +16,6 @@ import { loadVansSearchParams } from "~/features/vans/loaders.server";
 import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
 import { notFound } from "~/utils/errors/not-found";
 import { serverError } from "~/utils/errors/server-error";
-import { css, cx } from "../../../styled-system/css";
-import { grid } from "../../../styled-system/patterns";
 import type { Route } from "./+types/van-detail";
 
 export const headers = forwardDataHeaders;

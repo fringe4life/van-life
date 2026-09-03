@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 
-import { cva, cx, type RecipeVariantProps } from "../../../styled-system/css";
+import { cva, cx, type RecipeVariantProps } from "styled-system/css";
 
 const dialogVariants = cva({
   base: {

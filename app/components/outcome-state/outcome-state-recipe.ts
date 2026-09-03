@@ -1,4 +1,4 @@
-import { sva } from "../../../styled-system/css";
+import { sva } from "styled-system/css";
 
 const outcomeStateRecipe = sva({
   base: {

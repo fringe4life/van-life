@@ -1,8 +1,7 @@
 import { useId, ViewTransition } from "react";
+import { css, cx } from "styled-system/css";
 import type { ViewTransitionTune } from "~/components/types";
 import type { Id, Message, Prettify } from "~/types";
-
-import { css, cx } from "../../../styled-system/css";
 
 type FormErrorProps = Prettify<
   {

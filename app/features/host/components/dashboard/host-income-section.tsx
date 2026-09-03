@@ -1,9 +1,9 @@
 import { href } from "react-router";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import { CustomLink } from "~/components/links/custom-link";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import type { Maybe } from "~/types";
-import { css, cx } from "../../../../../styled-system/css";
-import { grid } from "../../../../../styled-system/patterns";
 
 interface HostIncomeSectionProps {
   elapsedDays: number;

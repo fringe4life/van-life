@@ -107,6 +107,7 @@ export default defineConfig({
     "--star-gap": "0.5rem",
     "--star-size": "1.25rem",
   },
+  importMap: "styled-system",
   include: [
     "./app/**/*.{js,jsx,ts,tsx}",
     "./app/**/.client/**/*.{js,jsx,ts,tsx}",

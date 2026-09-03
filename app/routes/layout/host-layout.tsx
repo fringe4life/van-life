@@ -1,4 +1,6 @@
 import { Outlet } from "react-router";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import { GenericComponent } from "~/components/generic-component";
 import {
   CustomNavLink,
@@ -10,8 +12,6 @@ import {
 import { hostNavItems } from "~/features/host/constants/host-nav-items";
 import { authMiddleware } from "~/features/middleware/functions/auth-middleware";
 import { navLinkClassName } from "~/features/navigation/styles";
-import { css, cx } from "../../../styled-system/css";
-import { grid } from "../../../styled-system/patterns";
 import type { Route } from "./+types/host-layout";
 
 const renderHostNavItemProps = (item: CustomNavLinkProps) => ({

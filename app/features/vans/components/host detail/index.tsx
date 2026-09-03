@@ -1,5 +1,7 @@
 import type { ComponentPropsWithoutRef } from "react";
 import { href } from "react-router";
+import { css, cx } from "styled-system/css";
+import { cq, flex, grid } from "styled-system/patterns";
 import { GenericComponent } from "~/components/generic-component";
 import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
 import { Image } from "~/components/image/image";
@@ -18,8 +20,6 @@ import type { VanProps } from "~/features/vans/types";
 import { toLowercaseVanType } from "~/features/vans/utils/validators";
 import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
 import type { Id } from "~/types";
-import { css, cx } from "../../../../../styled-system/css";
-import { cq, flex, grid } from "../../../../../styled-system/patterns";
 import { VanBadge } from "../van-badge";
 import { vanCard } from "../van-card-recipe";
 import { VanPrice } from "../van-price";

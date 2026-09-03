@@ -1,6 +1,6 @@
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import type { Prettify } from "~/types";
-import { css, cx } from "../../../../../styled-system/css";
-import { grid } from "../../../../../styled-system/patterns";
 
 import { FilterCheckboxRow } from "./filter-checkbox-row";
 import type {

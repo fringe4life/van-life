@@ -4,11 +4,11 @@ import {
   useId,
   ViewTransition,
 } from "react";
+import { css, cx } from "styled-system/css";
+import { vstack } from "styled-system/patterns";
 import type { ViewTransitionTune } from "~/components/types";
 import { Label } from "~/components/ui/label";
 import type { Id, Message, Prettify } from "~/types";
-import { css, cx } from "../../../styled-system/css";
-import { vstack } from "../../../styled-system/patterns";
 
 type FieldA11y = Prettify<
   {

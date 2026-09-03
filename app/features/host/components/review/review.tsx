@@ -1,16 +1,10 @@
 import type { CSSProperties } from "react";
+import { css, cx } from "styled-system/css";
+import { cq, flex, grid, visuallyHidden, wrap } from "styled-system/patterns";
 import { Card, CardContent } from "~/components/ui/card";
 import type { ReviewModel, UserModel } from "~/db/client.server";
 import { MAX_RATING } from "~/features/host/constants/constants";
 import type { Maybe, Prettify } from "~/types";
-import { css, cx } from "../../../../../styled-system/css";
-import {
-  cq,
-  flex,
-  grid,
-  visuallyHidden,
-  wrap,
-} from "../../../../../styled-system/patterns";
 import { RatingStars } from "./rating-stars";
 import { ReviewBadge } from "./review-badge";
 import { formatReviewRating, normalizeReviewRating } from "./review-recipe";

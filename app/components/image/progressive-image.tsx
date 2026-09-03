@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { css, cx } from "styled-system/css";
 import { Image, type ImgProps } from "~/components/image/image";
-import { css, cx } from "../../../styled-system/css";
 
 /**
  * Blur/pulse placeholder until `onLoad`. `loaded` is instance state, seeded

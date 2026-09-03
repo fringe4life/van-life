@@ -1,8 +1,8 @@
 import { Check, Loader2, X } from "lucide-react";
 import type { ReactElement } from "react";
+import { css, cx } from "styled-system/css";
+import { center, hstack, square } from "styled-system/patterns";
 import { Button } from "~/components/ui/button";
-import { css, cx } from "../../styled-system/css";
-import { center, hstack, square } from "../../styled-system/patterns";
 
 /**
  * Status of the button action

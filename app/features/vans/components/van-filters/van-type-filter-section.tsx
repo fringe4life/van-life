@@ -1,8 +1,8 @@
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import { VAN_TYPE_LOWERCASE } from "~/features/vans/constants/van-types";
 import type { LowercaseVanType } from "~/features/vans/types";
 import type { Prettify } from "~/types";
-import { css, cx } from "../../../../../styled-system/css";
-import { grid } from "../../../../../styled-system/patterns";
 import { FilterCheckboxRow } from "./filter-checkbox-row";
 import type {
   FilterBaseId,

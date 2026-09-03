@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { cx } from "../../../styled-system/css";
+import { cx } from "styled-system/css";
 import { OutcomeStateActions } from "./outcome-state-actions";
 import { OutcomeStateContent } from "./outcome-state-content";
 import { OutcomeStateMetadata } from "./outcome-state-metadata";

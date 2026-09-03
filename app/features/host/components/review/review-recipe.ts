@@ -1,5 +1,5 @@
+import { cva } from "styled-system/css";
 import { MAX_RATING } from "~/features/host/constants/constants";
-import { cva } from "../../../../../styled-system/css";
 
 type ReviewScore = 1 | 2 | 3 | 4 | 5;
 

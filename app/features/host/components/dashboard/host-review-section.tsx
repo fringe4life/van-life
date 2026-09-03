@@ -1,8 +1,8 @@
 import { href } from "react-router";
+import { css, cx } from "styled-system/css";
+import { hstack } from "styled-system/patterns";
 import { CustomLink } from "~/components/links/custom-link";
 import { RatingStars } from "~/features/host/components/review/rating-stars";
-import { css, cx } from "../../../../../styled-system/css";
-import { hstack } from "../../../../../styled-system/patterns";
 
 interface HostReviewSectionProps {
   avgRating: number;

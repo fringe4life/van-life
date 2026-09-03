@@ -1,4 +1,4 @@
-import { cva } from "../../../../styled-system/css";
+import { cva } from "styled-system/css";
 
 const hamburgerBar = cva({
   base: {

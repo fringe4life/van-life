@@ -1,6 +1,6 @@
+import { cx } from "styled-system/css";
 import { CustomLink } from "~/components/links/custom-link";
 import { buttonVariants } from "~/components/ui/button-variants";
-import { cx } from "../../../styled-system/css";
 import type {
   OutcomeKind,
   OutcomeStateAction,

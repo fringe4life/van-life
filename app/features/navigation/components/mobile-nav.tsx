@@ -1,10 +1,10 @@
 import type { MouseEvent } from "react";
 import { href } from "react-router";
+import { css, cx } from "styled-system/css";
+import { cq, visuallyHidden, vstack } from "styled-system/patterns";
 import { GenericComponent } from "~/components/generic-component";
 import { Dialog } from "~/components/ui/dialog";
 import type { Items } from "~/features/pagination/types";
-import { css, cx } from "../../../../styled-system/css";
-import { cq, visuallyHidden, vstack } from "../../../../styled-system/patterns";
 import { CustomLink } from "../../../components/links/custom-link";
 import { brandClassName } from "../styles";
 import type { NavItem as NavItemType } from "../types";

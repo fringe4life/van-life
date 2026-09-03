@@ -1,10 +1,9 @@
 import type { ChangeEvent } from "react";
+import { css, cx } from "styled-system/css";
+import { hstack } from "styled-system/patterns";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import type { Id, Prettify } from "~/types";
-
-import { css, cx } from "../../../../../styled-system/css";
-import { hstack } from "../../../../../styled-system/patterns";
 
 type FilterCheckboxRowProps = Prettify<
   Id & {

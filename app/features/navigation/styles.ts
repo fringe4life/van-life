@@ -1,5 +1,5 @@
-import { css, cx } from "../../../styled-system/css";
-import { hstack } from "../../../styled-system/patterns";
+import { css, cx } from "styled-system/css";
+import { hstack } from "styled-system/patterns";
 import type { NavLinkClassNameProps } from "./types";
 
 export const brandClassName = css({

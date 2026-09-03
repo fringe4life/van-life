@@ -1,4 +1,4 @@
-import { cva, type RecipeVariantProps } from "../../../styled-system/css";
+import { cva, type RecipeVariantProps } from "styled-system/css";
 
 const badgeVariants = cva({
   base: {

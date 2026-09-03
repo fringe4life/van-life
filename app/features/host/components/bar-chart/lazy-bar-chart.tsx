@@ -1,10 +1,10 @@
 import { lazy, Suspense } from "react";
+import { css } from "styled-system/css";
 import { OutcomeState } from "~/components/outcome-state";
 import type { CollectionOutcomeProps } from "~/components/types";
 import type { Data, DataArray } from "~/features/host/types";
 import type { Maybe, Prettify } from "~/types";
 import { getCollectionState } from "~/utils/errors/get-collection-state";
-import { css } from "../../../../../styled-system/css";
 import { BarChartSkeleton } from "./bar-chart-skeleton";
 
 type LazyBarChartProps = Prettify<

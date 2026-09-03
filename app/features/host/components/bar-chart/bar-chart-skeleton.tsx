@@ -1,6 +1,6 @@
+import { css, cx } from "styled-system/css";
+import { flex } from "styled-system/patterns";
 import { bgSkeleton } from "~/styles";
-import { css, cx } from "../../../../../styled-system/css";
-import { flex } from "../../../../../styled-system/patterns";
 import { barHeight } from "./styles";
 
 const BarChartSkeleton = () => (

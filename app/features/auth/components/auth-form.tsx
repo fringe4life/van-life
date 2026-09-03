@@ -1,7 +1,7 @@
 import type { ReactNode, SubmitEventHandler } from "react";
 import type { FetcherWithComponents } from "react-router";
-import { css, cx } from "../../../../styled-system/css";
-import { grid } from "../../../../styled-system/patterns";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 
 const authFormLayoutClassName = grid({
   alignItems: "center",

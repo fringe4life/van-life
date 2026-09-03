@@ -1,7 +1,7 @@
+import { css, cx } from "styled-system/css";
+import { cq, grid, wrap } from "styled-system/patterns";
 import { Card, CardContent } from "~/components/ui/card";
 import { bgSkeleton } from "~/styles";
-import { css, cx } from "../../../../../styled-system/css";
-import { cq, grid, wrap } from "../../../../../styled-system/patterns";
 import { transactionCard } from "./transaction-recipe";
 
 const TransactionSkeleton = () => (

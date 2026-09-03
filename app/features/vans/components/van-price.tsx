@@ -1,7 +1,7 @@
+import { css } from "styled-system/css";
+import { flex } from "styled-system/patterns";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import { getDiscountedPrice } from "~/utils/pricing";
-import { css } from "../../../../styled-system/css";
-import { flex } from "../../../../styled-system/patterns";
 import type { VanProps } from "../types";
 
 interface VanPriceProps extends VanProps {}

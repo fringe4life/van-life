@@ -6,6 +6,7 @@
     "workers/app.ts",
     ".env.schema"
   ],
+  "dynamicallyLoaded": ["app/features/host/components/bar-chart/bar-chart.tsx"],
   "typeAware": {
     "enabled": true,
     "require": "complete",

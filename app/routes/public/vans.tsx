@@ -1,4 +1,6 @@
 import { data } from "react-router";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import { RouteErrorBoundary } from "~/components/route-error-boundary";
 import { SearchInput } from "~/components/search-input";
 import {
@@ -11,8 +13,6 @@ import { VanFilters } from "~/features/vans/components/van-filters";
 import { VanHeader } from "~/features/vans/components/van-header";
 import { VansList } from "~/features/vans/components/vans-list/vans-list";
 import { loadVanCatalog } from "~/features/vans/services/catalog.server";
-import { css, cx } from "../../../styled-system/css";
-import { grid } from "../../../styled-system/patterns";
 import type { Route } from "./+types/vans";
 
 export const headers = forwardDataHeaders;

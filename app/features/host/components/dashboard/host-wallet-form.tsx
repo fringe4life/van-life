@@ -1,5 +1,7 @@
 import type { ChangeEventHandler, SubmitEventHandler } from "react";
 import type { FetcherWithComponents } from "react-router";
+import { css, cx } from "styled-system/css";
+import { cq, grid, hstack, visuallyHidden } from "styled-system/patterns";
 import { Field } from "~/components/form/field";
 import type { FormActionResultFrom } from "~/components/form/form-action-result";
 import { FormError } from "~/components/form/form-error";
@@ -16,13 +18,6 @@ import type {
   MONEY_FORM_FIELDS,
 } from "~/features/host/types";
 import { DEPOSIT, WITHDRAW } from "~/features/vans/constants/vans-constants";
-import { css, cx } from "../../../../../styled-system/css";
-import {
-  cq,
-  grid,
-  hstack,
-  visuallyHidden,
-} from "../../../../../styled-system/patterns";
 
 type HostWalletActionData = FormActionResultFrom<
   object,

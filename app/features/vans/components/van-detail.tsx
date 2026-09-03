@@ -1,4 +1,6 @@
 import { href } from "react-router";
+import { css, cx } from "styled-system/css";
+import { cq, grid, hstack } from "styled-system/patterns";
 import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
 import { Image } from "~/components/image/image";
 import { HIGH_QUALITY_IMAGE_QUALITY } from "~/components/image/img-constants";
@@ -19,8 +21,6 @@ import {
   validateLowercaseVanType,
 } from "~/features/vans/utils/validators";
 import { isVanAvailable } from "~/features/vans/utils/van-state-helpers";
-import { css, cx } from "../../../../styled-system/css";
-import { cq, grid, hstack } from "../../../../styled-system/patterns";
 import { VanPrice } from "./van-price";
 
 const VAN_DETAIL_IMG_SIZES = [300, 450, 600, 750, 1000] as const;

@@ -1,7 +1,7 @@
+import { css, cx } from "styled-system/css";
 import { TransactionSkeleton } from "~/features/host/components/transaction/transaction-skeleton";
 import { PaginatedItemsSkeleton } from "~/features/pagination/components/paginated-items-skeleton";
 import { gridMax } from "~/styles";
-import { css, cx } from "../../../../../styled-system/css";
 import { vHostList } from "../../styles";
 
 const TransactionListSkeleton = () => (

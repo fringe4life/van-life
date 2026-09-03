@@ -1,7 +1,7 @@
 import { href, isRouteErrorResponse, useLocation } from "react-router";
+import { css } from "styled-system/css";
 import { HTTP_STATUS } from "~/constants/http-constants";
 import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
-import { css } from "../../styled-system/css";
 import { OutcomeState } from "./outcome-state";
 import type { OutcomeStateConfig } from "./outcome-state/types";
 

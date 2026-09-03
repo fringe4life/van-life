@@ -1,12 +1,12 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import { startTransition } from "react";
+import { css } from "styled-system/css";
+import { hstack } from "styled-system/patterns";
 import { Button } from "~/components/ui/button";
 import { cursorPaginationParsers } from "~/features/pagination/parsers";
 import type { Direction, PaginationProps } from "~/features/pagination/types";
 import type { Id } from "~/types";
-import { css } from "../../../../styled-system/css";
-import { hstack } from "../../../../styled-system/patterns";
 
 const pageIconClassName = css({ aspectRatio: "square", inlineSize: "4" });
 

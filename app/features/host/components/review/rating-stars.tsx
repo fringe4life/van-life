@@ -1,10 +1,10 @@
 import { StarIcon } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
+import { css, cx } from "styled-system/css";
+import { flex, visuallyHidden } from "styled-system/patterns";
 import type { ReviewModel } from "~/db/client.server";
 import { MAX_RATING } from "~/features/host/constants/constants";
 import type { Prettify } from "~/types";
-import { css, cx } from "../../../../../styled-system/css";
-import { flex, visuallyHidden } from "../../../../../styled-system/patterns";
 
 type RatingStyles = CSSProperties & {
   "--rating": number;

@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import { css, cx, viewTransition } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import {
   Card,
   CardContent,
@@ -7,8 +9,6 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import type { Children, Prettify } from "~/types";
-import { css, cx, viewTransition } from "../../../../styled-system/css";
-import { grid } from "../../../../styled-system/patterns";
 
 /** Shared view-transition names for login ↔ signup morph. */
 export const AUTH_VT = {

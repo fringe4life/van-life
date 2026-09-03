@@ -10,7 +10,7 @@ The app uses PandaCSS v2 beta (`@pandacss/*` is currently pinned to `2.0.0-beta.
 
 - Panda configuration and design tokens: [`panda.config.ts`](./panda.config.ts)
 - Panda PostCSS integration: [`postcss.config.cjs`](./postcss.config.cjs)
-- Generated Panda helpers and CSS: [`styled-system`](./styled-system) — generated output; do not edit it directly
+- Generated Panda helpers and CSS: [`styled-system`](./styled-system) — generated output; import as `styled-system/css` / `styled-system/patterns` (`tsconfig` path). Do not edit it directly.
 - Authored global CSS: [`app/app.css`](./app/app.css)
 - Shared style helpers: [`app/styles.ts`](./app/styles.ts)
 - Shared UI primitives and recipes: [`app/components/ui`](./app/components/ui)
@@ -27,8 +27,8 @@ The app uses PandaCSS v2 beta (`@pandacss/*` is currently pinned to `2.0.0-beta.
 Import generated helpers from `styled-system` and compose their results with `cx`:
 
 ```tsx
-import { css, cx } from "../../../styled-system/css";
-import { grid } from "../../../styled-system/patterns";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 
 const className = cx(
   grid({ columns: { base: 1, md: 2 }, gap: "4" }),

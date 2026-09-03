@@ -1,5 +1,6 @@
 import { useQueryStates } from "nuqs";
 import { type ChangeEvent, startTransition } from "react";
+import { css, cx } from "styled-system/css";
 import { buttonVariants } from "~/components/ui/button-variants";
 import {
   DEFAULT_LIMIT,
@@ -7,7 +8,6 @@ import {
 } from "~/features/pagination/pagination-constants";
 import { limitParsers } from "~/features/pagination/parsers";
 import { validateLimit } from "~/features/pagination/utils/validators";
-import { css, cx } from "../../../../styled-system/css";
 
 export const PaginationLimitControl = () => {
   const [{ limit }, setSearchParams] = useQueryStates(limitParsers);

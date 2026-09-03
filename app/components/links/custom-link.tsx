@@ -1,6 +1,6 @@
 import { Link, type LinkProps } from "react-router";
+import { css, cx } from "styled-system/css";
 import useIsPage from "~/hooks/use-is-page";
-import { css, cx } from "../../../styled-system/css";
 export type CustomLinkProps = Omit<LinkProps, "style">;
 
 const CustomLink = ({ children, to, className, ...rest }: CustomLinkProps) => {

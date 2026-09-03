@@ -1,5 +1,7 @@
 import { useQueryStates } from "nuqs";
 import { startTransition } from "react";
+import { css, cx, viewTransition } from "styled-system/css";
+import { flex, grid } from "styled-system/patterns";
 import { GenericComponent } from "~/components/generic-component";
 import { Button } from "~/components/ui/button";
 import {
@@ -9,8 +11,6 @@ import {
 import { hostPaginationParsers } from "~/features/pagination/parsers";
 import type { SortOption } from "~/features/pagination/types";
 import type { Maybe } from "~/types";
-import { css, cx, viewTransition } from "../../styled-system/css";
-import { flex, grid } from "../../styled-system/patterns";
 
 interface SortableProps {
   /** Optional className for the container */

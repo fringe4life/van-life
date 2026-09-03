@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { cx } from "../../../styled-system/css";
+import { cx } from "styled-system/css";
 import { type BadgeVariantProps, badgeVariants } from "./badge-variants";
 
 function Badge({

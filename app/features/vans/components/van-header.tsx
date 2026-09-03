@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from "react";
-import { css } from "../../../../styled-system/css";
+import { css } from "styled-system/css";
 
 const VanHeader = ({ children }: ComponentPropsWithoutRef<"h2">) => (
   <h2

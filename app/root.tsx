@@ -3,8 +3,8 @@ import { Links, Outlet, Scripts, ScrollRestoration } from "react-router";
 import type { Route } from "./+types/root";
 import { RouteErrorBoundary } from "./components/route-error-boundary";
 import "./app.css";
-import { css, cx } from "../styled-system/css";
-import { grid } from "../styled-system/patterns";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import type { Children } from "./types";
 
 const layoutGrid = grid({

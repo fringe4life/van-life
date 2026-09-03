@@ -1,7 +1,7 @@
+import { css, cx } from "styled-system/css";
+import { cq, grid } from "styled-system/patterns";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { bgSkeleton } from "~/styles";
-import { css, cx } from "../../../../styled-system/css";
-import { cq, grid } from "../../../../styled-system/patterns";
 
 const VanCardSkeleton = () => (
   <div

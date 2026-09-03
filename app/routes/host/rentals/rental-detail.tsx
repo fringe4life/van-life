@@ -1,4 +1,6 @@
 import { data, href, redirect, useNavigation } from "react-router";
+import { css, cx } from "styled-system/css";
+import { grid } from "styled-system/patterns";
 import { summarize } from "valibot";
 import { CustomForm } from "~/components/custom-form";
 import type { FormActionFailure } from "~/components/form/form-action-result";
@@ -23,8 +25,6 @@ import { notFound } from "~/utils/errors/not-found";
 import { validateSchema } from "~/utils/errors/parse-schema.server";
 import { serverError } from "~/utils/errors/server-error";
 import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
-import { css, cx } from "../../../../styled-system/css";
-import { grid } from "../../../../styled-system/patterns";
 import type { Route } from "./+types/rental-detail";
 
 type RentActionData = FormActionFailure<string>;
