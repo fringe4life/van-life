@@ -1059,7 +1059,7 @@ Configuration in `lint-staged.config.ts`.
 - **CI** (`.github/workflows/ci.yml`) — least-privilege permissions:
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
-  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — self-contained Action, no Bun install
+  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.12`, same as `package.json`); self-contained, no Bun install
   - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.22.0` Action (CLI `version: 3.21.0`, same as `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`)
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
