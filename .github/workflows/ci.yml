@@ -99,10 +99,10 @@ jobs:
           fetch-depth: 0
 
       - name: Fallow audit
-        uses: fallow-rs/fallow@32b3f89fe28c286c85a6b0aed4ec5be120f54da6 # v3.6.0
+        uses: fallow-rs/fallow@79a0e8d8dbcaa408dce348b3df14fc1e824f988b # v3.22.0
         with:
           command: audit
-          version: "3.6.0"
+          version: "3.21.0"
           score: true
           comment: true
           review-comments: true
@@ -110,8 +110,8 @@ jobs:
           gate: new-only
 
       - name: Fallow security
-        uses: fallow-rs/fallow@32b3f89fe28c286c85a6b0aed4ec5be120f54da6 # v3.6.0
+        uses: fallow-rs/fallow@79a0e8d8dbcaa408dce348b3df14fc1e824f988b # v3.22.0
         with:
           command: security
-          version: "3.6.0"
+          version: "3.21.0"
           fail-on-issues: false
