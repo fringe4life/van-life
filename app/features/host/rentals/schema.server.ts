@@ -1,5 +1,5 @@
 import { maxLength, object, pipe, regex, string } from "valibot";
-import { uuidv7Schema } from "~/dal/schemas.server";
+import { uuidv7Schema } from "~/dal/schema.server";
 
 /**
  * URL slug: lowercase alphanumeric words joined by single hyphens, max 70 chars.

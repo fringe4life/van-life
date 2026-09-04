@@ -1,7 +1,7 @@
 import { createSerializer } from "nuqs/server";
-import { validateLimit } from "~/features/pagination/utils/validators";
+import { parseLimit } from "~/features/pagination/schema";
 // fallow-ignore-next-line
-import { vansParsers } from "~/features/vans/parsers";
+import { vansParsers } from "~/features/vans/schema";
 import type { List, Maybe, Prettify } from "~/types";
 import type { Limit } from "../types";
 
@@ -39,7 +39,7 @@ function getOptionalVanFilterParams({
 function buildVanQueryParams(params: VanSearchParams): VanQueryParams {
   return {
     cursor: params.cursor,
-    limit: validateLimit(params.limit),
+    limit: parseLimit(params.limit),
     ...getOptionalVanFilterParams(params),
   };
 }

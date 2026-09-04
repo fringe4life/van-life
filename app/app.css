@@ -77,6 +77,14 @@
 }
 
 /* ─── SCROLL DRIVEN ANIMATIONS ───────────────────────────────────────────── */
+@supports (animation-timeline: scroll()) {
+  .nav-shell-scroll {
+    animation: nav-shell-scroll 1ms linear both;
+    animation-range: 0 var(--nav-shell-scroll-range);
+    animation-timeline: scroll(root block);
+  }
+}
+
 .scroll-sm,
 .scroll-md,
 .scroll-lg {
@@ -88,14 +96,6 @@
 .scroll-md {
   animation-range: entry 0% cover 10%;
 }
-
-/* @utility scroll-reveal {
-  --fade-from: 0.5;
-  --scale-from: 0.5;
-  animation-name: fade, scale, slide-x;
-  animation-duration: 1ms;
-  animation-fill-mode: both;
-} */
 
 .scroll-sm:nth-child(n + 3),
 .scroll-md:nth-child(n + 5),

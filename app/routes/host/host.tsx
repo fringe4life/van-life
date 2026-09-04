@@ -12,7 +12,7 @@ import { HostReviewSection } from "~/features/host/components/dashboard/host-rev
 import { HostVansSection } from "~/features/host/components/dashboard/host-vans-section";
 import { HostWalletForm } from "~/features/host/components/dashboard/host-wallet-form";
 import { useHostWallet } from "~/features/host/hooks/use-host-wallet";
-import { moneySchema } from "~/features/host/schemas.server";
+import { moneySchema } from "~/features/host/schema.server";
 import { loadHostDashboard } from "~/features/host/services/dashboard.server";
 import { depositOrWithdraw } from "~/features/host/services/wallet.server";
 import { MONEY_ECHO_FIELDS, MONEY_FORM_FIELDS } from "~/features/host/types";
@@ -27,7 +27,7 @@ import { badRequest } from "~/utils/errors/bad-request";
 import {
   schemaErrorsToFieldErrors,
   validateSchema,
-} from "~/utils/errors/parse-schema.server";
+} from "~/utils/errors/parse-schema";
 import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/host";
 

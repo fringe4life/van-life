@@ -25,7 +25,7 @@ const queryState = {
   limit: 20,
   onlyOnSale: false,
   search: "explorer",
-  types: ["simple"],
+  types: ["SIMPLE"],
 };
 
 describe("createVansListCardProps", () => {
@@ -36,7 +36,7 @@ describe("createVansListCardProps", () => {
     expect(props.link).toContain("/vans/test-van?");
     expect(props.link).toContain("cursor=cursor-id");
     expect(props.link).toContain("limit=20");
-    expect(props.link).toContain("types=simple");
+    expect(props.link).toContain("types=SIMPLE");
     expect(props.link).toContain("excludeInRepair=true");
     expect(props.link).toContain("search=explorer");
     expect(props.van).toBe(van);

@@ -14,7 +14,7 @@ import {
 import { AUTH_VT, AuthCard } from "~/features/auth/components/auth-card";
 import { AuthForm } from "~/features/auth/components/auth-form";
 import { useAuthForm } from "~/features/auth/hooks/use-auth-form";
-import { signUpScheme } from "~/features/auth/schemas.server";
+import { signUpSchema } from "~/features/auth/schema.server";
 import {
   SIGN_UP_ECHO_FIELDS,
   SIGN_UP_FORM_FIELDS,
@@ -26,7 +26,7 @@ import { badRequest } from "~/utils/errors/bad-request";
 import {
   schemaErrorsToFieldErrors,
   validateSchema,
-} from "~/utils/errors/parse-schema.server";
+} from "~/utils/errors/parse-schema";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import type { Route } from "./+types/sign-up";
 
@@ -53,7 +53,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const formData = Object.fromEntries(await request.formData());
   const echoValues = pickFormValues(formData, SIGN_UP_ECHO_FIELDS);
 
-  const validation = validateSchema(signUpScheme, formData);
+  const validation = validateSchema(signUpSchema, formData);
 
   if (!validation.success) {
     return badRequest({

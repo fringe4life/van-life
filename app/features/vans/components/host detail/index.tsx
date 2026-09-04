@@ -2,10 +2,10 @@ import type { ComponentPropsWithoutRef } from "react";
 import { href } from "react-router";
 import { css, cx } from "styled-system/css";
 import { cq, flex, grid } from "styled-system/patterns";
-import { GenericComponent } from "~/components/generic-component";
 import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
 import { Image } from "~/components/image/image";
 import { HIGH_QUALITY_IMAGE_QUALITY } from "~/components/image/img-constants";
+import { ItemList } from "~/components/item-list";
 import { CustomNavLink } from "~/components/links/custom-nav-link";
 import { Badge } from "~/components/ui/badge";
 import {
@@ -17,7 +17,6 @@ import {
 } from "~/components/ui/card";
 import type { NavLinkClassNameProps } from "~/features/navigation/types";
 import type { VanProps } from "~/features/vans/types";
-import { toLowercaseVanType } from "~/features/vans/utils/validators";
 import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
 import type { Id } from "~/types";
 import { VanBadge } from "../van-badge";
@@ -144,8 +143,11 @@ const VanDetailCardRoot = ({
               })}
             >
               <Badge
-                className={css({ "@detail/md": { marginBlockStart: "4" } })}
-                variant={toLowercaseVanType(type)}
+                className={css({
+                  "@detail/md": { marginBlockStart: "4" },
+                  textTransform: "lowercase",
+                })}
+                variant={type}
               >
                 {type}
               </Badge>
@@ -164,13 +166,10 @@ const VanDetailCardRoot = ({
             </div>
           </CardHeader>
           <CardContent>
-            <GenericComponent
+            <ItemList
               Component={CustomNavLink}
               className={flex({ gap: "6", marginBlock: "6" })}
-              emptyState={null}
-              errorState={{ title: "Something went wrong" }}
               items={navLinks}
-              noMatchState={null}
               renderProps={renderHostVanDetailNavProps}
             />
           </CardContent>

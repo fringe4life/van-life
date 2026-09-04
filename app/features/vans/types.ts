@@ -1,10 +1,6 @@
 import type { VanModel } from "~/db/client.server";
 import type { VanState, VanType } from "~/db/enums";
-import type { Maybe, Prettify } from "~/types";
-
-export interface TypeFilter {
-  typeFilter: Prettify<Exclude<Maybe<VanType>, null>>;
-}
+import type { Prettify } from "~/types";
 
 export interface VanFilters {
   excludeInRepair?: boolean;
@@ -15,9 +11,6 @@ export interface VanFilters {
 /** Lowercase enum value; suffix after `_` when present, else whole value. */
 type LowercaseEnumValue<T extends string> =
   T extends `${string}_${infer Suffix}` ? Lowercase<Suffix> : Lowercase<T>;
-
-/** Canonical lowercase van type. */
-export type LowercaseVanType = Lowercase<VanType>;
 
 /** Canonical lowercase van state, including runtime-only `new`. */
 export type LowercaseVanState = LowercaseEnumValue<VanState> | "new";

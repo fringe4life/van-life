@@ -1,8 +1,8 @@
 import type { ElementType, ReactNode } from "react";
 import {
-  GenericComponent,
-  type GenericComponentProps,
-} from "~/components/generic-component";
+  CollectionList,
+  type CollectionListProps,
+} from "~/components/collection-list";
 import type { Id, List, Prettify } from "~/types";
 import { DeferredAwait } from "./await";
 
@@ -11,7 +11,7 @@ export type DeferredItemsProps<
   P,
   E extends ElementType = "div",
 > = Prettify<
-  Omit<GenericComponentProps<T, P, E>, "items"> & {
+  Omit<CollectionListProps<T, P, E>, "items"> & {
     errorElement?: ReactNode;
     fallback: ReactNode;
     resolve: Promise<List<T>>;
@@ -19,20 +19,20 @@ export type DeferredItemsProps<
 >;
 
 /**
- * Deferred list: Suspense/Await → {@link GenericComponent}.
+ * Deferred list: Suspense/Await → {@link CollectionList}.
  */
 const DeferredItems = <T extends Id, P, E extends ElementType = "div">({
   errorElement,
   fallback,
   resolve,
-  ...genericProps
+  ...collectionProps
 }: DeferredItemsProps<T, P, E>) => (
   <DeferredAwait
     errorElement={errorElement}
     fallback={fallback}
     resolve={resolve}
   >
-    {(items) => <GenericComponent {...genericProps} items={items} />}
+    {(items) => <CollectionList {...collectionProps} items={items} />}
   </DeferredAwait>
 );
 

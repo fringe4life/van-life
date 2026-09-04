@@ -1,29 +1,12 @@
 import { Outlet } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
-import { GenericComponent } from "~/components/generic-component";
-import {
-  CustomNavLink,
-  type CustomNavLinkProps,
-} from "~/components/links/custom-nav-link";
-// Host nav lives in features/host; layout zone intentionally excludes that domain
-// feature so only this host shell may reach it.
-// fallow-ignore-next-line boundary-violation
-import { hostNavItems } from "~/features/host/constants/host-nav-items";
+//fallow-ignore-next-line boundary-violation
+import { HostMobileNav } from "~/features/host/components/host-nav/host-mobile-nav";
+//fallow-ignore-next-line boundary-violation
+import { HostNav } from "~/features/host/components/host-nav/host-nav";
 import { authMiddleware } from "~/features/middleware/functions/auth-middleware";
-import { navLinkClassName } from "~/features/navigation/styles";
 import type { Route } from "./+types/host-layout";
-
-const renderHostNavItemProps = (item: CustomNavLinkProps) => ({
-  ...item,
-  className: navLinkClassName,
-});
-
-const HostNavListItem = (props: CustomNavLinkProps) => (
-  <li>
-    <CustomNavLink {...props} />
-  </li>
-);
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 
@@ -32,18 +15,6 @@ export const middleware: Route.MiddlewareFunction[] = [authMiddleware];
 // skip server middleware when a target route has no loader of its own.
 // See docs/react-router-audit.md and node_modules/react-router/docs/how-to/middleware.md
 export const loader = () => null;
-
-const maskScrollHint = css({
-  _supportsScroll: {
-    animationDuration: "auto",
-    animationName: "scroll-mask",
-    animationTimeline: "scroll(x self)",
-    animationTimingFunction: "linear",
-  },
-  maskImage:
-    "linear-gradient(to right, black 0%, black 5%, black 95%, transparent 100%)",
-  maskRepeat: "no-repeat",
-});
 
 const HostLayout = () => (
   <>
@@ -68,50 +39,16 @@ const HostLayout = () => (
           }),
           css({
             gridArea: "nav",
-            insetBlockStart: "6",
-            maxBlockSize: "calc(100dvh - 3rem)",
+            insetBlockStart: { lg: "var(--header-height)" },
+            maxBlockSize: { lg: "calc(100dvh - var(--header-height))" },
             minInlineSize: "0",
             overflowY: { lg: "auto" },
             position: { lg: "sticky" },
           })
         )}
       >
-        <nav
-          aria-label="Host navigation"
-          className={css({ minInlineSize: "0" })}
-        >
-          <GenericComponent
-            as="ul"
-            Component={HostNavListItem}
-            className={cx(
-              grid({
-                alignItems: "center",
-                columns: { lg: 1 },
-                gap: { base: "3", lg: "2" },
-                gridAutoColumns: { base: "max-content", lg: "auto" },
-                gridAutoFlow: { base: "column", lg: "row" },
-              }),
-              css({
-                lg: {
-                  animation: "none",
-                  maskImage: "none",
-                },
-                marginBlockEnd: { base: "5", lg: "0" },
-                minInlineSize: "0",
-                overflowX: { base: "auto", lg: "visible" },
-                overscrollBehaviorX: { base: "contain", lg: "auto" },
-                paddingBlock: { base: "3", lg: "0" },
-                scrollbarWidth: "none",
-              }),
-              maskScrollHint
-            )}
-            emptyState={{ title: "No nav links" }}
-            errorState={{ title: "Something went wrong" }}
-            items={hostNavItems}
-            noMatchState={null}
-            renderProps={renderHostNavItemProps}
-          />
-        </nav>
+        <HostMobileNav />
+        <HostNav />
       </aside>
 
       <div className={css({ gridArea: "content", minInlineSize: "0" })}>

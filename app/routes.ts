@@ -17,7 +17,6 @@ export default [
     layout("./routes/layout/auth-layout.tsx", [
       route("login", "./routes/auth/login.tsx"),
       route("signup", "./routes/auth/sign-up.tsx"),
-      route("signout", "./routes/auth/sign-out.tsx"),
     ]),
     layout("./routes/layout/host-layout.tsx", [
       ...prefix("host", [
@@ -42,6 +41,7 @@ export default [
     ]),
     route("*", "./routes/public/404.tsx"),
   ]),
+  route("signout", "./routes/auth/sign-out.ts"),
   route("/api/auth/*", "./routes/api/auth.ts"),
   route("robots.txt", "./routes/public/robots.txt.ts"),
   route("sitemap.xml", "./routes/public/sitemap.xml.ts"),

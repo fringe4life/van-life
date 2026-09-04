@@ -6,8 +6,7 @@ import {
   DEFAULT_LIMIT,
   LIMITS,
 } from "~/features/pagination/pagination-constants";
-import { limitParsers } from "~/features/pagination/parsers";
-import { validateLimit } from "~/features/pagination/utils/validators";
+import { limitParsers, parseLimit } from "~/features/pagination/schema";
 
 export const PaginationLimitControl = () => {
   const [{ limit }, setSearchParams] = useQueryStates(limitParsers);
@@ -15,7 +14,7 @@ export const PaginationLimitControl = () => {
   const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
     startTransition(async () => {
       await setSearchParams({
-        limit: validateLimit(Number(event.target.value)),
+        limit: parseLimit(Number(event.target.value)),
       });
     });
   };

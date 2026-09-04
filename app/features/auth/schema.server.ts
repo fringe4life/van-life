@@ -32,7 +32,7 @@ export const loginSchema = object({
  * - Extends loginSchema with confirmPassword and name fields.
  * - Ensures password and confirmPassword match.
  */
-export const signUpScheme = pipe(
+export const signUpSchema = pipe(
   object({
     confirmPassword: passwordSchema,
     email: pipe(string(), email()),

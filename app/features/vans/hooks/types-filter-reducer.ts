@@ -1,11 +1,11 @@
-import type { LowercaseVanType } from "~/features/vans/types";
+import type { VanType } from "~/db/enums";
 
-type TypesFilterAction = { type: "reset" } | { type: LowercaseVanType };
+type TypesFilterAction = { type: "reset" } | { type: VanType };
 
 const typesFilterReducer = (
-  state: LowercaseVanType[],
+  state: VanType[],
   action: TypesFilterAction
-): LowercaseVanType[] => {
+): VanType[] => {
   if (action.type === "reset") {
     return [];
   }

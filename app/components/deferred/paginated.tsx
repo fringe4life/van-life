@@ -1,8 +1,8 @@
 import type { ElementType, ReactNode } from "react";
 import {
-  GenericComponent,
-  type GenericComponentProps,
-} from "~/components/generic-component";
+  CollectionList,
+  type CollectionListProps,
+} from "~/components/collection-list";
 import { Pagination } from "~/features/pagination/components/pagination";
 import type { InitialPaginationProps } from "~/features/pagination/types";
 import type { Id, Prettify } from "~/types";
@@ -13,7 +13,7 @@ export type DeferredPaginatedProps<
   P,
   E extends ElementType = "div",
 > = Prettify<
-  Omit<GenericComponentProps<T, P, E>, "items"> & {
+  Omit<CollectionListProps<T, P, E>, "items"> & {
     errorElement?: ReactNode;
     fallback: ReactNode;
     resolve: Promise<InitialPaginationProps<T>>;
@@ -21,13 +21,13 @@ export type DeferredPaginatedProps<
 >;
 
 /**
- * Deferred page slice: Suspense/Await → list + {@link Pagination}.
+ * Deferred page slice: Suspense/Await → {@link CollectionList} + {@link Pagination}.
  */
 const DeferredPaginated = <T extends Id, P, E extends ElementType = "div">({
   errorElement,
   fallback,
   resolve,
-  ...genericProps
+  ...collectionProps
 }: DeferredPaginatedProps<T, P, E>) => (
   <DeferredAwait
     errorElement={errorElement}
@@ -36,7 +36,7 @@ const DeferredPaginated = <T extends Id, P, E extends ElementType = "div">({
   >
     {({ items, paginationMetadata }) => (
       <>
-        <GenericComponent {...genericProps} items={items} />
+        <CollectionList {...collectionProps} items={items} />
         <Pagination items={items} paginationMetadata={paginationMetadata} />
       </>
     )}

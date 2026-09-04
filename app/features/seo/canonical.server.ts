@@ -1,7 +1,7 @@
 import { createSerializer } from "nuqs/server";
 import { href } from "react-router";
-import { vansParsers } from "~/features/vans/parsers";
-import type { LowercaseVanType } from "../vans/types";
+import type { VanType } from "~/db/enums";
+import { vansParsers } from "~/features/vans/schema";
 import { getSiteOrigin } from "./get-site-origin.server";
 
 const serializeCanonicalVanListParams = createSerializer(vansParsers, {
@@ -15,9 +15,7 @@ interface VanListCanonicalParams {
   excludeInRepair: boolean;
   onlyOnSale: boolean;
   search: string;
-  type: LowercaseVanType | "";
-  types: LowercaseVanType[];
-  vanFilter: "" | "new" | "sale";
+  types: VanType[];
 }
 
 export const buildVanListCanonicalUrl = (
@@ -29,9 +27,7 @@ export const buildVanListCanonicalUrl = (
     excludeInRepair: params.excludeInRepair,
     onlyOnSale: params.onlyOnSale,
     search: params.search,
-    type: params.type,
     types: params.types,
-    vanFilter: params.vanFilter,
   });
 
   return queryString

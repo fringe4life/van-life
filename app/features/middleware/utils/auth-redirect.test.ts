@@ -25,6 +25,7 @@ describe("getSafeRedirectPath", () => {
   it("rejects auth routes as return targets", () => {
     expect(getSafeRedirectPath(href("/login"))).toBe(href("/host"));
     expect(getSafeRedirectPath(`${href("/signup")}?x=1`)).toBe(href("/host"));
+    expect(getSafeRedirectPath(href("/signout"))).toBe(href("/host"));
   });
 });
 

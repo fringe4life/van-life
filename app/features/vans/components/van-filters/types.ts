@@ -1,4 +1,4 @@
-import type { LowercaseVanType } from "~/features/vans/types";
+import type { VanType } from "~/db/enums";
 import type { Prettify } from "~/types";
 import type { VanStateFilterKey } from "./van-state-filter-config";
 
@@ -28,10 +28,10 @@ export interface VanStateFilterChange {
 
 /** Shared by type filter section + row. */
 export interface VanTypeFilterToggle {
-  onToggle: (type: LowercaseVanType) => void;
+  onToggle: (type: VanType) => void;
 }
 
 /** Shared by type filter section + row. */
 export interface VanTypeFilterSelection {
-  types: LowercaseVanType[];
+  types: VanType[];
 }

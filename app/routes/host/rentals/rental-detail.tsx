@@ -14,7 +14,7 @@ import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
-import { rentVanSchema } from "~/features/host/rentals/schemas.server";
+import { rentVanSchema } from "~/features/host/rentals/schema.server";
 import { rentVan } from "~/features/host/services/rental.server";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
@@ -22,7 +22,7 @@ import { VanCard } from "~/features/vans/components/van-card";
 import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
 import { badRequest } from "~/utils/errors/bad-request";
 import { notFound } from "~/utils/errors/not-found";
-import { validateSchema } from "~/utils/errors/parse-schema.server";
+import { validateSchema } from "~/utils/errors/parse-schema";
 import { serverError } from "~/utils/errors/server-error";
 import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/rental-detail";

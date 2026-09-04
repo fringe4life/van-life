@@ -1,12 +1,14 @@
 import type { TransactionType } from "~/db/enums";
+import type {
+  RentalTransactionProps,
+  RentalTransactionType,
+  WalletTransactionProps,
+  WalletTransactionType,
+} from "~/features/host/components/transaction/transaction-types";
 import {
   isRentalTransactionType,
   isWalletTransactionType,
-  type RentalTransactionProps,
-  type RentalTransactionType,
-  type WalletTransactionProps,
-  type WalletTransactionType,
-} from "~/features/host/components/transaction/transaction-types";
+} from "~/features/host/schema.server";
 import type { Maybe, Prettify } from "~/types";
 import { DomainError } from "~/utils/errors/domain-error.server";
 import { rentDurationLabel } from "~/utils/get-elapsed-time.server";

@@ -1,7 +1,7 @@
-import { type UUIDv7, uuidv7Schema } from "~/dal/schemas.server";
+import { type UUIDv7, uuidv7Schema } from "~/dal/schema.server";
 import type { Maybe } from "~/types";
 import { DomainError, isDomainError } from "~/utils/errors/domain-error.server";
-import { validateSchema } from "~/utils/errors/parse-schema.server";
+import { validateSchema } from "~/utils/errors/parse-schema";
 
 /**
  * Parse and brand a string as UUIDv7.

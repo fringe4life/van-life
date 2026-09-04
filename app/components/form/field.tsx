@@ -67,7 +67,14 @@ const Field = ({
   };
   return (
     <div
-      className={cx(vstack({ alignItems: "stretch", gap: "1.5" }), className)}
+      className={cx(
+        vstack({
+          alignItems: "stretch",
+          gap: "1.5",
+          justifyContent: "start",
+        }),
+        className
+      )}
     >
       <Label htmlFor={id} {...labelProps}>
         {label}

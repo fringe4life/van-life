@@ -1,5 +1,6 @@
 import { defaultRateLimit, useQueryStates } from "nuqs";
 import { startTransition, useId } from "react";
+import type { VanType } from "~/db/enums";
 import {
   DEFAULT_CURSOR,
   DEFAULT_DIRECTION,
@@ -10,14 +11,12 @@ import {
 } from "~/features/vans/components/van-filters/van-state-filter-config";
 import { useOptimisticBooleanFilter } from "~/features/vans/hooks/use-optimistic-boolean-filter";
 import { useOptimisticTypesFilter } from "~/features/vans/hooks/use-optimistic-types-filter";
-import { vansFilterUrlParsers } from "~/features/vans/parsers";
-import type { LowercaseVanType } from "~/features/vans/types";
+import { toValidTypes, vansFilterUrlParsers } from "~/features/vans/schema";
 import {
   activeFilterCount,
   getLimitUrlUpdates,
   isRemovingFilter,
   snapshotFilterState,
-  toValidTypes,
   type VanFilterUrlState,
 } from "~/features/vans/utils/van-filter-url";
 
@@ -81,7 +80,7 @@ const useVanFilters = () => {
     });
   };
 
-  const toggleType = (type: LowercaseVanType) => {
+  const toggleType = (type: VanType) => {
     const current = getCurrentState();
     const newTypes = current.types.includes(type)
       ? current.types.filter((t) => t !== type)

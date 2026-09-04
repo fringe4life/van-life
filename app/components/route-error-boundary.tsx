@@ -98,7 +98,13 @@ const RouteErrorBoundary = ({
       emptyState
     );
 
-    return <OutcomeState kind="empty" {...state} />;
+    return (
+      <OutcomeState
+        kind="empty"
+        {...state}
+        className={css({ gridArea: "content" })}
+      />
+    );
   }
 
   const state = mergeOutcomeState(
@@ -113,7 +119,13 @@ const RouteErrorBoundary = ({
     errorState
   );
 
-  return <OutcomeState kind="error" {...state} />;
+  return (
+    <OutcomeState
+      kind="error"
+      {...state}
+      className={css({ gridArea: "content" })}
+    />
+  );
 };
 
 export { RouteErrorBoundary };

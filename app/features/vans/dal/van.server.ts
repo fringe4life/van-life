@@ -12,37 +12,34 @@ import {
   type SQL,
   sql,
 } from "drizzle-orm";
+import { safeParse } from "valibot";
 import type { AppDb, VanModel } from "~/db/client.server";
-import { VanState, VanType, type VanType as VanTypeEnum } from "~/db/enums";
+import { VanState, type VanType } from "~/db/enums";
 import { van } from "~/db/schema/van";
 import type { BasePaginationParams } from "~/features/pagination/types";
 import { getCursorMetadata } from "~/features/pagination/utils/get-cursor-metadata.server";
-import type { List, Maybe, Prettify, Search } from "~/types";
-import type { TypeFilter, VanFilters } from "../types";
+import { vanTypeFromClientSchema } from "~/features/vans/schema";
+import type { List, Prettify, Search } from "~/types";
+import type { VanFilters } from "../types";
 
 const WHITESPACE_REGEX = /\s+/;
-const VAN_TYPE_VALUES = new Set<string>(Object.values(VanType));
 
-function parseVanTypeStrings(types: string[]): VanTypeEnum[] {
-  return types
-    .map((t) => t.toUpperCase())
-    .filter((t): t is VanTypeEnum => VAN_TYPE_VALUES.has(t));
+function parseVanTypeStrings(types: string[]): VanType[] {
+  return types.flatMap((type) => {
+    const result = safeParse(vanTypeFromClientSchema, type);
+    return result.success ? [result.output] : [];
+  });
 }
 
-function buildVanTypeCondition(
-  types: List<string>,
-  typeFilter: Maybe<VanTypeEnum>
-): SQL | undefined {
-  if (types && types.length > 0) {
-    const vanTypes = parseVanTypeStrings(types);
-    if (vanTypes.length === 0) {
-      return;
-    }
-    return inArray(van.type, vanTypes);
+function buildVanTypeCondition(types: List<string>): SQL | undefined {
+  if (!(types && types.length > 0)) {
+    return;
   }
-  if (typeFilter) {
-    return eq(van.type, typeFilter);
+  const vanTypes = parseVanTypeStrings(types);
+  if (vanTypes.length === 0) {
+    return;
   }
+  return inArray(van.type, vanTypes);
 }
 
 function buildSearchConditions(search: string): SQL[] {
@@ -61,9 +58,7 @@ function buildSearchConditions(search: string): SQL[] {
   });
 }
 
-type GetVansProps = Prettify<
-  BasePaginationParams & TypeFilter & Search & VanFilters
->;
+type GetVansProps = Prettify<BasePaginationParams & Search & VanFilters>;
 
 export function getVans(
   db: AppDb,
@@ -71,7 +66,6 @@ export function getVans(
     cursor,
     limit,
     direction,
-    typeFilter,
     search,
     types,
     excludeInRepair,
@@ -86,7 +80,7 @@ export function getVans(
 
   const conditions: SQL[] = [];
 
-  const typeCondition = buildVanTypeCondition(types, typeFilter);
+  const typeCondition = buildVanTypeCondition(types);
   if (typeCondition) {
     conditions.push(typeCondition);
   }

@@ -114,7 +114,6 @@ async function seedVans(db: AppDb) {
 const baseQuery = {
   cursor: undefined,
   limit: 10,
-  typeFilter: undefined,
 } as const;
 
 describe("getVans", () => {
@@ -140,22 +139,9 @@ describe("getVans", () => {
     ]);
   });
 
-  it("filters by typeFilter when types is empty", async () => {
-    const rows = await getVans(db, {
-      ...baseQuery,
-      typeFilter: VanType.SIMPLE,
-    });
-
-    expect(rows.map((row) => row.slug).sort()).toEqual([
-      "modest-explorer",
-      "shop-bound",
-    ]);
-  });
-
   it("filters by types list and ignores invalid type strings", async () => {
     const rows = await getVans(db, {
       ...baseQuery,
-      typeFilter: VanType.SIMPLE,
       types: ["luxury", "not-a-type"],
     });
 

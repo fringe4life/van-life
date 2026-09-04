@@ -2,13 +2,13 @@ import { useQueryStates } from "nuqs";
 import { startTransition } from "react";
 import { css, cx, viewTransition } from "styled-system/css";
 import { flex, grid } from "styled-system/patterns";
-import { GenericComponent } from "~/components/generic-component";
+import { ItemList } from "~/components/item-list";
 import { Button } from "~/components/ui/button";
 import {
   DEFAULT_CURSOR,
   DEFAULT_DIRECTION,
 } from "~/features/pagination/pagination-constants";
-import { hostPaginationParsers } from "~/features/pagination/parsers";
+import { hostPaginationParsers } from "~/features/pagination/schema";
 import type { SortOption } from "~/features/pagination/types";
 import type { Maybe } from "~/types";
 
@@ -124,7 +124,7 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
         {title} ({itemCount})
       </h3>
 
-      <GenericComponent
+      <ItemList
         Component={Button}
         className={grid({
           alignItems: "center",
@@ -133,10 +133,7 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
           gridAutoFlow: { sm: "column" },
           overflowX: "auto",
         })}
-        emptyState={null}
-        errorState={{ title: "Something went wrong" }}
         items={sortOptions}
-        noMatchState={null}
         renderProps={renderSortButtonProps}
       />
     </div>

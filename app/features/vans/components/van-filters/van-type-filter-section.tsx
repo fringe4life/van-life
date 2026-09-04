@@ -1,7 +1,7 @@
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
-import { VAN_TYPE_LOWERCASE } from "~/features/vans/constants/van-types";
-import type { LowercaseVanType } from "~/features/vans/types";
+import type { VanType } from "~/db/enums";
+import { VAN_TYPE_VALUES } from "~/features/vans/schema";
 import type { Prettify } from "~/types";
 import { FilterCheckboxRow } from "./filter-checkbox-row";
 import type {
@@ -14,7 +14,7 @@ type VanTypeFilterRowProps = Prettify<
   FilterBaseId &
     VanTypeFilterToggle &
     VanTypeFilterSelection & {
-      type: LowercaseVanType;
+      type: VanType;
     }
 >;
 
@@ -33,8 +33,7 @@ const VanTypeFilterRow = ({
       checked={types.includes(type)}
       id={`${baseId}-van-filter-type-${type}`}
       label={type}
-      // labelClassName="capitalize"
-      labelClassName={css({ textTransform: "capitalize" })}
+      labelClassName={css({ textTransform: "lowercase" })}
       onChange={handleCheckedChange}
     />
   );
@@ -73,7 +72,7 @@ const VanTypeFilterSection = ({
     >
       Van Types
     </legend>
-    {VAN_TYPE_LOWERCASE.map((type) => (
+    {VAN_TYPE_VALUES.map((type) => (
       <VanTypeFilterRow
         baseId={baseId}
         key={type}

@@ -1,9 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { array, minLength, object, pipe, string } from "valibot";
-import {
-  schemaErrorsToFieldErrors,
-  validateSchema,
-} from "./parse-schema.server";
+import { schemaErrorsToFieldErrors, validateSchema } from "./parse-schema";
 
 const nestedSchema = object({
   address: object({

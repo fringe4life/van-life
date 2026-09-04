@@ -34,10 +34,10 @@ describe("buildVanQueryString", () => {
       excludeInRepair: true,
       onlyOnSale: true,
       search: "  camper  ",
-      types: ["simple", "rugged"],
+      types: ["SIMPLE", "RUGGED"],
     });
 
-    expect(query).toContain("types=simple,rugged");
+    expect(query).toContain("types=SIMPLE,RUGGED");
     expect(query).toContain("excludeInRepair=true");
     expect(query).toContain("onlyOnSale=true");
     expect(query).toContain("search=camper");
