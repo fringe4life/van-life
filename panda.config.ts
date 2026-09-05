@@ -101,6 +101,12 @@ export default defineConfig({
     "--global-font-body": "Inter, ui-sans-serif, system-ui, sans-serif",
     "--header-height": "104px",
     "--mobile-menu-width": "min(100vw, 25rem)",
+    "--nav-control-inset-block":
+      "calc((var(--header-height) - var(--nav-control-size)) / 2 + 1px)",
+    "--nav-control-size": "3rem",
+    "--nav-shell-compact-height": "66px",
+    "--nav-shell-scroll-offset": "1.125rem",
+    "--nav-shell-scroll-range": "5rem",
     "--rating-stars-width":
       "calc(var(--star-size) * var(--star-count) + var(--star-gap) * (var(--star-count) - 1))",
     "--star-count": "5",
@@ -119,7 +125,7 @@ export default defineConfig({
     removeUnusedStyles: true,
     removeUnusedTokens: true,
     smartCompoundVariants: true,
-    treeshakeDesignSystem: false,
+    treeshakeDesignSystem: true,
   },
   outdir: "styled-system",
   preflight: true,
@@ -139,6 +145,7 @@ export default defineConfig({
         "form",
         "detail",
         "outcome-state",
+        "host-nav",
       ],
       containerSizes: {
         "2xl": "44rem",
@@ -168,6 +175,30 @@ export default defineConfig({
           },
           to: {
             opacity: "var(--fade-to, 1)",
+          },
+        },
+        "nav-shell-scroll": {
+          from: {
+            backgroundColor: "surface",
+            blockSize: "var(--header-height)",
+            borderBlockStartColor: "transparent",
+            borderBottomColor: "transparent",
+            borderInlineColor: "transparent",
+            borderRadius: "0",
+            boxShadow: "none",
+            paddingBlock: "7",
+            translate: "0 0",
+          },
+          to: {
+            backgroundColor: "card",
+            blockSize: "var(--nav-shell-compact-height)",
+            borderBlockStartColor: "border",
+            borderBottomColor: "border.accent",
+            borderInlineColor: "border",
+            borderRadius: "full",
+            boxShadow: "sm",
+            paddingBlock: "2",
+            translate: "0 var(--nav-shell-scroll-offset)",
           },
         },
         scale: {

@@ -1,14 +1,14 @@
 import { useOptimistic } from "react";
-import type { LowercaseVanType } from "~/features/vans/types";
+import type { VanType } from "~/db/enums";
 import { typesFilterReducer } from "./types-filter-reducer";
 
-const useOptimisticTypesFilter = (initialTypes: LowercaseVanType[]) => {
+const useOptimisticTypesFilter = (initialTypes: VanType[]) => {
   const [optimisticTypes, addOptimisticType] = useOptimistic(
     initialTypes,
     typesFilterReducer
   );
 
-  const toggleType = (type: LowercaseVanType) => {
+  const toggleType = (type: VanType) => {
     addOptimisticType({ type });
   };
 

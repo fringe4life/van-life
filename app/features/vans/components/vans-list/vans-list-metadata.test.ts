@@ -21,12 +21,12 @@ describe("getVansListMetadataItems", () => {
       excludeInRepair: true,
       onlyOnSale: true,
       search: "Explorer",
-      types: ["simple", "rugged"],
+      types: ["SIMPLE", "RUGGED"],
     });
 
     expect(items).toEqual([
       { kind: "search", value: "Explorer" },
-      { kind: "types", value: "simple, rugged" },
+      { kind: "types", value: "SIMPLE, RUGGED" },
       { kind: "excludeInRepair" },
       { kind: "onlyOnSale" },
     ]);

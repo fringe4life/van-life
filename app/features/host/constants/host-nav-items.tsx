@@ -8,83 +8,66 @@ import {
   Wallet,
 } from "lucide-react";
 import { href } from "react-router";
-import { css } from "styled-system/css";
-import type { CustomNavLinkProps } from "~/components/links/custom-nav-link";
-
-const navIconClassName = css({ aspectRatio: "square" });
+import type { HostNavItem } from "./host-nav-types";
 
 const hostNavItems = [
   {
-    children: (
-      <>
-        <LayoutDashboard className={navIconClassName} />
-        <span>Dashboard</span>
-      </>
-    ),
+    currentBehavior: "route",
     end: true,
+    group: "activity",
+    icon: LayoutDashboard,
     id: "Dashboard",
+    label: "Dashboard",
     to: href("/host"),
   },
   {
-    children: (
-      <>
-        <ArrowRightLeft className={navIconClassName} />
-        <span>Rentals</span>
-      </>
-    ),
+    currentBehavior: "route",
+    group: "activity",
+    icon: ArrowRightLeft,
     id: "rental-activity",
+    label: "Rentals",
     to: href("/host/rental-activity"),
   },
   {
-    children: (
-      <>
-        <Wallet className={navIconClassName} />
-        <span>Wallet</span>
-      </>
-    ),
+    currentBehavior: "route",
+    group: "activity",
+    icon: Wallet,
     id: "Wallet",
+    label: "Wallet",
     to: href("/host/wallet-activity"),
   },
   {
-    children: (
-      <>
-        <Car className={navIconClassName} />
-        <span>Vans</span>
-      </>
-    ),
+    currentBehavior: "route",
+    group: "listings",
+    icon: Car,
     id: "Vans",
+    label: "Vans",
     to: href("/host/vans"),
   },
   {
-    children: (
-      <>
-        <Star className={navIconClassName} />
-        <span>Reviews</span>
-      </>
-    ),
+    currentBehavior: "route",
+    group: "activity",
+    icon: Star,
     id: "Reviews",
+    label: "Reviews",
     to: href("/host/review"),
   },
   {
-    children: (
-      <>
-        <SquarePlus className={navIconClassName} />
-        <span>Add Van</span>
-      </>
-    ),
+    currentBehavior: "never",
+    group: "listings",
+    icon: SquarePlus,
     id: "Add Van",
+    label: "Add Van",
     to: href("/host/vans"),
   },
   {
-    children: (
-      <>
-        <KeySquare className={navIconClassName} />
-        <span>Your rentals</span>
-      </>
-    ),
+    currentBehavior: "route",
+    group: "rental-workflow",
+    icon: KeySquare,
     id: "host-rentals",
+    label: "Your rentals",
     to: href("/host/rentals"),
   },
-] satisfies CustomNavLinkProps[];
+] as const satisfies readonly HostNavItem[];
 
 export { hostNavItems };

@@ -7,7 +7,7 @@ import {
 import { toPagination } from "~/features/pagination/utils/to-pagination.server";
 import { getHostVans } from "~/features/vans/dal/host-van.server";
 import { createVan } from "~/features/vans/dal/van.server";
-import type { addVanSchema } from "~/features/vans/schemas.server";
+import type { addVanSchema } from "~/features/vans/schema.server";
 import type { UUIDv7 } from "~/types/ids.server";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import { getSlug } from "~/utils/get-slug";

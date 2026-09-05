@@ -84,7 +84,7 @@ const VanFilters = () => {
               whiteSpace: "nowrap",
             })}
             size="small"
-            variant={hasFilters ? "luxury" : "outline"}
+            variant={hasFilters ? "LUXURY" : "outline"}
           >
             {hasFilters ? `${badgeCount} active` : "All vans"}
           </Badge>

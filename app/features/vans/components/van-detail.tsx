@@ -17,10 +17,6 @@ import {
 } from "~/components/ui/card";
 import type { VanModel } from "~/db/client.server";
 import {
-  toLowercaseVanType,
-  validateLowercaseVanType,
-} from "~/features/vans/utils/validators";
-import {
   isVanAvailable,
   lowercaseVanState,
 } from "~/features/vans/utils/van-state-helpers";
@@ -43,7 +39,7 @@ export default function VanDetail({
   const rentTo = vanIsAvailable
     ? href("/host/rentals/rent/:vanSlug", { vanSlug })
     : href("/vans/:vanSlug", { vanSlug });
-  const rentVariant = vanIsAvailable ? toLowercaseVanType(type) : "unavailable";
+  const rentVariant = vanIsAvailable ? type : "unavailable";
   const rentClassName = badgeVariants({ variant: rentVariant });
   const srcSet = createWebPSrcSet(imageUrl, {
     aspectRatio: "1:1",
@@ -153,9 +149,12 @@ export default function VanDetail({
             )}
           >
             <Badge
-              className={css({ "@card-full/xl": { margin: "0" } })}
+              className={css({
+                "@card-full/xl": { margin: "0" },
+                textTransform: "lowercase",
+              })}
               size="small"
-              variant={validateLowercaseVanType(type.toLowerCase())}
+              variant={type}
             >
               {type}
             </Badge>

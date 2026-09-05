@@ -23,7 +23,10 @@
       }
     },
     {
-      "includes": ["app/features/navigation/components/mobile-nav.tsx"],
+      "includes": [
+        "app/features/host/components/host-nav/host-mobile-nav.tsx",
+        "app/features/navigation/components/mobile-nav.tsx"
+      ],
       "linter": {
         "rules": {
           "suspicious": {

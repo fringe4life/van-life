@@ -9,7 +9,7 @@ import {
   DEFAULT_CURSOR,
   DEFAULT_DIRECTION,
 } from "~/features/pagination/pagination-constants";
-import { searchUrlParsers } from "~/features/pagination/parsers";
+import { searchUrlParsers } from "~/features/pagination/schema";
 import { Input } from "./ui/input";
 
 const SearchInput = () => {

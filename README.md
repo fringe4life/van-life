@@ -9,7 +9,7 @@
 [![PandaCSS](https://img.shields.io/badge/PandaCSS-2.0.0--beta.15-F6E05E?logoColor=black)](https://panda-css.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.2-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.5.9-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Biome](https://img.shields.io/badge/Biome-2.5.11-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.10.7-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
@@ -44,13 +44,13 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ## Features
 
 - 🚀 **Modern React Router 8** with server-side rendering and file-based routing
-- 🔒 **Authentication** with better-auth (sign up, login, session management, safe `redirectTo` return URLs, per-field form errors)
+- 🔒 **Authentication** with better-auth (sign up, login, session management, safe `redirectTo` return URLs, per-field form errors; sign-out is a POST resource route + `SignOutForm`, no empty page)
 - 📤 **Shared form actions** (`FormActionResult`, `StatusButton`, fetcher status helpers) for pending/success/error submit UX across auth and host forms
 - 🧱 **Typed service results** (`ServiceResult` + `DomainError` → `toActionResultOrThrow`) map host rentals/wallet failures to `badRequest` / `conflict` / `internalError` / `notFound`
 - ⚛️ **React 19 (canary) & Compiler** (Activity component, native meta elements, automatic optimizations, lazy loading)
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🔍 **Advanced Van Filtering** (modular filter panel on the vans catalog, facet-based state filters, `useVanFilters` hook, multi-select types, optimistic UI, debounced nuqs updates)
-- 📱 **Mobile Navigation** (native `<dialog>` + Invoker `show-modal`/`close`, CSS `:has(dialog[open])` hamburger morph, `starting-style` + `transition-discrete`)
+- 📱 **Navigation** — public header (`nav-shell-scroll` compact on scroll) + native `<dialog>` mobile drawer; host rail grouped Activity / Listings / Rental workflow, tablet `host-nav` container, mobile native `popover` + CSS Anchor + Invoker Commands
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals; `reviewRecipe` / `ReviewBadge` + container-query layout)
@@ -60,11 +60,11 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
 - 🎨 **Semantic design system** (`DESIGN.md` + `panda.config.ts`) — token paths (`surface`, `muted.foreground`, `border.subtle`) not raw palette at call sites
 - 🧑‍💻 **TypeScript** throughout with strict type checking
-- 🧪 **Valibot** for runtime schema validation (named imports, server schemas)
+- 🧪 **Valibot** isomorphic `schema.ts` (client + SSR) and `schema.server.ts` (forms/actions); nuqs literals share picklist arrays
 - 🗄️ **Time-sortable database IDs** with UUID v7 (text columns on D1/SQLite)
 - 🎨 **PandaCSS 2** (typed `css` / patterns / recipes; PostCSS + `panda build`)
 - 📦 **Drizzle ORM** with Cloudflare D1 (SQLite) and relational queries
-- 🔧 **Generic Components** for reusability and maintainability
+- 📋 **List primitives** — `ItemList` for guaranteed arrays (nav, sort); `CollectionList` for async/empty/error collections (`OutcomeState`)
 - 🎭 **Panda recipes** (`cva` from `styled-system/css`) — `vanCard`, `transactionRecipe`, `reviewRecipe`, `outcomeState`
 - 🧩 **Compound Components** with React 19's modern context API (no `.Provider`, uses `use()`)
 - 📊 **Sortable Data Tables** with reusable sorting components
@@ -90,8 +90,8 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **React Router 8.3.1** (file-based routing, SSR, optional route parameters, middleware)
 - **TypeScript 7.0.2** with strict configuration
 - **PandaCSS 2.0.0-beta.15** — tokens, recipes, patterns (`css`, `cx`, `cva` from `styled-system`)
-- **Native HTML** (`<dialog>`, Popover + CSS Anchor + Invoker Commands) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea)
-- **Lucide React 1.34.0** for icons (direct imports for performance)
+- **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover)
+- **Lucide React 1.38.0** for icons (direct imports for performance)
 - **TanStack Charts 0.16.0** for host income/review bars (lazy-loaded via `LazyBarChart`)
 - **nuqs 2.10.1** for type-safe URL state management via shared parsers
 
@@ -111,15 +111,16 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **rollup-plugin-visualizer 7.1.1** - Client/server bundle treemaps (`VITE_ANALYZE=true`)
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler 1.0** (stable) - Automatic memoization via `@rolldown/plugin-babel` + `reactCompilerPreset`
-- **Biome 2.5.9** for linting and formatting with Ultracite integration
+- **Biome 2.5.11** for linting and formatting with Ultracite integration
 - **Ultracite 7.10.7** - AI-friendly linting rules for maximum type safety and accessibility
-- **Varlock 1.17.1** - Typed env schema (`.env.schema`) with Cloudflare integration
+- **Varlock 1.18.0** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.127.1** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
-- **react-doctor 0.9.12** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
-- **fallow 3.21.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
+- **react-doctor 0.9.13** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
+- **fallow 3.22.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
+- **@types/bun 1.4.0** — `bun:test` / `bun:sqlite` for `tsc` (`tsconfig` `types` includes `"bun"`)
 - **Bun** for fast package management and runtime
 
 ### Build System
@@ -138,52 +139,57 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ```
 app/
 ├── components/          # Reusable UI components
-│   ├── ui/             # Panda recipe wrappers: button, dialog, checkbox, badge, card, input, label, textarea
+│   ├── ui/             # Panda recipe wrappers: button, dialog, checkbox, badge, card, input, label, textarea, popover
 │   ├── form/           # Field, FormError, FormActionResult types, fetcher status → StatusButton helpers
 │   ├── deferred/       # Await / Items / Paginated (Suspense + Await)
 │   ├── image/          # Progressive image primitive (moved from features/image)
 │   ├── links/          # CustomLink / CustomNavLink
 │   ├── outcome-state/  # Empty/error chrome (`OutcomeState` + recipe)
+│   ├── collection-list.tsx  # Uncertain lists → OutcomeState or ItemList
+│   ├── item-list.tsx   # Guaranteed T[] map (nav, sort, static tabs)
 │   ├── route-error-boundary.tsx  # Shared route ErrorBoundary
 │   ├── status-button.tsx  # Pending/success/error submit button (idle auto-reset via useAutoIdleStatus)
 │   ├── types.ts        # Shared prop types (AsProps, EmptyState, ErrorState, ViewTransitionTune)
-│   └── [common]        # Generic components (lists, sortable, etc.)
+│   └── [common]        # Sortable, search-input, etc.
 ├── constants/          # App-wide constants (cache-headers, time-constants, enums)
 ├── dal/                # Global data access helpers
-│   ├── schemas.server.ts      # Shared UUID v7 Valibot schema (brand at parseUuidV7)
+│   ├── schema.server.ts      # UUID v7 Valibot schema (brand at parseUuidV7)
 │   └── parse-uuidv7.server.ts # Parse/string → UUIDv7 at trust boundaries
 ├── features/
 │   ├── auth/
 │   │   ├── components/        # AuthCard, AuthForm + AUTH_VT view-transition names
 │   │   ├── hooks/             # use-auth-form
-│   │   ├── schemas.server.ts  # Login/sign-up Valibot schemas
+│   │   ├── schema.server.ts   # Login/sign-up Valibot schemas
 │   │   └── types.ts           # Login/sign-up field keys + field-error types
 │   ├── host/
-│   │   ├── components/ # Host UI (van-form, charts, dashboard, reviews, transaction/)
+│   │   ├── components/ # Host UI (van-form, charts, dashboard, reviews, transaction/, host-nav/)
 │   │   │   ├── dashboard/  # host-income-section, host-review-section, host-vans-section, host-wallet-form
+│   │   │   ├── host-nav/   # Grouped rail + tablet container + mobile popover
 │   │   │   ├── review/     # Review + review-recipe / review-badge
 │   │   │   └── transaction/ # Transaction, rental/wallet rows, transaction-recipe / badge
+│   │   ├── constants/  # host-nav-items, host-nav-groups, host-nav-types
 │   │   ├── dal/        # rental-activity, wallet-movement, review, transaction-sort
 │   │   ├── services/   # dashboard, income, rental, reviews, transfers, wallet
 │   │   ├── hooks/      # use-host-wallet, balance-reducer
 │   │   ├── rentals/
-│   │   │   └── schemas.server.ts  # Rental action schemas
-│   │   ├── schemas.server.ts  # Host action schemas (deposit/withdraw)
+│   │   │   └── schema.server.ts  # Rental action schemas
+│   │   ├── schema.server.ts  # Host money form + transaction-type Valibot `is`
 │   │   └── utils/      # Chart period/points, pickChartGranularity, resolveChartContext
 │   ├── middleware/     # Auth, Cloudflare, db context, auth-redirect helpers
-│   ├── navigation/     # Nav, mobile-nav (native dialog + invoker), hamburger-icon
-│   ├── pagination/     # Pagination + PaginationLimitControl / PaginationControl; parsers + loaders.server.ts
+│   ├── navigation/     # Nav, mobile-nav (native dialog + invoker), sign-out-form, hamburger-icon
+│   ├── pagination/     # Pagination + PaginationLimitControl / PaginationControl; schema.ts parsers + loaders.server.ts
 │   ├── seo/            # SEO helpers (canonical URLs, SeoHead, sitemap)
 │   │   └── dal/        # SEO Drizzle reads (sitemap.server.ts)
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, van-card-recipe, VanDetail, HostVanDetail*, van-filters/, vans-list/)
 │       │   ├── van-filters/  # VanFilters, type/state sections, facet config, shared filter types
 │       │   └── vans-list/    # Public catalog list + metadata/state helpers
-│       ├── constants/  # Van-related constants (van-types.ts for client-safe constants)
+│       ├── constants/  # vans-constants.ts
 │       ├── dal/        # Van Drizzle repositories (*.server.ts)
 │       ├── services/   # catalog, host-vans, van-detail
 │       ├── hooks/      # use-van-filters, host-vans list reducer, display hooks, optimistic filter hooks
-│       ├── schemas.server.ts  # Van form Valibot schemas
+│       ├── schema.ts          # Van type/URL Valibot schemas + nuqs parsers
+│       ├── schema.server.ts   # addVan form schema
 │       ├── types.ts    # Van-specific TypeScript types (incl. VanFormValues / field errors)
 │       └── utils/      # pricing, van-filter-url, to-van-form-values, pending-van-from-form-data
 ├── db/                 # Drizzle schema, client, seed, migrations
@@ -203,10 +209,10 @@ app/
 │   └── generic-sorting.server.ts  # Generic Drizzle orderBy utilities
 ├── types/              # Shared utility types (Maybe, List, Id, Prettify, Replace, Search)
 │   ├── auth.server.ts      # AuthenticatedUser (UUIDv7 id)
-│   └── ids.server.ts       # UUIDv7 re-export from dal schemas
+│   └── ids.server.ts       # UUIDv7 re-export from dal/schema.server.ts
 ├── routes/             # Route modules (Activity-based single routes)
 │   ├── api/            # better-auth handler (auth.ts)
-│   ├── auth/           # login, sign-up, sign-out
+│   ├── auth/           # login, sign-up; sign-out.ts resource action (POST → /login)
 │   ├── host/           # Dashboard, rental-activity, wallet-activity, reviews, vans, rentals
 │   │   ├── 404.tsx     # Host catch-all (keeps host chrome)
 │   │   └── rentals/    # rentals list, rent/:vanSlug, returnRental/:rentId
@@ -222,7 +228,7 @@ app/
 ├── styles.ts           # Shared Panda helpers (gridMax, fullBleed, bgSkeleton)
 ├── utils/              # Shared utilities
 │   ├── result.ts       # Tiny Result helper
-│   └── errors/         # tryCatch, ServiceResult, DomainError, toActionResultOrThrow, parse-schema.server.ts, HTTP helpers
+│   └── errors/         # tryCatch, ServiceResult, DomainError, toActionResultOrThrow, parse-schema.ts, HTTP helpers
 ├── assets/             # Static assets (SVGs, images)
 ├── root.tsx            # Root component
 └── routes.ts           # Route configuration
@@ -243,7 +249,9 @@ docs/
 ├── react-stinky-report.md  # React Stinky smell sweep + fixes
 ├── fallow-health-backlog.md # Code health backlog from fallow analysis
 ├── financial-display-routing.md # Host rental vs wallet activity IA
-└── cursor-pagination-limit-and-component-split.md # Pagination limit vs cursor split
+├── cursor-pagination-limit-and-component-split.md # Pagination limit vs cursor split
+├── host-navigation-popover.md # Host rail / tablet / native popover contract
+└── temporal-api.md         # Temporal.Instant notes (not shipped; polyfill required)
 
 .fallowrc.jsonc             # Fallow config (boundaries, health thresholds, security categories)
 ```
@@ -339,12 +347,14 @@ if (actionFailure) {
 return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 ```
 
-### Feature-Specific Validators
+### Validation (Valibot)
 
-- **Van validators** (`app/features/vans/utils/validators.ts`) — VanType / VanState guards
-- **Pagination validators** (`app/features/pagination/utils/validators.ts`) — limit, direction, sort, cursor
-- **Shared UUID schema** (`app/dal/schemas.server.ts`) — `uuidv7Schema`
-- **Server-side Valibot schemas** in feature `schemas.server.ts` files with `app/utils/errors/parse-schema.server.ts` (`validateSchema`, `schemaErrorsToFieldErrors` for per-field form UI)
+- **`schema.ts`** — isomorphic (client + server, including SSR). **`schema.server.ts`** — server only. **`schema.client.ts`** — none: RR `.client.ts` cannot be imported from route modules or SSR components.
+- **Van / pagination URL enums** — feature `schema.ts`. Form actions (`addVan`, money, login/sign-up) live in `schema.server.ts`. Types via `InferOutput`. URL/form → DB: `vanTypeFromClientSchema`. Van type in URL, filters, and badges is `VanType` (`SIMPLE` / `RUGGED` / `LUXURY`).
+- **UUID v7** (`app/dal/schema.server.ts`) — `uuidv7Schema`, branded at `parseUuidV7`
+- **Rental actions** (`app/features/host/rentals/schema.server.ts`)
+- **Parse helper** (`app/utils/errors/parse-schema.ts`) — `validateSchema`, `schemaErrorsToFieldErrors` for per-field form UI
+- **nuqs** — primitive query enums use `parseAsStringLiteral` / `parseAsNumberLiteral` on the same const arrays as Valibot `picklist`. Standard Schema in nuqs is `parseAsJson` (JSON blobs in the URL) and `createStandardSchemaV1` (nuqs parsers → tRPC / TanStack Router), not Valibot → `?limit=10`. Unconstrained bits stay `parseAsString` / `parseAsBoolean`.
 
 ---
 
@@ -358,7 +368,7 @@ return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 - **Return path** from React Router’s normalized middleware `url` (`getReturnPathFromUrl`) — strips `.data` / `_.data` / `_routes` (do not use raw `request.url`)
 - **Host auth middleware** runs once on `host-layout.tsx` (stub loader ensures `.data` requests on client navigations)
 - **`redirectTo` query param** on login — returns users to the page they tried to visit (open-redirect safe)
-- **Valibot validation** (`app/features/auth/schemas.server.ts`) for login/sign-up forms
+- **Valibot validation** (`app/features/auth/schema.server.ts`) for login/sign-up forms
 - **Per-field errors** — `schemaErrorsToFieldErrors` + `LOGIN_FORM_FIELDS` / `SIGN_UP_FORM_FIELDS` (`app/features/auth/types.ts`); UI via shared `Field` / `FormError`
 - **Form action results** — `FormActionResult` + `toActionResultOrThrow` map `ServiceResult` kinds to `badRequest` / `conflict` / `internalError` / `notFound`; `getFetcherStatus` + `useAutoIdleStatus` drive `StatusButton`
 - **Accessible auth forms** — `useFetcher` + `useTransition`, labeled inputs, `aria-invalid` / `aria-describedby`, form-level `role="alert"`
@@ -366,6 +376,7 @@ return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 - **Server-side session handling** in loaders
 - **Better-auth config** in `app/lib/auth.server.ts`; **`AuthenticatedUser`** type in `app/types/auth.server.ts`
 - **UUID v7 generator** (`createId` in `app/lib/id.server.ts`) for user IDs via Better Auth `generateId`
+- **Sign-out** — resource route `app/routes/auth/sign-out.ts` (`POST /signout`); `SignOutForm` posts via fetcher; success `replace`s to `/login`
 
 ---
 
@@ -380,7 +391,7 @@ The application uses **nuqs 2.10.1** for type-safe URL state management:
 - **Client-side state management** with `useQueryStates`
 - **Bidirectional cursor pagination** with forward/backward navigation
 - **Pagination with sorting** on Reviews, rental-activity, and wallet-activity pages
-- **Split pagination parsers** — `limitParsers` vs `cursorPaginationParsers` (`app/features/pagination/parsers.ts`); limit change does not reset cursor
+- **Split pagination parsers** — `limitParsers` vs `cursorPaginationParsers` (`app/features/pagination/schema.ts`); limit change does not reset cursor
 - **Van search functionality** with case-insensitive `LIKE` across name and description (word-split), debounced input (250ms), immediate Enter key submission
 - **Advanced van filtering** via `vansFilterUrlParsers` — multi-select types plus facet-driven state filters (`van-state-filter-config.ts`); debounced adds, immediate removes (`van-filter-url.ts`)
 - **Automatic URL synchronization** with proper type handling
@@ -390,7 +401,7 @@ The application uses **nuqs 2.10.1** for type-safe URL state management:
 ### Implementation
 
 ```typescript
-// Cursor vs limit (app/features/pagination/parsers.ts)
+// Cursor vs limit (app/features/pagination/schema.ts)
 export const limitParsers = { limit: parseAsLimit };
 export const cursorPaginationParsers = { cursor, direction };
 
@@ -974,7 +985,7 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run fix` – Auto-fix issues with Ultracite (format + lint)
 - `bun run check` – Run Ultracite checks (no fix)
 - `bun run doctor` – Run Ultracite doctor
-- `bun run react-doctor` – Run React Doctor diagnostics (`doctor.config.ts`)
+- `bun run react-doctor` – React Doctor on changed files (`--verbose --scope changed`)
 - `bun run fallow` – Full fallow analysis (dead code + dupes + health)
 - `bun run fallow:audit` – PR-style audit (dead code, complexity, duplication on changed files)
 - `bun run test` – Run Bun test suite
@@ -1018,7 +1029,9 @@ Configuration in `lint-staged.config.ts`.
 - **Tokens + recipes** in `panda.config.ts`; PostCSS via `postcss.config.cjs`; `bun run prepare` runs `panda build`
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — native `<dialog>` panel/fullscreen variants (`starting-style`, `transition-discrete`, Invoker Commands)
-- **Reusable keyframes** — parameterized fade / scale / slide in `panda.config.ts` + leftover `::view-transition-*` in `app/app.css`
+- **Public header** — `nav-shell-scroll` keyframes compact the bar on scroll (`panda.config.ts`)
+- **Host nav** — grouped rail; tablet named `host-nav` container; mobile native `popover="auto"` + CSS Anchor + Invoker `toggle-popover` (uncontrolled; see `docs/host-navigation-popover.md`)
+- **Reusable keyframes** — parameterized fade / scale / slide / `nav-shell-scroll` in `panda.config.ts` + leftover `::view-transition-*` in `app/app.css`
 - **Auth + host view transitions** — named bags via `defineViewTransitions`; unique `view-transition-name` stays on the element
 - **Semantic tokens** — `DESIGN.md`; consume paths (`surface`, `muted.foreground`, `border.subtle`) not palette primitives at call sites
 - **Scroll-driven host nav hint** — `supportsScroll` condition + scroll-driven classes in `app/app.css`
@@ -1028,7 +1041,7 @@ Configuration in `lint-staged.config.ts`.
 ### Custom Design System
 
 - **Theme tokens** in `panda.config.ts` — palette primitives + semantic roles; see `DESIGN.md`
-- **Component variants** using Panda `cva` (`button-variants.ts`, `badge-variants.ts`, `vanCard`, `dialogVariants`, `outcomeState`)
+- **Component variants** using Panda `cva` (`button-variants.ts`, `badge-variants.ts`, `vanCard`, `dialogVariants`, `outcomeState`, `popover`)
 - **Van card chrome** — `vanCard` recipe in `van-card-recipe.ts`
 - **Named container queries** — host wallet / outcome-state layouts via Panda `cq` and `gridTemplateAreas`
 - **Type-safe styling** with TypeScript token paths throughout
@@ -1037,7 +1050,7 @@ Configuration in `lint-staged.config.ts`.
 
 ## Code Quality
 
-- **Biome 2.5.9** for linting and formatting with Ultracite integration
+- **Biome 2.5.11** for linting and formatting with Ultracite integration
 - **Ultracite 7.10.7** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 7.0.2** with strict configuration
 - **Valibot 1.4.2** for runtime validation with regex support for slug validation
@@ -1050,8 +1063,8 @@ Configuration in `lint-staged.config.ts`.
 - **Error handling** with `DomainError` / `ServiceResult` / `toActionResultOrThrow`, plus `notFound` / `serverError` / `badRequest` / `conflict` / `internalError`, `getRouteErrorMessage` for boundaries, and `getCollectionState` for list empty/error states
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
-- **Feature-specific validators** - Validators organized by feature domain (vans, pagination) for better maintainability and code organization
-- **fallow 3.21.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
+- **Feature schemas** — vans/pagination URL enums in `schema.ts`; form actions in `schema.server.ts`; Van type is uppercase `VanType` (`SIMPLE` / `RUGGED` / `LUXURY`) end-to-end
+- **fallow 3.22.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
 - **Bun `overrides`** — pin transitive audit fixes (`@remix-run/server-runtime`, `brace-expansion`, `fast-uri`, `picomatch`, `turbo-stream`, …) while `bunfig.toml` keeps `minimumReleaseAge`
 
 ### GitHub Actions
@@ -1059,8 +1072,8 @@ Configuration in `lint-staged.config.ts`.
 - **CI** (`.github/workflows/ci.yml`) — least-privilege permissions:
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
-  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.12`, same as `package.json`); self-contained, no Bun install
-  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.22.0` Action (CLI `version: 3.21.0`, same as `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`)
+  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.13`, same as `package.json`); self-contained, no Bun install
+  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.22.0` Action (CLI `version: 3.22.0`, same as `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`); type-aware `require: "best-effort"` so incomplete semantic evidence stays advisory
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability; bump via Dependabot `github-actions` or periodic SHA refresh

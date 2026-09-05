@@ -14,7 +14,7 @@ import {
 import { AUTH_VT, AuthCard } from "~/features/auth/components/auth-card";
 import { AuthForm } from "~/features/auth/components/auth-form";
 import { useAuthForm } from "~/features/auth/hooks/use-auth-form";
-import { loginSchema } from "~/features/auth/schemas.server";
+import { loginSchema } from "~/features/auth/schema.server";
 import { LOGIN_ECHO_FIELDS, LOGIN_FORM_FIELDS } from "~/features/auth/types";
 import { hasAuthContext } from "~/features/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/features/middleware/functions/has-auth-middleware";
@@ -27,7 +27,7 @@ import { badRequest } from "~/utils/errors/bad-request";
 import {
   schemaErrorsToFieldErrors,
   validateSchema,
-} from "~/utils/errors/parse-schema.server";
+} from "~/utils/errors/parse-schema";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 
 import type { Route } from "./+types/login";

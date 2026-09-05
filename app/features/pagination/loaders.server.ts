@@ -1,6 +1,6 @@
 import { createLoader } from "nuqs/server";
 import { parseOptionalUuidV7 } from "~/dal/parse-uuidv7.server";
-import { hostPaginationParsers } from "~/features/pagination/parsers";
+import { hostPaginationParsers } from "~/features/pagination/schema";
 import type { UUIDv7 } from "~/types/ids.server";
 
 export const loadHostSearchParams = createLoader(hostPaginationParsers);

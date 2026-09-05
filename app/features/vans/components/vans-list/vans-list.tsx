@@ -3,12 +3,12 @@ import { ViewTransition } from "react";
 import { useLocation } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
-import { GenericComponent } from "~/components/generic-component";
+import { CollectionList } from "~/components/collection-list";
 import { PendingUI } from "~/components/pending-ui";
 import type { VanModel } from "~/db/client.server";
 import { Pagination } from "~/features/pagination/components/pagination";
 import type { InitialPaginationProps } from "~/features/pagination/types";
-import { vansParsers } from "~/features/vans/parsers";
+import { vansParsers } from "~/features/vans/schema";
 import { gridMax } from "~/styles";
 import { createVansListCardProps, VanListItem } from "./vans-list-card";
 import {
@@ -64,7 +64,7 @@ const VansList = ({ items: vans, paginationMetadata }: VansListProps) => {
           })
         )}
       >
-        <GenericComponent
+        <CollectionList
           as="ul"
           Component={VanListItem}
           className={gridMax}

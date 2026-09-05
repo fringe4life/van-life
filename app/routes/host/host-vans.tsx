@@ -13,9 +13,9 @@ import {
 } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
+import { CollectionList } from "~/components/collection-list";
 import type { FormActionResult } from "~/components/form/form-action-result";
 import { readActionFormData } from "~/components/form/read-action-form-data";
-import { GenericComponent } from "~/components/generic-component";
 import { CustomLink } from "~/components/links/custom-link";
 import { PendingUI } from "~/components/pending-ui";
 import {
@@ -28,7 +28,7 @@ import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
 import { authContext } from "~/features/middleware/contexts/auth";
 import { dbContext } from "~/features/middleware/contexts/db";
 import { Pagination } from "~/features/pagination/components/pagination";
-import { hostPaginationParsers } from "~/features/pagination/parsers";
+import { hostPaginationParsers } from "~/features/pagination/schema";
 import { VanCard } from "~/features/vans/components/van-card";
 import { VanHeader } from "~/features/vans/components/van-header";
 import {
@@ -36,16 +36,12 @@ import {
   hostVansListReducer,
 } from "~/features/vans/hooks/host-vans-list-reducer";
 import { useDisplayHostVans } from "~/features/vans/hooks/use-display-host-vans";
-import { addVanSchema } from "~/features/vans/schemas.server";
+import { addVanSchema } from "~/features/vans/schema.server";
 import {
   createHostVan,
   loadHostVansPage,
 } from "~/features/vans/services/host-vans.server";
-import type {
-  HostVanListItem,
-  VanCardProps,
-  VanFormFieldKey,
-} from "~/features/vans/types";
+import type { HostVanListItem, VanFormFieldKey } from "~/features/vans/types";
 import { isPendingVan, VAN_FORM_FIELDS } from "~/features/vans/types";
 import { pendingVanFromFormData } from "~/features/vans/utils/pending-van-from-form-data";
 import { toVanCardModel } from "~/features/vans/utils/to-van-card-model";
@@ -55,7 +51,7 @@ import { badRequest } from "~/utils/errors/bad-request";
 import {
   schemaErrorsToFieldErrors,
   validateSchema,
-} from "~/utils/errors/parse-schema.server";
+} from "~/utils/errors/parse-schema";
 import type { Route } from "./+types/host-vans";
 
 interface HostVansActionSuccess {
@@ -270,7 +266,7 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
         })}
       >
         <VanHeader>Your listed vans</VanHeader>
-        <GenericComponent<HostVanListItem, VanCardProps>
+        <CollectionList
           as="div"
           Component={VanCard}
           className={cx(gridMax, css({ marginBlockStart: "6" }))}

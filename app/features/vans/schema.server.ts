@@ -15,20 +15,19 @@ import {
   regex,
   string,
   toNumber,
-  toUpperCase,
   transform,
   trim,
   url,
 } from "valibot";
 import { MAX_ADD } from "~/constants/constants";
-import { VanState, VanType } from "~/db/enums";
+import { VanState } from "~/db/enums";
+import { vanTypeFromClientSchema } from "~/features/vans/schema";
 
 const VAN_STATES = [
   VanState.AVAILABLE,
   VanState.IN_REPAIR,
   VanState.ON_SALE,
 ] as const;
-const VAN_TYPES = [VanType.LUXURY, VanType.RUGGED, VanType.SIMPLE] as const;
 
 /**
  * Schema for adding a new van.
@@ -67,5 +66,5 @@ export const addVanSchema = object({
     maxValue(MAX_ADD)
   ),
   state: optional(nullable(picklist(VAN_STATES))),
-  type: pipe(string(), trim(), toUpperCase(), picklist(VAN_TYPES)),
+  type: vanTypeFromClientSchema,
 });

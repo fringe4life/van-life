@@ -1,6 +1,7 @@
 import { CustomLink } from "../../../components/links/custom-link";
 import { CustomNavLink } from "../../../components/links/custom-nav-link";
 import type { NavItem as NavItemData } from "../types";
+import { SignOutForm } from "./sign-out-form";
 
 interface NavItemComponentProps {
   item: NavItemData;
@@ -8,10 +9,12 @@ interface NavItemComponentProps {
 
 const NavItem = ({ item }: NavItemComponentProps) => {
   switch (item.type) {
-    case "nav-link":
+    case "form":
       return (
         <li>
-          <CustomNavLink {...item.props}>{item.children}</CustomNavLink>
+          <SignOutForm className={item.props.className}>
+            {item.children}
+          </SignOutForm>
         </li>
       );
 
@@ -19,6 +22,13 @@ const NavItem = ({ item }: NavItemComponentProps) => {
       return (
         <li>
           <CustomLink {...item.props}>{item.children}</CustomLink>
+        </li>
+      );
+
+    case "nav-link":
+      return (
+        <li>
+          <CustomNavLink {...item.props}>{item.children}</CustomNavLink>
         </li>
       );
     default:

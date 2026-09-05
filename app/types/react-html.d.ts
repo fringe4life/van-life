@@ -12,5 +12,7 @@ declare module "react" {
   interface ButtonHTMLAttributes<T> {
     command?: StandardCommand | `--${string}`;
     commandfor?: string;
+    popovertarget?: string;
+    popovertargetaction?: "toggle" | "show" | "hide";
   }
 }

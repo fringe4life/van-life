@@ -7,7 +7,6 @@ import { CustomLink } from "~/components/links/custom-link";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import type { VanCardProps } from "~/features/vans/types";
-import { toLowercaseVanType } from "~/features/vans/utils/validators";
 import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
 import { VanBadge } from "./van-badge";
 import { vanCard } from "./van-card-recipe";
@@ -133,8 +132,12 @@ const VanCard = ({
             {action}
           </div>
           <Badge
-            className={css({ gridArea: "type", justifySelf: "start" })}
-            variant={toLowercaseVanType(type)}
+            className={css({
+              gridArea: "type",
+              justifySelf: "start",
+              textTransform: "lowercase",
+            })}
+            variant={type}
           >
             {type}
           </Badge>

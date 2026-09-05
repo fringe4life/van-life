@@ -30,7 +30,7 @@ export const buildAboutPageSeo = (
 });
 
 export const buildVansPageSeo = (request: Request): PageSeo => {
-  const { search, types, excludeInRepair, onlyOnSale, type, vanFilter } =
+  const { search, types, excludeInRepair, onlyOnSale } =
     loadVansSearchParams(request);
 
   return {
@@ -41,9 +41,7 @@ export const buildVansPageSeo = (request: Request): PageSeo => {
       excludeInRepair,
       onlyOnSale,
       search,
-      type,
       types,
-      vanFilter,
     }),
   };
 };

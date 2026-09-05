@@ -318,6 +318,10 @@ Inputs and textareas use `input.background`, `input.foreground`, `input`, `place
 
 Desktop and mobile navigation share the primary hover role. The mobile drawer uses the named `groupOpenMobileNav` condition and the configured dialog duration/glide easing. Keep the hamburger's semantic button labels, dialog relationships, focus behavior, and close controls intact.
 
+### Popovers
+
+Reusable anchored mini-panels use the `Popover`, `PopoverHeader`, `PopoverTitle`, `PopoverContent`, `PopoverSection`, and `PopoverItem` compound slots from [`app/components/ui/popover.tsx`](./app/components/ui/popover.tsx). Use the semantic `popover` surface roles, keep native `popover` state uncontrolled, and scope `display` to `_open` so the browser's closed-state rule remains authoritative. Prefer the existing discrete `opacity,translate,display,overlay` transition with `normal` duration and `glide` easing. Interactive popovers should provide a visible label, preserve semantic navigation or form structure, support Escape/light dismissal, and restore focus to their trigger without adding a focus trap unless the product flow truly requires dialog behavior.
+
 ### Filters, sorting, pagination, and charts
 
 - `VanFilters` uses `surface.overlay` and `surface.overlay.muted` on compact layouts and the `border.accent` rail on desktop.

@@ -1,5 +1,5 @@
+import { parseVanType } from "~/features/vans/schema";
 import type { PendingVan } from "~/features/vans/types";
-import { validateVanType } from "~/features/vans/utils/validators";
 import { getSlug } from "~/utils/get-slug";
 
 export function pendingVanFromFormData(
@@ -21,6 +21,6 @@ export function pendingVanFromFormData(
     price: Number(formData.get("price")),
     slug: getSlug(name),
     status: "pending",
-    type: validateVanType(typeRaw.trim().toUpperCase()),
+    type: parseVanType(typeRaw),
   };
 }

@@ -1,12 +1,19 @@
 import { href } from "react-router";
-import { css, cx } from "styled-system/css";
-import { hstack } from "styled-system/patterns";
-import { GenericComponent } from "~/components/generic-component";
+import { cx } from "styled-system/css";
+import { ItemList } from "~/components/item-list";
 import { CustomLink } from "../../../components/links/custom-link";
-import { brandClassName } from "../styles";
+import {
+  brandClassName,
+  desktopAuthNavClassName,
+  desktopNavListClassName,
+  desktopPageNavClassName,
+  navBrandClassName,
+  navOuterClassName,
+  navShellClassName,
+} from "../styles";
 import type { NavItem as NavItemType } from "../types";
-import { getNavItems } from "../utils/get-nav-items";
-import { MobileNav } from "./mobile-nav";
+import { getAuthNavItems, pageNavItems } from "../utils/get-nav-items";
+import { MobileNavDialog, MobileNavTrigger } from "./mobile-nav";
 import { NavItem } from "./nav-item";
 
 const renderNavItemProps = (item: NavItemType) => ({ item });
@@ -16,36 +23,44 @@ interface NavProps {
 }
 
 const Nav = ({ hasToken }: NavProps) => {
-  const navItems = getNavItems(hasToken);
+  const auth = getAuthNavItems(hasToken);
 
   return (
-    <header
-      className={cx(
-        css({ gridArea: "nav" }),
-        hstack({
-          gap: { base: "3", sm: "6" },
-          justifyContent: "space-between",
-          paddingBlock: "9",
-        })
-      )}
-    >
-      <h1 className={brandClassName}>
-        <CustomLink to={href("/")}>#vanlife</CustomLink>
-      </h1>
-      {/* Desktop nav */}
-      <nav className={css({ display: { base: "none", md: "block" } })}>
-        <GenericComponent
-          as="ul"
-          Component={NavItem}
-          className={hstack({ gap: "3", justifyContent: "end" })}
-          emptyState={{ title: "No nav items" }}
-          errorState={{ title: "Something went wrong" }}
-          items={navItems}
-          noMatchState={null}
-          renderProps={renderNavItemProps}
-        />
-      </nav>
-      <MobileNav items={navItems} />
+    <header className={cx(navOuterClassName, "group/hamburger")}>
+      <div className={cx(navShellClassName, "nav-shell-scroll")}>
+        <h1 className={cx(brandClassName, navBrandClassName)}>
+          <CustomLink to={href("/")}>#vanlife</CustomLink>
+        </h1>
+
+        {/* Desktop page navigation */}
+        <nav aria-label="Page navigation" className={desktopPageNavClassName}>
+          <ItemList
+            as="ul"
+            Component={NavItem}
+            className={desktopNavListClassName}
+            items={pageNavItems}
+            renderProps={renderNavItemProps}
+          />
+        </nav>
+
+        {/* Desktop account navigation */}
+        <nav
+          aria-label="Account navigation"
+          className={desktopAuthNavClassName}
+        >
+          <ItemList
+            as="ul"
+            Component={NavItem}
+            className={desktopNavListClassName}
+            items={auth}
+            renderProps={renderNavItemProps}
+          />
+        </nav>
+
+        <MobileNavTrigger />
+      </div>
+
+      <MobileNavDialog auth={auth} />
     </header>
   );
 };

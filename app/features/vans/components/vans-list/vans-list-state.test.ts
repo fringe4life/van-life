@@ -26,7 +26,7 @@ describe("hasActiveVansListFilters", () => {
     expect(hasActiveVansListFilters({ ...noFilters, search: "explorer" })).toBe(
       true
     );
-    expect(hasActiveVansListFilters({ ...noFilters, types: ["simple"] })).toBe(
+    expect(hasActiveVansListFilters({ ...noFilters, types: ["SIMPLE"] })).toBe(
       true
     );
   });

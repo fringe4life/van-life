@@ -11,6 +11,7 @@ import { StatusButton } from "~/components/status-button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
+import { VAN_TYPE_VALUES } from "~/features/vans/schema";
 import type { VanFormFieldErrors, VanFormValues } from "~/features/vans/types";
 import type { Ok, Prettify } from "~/types";
 
@@ -76,6 +77,7 @@ const VanForm = ({
           aria-labelledby={formTitleId}
           className={cx(
             grid({
+              alignItems: "start",
               columnGap: "6",
               gridTemplateAreas: {
                 "@form/xl":
@@ -161,17 +163,14 @@ const VanForm = ({
                   defaultValue={formDataDefaults?.type ?? ""}
                   list={`${a11y.id}-list`}
                   name="type"
-                  placeholder="simple or luxury or rugged"
+                  placeholder="SIMPLE, LUXURY, or RUGGED"
                   type="text"
                 />
                 {/* react-doctor-disable-next-line*/}
                 <datalist id={`${a11y.id}-list`}>
-                  {/* react-doctor-disable-next-line*/}
-                  <option value="luxury" />
-                  {/* react-doctor-disable-next-line*/}
-                  <option value="simple" />
-                  {/* react-doctor-disable-next-line*/}
-                  <option value="rugged" />
+                  {VAN_TYPE_VALUES.map((vanType) => (
+                    <option key={vanType} value={vanType} />
+                  ))}
                 </datalist>
               </>
             )}

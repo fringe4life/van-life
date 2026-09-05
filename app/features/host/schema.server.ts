@@ -3,6 +3,7 @@ import {
   finite,
   forward,
   gtValue,
+  is,
   maxValue,
   number,
   object,
@@ -13,6 +14,12 @@ import {
   toNumber,
 } from "valibot";
 import { MAX_ADD, MIN_ADD, MIN_WITHDRAW } from "~/constants/constants";
+import {
+  RENTAL_ACTIVITY_TYPES,
+  type RentalTransactionType,
+  WALLET_MOVEMENT_TYPES,
+  type WalletTransactionType,
+} from "~/features/host/components/transaction/transaction-types";
 import { DEPOSIT, WITHDRAW } from "~/features/vans/constants/vans-constants";
 
 const parsedAmountSchema = pipe(
@@ -51,3 +58,14 @@ export const moneySchema = pipe(
     ["amount"]
   )
 );
+
+const walletTransactionTypeSchema = picklist(WALLET_MOVEMENT_TYPES);
+const rentalTransactionTypeSchema = picklist(RENTAL_ACTIVITY_TYPES);
+
+export const isWalletTransactionType = (
+  type: unknown
+): type is WalletTransactionType => is(walletTransactionTypeSchema, type);
+
+export const isRentalTransactionType = (
+  type: unknown
+): type is RentalTransactionType => is(rentalTransactionTypeSchema, type);

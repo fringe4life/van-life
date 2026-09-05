@@ -1,13 +1,13 @@
 import { debounce, defaultRateLimit } from "nuqs";
 import { DEFAULT_DEBOUNCE } from "~/constants/constants";
-import { VAN_TYPE_LOWERCASE } from "~/features/vans/constants/van-types";
-import type { LowercaseVanType } from "~/features/vans/types";
+import type { VanType } from "~/db/enums";
+import { toValidTypes } from "~/features/vans/schema";
 import type { List, Maybe } from "~/types";
 
 export interface VanFilterUrlState {
   excludeInRepair: boolean;
   onlyOnSale: boolean;
-  types: LowercaseVanType[];
+  types: VanType[];
 }
 
 interface VanFilterUrlSnapshotInput {
@@ -15,11 +15,6 @@ interface VanFilterUrlSnapshotInput {
   onlyOnSale: Maybe<boolean>;
   types: List<string>;
 }
-
-export const toValidTypes = (types: List<string>): LowercaseVanType[] =>
-  (types ?? []).filter((t): t is LowercaseVanType =>
-    VAN_TYPE_LOWERCASE.includes(t as LowercaseVanType)
-  );
 
 export const snapshotFilterState = (
   urlState: VanFilterUrlSnapshotInput

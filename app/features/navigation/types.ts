@@ -6,12 +6,7 @@ import type { CustomNavLinkProps } from "../../components/links/custom-nav-link"
 /** Props passed to NavLink `className`, `style`, and `children` render functions. */
 export type NavLinkClassNameProps = NavLinkRenderProps;
 
-type BaseNavItem = Prettify<
-  Children &
-    Id & {
-      show: boolean;
-    }
->;
+type BaseNavItem = Prettify<Children & Id>;
 
 type NavLinkItem = Prettify<
   BaseNavItem & {
@@ -27,4 +22,11 @@ type LinkItem = Prettify<
   }
 >;
 
-export type NavItem = NavLinkItem | LinkItem;
+type FormItem = Prettify<
+  BaseNavItem & {
+    type: "form";
+    props: { className: string };
+  }
+>;
+
+export type NavItem = FormItem | LinkItem | NavLinkItem;

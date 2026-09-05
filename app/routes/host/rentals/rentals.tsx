@@ -1,6 +1,6 @@
 import { data, href } from "react-router";
 import { grid } from "styled-system/patterns";
-import { GenericComponent } from "~/components/generic-component";
+import { CollectionList } from "~/components/collection-list";
 import { CustomLink } from "~/components/links/custom-link";
 import { PendingUI } from "~/components/pending-ui";
 import {
@@ -80,7 +80,7 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
       <meta content="View and manage your van rentals" name="description" />
       <VanHeader>Vans you are renting</VanHeader>
 
-      <GenericComponent
+      <CollectionList
         as="div"
         Component={VanCard}
         className={gridMax}
