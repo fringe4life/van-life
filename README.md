@@ -120,6 +120,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **fallow 3.22.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
+- **@types/bun 1.4.0** — `bun:test` / `bun:sqlite` for `tsc` (`tsconfig` `types` includes `"bun"`)
 - **Bun** for fast package management and runtime
 
 ### Build System
