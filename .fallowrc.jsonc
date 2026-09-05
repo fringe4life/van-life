@@ -9,7 +9,10 @@
   "dynamicallyLoaded": ["app/features/host/components/bar-chart/bar-chart.tsx"],
   "typeAware": {
     "enabled": true,
-    "require": "complete",
+    // complete fails the run when the TS companion is partial/unavailable
+    // (CI Action has no bun install; worker-configuration.d.ts is generated).
+    // best-effort still runs checker evidence; tsc owns compiler correctness.
+    "require": "best-effort",
     "projects": ["tsconfig.json"]
   },
   "rules": {
