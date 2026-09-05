@@ -8,11 +8,6 @@ export type NavLinkClassNameProps = NavLinkRenderProps;
 
 type BaseNavItem = Prettify<Children & Id>;
 
-export interface NavigationGroups {
-  readonly auth: readonly NavItem[];
-  readonly pages: readonly NavItem[];
-}
-
 type NavLinkItem = Prettify<
   BaseNavItem & {
     type: "nav-link";

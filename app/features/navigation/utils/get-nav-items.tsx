@@ -2,7 +2,7 @@ import { Info, LogIn, LogOut, Truck, User } from "lucide-react";
 import { href } from "react-router";
 import { css } from "styled-system/css";
 import { linkClassName, navLinkClassName } from "../styles";
-import type { NavItem, NavigationGroups } from "../types";
+import type { NavItem } from "../types";
 
 const navIconClassName = css({ aspectRatio: "square" });
 
@@ -29,7 +29,7 @@ const pageNavItems = [
     props: { className: navLinkClassName, to: href("/vans") },
     type: "nav-link",
   },
-] satisfies readonly NavItem[];
+] as const satisfies readonly NavItem[];
 
 const authenticatedNavItems = [
   {
@@ -54,7 +54,7 @@ const authenticatedNavItems = [
     props: { className: linkClassName },
     type: "form",
   },
-] satisfies readonly NavItem[];
+] as const satisfies readonly NavItem[];
 
 const signedOutNavItems = [
   {
@@ -68,11 +68,10 @@ const signedOutNavItems = [
     props: { className: navLinkClassName, to: href("/login") },
     type: "nav-link",
   },
-] satisfies readonly NavItem[];
+] as const satisfies readonly NavItem[];
 
-export function getNavItems(hasToken: boolean): NavigationGroups {
-  return {
-    auth: hasToken ? authenticatedNavItems : signedOutNavItems,
-    pages: pageNavItems,
-  };
+export function getAuthNavItems(hasToken: boolean): readonly NavItem[] {
+  return hasToken ? authenticatedNavItems : signedOutNavItems;
 }
+
+export { pageNavItems };

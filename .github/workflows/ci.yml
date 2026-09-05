@@ -82,7 +82,7 @@ jobs:
         with:
           scope: changed
           blocking: warning
-          version: "0.9.12"
+          version: "0.9.13"
 
   # Soft gate: rules mostly warn + fail-on-issues false until cleanup settles.
   fallow:
@@ -103,7 +103,7 @@ jobs:
         uses: fallow-rs/fallow@79a0e8d8dbcaa408dce348b3df14fc1e824f988b # v3.22.0
         with:
           command: audit
-          version: "3.21.0"
+          version: "3.22.0"
           score: true
           comment: true
           review-comments: true
@@ -114,5 +114,5 @@ jobs:
         uses: fallow-rs/fallow@79a0e8d8dbcaa408dce348b3df14fc1e824f988b # v3.22.0
         with:
           command: security
-          version: "3.21.0"
+          version: "3.22.0"
           fail-on-issues: false

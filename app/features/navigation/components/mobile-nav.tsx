@@ -13,6 +13,7 @@ import {
   mobileNavSectionListClassName,
 } from "../styles";
 import type { NavItem as NavItemType } from "../types";
+import { pageNavItems } from "../utils/get-nav-items";
 import { HamburgerIcon } from "./hamburger-icon";
 import { NavItem } from "./nav-item";
 
@@ -20,7 +21,6 @@ const MOBILE_NAV_DIALOG_ID = "mobile-nav-dialog";
 
 interface MobileNavDialogProps {
   auth: readonly NavItemType[];
-  pages: readonly NavItemType[];
 }
 
 const closeMobileNavDialog = () => {
@@ -91,7 +91,7 @@ const MobileNavTrigger = () => (
   </button>
 );
 
-const MobileNavDialog = ({ auth, pages }: MobileNavDialogProps) => (
+const MobileNavDialog = ({ auth }: MobileNavDialogProps) => (
   <Dialog
     aria-labelledby="mobile-nav-title"
     className={cx(cq({ name: "mobile-nav" }), "group/mobile-nav")}
@@ -115,13 +115,16 @@ const MobileNavDialog = ({ auth, pages }: MobileNavDialogProps) => (
       #vanlife
     </CustomLink>
     <div className={mobileNavDrawerClassName}>
+      <h2 className={visuallyHidden()} id="mobile-nav-title">
+        Navigation
+      </h2>
       <nav aria-label="Page navigation" className={mobileNavSectionClassName}>
         <h3 className={mobileNavSectionHeading}>Pages</h3>
         <ItemList
           as="ul"
           Component={NavItem}
           className={mobileNavSectionListClassName}
-          items={pages}
+          items={pageNavItems}
           renderProps={renderMobileNavItemProps}
         />
       </nav>
@@ -159,9 +162,6 @@ const MobileNavDialog = ({ auth, pages }: MobileNavDialogProps) => (
     >
       <HamburgerIcon size={24} />
     </button>
-    <h2 className={visuallyHidden()} id="mobile-nav-title">
-      Navigation
-    </h2>
   </Dialog>
 );
 

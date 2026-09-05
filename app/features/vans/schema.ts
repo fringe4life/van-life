@@ -51,16 +51,16 @@ const vanFiltersParser = {
   types: parseAsArrayOf(parseAsStringLiteral(VAN_TYPE_VALUES))
     .withDefault([])
     .withOptions(NUQS_DEFAULT_OPTIONS),
-};
+} as const;
 
 export const vansFilterUrlParsers = {
   ...vanFiltersParser,
   ...cursorPaginationParsers,
-};
+} as const;
 
 export const vansParsers = {
   ...cursorPaginationParsers,
   ...limitParsers,
   ...searchParser,
   ...vanFiltersParser,
-};
+} as const;

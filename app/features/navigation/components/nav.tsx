@@ -12,7 +12,7 @@ import {
   navShellClassName,
 } from "../styles";
 import type { NavItem as NavItemType } from "../types";
-import { getNavItems } from "../utils/get-nav-items";
+import { getAuthNavItems, pageNavItems } from "../utils/get-nav-items";
 import { MobileNavDialog, MobileNavTrigger } from "./mobile-nav";
 import { NavItem } from "./nav-item";
 
@@ -23,7 +23,7 @@ interface NavProps {
 }
 
 const Nav = ({ hasToken }: NavProps) => {
-  const { auth, pages } = getNavItems(hasToken);
+  const auth = getAuthNavItems(hasToken);
 
   return (
     <header className={cx(navOuterClassName, "group/hamburger")}>
@@ -38,7 +38,7 @@ const Nav = ({ hasToken }: NavProps) => {
             as="ul"
             Component={NavItem}
             className={desktopNavListClassName}
-            items={pages}
+            items={pageNavItems}
             renderProps={renderNavItemProps}
           />
         </nav>
@@ -60,7 +60,7 @@ const Nav = ({ hasToken }: NavProps) => {
         <MobileNavTrigger />
       </div>
 
-      <MobileNavDialog auth={auth} pages={pages} />
+      <MobileNavDialog auth={auth} />
     </header>
   );
 };

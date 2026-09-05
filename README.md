@@ -116,8 +116,8 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **Varlock 1.18.0** - Typed env schema (`.env.schema`) with Cloudflare integration
 - **Wrangler 4.127.1** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
-- **react-doctor 0.9.12** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
-- **fallow 3.21.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
+- **react-doctor 0.9.13** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
+- **fallow 3.22.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **Bun** for fast package management and runtime
@@ -984,7 +984,7 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run fix` – Auto-fix issues with Ultracite (format + lint)
 - `bun run check` – Run Ultracite checks (no fix)
 - `bun run doctor` – Run Ultracite doctor
-- `bun run react-doctor` – Run React Doctor diagnostics (`doctor.config.ts`)
+- `bun run react-doctor` – React Doctor on changed files (`--verbose --scope changed`)
 - `bun run fallow` – Full fallow analysis (dead code + dupes + health)
 - `bun run fallow:audit` – PR-style audit (dead code, complexity, duplication on changed files)
 - `bun run test` – Run Bun test suite
@@ -1063,7 +1063,7 @@ Configuration in `lint-staged.config.ts`.
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
 - **Feature schemas** — vans/pagination URL enums in `schema.ts`; form actions in `schema.server.ts`; Van type is uppercase `VanType` (`SIMPLE` / `RUGGED` / `LUXURY`) end-to-end
-- **fallow 3.21.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
+- **fallow 3.22.0** - Architecture boundaries (feature↔route pairing in `.fallowrc.jsonc`), dead-code/dupes/health analysis; rules at `warn` until backlog cleared
 - **Bun `overrides`** — pin transitive audit fixes (`@remix-run/server-runtime`, `brace-expansion`, `fast-uri`, `picomatch`, `turbo-stream`, …) while `bunfig.toml` keeps `minimumReleaseAge`
 
 ### GitHub Actions
@@ -1071,8 +1071,8 @@ Configuration in `lint-staged.config.ts`.
 - **CI** (`.github/workflows/ci.yml`) — least-privilege permissions:
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
-  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.12`, same as `package.json`); self-contained, no Bun install
-  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.22.0` Action (CLI `version: 3.21.0`, same as `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`)
+  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.13`, same as `package.json`); self-contained, no Bun install
+  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.22.0` Action (CLI `version: 3.22.0`, same as `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`)
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability; bump via Dependabot `github-actions` or periodic SHA refresh

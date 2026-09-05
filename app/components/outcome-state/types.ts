@@ -21,6 +21,7 @@ interface ReloadOutcomeAction {
 export type OutcomeStateAction = LinkedOutcomeAction | ReloadOutcomeAction;
 
 export interface OutcomeStateConfig {
+  className?: string;
   description?: ReactNode;
   headingId?: string;
   headingLevel?: OutcomeHeadingLevel;
@@ -33,7 +34,6 @@ export interface OutcomeStateConfig {
 }
 
 export interface OutcomeStateProps extends OutcomeStateConfig {
-  className?: string;
   kind: OutcomeKind;
 }
 

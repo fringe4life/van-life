@@ -1,5 +1,5 @@
 import { href, isRouteErrorResponse, useLocation } from "react-router";
-import { css } from "styled-system/css";
+import { css, cx } from "styled-system/css";
 import { HTTP_STATUS } from "~/constants/http-constants";
 import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import { OutcomeState } from "./outcome-state";
@@ -62,6 +62,8 @@ const ErrorMetadata = ({
   );
 };
 
+const contentClassName = css({ gridArea: "content" });
+
 const mergeOutcomeState = (
   defaults: OutcomeStateConfig,
   overrides?: Partial<OutcomeStateConfig>
@@ -102,7 +104,7 @@ const RouteErrorBoundary = ({
       <OutcomeState
         kind="empty"
         {...state}
-        className={css({ gridArea: "content" })}
+        className={cx(state.className, contentClassName)}
       />
     );
   }
@@ -123,7 +125,7 @@ const RouteErrorBoundary = ({
     <OutcomeState
       kind="error"
       {...state}
-      className={css({ gridArea: "content" })}
+      className={cx(state.className, contentClassName)}
     />
   );
 };
