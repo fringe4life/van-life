@@ -39,11 +39,15 @@ const badgeVariants = cva({
       },
     },
     variant: {
+      IN_REPAIR: {
+        backgroundColor: "status.repair",
+        color: "status.repair.foreground",
+      },
       LUXURY: {
         backgroundColor: "secondary",
         color: "secondary.foreground",
       },
-      new: {
+      NEW: {
         backgroundColor: "status.new",
         color: "status.new.foreground",
       },
@@ -55,17 +59,9 @@ const badgeVariants = cva({
         backgroundColor: "type.rugged",
         color: "type.rugged.foreground",
       },
-      repair: {
-        backgroundColor: "status.repair",
-        color: "status.repair.foreground",
-      },
       SIMPLE: {
         backgroundColor: "type.simple",
         color: "type.simple.foreground",
-      },
-      sale: {
-        backgroundColor: "status.sale",
-        color: "status.sale.foreground",
       },
       unavailable: {
         backgroundColor: "status.unavailable",

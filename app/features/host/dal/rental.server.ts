@@ -1,6 +1,7 @@
 import { and, asc, desc, eq, gt, isNull, lt, type SQL } from "drizzle-orm";
 import type { AppDb } from "~/db/client.server";
 import { rent, van } from "~/db/schema/van";
+import { vanSelectWithChrome } from "~/features/vans/dal/listing-chrome.server";
 import type { BasePaginationParams } from "~/pagination/types";
 import { getCursorMetadata } from "~/pagination/utils/get-cursor-metadata.server";
 import type { UUIDv7 } from "~/types/ids.server";
@@ -28,7 +29,7 @@ export async function getHostRentedVan(
   const rows = await db
     .select({
       rent,
-      van,
+      van: vanSelectWithChrome(),
     })
     .from(rent)
     .innerJoin(van, eq(rent.vanId, van.id))
@@ -75,7 +76,7 @@ export async function getHostRentedVans(
   const rows = await db
     .select({
       rent,
-      van,
+      van: vanSelectWithChrome(),
     })
     .from(rent)
     .innerJoin(van, eq(rent.vanId, van.id))

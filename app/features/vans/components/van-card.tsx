@@ -9,7 +9,6 @@ import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { viewTransitionShare } from "~/components/view-transition-share";
 import type { VanCardProps } from "~/features/vans/types";
-import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
 import { usePaginationSliceLock } from "~/pagination/components/pagination-page-epoch";
 import { VanBadge } from "./van-badge";
 import { vanCard } from "./van-card-recipe";
@@ -76,7 +75,7 @@ const VanCard = ({
         <Card
           className={cx(
             vanCard({
-              state: lowercaseVanState(van),
+              state: van.listingChrome,
             }),
             css({
               position: "relative",

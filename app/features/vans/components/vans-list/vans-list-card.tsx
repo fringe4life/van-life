@@ -1,9 +1,8 @@
 import { href } from "react-router";
-import type { VanModel } from "~/db/client.server";
 import { VanCard } from "~/features/vans/components/van-card";
 import { VanPrice } from "~/features/vans/components/van-price";
 import { vanViewTransitionName } from "~/features/vans/components/van-view-transitions";
-import type { VanCardProps } from "~/features/vans/types";
+import type { VanCardProps, VanWithChrome } from "~/features/vans/types";
 import { buildVanUrl } from "~/pagination/utils/build-search-params";
 export interface VansListQueryState {
   cursor: string;
@@ -15,7 +14,7 @@ export interface VansListQueryState {
 }
 
 export const createVansListCardProps = (
-  van: VanModel,
+  van: VanWithChrome,
   index: number,
   queryState: VansListQueryState
 ): VanCardProps => ({

@@ -11,7 +11,7 @@ import {
 } from "~/features/host/dal/rental-transaction.server";
 import { getAccountSummary } from "~/features/host/dal/wallet-movement.server";
 import { getCost } from "~/features/vans/utils/get-cost";
-import { isVanAvailable } from "~/features/vans/utils/van-state-helpers";
+import { isVanRentable } from "~/features/vans/utils/van-state-helpers";
 import type { BasePaginationParams } from "~/pagination/types";
 import { toPagination } from "~/pagination/utils/to-pagination.server";
 import type { UUIDv7 } from "~/types/ids.server";
@@ -63,7 +63,7 @@ export async function rentVan(db: AppDb, vanSlug: string, renterId: UUIDv7) {
     });
   }
 
-  if (!isVanAvailable(van)) {
+  if (!isVanRentable(van)) {
     return err({
       kind: "unavailable",
       message: "This van is not available to rent",

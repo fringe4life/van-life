@@ -1,5 +1,5 @@
 import type { VanModel } from "~/db/client.server";
-import type { VanState, VanType } from "~/db/enums";
+import { VanState, type VanType } from "~/db/enums";
 import type { Prettify } from "~/types";
 
 export interface VanFilters {
@@ -8,15 +8,21 @@ export interface VanFilters {
   types?: string[];
 }
 
-/** Lowercase enum value; suffix after `_` when present, else whole value. */
-type LowercaseEnumValue<T extends string> =
-  T extends `${string}_${infer Suffix}` ? Lowercase<Suffix> : Lowercase<T>;
+export const ListingChrome = {
+  ...VanState,
+  NEW: "NEW",
+} as const;
 
-/** Canonical lowercase van state, including runtime-only `new`. */
-export type LowercaseVanState = LowercaseEnumValue<VanState> | "new";
+export type ListingChrome = (typeof ListingChrome)[keyof typeof ListingChrome];
+
+export type VanWithChrome = Prettify<
+  VanModel & {
+    listingChrome: ListingChrome;
+  }
+>;
 
 export interface VanProps {
-  van: VanModel;
+  van: VanWithChrome;
 }
 
 export type VanCardProps = Prettify<
@@ -42,7 +48,7 @@ export interface PendingVan {
   type: VanType;
 }
 
-export type HostVanListItem = VanModel | PendingVan;
+export type HostVanListItem = VanWithChrome | PendingVan;
 
 export function isPendingVan(item: HostVanListItem): item is PendingVan {
   return "status" in item && item.status === "pending";

@@ -5,7 +5,11 @@ import type { AppDb } from "~/db/client.server";
 import { VanState, VanType } from "~/db/enums";
 import { user } from "~/db/schema/auth";
 import { van } from "~/db/schema/van";
-import { getVanForRentBySlug } from "~/features/host/dal/rental.server";
+import {
+  getHostRentedVan,
+  getHostRentedVans,
+  getVanForRentBySlug,
+} from "~/features/host/dal/rental.server";
 import { rentVan } from "~/features/host/services/rental.server";
 import type { UUIDv7 } from "~/types/ids.server";
 
@@ -223,5 +227,33 @@ describe("rentVan", () => {
 
     const claimed = await getVanForRentBySlug(db, "sale-wheels");
     expect(claimed?.isRented).toBe(true);
+  });
+
+  it("includes listingChrome on nested rented van joins", async () => {
+    const result = await rentVan(db, "sale-wheels", RENTER_ID);
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      throw new Error("expected rentVan to succeed for nested chrome");
+    }
+
+    const listed = await getHostRentedVans(db, RENTER_ID, {
+      cursor: undefined,
+      direction: "forward",
+      limit: 10,
+    });
+
+    expect(listed).toHaveLength(1);
+    expect(listed[0]?.van.id).toBe(IDS.onSale);
+    expect(listed[0]?.van.listingChrome).toBe(VanState.ON_SALE);
+
+    const rentId = listed[0]?.id;
+    expect(rentId).toBeDefined();
+    if (!rentId) {
+      throw new Error("expected rented van id");
+    }
+
+    const detail = await getHostRentedVan(db, rentId, RENTER_ID);
+    expect(detail?.van.listingChrome).toBe(VanState.ON_SALE);
   });
 });
