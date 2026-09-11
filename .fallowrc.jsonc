@@ -41,6 +41,11 @@
     "private-type-leaks": "off"
   },
   "ignorePatterns": ["worker-configuration.d.ts", "doctor.config.ts"],
+  // Panda outdir is gitignored codegen (`styled-system` in .gitignore).
+  // Built-in pandacss plugin only keeps panda.config.ts as an entry;
+  // it does not register the generated import map. Specifier globs
+  // silence unresolved-import; they do not change the module graph.
+  "ignoreUnresolvedImports": ["styled-system", "styled-system/**"],
   "ignoreDependencies": [
     "@acusti/vite-plugin-react-compiler",
     "isbot",
