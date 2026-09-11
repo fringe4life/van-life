@@ -1,14 +1,15 @@
 import { useQueryStates } from "nuqs";
-import { ViewTransition } from "react";
 import { useLocation } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import { CollectionList } from "~/components/collection-list";
 import { PendingUI } from "~/components/pending-ui";
 import type { VanModel } from "~/db/client.server";
-import { Pagination } from "~/features/pagination/components/pagination";
-import type { InitialPaginationProps } from "~/features/pagination/types";
 import { vansParsers } from "~/features/vans/schema";
+import { Pagination } from "~/pagination/components/pagination";
+import { PaginationOffsetTransition } from "~/pagination/components/pagination-offset-transition";
+import type { InitialPaginationProps } from "~/pagination/types";
+import { pageSliceKey } from "~/pagination/utils/page-slice-key";
 import { gridMax } from "~/styles";
 import { createVansListCardProps, VanListItem } from "./vans-list-card";
 import {
@@ -51,21 +52,20 @@ const VansList = ({ items: vans, paginationMetadata }: VansListProps) => {
     });
 
   return (
-    <ViewTransition>
-      <PendingUI
-        className={cx(
-          grid({
-            gap: "6",
-            gridTemplateRows: "1fr min-content",
-          }),
-          css({
-            blockSize: "full",
-            minBlockSize: "0",
-          })
-        )}
-      >
+    <PendingUI
+      className={cx(
+        grid({
+          gap: "6",
+          gridTemplateRows: "1fr min-content",
+        }),
+        css({
+          blockSize: "full",
+          minBlockSize: "0",
+        })
+      )}
+    >
+      <PaginationOffsetTransition sliceKey={pageSliceKey(vans)}>
         <CollectionList
-          as="ul"
           Component={VanListItem}
           className={gridMax}
           emptyState={VANS_LIST_EMPTY_STATE}
@@ -76,8 +76,8 @@ const VansList = ({ items: vans, paginationMetadata }: VansListProps) => {
           renderProps={renderVanCardProps}
         />
         <Pagination items={vans} paginationMetadata={paginationMetadata} />
-      </PendingUI>
-    </ViewTransition>
+      </PaginationOffsetTransition>
+    </PendingUI>
   );
 };
 

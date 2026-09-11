@@ -1,4 +1,6 @@
-export const rents: { rentedAt: Date }[] = [
+import { expandSeed, SEED_VOLUME, staggerDates } from "./scale";
+
+const rentTemplates: readonly { rentedAt: Date }[] = [
   {
     rentedAt: new Date("2024-12-16T00:00:00Z"),
   },
@@ -114,3 +116,5 @@ export const rents: { rentedAt: Date }[] = [
     rentedAt: new Date("2024-11-30T00:00:00Z"),
   },
 ];
+
+export const rents = staggerDates(expandSeed(rentTemplates, SEED_VOLUME.rents));

@@ -1,8 +1,8 @@
 import { generateSitemap } from "@forge42/seo-tools/sitemap";
 import { href } from "react-router";
-import { dbContext } from "~/features/middleware/contexts/db";
-import { getVanSlugsForSitemap } from "~/features/seo/dal/sitemap.server";
-import { getSiteOrigin } from "~/features/seo/get-site-origin.server";
+import { dbContext } from "~/middleware/contexts/db";
+import { getVanSlugsForSitemap } from "~/seo/dal/sitemap.server";
+import { getSiteOrigin } from "~/seo/get-site-origin.server";
 import type { Route } from "./+types/sitemap.xml";
 
 const formatLastMod = (date: Date) => date.toISOString().split("T")[0];

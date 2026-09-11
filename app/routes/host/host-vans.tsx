@@ -25,10 +25,6 @@ import {
 import type { VanModel } from "~/db/client.server";
 import { VanForm } from "~/features/host/components/van-form";
 import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
-import { authContext } from "~/features/middleware/contexts/auth";
-import { dbContext } from "~/features/middleware/contexts/db";
-import { Pagination } from "~/features/pagination/components/pagination";
-import { hostPaginationParsers } from "~/features/pagination/schema";
 import { VanCard } from "~/features/vans/components/van-card";
 import { VanHeader } from "~/features/vans/components/van-header";
 import {
@@ -46,6 +42,12 @@ import { isPendingVan, VAN_FORM_FIELDS } from "~/features/vans/types";
 import { pendingVanFromFormData } from "~/features/vans/utils/pending-van-from-form-data";
 import { toVanCardModel } from "~/features/vans/utils/to-van-card-model";
 import { toVanFormValues } from "~/features/vans/utils/to-van-form-values";
+import { authContext } from "~/middleware/contexts/auth";
+import { dbContext } from "~/middleware/contexts/db";
+import { Pagination } from "~/pagination/components/pagination";
+import { PaginationOffsetTransition } from "~/pagination/components/pagination-offset-transition";
+import { hostPaginationParsers } from "~/pagination/schema";
+import { pageSliceKey } from "~/pagination/utils/page-slice-key";
 import { gridMax } from "~/styles";
 import { badRequest } from "~/utils/errors/bad-request";
 import {
@@ -266,17 +268,19 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
         })}
       >
         <VanHeader>Your listed vans</VanHeader>
-        <CollectionList
-          as="div"
-          Component={VanCard}
-          className={cx(gridMax, css({ marginBlockStart: "6" }))}
-          emptyState={{ title: HOST_VANS_EMPTY_MESSAGE }}
-          errorState={{ title: "Something went wrong" }}
-          items={displayItems}
-          noMatchState={null}
-          renderProps={renderHostVanCardProps}
-        />
-        <Pagination items={vans} paginationMetadata={paginationMetadata} />
+        <PaginationOffsetTransition sliceKey={pageSliceKey(displayItems)}>
+          <CollectionList
+            as="div"
+            Component={VanCard}
+            className={cx(gridMax, css({ marginBlockStart: "6" }))}
+            emptyState={{ title: HOST_VANS_EMPTY_MESSAGE }}
+            errorState={{ title: "Something went wrong" }}
+            items={displayItems}
+            noMatchState={null}
+            renderProps={renderHostVanCardProps}
+          />
+          <Pagination items={vans} paginationMetadata={paginationMetadata} />
+        </PaginationOffsetTransition>
       </PendingUI>
     </>
   );

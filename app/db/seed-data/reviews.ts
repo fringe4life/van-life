@@ -1,4 +1,6 @@
-export const reviews = [
+import { expandSeed, SEED_VOLUME, staggerDates } from "./scale";
+
+const reviewTemplates = [
   {
     createdAt: new Date("2024-12-16T00:00:00Z"),
     rating: 1,
@@ -24,8 +26,10 @@ export const reviews = [
     updatedAt: new Date("2021-12-05T00:00:00Z"),
   },
   {
+    createdAt: new Date("2025-01-01T00:00:00Z"),
     rating: 5,
     text: "The van was a great experience. It was genuine luxury and a pleasure to drive",
+    updatedAt: new Date("2025-01-01T00:00:00Z"),
   },
   {
     createdAt: new Date("2022-12-04T00:00:00Z"),
@@ -34,10 +38,10 @@ export const reviews = [
     updatedAt: new Date("2022-12-04T00:00:00Z"),
   },
   {
-    createdAt: new Date("2025-02-28:00:00Z"),
+    createdAt: new Date("2025-02-28T00:00:00Z"),
     rating: 2,
     text: "The van was not a good experience. It had a terrible mattress, sleeping was almost impossible.",
-    updatedAt: new Date("2025-02-28:00:00Z"),
+    updatedAt: new Date("2025-02-28T00:00:00Z"),
   },
   {
     createdAt: new Date("2025-03-21T00:00:00Z"),
@@ -237,34 +241,8 @@ export const reviews = [
     text: "Amazing van experience! The luxury amenities made our trip unforgettable. Highly recommend for anyone looking for comfort and style.",
     updatedAt: new Date("2024-06-08T00:00:00Z"),
   },
-  {
-    createdAt: new Date("2024-05-17T00:00:00Z"),
-    rating: 1,
-    text: "Terrible experience. The van had multiple mechanical issues and the owner was completely unresponsive to our concerns.",
-    updatedAt: new Date("2024-05-17T00:00:00Z"),
-  },
-  {
-    createdAt: new Date("2023-04-06T00:00:00Z"),
-    rating: 2,
-    text: "The van was functional but very basic. The interior was smaller than expected and the amenities were minimal.",
-    updatedAt: new Date("2023-04-06T00:00:00Z"),
-  },
-  {
-    createdAt: new Date("2024-09-28T00:00:00Z"),
-    rating: 3,
-    text: "Decent van for short trips. The bed was comfortable but the kitchen area was cramped and difficult to use.",
-    updatedAt: new Date("2024-09-28T00:00:00Z"),
-  },
-  {
-    createdAt: new Date("2023-11-15T00:00:00Z"),
-    rating: 4,
-    text: "Great van with excellent features! The solar setup was impressive and the interior design was thoughtful and practical.",
-    updatedAt: new Date("2023-11-15T00:00:00Z"),
-  },
-  {
-    createdAt: new Date("2024-06-08T00:00:00Z"),
-    rating: 5,
-    text: "Amazing van experience! The luxury amenities made our trip unforgettable. Highly recommend for anyone looking for comfort and style.",
-    updatedAt: new Date("2024-06-08T00:00:00Z"),
-  },
-];
+] as const;
+
+export const reviews = staggerDates(
+  expandSeed(reviewTemplates, SEED_VOLUME.reviews)
+);

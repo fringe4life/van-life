@@ -1,15 +1,16 @@
 import { useQueryStates } from "nuqs";
-import { startTransition } from "react";
+import { startTransition, ViewTransition } from "react";
 import { css, cx, viewTransition } from "styled-system/css";
 import { flex, grid } from "styled-system/patterns";
 import { ItemList } from "~/components/item-list";
 import { Button } from "~/components/ui/button";
+import { chromeViewTransitionName } from "~/components/view-transition-names";
 import {
   DEFAULT_CURSOR,
   DEFAULT_DIRECTION,
-} from "~/features/pagination/pagination-constants";
-import { hostPaginationParsers } from "~/features/pagination/schema";
-import type { SortOption } from "~/features/pagination/types";
+} from "~/pagination/pagination-constants";
+import { hostPaginationParsers } from "~/pagination/schema";
+import type { SortOption } from "~/pagination/types";
 import type { Maybe } from "~/types";
 
 interface SortableProps {
@@ -20,19 +21,8 @@ interface SortableProps {
   /** Title to display above the sort buttons */
   title: string;
 }
-/** 
- * ::view-transition-old(sortable-title) {
-  --fade-to: 0;
-  --slide-y-to: 1rem;
-  animation-name: --fade, --slide-y;
-}
 
-::view-transition-new(sortable-title) {
-  --fade-from: 0;
-  --slide-y-from: -1rem;
-  animation-name: --fade, --slide-y;
-}
-*/
+const sortableTitleTransition = viewTransition("sortableTitle");
 
 /**
  * Reusable sorting component that provides sort buttons and clear filters functionality
@@ -110,19 +100,22 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
         className
       )}
     >
-      <h3
-        className={cx(
-          viewTransition("sortableTitle"),
-          css({
+      <ViewTransition
+        default="none"
+        name={chromeViewTransitionName.sortableTitle}
+        share={sortableTitleTransition}
+        update={sortableTitleTransition}
+      >
+        <h3
+          className={css({
             color: "foreground",
             fontSize: "lg",
             fontWeight: "bold",
-            viewTransitionName: "sortable-title",
-          })
-        )}
-      >
-        {title} ({itemCount})
-      </h3>
+          })}
+        >
+          {title} ({itemCount})
+        </h3>
+      </ViewTransition>
 
       <ItemList
         Component={Button}

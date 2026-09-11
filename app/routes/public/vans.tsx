@@ -7,12 +7,12 @@ import {
   forwardDataHeaders,
   PUBLIC_SHORT_CACHE_HEADERS,
 } from "~/constants/cache-headers";
-import { dbContext } from "~/features/middleware/contexts/db";
-import { SeoHead } from "~/features/seo/seo-head";
 import { VanFilters } from "~/features/vans/components/van-filters";
 import { VanHeader } from "~/features/vans/components/van-header";
 import { VansList } from "~/features/vans/components/vans-list/vans-list";
 import { loadVanCatalog } from "~/features/vans/services/catalog.server";
+import { dbContext } from "~/middleware/contexts/db";
+import { SeoHead } from "~/seo/seo-head";
 import type { Route } from "./+types/vans";
 
 export const headers = forwardDataHeaders;
@@ -83,6 +83,7 @@ const Vans = ({
           grid({
             gridArea: "filters",
             lg: {
+              alignSelf: "stretch",
               justifySelf: "stretch",
             },
           }),

@@ -1,9 +1,9 @@
 import type { AppDb } from "~/db/client.server";
-import { parsePaginationCursor } from "~/features/pagination/loaders.server";
-import { toPagination } from "~/features/pagination/utils/to-pagination.server";
-import { buildVansPageSeo } from "~/features/seo/build-page-seo.server";
 import { getVans } from "~/features/vans/dal/van.server";
 import { loadVansSearchParams } from "~/features/vans/loaders.server";
+import { buildVansPageSeo } from "~/features/vans/seo.server";
+import { parsePaginationCursor } from "~/pagination/loaders.server";
+import { toPagination } from "~/pagination/utils/to-pagination.server";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 
 export async function loadVanCatalog(db: AppDb, request: Request) {

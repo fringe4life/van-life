@@ -4,6 +4,16 @@
       "command": "bun",
       "args": ["x", "@pandacss/mcp", "--config", "./panda.config.ts"],
       "cwd": "${workspaceFolder}"
+    },
+    "fallow": {
+      "command": "bun",
+      "args": ["x", "fallow-mcp"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "FALLOW_BIN": "${workspaceFolder}/node_modules/.bin/fallow",
+        "FALLOW_AGENT_SOURCE": "cursor",
+        "FALLOW_TIMEOUT_SECS": "180"
+      }
     }
   }
 }

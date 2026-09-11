@@ -1,8 +1,8 @@
 import { asc, desc, eq } from "drizzle-orm";
 import type { AppDb } from "~/db/client.server";
 import { transaction } from "~/db/schema/van";
-import { createKeysetCursorPredicate } from "~/features/pagination/utils/create-keyset-cursor.server";
 import type { OrderByClause } from "~/lib/generic-sorting.server";
+import { createKeysetCursorPredicate } from "~/pagination/utils/create-keyset-cursor.server";
 import type { Maybe } from "~/types";
 import type { UUIDv7 } from "~/types/ids.server";
 

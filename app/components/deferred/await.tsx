@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Suspense } from "react";
 import { Await } from "react-router";
 import { OutcomeState } from "~/components/outcome-state";
+import { DeferredTransition } from "./transition";
 
 const DEFAULT_ERROR = (
   <OutcomeState kind="error" title="Something went wrong" />
@@ -23,10 +24,14 @@ const DeferredAwait = <T,>({
   fallback,
   resolve,
 }: DeferredAwaitProps<T>) => (
-  <Suspense fallback={fallback}>
-    <Await errorElement={errorElement} resolve={resolve}>
-      {children}
-    </Await>
+  <Suspense
+    fallback={<DeferredTransition phase="exit">{fallback}</DeferredTransition>}
+  >
+    <DeferredTransition phase="enter">
+      <Await errorElement={errorElement} resolve={resolve}>
+        {children}
+      </Await>
+    </DeferredTransition>
   </Suspense>
 );
 

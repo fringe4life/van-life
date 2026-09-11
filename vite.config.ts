@@ -1,8 +1,7 @@
+import reactCompiler from "@acusti/vite-plugin-react-compiler";
 import { reactRouter } from "@react-router/dev/vite";
-import babel from "@rolldown/plugin-babel";
 import { varlockCloudflareVitePlugin } from "@varlock/cloudflare-integration";
 import { DevTools } from "@vitejs/devtools";
-import { reactCompilerPreset } from "@vitejs/plugin-react";
 // import { reactRouterDevTools } from 'react-router-devtools';
 import type { RolldownPlugin } from "rolldown";
 import { visualizer } from "rollup-plugin-visualizer";
@@ -42,10 +41,13 @@ export default defineConfig(async () => {
     build: {
       target: "esnext",
     },
-    devtools: {
-      enabled: true,
-      environments: ["client", "ssr"],
-    },
+    // Vite 8.2 / 8.3-beta.0 auto-load DevToolsIntegration({ config }).
+    // @vitejs/devtools 0.7.1 expects { command, devtools } — crashes build.
+    // Re-enable when https://github.com/vitejs/vite/pull/23333 is merged.
+    // devtools: {
+    //   enabled: true,
+    //   environments: ["client", "ssr"],
+    // },
     environments: {
       client: {
         build: {
@@ -68,9 +70,9 @@ export default defineConfig(async () => {
       ...devtoolsPlugins,
       varlockCloudflareVitePlugin({ viteEnvironment: { name: "ssr" } }),
       // reactRouterDevTools(),
-      // React Router owns JSX/HMR — import only reactCompilerPreset, not react()
+      // React Router owns JSX/HMR — do not add @vitejs/plugin-react's react()
       reactRouter(),
-      babel({ presets: [reactCompilerPreset()] }),
+      reactCompiler(),
     ],
     resolve: {
       tsconfigPaths: true,

@@ -1,5 +1,6 @@
 import { cva } from "styled-system/css";
 import { TransactionType } from "~/db/enums";
+import type { ChartHeightBandVariant } from "~/features/host/utils/chart-height-bands";
 
 const transactionMeta = {
   [TransactionType.DEPOSIT]: {
@@ -42,6 +43,16 @@ const transactionCard = cva({
     type: "RENTAL_PAYMENT",
   },
   variants: {
+    heightBand: {
+      five: { borderInlineStartColor: "chart.5" },
+      four: { borderInlineStartColor: "chart.4" },
+      one: { borderInlineStartColor: "chart.1" },
+      three: { borderInlineStartColor: "chart.3" },
+      two: { borderInlineStartColor: "chart.2" },
+    } satisfies Record<
+      ChartHeightBandVariant,
+      { borderInlineStartColor: string }
+    >,
     type: {
       DEPOSIT: {
         backgroundColor: "surface.accent/40",

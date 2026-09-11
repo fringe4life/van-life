@@ -1,10 +1,15 @@
 import type { CSSProperties } from "react";
 import { css, cx } from "styled-system/css";
 import { cq, flex, grid, visuallyHidden, wrap } from "styled-system/patterns";
+import { LocalTime } from "~/components/local-time";
 import { Card, CardContent } from "~/components/ui/card";
 import type { ReviewModel, UserModel } from "~/db/client.server";
 import { MAX_RATING } from "~/features/host/constants/constants";
-import type { Maybe, Prettify } from "~/types";
+import {
+  CHART_HEIGHT_BAND_COLOR_BY_VARIANT,
+  type ChartHeightBandVariant,
+} from "~/features/host/utils/chart-height-bands";
+import type { Prettify } from "~/types";
 import { RatingStars } from "./rating-stars";
 import { ReviewBadge } from "./review-badge";
 import { formatReviewRating, normalizeReviewRating } from "./review-recipe";
@@ -15,12 +20,14 @@ type ReviewProps = Prettify<
       ReviewModel,
       "user" | "rent" | "createdAt" | "updatedAt" | "rentId" | "userId"
     > & {
-      timestamp: Maybe<string>;
+      date: Date;
+      heightBand: ChartHeightBandVariant;
     }
 >;
 
 type RatingRailStyle = CSSProperties & {
   "--rating": number;
+  "--rating-band-color": string;
 };
 
 const reviewMetadataLabel = css({
@@ -43,10 +50,13 @@ const reviewMetadataLabel = css({
   textTransform: "uppercase",
 });
 
-const Review = ({ id, name, rating, text, timestamp }: ReviewProps) => {
+const Review = ({ date, heightBand, id, name, rating, text }: ReviewProps) => {
   const headingId = `review-${id}-title`;
   const normalizedRating = normalizeReviewRating(rating);
-  const railStyle: RatingRailStyle = { "--rating": normalizedRating };
+  const railStyle: RatingRailStyle = {
+    "--rating": normalizedRating,
+    "--rating-band-color": CHART_HEIGHT_BAND_COLOR_BY_VARIANT[heightBand],
+  };
 
   return (
     <div
@@ -54,6 +64,7 @@ const Review = ({ id, name, rating, text, timestamp }: ReviewProps) => {
         cq({ name: "review" }),
         css({ alignSelf: "start", minInlineSize: "0" })
       )}
+      style={railStyle}
     >
       <Card
         aria-labelledby={headingId}
@@ -97,8 +108,8 @@ const Review = ({ id, name, rating, text, timestamp }: ReviewProps) => {
               position: "absolute",
             })
           )}
+          data-height-band={heightBand}
           data-rating={normalizedRating}
-          style={railStyle}
         />
 
         <CardContent className={css({ display: "contents" })}>
@@ -147,7 +158,7 @@ const Review = ({ id, name, rating, text, timestamp }: ReviewProps) => {
               <span
                 aria-hidden="true"
                 className={css({
-                  color: "rating",
+                  color: "var(--rating-band-color, {colors.rating})",
                   fontSize: "4xl",
                   fontWeight: "extrabold",
                   lineHeight: "none",
@@ -255,9 +266,7 @@ const Review = ({ id, name, rating, text, timestamp }: ReviewProps) => {
                   wordBreak: "break-word",
                 })}
               >
-                <time suppressHydrationWarning>
-                  {timestamp ?? "Date unavailable"}
-                </time>
+                <LocalTime date={date} />
               </dd>
             </div>
           </dl>

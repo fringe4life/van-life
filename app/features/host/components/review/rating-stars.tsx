@@ -40,12 +40,15 @@ const Star = ({ rating, starIndex }: StarProps): ReactNode => {
         className={css({
           blockSize: "var(--star-size)",
           inlineSize: "var(--star-size)",
-          stroke: "rating",
+          stroke: "var(--rating-band-color, {colors.rating})",
         })}
       />
 
       <div
-        className={cx("rating-star-fill", css({ color: "rating" }))}
+        className={cx(
+          "rating-star-fill",
+          css({ color: "var(--rating-band-color, {colors.rating})" })
+        )}
         style={starStyle}
       >
         <StarIcon

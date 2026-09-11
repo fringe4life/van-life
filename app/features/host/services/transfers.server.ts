@@ -9,7 +9,7 @@ import {
   resolveChartContext,
   toTransactionAggStats,
 } from "~/features/host/utils/resolve-chart-context.server";
-import { toPagination } from "~/features/pagination/utils/to-pagination.server";
+import { toPagination } from "~/pagination/utils/to-pagination.server";
 import type { UUIDv7 } from "~/types/ids.server";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 

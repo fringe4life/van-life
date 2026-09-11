@@ -25,6 +25,7 @@ export type VanCardProps = Prettify<
     imageIndex?: number;
     link: string;
     linkCoversCard?: boolean;
+    priceTransitionName?: string;
   }
 >;
 

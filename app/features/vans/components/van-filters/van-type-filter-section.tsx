@@ -1,3 +1,4 @@
+import { startTransition } from "react";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import type { VanType } from "~/db/enums";
@@ -25,7 +26,9 @@ const VanTypeFilterRow = ({
   onToggle,
 }: VanTypeFilterRowProps) => {
   const handleCheckedChange = () => {
-    onToggle(type);
+    startTransition(() => {
+      onToggle(type);
+    });
   };
 
   return (

@@ -1,0 +1,23 @@
+import type { Direction, PaginationMetadata } from "~/pagination/types";
+
+export const DEFAULT_LIMIT = 10;
+export const DEFAULT_CURSOR = "";
+export const DEFAULT_DIRECTION = "forward";
+export const DEFAULT_SORT = "newest";
+
+export const LIMITS = [5, 10, 20, 50] as const;
+export const DIRECTIONS = [
+  "forward",
+  "backward",
+] as const satisfies readonly Direction[];
+export const SORT_OPTIONS = ["newest", "oldest", "highest", "lowest"] as const;
+
+export const PAGINATION_METADATA = {
+  hasNextPage: false,
+  hasPreviousPage: false,
+} satisfies PaginationMetadata;
+
+export const NO_PAGINATION = {
+  items: null,
+  paginationMetadata: PAGINATION_METADATA,
+} as const;

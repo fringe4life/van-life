@@ -22,7 +22,7 @@ import {
 interface HostNavMobileGroupProps {
   groupId: HostNavGroupId;
   headingIdPrefix: string;
-  onLinkClick?: MouseEventHandler<HTMLAnchorElement>;
+  onLinkClick: MouseEventHandler<HTMLAnchorElement>;
 }
 
 const HostNavPopoverListItem = ({ item, onClick }: HostNavLinkProps) => (
@@ -32,7 +32,7 @@ const HostNavPopoverListItem = ({ item, onClick }: HostNavLinkProps) => (
 );
 
 const renderHostNavPopoverListItemProps =
-  (onClick?: MouseEventHandler<HTMLAnchorElement>) => (item: HostNavItem) => ({
+  (onClick: MouseEventHandler<HTMLAnchorElement>) => (item: HostNavItem) => ({
     item,
     onClick,
   });

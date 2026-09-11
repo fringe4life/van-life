@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { css, cx, viewTransition } from "styled-system/css";
+import { type ReactNode, ViewTransition } from "react";
+import { viewTransition } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import {
   Card,
@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { viewTransitionShare } from "~/components/view-transition-share";
 import type { Children, Prettify } from "~/types";
 
 /** Shared view-transition names for login ↔ signup morph. */
@@ -22,6 +23,9 @@ export const AUTH_VT = {
   title: "auth-title",
 } as const;
 
+const authTitleTransition = viewTransition("authTitle");
+const authFooterTransition = viewTransition("authFooter");
+
 type AuthCardProps = Prettify<
   Children & {
     footer: ReactNode;
@@ -29,45 +33,28 @@ type AuthCardProps = Prettify<
   }
 >;
 
-/**
- * ::view-transition-old(auth-title) {
-  --fade-to: 0;
-  --slide-x-to: 1rem;
-  animation-name: --fade, --slide-x;
-}
-
-::view-transition-new(auth-title) {
-  --fade-from: 0;
-  --slide-x-from: -1rem;
-  animation-name: --fade, --slide-x;
-}
- */
-
 export const AuthCard = ({ children, footer, title }: AuthCardProps) => (
-  <Card
-    className={grid({ rowGap: "4" })}
-    style={{ viewTransitionName: AUTH_VT.card }}
-  >
-    <CardHeader>
-      <CardTitle
-        className={cx(
-          viewTransition("authTitle"),
-          css({ viewTransitionName: AUTH_VT.title })
-        )}
-      >
-        {title}
-      </CardTitle>
-    </CardHeader>
-    <CardContent>{children}</CardContent>
-    <CardFooter>
-      <p
-        className={cx(
-          viewTransition("authFooter"),
-          css({ viewTransitionName: AUTH_VT.footer })
-        )}
-      >
-        {footer}
-      </p>
-    </CardFooter>
-  </Card>
+  <ViewTransition {...viewTransitionShare} name={AUTH_VT.card}>
+    <Card className={grid({ rowGap: "4" })}>
+      <CardHeader>
+        <ViewTransition
+          default="none"
+          name={AUTH_VT.title}
+          share={authTitleTransition}
+        >
+          <CardTitle>{title}</CardTitle>
+        </ViewTransition>
+      </CardHeader>
+      <CardContent>{children}</CardContent>
+      <CardFooter>
+        <ViewTransition
+          default="none"
+          name={AUTH_VT.footer}
+          share={authFooterTransition}
+        >
+          <p>{footer}</p>
+        </ViewTransition>
+      </CardFooter>
+    </Card>
+  </ViewTransition>
 );

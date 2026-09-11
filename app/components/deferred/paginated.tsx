@@ -3,8 +3,13 @@ import {
   CollectionList,
   type CollectionListProps,
 } from "~/components/collection-list";
-import { Pagination } from "~/features/pagination/components/pagination";
-import type { InitialPaginationProps } from "~/features/pagination/types";
+import { Pagination } from "~/pagination/components/pagination";
+import {
+  PaginationOffsetTransition,
+  PaginationPageSlice,
+} from "~/pagination/components/pagination-offset-transition";
+import type { InitialPaginationProps } from "~/pagination/types";
+import { pageSliceKey } from "~/pagination/utils/page-slice-key";
 import type { Id, Prettify } from "~/types";
 import { DeferredAwait } from "./await";
 
@@ -29,18 +34,20 @@ const DeferredPaginated = <T extends Id, P, E extends ElementType = "div">({
   resolve,
   ...collectionProps
 }: DeferredPaginatedProps<T, P, E>) => (
-  <DeferredAwait
-    errorElement={errorElement}
-    fallback={fallback}
-    resolve={resolve}
-  >
-    {({ items, paginationMetadata }) => (
-      <>
-        <CollectionList {...collectionProps} items={items} />
-        <Pagination items={items} paginationMetadata={paginationMetadata} />
-      </>
-    )}
-  </DeferredAwait>
+  <PaginationOffsetTransition>
+    <DeferredAwait
+      errorElement={errorElement}
+      fallback={fallback}
+      resolve={resolve}
+    >
+      {({ items, paginationMetadata }) => (
+        <PaginationPageSlice sliceKey={pageSliceKey(items)}>
+          <CollectionList {...collectionProps} items={items} />
+          <Pagination items={items} paginationMetadata={paginationMetadata} />
+        </PaginationPageSlice>
+      )}
+    </DeferredAwait>
+  </PaginationOffsetTransition>
 );
 
 export { DeferredPaginated };

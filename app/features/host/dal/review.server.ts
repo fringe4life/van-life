@@ -3,13 +3,13 @@ import type { AppDb } from "~/db/client.server";
 import { user } from "~/db/schema/auth";
 import { rent, review } from "~/db/schema/van";
 import type { ChartPoint } from "~/features/host/utils/chart-points.server";
-import type { PaginationParams } from "~/features/pagination/types";
-import { createKeysetCursorPredicate } from "~/features/pagination/utils/create-keyset-cursor.server";
-import { resolveSortedCursor } from "~/features/pagination/utils/resolve-sorted-cursor.server";
 import {
   COMMON_SORT_CONFIGS,
   type OrderByClause,
 } from "~/lib/generic-sorting.server";
+import type { PaginationParams } from "~/pagination/types";
+import { createKeysetCursorPredicate } from "~/pagination/utils/create-keyset-cursor.server";
+import { resolveSortedCursor } from "~/pagination/utils/resolve-sorted-cursor.server";
 import type { UUIDv7 } from "~/types/ids.server";
 import { MAX_RATING } from "../constants/constants";
 

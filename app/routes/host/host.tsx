@@ -16,13 +16,13 @@ import { moneySchema } from "~/features/host/schema.server";
 import { loadHostDashboard } from "~/features/host/services/dashboard.server";
 import { depositOrWithdraw } from "~/features/host/services/wallet.server";
 import { MONEY_ECHO_FIELDS, MONEY_FORM_FIELDS } from "~/features/host/types";
-import { authContext } from "~/features/middleware/contexts/auth";
-import { dbContext } from "~/features/middleware/contexts/db";
+import { DEPOSIT } from "~/features/vans/constants/vans-constants";
+import { authContext } from "~/middleware/contexts/auth";
+import { dbContext } from "~/middleware/contexts/db";
 import {
   getRedirectParamFromRequest,
   getSafeRedirectPath,
-} from "~/features/middleware/utils/auth-redirect";
-import { DEPOSIT } from "~/features/vans/constants/vans-constants";
+} from "~/middleware/utils/auth-redirect";
 import { badRequest } from "~/utils/errors/bad-request";
 import {
   schemaErrorsToFieldErrors,

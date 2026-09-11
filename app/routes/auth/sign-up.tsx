@@ -1,3 +1,4 @@
+import { ViewTransition } from "react";
 import { data, href, redirect, replace } from "react-router";
 import { css } from "styled-system/css";
 import { Field } from "~/components/form/field";
@@ -7,6 +8,7 @@ import { pickFormValues } from "~/components/form/pick-form-values";
 import { CustomLink } from "~/components/links/custom-link";
 import { StatusButton } from "~/components/status-button";
 import { Input } from "~/components/ui/input";
+import { viewTransitionShare } from "~/components/view-transition-share";
 import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
@@ -19,9 +21,9 @@ import {
   SIGN_UP_ECHO_FIELDS,
   SIGN_UP_FORM_FIELDS,
 } from "~/features/auth/types";
-import { hasAuthContext } from "~/features/middleware/contexts/has-auth";
-import { hasAuthMiddleware } from "~/features/middleware/functions/has-auth-middleware";
 import { auth } from "~/lib/auth.server";
+import { hasAuthContext } from "~/middleware/contexts/has-auth";
+import { hasAuthMiddleware } from "~/middleware/functions/has-auth-middleware";
 import { badRequest } from "~/utils/errors/bad-request";
 import {
   schemaErrorsToFieldErrors,
@@ -126,19 +128,21 @@ export default function SignUp() {
           <Field
             error={fieldErrors?.email}
             label="Email"
-            labelProps={{
-              style: { viewTransitionName: AUTH_VT.emailLabel },
+            labelTransition={{
+              ...viewTransitionShare,
+              name: AUTH_VT.emailLabel,
             }}
           >
             {(a11y) => (
-              <Input
-                {...a11y}
-                defaultValue={formData.email}
-                name="email"
-                placeholder="your.email@email.com"
-                style={{ viewTransitionName: AUTH_VT.email }}
-                type="email"
-              />
+              <ViewTransition {...viewTransitionShare} name={AUTH_VT.email}>
+                <Input
+                  {...a11y}
+                  defaultValue={formData.email}
+                  name="email"
+                  placeholder="your.email@email.com"
+                  type="email"
+                />
+              </ViewTransition>
             )}
           </Field>
           <Field error={fieldErrors?.name} label="Name">
@@ -155,18 +159,20 @@ export default function SignUp() {
           <Field
             error={fieldErrors?.password}
             label="Password"
-            labelProps={{
-              style: { viewTransitionName: AUTH_VT.passwordLabel },
+            labelTransition={{
+              ...viewTransitionShare,
+              name: AUTH_VT.passwordLabel,
             }}
           >
             {(a11y) => (
-              <Input
-                {...a11y}
-                name="password"
-                placeholder="password"
-                style={{ viewTransitionName: AUTH_VT.password }}
-                type="password"
-              />
+              <ViewTransition {...viewTransitionShare} name={AUTH_VT.password}>
+                <Input
+                  {...a11y}
+                  name="password"
+                  placeholder="password"
+                  type="password"
+                />
+              </ViewTransition>
             )}
           </Field>
           <Field error={fieldErrors?.confirmPassword} label="Confirm password">
@@ -180,13 +186,11 @@ export default function SignUp() {
             )}
           </Field>
           <FormError message={formError} />
-          <StatusButton
-            status={status}
-            style={{ viewTransitionName: AUTH_VT.submit }}
-            type="submit"
-          >
-            Sign up
-          </StatusButton>
+          <ViewTransition {...viewTransitionShare} name={AUTH_VT.submit}>
+            <StatusButton status={status} type="submit">
+              Sign up
+            </StatusButton>
+          </ViewTransition>
         </AuthForm>
       </AuthCard>
     </>

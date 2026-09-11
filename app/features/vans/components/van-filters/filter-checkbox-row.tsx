@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import { type ChangeEvent, startTransition } from "react";
 import { css, cx } from "styled-system/css";
 import { hstack } from "styled-system/patterns";
 import { Checkbox } from "~/components/ui/checkbox";
@@ -24,7 +24,9 @@ const FilterCheckboxRow = ({
   labelClassName,
 }: FilterCheckboxRowProps) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event.currentTarget.checked);
+    startTransition(() => {
+      onChange(event.currentTarget.checked);
+    });
   };
 
   return (

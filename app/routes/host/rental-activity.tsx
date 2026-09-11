@@ -1,9 +1,12 @@
+import { ViewTransition } from "react";
 import { data } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import { DeferredPaginated } from "~/components/deferred/paginated";
 import { PendingUI } from "~/components/pending-ui";
 import { Sortable } from "~/components/sortable";
+import { chromeViewTransitionName } from "~/components/view-transition-names";
+import { viewTransitionShare } from "~/components/view-transition-share";
 import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
@@ -13,15 +16,15 @@ import { RentalTransaction } from "~/features/host/components/transaction/rental
 import { TransactionListSkeleton } from "~/features/host/components/transaction/transaction-list-skeleton";
 import type { RentalTransactionProps } from "~/features/host/components/transaction/transaction-types";
 import { loadIncomePage } from "~/features/host/services/income.server";
-import { vHostList } from "~/features/host/styles";
-import { authContext } from "~/features/middleware/contexts/auth";
-import { dbContext } from "~/features/middleware/contexts/db";
+import { getChartMagnitudeMax } from "~/features/host/utils/chart-height-bands";
+import { VanHeader } from "~/features/vans/components/van-header";
+import { displayPrice } from "~/features/vans/utils/display-price";
+import { authContext } from "~/middleware/contexts/auth";
+import { dbContext } from "~/middleware/contexts/db";
 import {
   loadHostSearchParams,
   parsePaginationCursor,
-} from "~/features/pagination/loaders.server";
-import { VanHeader } from "~/features/vans/components/van-header";
-import { displayPrice } from "~/features/vans/utils/display-price";
+} from "~/pagination/loaders.server";
 import { gridMax } from "~/styles";
 import type { Route } from "./+types/rental-activity";
 export const headers = forwardDataHeaders;
@@ -41,11 +44,20 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   return data(page, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
-const renderIncomeItemProps = (item: RentalTransactionProps) => item;
+const renderIncomeItemProps = (
+  item: RentalTransactionProps,
+  chartMagnitudeMax: number
+) => ({
+  ...item,
+  chartMagnitudeMax,
+});
 
 const HostRentalActivity = ({ loaderData }: Route.ComponentProps) => {
   const { chartData, elapsedDays, pagePromise, sumIncome, txnCount } =
     loaderData;
+  const chartMagnitudeMax = getChartMagnitudeMax(chartData);
+  const renderRentalTransactionProps = (item: RentalTransactionProps) =>
+    renderIncomeItemProps(item, chartMagnitudeMax);
 
   return (
     <PendingUI
@@ -65,33 +77,41 @@ const HostRentalActivity = ({ loaderData }: Route.ComponentProps) => {
       />
       <VanHeader>Rental activity</VanHeader>
 
-      <p
-        className={css({
-          marginBlock: "3",
-          viewTransitionName: "elapsed-days",
-        })}
+      <ViewTransition
+        {...viewTransitionShare}
+        name={chromeViewTransitionName.elapsedDays}
       >
-        Rental activity, last{" "}
-        <span
+        <p
           className={css({
-            color: "muted.foreground",
-            fontWeight: "bold",
-            textDecoration: "underline",
+            marginBlock: "3",
           })}
         >
-          {elapsedDays} days
-        </span>
-      </p>
-      <p
-        className={css({
-          fontSize: { base: "3xl", md: "5xl", sm: "4xl" },
-          fontWeight: "extrabold",
-          marginBlockEnd: "6",
-          viewTransitionName: "income-amount",
-        })}
+          Rental activity, last{" "}
+          <span
+            className={css({
+              color: "muted.foreground",
+              fontWeight: "bold",
+              textDecoration: "underline",
+            })}
+          >
+            {elapsedDays} days
+          </span>
+        </p>
+      </ViewTransition>
+      <ViewTransition
+        {...viewTransitionShare}
+        name={chromeViewTransitionName.incomeAmount}
       >
-        {displayPrice(sumIncome)}
-      </p>
+        <p
+          className={css({
+            fontSize: { base: "3xl", md: "5xl", sm: "4xl" },
+            fontWeight: "extrabold",
+            marginBlockEnd: "6",
+          })}
+        >
+          {displayPrice(sumIncome)}
+        </p>
+      </ViewTransition>
 
       {/*
         Option: defer chart like the list — return chartPromise from loader (don't await),
@@ -108,7 +128,7 @@ const HostRentalActivity = ({ loaderData }: Route.ComponentProps) => {
       <DeferredPaginated
         as="div"
         Component={RentalTransaction}
-        className={cx(gridMax, vHostList, css({ marginBlockStart: "6" }))}
+        className={cx(gridMax, css({ marginBlockStart: "6" }))}
         emptyState={{
           description:
             "Complete a rental and its payment activity will appear here.",
@@ -117,7 +137,7 @@ const HostRentalActivity = ({ loaderData }: Route.ComponentProps) => {
         errorState={{ title: "Something went wrong" }}
         fallback={<TransactionListSkeleton />}
         noMatchState={null}
-        renderProps={renderIncomeItemProps}
+        renderProps={renderRentalTransactionProps}
         resolve={pagePromise}
       />
     </PendingUI>

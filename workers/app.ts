@@ -1,7 +1,7 @@
 import { createRequestHandler, RouterContextProvider } from "react-router";
 import { createDb } from "~/db/client.server";
-import { cloudflareContext } from "~/features/middleware/contexts/cloudflare";
-import { dbContext } from "~/features/middleware/contexts/db";
+import { cloudflareContext } from "~/middleware/contexts/cloudflare";
+import { dbContext } from "~/middleware/contexts/db";
 
 declare global {
   interface CloudflareEnvironment extends Env {}

@@ -42,6 +42,7 @@ export default [
     route("*", "./routes/public/404.tsx"),
   ]),
   route("signout", "./routes/auth/sign-out.ts"),
+  route("theme", "./routes/theme.ts"),
   route("/api/auth/*", "./routes/api/auth.ts"),
   route("robots.txt", "./routes/public/robots.txt.ts"),
   route("sitemap.xml", "./routes/public/sitemap.xml.ts"),

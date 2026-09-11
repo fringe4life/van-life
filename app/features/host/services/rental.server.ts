@@ -10,10 +10,10 @@ import {
   executeReturnVanTransaction,
 } from "~/features/host/dal/rental-transaction.server";
 import { getAccountSummary } from "~/features/host/dal/wallet-movement.server";
-import type { BasePaginationParams } from "~/features/pagination/types";
-import { toPagination } from "~/features/pagination/utils/to-pagination.server";
 import { getCost } from "~/features/vans/utils/get-cost";
 import { isVanAvailable } from "~/features/vans/utils/van-state-helpers";
+import type { BasePaginationParams } from "~/pagination/types";
+import { toPagination } from "~/pagination/utils/to-pagination.server";
 import type { UUIDv7 } from "~/types/ids.server";
 import { caughtErrorToServiceResult } from "~/utils/errors/domain-error.server";
 import { tryCatch } from "~/utils/errors/try-catch.server";

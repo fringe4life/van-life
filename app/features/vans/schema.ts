@@ -10,12 +10,12 @@ import {
   trim,
 } from "valibot";
 import { VanType } from "~/db/enums";
+import { NUQS_DEFAULT_OPTIONS } from "~/lib/nuqs-options";
 import {
   cursorPaginationParsers,
   limitParsers,
   searchParser,
-} from "~/features/pagination/schema";
-import { NUQS_DEFAULT_OPTIONS } from "~/lib/nuqs-options";
+} from "~/pagination/schema";
 import type { List } from "~/types";
 
 export const VAN_TYPE_VALUES = [

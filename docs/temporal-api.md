@@ -14,7 +14,7 @@ Not Baseline. Safari stable still missing. Cloudflare Workers has **no supported
 | `date-fns` 5.0.0-alpha.0 | **one** import: `differenceInDays` in [`app/utils/get-elapsed-time.server.ts`](../app/utils/get-elapsed-time.server.ts) |
 | Display | `Intl.DateTimeFormat` + `Date.toISOString()` / `toLocaleDateString()` |
 | Loaders | `Date` crosses RR via turbo-stream 3.2.1 (this repo overrides it) |
-| better-auth 1.7.2 | drizzle adapter writes `Date` into `timestamp_ms` columns |
+| better-auth 1.7.3 | drizzle adapter writes `Date` into `timestamp_ms` columns |
 | Tests / seed | Bun `bun test` + lots of `new Date("…Z")` |
 | Types | `tsconfig` `"lib": ["DOM", "DOM.Iterable", "ES2023"]` — **no** `esnext.temporal` yet |
 | Worker | `compatibility_date: "2026-06-31"`, `nodejs_compat`. Same polyfill rule as [`invokers-polyfill.md`](./invokers-polyfill.md): client-only APIs stay out of the SSR graph |

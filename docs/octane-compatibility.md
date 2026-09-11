@@ -11,12 +11,12 @@
 - React Router **8.3.1 framework mode**: `@react-router/dev`, `app/routes.ts`, loaders/actions, `reactRouter()` Vite plugin, Worker `createRequestHandler` over `virtual:react-router/server-build` (`workers/app.ts`).
 - Root `Layout` renders `<Links />` and `<Scripts />` (`app/root.tsx`).
 - Cloudflare Workers: `@cloudflare/vite-plugin` via `@varlock/cloudflare-integration`, `wrangler.jsonc` with D1, `assets.not_found_handling: "single-page-application"`.
-- Vite 8.2.2 (rolldown), `@rolldown/plugin-babel` + `babel-plugin-react-compiler` / `reactCompilerPreset`.
+- Vite 8.2.2 (rolldown), `@acusti/vite-plugin-react-compiler` + `oxc-transform-react`.
 - React `19.3.0-canary-eb8feb71-20260814`.
 - nuqs 2.10.1 with `NuqsAdapter` from `nuqs/adapters/react-router/v8`, client `useQueryStates`, `nuqs/server` serializers/loaders.
 - `@tanstack/charts` 0.16.0 via `@tanstack/charts/react` (not recharts).
 - Panda CSS 2.0.0-beta (`css()` / `cx()` class strings; no `@base-ui/react`, no Radix).
-- better-auth 1.7.2 (`better-auth/minimal` + `auth.handler(request)` + drizzle D1 adapter). No `better-auth/react` client in this tree.
+- better-auth 1.7.3 (`better-auth/minimal` + `auth.handler(request)` + drizzle D1 adapter). No `better-auth/react` client in this tree.
 - Bun, varlock.
 
 Status labels used below:
@@ -57,7 +57,7 @@ Owner notes after issue 115 (nuqs compiler, Cloudflare, TanStack Charts): Cloudf
 | “nuqs compiler” | **Not found** as a nuqs product. | Same. | Search of [nuqs docs](https://nuqs.47ng.com/docs), README, v2.10.0/v2.10.1 releases; GitHub code search on 47ng/nuqs for `compiler` returned no matching source |
 | TanStack Charts 0.16.0 | Keep `@tanstack/charts/react`. **Unblocked**. | **Unblocked**: `@tanstack/charts/octane` / `@tanstack/octane-charts@0.16.0`, SSR documented. | [Octane adapter](https://tanstack.com/charts/latest/docs/framework/octane/adapter), [SSR guide](https://tanstack.com/charts/latest/docs/guides/ssr-and-hydration) |
 | Panda CSS | Class-string CSS. **Unblocked** / orthogonal. No Octane binding. | Same. | [bindings directory](https://octanejs.dev/docs/bindings) (no Panda package), this repo `panda.config.ts` + `styled-system/css` |
-| better-auth + Drizzle D1 | Server Fetch handler already. **Unblocked**. | Client binding exists (`@octanejs/better-auth`); server stays `auth.handler(request)`. **Soft**: binding pins better-auth 1.6.29 vs this repo 1.7.2. This app has no `better-auth/react` client. | [better-auth README](https://github.com/octanejs/octane/blob/main/packages/better-auth/README.md), [bindings-status](https://github.com/octanejs/octane/blob/main/docs/bindings-status.md), `app/lib/auth.server.ts` |
+| better-auth + Drizzle D1 | Server Fetch handler already. **Unblocked**. | Client binding exists (`@octanejs/better-auth`); server stays `auth.handler(request)`. **Soft**: binding pins better-auth 1.6.29 vs this repo 1.7.3. This app has no `better-auth/react` client. | [better-auth README](https://github.com/octanejs/octane/blob/main/packages/better-auth/README.md), [bindings-status](https://github.com/octanejs/octane/blob/main/docs/bindings-status.md), `app/lib/auth.server.ts` |
 | Base UI / current UI kit | This repo does **not** depend on `@base-ui/react`. Native HTML + Panda variants. **Unblocked**. | `@octanejs/base-ui` exists (alpha, 35/43 subpaths) if needed later. **Soft**, not required today. | this repo `package.json` / `app/components/ui`; [base-ui README](https://github.com/octanejs/octane/blob/main/packages/base-ui/README.md) |
 | Octane maturity | Alpha/beta. **Soft**. | Same. | [llms.txt “alpha”](https://octanejs.dev/llms.txt) vs [bindings “beta”](https://octanejs.dev/docs/bindings) |
 | TypeScript 7 | **Soft**: Octane `.tsrx` editor plugin “unavailable in TS 7 previews”. This repo uses TypeScript 7.0.2. | Same. | [react-compat editor](https://octanejs.dev/docs/react-compat) |
@@ -231,7 +231,7 @@ Octane is not React Compiler. It is a separate runtime that compiles `.tsrx` / o
 
 Official mixed toolchain: `requireDirective: true` so Octane owns `.tsrx` and pragma-marked files; everything else stays with the host compiler. Example plugins: `octane({ requireDirective: true })` and `react()` from `@vitejs/plugin-react`. [build tools — Mixed toolchains](https://octanejs.dev/docs/build-tools), [react-compat](https://octanejs.dev/docs/react-compat)
 
-**Islands:** React Compiler can keep compiling React modules (`babel-plugin-react-compiler` as this repo already does). Octane modules use Octane's compiler. File-ownership split is the specified coexistence model. **Unblocked** at the docs level.
+**Islands:** React Compiler can keep compiling React modules (`@acusti/vite-plugin-react-compiler` as this repo already does). Octane modules use Octane's compiler. File-ownership split is the specified coexistence model. **Unblocked** at the docs level.
 
 **Full rewrite:** Octane components do not go through React Compiler. Octane Strong mode is a different opt-in purity/memo contract. Docs mention React Compiler only as **comparison evidence**, not a control Octane honors. [differences from React](https://octanejs.dev/docs/differences-from-react)
 
@@ -247,7 +247,7 @@ Official mixed toolchain: `requireDirective: true` so Octane owns `.tsrx` and pr
 
 **better-auth:** Octane binding `@octanejs/better-auth` reuses the vanilla client and maps Nanostores to Octane hooks. Server remains `auth.handler(request)` (Fetch). React-framework helpers such as `better-auth/tanstack-start` are not re-exported. [better-auth README](https://github.com/octanejs/octane/blob/main/packages/better-auth/README.md)
 
-This app already uses the Fetch handler (`app/routes/api/auth.ts` → `auth.handler(request)`) and `better-auth/minimal` on the server. No `better-auth/react` client usage found. **Orthogonal** today. Binding version pin (upstream 1.6.29 vs repo 1.7.2) is soft if a client port is added later.
+This app already uses the Fetch handler (`app/routes/api/auth.ts` → `auth.handler(request)`) and `better-auth/minimal` on the server. No `better-auth/react` client usage found. **Orthogonal** today. Binding version pin (upstream 1.6.29 vs repo 1.7.3) is soft if a client port is added later.
 
 **Drizzle + D1:** no Octane UI binding required. Server ORM. **Orthogonal.** Worker must still expose the D1 binding (wrangler), which adapter-cloudflare's `env` forwarding covers at the platform level (**inference** that D1 is “just env”).
 
@@ -273,7 +273,7 @@ Octane llms.txt: playground runtime browsers “matching Vite 8's default build 
 
 **React 19:** `OctaneCompat` supports React 19; `ReactCompat` requires **19.2 or newer** in the 19 series. [react-compat](https://octanejs.dev/docs/react-compat). This repo is `19.3.0-canary-…`. Satisfies “19.2+” numerically.
 
-**Not specified:** official testing against React **canary** builds, or against `@rolldown/plugin-babel` + `reactCompilerPreset` sitting next to `octane()`. No documented incompatibility found.
+**Not specified:** official testing against React **canary** builds, or against `@acusti/vite-plugin-react-compiler` sitting next to `octane()`. No documented incompatibility found.
 
 **TypeScript 7 (related DX, not runtime):** “Use TypeScript 5.9/6.x in the editor; the plugin API is unavailable in TS 7 previews.” [react-compat](https://octanejs.dev/docs/react-compat). This repo: `typescript` 7.0.2. **Soft friction** for `.tsrx` editor types, not a documented runtime hard block.
 

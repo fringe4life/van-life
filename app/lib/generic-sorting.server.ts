@@ -1,4 +1,4 @@
-import type { SortOption } from "~/features/pagination/types";
+import type { SortOption } from "~/pagination/types";
 
 /**
  * Generic sorting configuration for Drizzle orderBy clauses.

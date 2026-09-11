@@ -7,13 +7,13 @@ import {
   forwardDataHeaders,
   PUBLIC_SHORT_CACHE_HEADERS,
 } from "~/constants/cache-headers";
-import { dbContext } from "~/features/middleware/contexts/db";
-import { buildVanUrl } from "~/features/pagination/utils/build-search-params";
-import { buildVanDetailPageSeo } from "~/features/seo/build-page-seo.server";
-import { SeoHead } from "~/features/seo/seo-head";
 import VanDetail from "~/features/vans/components/van-detail";
 import { loadVansSearchParams } from "~/features/vans/loaders.server";
+import { buildVanDetailPageSeo } from "~/features/vans/seo.server";
 import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
+import { dbContext } from "~/middleware/contexts/db";
+import { buildVanUrl } from "~/pagination/utils/build-search-params";
+import { SeoHead } from "~/seo/seo-head";
 import { notFound } from "~/utils/errors/not-found";
 import { serverError } from "~/utils/errors/server-error";
 import type { Route } from "./+types/van-detail";

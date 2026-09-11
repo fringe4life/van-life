@@ -11,8 +11,8 @@ import {
   forwardDataHeaders,
   PUBLIC_SHORT_CACHE_HEADERS,
 } from "~/constants/cache-headers";
-import { buildHomePageSeo } from "~/features/seo/build-page-seo.server";
-import { SeoHead } from "~/features/seo/seo-head";
+import { buildHomePageSeo } from "~/seo/build-page-seo.server";
+import { SeoHead } from "~/seo/seo-head";
 import { fullLayout } from "~/styles";
 
 import type { Route } from "./+types/home";
@@ -45,6 +45,137 @@ export const loader = ({ request }: Route.LoaderArgs) =>
     { headers: PUBLIC_SHORT_CACHE_HEADERS }
   );
 
+const HomeImage = () => (
+  // ViewTransition simply isnt working for now.
+  // <ViewTransition name="home-image">
+  <div
+    className={css({
+      inset: 0,
+      maskImage: { md: "url(/rvMask.min.svg)" },
+      maskPosition: "right",
+      maskRepeat: "no-repeat",
+      maskSize: "cover",
+      position: "absolute",
+      viewTransitionName: "home-image",
+    })}
+  >
+    <div
+      className={css({
+        backgroundBlendMode: "darken",
+        bgLinear: "to-br",
+        gradientFrom: "indigo.300/40",
+        gradientFromPosition: "0%",
+        gradientTo: "yellow.200/40",
+        gradientToPosition: "66%",
+        gradientVia: "green.300/40",
+        gradientViaPosition: "33%",
+        inset: 0,
+        position: "absolute",
+        zIndex: 10,
+      })}
+    />
+    <Image
+      alt="Camper van on scenic road"
+      className={css({
+        inlineSize: "full",
+      })}
+      decoding="sync"
+      fetchPriority="high"
+      height={900}
+      loading="eager"
+      pictureClassName={css({
+        blockSize: "full",
+        inlineSize: "full",
+        inset: 0,
+        position: "absolute",
+      })}
+      sizes={sizes}
+      sources={[
+        {
+          media: "(max-width: 767px)",
+          sizes,
+          srcSet: mobileSrcSet,
+          type: "image/webp",
+        },
+        {
+          media: "(min-width: 768px)",
+          sizes,
+          srcSet: desktopSrcSet,
+          type: "image/webp",
+        },
+      ]}
+      src={HOME_IMG_URL}
+      srcSet={desktopSrcSet}
+      width={1600}
+    />
+  </div>
+  // </ViewTransition>
+);
+
+const HeroText = () => (
+  // <ViewTransition
+  //   default="none"
+  //   enter={heroTextTransition}
+  //   exit={heroTextTransition}
+  //   name={chromeViewTransitionName.heroText}
+  // >
+  <div
+    className={cx(
+      grid({
+        alignContent: "center",
+        gap: "6",
+        justifyContent: { md: "center" },
+      }),
+      css({
+        paddingInline: { base: "padding-inline", md: "0" },
+        zIndex: 20,
+      })
+    )}
+  >
+    <h2
+      className={css({
+        backdropBlur: "sm",
+        backdropFilter: "auto",
+        color: "{colors.on-image}",
+        fontSize: { base: "2xl", md: "4xl", sm: "3xl" },
+        fontWeight: "extrabold",
+        lineHeight: { base: "8", md: "10", sm: "9" },
+        maxInlineSize: "20ch",
+        padding: 1,
+        textShadow: "lg",
+        textShadowColor: "black",
+      })}
+    >
+      You got the travel plans, we got the travel vans.
+    </h2>
+
+    <p
+      className={css({
+        backdropBlur: "xs",
+        backdropFilter: "auto",
+        color: "{colors.on-image}",
+        maxInlineSize: { base: "34ch", sm: "42.5ch" },
+        padding: 1,
+        textShadow: "sm",
+        textShadowColor: "black",
+      })}
+    >
+      Add adventure to your life by joining the #vanlife movement. Rent the
+      perfect van to make your perfect road trip.
+    </p>
+    <CustomLink
+      className={cx(
+        buttonVariants({ size: "lg", variant: "default" }),
+        css({ maxInlineSize: "42.5ch" })
+      )}
+      to={href("/vans")}
+    >
+      Find your van
+    </CustomLink>
+  </div>
+  // </ViewTransition>
+);
+
 const Home = ({ loaderData }: Route.ComponentProps) => (
   <PendingUI
     as="section"
@@ -68,123 +199,10 @@ const Home = ({ loaderData }: Route.ComponentProps) => (
   >
     <SeoHead {...loaderData.seo} />
     {/* Background Image with gradient overlay */}
-    <div
-      className={css({
-        inset: 0,
-        maskImage: { md: "url(/rvMask.min.svg)" },
-        maskPosition: "right",
-        maskRepeat: "no-repeat",
-        maskSize: "cover",
-        position: "absolute",
-      })}
-    >
-      <div
-        className={css({
-          backgroundBlendMode: "darken",
-          bgLinear: "to-br",
-          gradientFrom: "indigo.300/40",
-          gradientFromPosition: "0%",
-          gradientTo: "yellow.200/40",
-          gradientToPosition: "66%",
-          gradientVia: "green.300/40",
-          gradientViaPosition: "33%",
-          inset: 0,
-          position: "absolute",
-          zIndex: 10,
-        })}
-      />
-      <Image
-        alt="Camper van on scenic road"
-        className={css({
-          inlineSize: "full",
-          viewTransitionName: "home-image",
-        })}
-        decoding="sync"
-        fetchPriority="high"
-        height={900}
-        loading="eager"
-        pictureClassName={css({
-          blockSize: "full",
-          inlineSize: "full",
-          inset: 0,
-          position: "absolute",
-        })}
-        sizes={sizes}
-        sources={[
-          {
-            media: "(max-width: 767px)",
-            sizes,
-            srcSet: mobileSrcSet,
-            type: "image/webp",
-          },
-          {
-            media: "(min-width: 768px)",
-            sizes,
-            srcSet: desktopSrcSet,
-            type: "image/webp",
-          },
-        ]}
-        src={HOME_IMG_URL}
-        srcSet={desktopSrcSet}
-        width={1600}
-      />
-    </div>
+    <HomeImage />
 
     {/* Content overlay */}
-    <div
-      className={cx(
-        grid({
-          alignContent: "center",
-          gap: "6",
-          justifyContent: { md: "center" },
-        }),
-        css({
-          paddingInline: { base: "padding-inline", md: "0" },
-          zIndex: 20,
-        })
-      )}
-    >
-      <h2
-        className={css({
-          backdropBlur: "sm",
-          backdropFilter: "auto",
-          color: "{colors.on-image}",
-          fontSize: { base: "2xl", md: "4xl", sm: "3xl" },
-          fontWeight: "extrabold",
-          lineHeight: { base: "8", md: "10", sm: "9" },
-          maxInlineSize: "20ch",
-          padding: 1,
-          textShadow: "lg",
-          textShadowColor: "black",
-        })}
-      >
-        You got the travel plans, we got the travel vans.
-      </h2>
-
-      <p
-        className={css({
-          backdropBlur: "xs",
-          backdropFilter: "auto",
-          color: "{colors.on-image}",
-          maxInlineSize: { base: "34ch", sm: "42.5ch" },
-          padding: 1,
-          textShadow: "sm",
-          textShadowColor: "black",
-        })}
-      >
-        Add adventure to your life by joining the #vanlife movement. Rent the
-        perfect van to make your perfect road trip.
-      </p>
-      <CustomLink
-        className={cx(
-          buttonVariants({ size: "lg", variant: "default" }),
-          css({ maxInlineSize: "42.5ch" })
-        )}
-        to={href("/vans")}
-      >
-        Find your van
-      </CustomLink>
-    </div>
+    <HeroText />
   </PendingUI>
 );
 export default Home;

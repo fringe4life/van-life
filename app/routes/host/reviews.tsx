@@ -12,15 +12,19 @@ import type { ReviewModel, UserModel } from "~/db/client.server";
 import { LazyBarChart } from "~/features/host/components/bar-chart/lazy-bar-chart";
 import { Review } from "~/features/host/components/review/review";
 import { ReviewListSkeleton } from "~/features/host/components/review/review-list-skeleton";
+import { normalizeReviewRating } from "~/features/host/components/review/review-recipe";
 import { loadReviewsPage } from "~/features/host/services/reviews.server";
-import { vHostList } from "~/features/host/styles";
-import { authContext } from "~/features/middleware/contexts/auth";
-import { dbContext } from "~/features/middleware/contexts/db";
+import {
+  type ChartHeightBandVariant,
+  getChartHeightBandVariantByPointId,
+} from "~/features/host/utils/chart-height-bands";
+import { VanHeader } from "~/features/vans/components/van-header";
+import { authContext } from "~/middleware/contexts/auth";
+import { dbContext } from "~/middleware/contexts/db";
 import {
   loadHostSearchParams,
   parsePaginationCursor,
-} from "~/features/pagination/loaders.server";
-import { VanHeader } from "~/features/vans/components/van-header";
+} from "~/pagination/loaders.server";
 import { gridMax } from "~/styles";
 import type { Prettify } from "~/types";
 import type { Route } from "./+types/reviews";
@@ -44,24 +48,24 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 type ReviewListItem = Prettify<ReviewModel & { user: Pick<UserModel, "name"> }>;
 
-const renderReviewProps = ({
-  user,
-  text,
-  rating,
-  updatedAt,
-  createdAt,
-  id,
-}: ReviewListItem) => ({
+const renderReviewItemProps = (
+  { user, text, rating, updatedAt, createdAt, id }: ReviewListItem,
+  heightBandByRatingId: ReadonlyMap<string, ChartHeightBandVariant>
+) => ({
+  date: updatedAt ?? createdAt,
+  heightBand:
+    heightBandByRatingId.get(String(normalizeReviewRating(rating))) ?? "one",
   id,
   name: user.name,
   rating,
   text,
-  // TODO: UTC→viewer-TZ in loader; toLocaleDateString() can mismatch SSR vs client
-  timestamp: updatedAt?.toLocaleDateString() ?? createdAt.toLocaleDateString(),
 });
 
 const HostReviews = ({ loaderData }: Route.ComponentProps) => {
   const { chartData, pagePromise, reviewCount } = loaderData;
+  const heightBandByRatingId = getChartHeightBandVariantByPointId(chartData);
+  const renderReviewProps = (item: ReviewListItem) =>
+    renderReviewItemProps(item, heightBandByRatingId);
 
   return (
     <PendingUI
@@ -102,7 +106,7 @@ const HostReviews = ({ loaderData }: Route.ComponentProps) => {
       <DeferredPaginated
         as="div"
         Component={Review}
-        className={cx(gridMax, vHostList, css({ marginBlockStart: "6" }))}
+        className={cx(gridMax, css({ marginBlockStart: "6" }))}
         emptyState={{ title: "You have received no reviews" }}
         errorState={{ title: "Something went wrong" }}
         fallback={<ReviewListSkeleton />}

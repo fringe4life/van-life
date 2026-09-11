@@ -4,11 +4,18 @@
 
 Van Life uses a warm, light, editorial interface for browsing camper vans and managing host activity. The visual language combines a lightly orange-tinted canvas, dark neutral typography, deliberate orange actions, and compact data-oriented controls. Surfaces should feel layered but not busy: the page canvas separates from the main shell, cards provide a clear reading surface, and accent colors are reserved for actions, status, and purposeful decoration.
 
-The app uses PandaCSS v2 beta (`@pandacss/*` is currently pinned to `2.0.0-beta.15`). Styles are authored as typed Panda style objects, patterns, and recipes. These APIs generate class names that are passed to React's `className`; hand-authored utility vocabulary is not the styling API. The system is intentionally semantic so components consume roles such as `surface`, `muted.foreground`, and `border.subtle` rather than selecting a palette value at the point of use.
+The app uses PandaCSS v2 beta (`@pandacss/*` is currently pinned to `2.0.0-beta.16`). Styles are authored as typed Panda style objects, patterns, and recipes. These APIs generate class names that are passed to React's `className`; hand-authored utility vocabulary is not the styling API. The system is intentionally semantic so components consume roles such as `surface`, `muted.foreground`, and `border.subtle` rather than selecting a palette value at the point of use.
 
 ## Source of Truth
 
-- Panda configuration and design tokens: [`panda.config.ts`](./panda.config.ts)
+- Panda config entry: [`panda.config.ts`](./panda.config.ts) — include paths, presets, optimize flags, `globalVars`, breakpoints, and container query names/sizes
+- Theme modules (sibling of `app/`): [`theme/`](./theme)
+  - Primitive tokens: [`theme/tokens.ts`](./theme/tokens.ts) (`defineTokens`)
+  - Semantic aliases: [`theme/semantic-tokens.ts`](./theme/semantic-tokens.ts) (`defineSemanticTokens`)
+  - Conditions: [`theme/conditions.ts`](./theme/conditions.ts) (`defineConditions`)
+  - Keyframes: [`theme/keyframes.ts`](./theme/keyframes.ts) (`defineKeyframes`)
+  - Global Panda CSS: [`theme/global-styles.ts`](./theme/global-styles.ts) (`defineGlobalStyles`)
+  - Named view-transition bags: [`theme/view-transitions.ts`](./theme/view-transitions.ts) (`defineViewTransitions`)
 - Panda PostCSS integration: [`postcss.config.cjs`](./postcss.config.cjs)
 - Generated Panda helpers and CSS: [`styled-system`](./styled-system) — generated output; import as `styled-system/css` / `styled-system/patterns` (`tsconfig` path). Do not edit it directly.
 - Authored global CSS: [`app/app.css`](./app/app.css)
@@ -16,7 +23,7 @@ The app uses PandaCSS v2 beta (`@pandacss/*` is currently pinned to `2.0.0-beta.
 - Shared UI primitives and recipes: [`app/components/ui`](./app/components/ui)
 - Domain-specific van presentation: [`app/features/vans/components`](./app/features/vans/components)
 
-`panda.config.ts` owns tokens, semantic aliases, breakpoints, container sizes and names, keyframes, global Panda CSS, global variables, and named view-transition definitions. `postcss.config.cjs` runs Panda's PostCSS plugin. `vite.config.ts` owns the Vite and React Router build; it is not the token source and does not contain a separate styling theme.
+`theme/` owns tokens, semantic aliases, keyframes, global Panda CSS, custom conditions, and named view-transition definitions. `panda.config.ts` wires those modules into `defineConfig` and still owns breakpoints, container names/sizes, `globalVars`, and compiler options. `postcss.config.cjs` runs Panda's PostCSS plugin. `vite.config.ts` owns the Vite and React Router build; it is not the token source and does not contain a separate styling theme.
 
 `app/app.css` is reserved for global CSS that is intentionally authored outside Panda's object model: the Inter `@font-face`, document view-transition selectors, and scroll-driven animation classes. It is not a second token file. Visual-diff reports and screenshots are evidence for maintaining the system, not runtime inputs.
 
@@ -42,11 +49,13 @@ const className = cx(
 );
 ```
 
-Use `css()` for component-local styles, `cx()` for composition, and generated patterns such as `grid`, `flex`, `hstack`, `vstack`, `gridItem`, and `cq` for recurring layout behavior. Keep the returned class name on the DOM element's `className` prop; do not reimplement generated declarations in a second stylesheet.
+Use `css()` for component-local styles, `cx()` for composition, `keyframes()` for one-off `@keyframes` next to the consumer, and generated patterns such as `grid`, `flex`, `hstack`, `vstack`, `gridItem`, and `cq` for recurring layout behavior. Keep the returned class name on the DOM element's `className` prop; do not reimplement generated declarations in a second stylesheet.
+
+`keyframes({ from: {…}, to: {…} })` returns a `kf_…` animation name and emits its `@keyframes` block, tree-shaken to what the build references through `animationName` or the `animation` shorthand. Object form only — a bare `animationName: "fade"` already resolves a `theme.keyframes` entry. Shared design-system animations stay in [`theme/keyframes.ts`](./theme/keyframes.ts).
 
 ### Token path syntax
 
-Panda style props consume token paths from `panda.config.ts`:
+Panda style props consume token paths from [`theme/tokens.ts`](./theme/tokens.ts) and [`theme/semantic-tokens.ts`](./theme/semantic-tokens.ts):
 
 - A top-level semantic color uses `backgroundColor: "surface"` or `color: "foreground"`.
 - A nested semantic color uses `backgroundColor: "surface.muted"` or `color: "surface.inverse.foreground"`.
@@ -61,7 +70,7 @@ Use semantic tokens for ordinary component styling. A raw value is justified onl
 ### Principles
 
 1. Use semantic token paths in Panda style objects and recipes.
-2. Keep palette primitives and semantic aliases in `panda.config.ts` so a theme change has one edit point.
+2. Keep palette primitives in [`theme/tokens.ts`](./theme/tokens.ts) and semantic aliases in [`theme/semantic-tokens.ts`](./theme/semantic-tokens.ts) so a theme change has one edit point.
 3. Pair every strong background role with a readable foreground role.
 4. Use token opacity modifiers such as `"primary/90"`, `"border.accent/70"`, and `"success/35"` instead of duplicating translucent colors.
 5. Do not use color as the only signal for an error, status, or action; pair it with text, icons, labels, disabled state, or other state styling.
@@ -158,7 +167,7 @@ Primitive tokens are declared under `theme.extend.tokens.colors` and should rare
 - Van source colors: `van.new`, `van.repair`, `van.sale`
 - Yellow: `yellow.200`
 
-If a component needs a new color, first decide whether it is an existing semantic role used incorrectly. Add a primitive only when the authored value is genuinely distinct, then expose it through a semantic alias in `panda.config.ts`.
+If a component needs a new color, first decide whether it is an existing semantic role used incorrectly. Add a primitive only when the authored value is genuinely distinct, then expose it through a semantic alias in [`theme/semantic-tokens.ts`](./theme/semantic-tokens.ts).
 
 ### Borders and focus
 
@@ -175,7 +184,7 @@ Use explicit border styles when a component owns a visible border, for example `
 
 ## Typography
 
-- Font family: use `fontFamily: "sans"`, backed by the variable Inter face declared in [`app/app.css`](./app/app.css) and registered as `fonts.sans` in [`panda.config.ts`](./panda.config.ts). Panda emits the generated `--fonts-sans` variable; do not introduce a second font-family variable.
+- Font family: use `fontFamily: "sans"`, backed by the variable Inter face declared in [`app/app.css`](./app/app.css) and registered as `fonts.sans` in [`theme/tokens.ts`](./theme/tokens.ts). Panda emits the generated `--fonts-sans` variable; do not introduce a second font-family variable.
 - Use Panda's named font-size tokens: `xs`, `sm`, `base`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, and `5xl`. `2xs` is the authored token for the very small inverse-footer attribution.
 - Use responsive Panda objects for route-scale headings, for example `fontSize: { base: "2xl", sm: "3xl", md: "4xl" }`.
 - Headings use strong weights (`bold` through `extrabold`) and balanced wrapping. Global heading `textWrap: "balance"` is configured in Panda.
@@ -270,19 +279,19 @@ Motion reinforces state changes and navigation rather than decorating static con
 | `--duration-dialog` | Native dialog open/close and mobile navigation transitions. |
 | `animationName: "fade"`, `"scale"`, `"slide-x"`, `"slide-y"` | Configured view-transition keyframes. |
 | `animationName: "shimmer"` | Loading placeholder animation used by `bgSkeleton`. |
+| `keyframes({ from, to })` | Component-local `@keyframes` (public header scroll compact). Shared animations stay in `theme.keyframes`. |
 | `viewTransition("authTitle")` and related helpers | Named Panda view-transition bags. |
 | `viewTransitionName` | Unique element identity; keep it on the element alongside the named bag when both are required. |
 
-Panda view-transition bags are defined with `defineViewTransitions` in [`panda.config.ts`](./panda.config.ts). Use the generated `viewTransition()` helper for configured bags such as `authTitle`, `authFooter`, and `sortableTitle`, and keep unique names such as `card-${van.id}` on the element. The generic `@view-transition` and `::view-transition-*` rules remain in [`app/app.css`](./app/app.css).
+Panda view-transition bags are defined with `defineViewTransitions` in [`theme/view-transitions.ts`](./theme/view-transitions.ts). Use the generated `viewTransition()` helper for configured bags such as `authTitle`, `authFooter`, and `sortableTitle`, and keep unique names such as `card-${van.id}` on the element. The generic `@view-transition` and `::view-transition-*` rules remain in [`app/app.css`](./app/app.css).
 
 ### Authored global motion
 
-The following behaviors intentionally remain in `app/app.css` or global Panda CSS rather than being component-local token declarations:
+The following behaviors intentionally remain in `app/app.css` or [`theme/global-styles.ts`](./theme/global-styles.ts) rather than being component-local token declarations:
 
-- `.scroll-sm`, `.scroll-md`, and `.scroll-lg` provide scroll-timeline reveal behavior for later list items.
-- `.rating-rail` and `.rating-star-fill` are global Panda selectors for the rating visualization.
+- `.rating-rail` and `.rating-star-fill` are global Panda selectors in [`theme/global-styles.ts`](./theme/global-styles.ts) for the rating visualization.
 - `bgSkeleton` in [`app/styles.ts`](./app/styles.ts) composes the `shimmer` keyframe with `skeleton` tokens and runtime `--skeleton-color` overrides.
-- `supportsScroll` is a Panda condition for `@supports (animation-timeline: scroll())`.
+- `supportsScroll` is a Panda condition in [`theme/conditions.ts`](./theme/conditions.ts) for `@supports (animation-timeline: scroll())`.
 
 Preserve view-transition names and animation variables when changing layout or color styles. The list, chart, auth, dialog, and image transitions are part of component behavior, not decoration. Do not make a transition the only way a state change is communicated.
 
@@ -306,11 +315,13 @@ Use [`StatusButton`](./app/components/status-button.tsx) for asynchronous form a
 
 ### Cards and forms
 
-[`card.tsx`](./app/components/ui/card.tsx) provides the elevated surface, foreground, padding, radius, and default shadow through `css()` and `cx()`. Forms compose `Card`, `Field`, `Label`, `Input`, `Textarea`, `FormError`, and `StatusButton` rather than restyling each control independently.
+[`card.tsx`](./app/components/ui/card.tsx) provides the elevated surface, foreground, padding, radius, and default shadow through `css()` and `cx()`. Forms compose `Card`, `Field`, `Label`, `Input`, `Select`, `Textarea`, `FormError`, and `StatusButton` rather than restyling each control independently.
 
 `VanCard` owns the placement and inline-end alignment of its required `action` slot. Callers provide action content such as a price, edit link, return link, or pending label without adding alignment-only wrappers. Keep `VanCard` and `VanCardSkeleton` on the same named-area and track contract. When a card wrapper contains title/details as well as an action, prefer a nested named grid and use `CardContent` where the content semantics fit; do not change the shared `CardFooter` meaning for one card variant.
 
 Inputs and textareas use `input.background`, `input.foreground`, `input`, `placeholder`, and `ring` through Panda style props. Labels use `foreground`. Error text uses `destructive`. Keep `aria-invalid`, `aria-describedby`, and `role="alert"` behavior intact when changing form presentation.
+
+[`Select`](./app/components/ui/select.tsx) is the native `<select>` primitive. It opts into CSS customizable select via `appearance: base-select` under `_supportsBaseSelect`. The closed control uses `card` / `card.foreground` / `input`; the picker uses `popover` / `popover.foreground` / `border` with `shadow: "md"`. Focus uses `ring`. Checked options use `primary`; option hover uses `accent`. Invalid uses `destructive`. Legacy browsers keep `appearance: none` plus a chevron background. SSR and the first hydrate pass stay a classic select (`useSupportsBaseSelect` server snapshot `false`). Supporting engines then re-render the `<button><selectedcontent>` pair and rich option content. React may still log a DEV nesting warning ([#33038](https://github.com/facebook/react/issues/33038)); that is a client update, not a hydrate mismatch.
 
 ### Dialogs and navigation
 
@@ -326,7 +337,7 @@ Reusable anchored mini-panels use the `Popover`, `PopoverHeader`, `PopoverTitle`
 
 - `VanFilters` uses `surface.overlay` and `surface.overlay.muted` on compact layouts and the `border.accent` rail on desktop.
 - `Sortable` uses `backgroundColor: "primary"` and `color: "primary.foreground"` for the selected sort control.
-- `Pagination` uses `muted.foreground` for no-results messaging and the shared outline button.
+- `Pagination` uses `muted.foreground` for no-results messaging, outline buttons for prev/next, and `Select` for page size (row-density Lucide icons when `appearance: base-select` is supported).
 - Dashboard charts use the `chart.*` token family. The bar chart uses `color: "chart.1"`, while the chart mark uses `currentColor`.
 - Skeleton charts use `bgSkeleton` with runtime values such as `"--skeleton-color": "{colors.chart.1}"` and `"--skeleton-highlight": "{colors.surface.accent}"`; do not reintroduce obsolete color variable names.
 
@@ -349,10 +360,10 @@ Use `cq({ name: "card" })` for card container queries and conditions such as `"@
 
 ## PandaCSS Maintenance Rules
 
-1. Add new authored colors, radii, spacing, font, easing, size, keyframe, or semantic roles to `panda.config.ts` before consuming them.
+1. Add new authored colors, radii, spacing, font, easing, or size tokens to [`theme/tokens.ts`](./theme/tokens.ts); semantic roles to [`theme/semantic-tokens.ts`](./theme/semantic-tokens.ts); shared keyframes to [`theme/keyframes.ts`](./theme/keyframes.ts); conditions to [`theme/conditions.ts`](./theme/conditions.ts); and view-transition bags to [`theme/view-transitions.ts`](./theme/view-transitions.ts) before consuming them. Colocate one-off animations with `keyframes()` next to the consumer. Wire new top-level config (breakpoints, containers, `globalVars`) in [`panda.config.ts`](./panda.config.ts).
 2. Give every new strong background an explicit readable `.foreground` token.
 3. Prefer an existing semantic role over creating a one-off token.
-4. Use `css()`, `cx()`, `cva()`, `sva()`, and generated patterns instead of duplicating a component's declarations in a separate stylesheet.
+4. Use `css()`, `cx()`, `cva()`, `sva()`, `keyframes()`, and generated patterns instead of duplicating a component's declarations in a separate stylesheet.
 5. Use nested Panda token paths such as `surface.accent`, `status.repair.foreground`, and `type.rugged.foreground`; do not invent hyphenated aliases that are not present in the config.
 6. Use `{colors.*}`, `{spacing.*}`, and other Panda references only inside raw CSS strings where a token must be embedded in a function or custom property.
 7. Keep runtime custom properties for genuinely dynamic values, such as ratings, chart dimensions, dialog duration, and skeleton overrides. Give static values a named Panda token instead.

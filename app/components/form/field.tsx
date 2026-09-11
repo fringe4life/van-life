@@ -48,6 +48,7 @@ interface FieldProps {
   errorTransition?: ViewTransitionTune;
   label: ReactNode;
   labelProps?: ComponentProps<typeof Label>;
+  labelTransition?: ViewTransitionTune;
 }
 
 const Field = ({
@@ -57,6 +58,7 @@ const Field = ({
   errorTransition,
   label,
   labelProps,
+  labelTransition,
 }: FieldProps) => {
   const id = useId();
   const errorId = `${id}-error`;
@@ -65,6 +67,11 @@ const Field = ({
     "aria-invalid": error ? true : undefined,
     id,
   };
+  const labeled = (
+    <Label htmlFor={id} {...labelProps}>
+      {label}
+    </Label>
+  );
   return (
     <div
       className={cx(
@@ -76,9 +83,11 @@ const Field = ({
         className
       )}
     >
-      <Label htmlFor={id} {...labelProps}>
-        {label}
-      </Label>
+      {labelTransition ? (
+        <ViewTransition {...labelTransition}>{labeled}</ViewTransition>
+      ) : (
+        labeled
+      )}
       {children(a11y)}
       <FieldError
         errorTransition={errorTransition}

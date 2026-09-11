@@ -2,7 +2,7 @@ import type { ElementType } from "react";
 import { ItemList, type ItemListProps } from "~/components/item-list";
 import { OutcomeState } from "~/components/outcome-state";
 import type { CollectionOutcomeProps } from "~/components/types";
-import type { Items } from "~/features/pagination/types";
+import type { Items } from "~/pagination/types";
 import type { Id, Prettify } from "~/types";
 import { getCollectionState } from "~/utils/errors/get-collection-state";
 

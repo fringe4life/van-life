@@ -10,7 +10,6 @@ const CustomNavLink = ({ children, to, ...rest }: CustomNavLinkProps) => {
       {...rest}
       prefetch="intent"
       style={{ pointerEvents: isPage ? "none" : "auto" }}
-      viewTransition
     >
       {children}
     </NavLink>
