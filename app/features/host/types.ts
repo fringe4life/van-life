@@ -1,14 +1,9 @@
-import type { Amount, Id, Maybe, Prettify } from "~/types";
+import type { Amount, Id, Prettify } from "~/types";
 
 export type DataArray = Prettify<{ name: string } & Amount & Id>[];
 
 export interface Data<T> {
   data: T;
-}
-
-export interface Params {
-  action?: Maybe<string>;
-  vanSlug: string;
 }
 
 export const MONEY_FORM_FIELDS = ["amount"] as const;

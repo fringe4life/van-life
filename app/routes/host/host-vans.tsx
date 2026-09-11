@@ -158,23 +158,10 @@ const renderHostVanCardProps = (item: HostVanListItem, index: number) => {
         Saving…
       </p>
     ) : (
-      <p className={css({ textAlign: "right" })}>
-        <CustomLink
-          to={href("/host/vans/:vanSlug/:action?", {
-            action: "edit",
-            vanSlug: van.slug,
-          })}
-        >
-          Edit
-        </CustomLink>
-      </p>
+      <span />
     ),
     imageIndex: index,
-    link: pending
-      ? "#"
-      : href("/host/vans/:vanSlug/:action?", {
-          vanSlug: van.slug,
-        }),
+    link: pending ? "#" : href("/host/vans/:vanSlug", { vanSlug: van.slug }),
     linkCoversCard: !pending,
     van,
   };

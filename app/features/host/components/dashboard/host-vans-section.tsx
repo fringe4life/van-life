@@ -9,12 +9,9 @@ import { PaginatedItemsSkeleton } from "~/pagination/components/paginated-items-
 import { gridMax } from "~/styles";
 
 const renderHostVanCardProps = (item: VanWithChrome, index: number) => ({
-  action: <p>Edit</p>,
+  action: <span />,
   imageIndex: index,
-  link: href("/host/vans/:vanSlug/:action?", {
-    action: "edit",
-    vanSlug: item.slug,
-  }),
+  link: href("/host/vans/:vanSlug", { vanSlug: item.slug }),
   van: item,
 });
 
