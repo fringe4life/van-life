@@ -12,23 +12,16 @@ import { getHostVanDetailNavItems } from "~/features/vans/components/host-detail
 import { getHostVanBySlug } from "~/features/vans/dal/host-van.server";
 import { authContext } from "~/middleware/contexts/auth";
 import { dbContext } from "~/middleware/contexts/db";
-import { loadHostSearchParams } from "~/pagination/loaders.server";
-import { buildVanUrl } from "~/pagination/utils/build-search-params";
+import { withSearch } from "~/pagination/utils/with-search";
 import { notFound } from "~/utils/errors/not-found";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import type { Route } from "./+types/index";
 
 export const headers = forwardDataHeaders;
 
-export const loader = async ({
-  params,
-  request,
-  context,
-}: Route.LoaderArgs) => {
+export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const user = context.get(authContext);
   const db = context.get(dbContext);
-
-  const { cursor, limit } = loadHostSearchParams(request);
 
   const { data: van } = await tryCatch(() =>
     getHostVanBySlug(db, user.id, params.vanSlug)
@@ -38,19 +31,14 @@ export const loader = async ({
     notFound("Van not found");
   }
 
-  return data({ cursor, limit, van }, { headers: PRIVATE_NO_STORE_HEADERS });
+  return data({ van }, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
 const HostVanDetailLayout = ({ loaderData }: Route.ComponentProps) => {
-  const { van, cursor, limit } = loaderData;
+  const { van } = loaderData;
   const { search } = useLocation();
   const navItems = getHostVanDetailNavItems(van.slug, search);
-
-  const backLink = buildVanUrl({
-    baseUrl: href("/host/vans"),
-    cursor,
-    limit,
-  });
+  const backLink = withSearch(href("/host/vans"), search);
 
   return (
     <div

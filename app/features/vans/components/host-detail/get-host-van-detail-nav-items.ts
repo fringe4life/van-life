@@ -1,18 +1,11 @@
 import { href } from "react-router";
 import type { CustomNavLinkProps } from "~/components/links/custom-nav-link";
+import { withSearch } from "~/pagination/utils/with-search";
 import type { Id, Prettify } from "~/types";
 
 type HostVanDetailNavItem = Prettify<
   Id & Pick<CustomNavLinkProps, "children" | "end" | "to">
 >;
-
-function withSearch(pathname: string, search: string): string {
-  if (search.length === 0) {
-    return pathname;
-  }
-
-  return `${pathname}${search}`;
-}
 
 function getHostVanDetailNavItems(vanSlug: string, search = "") {
   return [

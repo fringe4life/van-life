@@ -25,7 +25,7 @@ import { vanViewTransitionName } from "../van-view-transitions";
 import type { HostVanDetailNavItem } from "./get-host-van-detail-nav-items";
 
 const HOST_VAN_DETAIL_IMG_SIZES = [200, 250, 300, 400] as const;
-const footerTransition = viewTransition("fadeSlide");
+const fadeSlideTransition = viewTransition("fadeSlide");
 
 type VanDetailCardProps = Prettify<
   VanProps &
@@ -164,7 +164,7 @@ const VanDetailCard = ({
             />
           </CardContent>
 
-          <ViewTransition default="none" update={footerTransition}>
+          <ViewTransition default="none" update={fadeSlideTransition}>
             <CardFooter>{children}</CardFooter>
           </ViewTransition>
         </Card>

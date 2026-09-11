@@ -771,7 +771,7 @@ The `toPagination` utility implements correct cursor pagination logic:
 ```
 
 - **Layout** — `app/routes/host/vans/index.tsx` loads the van and builds nav items
-- **Leaves** — `details.tsx` (index), `pricing.tsx`, `photos.tsx` read parent loader via `getHostVanDetailLoaderData(matches)`
+- **Leaves** — `details.tsx` (index), `pricing.tsx`, `photos.tsx` read parent loader via `getHostVanDetailLoaderData(matches)` (`satisfies` against generated parent route id)
 - **Nav** — `getHostVanDetailNavItems` preserves list search params on Details / Pricing / Photos
 
 ---
