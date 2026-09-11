@@ -8,6 +8,14 @@ import {
   getChartMagnitudeMax,
 } from "./chart-height-bands";
 
+const STABLE_BAND_KEYS = [
+  "chart.1",
+  "chart.2",
+  "chart.3",
+  "chart.4",
+  "chart.5",
+] as const;
+
 describe("getChartMagnitudeMax", () => {
   it("uses the largest absolute value", () => {
     expect(
@@ -31,6 +39,25 @@ describe("getChartHeightBands", () => {
       "6k–8k",
       "8k–10k+",
     ]);
+  });
+
+  it("keeps five stable unique keys at small domain maxima", () => {
+    for (const domainMax of [1, 2] as const) {
+      const bands = getChartHeightBands(domainMax);
+
+      expect(bands).toHaveLength(5);
+      expect(bands.map((band) => band.key)).toEqual([...STABLE_BAND_KEYS]);
+      expect(new Set(bands.map((band) => band.key)).size).toBe(5);
+    }
+  });
+
+  it("allows rounded labels to collide at domainMax 1 while keys stay unique", () => {
+    const bands = getChartHeightBands(1);
+    const uniqueKeys = new Set(bands.map((band) => band.key));
+    const uniqueLabels = new Set(bands.map((band) => band.label));
+
+    expect(uniqueKeys.size).toBe(5);
+    expect(uniqueLabels.size).toBeLessThan(bands.length);
   });
 });
 
@@ -113,5 +140,18 @@ describe("expandToCumulativeChartPoints", () => {
       { bandKey: "chart.2", end: 3000, id: "partial-two", start: 2000 },
     ]);
     expect(points.some((point) => point.id.startsWith("zero-"))).toBe(false);
+  });
+
+  it("keeps unique bandKeys when expanding small amounts whose labels collide", () => {
+    for (const amount of [1, 2] as const) {
+      const points = expandToCumulativeChartPoints([
+        { amount, id: "small", name: "Jan" },
+      ]);
+      const bandKeys = points.map((point) => point.bandKey);
+      const expectedKeys = getChartHeightBands(amount).map((band) => band.key);
+
+      expect(new Set(bandKeys).size).toBe(bandKeys.length);
+      expect(expectedKeys).toEqual([...STABLE_BAND_KEYS]);
+    }
   });
 });

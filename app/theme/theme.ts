@@ -15,7 +15,9 @@ const HTML_THEME_CLASSES = {
 } as const satisfies Record<StoredTheme, StoredTheme>;
 
 export function isThemeChoice(value: unknown): value is ThemeChoice {
-  return value === "dark" || value === "light" || value === "system";
+  const isSupportedThemeChoice =
+    value === "dark" || value === "light" || value === "system";
+  return isSupportedThemeChoice;
 }
 
 export function parseStoredTheme(value: unknown): StoredTheme | null {

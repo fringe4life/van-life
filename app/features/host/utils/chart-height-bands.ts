@@ -115,8 +115,10 @@ export function getChartHeightBand(
 ): ChartHeightBand {
   const bands = getChartHeightBands(domainMax);
   const magnitude = Math.abs(amount);
+  const isZeroMagnitude = magnitude === 0;
+  const isInvalidDomain = domainMax <= 0 || !Number.isFinite(domainMax);
 
-  if (magnitude === 0 || domainMax <= 0 || !Number.isFinite(domainMax)) {
+  if (isZeroMagnitude || isInvalidDomain) {
     return bands[0];
   }
 

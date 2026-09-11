@@ -6,7 +6,7 @@
  * Must run in `<head>` before CSS. No-op when `<html>` already has
  * `.dark` or `.light` (cookie / SSR class).
  */
-export const THEME_BOOTSTRAP_SCRIPT = `(function(){try{var r=document.documentElement;if(r.classList.contains("dark")||r.classList.contains("light"))return;var d=window.matchMedia("(prefers-color-scheme: dark)").matches;r.classList.add(d?"dark":"light");r.style.colorScheme=d?"dark":"light";}catch(e){}})();`;
+export const THEME_BOOTSTRAP_SCRIPT = `(function(){try{const r=document.documentElement;if(r.classList.contains("dark")||r.classList.contains("light"))return;const d=window.matchMedia("(prefers-color-scheme: dark)").matches;r.classList.add(d?"dark":"light");r.style.colorScheme=d?"dark":"light";}catch(e){}})();`;
 
 export const THEME_BOOTSTRAP_TAG = `<script data-cfasync="false">${THEME_BOOTSTRAP_SCRIPT}</script>`;
 

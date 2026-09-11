@@ -1099,6 +1099,13 @@
       "table": "van"
     },
     {
+      "columns": ["provider_id", "account_id"],
+      "nameExplicit": true,
+      "name": "account_providerId_accountId_uidx",
+      "entityType": "uniques",
+      "table": "account"
+    },
+    {
       "columns": ["token"],
       "nameExplicit": false,
       "name": "session_token_unique",

@@ -13,6 +13,7 @@ import { createId } from "~/lib/id.server";
 
 const db = createDb(cfEnv.DB);
 
+// Better Auth 1.7.3 AccountKey is (providerId, accountId); issuer identity was reverted; no identityStrategy option.
 export const auth = betterAuth({
   advanced: {
     database: {

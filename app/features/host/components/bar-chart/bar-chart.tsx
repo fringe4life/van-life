@@ -27,10 +27,10 @@ const BAR_RADIUS_PX = 6;
 
 const createCumulativeDefinition = (data: DataArray) => {
   const bandData = expandToCumulativeChartPoints(data);
-  const bandLabels = getChartHeightBands(getChartMagnitudeMax(data)).map(
-    ({ label }) => label
+  const bandKeys = getChartHeightBands(getChartMagnitudeMax(data)).map(
+    ({ key }) => key
   );
-  const colorScale = scaleOrdinal(bandLabels, CHART_HEIGHT_BAND_COLORS);
+  const colorScale = scaleOrdinal(bandKeys, CHART_HEIGHT_BAND_COLORS);
 
   return defineChart({
     color: {
@@ -39,7 +39,7 @@ const createCumulativeDefinition = (data: DataArray) => {
     },
     marks: [
       barY(bandData, {
-        color: "bandLabel",
+        color: "bandKey",
         key: "id",
         radius: BAR_RADIUS_PX,
         stroke: "var(--colors-surface)",

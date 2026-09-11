@@ -36,6 +36,9 @@ describe("injectThemeBootstrapHtml", () => {
     expect(scriptIndex).toBeLessThan(cssIndex);
     expect(html).toContain(`data-cfasync="false"`);
     expect(html).toContain(THEME_BOOTSTRAP_SCRIPT);
+    expect(THEME_BOOTSTRAP_SCRIPT).toContain("const r=");
+    expect(THEME_BOOTSTRAP_SCRIPT).toContain("const d=");
+    expect(THEME_BOOTSTRAP_SCRIPT).not.toContain("var ");
   });
 
   it("is a no-op without a color-scheme meta", () => {

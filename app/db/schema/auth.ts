@@ -1,5 +1,11 @@
 import { sql } from "drizzle-orm";
-import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  integer,
+  sqliteTable,
+  text,
+  unique,
+} from "drizzle-orm/sqlite-core";
 import { uuidv7Column } from "~/db/columns";
 
 export const user = sqliteTable("user", {
@@ -68,7 +74,13 @@ export const account = sqliteTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
   },
-  (table) => [index("account_userId_idx").on(table.userId)]
+  (table) => [
+    index("account_userId_idx").on(table.userId),
+    unique("account_providerId_accountId_uidx").on(
+      table.providerId,
+      table.accountId
+    ),
+  ]
 );
 
 export const verification = sqliteTable(
