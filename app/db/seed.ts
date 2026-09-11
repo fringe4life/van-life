@@ -26,6 +26,7 @@ import {
   shouldCompleteRental,
 } from "./seed-fns";
 
+/** First N users become hosts. Not the van catalog size — that is `vans.ts`. */
 const HOST_COUNT = 3;
 /** Bound params per row for D1 chunking (must stay under ~100/statement). */
 const VAN_COLS = 12;
@@ -94,6 +95,8 @@ const main = async () => {
     const rentsWithIds = rents.map((seedRent) => {
       let vanId = getRandomId(vanRecords);
 
+      // Unbounded. Hangs if every van is already in vansRented.
+      // Invariant + fix: MAX_ACTIVE_SEED_RENTS in seed-fns.ts.
       while (vansRented.has(vanId)) {
         vanId = getRandomId(vanRecords);
       }

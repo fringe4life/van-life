@@ -36,7 +36,16 @@ function clampRentalEndToNow(rentedAt: Date, now = new Date()): Date {
   return endDate.getTime() <= now.getTime() ? endDate : now;
 }
 
-/** Keep a few vans occupied; rest of seed rents are history so charts have volume. */
+/**
+ * Keep a few vans occupied; rest of seed rents are history so charts have volume.
+ *
+ * Agent: `seed.ts` retries `while (vansRented.has(vanId))` with no attempt cap.
+ * Hang iff that set covers every seed van (catalog length ≤ this number).
+ * `HOST_COUNT` is users, not vans. `findRentableVan` is capped (100) and cannot hang.
+ * Safe today because `vans.ts` is larger than this cap. Shrinking the catalog to
+ * ≤ this, or raising this above catalog length, makes the hang reachable.
+ * Then pick from remaining rentable ids and throw if empty — no unbounded retry.
+ */
 const MAX_ACTIVE_SEED_RENTS = 8;
 const COMPLETED_RENT_PROBABILITY = 0.9;
 

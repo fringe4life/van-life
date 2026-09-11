@@ -11,7 +11,7 @@
     "db:migrate:remote": "bun run scripts/flatten-d1-migrations.ts && wrangler d1 migrations apply DB --remote",
     "db:optimize:local": "wrangler d1 execute DB --local --command='PRAGMA optimize'",
     "db:optimize:remote": "wrangler d1 execute DB --remote --command='PRAGMA optimize'",
-    "db:seed": "bun run app/db/seed.ts",
+    "db:seed:local": "bun run app/db/seed.ts",
     "db:seed:remote": "varlock run -- bun run app/db/seed.ts --remote",
     "db:studio:local": "drizzle-kit studio --config drizzle.local.config.ts",
     "db:studio:remote": "varlock run -- drizzle-kit studio",

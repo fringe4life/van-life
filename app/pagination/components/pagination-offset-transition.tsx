@@ -1,5 +1,6 @@
 import {
   addTransitionType,
+  startTransition,
   useLayoutEffect,
   useState,
   ViewTransition,
@@ -91,7 +92,9 @@ const PaginationPageSlice = ({
   if (sliceKey !== prevSliceKey) {
     setPrevSliceKey(sliceKey);
     if (direction) {
-      addTransitionType(direction);
+      startTransition(() => {
+        addTransitionType(direction);
+      });
       setNeedsPagerClear(true);
       if (!isFirstPaint) {
         setPageEpoch((epoch) => epoch + 1);
