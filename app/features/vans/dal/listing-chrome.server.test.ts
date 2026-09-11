@@ -12,6 +12,18 @@ describe("newnessCutoffUtc", () => {
       "2026-01-31T12:00:00.000Z"
     );
   });
+
+  it.each([
+    ["2026-08-29T12:00:00.000Z", "2026-02-28T12:00:00.000Z"],
+    ["2026-08-30T12:00:00.000Z", "2026-02-28T12:00:00.000Z"],
+    ["2026-08-31T12:00:00.000Z", "2026-02-28T12:00:00.000Z"],
+    ["2024-08-31T12:00:00.000Z", "2024-02-29T12:00:00.000Z"],
+  ] as const)(
+    "clamps %s onto last valid UTC day of target month",
+    (source, expected) => {
+      expect(newnessCutoffUtc(new Date(source)).toISOString()).toBe(expected);
+    }
+  );
 });
 
 describe("listingChromeFromRow", () => {

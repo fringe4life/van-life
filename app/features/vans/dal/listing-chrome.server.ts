@@ -5,11 +5,15 @@ import { van } from "~/db/schema/van";
 import { ListingChrome } from "~/features/vans/types";
 
 function newnessCutoffUtc(now = new Date()): Date {
+  const year = now.getUTCFullYear();
+  const month = now.getUTCMonth() - SIX_MONTHS;
+  const lastDay = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+
   return new Date(
     Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth() - SIX_MONTHS,
-      now.getUTCDate(),
+      year,
+      month,
+      Math.min(now.getUTCDate(), lastDay),
       now.getUTCHours(),
       now.getUTCMinutes(),
       now.getUTCSeconds(),
