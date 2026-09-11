@@ -3,20 +3,28 @@ import { css } from "styled-system/css";
 import { Badge } from "~/components/ui/badge";
 import { viewTransitionShare } from "~/components/view-transition-share";
 import { formatEnumLabel } from "~/features/vans/utils/format-enum";
-import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
-import type { VanProps } from "../types";
+import { ListingChrome, type VanProps } from "../types";
 import { vanViewTransitionName } from "./van-view-transitions";
 
 interface VanBadgeProps extends VanProps {}
 
+const vanStatusBadgeClassName = css({
+  insetBlockStart: "-2",
+  insetInlineEnd: "-2",
+  position: "absolute",
+  zIndex: "10",
+});
+
 const VanBadge = ({ van }: VanBadgeProps) => {
-  const state = lowercaseVanState(van);
-  if (state === "available") {
+  const { listingChrome } = van;
+  if (
+    listingChrome !== ListingChrome.IN_REPAIR &&
+    listingChrome !== ListingChrome.NEW
+  ) {
     return null;
   }
 
-  const labelRaw = state === "new" ? "NEW" : (van.state ?? "AVAILABLE");
-  const label = formatEnumLabel(labelRaw);
+  const label = formatEnumLabel(listingChrome);
 
   return (
     <ViewTransition
@@ -24,14 +32,9 @@ const VanBadge = ({ van }: VanBadgeProps) => {
       name={vanViewTransitionName.status(van.id)}
     >
       <Badge
-        className={css({
-          insetBlockStart: "4",
-          insetInlineEnd: "4",
-          position: "absolute",
-          zIndex: "10",
-        })}
+        className={vanStatusBadgeClassName}
         title={label}
-        variant={state}
+        variant={listingChrome}
       >
         {label}
       </Badge>

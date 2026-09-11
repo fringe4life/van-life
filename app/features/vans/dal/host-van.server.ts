@@ -1,6 +1,7 @@
 import { and, asc, desc, eq, gt, lt, type SQL } from "drizzle-orm";
 import type { AppDb } from "~/db/client.server";
 import { van } from "~/db/schema/van";
+import { vanSelectWithChrome } from "~/features/vans/dal/listing-chrome.server";
 import type { BasePaginationParams } from "~/pagination/types";
 import { getCursorMetadata } from "~/pagination/utils/get-cursor-metadata.server";
 import type { UUIDv7 } from "~/types/ids.server";
@@ -11,7 +12,7 @@ export async function getHostVanBySlug(
   vanSlug: string
 ) {
   const [result] = await db
-    .select()
+    .select(vanSelectWithChrome())
     .from(van)
     .where(and(eq(van.hostId, userId), eq(van.slug, vanSlug)))
     .limit(1);
@@ -40,7 +41,7 @@ export function getHostVans(
   const idOrder = orderBy.id === "desc" ? desc(van.id) : asc(van.id);
 
   return db
-    .select()
+    .select(vanSelectWithChrome())
     .from(van)
     .where(and(...conditions))
     .orderBy(idOrder)

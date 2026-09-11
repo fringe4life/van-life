@@ -1,7 +1,10 @@
 import { describe, expect, it } from "bun:test";
-import type { VanModel } from "~/db/client.server";
 import { VanState, VanType } from "~/db/enums";
-import type { HostVanListItem, PendingVan } from "~/features/vans/types";
+import type {
+  HostVanListItem,
+  PendingVan,
+  VanWithChrome,
+} from "~/features/vans/types";
 import type { UUIDv7 } from "~/types/ids.server";
 import { useDisplayHostVans } from "./use-display-host-vans";
 
@@ -16,8 +19,8 @@ const IDS = {
 } as const;
 
 function makeVan(
-  overrides: Partial<VanModel> & Pick<VanModel, "id" | "slug">
-): VanModel {
+  overrides: Partial<VanWithChrome> & Pick<VanWithChrome, "id" | "slug">
+): VanWithChrome {
   return {
     createdAt: new Date("2024-01-01T00:00:00Z"),
     description: "A fine van",
@@ -25,6 +28,7 @@ function makeVan(
     hostId: HOST_ID,
     imageUrl: "https://example.com/van.jpg",
     isRented: false,
+    listingChrome: VanState.AVAILABLE,
     name: "Test Van",
     price: 80,
     state: VanState.AVAILABLE,

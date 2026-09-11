@@ -17,11 +17,8 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { viewTransitionShare } from "~/components/view-transition-share";
-import type { VanModel } from "~/db/client.server";
-import {
-  isVanAvailable,
-  lowercaseVanState,
-} from "~/features/vans/utils/van-state-helpers";
+import type { VanWithChrome } from "~/features/vans/types";
+import { isVanRentable } from "~/features/vans/utils/van-state-helpers";
 import { VanBadge } from "./van-badge";
 import { vanCard } from "./van-card-recipe";
 import { VanPrice } from "./van-price";
@@ -31,19 +28,19 @@ const VAN_DETAIL_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
 const descriptionTransition = viewTransition("vanDescription");
 
 interface VanDetailProps {
-  van: VanModel;
+  van: VanWithChrome;
 }
 
 export default function VanDetail({
   van: { imageUrl, description, type, name, slug: vanSlug },
   van,
 }: VanDetailProps) {
-  const vanIsAvailable = isVanAvailable(van);
-  const rentLabel = vanIsAvailable ? "Rent this van" : "Van not available";
-  const rentTo = vanIsAvailable
+  const vanIsRentable = isVanRentable(van);
+  const rentLabel = vanIsRentable ? "Rent this van" : "Van not available";
+  const rentTo = vanIsRentable
     ? href("/host/rentals/rent/:vanSlug", { vanSlug })
     : href("/vans/:vanSlug", { vanSlug });
-  const rentVariant = vanIsAvailable ? type : "unavailable";
+  const rentVariant = vanIsRentable ? type : "unavailable";
   const rentClassName = badgeVariants({ variant: rentVariant });
   const srcSet = createWebPSrcSet(imageUrl, {
     aspectRatio: "1:1",
@@ -56,7 +53,7 @@ export default function VanDetail({
       <ViewTransition {...viewTransitionShare} name={`card-${van.id}`}>
         <Card
           className={cx(
-            vanCard({ state: lowercaseVanState(van) }),
+            vanCard({ state: van.listingChrome }),
             grid({
               columnGap: "4",
               gridTemplateAreas: {

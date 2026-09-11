@@ -2,8 +2,8 @@ import { describe, expect, it, mock } from "bun:test";
 import { render, screen } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { createMemoryRouter, RouterProvider } from "react-router";
-import type { VanModel } from "~/db/client.server";
 import { VanState, VanType } from "~/db/enums";
+import type { VanWithChrome } from "~/features/vans/types";
 import {
   DEFAULT_CURSOR,
   DEFAULT_LIMIT,
@@ -18,12 +18,13 @@ const van = {
   id: "01900000-0000-7000-8000-000000000010" as UUIDv7,
   imageUrl: "https://example.com/van.jpg",
   isRented: false,
+  listingChrome: VanState.AVAILABLE,
   name: "Test Van",
   price: 80,
   slug: "test-van",
   state: VanState.AVAILABLE,
   type: VanType.SIMPLE,
-} satisfies VanModel;
+} satisfies VanWithChrome;
 
 const seo = {
   description: "A van",

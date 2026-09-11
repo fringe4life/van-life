@@ -1,12 +1,13 @@
-import type { VanModel } from "~/db/client.server";
 import {
   type HostVanListItem,
   isPendingVan,
+  ListingChrome,
   type PendingVan,
+  type VanWithChrome,
 } from "~/features/vans/types";
 import type { UUIDv7 } from "~/types/ids.server";
 
-function pendingToVanCardModel(pending: PendingVan): VanModel {
+function pendingToVanCardModel(pending: PendingVan): VanWithChrome {
   return {
     createdAt: new Date(0),
     description: pending.description,
@@ -16,6 +17,7 @@ function pendingToVanCardModel(pending: PendingVan): VanModel {
     id: pending.id as UUIDv7,
     imageUrl: pending.imageUrl,
     isRented: false,
+    listingChrome: ListingChrome.AVAILABLE,
     name: pending.name,
     price: pending.price,
     slug: pending.slug,
@@ -24,7 +26,7 @@ function pendingToVanCardModel(pending: PendingVan): VanModel {
   };
 }
 
-export function toVanCardModel(item: HostVanListItem): VanModel {
+export function toVanCardModel(item: HostVanListItem): VanWithChrome {
   if (isPendingVan(item)) {
     return pendingToVanCardModel(item);
   }

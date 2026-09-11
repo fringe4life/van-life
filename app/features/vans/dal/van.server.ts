@@ -16,6 +16,7 @@ import { safeParse } from "valibot";
 import type { AppDb, VanModel } from "~/db/client.server";
 import { VanState, type VanType } from "~/db/enums";
 import { van } from "~/db/schema/van";
+import { vanSelectWithChrome } from "~/features/vans/dal/listing-chrome.server";
 import { vanTypeFromClientSchema } from "~/features/vans/schema";
 import type { BasePaginationParams } from "~/pagination/types";
 import { getCursorMetadata } from "~/pagination/utils/get-cursor-metadata.server";
@@ -106,12 +107,17 @@ export function getVans(
   const idOrder = orderBy.id === "desc" ? desc(van.id) : asc(van.id);
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
-  return db.select().from(van).where(whereClause).orderBy(idOrder).limit(take);
+  return db
+    .select(vanSelectWithChrome())
+    .from(van)
+    .where(whereClause)
+    .orderBy(idOrder)
+    .limit(take);
 }
 
 export async function getVanBySlug(db: AppDb, slug: string) {
   const [result] = await db
-    .select()
+    .select(vanSelectWithChrome())
     .from(van)
     .where(eq(van.slug, slug))
     .limit(1);

@@ -4,8 +4,8 @@ import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import { CollectionList } from "~/components/collection-list";
 import { PendingUI } from "~/components/pending-ui";
-import type { VanModel } from "~/db/client.server";
 import { vansParsers } from "~/features/vans/schema";
+import type { VanWithChrome } from "~/features/vans/types";
 import { Pagination } from "~/pagination/components/pagination";
 import { PaginationOffsetTransition } from "~/pagination/components/pagination-offset-transition";
 import type { InitialPaginationProps } from "~/pagination/types";
@@ -22,7 +22,7 @@ import {
   hasActiveVansListFilters,
 } from "./vans-list-state";
 
-export type VansListProps = InitialPaginationProps<VanModel>;
+export type VansListProps = InitialPaginationProps<VanWithChrome>;
 
 const VansList = ({ items: vans, paginationMetadata }: VansListProps) => {
   const [{ cursor, limit, search, types, excludeInRepair, onlyOnSale }] =
@@ -41,7 +41,7 @@ const VansList = ({ items: vans, paginationMetadata }: VansListProps) => {
     ...VANS_LIST_NO_MATCH_STATE,
     metadata: <VansListMetadata {...filterState} />,
   };
-  const renderVanCardProps = (van: VanModel, index: number) =>
+  const renderVanCardProps = (van: VanWithChrome, index: number) =>
     createVansListCardProps(van, index, {
       cursor,
       excludeInRepair,

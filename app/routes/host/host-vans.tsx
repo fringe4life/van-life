@@ -22,7 +22,6 @@ import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
-import type { VanModel } from "~/db/client.server";
 import { VanForm } from "~/features/host/components/van-form";
 import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
 import { VanCard } from "~/features/vans/components/van-card";
@@ -37,7 +36,11 @@ import {
   createHostVan,
   loadHostVansPage,
 } from "~/features/vans/services/host-vans.server";
-import type { HostVanListItem, VanFormFieldKey } from "~/features/vans/types";
+import type {
+  HostVanListItem,
+  VanFormFieldKey,
+  VanWithChrome,
+} from "~/features/vans/types";
 import { isPendingVan, VAN_FORM_FIELDS } from "~/features/vans/types";
 import { pendingVanFromFormData } from "~/features/vans/utils/pending-van-from-form-data";
 import { toVanCardModel } from "~/features/vans/utils/to-van-card-model";
@@ -58,7 +61,7 @@ import type { Route } from "./+types/host-vans";
 
 interface HostVansActionSuccess {
   clientKey?: string;
-  van: VanModel;
+  van: VanWithChrome;
 }
 
 type HostVansActionData = FormActionResult<

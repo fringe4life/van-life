@@ -1,5 +1,6 @@
 import { Database } from "bun:sqlite";
 import { beforeEach, describe, expect, it } from "bun:test";
+import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/bun-sqlite";
 import type { AppDb } from "~/db/client.server";
 import { VanState, VanType } from "~/db/enums";
@@ -240,6 +241,30 @@ describe("getVans", () => {
 
     expect(rows).toHaveLength(1);
     expect(rows[0]?.slug).toBe("modest-explorer");
+  });
+
+  it("derives listingChrome: repair and sale beat newness", async () => {
+    const young = new Date();
+    await db
+      .update(van)
+      .set({ createdAt: young })
+      .where(eq(van.id, IDS.onSaleRugged));
+    await db
+      .update(van)
+      .set({ createdAt: young })
+      .where(eq(van.id, IDS.repairSimple));
+    await db
+      .update(van)
+      .set({ createdAt: new Date("2020-01-01T00:00:00Z") })
+      .where(eq(van.id, IDS.availableSimple));
+
+    const rows = await getVans(db, baseQuery);
+    const byId = Object.fromEntries(rows.map((row) => [row.id, row]));
+
+    expect(byId[IDS.repairSimple]?.listingChrome).toBe(VanState.IN_REPAIR);
+    expect(byId[IDS.onSaleRugged]?.listingChrome).toBe(VanState.ON_SALE);
+    expect(byId[IDS.availableSimple]?.listingChrome).toBe(VanState.AVAILABLE);
+    expect(byId[IDS.availableLuxury]?.listingChrome).toBe("NEW");
   });
 
   it("applies cursor while filters are active", async () => {

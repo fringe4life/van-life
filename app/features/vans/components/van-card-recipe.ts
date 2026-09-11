@@ -4,20 +4,20 @@ const vanCard = cva({
   base: {},
   variants: {
     state: {
-      available: {},
-      new: {
-        backgroundColor: "status.new/10",
-        borderColor: "status.new",
-        borderStyle: "solid",
-        borderWidth: "2",
-      },
-      repair: {
+      AVAILABLE: {},
+      IN_REPAIR: {
         backgroundColor: "status.repair/10",
         borderColor: "status.repair",
         borderStyle: "solid",
         borderWidth: "2",
       },
-      sale: {
+      NEW: {
+        backgroundColor: "status.new/10",
+        borderColor: "status.new",
+        borderStyle: "solid",
+        borderWidth: "2",
+      },
+      ON_SALE: {
         backgroundColor: "status.sale/10",
         borderColor: "status.sale",
         borderStyle: "solid",

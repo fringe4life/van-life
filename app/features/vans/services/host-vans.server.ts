@@ -1,6 +1,7 @@
 import type { InferOutput } from "valibot";
 import type { AppDb } from "~/db/client.server";
 import { getHostVans } from "~/features/vans/dal/host-van.server";
+import { listingChromeFromRow } from "~/features/vans/dal/listing-chrome.server";
 import { createVan } from "~/features/vans/dal/van.server";
 import type { addVanSchema } from "~/features/vans/schema.server";
 import {
@@ -51,5 +52,11 @@ export function createHostVan(
     state: validated.state ?? null,
   };
 
-  return tryCatch(() => createVan(db, resultWithHostId));
+  return tryCatch(async () => {
+    const created = await createVan(db, resultWithHostId);
+    return {
+      ...created,
+      listingChrome: listingChromeFromRow(created.state, created.createdAt),
+    };
+  });
 }

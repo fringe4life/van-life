@@ -1,9 +1,9 @@
 import type { FetcherStateObject } from "~/components/form/types";
-import type { VanModel } from "~/db/client.server";
 import type {
   HostVanListItem,
   VanFormFieldErrors,
   VanFormValues,
+  VanWithChrome,
 } from "~/features/vans/types";
 import { isPendingVan } from "~/features/vans/types";
 import type { Limit } from "~/pagination/types";
@@ -15,7 +15,7 @@ type CreateVanFetcherData = Prettify<
     fieldErrors?: VanFormFieldErrors;
     formData?: VanFormValues;
     formError?: string;
-    van?: VanModel;
+    van?: VanWithChrome;
   }
 >;
 

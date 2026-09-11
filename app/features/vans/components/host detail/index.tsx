@@ -17,7 +17,6 @@ import {
 } from "~/components/ui/card";
 import { viewTransitionShare } from "~/components/view-transition-share";
 import type { VanProps } from "~/features/vans/types";
-import { lowercaseVanState } from "~/features/vans/utils/van-state-helpers";
 import { navLinkClassName } from "~/navigation/styles";
 import type { Id, Prettify } from "~/types";
 import { VanBadge } from "../van-badge";
@@ -81,7 +80,7 @@ const VanDetailCardRoot = ({
         )}
       >
         <ViewTransition {...viewTransitionShare} name={`card-${van.id}`}>
-          <Card className={vanCard({ state: lowercaseVanState(van) })}>
+          <Card className={vanCard({ state: van.listingChrome })}>
             <CardHeader
               className={grid({
                 "@detail/md": {

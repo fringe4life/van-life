@@ -1,11 +1,11 @@
 import { createContext, use } from "react";
-import type { VanModel } from "~/db/client.server";
+import type { VanWithChrome } from "~/features/vans/types";
 import type { Maybe } from "~/types";
 
 /**
  * Context for sharing van data within VanDetailCard compound component
  */
-const VanDetailCardContext = createContext<Maybe<VanModel>>(null);
+const VanDetailCardContext = createContext<Maybe<VanWithChrome>>(null);
 
 const useVanDetailCard = () => {
   const van = use(VanDetailCardContext);

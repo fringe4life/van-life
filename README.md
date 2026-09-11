@@ -56,7 +56,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - ⭐ **Review System** (rate and review rentals; `reviewRecipe` / `ReviewBadge` + container-query layout)
 - 📈 **Host Dashboard** (modular sections — income, reviews, vans, wallet — with TanStack Charts bars; wallet form uses `@container/wallet` two-column layout)
 - 💰 **Financial Management** — `/host/rental-activity` (rental pay/return) vs `/host/wallet-activity` (deposit/withdraw); typed transaction rows + pagination
-- 🏷️ **Van State System** (NEW, IN_REPAIR, ON_SALE, AVAILABLE with discount pricing)
+- 🏷️ **Van listing chrome** — stored `VanState` (`AVAILABLE` / `IN_REPAIR` / `ON_SALE`); `NEW` derived at read; exclusive card wash + repair/new badge
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
 - 🎨 **Semantic design system** (`DESIGN.md` + `theme/`) — token paths (`surface`, `muted.foreground`, `border.subtle`) not raw palette at call sites
 - 🧑‍💻 **TypeScript** throughout with strict type checking
@@ -181,13 +181,13 @@ app/
 │       │   ├── van-filters/  # VanFilters, type/state sections, facet config, shared filter types
 │       │   └── vans-list/    # Public catalog list + metadata/state helpers
 │       ├── constants/  # vans-constants.ts
-│       ├── dal/        # Van Drizzle repositories (*.server.ts)
+│       ├── dal/        # Van Drizzle repositories + listing-chrome.server.ts
 │       ├── services/   # catalog, host-vans, van-detail
 │       ├── hooks/      # use-van-filters, host-vans list reducer, display hooks, optimistic filter hooks
 │       ├── schema.ts          # Van type/URL Valibot schemas + nuqs parsers
 │       ├── schema.server.ts   # addVan form schema
-│       ├── types.ts    # Van-specific TypeScript types (incl. VanFormValues / field errors)
-│       └── utils/      # pricing, van-filter-url, to-van-form-values, pending-van-from-form-data
+│       ├── types.ts    # ListingChrome (VanState + NEW), VanWithChrome, VanFormValues
+│       └── utils/      # pricing, van-filter-url, isVanRentable, to-van-form-values, pending-van-from-form-data
 ├── db/                 # Drizzle schema, client, seed, migrations
 │   ├── client.server.ts    # createDb(d1) → drizzle-orm/d1
 │   ├── d1-http.server.ts   # Remote D1 HTTP (`/raw`) for seed; tryCatch + split helpers
@@ -260,7 +260,7 @@ docs/
 ├── rust-react-compiler.md # Native React Compiler via oxc-transform-react (Vite 8)
 ├── react-view-transition.md # React 19.3 ViewTransition + Panda bags
 ├── theme-toggle-ssr.md     # Cookie theme + FOUC-free SSR bootstrap
-├── van-state-stored-vs-derived.md # Stored vs client-derived van state
+├── van-state-stored-vs-derived.md # Stored VanState vs derived listingChrome / occupancy
 ├── fallow-cursor-mcp.md    # Fallow MCP + Cursor hook
 ├── react-stinky-report.md  # React Stinky smell sweep + fixes
 ├── fallow-health-backlog.md # Code health backlog from fallow analysis
@@ -293,7 +293,7 @@ docs/
   - **Drizzle relations v2** (`defineRelations` in `app/db/relations.ts`; passed to `drizzle(d1, { relations })`)
   - **Van search** — case-insensitive `LIKE` on name/description (word-split)
   - **Indexes** for host/type composites, rent pagination (`renterId`/`rentedTo`/`id`), review FKs; unique `van.slug`
-  - **Van state** — NEW is client-derived; IN_REPAIR / ON_SALE / AVAILABLE stored
+  - **Van state** — stored `AVAILABLE` / `IN_REPAIR` / `ON_SALE`; `listingChrome` SELECT CASE adds synthetic `NEW` (6-month cutoff); occupancy is open rent, not `AVAILABLE`
   - **Slug-based routing** with Valibot regex + max length validation
   - **Branded UUID v7 types** via a unique-symbol brand and `parseUuidV7` at trust boundaries
   - **`dbContext` middleware** — shares `AppDb` from `env.DB` with loaders/actions
@@ -309,7 +309,7 @@ bun run db:migrate:local
 bun run db:migrate:remote
 
 # Seed (needs ≥3 users via sign-up first)
-bun run db:seed          # local
+bun run db:seed:local    # local
 bun run db:seed:remote   # remote D1 HTTP
 
 # Optional: run SQLite PRAGMA optimize after heavy seed/migrate
@@ -579,18 +579,24 @@ The application features a comprehensive **van state management system** with dy
 
 ### Van States
 
-- **NEW** - Client-derived state for vans created within the last 6 months
-- **IN_REPAIR** - Vans currently under maintenance (not rentable)
-- **ON_SALE** - Vans with discount pricing applied
-- **AVAILABLE** - Standard rentable vans
+Stored host lifecycle (`van.state`), not occupancy:
+
+- **IN_REPAIR** — under maintenance (not rentable)
+- **ON_SALE** — discount pricing; still rentable
+- **AVAILABLE** — default listing lifecycle (not “no open rent”)
+
+`listingChrome` (`VanState | "NEW"`) is exclusive card chrome, priority repair → sale → newness → none:
+
+- **NEW** — derived at read when `AVAILABLE` and `createdAt` is within 6 UTC months (`listing-chrome.server.ts` CASE; JS helper on create `RETURNING`)
+- Occupancy is an open `rent` row (`rentedTo IS NULL`); `isRented` is the claim lock
+- Rentable = `isVanRentable` (`!isRented && state !== IN_REPAIR`)
 
 ### Dynamic Pricing Features
 
 - **Discount System** - ON_SALE vans can have 5-100% discounts
 - **Price Display** - Original price with strikethrough, discounted price highlighted
 - **VanPrice Component** - Reusable component for consistent pricing display
-- **Smart Badges** - VanBadge component shows relevant state information
-- **Client-side Derivation** - NEW state computed from createdAt timestamp
+- **Smart Badges** - VanBadge shows `IN_REPAIR` or `NEW` only (sale is chrome + strikethrough, no status badge)
 
 ### Implementation
 
@@ -740,11 +746,11 @@ The `toPagination` utility implements correct cursor pagination logic:
 
 ## Van card recipe
 
-`vanCard` Panda recipe in `app/features/vans/components/van-card-recipe.ts` maps van state to border/wash tokens. Morph name lives on React `<ViewTransition name={\`card-${van.id}\`}>` (not inline CSS).
+`vanCard` Panda recipe in `app/features/vans/components/van-card-recipe.ts` maps `listingChrome` (`AVAILABLE` / `IN_REPAIR` / `ON_SALE` / `NEW`) to border/wash tokens. Morph name lives on React `<ViewTransition name={\`card-${van.id}\`}>` (not inline CSS).
 
 ```tsx
 <ViewTransition {...viewTransitionShare} name={`card-${van.id}`}>
-  <Card className={vanCard({ className, state: lowercaseVanState(van) })}>
+  <Card className={vanCard({ className, state: van.listingChrome })}>
 ```
 
 **Used in:** `VanCard`, `VanDetail`, `VanDetailCard`
@@ -940,7 +946,7 @@ bun install
 bun run db:generate
 bun run db:migrate:local
 # Sign up ≥3 users in the app, then:
-bun run db:seed
+bun run db:seed:local
 
 # Start development server (Varlock loads env; Vite CF plugin provides env.DB)
 bun run dev
@@ -1014,7 +1020,7 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run db:migrate:remote` – Flatten + apply D1 migrations remotely
 - `bun run db:optimize:local` – `PRAGMA optimize` on local Miniflare D1
 - `bun run db:optimize:remote` – `PRAGMA optimize` on remote D1
-- `bun run db:seed` – Seed local Miniflare D1
+- `bun run db:seed:local` – Seed local Miniflare D1
 - `bun run db:seed:remote` – Seed remote D1 via HTTP API
 - `bun run db:studio:local` – Drizzle Studio against local Miniflare SQLite
 - `bun run db:studio:remote` – Drizzle Studio against remote D1 (`d1-http`)
