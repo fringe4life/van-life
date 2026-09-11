@@ -1,4 +1,6 @@
 /* ─── IMPORTS & FONTS ────────────────────────────────────────────────────── */
+/* biome-ignore-all lint/correctness/noUnknownTypeSelector: CSS View Transition pseudo-elements */
+
 @layer reset, base, tokens, recipes, utilities;
 
 @font-face {
@@ -11,105 +13,41 @@
 }
 
 /* ─── VIEW TRANSITIONS ───────────────────────────────────────────────────── */
-@view-transition {
+/* @view-transition {
   navigation: auto;
-}
+} */
 
 /* Set the shared infrastructure for all transition elements */
-::view-transition-group(*) {
+/* ::view-transition-group(*) {
   animation-duration: 300ms;
   animation-fill-mode: both;
-}
-
+} */
 /* Children inherit the duration and fill-mode, so we only need the names */
 /* only-child means there is not an after snapshot */
 /* i.e. the card is no longer on the page after being filtered out */
-::view-transition-old(*):only-child {
-  --fade-to: 0;
+/* ::view-transition-old(*):only-child {
   --scale-to: 0;
-  animation-name: fade, scale;
-}
+  animation-name: fade-out, scale;
+} */
 
 /* only-child means there is not a before snapshot */
 /* i.e. the card is new to being on the page */
-::view-transition-new(*):only-child {
-  animation-name: fade, scale;
-}
-
+/* ::view-transition-new(*):only-child {
+  animation-name: fade-in, scale;
+} */
+/* ::view-transition-new(host-chart):only-child  */
 ::view-transition-new(home-image):only-child,
-::view-transition-new(about-image):only-child,
-::view-transition-new(host-chart):only-child {
-  --fade-from: 0.5;
+::view-transition-new(about-image):only-child {
   --scale-from: 0.5;
-  --slide-x-from: -100vh;
-  animation-name: fade, scale, slide-x;
+  --slide-distance: -100vh;
+  animation-name: fade-in, scale, slide-in;
 }
 
 /* view transition for hero elements entering and leaving a route */
 ::view-transition-old(home-image):only-child,
-::view-transition-old(about-image):only-child,
-::view-transition-old(host-chart):only-child {
-  --fade-to: 0.5;
+::view-transition-old(about-image):only-child {
+  /* ::view-transition-old(host-chart):only-child { */
   --scale-to: 0.5;
-  --slide-x-to: 100vh;
-  animation-name: fade, scale, slide-x;
-}
-
-/* Rising Deck transition for lists */
-::view-transition-new(host-list):only-child {
-  --fade-from: 0;
-  --slide-y-from: 4rem;
-  --scale-from: 0.95;
-  animation:
-    fade 400ms ease-out both,
-    slide-y 600ms var(--easings-spring-soft) both,
-    scale 600ms var(--easings-spring-soft) both;
-}
-
-::view-transition-old(host-list):only-child {
-  --fade-to: 0;
-  --slide-y-to: 2rem;
-  --scale-to: 0.98;
-  animation:
-    fade 300ms ease-in both,
-    slide-y 300ms ease-in both,
-    scale 300ms ease-in both;
-}
-
-/* ─── SCROLL DRIVEN ANIMATIONS ───────────────────────────────────────────── */
-@supports (animation-timeline: scroll()) {
-  .nav-shell-scroll {
-    animation: nav-shell-scroll 1ms linear both;
-    animation-range: 0 var(--nav-shell-scroll-range);
-    animation-timeline: scroll(root block);
-  }
-}
-
-.scroll-sm,
-.scroll-md,
-.scroll-lg {
-  animation-timeline: view();
-  animation-range: entry;
-  animation-fill-mode: both;
-}
-
-.scroll-md {
-  animation-range: entry 0% cover 10%;
-}
-
-.scroll-sm:nth-child(n + 3),
-.scroll-md:nth-child(n + 5),
-.scroll-lg:nth-child(n + 7) {
-  --fade-from: 0.5;
-  --scale-from: 0.5;
-  --slide-x-from: -100vh;
-  animation-name: fade, scale, slide-x;
-  animation-duration: 1ms;
-  animation-fill-mode: both;
-}
-
-.scroll-sm:nth-child(2n):nth-child(n + 3),
-.scroll-md:nth-child(2n):nth-child(n + 6),
-.scroll-lg:nth-child(2n):nth-child(n + 8) {
-  --slide-x-from: 100vh;
+  --slide-distance: 100vh;
+  animation-name: fade-out, scale, slide-out;
 }

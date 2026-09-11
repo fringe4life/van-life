@@ -1,6 +1,7 @@
 import { TransactionType } from "~/db/enums";
+import { expandSeed, SEED_VOLUME, staggerDates } from "./scale";
 
-export const transactions = [
+const transactionTemplates = [
   {
     amount: 2500.0,
     createdAt: new Date("2024-01-15T10:30:00Z"),
@@ -151,4 +152,8 @@ export const transactions = [
     createdAt: new Date("2024-12-22T09:45:00Z"),
     type: TransactionType.WITHDRAW,
   },
-];
+] as const;
+
+export const transactions = staggerDates(
+  expandSeed(transactionTemplates, SEED_VOLUME.transactions)
+);

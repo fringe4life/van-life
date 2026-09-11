@@ -19,7 +19,7 @@ export default {
       },
       {
         files: [
-          "app/features/navigation/components/mobile-nav.tsx",
+          "app/navigation/components/mobile-nav.tsx",
           "app/features/vans/components/van-filters/van-filters.tsx",
         ],
         rules: ["react-doctor/no-unknown-property"],

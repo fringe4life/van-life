@@ -2,6 +2,7 @@ import type { VanInsert } from "~/db/client.server";
 import { VanType } from "~/db/enums";
 import { getRecentDate } from "../seed-fns";
 
+/** Length must stay > MAX_ACTIVE_SEED_RENTS in seed-fns.ts or seed rent assignment can hang. */
 export const vans: Omit<VanInsert, "slug" | "hostId" | "id" | "isRented">[] = [
   {
     createdAt: getRecentDate(2),

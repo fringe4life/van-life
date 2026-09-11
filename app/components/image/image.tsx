@@ -52,7 +52,7 @@ const Image = ({
           textAlign: "middle",
           textDecoration: "none",
           textStyle: "italic",
-          transitionDuration: "200ms",
+          transitionDuration: "normal",
           transitionProperty: "opacity",
           transitionTimingFunction: "ease-in-out",
         }),

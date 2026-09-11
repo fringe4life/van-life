@@ -25,11 +25,11 @@ import {
   type HostRentedVan,
   loadReturnRentalContext,
 } from "~/features/host/services/rental.server";
-import { authContext } from "~/features/middleware/contexts/auth";
-import { dbContext } from "~/features/middleware/contexts/db";
-import { getHostRedirectUrl } from "~/features/middleware/utils/auth-redirect";
 import { VanCard } from "~/features/vans/components/van-card";
 import { getCost } from "~/features/vans/utils/get-cost";
+import { authContext } from "~/middleware/contexts/auth";
+import { dbContext } from "~/middleware/contexts/db";
+import { getHostRedirectUrl } from "~/middleware/utils/auth-redirect";
 import {
   domainErrorToServiceResult,
   isDomainError,

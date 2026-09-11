@@ -1,7 +1,7 @@
 import { generateRobotsTxt } from "@forge42/seo-tools/robots";
 import { href } from "react-router";
-import { getSiteOrigin } from "~/features/seo/get-site-origin.server";
 import { env } from "~/lib/env.server";
+import { getSiteOrigin } from "~/seo/get-site-origin.server";
 import type { Route } from "./+types/robots.txt";
 
 export const loader = ({ request }: Route.LoaderArgs) => {
@@ -14,7 +14,14 @@ export const loader = ({ request }: Route.LoaderArgs) => {
       ...(isProduction
         ? {
             allow: ["/"],
-            disallow: ["/host/", "/login", "/signup", "/signout", "/api/"],
+            disallow: [
+              "/host/",
+              "/login",
+              "/signup",
+              "/signout",
+              "/theme",
+              "/api/",
+            ],
           }
         : { disallow: ["/"] }),
       sitemap: [`${origin}${href("/sitemap.xml")}`],

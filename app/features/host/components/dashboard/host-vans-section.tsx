@@ -3,9 +3,9 @@ import { css, cx } from "styled-system/css";
 import { DeferredItems } from "~/components/deferred/items";
 import type { VanModel } from "~/db/client.server";
 import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
-import { PaginatedItemsSkeleton } from "~/features/pagination/components/paginated-items-skeleton";
 import { VanCard } from "~/features/vans/components/van-card";
 import { VanCardSkeleton } from "~/features/vans/components/van-card-skeleton";
+import { PaginatedItemsSkeleton } from "~/pagination/components/paginated-items-skeleton";
 import { gridMax } from "~/styles";
 
 const renderHostVanCardProps = (item: VanModel, index: number) => ({

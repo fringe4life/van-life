@@ -30,9 +30,30 @@ function getEndDate(rentedAt: Date) {
   );
 }
 
-function randomTrueOrFalse() {
-  const HalfProbability = 0.5;
-  return getRandomNumber(0, 1) > HalfProbability;
+/** Completed seed rents must not land after `now` — staggerDates can sit at Date.now(). */
+function clampRentalEndToNow(rentedAt: Date, now = new Date()): Date {
+  const endDate = getEndDate(rentedAt);
+  return endDate.getTime() <= now.getTime() ? endDate : now;
+}
+
+/**
+ * Keep a few vans occupied; rest of seed rents are history so charts have volume.
+ *
+ * Agent: `seed.ts` retries `while (vansRented.has(vanId))` with no attempt cap.
+ * Hang iff that set covers every seed van (catalog length ≤ this number).
+ * `HOST_COUNT` is users, not vans. `findRentableVan` is capped (100) and cannot hang.
+ * Safe today because `vans.ts` is larger than this cap. Shrinking the catalog to
+ * ≤ this, or raising this above catalog length, makes the hang reachable.
+ * Then pick from remaining rentable ids and throw if empty — no unbounded retry.
+ */
+const MAX_ACTIVE_SEED_RENTS = 8;
+const COMPLETED_RENT_PROBABILITY = 0.9;
+
+function shouldCompleteRental(activeCount: number): boolean {
+  if (activeCount >= MAX_ACTIVE_SEED_RENTS) {
+    return true;
+  }
+  return Math.random() < COMPLETED_RENT_PROBABILITY;
 }
 
 function getRandomNumber(min = 3, max = 21) {
@@ -118,31 +139,16 @@ function getRandomDiscount(min = 5, max = 100): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRecentRentalDate(): Date {
-  const DaysInSixWeeks = 42;
-  const now = new Date();
-  const sixWeeksAgo = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() - DaysInSixWeeks
-  );
-  const startMs = sixWeeksAgo.getTime();
-  const endMs = now.getTime();
-  const randomTime = startMs + Math.random() * (endMs - startMs);
-  return new Date(randomTime);
-}
-
 export {
   chunksOf,
+  clampRentalEndToNow,
   clearTables,
   findRentableVan,
   getCost,
-  getEndDate,
   getRandomDiscount,
   getRandomId,
   getRecentDate,
-  getRecentRentalDate,
   getVanState,
   isVanRentable,
-  randomTrueOrFalse,
+  shouldCompleteRental,
 };

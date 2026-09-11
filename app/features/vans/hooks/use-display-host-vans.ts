@@ -1,12 +1,12 @@
 import type { FetcherStateObject } from "~/components/form/types";
 import type { VanModel } from "~/db/client.server";
-import type { Limit } from "~/features/pagination/types";
 import type {
   HostVanListItem,
   VanFormFieldErrors,
   VanFormValues,
 } from "~/features/vans/types";
 import { isPendingVan } from "~/features/vans/types";
+import type { Limit } from "~/pagination/types";
 import type { Ok, Prettify } from "~/types";
 
 type CreateVanFetcherData = Prettify<

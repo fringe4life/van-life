@@ -27,9 +27,9 @@ import {
 } from "~/features/host/utils/chart-points.server";
 import type { ChartGranularity } from "~/features/host/utils/pick-chart-granularity.server";
 import { toRentalTransactionListItem } from "~/features/host/utils/to-transaction-list-item.server";
-import type { PaginationParams } from "~/features/pagination/types";
-import { resolveSortedCursor } from "~/features/pagination/utils/resolve-sorted-cursor.server";
 import { COMMON_SORT_CONFIGS } from "~/lib/generic-sorting.server";
+import type { PaginationParams } from "~/pagination/types";
+import { resolveSortedCursor } from "~/pagination/utils/resolve-sorted-cursor.server";
 import type { UUIDv7 } from "~/types/ids.server";
 
 const renter = alias(user, "renter");

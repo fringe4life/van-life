@@ -12,8 +12,7 @@ const VanCardSkeleton = () => (
         // biome-ignore assist/source/noDuplicateClasses: css styles
         containIntrinsicSize: "auto 300px auto 200px",
         contentVisibility: "auto",
-      }),
-      "scroll-md"
+      })
     )}
   >
     <Card

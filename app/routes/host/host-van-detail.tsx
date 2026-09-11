@@ -9,12 +9,12 @@ import {
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
 import { determineHostVansRoute } from "~/features/host/utils/determine-host-vans-route";
-import { authContext } from "~/features/middleware/contexts/auth";
-import { dbContext } from "~/features/middleware/contexts/db";
-import { loadHostSearchParams } from "~/features/pagination/loaders.server";
-import { buildVanUrl } from "~/features/pagination/utils/build-search-params";
 import { VanDetailCard } from "~/features/vans/components/host detail";
 import { getHostVanBySlug } from "~/features/vans/dal/host-van.server";
+import { authContext } from "~/middleware/contexts/auth";
+import { dbContext } from "~/middleware/contexts/db";
+import { loadHostSearchParams } from "~/pagination/loaders.server";
+import { buildVanUrl } from "~/pagination/utils/build-search-params";
 import { notFound } from "~/utils/errors/not-found";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import type { Route } from "./+types/host-van-detail";

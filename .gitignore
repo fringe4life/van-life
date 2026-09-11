@@ -23,7 +23,9 @@ worker-configuration.d.ts
 fallow-viz.html
 
 
-.kombai
+# Kombai local indexes / stack; keep shared MCP servers
+.kombai/*
+!.kombai/mcp.json
 
 # Panda
 styled-system

@@ -1,7 +1,8 @@
-import { lazy, Suspense } from "react";
-import { css } from "styled-system/css";
+import { lazy, Suspense, ViewTransition } from "react";
 import { OutcomeState } from "~/components/outcome-state";
 import type { CollectionOutcomeProps } from "~/components/types";
+import { chromeViewTransitionName } from "~/components/view-transition-names";
+import { viewTransitionPage } from "~/components/view-transition-share";
 import type { Data, DataArray } from "~/features/host/types";
 import type { Maybe, Prettify } from "~/types";
 import { getCollectionState } from "~/utils/errors/get-collection-state";
@@ -27,7 +28,10 @@ const LazyBarChart = ({
   });
   if (!collectionState.ok) {
     return (
-      <div className={css({ viewTransitionName: "host-chart" })}>
+      <ViewTransition
+        {...viewTransitionPage}
+        name={chromeViewTransitionName.hostChart}
+      >
         {collectionState.config ? (
           <OutcomeState
             kind={collectionState.kind}
@@ -36,7 +40,7 @@ const LazyBarChart = ({
         ) : (
           <div aria-hidden="true" />
         )}
-      </div>
+      </ViewTransition>
     );
   }
   return (

@@ -15,18 +15,18 @@ import { transactions } from "./seed-data/transactions";
 import { vans } from "./seed-data/vans";
 import {
   chunksOf,
+  clampRentalEndToNow,
   clearTables,
   findRentableVan,
   getCost,
-  getEndDate,
   getRandomDiscount,
   getRandomId,
-  getRecentRentalDate,
   getVanState,
   isVanRentable,
-  randomTrueOrFalse,
+  shouldCompleteRental,
 } from "./seed-fns";
 
+/** First N users become hosts. Not the van catalog size — that is `vans.ts`. */
 const HOST_COUNT = 3;
 /** Bound params per row for D1 chunking (must stay under ~100/statement). */
 const VAN_COLS = 12;
@@ -95,6 +95,8 @@ const main = async () => {
     const rentsWithIds = rents.map((seedRent) => {
       let vanId = getRandomId(vanRecords);
 
+      // Unbounded. Hangs if every van is already in vansRented.
+      // Invariant + fix: MAX_ACTIVE_SEED_RENTS in seed-fns.ts.
       while (vansRented.has(vanId)) {
         vanId = getRandomId(vanRecords);
       }
@@ -119,9 +121,9 @@ const main = async () => {
       }
       const renterId = getRandomId(renterPool);
 
-      const recentRentalDate = getRecentRentalDate();
-      const rentedTo = randomTrueOrFalse()
-        ? getEndDate(recentRentalDate)
+      const { rentedAt } = seedRent;
+      const rentedTo = shouldCompleteRental(vansRented.size)
+        ? clampRentalEndToNow(rentedAt)
         : null;
       if (rentedTo) {
         vansReturned.push(vanId);
@@ -130,9 +132,8 @@ const main = async () => {
       }
 
       return {
-        ...seedRent,
         hostId,
-        rentedAt: recentRentalDate,
+        rentedAt,
         rentedTo,
         renterId,
         vanId,
@@ -192,12 +193,20 @@ const main = async () => {
     );
 
     const completedRents = createdRents.filter((r) => r.rentedTo !== null);
+    if (completedRents.length === 0) {
+      throw new Error(
+        "Seed produced no completed rents; cannot attach reviews"
+      );
+    }
 
-    const reviewsWithIds = reviews.map((seedReview) => ({
-      ...seedReview,
-      rentId: getRandomId(completedRents),
-      userId: getRandomId(users),
-    }));
+    const reviewsWithIds = reviews.map((seedReview, index) => {
+      const completedRent = completedRents[index % completedRents.length];
+      return {
+        ...seedReview,
+        rentId: completedRent.id,
+        userId: completedRent.renterId,
+      };
+    });
 
     await Promise.all(
       [...chunksOf(reviewsWithIds, REVIEW_COLS)].map((chunk) =>
@@ -205,9 +214,9 @@ const main = async () => {
       )
     );
 
-    const transactionsWithIds = transactions.map((seedTx) => ({
+    const transactionsWithIds = transactions.map((seedTx, index) => ({
       ...seedTx,
-      userId: getRandomId(users),
+      userId: hosts[index % hosts.length].id,
     }));
 
     await Promise.all(
@@ -220,9 +229,33 @@ const main = async () => {
       (host) => vansWithHosts.filter((v) => v.hostId === host.id).length
     );
 
+    const rentHostById = new Map(createdRents.map((r) => [r.id, r.hostId]));
+    const reviewCountByHost = new Map<string, number>();
+    for (const rev of reviewsWithIds) {
+      const hostId = rentHostById.get(rev.rentId);
+      if (!hostId) {
+        continue;
+      }
+      reviewCountByHost.set(hostId, (reviewCountByHost.get(hostId) ?? 0) + 1);
+    }
+
+    const hostLines = hosts.map((host) => {
+      const hostRentCount = rentsWithIds.filter(
+        (r) => r.hostId === host.id
+      ).length;
+      const hostReviewCount = reviewCountByHost.get(host.id) ?? 0;
+      const hostWalletCount = transactionsWithIds.filter(
+        (tx) => tx.userId === host.id
+      ).length;
+      return `${host.name}: ${hostRentCount} rents / ${hostReviewCount} reviews / ${hostWalletCount} wallet txs`;
+    });
+
     console.info(
       `Seed complete. ${vans.length} vans (${vansPerHost.join("/")} per host), ${createdRents.length} rents, ${rentalTransactions.length} rental txs, ${reviewsWithIds.length} reviews, ${transactionsWithIds.length} user txs.`
     );
+    for (const line of hostLines) {
+      console.info(`  ${line}`);
+    }
   } finally {
     await proxy?.dispose();
   }

@@ -63,7 +63,7 @@ Official migration docs go **data → framework**, not the reverse. [upgrading/r
 | File | Usage |
 |------|--------|
 | `package.json` | `@react-router/dev@8.3.1`. Scripts: `react-router dev`, `react-router build`, `react-router typegen`. |
-| `vite.config.ts` | `reactRouter()` from `@react-router/dev/vite`. Comment: RR owns JSX/HMR (import `reactCompilerPreset` only, not `react()`). |
+| `vite.config.ts` | `reactRouter()` from `@react-router/dev/vite`. Comment: RR owns JSX/HMR (do not add `react()` from `@vitejs/plugin-react`). Native compiler via `@acusti/vite-plugin-react-compiler`. |
 | `react-router.config.ts` | `ssr: true`, `future.unstable_optimizeDeps: true`. `prerender` commented. Both flags are `[MODES: framework]`. [Rendering](https://reactrouter.com/start/framework/rendering), [Future flags](https://reactrouter.com/upgrading/future) |
 | `app/routes.ts` | `route`, `index`, `layout`, `prefix` from `@react-router/dev/routes`. |
 | `tsconfig.json` | `"rootDirs": [".", "./.react-router/types"]`, include `.react-router/types/**/*`. |

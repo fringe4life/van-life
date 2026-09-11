@@ -1,5 +1,5 @@
 import { css, cx } from "styled-system/css";
-import { navLinkClassName } from "~/features/navigation/styles";
+import { navLinkClassName } from "~/navigation/styles";
 
 const hostNavLinkLayoutClassName = css({
   _currentPage: {

@@ -1,5 +1,6 @@
+import { ViewTransition } from "react";
 import { href } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css, cx, viewTransition } from "styled-system/css";
 import { cq, grid, hstack } from "styled-system/patterns";
 import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
 import { Image } from "~/components/image/image";
@@ -15,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { viewTransitionShare } from "~/components/view-transition-share";
 import type { VanModel } from "~/db/client.server";
 import {
   isVanAvailable,
@@ -23,8 +25,10 @@ import {
 import { VanBadge } from "./van-badge";
 import { vanCard } from "./van-card-recipe";
 import { VanPrice } from "./van-price";
+import { vanViewTransitionName } from "./van-view-transitions";
 
 const VAN_DETAIL_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
+const descriptionTransition = viewTransition("vanDescription");
 
 interface VanDetailProps {
   van: VanModel;
@@ -49,159 +53,186 @@ export default function VanDetail({
 
   return (
     <div className={cx(cq({ name: "card-full" }), css({ contain: "content" }))}>
-      <Card
-        className={cx(
-          vanCard({ state: lowercaseVanState(van) }),
-          grid({
-            columnGap: "4",
-            gridTemplateAreas: {
-              "@card-full/xl":
-                // biome-ignore assist/source/noDuplicateClasses: repeated areas intentionally span detail tracks
-                '"media content" "media content" "media content"',
-              base: '"media" "content" "footer"',
-            },
-            gridTemplateColumns: {
-              "@card-full/xl": "repeat(2, minmax(0, 1fr))",
-            },
-            // biome-ignore assist/source/noDuplicateClasses: repeated auto rows intentionally define detail tracks
-            gridTemplateRows: { "@card-full/xl": "auto auto 1fr" },
-            rowGap: "2",
-          })
-        )}
-        style={{ viewTransitionName: `card-${van.id}` }}
-      >
-        <CardHeader
-          className={css({
-            gridArea: "media",
-            position: "relative",
-          })}
-        >
-          <VanBadge van={van} />
-          <Image
-            alt={name}
-            className={css({ aspectRatio: "square", borderRadius: "md" })}
-            decoding="sync"
-            fetchPriority="high"
-            height="600"
-            loading="eager"
-            sizes="(min-width: 1024px) 500px, (min-width: 768px) 400px, 300px"
-            src={imageUrl}
-            srcSet={srcSet}
-            width="600"
-          />
-        </CardHeader>
-
-        <CardContent
+      <ViewTransition {...viewTransitionShare} name={`card-${van.id}`}>
+        <Card
           className={cx(
+            vanCard({ state: lowercaseVanState(van) }),
             grid({
-              alignItems: "stretch",
               columnGap: "4",
-              gridArea: "content",
-              gridTemplateAreas: '"heading" "metadata" "description"',
+              gridTemplateAreas: {
+                "@card-full/xl":
+                  // biome-ignore assist/source/noDuplicateClasses: repeated areas intentionally span detail tracks
+                  '"media content" "media content" "media content"',
+                base: '"media" "content" "footer"',
+              },
+              gridTemplateColumns: {
+                "@card-full/xl": "repeat(2, minmax(0, 1fr))",
+              },
               // biome-ignore assist/source/noDuplicateClasses: repeated auto rows intentionally define detail tracks
               gridTemplateRows: { "@card-full/xl": "auto auto 1fr" },
               rowGap: "2",
-            }),
-            css({
-              alignSelf: { "@card-full/xl": "center" },
-              minInlineSize: "0",
             })
           )}
         >
-          {/* First row: Name and Rent button */}
-          <div
+          <CardHeader
             className={css({
-              alignItems: { "@card-full/xl": "center" },
-              display: { "@card-full/xl": "flex" },
-              gridArea: "heading",
-              justifyContent: { "@card-full/xl": "space-between" },
+              gridArea: "media",
+              position: "relative",
             })}
           >
-            <CardTitle
+            <VanBadge van={van} />
+            <ViewTransition
+              {...viewTransitionShare}
+              name={vanViewTransitionName.image(van.id)}
+            >
+              <Image
+                alt={name}
+                className={css({ aspectRatio: "square", borderRadius: "md" })}
+                decoding="sync"
+                fetchPriority="high"
+                height="600"
+                loading="eager"
+                sizes="(min-width: 1024px) 500px, (min-width: 768px) 400px, 300px"
+                src={imageUrl}
+                srcSet={srcSet}
+                width="600"
+              />
+            </ViewTransition>
+          </CardHeader>
+
+          <CardContent
+            className={cx(
+              grid({
+                alignItems: "stretch",
+                columnGap: "4",
+                gridArea: "content",
+                gridTemplateAreas: '"heading" "metadata" "description"',
+                // biome-ignore assist/source/noDuplicateClasses: repeated auto rows intentionally define detail tracks
+                gridTemplateRows: { "@card-full/xl": "auto auto 1fr" },
+                rowGap: "2",
+              }),
+              css({
+                alignSelf: { "@card-full/xl": "center" },
+                minInlineSize: "0",
+              })
+            )}
+          >
+            {/* First row: Name and Rent button */}
+            <div
               className={css({
-                "@card-full/xl": {
-                  fontSize: "xl",
-                  margin: "0",
-                },
+                alignItems: { "@card-full/xl": "center" },
+                display: { "@card-full/xl": "flex" },
+                gridArea: "heading",
+                justifyContent: { "@card-full/xl": "space-between" },
               })}
             >
-              {name}
-            </CardTitle>
+              <CardTitle
+                className={css({
+                  "@card-full/xl": {
+                    fontSize: "xl",
+                    margin: "0",
+                  },
+                })}
+              >
+                <ViewTransition
+                  {...viewTransitionShare}
+                  name={vanViewTransitionName.title(van.id)}
+                >
+                  <span>{name}</span>
+                </ViewTransition>
+              </CardTitle>
+              <CustomLink
+                className={cx(
+                  rentClassName,
+                  css({
+                    "@card-full/xl": { flexShrink: 0 },
+                    "@card-full/xlDown": { display: "none" },
+                  })
+                )}
+                to={rentTo}
+              >
+                {rentLabel}
+              </CustomLink>
+            </div>
+
+            {/* Second row: Badge and Price */}
+            <div
+              className={cx(
+                css({ gridArea: "metadata" }),
+                hstack({ gap: "4", justifyContent: "space-between" })
+              )}
+            >
+              <ViewTransition
+                {...viewTransitionShare}
+                name={vanViewTransitionName.type(van.id)}
+              >
+                <Badge
+                  className={css({
+                    "@card-full/xl": { margin: "0" },
+                    textTransform: "lowercase",
+                  })}
+                  size="small"
+                  variant={type}
+                >
+                  {type}
+                </Badge>
+              </ViewTransition>
+
+              <div
+                className={css({
+                  "@card-full/xl": { fontSize: "xl", margin: "0" },
+                })}
+              >
+                <ViewTransition
+                  {...viewTransitionShare}
+                  name={vanViewTransitionName.price(van.id)}
+                >
+                  <VanPrice van={van} />
+                </ViewTransition>
+              </div>
+            </div>
+
+            {/* Third row: Description */}
+            <ViewTransition
+              default="none"
+              enter={descriptionTransition}
+              exit={descriptionTransition}
+            >
+              <CardDescription
+                className={css({
+                  "@card-full/xl": {
+                    fontSize: "unset",
+                    margin: "0",
+                  },
+                  gridArea: "description",
+                })}
+              >
+                {description}
+              </CardDescription>
+            </ViewTransition>
+          </CardContent>
+
+          {/* Mobile/Tablet Footer - hidden on desktop */}
+          <CardFooter
+            className={css({
+              "@card-full/xl": {
+                display: "none",
+              },
+              gridArea: "footer",
+            })}
+          >
             <CustomLink
               className={cx(
                 rentClassName,
-                css({
-                  "@card-full/xl": { flexShrink: 0 },
-                  "@card-full/xlDown": { display: "none" },
-                })
+                css({ "@card-full/lg": { inlineSize: "full" } })
               )}
               to={rentTo}
             >
               {rentLabel}
             </CustomLink>
-          </div>
-
-          {/* Second row: Badge and Price */}
-          <div
-            className={cx(
-              css({ gridArea: "metadata" }),
-              hstack({ gap: "4", justifyContent: "space-between" })
-            )}
-          >
-            <Badge
-              className={css({
-                "@card-full/xl": { margin: "0" },
-                textTransform: "lowercase",
-              })}
-              size="small"
-              variant={type}
-            >
-              {type}
-            </Badge>
-
-            <div
-              className={css({
-                "@card-full/xl": { fontSize: "xl", margin: "0" },
-              })}
-            >
-              <VanPrice van={van} />
-            </div>
-          </div>
-
-          {/* Third row: Description */}
-          <CardDescription
-            className={css({
-              "@card-full/xl": {
-                fontSize: "unset",
-                margin: "0",
-              },
-              gridArea: "description",
-            })}
-          >
-            {description}
-          </CardDescription>
-        </CardContent>
-
-        {/* Mobile/Tablet Footer - hidden on desktop */}
-        <CardFooter
-          className={css({
-            "@card-full/xl": {
-              display: "none",
-            },
-            gridArea: "footer",
-          })}
-        >
-          <CustomLink
-            className={cx(
-              rentClassName,
-              css({ "@card-full/lg": { inlineSize: "full" } })
-            )}
-            to={rentTo}
-          >
-            {rentLabel}
-          </CustomLink>
-        </CardFooter>
-      </Card>
+          </CardFooter>
+        </Card>
+      </ViewTransition>
     </div>
   );
 }

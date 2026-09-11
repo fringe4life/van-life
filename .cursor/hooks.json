@@ -21,6 +21,13 @@
       }
     ],
     "postToolUse": [],
+    "beforeShellExecution": [
+      {
+        "command": "node .cursor/hooks/fallow-audit.mjs",
+        "timeout": 120,
+        "matcher": "git commit|git push"
+      }
+    ],
     "stop": [
       {
         "command": "node .cursor/hooks/react-doctor.mjs",

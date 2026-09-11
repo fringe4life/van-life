@@ -2,10 +2,6 @@ import { defaultRateLimit, useQueryStates } from "nuqs";
 import { startTransition, useId } from "react";
 import type { VanType } from "~/db/enums";
 import {
-  DEFAULT_CURSOR,
-  DEFAULT_DIRECTION,
-} from "~/features/pagination/pagination-constants";
-import {
   VAN_STATE_FILTERS,
   type VanStateFilterKey,
 } from "~/features/vans/components/van-filters/van-state-filter-config";
@@ -19,6 +15,10 @@ import {
   snapshotFilterState,
   type VanFilterUrlState,
 } from "~/features/vans/utils/van-filter-url";
+import {
+  DEFAULT_CURSOR,
+  DEFAULT_DIRECTION,
+} from "~/pagination/pagination-constants";
 
 const useVanFilters = () => {
   const [urlState, setUrlState] = useQueryStates(vansFilterUrlParsers);

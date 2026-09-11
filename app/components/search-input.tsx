@@ -8,8 +8,8 @@ import { DEFAULT_DEBOUNCE } from "~/constants/constants";
 import {
   DEFAULT_CURSOR,
   DEFAULT_DIRECTION,
-} from "~/features/pagination/pagination-constants";
-import { searchUrlParsers } from "~/features/pagination/schema";
+} from "~/pagination/pagination-constants";
+import { searchUrlParsers } from "~/pagination/schema";
 import { Input } from "./ui/input";
 
 const SearchInput = () => {

@@ -16,9 +16,9 @@ import { safeParse } from "valibot";
 import type { AppDb, VanModel } from "~/db/client.server";
 import { VanState, type VanType } from "~/db/enums";
 import { van } from "~/db/schema/van";
-import type { BasePaginationParams } from "~/features/pagination/types";
-import { getCursorMetadata } from "~/features/pagination/utils/get-cursor-metadata.server";
 import { vanTypeFromClientSchema } from "~/features/vans/schema";
+import type { BasePaginationParams } from "~/pagination/types";
+import { getCursorMetadata } from "~/pagination/utils/get-cursor-metadata.server";
 import type { List, Prettify, Search } from "~/types";
 import type { VanFilters } from "../types";
 

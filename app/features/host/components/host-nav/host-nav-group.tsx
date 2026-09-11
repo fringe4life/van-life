@@ -71,5 +71,4 @@ const HostNavGroup = ({
   );
 };
 
-export type { HostNavGroupProps };
 export { HostNavGroup };

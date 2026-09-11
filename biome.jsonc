@@ -12,7 +12,12 @@
     "defaultBranch": "main"
   },
   "files": {
-    "includes": ["app/**/*", "!!.cursor/hooks/*", "!fallow-viz.html"],
+    "includes": [
+      "app/**/*",
+      "theme/**/*",
+      "!!.cursor/hooks/*",
+      "!fallow-viz.html"
+    ],
     "ignoreUnknown": false
   },
   "overrides": [
@@ -25,7 +30,7 @@
     {
       "includes": [
         "app/features/host/components/host-nav/host-mobile-nav.tsx",
-        "app/features/navigation/components/mobile-nav.tsx"
+        "app/navigation/components/mobile-nav.tsx"
       ],
       "linter": {
         "rules": {

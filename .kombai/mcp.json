@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "panda": {
+      "command": "bun",
+      "args": ["x", "@pandacss/mcp", "--config", "./panda.config.ts"]
+    },
+    "fallow": {
+      "command": "bun",
+      "args": ["x", "fallow-mcp"],
+      "timeout": 180000,
+      "env": {
+        "FALLOW_BIN": "node_modules/.bin/fallow",
+        "FALLOW_TIMEOUT_SECS": "180"
+      }
+    }
+  }
+}

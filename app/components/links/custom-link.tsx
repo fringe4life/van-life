@@ -15,7 +15,6 @@ const CustomLink = ({ children, to, className, ...rest }: CustomLinkProps) => {
       to={to}
       {...rest}
       prefetch="intent"
-      viewTransition
     >
       {children}
     </Link>

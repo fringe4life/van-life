@@ -1,8 +1,8 @@
 import { and, asc, desc, eq, gt, isNull, lt, type SQL } from "drizzle-orm";
 import type { AppDb } from "~/db/client.server";
 import { rent, van } from "~/db/schema/van";
-import type { BasePaginationParams } from "~/features/pagination/types";
-import { getCursorMetadata } from "~/features/pagination/utils/get-cursor-metadata.server";
+import type { BasePaginationParams } from "~/pagination/types";
+import { getCursorMetadata } from "~/pagination/utils/get-cursor-metadata.server";
 import type { UUIDv7 } from "~/types/ids.server";
 
 /** Lean van lookup for rent creation — ownership + availability fields. */

@@ -1,11 +1,9 @@
 import { Outlet } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
-//fallow-ignore-next-line boundary-violation
 import { HostMobileNav } from "~/features/host/components/host-nav/host-mobile-nav";
-//fallow-ignore-next-line boundary-violation
 import { HostNav } from "~/features/host/components/host-nav/host-nav";
-import { authMiddleware } from "~/features/middleware/functions/auth-middleware";
+import { authMiddleware } from "~/middleware/functions/auth-middleware";
 import type { Route } from "./+types/host-layout";
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware];

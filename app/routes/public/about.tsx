@@ -1,6 +1,6 @@
 import { data, href } from "react-router";
 import { css, cx } from "styled-system/css";
-import { flex, grid } from "styled-system/patterns";
+import { cq, flex, grid } from "styled-system/patterns";
 import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
 import { Image } from "~/components/image/image";
 import { HIGH_QUALITY_IMAGE_QUALITY } from "~/components/image/img-constants";
@@ -11,8 +11,8 @@ import {
   forwardDataHeaders,
   PUBLIC_SHORT_CACHE_HEADERS,
 } from "~/constants/cache-headers";
-import { buildAboutPageSeo } from "~/features/seo/build-page-seo.server";
-import { SeoHead } from "~/features/seo/seo-head";
+import { buildAboutPageSeo } from "~/seo/build-page-seo.server";
+import { SeoHead } from "~/seo/seo-head";
 import { fullBleed } from "~/styles";
 
 import type { Route } from "./+types/about";
@@ -50,6 +50,7 @@ const About = ({ loaderData }: Route.ComponentProps) => (
     )}
   >
     <SeoHead {...loaderData.seo} />
+
     <Image
       alt="a couple enjoying their adventure"
       className={css({
@@ -58,6 +59,8 @@ const About = ({ loaderData }: Route.ComponentProps) => (
         maskPosition: "center",
         maskRepeat: "no-repeat",
         maskSize: "cover",
+        // <ViewTransition ... /> simply isnt working for now.
+        // wait for react router v8/9 to fix this.
         viewTransitionName: "about-image",
       })}
       decoding="sync"
@@ -138,34 +141,121 @@ const About = ({ loaderData }: Route.ComponentProps) => (
     </div>
 
     <article
-      className={grid({
-        alignContent: "space-between",
-        backgroundColor: "surface.accent",
-        borderRadius: "md",
-        gap: { base: "5", md: "6" },
-        maxInlineSize: { base: "full", md: "max-content" },
-        paddingBlock: { base: "3", md: "6" },
-        paddingInline: { base: "4", md: "12", sm: "8" },
-      })}
+      className={cx(
+        cq({ name: "card" }),
+        css({
+          backgroundColor: "surface.accent",
+          borderColor: "border.accent",
+          borderRadius: "xl",
+          borderStyle: "solid",
+          borderWidth: "1",
+          inlineSize: "full",
+          marginInline: "auto",
+          maxInlineSize: "content",
+          paddingBlock: { base: "5", md: "10", sm: "8" },
+          paddingInline: { base: "5", lg: "12", md: "10", sm: "8" },
+        })
+      )}
     >
-      <h3
-        className={css({
-          fontSize: { base: "xl", xs: "2xl" },
-          fontWeight: "bold",
+      <div
+        className={grid({
+          alignItems: { "@card/2xl": "center" },
+          columnGap: { "@card/2xl": "12", base: "5" },
+          gap: { "@card/2xl": "0", base: "5" },
+          gridTemplateAreas: {
+            "@card/2xl": '"statement action"',
+            base: '"statement" "action"',
+          },
+          gridTemplateColumns: {
+            "@card/2xl": "minmax(0, 1fr) minmax(16rem, 18rem)",
+            base: "minmax(0, 1fr)",
+          },
         })}
       >
-        Your destination is waiting.{" "}
-        <span className="block">Your van is ready.</span>
-      </h3>
-      <CustomLink
-        className={cx(
-          buttonVariants({ variant: "secondary" }),
-          css({ inlineSize: "full" })
-        )}
-        to={href("/vans")}
-      >
-        Explore our vans
-      </CustomLink>
+        <div className={css({ gridArea: "statement", minInlineSize: "0" })}>
+          <p
+            className={css({
+              color: "muted.foreground",
+              fontSize: "xs",
+              fontWeight: "bold",
+              letterSpacing: "widest",
+              marginBlockEnd: "3",
+              textTransform: "uppercase",
+            })}
+          >
+            Plan the getaway
+          </p>
+          <h3
+            className={css({
+              fontSize: { "@card/xl": "3xl", base: "xl", sm: "2xl" },
+              fontWeight: "extrabold",
+              lineHeight: "tight",
+              maxInlineSize: "620px",
+            })}
+          >
+            <span
+              className={css({
+                display: "block",
+                whiteSpace: { "@card/xl": "nowrap" },
+              })}
+            >
+              Your van is ready.
+            </span>
+            <span
+              className={css({
+                display: "block",
+                whiteSpace: { "@card/xl": "nowrap" },
+              })}
+            >
+              Your destination is waiting.
+            </span>
+          </h3>
+          <p
+            className={css({
+              color: "muted.foreground",
+              fontSize: { base: "base", sm: "lg" },
+              lineHeight: "6",
+              marginBlockStart: "4",
+              maxInlineSize: "560px",
+            })}
+          >
+            Explore the catalog, then choose the van that fits your trip.
+          </p>
+        </div>
+        <div
+          className={css({
+            alignItems: { "@card/2xl": "end", base: "stretch" },
+            display: "flex",
+            flexDirection: "column",
+            gap: "3",
+            gridArea: "action",
+            minInlineSize: "0",
+          })}
+        >
+          <CustomLink
+            className={cx(
+              buttonVariants({ variant: "secondary" }),
+              css({
+                inlineSize: { "@card/2xl": "auto", base: "full" },
+                minInlineSize: { "@card/2xl": "16.25rem" },
+              })
+            )}
+            to={href("/vans")}
+          >
+            Explore our vans
+          </CustomLink>
+          <p
+            className={css({
+              color: "muted.foreground",
+              fontSize: "sm",
+              fontWeight: "medium",
+              textAlign: { "@card/2xl": "end", base: "center" },
+            })}
+          >
+            Start with the right fit.
+          </p>
+        </div>
+      </div>
     </article>
   </PendingUI>
 );

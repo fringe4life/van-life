@@ -1,7 +1,10 @@
+import { ViewTransition } from "react";
 import { href } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import { CustomLink } from "~/components/links/custom-link";
+import { chromeViewTransitionName } from "~/components/view-transition-names";
+import { viewTransitionShare } from "~/components/view-transition-share";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import type { Maybe } from "~/types";
 
@@ -37,18 +40,22 @@ const HostIncomeSection = ({
       })
     )}
   >
-    <h2
-      className={css({
-        color: "foreground",
-        fontSize: { base: "2xl", md: "4xl", sm: "3xl" },
-        fontWeight: "bold",
-        gridArea: "heading",
-        lineHeight: { base: "8", md: "10", sm: "9" },
-        viewTransitionName: "van-header",
-      })}
+    <ViewTransition
+      {...viewTransitionShare}
+      name={chromeViewTransitionName.header}
     >
-      Welcome, {name ? name : "User"}!
-    </h2>
+      <h2
+        className={css({
+          color: "foreground",
+          fontSize: { base: "2xl", md: "4xl", sm: "3xl" },
+          fontWeight: "bold",
+          gridArea: "heading",
+          lineHeight: { base: "8", md: "10", sm: "9" },
+        })}
+      >
+        Welcome, {name ? name : "User"}!
+      </h2>
+    </ViewTransition>
 
     <dl
       className={cx(
@@ -86,18 +93,22 @@ const HostIncomeSection = ({
         </span>
       </dt>
 
-      <dd
-        className={css({
-          color: "foreground",
-          fontSize: { base: "xl", md: "5xl", sm: "4xl", xs: "2xl" },
-          fontWeight: { base: "semibold", md: "extrabold", sm: "bold" },
-          justifySelf: "end",
-          margin: "0",
-          viewTransitionName: "income-amount",
-        })}
+      <ViewTransition
+        {...viewTransitionShare}
+        name={chromeViewTransitionName.incomeAmount}
       >
-        {displayPrice(sumIncome)}
-      </dd>
+        <dd
+          className={css({
+            color: "foreground",
+            fontSize: { base: "xl", md: "5xl", sm: "4xl", xs: "2xl" },
+            fontWeight: { base: "semibold", md: "extrabold", sm: "bold" },
+            justifySelf: "end",
+            margin: "0",
+          })}
+        >
+          {displayPrice(sumIncome)}
+        </dd>
+      </ViewTransition>
 
       <dt
         className={css({
@@ -107,22 +118,26 @@ const HostIncomeSection = ({
         Balance
       </dt>
 
-      <dd
-        aria-busy={isBalancePending}
-        className={cx(
-          css({
-            color: "foreground",
-            fontSize: { base: "xl", md: "5xl", sm: "4xl", xs: "2xl" },
-            fontWeight: { base: "semibold", md: "extrabold", sm: "bold" },
-            justifySelf: "end",
-            margin: "0",
-            viewTransitionName: "balance-amount",
-          }),
-          isBalancePending && css({ opacity: 0.75 })
-        )}
+      <ViewTransition
+        {...viewTransitionShare}
+        name={chromeViewTransitionName.balanceAmount}
       >
-        {displayPrice(optimisticBalance)}
-      </dd>
+        <dd
+          aria-busy={isBalancePending}
+          className={cx(
+            css({
+              color: "foreground",
+              fontSize: { base: "xl", md: "5xl", sm: "4xl", xs: "2xl" },
+              fontWeight: { base: "semibold", md: "extrabold", sm: "bold" },
+              justifySelf: "end",
+              margin: "0",
+            }),
+            isBalancePending && css({ opacity: 0.75 })
+          )}
+        >
+          {displayPrice(optimisticBalance)}
+        </dd>
+      </ViewTransition>
     </dl>
     <CustomLink
       className={css({ gridArea: "details" })}

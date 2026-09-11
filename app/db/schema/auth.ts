@@ -60,8 +60,6 @@ export const account = sqliteTable(
       .notNull(),
     id: uuidv7Column("id").primaryKey(),
     idToken: text("id_token"),
-    /** Synthetic issuer, e.g. `local:credential` for email/password. */
-    issuer: text("issuer").notNull(),
     password: text("password"),
     providerId: text("provider_id").notNull(),
     refreshToken: text("refresh_token"),
@@ -78,8 +76,8 @@ export const account = sqliteTable(
   },
   (table) => [
     index("account_userId_idx").on(table.userId),
-    unique("account_issuer_providerAccountId_uidx").on(
-      table.issuer,
+    unique("account_providerId_accountId_uidx").on(
+      table.providerId,
       table.accountId
     ),
   ]

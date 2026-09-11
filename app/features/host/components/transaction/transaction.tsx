@@ -1,6 +1,7 @@
 import { css, cx } from "styled-system/css";
 import { cq, grid, visuallyHidden, wrap } from "styled-system/patterns";
 import { Card, CardContent } from "~/components/ui/card";
+import type { ChartHeightBandVariant } from "~/features/host/utils/chart-height-bands";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import type { Children, Prettify } from "~/types";
 import { TransactionBadge } from "./transaction-badge";
@@ -15,12 +16,15 @@ const transactionDateFormatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-type TransactionShellProps = Prettify<Children & TransactionProps>;
+type TransactionShellProps = Prettify<
+  Children & TransactionProps & { heightBand?: ChartHeightBandVariant }
+>;
 
 const Transaction = ({
   amount,
   children,
   createdAt,
+  heightBand,
   id,
   type,
 }: TransactionShellProps) => {
@@ -36,7 +40,8 @@ const Transaction = ({
     >
       <Card
         aria-labelledby={headingId}
-        className={transactionCard({ type })}
+        className={transactionCard({ heightBand, type })}
+        data-height-band={heightBand}
         role="article"
       >
         <CardContent className={css({ display: "contents" })}>
@@ -107,7 +112,6 @@ const Transaction = ({
                 whiteSpace: "nowrap",
               })}
               dateTime={createdAt.toISOString()}
-              suppressHydrationWarning
             >
               {transactionDateFormatter.format(createdAt)}
             </time>

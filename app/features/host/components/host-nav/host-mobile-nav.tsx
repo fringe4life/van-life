@@ -8,6 +8,7 @@ import {
   PopoverHeader,
   PopoverTitle,
 } from "~/components/ui/popover";
+import { closePopoverById } from "~/components/ui/popover/utils";
 import {
   formatRouteCount,
   getCurrentHostNavItem,
@@ -29,21 +30,8 @@ import {
 const HOST_MOBILE_POPOVER_ID = "host-mobile-nav-popover";
 const HOST_MOBILE_POPOVER_TITLE_ID = "host-mobile-nav-popover-title";
 
-type NativePopoverElement = HTMLElement & {
-  hidePopover: () => void;
-};
-
-const closeHostNavPopover = () => {
-  const popover = document.getElementById(HOST_MOBILE_POPOVER_ID);
-
-  if (popover instanceof HTMLElement && "hidePopover" in popover) {
-    (popover as NativePopoverElement).hidePopover();
-  }
-};
-
-const handleHostNavLinkClick: MouseEventHandler<HTMLAnchorElement> = () => {
-  closeHostNavPopover();
-};
+const handleHostNavLinkClick: MouseEventHandler<HTMLAnchorElement> = () =>
+  closePopoverById(HOST_MOBILE_POPOVER_ID);
 
 const renderHostNavMobileGroupProps = (group: HostNavGroup) => ({
   groupId: group.id,

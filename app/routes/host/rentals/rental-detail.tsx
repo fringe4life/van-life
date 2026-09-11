@@ -16,10 +16,10 @@ import {
 } from "~/constants/cache-headers";
 import { rentVanSchema } from "~/features/host/rentals/schema.server";
 import { rentVan } from "~/features/host/services/rental.server";
-import { authContext } from "~/features/middleware/contexts/auth";
-import { dbContext } from "~/features/middleware/contexts/db";
 import { VanCard } from "~/features/vans/components/van-card";
 import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
+import { authContext } from "~/middleware/contexts/auth";
+import { dbContext } from "~/middleware/contexts/db";
 import { badRequest } from "~/utils/errors/bad-request";
 import { notFound } from "~/utils/errors/not-found";
 import { validateSchema } from "~/utils/errors/parse-schema";

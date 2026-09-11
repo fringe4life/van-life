@@ -1,17 +1,23 @@
-import type { ComponentPropsWithoutRef } from "react";
+import { type ComponentPropsWithoutRef, ViewTransition } from "react";
 import { css } from "styled-system/css";
+import { chromeViewTransitionName } from "~/components/view-transition-names";
+import { viewTransitionShare } from "~/components/view-transition-share";
 
 const VanHeader = ({ children }: ComponentPropsWithoutRef<"h2">) => (
-  <h2
-    className={css({
-      fontSize: "3xl",
-      fontWeight: "bold",
-      lineHeight: "9",
-      viewTransitionName: "van-header",
-    })}
+  <ViewTransition
+    {...viewTransitionShare}
+    name={chromeViewTransitionName.header}
   >
-    {children}
-  </h2>
+    <h2
+      className={css({
+        fontSize: "3xl",
+        fontWeight: "bold",
+        lineHeight: "9",
+      })}
+    >
+      {children}
+    </h2>
+  </ViewTransition>
 );
 
 export { VanHeader };

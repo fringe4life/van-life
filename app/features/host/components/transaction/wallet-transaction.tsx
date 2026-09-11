@@ -1,4 +1,5 @@
 import { css } from "styled-system/css";
+import { getChartHeightBand } from "~/features/host/utils/chart-height-bands";
 import { Transaction } from "./transaction";
 import type { WalletTransactionProps } from "./transaction-types";
 
@@ -14,13 +15,24 @@ const WalletTransactionDetails = () => (
   </p>
 );
 
+interface WalletTransactionComponentProps extends WalletTransactionProps {
+  chartMagnitudeMax: number;
+}
+
 const WalletTransaction = ({
   amount,
+  chartMagnitudeMax,
   createdAt,
   id,
   type,
-}: WalletTransactionProps) => (
-  <Transaction amount={amount} createdAt={createdAt} id={id} type={type}>
+}: WalletTransactionComponentProps) => (
+  <Transaction
+    amount={amount}
+    createdAt={createdAt}
+    heightBand={getChartHeightBand(amount, chartMagnitudeMax).variant}
+    id={id}
+    type={type}
+  >
     <WalletTransactionDetails />
   </Transaction>
 );
