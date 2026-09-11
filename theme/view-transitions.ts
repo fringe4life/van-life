@@ -1,11 +1,11 @@
 import { defineViewTransitions } from "@pandacss/dev";
 
 /**
- * Named bags for viewTransition('authFooter') etc.
- * Panda owns view-transition-class; unique names live on React `<ViewTransition name>`.
+ * Shared vertical fade/slide recipes. Consumers choose the ViewTransition
+ * trigger (`enter`, `exit`, `share`, or `update`) for their use case.
  */
 export const viewTransitions = defineViewTransitions({
-  authFooter: {
+  fadeSlide: {
     new: {
       "--slide-distance-y": "-1rem",
       animationName: "fade-in, slide-in-y",
@@ -15,43 +15,13 @@ export const viewTransitions = defineViewTransitions({
       animationName: "fade-out, slide-out-y",
     },
   },
-  authTitle: {
+  fadeSlideSubtle: {
     new: {
-      "--slide-distance": "-1rem",
-      animationName: "fade-in, slide-in",
-    },
-    old: {
-      "--slide-distance": "1rem",
-      animationName: "fade-out, slide-out",
-    },
-  },
-  deferred: {
-    new: {
-      "--slide-distance-y": "4px",
+      "--slide-distance-y": "-0.5rem",
       animationName: "fade-in, slide-in-y",
     },
     old: {
-      "--slide-distance-y": "4px",
-      animationName: "fade-out, slide-out-y",
-    },
-  },
-  sortableTitle: {
-    new: {
-      "--slide-distance-y": "-1rem",
-      animationName: "fade-in, slide-in-y",
-    },
-    old: {
-      "--slide-distance-y": "1rem",
-      animationName: "fade-out, slide-out-y",
-    },
-  },
-  vanDescription: {
-    new: {
-      "--slide-distance-y": "1rem",
-      animationName: "fade-in, slide-in-y",
-    },
-    old: {
-      "--slide-distance-y": "1rem",
+      "--slide-distance-y": "0.5rem",
       animationName: "fade-out, slide-out-y",
     },
   },

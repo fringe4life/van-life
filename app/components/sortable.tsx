@@ -22,7 +22,7 @@ interface SortableProps {
   title: string;
 }
 
-const sortableTitleTransition = viewTransition("sortableTitle");
+const fadeSlideTransition = viewTransition("fadeSlide");
 
 /**
  * Reusable sorting component that provides sort buttons and clear filters functionality
@@ -103,8 +103,8 @@ const Sortable = ({ title, itemCount, className }: SortableProps) => {
       <ViewTransition
         default="none"
         name={chromeViewTransitionName.sortableTitle}
-        share={sortableTitleTransition}
-        update={sortableTitleTransition}
+        share={fadeSlideTransition}
+        update={fadeSlideTransition}
       >
         <h3
           className={css({

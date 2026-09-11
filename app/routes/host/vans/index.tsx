@@ -1,5 +1,4 @@
-import { Activity } from "react";
-import { data, href } from "react-router";
+import { data, href, Outlet, useLocation } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import { CustomLink } from "~/components/links/custom-link";
@@ -8,29 +7,21 @@ import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
-import { determineHostVansRoute } from "~/features/host/utils/determine-host-vans-route";
-import { VanDetailCard } from "~/features/vans/components/host detail";
+import { VanDetailCard } from "~/features/vans/components/host-detail";
+import { getHostVanDetailNavItems } from "~/features/vans/components/host-detail/get-host-van-detail-nav-items";
 import { getHostVanBySlug } from "~/features/vans/dal/host-van.server";
 import { authContext } from "~/middleware/contexts/auth";
 import { dbContext } from "~/middleware/contexts/db";
-import { loadHostSearchParams } from "~/pagination/loaders.server";
-import { buildVanUrl } from "~/pagination/utils/build-search-params";
+import { withSearch } from "~/pagination/utils/with-search";
 import { notFound } from "~/utils/errors/not-found";
 import { tryCatch } from "~/utils/errors/try-catch.server";
-import type { Route } from "./+types/host-van-detail";
+import type { Route } from "./+types/index";
 
 export const headers = forwardDataHeaders;
 
-export const loader = async ({
-  params,
-  request,
-  context,
-}: Route.LoaderArgs) => {
+export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const user = context.get(authContext);
   const db = context.get(dbContext);
-
-  // Parse search parameters from URL to preserve pagination state
-  const { cursor, limit } = loadHostSearchParams(request);
 
   const { data: van } = await tryCatch(() =>
     getHostVanBySlug(db, user.id, params.vanSlug)
@@ -40,22 +31,14 @@ export const loader = async ({
     notFound("Van not found");
   }
 
-  return data({ cursor, limit, van }, { headers: PRIVATE_NO_STORE_HEADERS });
+  return data({ van }, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
-const HostVanDetailPage = ({ loaderData, params }: Route.ComponentProps) => {
-  const { van, cursor, limit } = loaderData;
-
-  // Determine which view to show based on action parameter
-  const { isDetailsView, isPhotosView, isPricingView } =
-    determineHostVansRoute(params);
-
-  // Build back link with pagination search params
-  const backLink = buildVanUrl({
-    baseUrl: href("/host/vans"),
-    cursor,
-    limit,
-  });
+const HostVanDetailLayout = ({ loaderData }: Route.ComponentProps) => {
+  const { van } = loaderData;
+  const { search } = useLocation();
+  const navItems = getHostVanDetailNavItems(van.slug, search);
+  const backLink = withSearch(href("/host/vans"), search);
 
   return (
     <div
@@ -78,22 +61,14 @@ const HostVanDetailPage = ({ loaderData, params }: Route.ComponentProps) => {
       </CustomLink>
 
       <div className={css({ alignSelf: "center", gridArea: "detail" })}>
-        <VanDetailCard van={van}>
-          <Activity mode={isDetailsView ? "visible" : "hidden"}>
-            <VanDetailCard.Details />
-          </Activity>
-          <Activity mode={isPhotosView ? "visible" : "hidden"}>
-            <VanDetailCard.Photos />
-          </Activity>
-          <Activity mode={isPricingView ? "visible" : "hidden"}>
-            <VanDetailCard.Pricing />
-          </Activity>
+        <VanDetailCard navItems={navItems} van={van}>
+          <Outlet />
         </VanDetailCard>
       </div>
     </div>
   );
 };
-export default HostVanDetailPage;
+export default HostVanDetailLayout;
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
   <RouteErrorBoundary

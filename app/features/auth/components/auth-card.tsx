@@ -23,8 +23,7 @@ export const AUTH_VT = {
   title: "auth-title",
 } as const;
 
-const authTitleTransition = viewTransition("authTitle");
-const authFooterTransition = viewTransition("authFooter");
+const fadeSlideTransition = viewTransition("fadeSlide");
 
 type AuthCardProps = Prettify<
   Children & {
@@ -40,7 +39,7 @@ export const AuthCard = ({ children, footer, title }: AuthCardProps) => (
         <ViewTransition
           default="none"
           name={AUTH_VT.title}
-          share={authTitleTransition}
+          share={fadeSlideTransition}
         >
           <CardTitle>{title}</CardTitle>
         </ViewTransition>
@@ -50,7 +49,7 @@ export const AuthCard = ({ children, footer, title }: AuthCardProps) => (
         <ViewTransition
           default="none"
           name={AUTH_VT.footer}
-          share={authFooterTransition}
+          share={fadeSlideTransition}
         >
           <p>{footer}</p>
         </ViewTransition>

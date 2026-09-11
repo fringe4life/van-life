@@ -8,7 +8,7 @@ type DeferredTransitionProps = Prettify<
   }
 >;
 
-const deferredTransition = viewTransition("deferred");
+const deferredTransition = viewTransition("fadeSlideSubtle");
 
 /**
  * Animates a Suspense fallback out and its resolved content in without

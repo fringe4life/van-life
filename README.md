@@ -67,14 +67,14 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 📦 **Drizzle ORM** with Cloudflare D1 (SQLite) and relational queries
 - 📋 **List primitives** — `ItemList` for guaranteed arrays (nav, sort); `CollectionList` for async/empty/error collections (`OutcomeState`)
 - 🎭 **Panda recipes** (`cva` from `styled-system/css`) — `vanCard`, `transactionRecipe`, `reviewRecipe`, `outcomeState`
-- 🧩 **Compound Components** with React 19's modern context API (no `.Provider`, uses `use()`)
+- 🧩 **Host van detail** — nested routes (`/host/vans/:vanSlug`, `/pricing`, `/photos`); layout `Outlet` + `VanDetailCard`; leaf routes read parent loader via matches
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
 - ⚡ **Performance Optimized** with deferred loader promises (`app/components/deferred/*`), lazy charts, code splitting, and immutable array methods
 - 🧯 **Outcome + route errors** — shared `OutcomeState` empty/error chrome; `RouteErrorBoundary`; nested public/host `*` 404s keep layout chrome
 - 🧊 **HTTP cache headers** — `PRIVATE_NO_STORE` for host/auth; `PUBLIC_SHORT_CACHE` + `Vary: Cookie` for catalog; leaf `headers` exports via `forwardDataHeaders`
 - 🔗 **URL State Management** with nuqs 2.10.1 for type-safe search parameters
-- 🌐 **View Transitions** — React 19.3 `<ViewTransition>` + Panda named bags (auth, vans, pagination page slides, deferred list enter/exit, theme morph; home/about images still use React Router `viewTransition`; no nested `viewTransitionName`s)
+- 🌐 **View Transitions** — React 19.3 `<ViewTransition>` + reusable Panda bags (`fadeSlide`, `fadeSlideSubtle`) for auth, sortable titles, van details, deferred lists; pagination / theme / van-card keep local recipes; home/about images still use React Router `viewTransition`
 - 🎯 **Middleware-Driven Headers** (automatic header forwarding via React Router 8 middleware)
 - 🔄 **Shared Context Middleware** for eliminating duplicate data fetching between loaders and actions
 - 🔐 **Consolidated host auth middleware** on `host-layout.tsx` (no duplicate session lookups on leaf routes)
@@ -88,7 +88,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Frontend
 
 - **React 19.3** with stable Activity + `ViewTransition` for prerendering and morphs
-- **React Router 8.3.1** (file-based routing, SSR, optional route parameters, middleware)
+- **React Router 8.3.1** (file-based routing, SSR, nested host van detail routes, middleware)
 - **TypeScript 7.0.2** with strict configuration
 - **PandaCSS 2.0.0-beta.16** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`)
 - **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover, select)
@@ -177,7 +177,8 @@ app/
 │   │   ├── schema.server.ts  # Host money form + transaction-type Valibot `is`
 │   │   └── utils/      # Chart period/points, height-bands, pickChartGranularity, resolveChartContext
 │   └── vans/
-│       ├── components/ # Van UI (VanCard, van-card-recipe, VanDetail, HostVanDetail*, van-filters/, vans-list/)
+│       ├── components/ # Van UI (VanCard, van-card-recipe, VanDetail, van-filters/, vans-list/)
+│       │   ├── host-detail/  # VanDetailCard + details/pricing/photos + nav items
 │       │   ├── van-filters/  # VanFilters, type/state sections, facet config, shared filter types
 │       │   └── vans-list/    # Public catalog list + metadata/state helpers
 │       ├── constants/  # vans-constants.ts
@@ -213,12 +214,13 @@ app/
 ├── types/              # Shared utility types (Maybe, List, Id, Prettify, Replace, Search)
 │   ├── auth.server.ts      # AuthenticatedUser (UUIDv7 id)
 │   └── ids.server.ts       # UUIDv7 re-export from dal/schema.server.ts
-├── routes/             # Route modules (Activity-based single routes)
+├── routes/             # Route modules (framework-mode)
 │   ├── api/            # better-auth handler (auth.ts)
 │   ├── auth/           # login, sign-up; sign-out.ts resource action (POST → /login)
 │   ├── theme.ts        # POST `/theme` cookie resource
 │   ├── host/           # Dashboard, rental-activity, wallet-activity, reviews, vans, rentals
 │   │   ├── 404.tsx     # Host catch-all (keeps host chrome)
+│   │   ├── vans/       # :vanSlug layout + index/details, pricing, photos
 │   │   └── rentals/    # rentals list, rent/:vanSlug, returnRental/:rentId
 │   ├── layout/         # Layout components
 │   └── public/         # Public routes
@@ -259,6 +261,7 @@ docs/
 ├── octane-compatibility.md # Octane / React Compiler notes
 ├── rust-react-compiler.md # Native React Compiler via oxc-transform-react (Vite 8)
 ├── react-view-transition.md # React 19.3 ViewTransition + Panda bags
+├── instrumentation-posthog-sentry.md # PostHog + Sentry notes
 ├── theme-toggle-ssr.md     # Cookie theme + FOUC-free SSR bootstrap
 ├── van-state-stored-vs-derived.md # Stored VanState vs derived listingChrome / occupancy
 ├── fallow-cursor-mcp.md    # Fallow MCP + Cursor hook
@@ -565,6 +568,8 @@ route(":vanSlug", "./routes/public/van-detail.tsx");
 - Public van detail: `/vans/modest-explorer`
 - Public van detail with pagination: `/vans/modest-explorer?cursor=abc123&type=luxury`
 - Host van detail: `/host/vans/beach-bum`
+- Host van pricing: `/host/vans/beach-bum/pricing`
+- Host van photos: `/host/vans/beach-bum/photos`
 - Rent van: `/host/rentals/rent/the-cruiser`
 
 ### Pagination State Preservation
@@ -755,30 +760,19 @@ The `toPagination` utility implements correct cursor pagination logic:
 
 **Used in:** `VanCard`, `VanDetail`, `VanDetailCard`
 
-### Compound Components
+### Host van detail layout
 
-`VanDetailCard` uses the compound component pattern with React 19's modern context API:
+`VanDetailCard` is the host listing chrome. Nested routes render Details / Pricing / Photos through `<Outlet />` so the index tab always matches `/host/vans/:vanSlug`.
 
-```typescript
-// Usage with sub-components
-<VanDetailCard van={van}>
-  <Activity mode={isDetailsPage ? 'visible' : 'hidden'}>
-    <VanDetailCard.Details />
-  </Activity>
-  <Activity mode={isPhotosPage ? 'visible' : 'hidden'}>
-    <VanDetailCard.Photos />
-  </Activity>
-  <Activity mode={isPricingPage ? 'visible' : 'hidden'}>
-    <VanDetailCard.Pricing />
-  </Activity>
+```tsx
+<VanDetailCard navItems={navItems} van={van}>
+  <Outlet />
 </VanDetailCard>
 ```
 
-**Benefits:**
-- **Cleaner API**: No prop drilling, van data shared via context
-- **Modern React 19**: Uses `use()` hook and context without `.Provider`
-- **Composable**: Mix and match sub-components as needed
-- **Type-safe**: Full TypeScript support with proper error boundaries
+- **Layout** — `app/routes/host/vans/index.tsx` loads the van and builds nav items
+- **Leaves** — `details.tsx` (index), `pricing.tsx`, `photos.tsx` read parent loader via `getHostVanDetailLoaderData(matches)` (`satisfies` against generated parent route id)
+- **Nav** — `getHostVanDetailNavItems` preserves list search params on Details / Pricing / Photos
 
 ---
 
@@ -793,27 +787,18 @@ React 19's stable Activity component enables instant navigation by prerendering 
 ```tsx
 import { Activity } from "react";
 
-export default function Vans({ params }) {
-  const isDetailPage = params.vanSlug !== undefined;
-
-  return (
-    <>
-      <Activity mode={isDetailPage ? "visible" : "hidden"}>
-        <VanDetail />
-      </Activity>
-      <Activity mode={isDetailPage ? "hidden" : "visible"}>
-        <VanList />
-      </Activity>
-    </>
-  );
-}
+<Activity mode={onFirstPage ? "visible" : "hidden"}>
+  <VanForm {...formProps} />
+</Activity>
 ```
 
-**Benefits:** Zero perceived latency between views, state preservation (scroll position, filters), memory efficient with paused effects.
+Host vans hide the add form off the first page (`app/routes/host/host-vans.tsx`). Hidden Activity keeps the form mounted without prerendering host van detail tabs.
+
+**Benefits:** Zero perceived latency on first-page return, state preservation, paused effects while hidden.
 
 ### ViewTransition (React 19.3)
 
-Stable `<ViewTransition>` wraps shared UI. Unique `view-transition-name` stays on the element; animation bags live in `theme/view-transitions.ts`. Home/about images still opt in via React Router `viewTransition`. See `docs/react-view-transition.md`.
+Stable `<ViewTransition>` wraps shared UI. Unique `view-transition-name` stays on the element. Shared recipes live in `theme/view-transitions.ts` (`fadeSlide`, `fadeSlideSubtle`); consumers pick `enter` / `exit` / `share` / `update`. Pagination, theme morph, and van-card enter/exit stay local. Home/about images still opt in via React Router `viewTransition`. See `docs/react-view-transition.md`.
 
 ```tsx
 import { ViewTransition } from "react";
@@ -824,7 +809,7 @@ import { viewTransitionShare } from "~/components/view-transition-share";
 </ViewTransition>
 ```
 
-Used for auth cards, van cards/details, pagination page slides, deferred list enter/exit, and theme morph (`THEME_TRANSITION_TYPE`).
+`fadeSlide` covers auth title/footer, sortable titles, public van detail, and host van footer. `fadeSlideSubtle` covers deferred list enter/exit. Pagination page slides and theme morph (`THEME_TRANSITION_TYPE`) keep local recipes.
 
 ### Hydration-safe time
 
@@ -1075,7 +1060,7 @@ Configuration in `lint-staged.config.ts`.
 - **Public header** — colocated `keyframes()` compact the bar on scroll (`app/navigation/components/nav.tsx`)
 - **Host nav** — grouped rail; tablet named `host-nav` container; mobile native `popover="auto"` + CSS Anchor + Invoker `toggle-popover` (uncontrolled; see `docs/host-navigation-popover.md`)
 - **Reusable keyframes** — parameterized fade / scale / slide in `theme/keyframes.ts` + leftover `::view-transition-*` in `app/app.css`
-- **Auth + host view transitions** — named bags in `theme/view-transitions.ts`; unique `view-transition-name` stays on the element
+- **Reusable view transitions** — `fadeSlide` / `fadeSlideSubtle` bags in `theme/view-transitions.ts`; consumers pick `enter` / `exit` / `share` / `update`; unique `view-transition-name` stays on the element
 - **Semantic tokens** — `theme/semantic-tokens.ts` + `DESIGN.md`; consume paths (`surface`, `muted.foreground`, `border.subtle`) not palette primitives at call sites
 - **Dark / light / system** — cookie `theme`; `app/theme/theme-bootstrap.server.ts` sets `html` class + `color-scheme` before paint; header toggle (`app/navigation/components/theme-toggle.tsx`) uses `ViewTransition` (`docs/theme-toggle-ssr.md`)
 - **Scroll-driven host nav hint** — `supportsScroll` in `theme/conditions.ts` + scroll-driven classes in `app/app.css`

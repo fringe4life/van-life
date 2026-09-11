@@ -1,22 +1,17 @@
 import { css } from "styled-system/css";
-import { useVanDetailCard } from "./context";
+import type { VanProps } from "~/features/vans/types";
 
-/**
- * Details sub-component - displays van name, category, and description
- */
-function Details() {
-  const van = useVanDetailCard();
+function Details({ van }: VanProps) {
   const { name, type, description } = van;
 
   return (
     <article>
       <p className={css({ fontWeight: "bold" })}>
-        Name:
-        <span className={css({ fontWeight: "normal" })}>{name}</span>
+        Name: <span className={css({ fontWeight: "normal" })}>{name}</span>
       </p>
 
       <p className={css({ fontWeight: "bold", marginBlock: "4" })}>
-        Category:
+        Category:{" "}
         <span
           className={css({
             fontWeight: "normal",
@@ -34,7 +29,7 @@ function Details() {
           minInlineSize: "full",
         })}
       >
-        Description:
+        Description:{" "}
         <span className={css({ fontWeight: "normal" })}>{description}</span>
       </p>
     </article>

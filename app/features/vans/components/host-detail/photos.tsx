@@ -1,13 +1,8 @@
 import { css } from "styled-system/css";
 import { Image } from "~/components/image/image";
-import { useVanDetailCard } from "./context";
+import type { VanProps } from "~/features/vans/types";
 
-/**
- * Photos sub-component - displays van image
- */
-function Photos() {
-  const van = useVanDetailCard();
-
+function Photos({ van }: VanProps) {
   return (
     <Image
       alt={van.name}

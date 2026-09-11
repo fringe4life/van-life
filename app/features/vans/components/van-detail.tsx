@@ -25,7 +25,7 @@ import { VanPrice } from "./van-price";
 import { vanViewTransitionName } from "./van-view-transitions";
 
 const VAN_DETAIL_IMG_SIZES = [300, 450, 600, 750, 1000] as const;
-const descriptionTransition = viewTransition("vanDescription");
+const fadeSlideTransition = viewTransition("fadeSlide");
 
 interface VanDetailProps {
   van: VanWithChrome;
@@ -192,8 +192,8 @@ export default function VanDetail({
             {/* Third row: Description */}
             <ViewTransition
               default="none"
-              enter={descriptionTransition}
-              exit={descriptionTransition}
+              enter={fadeSlideTransition}
+              exit={fadeSlideTransition}
             >
               <CardDescription
                 className={css({

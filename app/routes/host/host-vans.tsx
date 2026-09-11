@@ -10,6 +10,7 @@ import {
   href,
   type ShouldRevalidateFunctionArgs,
   useFetcher,
+  useLocation,
 } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
@@ -51,6 +52,7 @@ import { Pagination } from "~/pagination/components/pagination";
 import { PaginationOffsetTransition } from "~/pagination/components/pagination-offset-transition";
 import { hostPaginationParsers } from "~/pagination/schema";
 import { pageSliceKey } from "~/pagination/utils/page-slice-key";
+import { withSearch } from "~/pagination/utils/with-search";
 import { gridMax } from "~/styles";
 import { badRequest } from "~/utils/errors/bad-request";
 import {
@@ -142,46 +144,40 @@ export function shouldRevalidate({
   return defaultShouldRevalidate;
 }
 
-const renderHostVanCardProps = (item: HostVanListItem, index: number) => {
-  const van = toVanCardModel(item);
-  const pending = isPendingVan(item);
+const createHostVanCardProps =
+  (search: string) => (item: HostVanListItem, index: number) => {
+    const van = toVanCardModel(item);
+    const pending = isPendingVan(item);
 
-  return {
-    action: pending ? (
-      <p
-        className={css({
-          color: "muted.foreground",
-          fontSize: "sm",
-          fontStyle: "italic",
-        })}
-      >
-        Saving…
-      </p>
-    ) : (
-      <p className={css({ textAlign: "right" })}>
-        <CustomLink
-          to={href("/host/vans/:vanSlug/:action?", {
-            action: "edit",
-            vanSlug: van.slug,
+    return {
+      action: pending ? (
+        <p
+          className={css({
+            color: "muted.foreground",
+            fontSize: "sm",
+            fontStyle: "italic",
           })}
         >
-          Edit
-        </CustomLink>
-      </p>
-    ),
-    imageIndex: index,
-    link: pending
-      ? "#"
-      : href("/host/vans/:vanSlug/:action?", {
-          vanSlug: van.slug,
-        }),
-    linkCoversCard: !pending,
-    van,
+          Saving…
+        </p>
+      ) : (
+        <span />
+      ),
+      imageIndex: index,
+      link: pending
+        ? "#"
+        : withSearch(
+            href("/host/vans/:vanSlug", { vanSlug: van.slug }),
+            search
+          ),
+      linkCoversCard: !pending,
+      van,
+    };
   };
-};
 
 const HostVans = ({ loaderData }: Route.ComponentProps) => {
   const { items: vans, paginationMetadata } = loaderData;
+  const { search } = useLocation();
   const onFirstPage = !paginationMetadata.hasPreviousPage;
 
   const [{ limit }] = useQueryStates(hostPaginationParsers);
@@ -280,7 +276,7 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
             errorState={{ title: "Something went wrong" }}
             items={displayItems}
             noMatchState={null}
-            renderProps={renderHostVanCardProps}
+            renderProps={createHostVanCardProps(search)}
           />
           <Pagination items={vans} paginationMetadata={paginationMetadata} />
         </PaginationOffsetTransition>

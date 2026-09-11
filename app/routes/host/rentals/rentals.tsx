@@ -41,7 +41,7 @@ const renderRentalVanCardProps = (rental: ActiveRental, index: number) => ({
     </CustomLink>
   ),
   imageIndex: index,
-  link: href("/host/vans/:vanSlug/:action?", {
+  link: href("/host/vans/:vanSlug", {
     vanSlug: rental.van.slug,
   }),
   linkCoversCard: false,
