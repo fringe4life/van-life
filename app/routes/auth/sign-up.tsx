@@ -21,7 +21,7 @@ import {
   SIGN_UP_ECHO_FIELDS,
   SIGN_UP_FORM_FIELDS,
 } from "~/features/auth/types";
-import { auth } from "~/lib/auth.server";
+import { getAuth } from "~/lib/auth.server";
 import { hasAuthContext } from "~/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/middleware/functions/has-auth-middleware";
 import { badRequest } from "~/utils/errors/bad-request";
@@ -69,7 +69,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   }
 
   const { data: signUp, error } = await tryCatch(() =>
-    auth.api.signUpEmail({
+    getAuth().api.signUpEmail({
       body: validation.data,
       returnHeaders: true,
     })
