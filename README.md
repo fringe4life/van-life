@@ -6,7 +6,7 @@
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.0.0--beta.16-F6E05E?logoColor=black)](https://panda-css.com/)
+[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.0.0--beta.17-F6E05E?logoColor=black)](https://panda-css.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.3-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.12-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
@@ -90,9 +90,9 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **React 19.3** with stable Activity + `ViewTransition` for prerendering and morphs
 - **React Router 8.3.1** (file-based routing, SSR, nested host van detail routes, middleware)
 - **TypeScript 7.0.2** with strict configuration
-- **PandaCSS 2.0.0-beta.16** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`)
+- **PandaCSS 2.0.0-beta.17** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`)
 - **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover, select)
-- **Lucide React 1.41.0** for icons (direct imports for performance)
+- **Lucide React 1.43.0** for icons (direct imports for performance)
 - **TanStack Charts 0.18.0** for host income/review bars (lazy-loaded via `LazyBarChart`; height-band colors)
 - **nuqs 2.10.1** for type-safe URL state management via shared parsers
 
@@ -108,7 +108,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Development Tools
 
 - **Vite 8.3.0-beta.1** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports
-- **@vitejs/devtools 0.7.2** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
+- **@vitejs/devtools 0.7.3** - Vite DevTools + DevTools for Rolldown (client/ssr environments)
 - **rollup-plugin-visualizer 7.1.1** - Client/server bundle treemaps (`VITE_ANALYZE=true`)
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler** (native Rust via `oxc-transform-react`) - Automatic memoization via `@acusti/vite-plugin-react-compiler` (not `@vitejs/plugin-react`'s `react()`; see `docs/rust-react-compiler.md`)
@@ -190,7 +190,8 @@ app/
 │       ├── types.ts    # ListingChrome (VanState + NEW), VanWithChrome, VanFormValues
 │       └── utils/      # pricing, van-filter-url, isVanRentable, to-van-form-values, pending-van-from-form-data
 ├── db/                 # Drizzle schema, client, seed, migrations
-│   ├── client.server.ts    # createDb(d1) → drizzle-orm/d1
+│   ├── client.server.ts    # createDb(d1) → drizzle-orm/d1 (seed / Miniflare)
+│   ├── get-db.server.ts    # isolate-cached getDb() from cloudflare:workers env.DB
 │   ├── d1-http.server.ts   # Remote D1 HTTP (`/raw`) for seed; tryCatch + split helpers
 │   ├── migrations/         # SQL migrations (flattened for Wrangler D1)
 │   ├── schema/             # auth.ts, van.ts, index.ts
@@ -204,7 +205,7 @@ app/
 ├── seo/                # SEO helpers (canonical URLs, SeoHead, sitemap)
 │   └── dal/            # SEO Drizzle reads (sitemap.server.ts)
 ├── lib/                # Server-side utilities
-│   ├── auth.server.ts      # Better-auth + drizzle-adapter/relations-v2
+│   ├── auth.server.ts      # isolate-cached getAuth() + drizzle-adapter/relations-v2
 │   ├── env.server.ts       # Varlock env re-export
 │   ├── id.server.ts        # UUID v7 ID generator for Better Auth
 │   ├── nuqs-options.ts     # Shared nuqs default options
@@ -343,7 +344,8 @@ export default defineConfig({
 
 Notes:
 
-- Runtime uses `createDb(env.DB)` — no `DATABASE_URL`.
+- Runtime uses isolate-cached `getDb()` (`app/db/get-db.server.ts`) wrapping `createDb(env.DB)` from `import { env } from "cloudflare:workers"`. No `DATABASE_URL`.
+- Seed / Miniflare still call `createDb(d1)` — keep `cloudflare:workers` out of `client.server.ts`.
 - Remote seed uses `createD1HttpDb` (`app/db/d1-http.server.ts`): sqlite-proxy → Cloudflare D1 `/raw`; `tryCatch` on fetch; helpers for parse, success assert, and row shaping (keeps fallow CRAP under threshold).
 - `CLOUDFLARE_*` vars required in `.env.schema` (drizzle-kit Studio / remote seed).
 - Local Studio: `drizzle.local.config.ts` resolves Miniflare SQLite under `.wrangler/state/...`.
@@ -396,7 +398,7 @@ return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 - **Accessible auth forms** — `useFetcher` + `useTransition`, labeled inputs, `aria-invalid` / `aria-describedby`, form-level `role="alert"`
 - **View transitions** on login/sign-up — shared `AuthCard` + `AUTH_VT` names on card, title, fields, submit, footer
 - **Server-side session handling** in loaders
-- **Better-auth config** in `app/lib/auth.server.ts`; **`AuthenticatedUser`** type in `app/types/auth.server.ts`
+- **Better-auth config** via isolate-cached `getAuth()` in `app/lib/auth.server.ts` (do not construct `drizzleAdapter` at import); **`AuthenticatedUser`** in `app/types/auth.server.ts`; session types from `Auth["$Infer"]`
 - **UUID v7 generator** (`createId` in `app/lib/id.server.ts`) for user IDs via Better Auth `generateId`
 - **Sign-out** — resource route `app/routes/auth/sign-out.ts` (`POST /signout`); `SignOutForm` posts via fetcher; success `replace`s to `/login`
 
@@ -1053,7 +1055,7 @@ Configuration in `lint-staged.config.ts`.
 
 ### PandaCSS 2 & Modern CSS
 
-- **PandaCSS 2.0.0-beta.16** — typed `css` / `cx` / `cva` / `keyframes` / patterns from `styled-system` (generated; do not edit)
+- **PandaCSS 2.0.0-beta.17** — typed `css` / `cx` / `cva` / `keyframes` / patterns from `styled-system` (generated; do not edit)
 - **Tokens** in `theme/`; `panda.config.ts` wires them; PostCSS via `postcss.config.cjs`; `bun run prepare` runs `panda build`
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — native `<dialog>` panel/fullscreen variants (`starting-style`, `transition-discrete`, Invoker Commands)
@@ -1139,7 +1141,7 @@ The application deploys to **Cloudflare Workers** with static client assets:
 - **Wrangler config** - `wrangler.jsonc` (assets from `./build/client`, `nodejs_compat`, D1 binding `DB`, `cache.enabled`)
 - **Workers Cache** - edge caching for public GETs; host/auth use `private, no-store` via `app/constants/cache-headers.ts`
 - **Varlock deploy** - `bun run deploy:project` runs `varlock-wrangler deploy` for typed secrets
-- **Cloudflare D1** - SQLite via `env.DB`; Drizzle `createDb(d1)` in middleware/`auth.server.ts`
+- **Cloudflare D1** - SQLite bind `env.DB` (Wrangler); isolate-cached `getDb()` seeds `dbContext`; Varlock `ENV` is schema strings (`BETTER_AUTH_*`, `CLOUDFLARE_*` HTTP), not the D1 object
 - **Cloudflare context** - `cloudflareContext` + `dbContext` middleware share `env` / `AppDb` with routes
 
 ```bash

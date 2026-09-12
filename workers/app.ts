@@ -1,5 +1,5 @@
 import { createRequestHandler, RouterContextProvider } from "react-router";
-import { createDb } from "~/db/client.server";
+import { getDb } from "~/db/get-db.server";
 import { cloudflareContext } from "~/middleware/contexts/cloudflare";
 import { dbContext } from "~/middleware/contexts/db";
 
@@ -15,9 +15,8 @@ const requestHandler = createRequestHandler(
 export default {
   fetch(request, env, ctx) {
     const loadContext = new RouterContextProvider();
-    const db = createDb(env.DB);
     loadContext.set(cloudflareContext, { ctx, env });
-    loadContext.set(dbContext, db);
+    loadContext.set(dbContext, getDb());
     return requestHandler(request, loadContext);
   },
 } satisfies ExportedHandler<CloudflareEnvironment>;

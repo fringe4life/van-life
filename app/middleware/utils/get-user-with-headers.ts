@@ -1,5 +1,5 @@
 import { parseUuidV7 } from "~/dal/parse-uuidv7.server";
-import { auth } from "~/lib/auth.server";
+import { getAuth } from "~/lib/auth.server";
 import type { UserAndHeaders } from "~/middleware/types";
 import type { AuthenticatedUser } from "~/types/auth.server";
 import type { User } from "~/types/index.server";
@@ -14,7 +14,7 @@ const getUserWithHeaders = async (
   request: Request
 ): Promise<UserAndHeaders> => {
   const { data: responseWithHeaders } = await tryCatch(() =>
-    auth.api.getSession({
+    getAuth().api.getSession({
       headers: request.headers,
       returnHeaders: true,
     })

@@ -18,7 +18,7 @@ import { AuthForm } from "~/features/auth/components/auth-form";
 import { useAuthForm } from "~/features/auth/hooks/use-auth-form";
 import { loginSchema } from "~/features/auth/schema.server";
 import { LOGIN_ECHO_FIELDS, LOGIN_FORM_FIELDS } from "~/features/auth/types";
-import { auth } from "~/lib/auth.server";
+import { getAuth } from "~/lib/auth.server";
 import { hasAuthContext } from "~/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/middleware/functions/has-auth-middleware";
 import {
@@ -72,7 +72,7 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   const { data: login, error } = await tryCatch(() =>
-    auth.api.signInEmail({
+    getAuth().api.signInEmail({
       body: validation.data,
       returnHeaders: true,
     })
