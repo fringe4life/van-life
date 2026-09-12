@@ -43,7 +43,28 @@ export type Auth = ReturnType<typeof createAuth>;
 
 let instance: Auth | undefined;
 
-/** Isolate-cached. `drizzleAdapter` reads `db._` at construct — must not run at import. */
+/**
+ * Isolate-cached Better Auth. `drizzleAdapter` reads `db._` at construct — must
+ * not run at import. Captures `getDb()` and `BETTER_AUTH_SECRET` on first call.
+ *
+ * Templates either singleton like this or `betterAuth({ database: env.DB })` per
+ * `fetch` (Cloudflare: do not cache clients derived from bindings).
+ *
+ * Unusual middle path — not used here — pass current drizzle and rebuild only
+ * when identity changes:
+ *
+ * ```
+ * let cachedDb: AppDb | undefined;
+ * export const getAuth = (db: AppDb): Auth => {
+ *   if (instance && cachedDb === db) return instance;
+ *   cachedDb = db;
+ *   instance = createAuth(db);
+ *   return instance;
+ * };
+ * ```
+ *
+ * Also compare `env.BETTER_AUTH_SECRET` if secrets rotate without a JS deploy.
+ */
 export const getAuth = (): Auth => {
   instance ??= createAuth();
   return instance;
