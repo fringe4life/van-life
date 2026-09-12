@@ -1105,7 +1105,7 @@ Configuration in `lint-staged.config.ts`.
   - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.22.0` Action (CLI `version: 3.22.0`, same as `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`); type-aware `require: "best-effort"` so incomplete semantic evidence stays advisory
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
-- **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability; bump via Dependabot `github-actions` or periodic SHA refresh
+- **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability. [`.github/dependabot.yml`](.github/dependabot.yml) bumps `github-actions` (grouped) and `bun` daily after a **3-day** `cooldown` (same window as `bunfig.toml` `minimumReleaseAge`); security updates skip the wait
 
 ### Ultracite Integration
 
