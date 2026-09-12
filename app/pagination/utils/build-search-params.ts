@@ -1,6 +1,6 @@
 import { createSerializer } from "nuqs/server";
 // fallow-ignore-next-line
-import { vansParsers } from "~/features/vans/schema";
+import { vansParsers } from "~/features/vans/parsers";
 import { parseLimit } from "~/pagination/schema";
 import type { List, Maybe, Prettify } from "~/types";
 import type { Limit } from "../types";

@@ -143,11 +143,20 @@ describe("getVans", () => {
   it("filters by types list and ignores invalid type strings", async () => {
     const rows = await getVans(db, {
       ...baseQuery,
-      types: ["luxury", "not-a-type"],
+      types: ["LUXURY", "not-a-type"],
     });
 
     expect(rows).toHaveLength(1);
     expect(rows[0]?.slug).toBe("the-cruiser");
+  });
+
+  it("does not coerce lowercase type filters", async () => {
+    const rows = await getVans(db, {
+      ...baseQuery,
+      types: ["luxury"],
+    });
+
+    expect(rows).toHaveLength(4);
   });
 
   it("returns no type filter when types are all invalid", async () => {
@@ -236,7 +245,7 @@ describe("getVans", () => {
       ...baseQuery,
       excludeInRepair: true,
       search: "explorer",
-      types: ["simple"],
+      types: ["SIMPLE"],
     });
 
     expect(rows).toHaveLength(1);

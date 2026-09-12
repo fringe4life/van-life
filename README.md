@@ -60,7 +60,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
 - 🎨 **Semantic design system** (`DESIGN.md` + `theme/`) — token paths (`surface`, `muted.foreground`, `border.subtle`) not raw palette at call sites
 - 🧑‍💻 **TypeScript** throughout with strict type checking
-- 🧪 **Valibot** isomorphic `schema.ts` (client + SSR) and `schema.server.ts` (forms/actions); nuqs literals share picklist arrays
+- 🧪 **Valibot** isomorphic `schema.ts` (catalogs + `addVanSchema`); nuqs URL maps in feature `parsers.ts`, sharing `vanType.values`
 - 🗄️ **Time-sortable database IDs** with UUID v7 (text columns on D1/SQLite)
 - 🌙 **Dark mode** — SSR `theme` cookie + bootstrap (no FOUC); semantic tokens for light/dark; header toggle uses React `ViewTransition` (`docs/theme-toggle-ssr.md`)
 - 🎨 **PandaCSS 2** (typed `css` / patterns / recipes; PostCSS + `panda build`)
@@ -185,8 +185,8 @@ app/
 │       ├── dal/        # Van Drizzle repositories + listing-chrome.server.ts
 │       ├── services/   # catalog, host-vans, van-detail
 │       ├── hooks/      # use-van-filters, host-vans list reducer, display hooks, optimistic filter hooks
-│       ├── schema.ts          # Van type/URL Valibot schemas + nuqs parsers
-│       ├── schema.server.ts   # addVan form schema
+│       ├── schema.ts          # vanType/vanState catalogs + addVanSchema
+│       ├── parsers.ts         # nuqs van URL maps (`vansParsers`, `vansFilterUrlParsers`)
 │       ├── types.ts    # ListingChrome (VanState + NEW), VanWithChrome, VanFormValues
 │       └── utils/      # pricing, van-filter-url, isVanRentable, to-van-form-values, pending-van-from-form-data
 ├── db/                 # Drizzle schema, client, seed, migrations
@@ -372,11 +372,11 @@ return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 ### Validation (Valibot)
 
 - **`schema.ts`** — isomorphic (client + server, including SSR). **`schema.server.ts`** — server only. **`schema.client.ts`** — none: RR `.client.ts` cannot be imported from route modules or SSR components.
-- **Van / pagination URL enums** — feature `schema.ts`. Form actions (`addVan`, money, login/sign-up) live in `schema.server.ts`. Types via `InferOutput`. URL/form → DB: `vanTypeFromClientSchema`. Van type in URL, filters, and badges is `VanType` (`SIMPLE` / `RUGGED` / `LUXURY`).
+- **Van catalogs** — `vanType` / `vanState` in feature `schema.ts`. **Van URL maps** — `vansParsers` / `vansFilterUrlParsers` in `parsers.ts`, sharing `vanType.values`. Pagination parsers still in `app/pagination/schema.ts`. Form actions (`addVan`, money, login/sign-up): vans `addVanSchema` is isomorphic in `schema.ts`; host/auth stay in `schema.server.ts`. Types via `InferOutput`. URL/form → DB: `vanTypeFromClientSchema`. Van type in URL, filters, and badges is `VanType` (`SIMPLE` / `RUGGED` / `LUXURY`).
 - **UUID v7** (`app/dal/schema.server.ts`) — `uuidv7Schema`, branded at `parseUuidV7`
 - **Rental actions** (`app/features/host/rentals/schema.server.ts`)
 - **Parse helper** (`app/utils/errors/parse-schema.ts`) — `validateSchema`, `schemaErrorsToFieldErrors` for per-field form UI
-- **nuqs** — primitive query enums use `parseAsStringLiteral` / `parseAsNumberLiteral` on the same const arrays as Valibot `picklist`. Standard Schema in nuqs is `parseAsJson` (JSON blobs in the URL) and `createStandardSchemaV1` (nuqs parsers → tRPC / TanStack Router), not Valibot → `?limit=10`. Unconstrained bits stay `parseAsString` / `parseAsBoolean`.
+- **nuqs** — van URL maps in `parsers.ts` use `parseAsStringLiteral(vanType.values)` (same catalog as Valibot `picklist`). Pagination still uses `parseAsStringLiteral` / `parseAsNumberLiteral` in `pagination/schema.ts`. Standard Schema in nuqs is `parseAsJson` (JSON blobs in the URL) and `createStandardSchemaV1` (nuqs parsers → tRPC / TanStack Router), not Valibot → `?limit=10`. Unconstrained bits stay `parseAsString` / `parseAsBoolean`.
 
 ---
 
@@ -1092,7 +1092,7 @@ Configuration in `lint-staged.config.ts`.
 - **Error handling** with `DomainError` / `ServiceResult` / `toActionResultOrThrow`, plus `notFound` / `serverError` / `badRequest` / `conflict` / `internalError`, `getRouteErrorMessage` for boundaries, and `getCollectionState` for list empty/error states
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
-- **Feature schemas** — vans/pagination URL enums in `schema.ts`; form actions in `schema.server.ts`; Van type is uppercase `VanType` (`SIMPLE` / `RUGGED` / `LUXURY`) end-to-end
+- **Feature schemas** — catalogs in vans `schema.ts`, URL maps in vans `parsers.ts` (share `vanType.values`); pagination parsers still in `pagination/schema.ts`; form actions in host/auth `schema.server.ts`; Van type is uppercase `VanType` (`SIMPLE` / `RUGGED` / `LUXURY`) end-to-end
 - **fallow 3.22.0** - Architecture boundaries (shared `app/middleware|navigation|pagination|seo|theme` vs `app/features/{auth,host,vans}` in `.fallowrc.jsonc`); health caps `maxCrap` 55 / cyclomatic+cognitive 12; rules at `warn` until backlog cleared
 - **Bun `overrides`** — pin transitive audit fixes (`@opentelemetry/core`, `fast-uri`, `qs`, `turbo-stream`) while `bunfig.toml` keeps `minimumReleaseAge`
 

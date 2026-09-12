@@ -1,5 +1,5 @@
 import { data } from "react-router";
-import { isThemeChoice } from "~/theme/theme";
+import { isThemeChoice } from "~/theme/schema";
 import { serializeThemeSetCookie } from "~/theme/theme-cookie.server";
 import type { Failure, Success } from "~/types";
 import { badRequest } from "~/utils/errors/bad-request";

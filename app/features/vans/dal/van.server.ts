@@ -12,12 +12,11 @@ import {
   type SQL,
   sql,
 } from "drizzle-orm";
-import { safeParse } from "valibot";
 import type { AppDb, VanModel } from "~/db/client.server";
-import { VanState, type VanType } from "~/db/enums";
+import { VanState } from "~/db/enums";
 import { van } from "~/db/schema/van";
 import { vanSelectWithChrome } from "~/features/vans/dal/listing-chrome.server";
-import { vanTypeFromClientSchema } from "~/features/vans/schema";
+import { vanType } from "~/features/vans/schema";
 import type { BasePaginationParams } from "~/pagination/types";
 import { getCursorMetadata } from "~/pagination/utils/get-cursor-metadata.server";
 import type { List, Prettify, Search } from "~/types";
@@ -25,18 +24,8 @@ import type { VanFilters } from "../types";
 
 const WHITESPACE_REGEX = /\s+/;
 
-function parseVanTypeStrings(types: string[]): VanType[] {
-  return types.flatMap((type) => {
-    const result = safeParse(vanTypeFromClientSchema, type);
-    return result.success ? [result.output] : [];
-  });
-}
-
 function buildVanTypeCondition(types: List<string>): SQL | undefined {
-  if (!(types && types.length > 0)) {
-    return;
-  }
-  const vanTypes = parseVanTypeStrings(types);
+  const vanTypes = vanType.parseMany(types ?? []);
   if (vanTypes.length === 0) {
     return;
   }

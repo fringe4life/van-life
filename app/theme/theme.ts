@@ -1,10 +1,5 @@
 import { createContext, use, useSyncExternalStore } from "react";
-
-export const THEME_CHOICES = ["light", "dark", "system"] as const;
-
-export type ThemeChoice = (typeof THEME_CHOICES)[number];
-
-export type StoredTheme = Exclude<ThemeChoice, "system">;
+import type { StoredTheme, ThemeChoice } from "~/theme/schema";
 
 export const THEME_TRANSITION_TYPE = "theme-change" as const;
 export const THEME_VIEW_TRANSITION_NAME = "theme" as const;
@@ -13,16 +8,6 @@ const HTML_THEME_CLASSES = {
   dark: "dark",
   light: "light",
 } as const satisfies Record<StoredTheme, StoredTheme>;
-
-export function isThemeChoice(value: unknown): value is ThemeChoice {
-  const isSupportedThemeChoice =
-    value === "dark" || value === "light" || value === "system";
-  return isSupportedThemeChoice;
-}
-
-export function parseStoredTheme(value: unknown): StoredTheme | null {
-  return value === "dark" || value === "light" ? value : null;
-}
 
 export function colorSchemeForTheme(
   theme: StoredTheme | null

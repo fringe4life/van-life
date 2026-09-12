@@ -8,7 +8,7 @@ Audit of the Van Life codebase against React Router v8.1 framework-mode docs (bu
 
 This app uses React Router v8.1 framework mode with SSR on Cloudflare Workers, typed route modules (`./+types/*`), `href()` for URL generation, and middleware enabled by default (no `future.v8_middleware` flag needed).
 
-URL search state is handled by **nuqs** via `NuqsAdapter` in `app/root.tsx` and shared parsers in `app/lib/parsers.ts`.
+URL search state is handled by **nuqs** via `NuqsAdapter` in `app/root.tsx` and feature parser modules (`app/features/vans/parsers.ts`; pagination still in `app/pagination/schema.ts`).
 
 ## What Is Already Strong
 
@@ -44,7 +44,7 @@ URL search state is handled by **nuqs** via `NuqsAdapter` in `app/root.tsx` and 
 ### URL state (nuqs)
 
 - `NuqsAdapter` from `nuqs/adapters/react-router/v8` in `root.tsx`
-- Shared parsers in `app/lib/parsers.ts` (pagination, filters, sort)
+- Van list parsers in `app/features/vans/parsers.ts` (`vansParsers`, `vansFilterUrlParsers`); pagination parsers still in `app/pagination/schema.ts`
 - Server-side loaders use `createLoader` / `createSerializer` from `nuqs/server`
 - Login redirect uses `redirectTo` search param via `getRedirectFromRequest` / `getLoginRedirectUrl`
 - Host top-up flow uses `getHostRedirectUrl` + deposit action redirect back to return-rental (same `redirectTo` param, `getSafeRedirectPath` validation)

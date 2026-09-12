@@ -1,26 +1,26 @@
-import { parseVanType } from "~/features/vans/schema";
+import type { InferOutput } from "valibot";
+import type { addVanSchema } from "~/features/vans/schema";
 import type { PendingVan } from "~/features/vans/types";
 import { getSlug } from "~/utils/get-slug";
 
+type AddVanOutput = InferOutput<typeof addVanSchema>;
+
 export function pendingVanFromFormData(
-  formData: FormData,
+  validated: AddVanOutput,
   clientKey: string
 ): PendingVan {
-  const name = String(formData.get("name") ?? "");
-  const typeRaw = String(formData.get("type") ?? "");
-  const discountRaw = formData.get("discount");
+  const { name } = validated;
 
   return {
     clientKey,
-    description: String(formData.get("description") ?? ""),
-    discount:
-      discountRaw === null || discountRaw === "" ? 0 : Number(discountRaw),
+    description: validated.description,
+    discount: validated.discount,
     id: `pending:${clientKey}`,
-    imageUrl: String(formData.get("imageUrl") ?? ""),
+    imageUrl: validated.imageUrl,
     name,
-    price: Number(formData.get("price")),
+    price: validated.price,
     slug: getSlug(name),
     status: "pending",
-    type: parseVanType(typeRaw),
+    type: validated.type,
   };
 }

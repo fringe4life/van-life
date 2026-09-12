@@ -5,7 +5,7 @@ import { hstack } from "styled-system/patterns";
 import { arrowRecipe } from "~/components/arrow-recipe";
 import { Button } from "~/components/ui/button";
 import { useBumpPaginationPageEpoch } from "~/pagination/components/pagination-page-epoch";
-import { cursorPaginationParsers } from "~/pagination/schema";
+import { cursorPaginationParsers } from "~/pagination/parsers";
 import type { Direction, PaginationProps } from "~/pagination/types";
 import type { Id } from "~/types";
 

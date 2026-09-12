@@ -7,7 +7,8 @@ import {
 } from "~/features/vans/components/van-filters/van-state-filter-config";
 import { useOptimisticBooleanFilter } from "~/features/vans/hooks/use-optimistic-boolean-filter";
 import { useOptimisticTypesFilter } from "~/features/vans/hooks/use-optimistic-types-filter";
-import { toValidTypes, vansFilterUrlParsers } from "~/features/vans/schema";
+import { vansFilterUrlParsers } from "~/features/vans/parsers";
+import { vanType } from "~/features/vans/schema";
 import {
   activeFilterCount,
   getLimitUrlUpdates,
@@ -25,7 +26,7 @@ const useVanFilters = () => {
   const baseId = useId();
 
   const { types, excludeInRepair, onlyOnSale } = urlState;
-  const validTypes = toValidTypes(types);
+  const validTypes = vanType.parseMany(types);
 
   const [optimisticTypes, toggleOptimisticType, resetOptimisticTypes] =
     useOptimisticTypesFilter(validTypes);
