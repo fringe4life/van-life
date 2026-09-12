@@ -4,7 +4,7 @@ import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import { CollectionList } from "~/components/collection-list";
 import { PendingUI } from "~/components/pending-ui";
-import { vansParsers } from "~/features/vans/schema";
+import { vansParsers } from "~/features/vans/parsers";
 import type { VanWithChrome } from "~/features/vans/types";
 import { Pagination } from "~/pagination/components/pagination";
 import { PaginationOffsetTransition } from "~/pagination/components/pagination-offset-transition";

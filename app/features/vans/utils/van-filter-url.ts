@@ -1,7 +1,7 @@
 import { debounce, defaultRateLimit } from "nuqs";
 import { DEFAULT_DEBOUNCE } from "~/constants/constants";
 import type { VanType } from "~/db/enums";
-import { toValidTypes } from "~/features/vans/schema";
+import { vanType } from "~/features/vans/schema";
 import type { List, Maybe } from "~/types";
 
 export interface VanFilterUrlState {
@@ -21,7 +21,7 @@ export const snapshotFilterState = (
 ): VanFilterUrlState => ({
   excludeInRepair: urlState.excludeInRepair ?? false,
   onlyOnSale: urlState.onlyOnSale ?? false,
-  types: toValidTypes(urlState.types),
+  types: vanType.parseMany(urlState.types ?? []),
 });
 
 export const activeFilterCount = (state: VanFilterUrlState): number =>

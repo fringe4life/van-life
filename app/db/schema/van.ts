@@ -7,7 +7,15 @@ import {
   text,
 } from "drizzle-orm/sqlite-core";
 import { uuidv7Column, uuidv7PrimaryKey } from "~/db/columns";
+// fallow-ignore-next-line -- drizzle allowlists follow vanType/vanState catalogs
+import { vanState, vanType } from "~/features/vans/schema";
 import { user } from "./auth";
+
+function sqliteTextEnum<T extends string>(
+  values: readonly [T, ...T[]]
+): [T, ...T[]] {
+  return [values[0], ...values.slice(1)];
+}
 
 export const van = sqliteTable(
   "van",
@@ -27,9 +35,9 @@ export const van = sqliteTable(
     price: integer("price").notNull(),
     slug: text("slug").notNull().unique(),
     state: text("state", {
-      enum: ["IN_REPAIR", "ON_SALE", "AVAILABLE"],
+      enum: sqliteTextEnum(vanState.values),
     }).default("AVAILABLE"),
-    type: text("type", { enum: ["SIMPLE", "LUXURY", "RUGGED"] }).notNull(),
+    type: text("type", { enum: sqliteTextEnum(vanType.values) }).notNull(),
   },
   (table) => [
     index("Van_hostId_id_idx").on(table.hostId, table.id),

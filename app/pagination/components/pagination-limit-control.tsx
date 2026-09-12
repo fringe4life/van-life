@@ -12,7 +12,8 @@ import { square } from "styled-system/patterns";
 import { Select } from "~/components/ui/select";
 import { useSupportsBaseSelect } from "~/hooks/use-supports-base-select";
 import { DEFAULT_LIMIT, LIMITS } from "~/pagination/pagination-constants";
-import { limitParsers, parseLimit } from "~/pagination/schema";
+import { limitParsers } from "~/pagination/parsers";
+import { parseLimit } from "~/pagination/schema";
 import type { Limits } from "~/pagination/types";
 
 const LIMIT_ICONS = {

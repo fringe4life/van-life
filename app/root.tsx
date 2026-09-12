@@ -13,13 +13,13 @@ import "./app.css";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import { themeTransition } from "~/navigation/components/theme-toggle-transition";
+import type { ThemeChoice } from "~/theme/schema";
 import {
   colorSchemeForTheme,
   htmlThemeClassName,
   THEME_TRANSITION_TYPE,
   THEME_VIEW_TRANSITION_NAME,
   ThemeChangeContext,
-  type ThemeChoice,
   useHtmlThemeClass,
 } from "~/theme/theme";
 import { readStoredTheme } from "~/theme/theme-cookie.server";

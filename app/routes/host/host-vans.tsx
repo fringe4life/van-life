@@ -3,6 +3,7 @@ import {
   Activity,
   type SubmitEventHandler,
   useOptimistic,
+  useState,
   useTransition,
 } from "react";
 import {
@@ -14,6 +15,7 @@ import {
 } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
+import { is, literal, looseObject } from "valibot";
 import { CollectionList } from "~/components/collection-list";
 import type { FormActionResult } from "~/components/form/form-action-result";
 import { readActionFormData } from "~/components/form/read-action-form-data";
@@ -32,13 +34,14 @@ import {
   hostVansListReducer,
 } from "~/features/vans/hooks/host-vans-list-reducer";
 import { useDisplayHostVans } from "~/features/vans/hooks/use-display-host-vans";
-import { addVanSchema } from "~/features/vans/schema.server";
+import { addVanSchema } from "~/features/vans/schema";
 import {
   createHostVan,
   loadHostVansPage,
 } from "~/features/vans/services/host-vans.server";
 import type {
   HostVanListItem,
+  VanFormFieldErrors,
   VanFormFieldKey,
   VanWithChrome,
 } from "~/features/vans/types";
@@ -50,7 +53,7 @@ import { authContext } from "~/middleware/contexts/auth";
 import { dbContext } from "~/middleware/contexts/db";
 import { Pagination } from "~/pagination/components/pagination";
 import { PaginationOffsetTransition } from "~/pagination/components/pagination-offset-transition";
-import { hostPaginationParsers } from "~/pagination/schema";
+import { hostPaginationParsers } from "~/pagination/parsers";
 import { pageSliceKey } from "~/pagination/utils/page-slice-key";
 import { withSearch } from "~/pagination/utils/with-search";
 import { gridMax } from "~/styles";
@@ -71,6 +74,20 @@ type HostVansActionData = FormActionResult<
   VanFormFieldKey
 >;
 
+/**
+ * Flatten FormData to one value per key — `addVanSchema` is that shape.
+ * Action and `handleSubmit` share this so the client gate and POST body
+ * are the same bag. Widen this helper and the schema together if a field
+ * needs `getAll`.
+ */
+function addVanFormEntries(formData: FormData) {
+  return Object.fromEntries(formData);
+}
+
+const hostVansActionSuccessSchema = looseObject({
+  ok: literal(true),
+});
+
 export const headers = forwardDataHeaders;
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
@@ -90,7 +107,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   const clientKey = String(rawFormData.get("clientKey") ?? "");
   rawFormData.delete("clientKey");
 
-  const formData = Object.fromEntries(rawFormData);
+  const formData = addVanFormEntries(rawFormData);
   const formValues = toVanFormValues(formData);
 
   const validation = validateSchema(addVanSchema, formData);
@@ -132,12 +149,7 @@ export function shouldRevalidate({
   actionResult,
   defaultShouldRevalidate,
 }: ShouldRevalidateFunctionArgs) {
-  if (
-    actionResult &&
-    typeof actionResult === "object" &&
-    "ok" in actionResult &&
-    actionResult.ok === true
-  ) {
+  if (is(hostVansActionSuccessSchema, actionResult)) {
     return false;
   }
 
@@ -189,6 +201,9 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
     hostVansListReducer
   );
 
+  const [clientFieldErrors, setClientFieldErrors] =
+    useState<VanFormFieldErrors>({});
+
   const displayItems = useDisplayHostVans({
     fetcherData: fetcher.data,
     fetcherState: fetcher.state,
@@ -197,26 +212,42 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
   });
 
   const {
-    fieldErrors,
+    fieldErrors: fetcherFieldErrors,
     formData: formDataDefaults,
     formError,
     ok,
   } = readActionFormData(fetcher.data);
 
+  const fieldErrors = { ...fetcherFieldErrors, ...clientFieldErrors };
+
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-    const clientKey = crypto.randomUUID();
-    const pending = pendingVanFromFormData(formData, clientKey);
+    const rawFormData = new FormData(event.currentTarget);
+    rawFormData.delete("clientKey");
 
-    formData.set("clientKey", clientKey);
+    const formData = addVanFormEntries(rawFormData);
+    const validation = validateSchema(addVanSchema, formData);
+
+    if (!validation.success) {
+      setClientFieldErrors(
+        schemaErrorsToFieldErrors(validation.errors, VAN_FORM_FIELDS)
+      );
+      return;
+    }
+
+    setClientFieldErrors({});
+
+    const clientKey = crypto.randomUUID();
+    const pending = pendingVanFromFormData(validation.data, clientKey);
+
+    rawFormData.set("clientKey", clientKey);
 
     const optimisticAction: HostVansListAction = { item: pending, type: "add" };
 
     startTransition(() => {
       addOptimisticItem(optimisticAction);
-      fetcher.submit(formData, {
+      fetcher.submit(rawFormData, {
         action: href("/host/vans"),
         method: "POST",
       });

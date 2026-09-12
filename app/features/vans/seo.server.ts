@@ -5,7 +5,7 @@ import { DEFAULT_OG_IMAGE, VANS_DESCRIPTION } from "~/seo/constants";
 import { getSiteOrigin } from "~/seo/get-site-origin.server";
 import type { PageSeo } from "~/seo/types";
 import { loadVansSearchParams } from "./loaders.server";
-import { vansParsers } from "./schema";
+import { vansParsers } from "./parsers";
 
 const serializeCanonicalVanListParams = createSerializer(vansParsers, {
   processUrlSearchParams: (searchParams) => {

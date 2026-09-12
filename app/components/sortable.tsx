@@ -9,7 +9,7 @@ import {
   DEFAULT_CURSOR,
   DEFAULT_DIRECTION,
 } from "~/pagination/pagination-constants";
-import { hostPaginationParsers } from "~/pagination/schema";
+import { hostPaginationParsers } from "~/pagination/parsers";
 import type { SortOption } from "~/pagination/types";
 import type { Maybe } from "~/types";
 

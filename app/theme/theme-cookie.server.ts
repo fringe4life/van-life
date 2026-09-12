@@ -4,7 +4,7 @@ import {
   parseStoredTheme,
   type StoredTheme,
   type ThemeChoice,
-} from "~/theme/theme";
+} from "~/theme/schema";
 
 export const THEME_COOKIE_NAME = "theme";
 

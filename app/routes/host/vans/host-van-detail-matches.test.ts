@@ -42,4 +42,24 @@ describe("getHostVanDetailLoaderData", () => {
       'Host van detail loader data is missing for "routes/host/vans/index". Matches: root, routes/host/vans/photos'
     );
   });
+
+  it("returns parent loader data when van has Date createdAt", () => {
+    expect(van.createdAt).toBeInstanceOf(Date);
+
+    const loaderData = { van };
+
+    expect(
+      getHostVanDetailLoaderData([{ id: "routes/host/vans/index", loaderData }])
+    ).toBe(loaderData);
+  });
+
+  it("throws when the matching route has a null van", () => {
+    expect(() =>
+      getHostVanDetailLoaderData([
+        { id: "routes/host/vans/index", loaderData: { van: null } },
+      ])
+    ).toThrow(
+      'Host van detail loader data is missing for "routes/host/vans/index". Matches: routes/host/vans/index'
+    );
+  });
 });

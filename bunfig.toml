@@ -6,7 +6,6 @@ minimumReleaseAgeExcludes = [
   "react-dom",
   "ultracite",
   "scheduler",
-  "vite",
   "@pandacss/cli",
   "@pandacss/compiler",
   "@pandacss/compiler-darwin-arm64",

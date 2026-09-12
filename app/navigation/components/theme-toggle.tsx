@@ -6,13 +6,8 @@ import { css, cx } from "styled-system/css";
 import { hstack, visuallyHidden } from "styled-system/patterns";
 import { Popover } from "~/components/ui/popover";
 import { closeClosestPopover } from "~/components/ui/popover/utils";
-import {
-  isThemeChoice,
-  THEME_CHOICES,
-  THEME_TRANSITION_TYPE,
-  type ThemeChoice,
-  useThemeChange,
-} from "~/theme/theme";
+import { isThemeChoice, THEME_CHOICES, type ThemeChoice } from "~/theme/schema";
+import { THEME_TRANSITION_TYPE, useThemeChange } from "~/theme/theme";
 import type { Route as RootRoute } from "../../+types/root";
 
 const THEME_FETCHER_KEY = "theme";

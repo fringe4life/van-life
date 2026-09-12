@@ -3,7 +3,7 @@ import type { AppDb } from "~/db/client.server";
 import { getHostVans } from "~/features/vans/dal/host-van.server";
 import { listingChromeFromRow } from "~/features/vans/dal/listing-chrome.server";
 import { createVan } from "~/features/vans/dal/van.server";
-import type { addVanSchema } from "~/features/vans/schema.server";
+import type { addVanSchema } from "~/features/vans/schema";
 import {
   loadHostSearchParams,
   parsePaginationCursor,
@@ -46,7 +46,7 @@ export function createHostVan(
 ) {
   const resultWithHostId = {
     ...validated,
-    discount: validated.discount ?? 0,
+    discount: validated.discount,
     hostId: userId,
     slug: getSlug(validated.name),
     state: validated.state ?? null,
