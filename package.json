@@ -45,7 +45,7 @@
     "@varlock/bitwarden-plugin": "2.0.1",
     "better-auth": "1.7.3",
     "date-fns": "5.0.0-alpha.0",
-    "drizzle-orm": "1.0.0-rc.4",
+    "drizzle-orm": "1.0.0-rc.5-169397b",
     "invokers-polyfill": "1.0.4",
     "isbot": "5.2.2",
     "lucide-react": "1.43.0",
