@@ -1,0 +1,29 @@
+# Version updates for SHA-pinned Actions (ci.yml, codeql.yml) and Bun
+# (package.json / bun.lock). Cooldown matches bunfig.toml
+# minimumReleaseAge (259200s = 3 days). Dependabot does not read
+# bunfig.toml (dependabot-core#15547), so the delay is set here.
+# Security updates ignore cooldown and open immediately.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+    cooldown:
+      default-days: 3
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: ci
+
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: daily
+    cooldown:
+      default-days: 3
+    commit-message:
+      prefix: chore
+      include: scope
