@@ -54,7 +54,7 @@
     "react-dom": "19.3.0",
     "react-router": "8.3.1",
     "uuidv7": "1.2.1",
-    "valibot": "1.4.2",
+    "valibot": "1.5.0",
     "varlock": "1.18.0"
   },
   "devDependencies": {
