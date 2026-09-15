@@ -1,5 +1,9 @@
 import { useQueryStates } from "nuqs";
-import { startTransition, ViewTransition } from "react";
+import {
+  startTransition as startReactTransition,
+  type TransitionStartFunction,
+  ViewTransition,
+} from "react";
 import { css, cx, viewTransition } from "styled-system/css";
 import { flex, grid } from "styled-system/patterns";
 import { ItemList } from "~/components/item-list";
@@ -18,6 +22,8 @@ interface SortableProps {
   className?: string;
   /** Number of items being sorted (for display) */
   itemCount: Maybe<number>;
+  /** Optional transition starter from a route-level `useTransition()` */
+  startTransition?: TransitionStartFunction;
   /** Title to display above the sort buttons */
   title: string;
 }
@@ -45,9 +51,16 @@ const sortOptions = [
 
 type SortOptionItem = (typeof sortOptions)[number];
 
-const Sortable = ({ title, itemCount, className }: SortableProps) => {
+const Sortable = ({
+  title,
+  itemCount,
+  className,
+  startTransition = startReactTransition,
+}: SortableProps) => {
   // Use nuqs for client-side state management
-  const [{ sort }, setSearchParams] = useQueryStates(hostPaginationParsers);
+  const [{ sort }, setSearchParams] = useQueryStates(hostPaginationParsers, {
+    startTransition,
+  });
 
   const handleSortChange = (sortOption: SortOption) => {
     startTransition(async () => {

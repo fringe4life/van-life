@@ -1,5 +1,6 @@
 import { css, cx } from "styled-system/css";
 import { cq, grid, visuallyHidden, wrap } from "styled-system/patterns";
+import { scrollReveal } from "~/components/scroll-reveal-recipe";
 import { Card, CardContent } from "~/components/ui/card";
 import type { ChartHeightBandVariant } from "~/features/host/utils/chart-height-bands";
 import { displayPrice } from "~/features/vans/utils/display-price";
@@ -35,6 +36,7 @@ const Transaction = ({
     <div
       className={cx(
         cq({ name: "transaction" }),
+        scrollReveal({ variant: "sweep" }),
         css({ alignSelf: "start", minInlineSize: "0" })
       )}
     >

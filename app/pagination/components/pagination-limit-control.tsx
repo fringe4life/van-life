@@ -6,7 +6,11 @@ import {
   Rows4Icon,
 } from "lucide-react";
 import { useQueryStates } from "nuqs";
-import { type ChangeEvent, startTransition } from "react";
+import {
+  type ChangeEvent,
+  startTransition as startReactTransition,
+  type TransitionStartFunction,
+} from "react";
 import { css, cx } from "styled-system/css";
 import { square } from "styled-system/patterns";
 import { Select } from "~/components/ui/select";
@@ -34,8 +38,14 @@ const limitSelectClassName = css({
   maxInlineSize: "fit-content",
 });
 
-export const PaginationLimitControl = () => {
-  const [{ limit }, setSearchParams] = useQueryStates(limitParsers);
+export const PaginationLimitControl = ({
+  startTransition = startReactTransition,
+}: {
+  startTransition?: TransitionStartFunction;
+} = {}) => {
+  const [{ limit }, setSearchParams] = useQueryStates(limitParsers, {
+    startTransition,
+  });
   const supportsBaseSelect = useSupportsBaseSelect();
   const currentLimit = limit ?? DEFAULT_LIMIT;
 

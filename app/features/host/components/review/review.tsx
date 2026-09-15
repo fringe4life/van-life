@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { css, cx } from "styled-system/css";
 import { cq, flex, grid, visuallyHidden, wrap } from "styled-system/patterns";
 import { LocalTime } from "~/components/local-time";
+import { scrollReveal } from "~/components/scroll-reveal-recipe";
 import { Card, CardContent } from "~/components/ui/card";
 import type { ReviewModel, UserModel } from "~/db/client.server";
 import { MAX_RATING } from "~/features/host/constants/constants";
@@ -62,6 +63,7 @@ const Review = ({ date, heightBand, id, name, rating, text }: ReviewProps) => {
     <div
       className={cx(
         cq({ name: "review" }),
+        scrollReveal({ variant: "tilt" }),
         css({ alignSelf: "start", minInlineSize: "0" })
       )}
       style={railStyle}

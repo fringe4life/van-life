@@ -6,6 +6,7 @@ export const conditions = defineConditions({
     // outcomeStateMd: "@container unsuccessful-state (min-width: 28rem)",
     // Semantic tokens still compile to `.dark { --vars }` only; first-visit
     // OS theme uses the head bootstrap script. This @slot covers `_dark` utilities.
+    collectionTwo: "@container collection (min-width: 39.5rem)",
     dark: {
       ".dark &": "@slot",
       "@media (prefers-color-scheme: dark)": {
@@ -16,5 +17,6 @@ export const conditions = defineConditions({
     groupOpenMobileNav: ".group\\/mobile-nav[open] &",
     supportsBaseSelect: "@supports (appearance: base-select)",
     supportsScroll: "@supports (animation-timeline: scroll())",
+    supportsViewTimeline: "@supports (animation-timeline: view())",
   },
 });

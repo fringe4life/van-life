@@ -5,6 +5,8 @@ const gridMax = grid({
   "--_gap": "2rem",
   "--_max-columns": 2,
   "--_min-column-size": "300px",
+  containerName: "collection",
+  containerType: "inline-size",
   gap: "var(--_gap)",
   gridTemplateColumns:
     "repeat(auto-fit, minmax(min(max(var(--_min-column-size), calc((100% - var(--_gap) * var(--_max-columns)) / var(--_max-columns))), 100%), 1fr))",

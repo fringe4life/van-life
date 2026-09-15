@@ -1,4 +1,5 @@
 import { FilterIcon } from "lucide-react";
+import type { TransitionStartFunction } from "react";
 import { css, cx } from "styled-system/css";
 import { flex, grid, hstack } from "styled-system/patterns";
 import { Badge } from "~/components/ui/badge";
@@ -7,7 +8,11 @@ import { useVanFilters } from "~/features/vans/hooks/use-van-filters";
 import { VanStateFilterSection } from "./van-state-filter-section";
 import { VanTypeFilterSection } from "./van-type-filter-section";
 
-const VanFilters = () => {
+const VanFilters = ({
+  startTransition,
+}: {
+  startTransition?: TransitionStartFunction;
+}) => {
   const {
     badgeCount,
     baseId,
@@ -16,7 +21,7 @@ const VanFilters = () => {
     stateFacets,
     toggleType,
     setStateFilter,
-  } = useVanFilters();
+  } = useVanFilters(startTransition);
   const hasFilters = badgeCount > 0;
 
   return (

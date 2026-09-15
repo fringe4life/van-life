@@ -25,4 +25,16 @@ export const viewTransitions = defineViewTransitions({
       animationName: "fade-out, slide-out-y",
     },
   },
+  hero: {
+    new: {
+      "--scale-from": "0.5",
+      "--slide-distance": "-100vh",
+      animationName: "fade-in, scale, slide-in",
+    },
+    old: {
+      "--scale-to": "0.5",
+      "--slide-distance": "100vh",
+      animationName: "fade-out, scale, slide-out",
+    },
+  },
 });

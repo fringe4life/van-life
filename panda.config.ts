@@ -65,6 +65,7 @@ export default defineConfig({
         "review",
         "card",
         "card-full",
+        "collection",
         "mobile-nav",
         "transaction",
         "form",

@@ -1,5 +1,9 @@
 import { defaultRateLimit, useQueryStates } from "nuqs";
-import { startTransition, useId } from "react";
+import {
+  startTransition as startReactTransition,
+  type TransitionStartFunction,
+  useId,
+} from "react";
 import type { VanType } from "~/db/enums";
 import {
   VAN_STATE_FILTERS,
@@ -21,8 +25,12 @@ import {
   DEFAULT_DIRECTION,
 } from "~/pagination/pagination-constants";
 
-const useVanFilters = () => {
-  const [urlState, setUrlState] = useQueryStates(vansFilterUrlParsers);
+const useVanFilters = (
+  startTransition: TransitionStartFunction = startReactTransition
+) => {
+  const [urlState, setUrlState] = useQueryStates(vansFilterUrlParsers, {
+    startTransition,
+  });
   const baseId = useId();
 
   const { types, excludeInRepair, onlyOnSale } = urlState;

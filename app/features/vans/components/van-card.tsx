@@ -5,6 +5,7 @@ import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
 import { listImagePriorityProps } from "~/components/image/list-image-priority-props";
 import { ProgressiveImage } from "~/components/image/progressive-image";
 import { CustomLink } from "~/components/links/custom-link";
+import { scrollReveal } from "~/components/scroll-reveal-recipe";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { viewTransitionShare } from "~/components/view-transition-share";
@@ -64,6 +65,7 @@ const VanCard = ({
       <div
         className={cx(
           cq({ name: "card" }),
+          scrollReveal({ variant: "lift" }),
           css({
             contain: "content",
             // biome-ignore assist/source/noDuplicateClasses: css

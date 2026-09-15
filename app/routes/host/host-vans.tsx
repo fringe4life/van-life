@@ -192,9 +192,11 @@ const HostVans = ({ loaderData }: Route.ComponentProps) => {
   const { search } = useLocation();
   const onFirstPage = !paginationMetadata.hasPreviousPage;
 
-  const [{ limit }] = useQueryStates(hostPaginationParsers);
-  const fetcher = useFetcher<HostVansActionData>();
   const [isPending, startTransition] = useTransition();
+  const [{ limit }] = useQueryStates(hostPaginationParsers, {
+    startTransition,
+  });
+  const fetcher = useFetcher<HostVansActionData>();
 
   const [optimisticItems, addOptimisticItem] = useOptimistic(
     vans ?? [],
