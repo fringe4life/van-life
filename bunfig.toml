@@ -2,10 +2,6 @@
 linker = "isolated"
 minimumReleaseAge = 259200
 minimumReleaseAgeExcludes = [
-  "react",
-  "react-dom",
-  "ultracite",
-  "scheduler",
   "@pandacss/cli",
   "@pandacss/compiler",
   "@pandacss/compiler-darwin-arm64",
@@ -25,8 +21,9 @@ minimumReleaseAgeExcludes = [
   "@pandacss/preset-panda",
   "@pandacss/types",
   "@tanstack/charts",
-  "@types/react",
-  "@types/react-dom"
+  "react-router",
+  "@react-router/dev",
+  "@react-router/node"
 ]
 
 [test]

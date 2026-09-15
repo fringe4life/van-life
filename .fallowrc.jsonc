@@ -57,7 +57,9 @@
     // Build-time only: route/vite config (app/routes.ts, vite.config.ts, react-router.config.ts)
     "@react-router/dev",
     "wrangler",
-    "rolldown"
+    // Vite DevTools optional peers — auto-mounted when present, never imported
+    "@vitejs/devtools-rolldown",
+    "@vitejs/devtools-vite"
   ],
   "duplicates": {
     "enabled": true,

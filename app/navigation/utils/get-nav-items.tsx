@@ -18,7 +18,6 @@ const pageNavItems = [
     props: {
       className: navLinkClassName,
       to: href("/about"),
-      viewTransition: true,
     },
     type: "nav-link",
   },

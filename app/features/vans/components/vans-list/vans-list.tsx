@@ -1,4 +1,8 @@
 import { useQueryStates } from "nuqs";
+import {
+  startTransition as startReactTransition,
+  type TransitionStartFunction,
+} from "react";
 import { useLocation } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
@@ -11,6 +15,7 @@ import { PaginationOffsetTransition } from "~/pagination/components/pagination-o
 import type { InitialPaginationProps } from "~/pagination/types";
 import { pageSliceKey } from "~/pagination/utils/page-slice-key";
 import { gridMax } from "~/styles";
+import type { Prettify } from "~/types";
 import { createVansListCardProps, VanListItem } from "./vans-list-card";
 import {
   VANS_LIST_EMPTY_STATE,
@@ -22,11 +27,19 @@ import {
   hasActiveVansListFilters,
 } from "./vans-list-state";
 
-export type VansListProps = InitialPaginationProps<VanWithChrome>;
+type VansListProps = Prettify<
+  InitialPaginationProps<VanWithChrome> & {
+    startTransition?: TransitionStartFunction;
+  }
+>;
 
-const VansList = ({ items: vans, paginationMetadata }: VansListProps) => {
+const VansList = ({
+  items: vans,
+  paginationMetadata,
+  startTransition = startReactTransition,
+}: VansListProps) => {
   const [{ cursor, limit, search, types, excludeInRepair, onlyOnSale }] =
-    useQueryStates(vansParsers);
+    useQueryStates(vansParsers, { startTransition });
   const { pathname, search: locationSearch } = useLocation();
 
   const filterState = {
@@ -75,7 +88,11 @@ const VansList = ({ items: vans, paginationMetadata }: VansListProps) => {
           noMatchWhen={hasActiveFilters}
           renderProps={renderVanCardProps}
         />
-        <Pagination items={vans} paginationMetadata={paginationMetadata} />
+        <Pagination
+          items={vans}
+          paginationMetadata={paginationMetadata}
+          startTransition={startTransition}
+        />
       </PaginationOffsetTransition>
     </PendingUI>
   );

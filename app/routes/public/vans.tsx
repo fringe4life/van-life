@@ -1,3 +1,4 @@
+import { useTransition } from "react";
 import { data } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
@@ -26,93 +27,101 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 const Vans = ({
   loaderData: { items: vans, paginationMetadata, seo },
-}: Route.ComponentProps) => (
-  <section
-    className={cx(
-      grid({
-        gap: "0",
-      }),
-      css({
-        blockSize: "full",
-        contain: "content",
-        inlineSize: "full",
-      })
-    )}
-  >
-    <div
+}: Route.ComponentProps) => {
+  const [, startTransition] = useTransition();
+
+  return (
+    <section
       className={cx(
         grid({
-          gap: "6",
-          gridTemplateAreas: {
-            base: '"header" "filters" "results"',
-            // biome-ignore assist/source/noDuplicateClasses: repeated filter area intentionally spans catalog rows
-            lg: '"filters header" "filters results"',
-          },
-          gridTemplateRows: "min-content 1fr",
-          lg: {
-            alignItems: "start",
-            gap: "8",
-            gridTemplateColumns: "15rem minmax(0,1fr)",
-          },
+          gap: "0",
         }),
         css({
-          minBlockSize: "0",
-          minInlineSize: "0",
+          blockSize: "full",
+          contain: "content",
+          inlineSize: "full",
         })
       )}
     >
-      <header
+      <div
         className={cx(
           grid({
             gap: "6",
+            gridTemplateAreas: {
+              base: '"header" "filters" "results"',
+              // biome-ignore assist/source/noDuplicateClasses: repeated filter area intentionally spans catalog rows
+              lg: '"filters header" "filters results"',
+            },
+            gridTemplateRows: "min-content 1fr",
             lg: {
-              gridArea: "header",
+              alignItems: "start",
+              gap: "8",
+              gridTemplateColumns: "15rem minmax(0,1fr)",
             },
           }),
           css({
-            minInlineSize: "0",
-          })
-        )}
-      >
-        <VanHeader>Explore our van options</VanHeader>
-        <SearchInput />
-      </header>
-
-      <div
-        className={cx(
-          grid({
-            gridArea: "filters",
-            lg: {
-              alignSelf: "stretch",
-              justifySelf: "stretch",
-            },
-          }),
-          css({
-            minInlineSize: "0",
-          })
-        )}
-      >
-        <VanFilters />
-      </div>
-
-      <div
-        className={cx(
-          grid({
-            gridArea: "results",
-          }),
-          css({
-            blockSize: "full",
             minBlockSize: "0",
             minInlineSize: "0",
           })
         )}
       >
-        <SeoHead {...seo} />
-        <VansList items={vans} paginationMetadata={paginationMetadata} />
+        <header
+          className={cx(
+            grid({
+              gap: "6",
+              lg: {
+                gridArea: "header",
+              },
+            }),
+            css({
+              minInlineSize: "0",
+            })
+          )}
+        >
+          <VanHeader>Explore our van options</VanHeader>
+          <SearchInput startTransition={startTransition} />
+        </header>
+
+        <div
+          className={cx(
+            grid({
+              gridArea: "filters",
+              lg: {
+                alignSelf: "stretch",
+                justifySelf: "stretch",
+              },
+            }),
+            css({
+              minInlineSize: "0",
+            })
+          )}
+        >
+          <VanFilters startTransition={startTransition} />
+        </div>
+
+        <div
+          className={cx(
+            grid({
+              gridArea: "results",
+            }),
+            css({
+              blockSize: "full",
+              minBlockSize: "0",
+              minInlineSize: "0",
+            })
+          )}
+        >
+          <SeoHead {...seo} />
+          <VansList
+            items={vans}
+            paginationMetadata={paginationMetadata}
+            startTransition={startTransition}
+          />
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 export default Vans;
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (

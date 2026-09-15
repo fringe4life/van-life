@@ -1,13 +1,17 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useQueryStates } from "nuqs";
-import { addTransitionType, startTransition } from "react";
+import {
+  addTransitionType,
+  startTransition as startReactTransition,
+  type TransitionStartFunction,
+} from "react";
 import { hstack } from "styled-system/patterns";
 import { arrowRecipe } from "~/components/arrow-recipe";
 import { Button } from "~/components/ui/button";
 import { useBumpPaginationPageEpoch } from "~/pagination/components/pagination-page-epoch";
 import { cursorPaginationParsers } from "~/pagination/parsers";
 import type { Direction, PaginationProps } from "~/pagination/types";
-import type { Id } from "~/types";
+import type { Id, Prettify } from "~/types";
 
 const previousArrowClassName = arrowRecipe({
   direction: "left",
@@ -18,11 +22,20 @@ const nextArrowClassName = arrowRecipe({
   distance: "compact",
 });
 
+type PaginationControlProps<T> = Prettify<
+  PaginationProps<T> & {
+    startTransition?: TransitionStartFunction;
+  }
+>;
+
 export const PaginationControl = <T extends Id>({
   items,
   paginationMetadata,
-}: PaginationProps<T>) => {
-  const [, setSearchParams] = useQueryStates(cursorPaginationParsers);
+  startTransition = startReactTransition,
+}: PaginationControlProps<T>) => {
+  const [, setSearchParams] = useQueryStates(cursorPaginationParsers, {
+    startTransition,
+  });
   const bumpPageEpoch = useBumpPaginationPageEpoch();
   const { hasNextPage, hasPreviousPage } = paginationMetadata;
 

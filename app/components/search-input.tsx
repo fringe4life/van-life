@@ -2,7 +2,8 @@ import { debounce, defaultRateLimit, useQueryStates } from "nuqs";
 import {
   type ChangeEventHandler,
   type KeyboardEventHandler,
-  startTransition,
+  startTransition as startReactTransition,
+  type TransitionStartFunction,
 } from "react";
 import { DEFAULT_DEBOUNCE } from "~/constants/constants";
 import {
@@ -12,8 +13,16 @@ import {
 import { searchUrlParsers } from "~/pagination/parsers";
 import { Input } from "./ui/input";
 
-const SearchInput = () => {
-  const [urlState, setUrlState] = useQueryStates(searchUrlParsers);
+interface SearchInputProps {
+  startTransition?: TransitionStartFunction;
+}
+
+const SearchInput = ({
+  startTransition = startReactTransition,
+}: SearchInputProps) => {
+  const [urlState, setUrlState] = useQueryStates(searchUrlParsers, {
+    startTransition,
+  });
 
   const startSearch = (
     searchString: string,

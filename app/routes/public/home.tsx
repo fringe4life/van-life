@@ -1,3 +1,4 @@
+import { ViewTransition } from "react";
 import { data, href } from "react-router";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
@@ -7,6 +8,8 @@ import { HIGH_QUALITY_IMAGE_QUALITY } from "~/components/image/img-constants";
 import { CustomLink } from "~/components/links/custom-link";
 import { PendingUI } from "~/components/pending-ui";
 import { buttonVariants } from "~/components/ui/button-variants";
+import { chromeViewTransitionName } from "~/components/view-transition-names";
+import { viewTransitionHero } from "~/components/view-transition-share";
 import {
   forwardDataHeaders,
   PUBLIC_SHORT_CACHE_HEADERS,
@@ -46,8 +49,6 @@ export const loader = ({ request }: Route.LoaderArgs) =>
   );
 
 const HomeImage = () => (
-  // ViewTransition simply isnt working for now.
-  // <ViewTransition name="home-image">
   <div
     className={css({
       inset: 0,
@@ -56,7 +57,6 @@ const HomeImage = () => (
       maskRepeat: "no-repeat",
       maskSize: "cover",
       position: "absolute",
-      viewTransitionName: "home-image",
     })}
   >
     <div
@@ -109,16 +109,9 @@ const HomeImage = () => (
       width={1600}
     />
   </div>
-  // </ViewTransition>
 );
 
 const HeroText = () => (
-  // <ViewTransition
-  //   default="none"
-  //   enter={heroTextTransition}
-  //   exit={heroTextTransition}
-  //   name={chromeViewTransitionName.heroText}
-  // >
   <div
     className={cx(
       grid({
@@ -173,36 +166,40 @@ const HeroText = () => (
       Find your van
     </CustomLink>
   </div>
-  // </ViewTransition>
 );
 
 const Home = ({ loaderData }: Route.ComponentProps) => (
-  <PendingUI
-    as="section"
-    className={cx(
-      grid({
-        aspectRatio: { base: "1/1.5", md: "video" },
-        gap: "0",
-        justifySelf: "center",
-        paddingInlineStart: { md: "6" },
-        placeContent: { md: "center" },
-      }),
-      css({
-        blockSize: "full",
-        color: "on-image",
-        contain: "strict",
-        marginInline: "auto",
-        position: "relative",
-      }),
-      fullLayout
-    )}
+  <ViewTransition
+    {...viewTransitionHero}
+    name={chromeViewTransitionName.homeImage}
   >
-    <SeoHead {...loaderData.seo} />
-    {/* Background Image with gradient overlay */}
-    <HomeImage />
+    <PendingUI
+      as="section"
+      className={cx(
+        grid({
+          aspectRatio: { base: "1/1.5", md: "video" },
+          gap: "0",
+          justifySelf: "center",
+          paddingInlineStart: { md: "6" },
+          placeContent: { md: "center" },
+        }),
+        css({
+          blockSize: "full",
+          color: "on-image",
+          contain: "strict",
+          marginInline: "auto",
+          position: "relative",
+        }),
+        fullLayout
+      )}
+    >
+      <SeoHead {...loaderData.seo} />
+      {/* Background Image with gradient overlay */}
+      <HomeImage />
 
-    {/* Content overlay */}
-    <HeroText />
-  </PendingUI>
+      {/* Content overlay */}
+      <HeroText />
+    </PendingUI>
+  </ViewTransition>
 );
 export default Home;

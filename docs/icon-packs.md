@@ -4,8 +4,6 @@
 
 Question: named imports from a huge icon barrel — does Vite “go over all of them”? Should this app switch packs for tree-shaking or hamburger morph?
 
-Did **not** run `bun run analyze` / `react-router build` here. Architecture from npm tarball + official docs. Measure this repo with `VITE_ANALYZE=true` + `build/client/stats.html` before chasing build-time.
-
 ## This-repo usage
 
 Named imports from `"lucide-react"` only:

@@ -1,6 +1,4 @@
 /* ─── IMPORTS & FONTS ────────────────────────────────────────────────────── */
-/* biome-ignore-all lint/correctness/noUnknownTypeSelector: CSS View Transition pseudo-elements */
-
 @layer reset, base, tokens, recipes, utilities;
 
 @font-face {
@@ -10,44 +8,4 @@
   font-weight: 100 900;
   src: url("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2")
     format("woff2-variations");
-}
-
-/* ─── VIEW TRANSITIONS ───────────────────────────────────────────────────── */
-/* @view-transition {
-  navigation: auto;
-} */
-
-/* Set the shared infrastructure for all transition elements */
-/* ::view-transition-group(*) {
-  animation-duration: 300ms;
-  animation-fill-mode: both;
-} */
-/* Children inherit the duration and fill-mode, so we only need the names */
-/* only-child means there is not an after snapshot */
-/* i.e. the card is no longer on the page after being filtered out */
-/* ::view-transition-old(*):only-child {
-  --scale-to: 0;
-  animation-name: fade-out, scale;
-} */
-
-/* only-child means there is not a before snapshot */
-/* i.e. the card is new to being on the page */
-/* ::view-transition-new(*):only-child {
-  animation-name: fade-in, scale;
-} */
-/* ::view-transition-new(host-chart):only-child  */
-::view-transition-new(home-image):only-child,
-::view-transition-new(about-image):only-child {
-  --scale-from: 0.5;
-  --slide-distance: -100vh;
-  animation-name: fade-in, scale, slide-in;
-}
-
-/* view transition for hero elements entering and leaving a route */
-::view-transition-old(home-image):only-child,
-::view-transition-old(about-image):only-child {
-  /* ::view-transition-old(host-chart):only-child { */
-  --scale-to: 0.5;
-  --slide-distance: 100vh;
-  animation-name: fade-out, scale, slide-out;
 }

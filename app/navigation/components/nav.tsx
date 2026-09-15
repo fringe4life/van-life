@@ -67,9 +67,7 @@ const Nav = ({ hasToken }: NavProps) => {
       <header className={cx(navOuterClassName, "group/hamburger")}>
         <div className={cx(navShellClassName, scrollAnimation)}>
           <h1 className={cx(brandClassName, navBrandClassName)}>
-            <CustomLink to={href("/")} viewTransition>
-              #vanlife
-            </CustomLink>
+            <CustomLink to={href("/")}>#vanlife</CustomLink>
           </h1>
 
           {/* Desktop page navigation */}
