@@ -81,7 +81,7 @@
     "@vitejs/devtools": "0.7.3",
     "@vitejs/devtools-rolldown": "0.7.3",
     "@vitejs/devtools-vite": "0.7.3",
-    "drizzle-kit": "1.0.0-rc.4",
+    "drizzle-kit": "1.0.0-rc.5-5935859",
     "fallow": "3.25.0",
     "husky": "9.1.7",
     "lint-staged": "17.5.1",
