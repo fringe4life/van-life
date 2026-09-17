@@ -100,7 +100,7 @@ jobs:
           fetch-depth: 0
 
       - name: Fallow audit
-        uses: fallow-rs/fallow@3b7cb01a1e4cdff6f3a9d700c7cddce7178bebad # v3.24.0
+        uses: fallow-rs/fallow@30167b42257ded3bef683f6c91b4aa4017a1ff59 # v3.25.0
         with:
           command: audit
           version: "3.22.0"
@@ -111,7 +111,7 @@ jobs:
           gate: new-only
 
       - name: Fallow security
-        uses: fallow-rs/fallow@3b7cb01a1e4cdff6f3a9d700c7cddce7178bebad # v3.24.0
+        uses: fallow-rs/fallow@30167b42257ded3bef683f6c91b4aa4017a1ff59 # v3.25.0
         with:
           command: security
           version: "3.22.0"
