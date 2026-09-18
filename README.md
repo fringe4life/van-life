@@ -6,11 +6,11 @@
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.0.0--beta.17-F6E05E?logoColor=black)](https://panda-css.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.4-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.0.0--beta.18-F6E05E?logoColor=black)](https://panda-css.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.5-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.5.12-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.11.1-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![Biome](https://img.shields.io/badge/Biome-2.5.13-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.12.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
 [![Vite](https://img.shields.io/badge/Vite-8.3.0-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
@@ -92,9 +92,9 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **React 19.3** with stable Activity + `ViewTransition` for prerendering and morphs
 - **React Router 8.4.0** (file-based routing, SSR, nested host van detail routes, middleware)
 - **TypeScript 7.0.2** with strict configuration
-- **PandaCSS 2.0.0-beta.17** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`)
+- **PandaCSS 2.0.0-beta.18** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`)
 - **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover, select)
-- **Lucide React 1.45.0** for icons (direct imports for performance)
+- **Lucide React 1.46.0** for icons (direct imports for performance)
 - **TanStack Charts 0.18.0** for host income/review bars (lazy-loaded via `LazyBarChart`; height-band colors)
 - **nuqs 2.10.1** for type-safe URL state management via shared parsers
 
@@ -102,7 +102,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 - **Cloudflare Workers** with React Router SSR via `workers/app.ts`
 - **Drizzle ORM 1.0.0-rc.4** with **Cloudflare D1** (SQLite; `drizzle-orm/d1`)
-- **better-auth 1.7.4** with **@better-auth/drizzle-adapter** (`relations-v2`) for authentication
+- **better-auth 1.7.5** with **@better-auth/drizzle-adapter** (`relations-v2`) for authentication
 - **Valibot 1.5.0** for schema validation (Cloudflare Workers–friendly; no JIT)
 - **uuidv7** for app-generated IDs (`createId` / `uuidv7PrimaryKey` helpers)
 - **Varlock** for typed, validated environment variables (Bitwarden integration in production)
@@ -110,14 +110,14 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Development Tools
 
 - **Vite 8.3.0** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports; core `devtools` option
-- **@vitejs/devtools 0.7.3** - Vite DevTools (`/__devtools/` in `bun run dev`; client/ssr environments)
-- **@vitejs/devtools-rolldown 0.7.3** / **@vitejs/devtools-vite 0.7.3** - Official Rolldown build analysis + Vite plugin inspector
+- **@vitejs/devtools 0.7.4** - Vite DevTools (`/__devtools/` in `bun run dev`; client/ssr environments)
+- **@vitejs/devtools-rolldown 0.7.4** / **@vitejs/devtools-vite 0.7.4** - Official Rolldown build analysis + Vite plugin inspector
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler** (native Rust via `oxc-transform-react`) - Automatic memoization via `@acusti/vite-plugin-react-compiler` (not `@vitejs/plugin-react`'s `react()`; see `docs/rust-react-compiler.md`)
-- **Biome 2.5.12** for linting and formatting with Ultracite integration
-- **Ultracite 7.11.1** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.5.13** for linting and formatting with Ultracite integration
+- **Ultracite 7.12.0** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock 1.19.0** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.131.1** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
+- **Wrangler 4.131.2** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
 - **react-doctor 0.9.14** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **fallow 3.25.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
@@ -224,7 +224,7 @@ app/
 │   ├── host/           # Dashboard, rental-activity, wallet-activity, reviews, vans, rentals
 │   │   ├── 404.tsx     # Host catch-all (keeps host chrome)
 │   │   ├── vans/       # :vanSlug layout + index/details, pricing, photos
-│   │   └── rentals/    # rentals list, rent/:vanSlug, returnRental/:rentId
+│   │   └── rentals/    # rentals list, rent/:vanSlug (`rental-detail.tsx`), returnRental/:rentId
 │   ├── layout/         # Layout components
 │   └── public/         # Public routes
 │       ├── vans.tsx    # Van listing
@@ -293,7 +293,7 @@ docs/
   - `rent` — Rental records and history
   - `review` — User reviews and ratings
   - `transaction` — Financial ledger (deposits, withdrawals, rental payments)
-- **Account (better-auth 1.7.4):** identity is `(providerId, accountId)`; credential `accountId` equals `user.id`
+- **Account (better-auth 1.7.5):** identity is `(providerId, accountId)`; credential `accountId` equals `user.id`
 - **Features:**
   - **UUID v7** primary keys via `uuidv7PrimaryKey` / `createId`
   - **Drizzle relations v2** (`defineRelations` in `app/db/relations.ts`; passed to `drizzle(d1, { relations })`)
@@ -386,7 +386,7 @@ return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 
 ## Authentication
 
-- **better-auth 1.7.4** with **@better-auth/drizzle-adapter/relations-v2** (SQLite / D1)
+- **better-auth 1.7.5** with **@better-auth/drizzle-adapter/relations-v2** (SQLite / D1)
 - **Joins** via `advanced.database.joins: true` (session/user fetched with relational queries)
 - **Account identity** keyed by `(providerId, accountId)` (1.7.3 dropped the 1.7.0–1.7.2 `issuer` column)
 - **Session management** with cookie cache + `preserveSessionInDatabase`
@@ -1060,7 +1060,7 @@ Configuration in `lint-staged.config.ts`.
 
 ### PandaCSS 2 & Modern CSS
 
-- **PandaCSS 2.0.0-beta.17** — typed `css` / `cx` / `cva` / `keyframes` / patterns from `styled-system` (generated; do not edit)
+- **PandaCSS 2.0.0-beta.18** — typed `css` / `cx` / `cva` / `keyframes` / patterns from `styled-system` (generated; do not edit)
 - **Tokens** in `theme/`; `panda.config.ts` wires them; PostCSS via `postcss.config.cjs`; `bun run prepare` runs `panda build`
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — native `<dialog>` panel/fullscreen variants (`starting-style`, `transition-discrete`, Invoker Commands)
@@ -1087,8 +1087,8 @@ Configuration in `lint-staged.config.ts`.
 
 ## Code Quality
 
-- **Biome 2.5.12** for linting and formatting with Ultracite integration
-- **Ultracite 7.11.1** - AI-friendly linting rules for maximum type safety and accessibility
+- **Biome 2.5.13** for linting and formatting with Ultracite integration
+- **Ultracite 7.12.0** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 7.0.2** with strict configuration
 - **Valibot 1.5.0** for runtime validation with regex support for slug validation
 - **Consistent code style:**
@@ -1109,8 +1109,8 @@ Configuration in `lint-staged.config.ts`.
 - **CI** (`.github/workflows/ci.yml`) — least-privilege permissions:
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
-  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.13`; local CLI `0.9.14` in `package.json`); self-contained, no Bun install
-  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.24.0` Action (CLI `version: 3.22.0`; local CLI `3.25.0` in `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`); type-aware `require: "best-effort"` so incomplete semantic evidence stays advisory
+  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.14`; matches local CLI in `package.json`); self-contained, no Bun install
+  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.25.0` Action (audit CLI `version: 3.22.0`; security CLI `version: 3.25.0`; local CLI `3.25.0` in `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`); `gate: new-only`
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability. [`.github/dependabot.yml`](.github/dependabot.yml) bumps `github-actions` (grouped) and `bun` daily after a **3-day** `cooldown` (same window as `bunfig.toml` `minimumReleaseAge`); security updates skip the wait
