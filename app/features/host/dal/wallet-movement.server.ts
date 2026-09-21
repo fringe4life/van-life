@@ -21,7 +21,7 @@ import {
 import { periodSqlFor } from "~/features/host/utils/chart-period.server";
 import {
   toBucketChartPoints,
-  toTxnChartPoint,
+  toTxnChartPoints,
 } from "~/features/host/utils/chart-points.server";
 import type { ChartGranularity } from "~/features/host/utils/pick-chart-granularity.server";
 import { toWalletTransactionListItem } from "~/features/host/utils/to-transaction-list-item.server";
@@ -91,12 +91,12 @@ export async function getUserTransferChartData(
       .where(walletMovementWhere(userId))
       .orderBy(asc(transaction.createdAt));
 
-    return rows.map((row) =>
-      toTxnChartPoint(
-        signedTransferAmount(row.amount, row.type),
-        row.createdAt,
-        row.id
-      )
+    return toTxnChartPoints(
+      rows.map((row) => ({
+        amount: signedTransferAmount(row.amount, row.type),
+        createdAt: row.createdAt,
+        id: row.id,
+      }))
     );
   }
 

@@ -41,23 +41,31 @@ describe("getChartHeightBands", () => {
     ]);
   });
 
-  it("keeps five stable unique keys at small domain maxima", () => {
+  it("keeps five stable unique keys and labels at small domain maxima", () => {
+    expect(getChartHeightBands(1).map((band) => band.label)).toEqual([
+      "0–0.2",
+      "0.2–0.4",
+      "0.4–0.6",
+      "0.6–0.8",
+      "0.8–1+",
+    ]);
+    expect(getChartHeightBands(2).map((band) => band.label)).toEqual([
+      "0–0.4",
+      "0.4–0.8",
+      "0.8–1.2",
+      "1.2–1.6",
+      "1.6–2+",
+    ]);
+
     for (const domainMax of [1, 2] as const) {
       const bands = getChartHeightBands(domainMax);
+      const labels = bands.map((band) => band.label);
 
       expect(bands).toHaveLength(5);
       expect(bands.map((band) => band.key)).toEqual([...STABLE_BAND_KEYS]);
       expect(new Set(bands.map((band) => band.key)).size).toBe(5);
+      expect(new Set(labels).size).toBe(5);
     }
-  });
-
-  it("allows rounded labels to collide at domainMax 1 while keys stay unique", () => {
-    const bands = getChartHeightBands(1);
-    const uniqueKeys = new Set(bands.map((band) => band.key));
-    const uniqueLabels = new Set(bands.map((band) => band.label));
-
-    expect(uniqueKeys.size).toBe(5);
-    expect(uniqueLabels.size).toBeLessThan(bands.length);
   });
 });
 
@@ -147,5 +155,29 @@ describe("getChartBarPoints", () => {
       id: "valid",
       sourceAmount: 10,
     });
+  });
+
+  it("sums amounts that share a displayed period name into one bar", () => {
+    const points = getChartBarPoints([
+      { amount: 10, id: "first", name: "2024-01-01T00:00" },
+      { amount: 25, id: "second", name: "2024-01-01T00:00" },
+      { amount: 5, id: "later", name: "2024-01-01T00:01" },
+    ]);
+
+    expect(points).toHaveLength(2);
+    expect(points).toMatchObject([
+      {
+        amount: 35,
+        id: "first",
+        name: "2024-01-01T00:00",
+        sourceAmount: 35,
+      },
+      {
+        amount: 5,
+        id: "later",
+        name: "2024-01-01T00:01",
+        sourceAmount: 5,
+      },
+    ]);
   });
 });

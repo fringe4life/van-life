@@ -17,6 +17,27 @@ export function toTxnChartPoint(
   };
 }
 
+/** One bar per displayed UTC minute; same-minute amounts are summed. */
+export function toTxnChartPoints(
+  rows: readonly { amount: number; createdAt: Date; id: string }[]
+): ChartPoint[] {
+  const pointsByPeriod = new Map<string, ChartPoint>();
+
+  for (const row of rows) {
+    const point = toTxnChartPoint(row.amount, row.createdAt, row.id);
+    const existing = pointsByPeriod.get(point.name);
+
+    if (existing === undefined) {
+      pointsByPeriod.set(point.name, point);
+      continue;
+    }
+
+    existing.amount += point.amount;
+  }
+
+  return [...pointsByPeriod.values()];
+}
+
 /** One bar per non-empty period from `GROUP BY` + `SUM`. */
 export function toBucketChartPoints(
   rows: { amount: number | null; name: string }[]

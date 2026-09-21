@@ -1,6 +1,7 @@
 import type { DataArray } from "~/features/host/types";
 
 const BAND_COUNT = 5;
+const MAX_BAND_FRACTION_DIGITS = 6;
 const TRAILING_ZERO_REGEX = /\.0$/;
 
 export const CHART_HEIGHT_BAND_COLORS = [
@@ -52,19 +53,36 @@ export interface ChartBarPoint extends ChartSourcePoint {
   sourceAmount: number;
 }
 
-const formatMagnitude = (value: number): string => {
-  if (value < 1000) {
+const getBandFractionDigits = (step: number): number => {
+  if (!(step > 0 && step < 1)) {
+    return 0;
+  }
+
+  return Math.min(MAX_BAND_FRACTION_DIGITS, Math.ceil(-Math.log10(step)));
+};
+
+const formatMagnitude = (value: number, fractionDigits: number): string => {
+  if (value >= 1000) {
+    const thousands = value / 1000;
+    const formatted = thousands.toFixed(thousands < 10 ? 1 : 0);
+
+    return `${formatted.replace(TRAILING_ZERO_REGEX, "")}k`;
+  }
+
+  if (fractionDigits === 0) {
     return `${Math.round(value)}`;
   }
 
-  const thousands = value / 1000;
-  const formatted = thousands.toFixed(thousands < 10 ? 1 : 0);
-
-  return `${formatted.replace(TRAILING_ZERO_REGEX, "")}k`;
+  return value.toFixed(fractionDigits).replace(TRAILING_ZERO_REGEX, "");
 };
 
-const formatBandLabel = (start: number, end: number, isLast: boolean) =>
-  `${formatMagnitude(start)}–${formatMagnitude(end)}${isLast ? "+" : ""}`;
+const formatBandLabel = (
+  start: number,
+  end: number,
+  isLast: boolean,
+  fractionDigits: number
+) =>
+  `${formatMagnitude(start, fractionDigits)}–${formatMagnitude(end, fractionDigits)}${isLast ? "+" : ""}`;
 
 export function getChartMagnitudeMax(
   points: readonly Pick<DataArray[number], "amount">[]
@@ -91,6 +109,7 @@ export function getChartHeightBands(domainMax: number): ChartHeightBand[] {
   }
 
   const step = domainMax / BAND_COUNT;
+  const fractionDigits = getBandFractionDigits(step);
 
   return CHART_HEIGHT_BANDS.map((band, index) => {
     const start = index * step;
@@ -99,7 +118,12 @@ export function getChartHeightBands(domainMax: number): ChartHeightBand[] {
     return {
       ...band,
       end,
-      label: formatBandLabel(start, end, index === BAND_COUNT - 1),
+      label: formatBandLabel(
+        start,
+        end,
+        index === BAND_COUNT - 1,
+        fractionDigits
+      ),
       start,
     };
   });
@@ -137,26 +161,44 @@ export function getChartHeightBandVariantByPointId(
   return variants;
 }
 
+function collapseChartPointsByName(
+  points: readonly ChartSourcePoint[]
+): ChartSourcePoint[] {
+  const collapsedByName = new Map<string, ChartSourcePoint>();
+
+  for (const point of points) {
+    if (!Number.isFinite(point.amount)) {
+      continue;
+    }
+
+    const existing = collapsedByName.get(point.name);
+
+    if (existing === undefined) {
+      collapsedByName.set(point.name, { ...point });
+      continue;
+    }
+
+    existing.amount += point.amount;
+  }
+
+  return [...collapsedByName.values()];
+}
+
 export function getChartBarPoints(
   points: readonly ChartSourcePoint[]
 ): ChartBarPoint[] {
-  const domainMax = getChartMagnitudeMax(points);
+  const collapsedPoints = collapseChartPointsByName(points);
+  const domainMax = getChartMagnitudeMax(collapsedPoints);
 
-  return points.flatMap((point) => {
-    if (!Number.isFinite(point.amount)) {
-      return [];
-    }
-
+  return collapsedPoints.map((point) => {
     const band = getChartHeightBand(point.amount, domainMax);
 
-    return [
-      {
-        ...point,
-        bandKey: band.key,
-        bandLabel: band.label,
-        bandVariant: band.variant,
-        sourceAmount: point.amount,
-      },
-    ];
+    return {
+      ...point,
+      bandKey: band.key,
+      bandLabel: band.label,
+      bandVariant: band.variant,
+      sourceAmount: point.amount,
+    };
   });
 }

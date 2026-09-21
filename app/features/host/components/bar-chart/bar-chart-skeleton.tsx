@@ -139,12 +139,12 @@ const BarChartSkeleton = (): ReactNode => (
     <div
       className={css({
         "--skeleton-highlight": "{colors.surface.accent}",
-        "@media (max-width: 22.5rem)": {
+        "@media (22.5rem < width <= 30rem)": {
+          "--chart-legend-height": "71px",
+        },
+        "@media (width <= 22.5rem)": {
           "--chart-axis-height": "22px",
           "--chart-legend-height": "90px",
-        },
-        "@media (max-width: 30rem)": {
-          "--chart-legend-height": "71px",
         },
         blockSize: "var(--chart-height)",
         display: "grid",
