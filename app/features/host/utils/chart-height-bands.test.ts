@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import {
   CHART_HEIGHT_BAND_COLOR_BY_VARIANT,
-  expandToCumulativeChartPoints,
+  getChartBarPoints,
   getChartHeightBand,
   getChartHeightBands,
   getChartHeightBandVariantByPointId,
@@ -97,61 +97,55 @@ describe("CHART_HEIGHT_BAND_COLOR_BY_VARIANT", () => {
   });
 });
 
-describe("expandToCumulativeChartPoints", () => {
-  it("creates cumulative positive segments from the baseline", () => {
-    expect(
-      expandToCumulativeChartPoints([
-        { amount: 10_000, id: "positive", name: "Jan" },
-      ])
-    ).toMatchObject([
-      { bandKey: "chart.1", end: 2000, start: 0 },
-      { bandKey: "chart.2", end: 4000, start: 2000 },
-      { bandKey: "chart.3", end: 6000, start: 4000 },
-      { bandKey: "chart.4", end: 8000, start: 6000 },
-      { bandKey: "chart.5", end: 10_000, start: 8000 },
-    ]);
-  });
-
-  it("keeps the same band colors while reversing negative direction", () => {
-    expect(
-      expandToCumulativeChartPoints([
-        { amount: -10_000, id: "negative", name: "Jan" },
-      ])
-    ).toMatchObject([
-      { bandKey: "chart.1", end: -2000, start: 0 },
-      { bandKey: "chart.2", end: -4000, start: -2000 },
-      { bandKey: "chart.3", end: -6000, start: -4000 },
-      { bandKey: "chart.4", end: -8000, start: -6000 },
-      { bandKey: "chart.5", end: -10_000, start: -8000 },
-    ]);
-  });
-
-  it("stops at the last band the magnitude reaches and skips zeros", () => {
-    const points = expandToCumulativeChartPoints([
-      { amount: 10_000, id: "full", name: "Jan" },
-      { amount: 3000, id: "partial", name: "Feb" },
+describe("getChartBarPoints", () => {
+  it("creates one signed bar datum per finite point", () => {
+    const points = getChartBarPoints([
+      { amount: 10_000, id: "positive", name: "Jan" },
+      { amount: -10_000, id: "negative", name: "Feb" },
       { amount: 0, id: "zero", name: "Mar" },
     ]);
 
-    expect(
-      points.filter((point) => point.id.startsWith("partial-"))
-    ).toMatchObject([
-      { bandKey: "chart.1", end: 2000, id: "partial-one", start: 0 },
-      { bandKey: "chart.2", end: 3000, id: "partial-two", start: 2000 },
+    expect(points).toHaveLength(3);
+    expect(points).toMatchObject([
+      {
+        amount: 10_000,
+        bandKey: "chart.5",
+        bandLabel: "8k–10k+",
+        bandVariant: "five",
+        id: "positive",
+        sourceAmount: 10_000,
+      },
+      {
+        amount: -10_000,
+        bandKey: "chart.5",
+        bandLabel: "8k–10k+",
+        bandVariant: "five",
+        id: "negative",
+        sourceAmount: -10_000,
+      },
+      {
+        amount: 0,
+        bandKey: "chart.1",
+        bandLabel: "0–2k",
+        bandVariant: "one",
+        id: "zero",
+        sourceAmount: 0,
+      },
     ]);
-    expect(points.some((point) => point.id.startsWith("zero-"))).toBe(false);
   });
 
-  it("keeps unique bandKeys when expanding small amounts whose labels collide", () => {
-    for (const amount of [1, 2] as const) {
-      const points = expandToCumulativeChartPoints([
-        { amount, id: "small", name: "Jan" },
-      ]);
-      const bandKeys = points.map((point) => point.bandKey);
-      const expectedKeys = getChartHeightBands(amount).map((band) => band.key);
+  it("omits non-finite amounts without changing the domain", () => {
+    const points = getChartBarPoints([
+      { amount: Number.NaN, id: "invalid", name: "Jan" },
+      { amount: 10, id: "valid", name: "Feb" },
+    ]);
 
-      expect(new Set(bandKeys).size).toBe(bandKeys.length);
-      expect(expectedKeys).toEqual([...STABLE_BAND_KEYS]);
-    }
+    expect(points).toHaveLength(1);
+    expect(points[0]).toMatchObject({
+      amount: 10,
+      bandKey: "chart.5",
+      id: "valid",
+      sourceAmount: 10,
+    });
   });
 });

@@ -3,7 +3,12 @@
  * `@tanstack/charts` is code-split via React.lazy().
  */
 // react-doctor-disable-next-line react-doctor/prefer-dynamic-import
-import { barY, colorLegend, defineChart } from "@tanstack/charts";
+import {
+  barY,
+  colorLegend,
+  colorLegendItems,
+  defineChart,
+} from "@tanstack/charts";
 import { Chart } from "@tanstack/charts/react";
 import { scaleBand } from "@tanstack/charts/scales/band";
 import { scaleLinear } from "@tanstack/charts/scales/linear";
@@ -14,9 +19,10 @@ import { css } from "styled-system/css";
 import { chromeViewTransitionName } from "~/components/view-transition-names";
 import { viewTransitionPage } from "~/components/view-transition-share";
 import type { Data, DataArray } from "~/features/host/types";
+import type { ChartHeightBandKey } from "~/features/host/utils/chart-height-bands";
 import {
   CHART_HEIGHT_BAND_COLORS,
-  expandToCumulativeChartPoints,
+  getChartBarPoints,
   getChartHeightBands,
   getChartMagnitudeMax,
 } from "~/features/host/utils/chart-height-bands";
@@ -25,28 +31,34 @@ import {
 const CHART_HEIGHT_PX = 350;
 const BAR_RADIUS_PX = 6;
 
-const createCumulativeDefinition = (data: DataArray) => {
-  const bandData = expandToCumulativeChartPoints(data);
-  const bandKeys = getChartHeightBands(getChartMagnitudeMax(data)).map(
-    ({ key }) => key
-  );
+const createBandDefinition = (data: DataArray) => {
+  const bandData = getChartBarPoints(data);
+  const bands = getChartHeightBands(getChartMagnitudeMax(data));
+  const bandKeys = bands.map(({ key }) => key);
+  const bandLabels = new Map(bands.map(({ key, label }) => [key, label]));
   const colorScale = scaleOrdinal(bandKeys, CHART_HEIGHT_BAND_COLORS);
 
   return defineChart({
     color: {
-      legend: colorLegend({ label: "Amount bands" }),
+      legend: colorLegend<ChartHeightBandKey>({
+        items: colorLegendItems<ChartHeightBandKey>({
+          label: {
+            format: (key) => bandLabels.get(key) ?? key,
+          },
+        }),
+        label: "Amount bands",
+      }),
       scale: colorScale,
     },
     marks: [
       barY(bandData, {
         color: "bandKey",
         key: "id",
-        radius: BAR_RADIUS_PX,
+        radius: { end: BAR_RADIUS_PX },
         stroke: "var(--colors-surface)",
         strokeWidth: 1,
         x: "name",
-        y1: "start",
-        y2: "end",
+        y: "amount",
       }),
     ],
     scales: {
@@ -84,7 +96,7 @@ const BarChartComponent = ({ data }: Data<DataArray>) => (
     >
       <Chart
         ariaLabel="Amount bands by period"
-        definition={createCumulativeDefinition(data)}
+        definition={createBandDefinition(data)}
         height={CHART_HEIGHT_PX}
       />
     </div>

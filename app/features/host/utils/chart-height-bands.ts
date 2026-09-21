@@ -45,15 +45,11 @@ export interface ChartHeightBand {
   variant: ChartHeightBandVariant;
 }
 
-export interface CumulativeChartPoint {
+export interface ChartBarPoint extends ChartSourcePoint {
   bandKey: ChartHeightBandKey;
   bandLabel: string;
   bandVariant: ChartHeightBandVariant;
-  end: number;
-  id: string;
-  name: string;
   sourceAmount: number;
-  start: number;
 }
 
 const formatMagnitude = (value: number): string => {
@@ -141,42 +137,26 @@ export function getChartHeightBandVariantByPointId(
   return variants;
 }
 
-function expandPointToBands(
-  { amount, id, name }: ChartSourcePoint,
-  bands: readonly ChartHeightBand[]
-): CumulativeChartPoint[] {
-  if (!Number.isFinite(amount) || amount === 0) {
-    return [];
-  }
+export function getChartBarPoints(
+  points: readonly ChartSourcePoint[]
+): ChartBarPoint[] {
+  const domainMax = getChartMagnitudeMax(points);
 
-  const magnitude = Math.abs(amount);
-  const direction = Math.sign(amount);
-  const expandedPoints: CumulativeChartPoint[] = [];
-
-  for (const band of bands) {
-    if (band.start >= magnitude) {
-      continue;
+  return points.flatMap((point) => {
+    if (!Number.isFinite(point.amount)) {
+      return [];
     }
 
-    expandedPoints.push({
-      bandKey: band.key,
-      bandLabel: band.label,
-      bandVariant: band.variant,
-      end: direction * Math.min(magnitude, band.end),
-      id: `${id}-${band.variant}`,
-      name,
-      sourceAmount: amount,
-      start: band.start === 0 ? 0 : direction * band.start,
-    });
-  }
+    const band = getChartHeightBand(point.amount, domainMax);
 
-  return expandedPoints;
-}
-
-export function expandToCumulativeChartPoints(
-  points: readonly ChartSourcePoint[]
-): CumulativeChartPoint[] {
-  const bands = getChartHeightBands(getChartMagnitudeMax(points));
-
-  return points.flatMap((point) => expandPointToBands(point, bands));
+    return [
+      {
+        ...point,
+        bandKey: band.key,
+        bandLabel: band.label,
+        bandVariant: band.variant,
+        sourceAmount: point.amount,
+      },
+    ];
+  });
 }

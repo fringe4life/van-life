@@ -2,10 +2,15 @@ import { describe, expect, it } from "bun:test";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
+import { act } from "react";
+import { hydrateRoot } from "react-dom/client";
+import { renderToString } from "react-dom/server";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { ThemeToggle } from "./theme-toggle";
 
-const renderThemeToggle = (
+const HYDRATION_MISMATCH = /hydrated but some attributes/;
+
+const themeToggleTree = (
   theme: "dark" | "light" | null = null,
   ui: ReactNode = <ThemeToggle />
 ) => {
@@ -33,8 +38,13 @@ const renderThemeToggle = (
     }
   );
 
-  return render(<RouterProvider router={router} />);
+  return <RouterProvider router={router} />;
 };
+
+const renderThemeToggle = (
+  theme: "dark" | "light" | null = null,
+  ui: ReactNode = <ThemeToggle />
+) => render(themeToggleTree(theme, ui));
 
 describe("ThemeToggle", () => {
   it("marks system as checked when the cookie is missing", () => {
@@ -96,5 +106,38 @@ describe("ThemeToggle", () => {
     expect(
       screen.getByRole("button", { name: "Color theme: System" })
     ).toBeInTheDocument();
+  });
+
+  it("hydrates after Chromium inlines caret-color on the radios", async () => {
+    const hydrationErrors: string[] = [];
+    const originalError = console.error;
+    console.error = (...args: unknown[]) => {
+      hydrationErrors.push(args.map(String).join(" "));
+    };
+
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    try {
+      container.innerHTML = renderToString(themeToggleTree("light"));
+      for (const radio of container.querySelectorAll<HTMLInputElement>(
+        'input[type="radio"]'
+      )) {
+        radio.style.caretColor = "transparent";
+      }
+
+      let root: ReturnType<typeof hydrateRoot> | undefined;
+      await act(() => {
+        root = hydrateRoot(container, themeToggleTree("light"));
+      });
+      await act(() => {
+        root?.unmount();
+      });
+    } finally {
+      console.error = originalError;
+      container.remove();
+    }
+
+    expect(hydrationErrors.join("\n")).not.toMatch(HYDRATION_MISMATCH);
   });
 });

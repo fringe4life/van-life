@@ -1,9 +1,7 @@
-import { defineConditions } from "@pandacss/dev";
+import { defineConditions } from "@pandacss/dev/define";
 
 export const conditions = defineConditions({
   extend: {
-    // outcomeStateLg: "@container unsuccessful-state (min-width: 52rem)",
-    // outcomeStateMd: "@container unsuccessful-state (min-width: 28rem)",
     // Semantic tokens still compile to `.dark { --vars }` only; first-visit
     // OS theme uses the head bootstrap script. This @slot covers `_dark` utilities.
     collectionTwo: "@container collection (min-width: 39.5rem)",

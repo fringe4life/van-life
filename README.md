@@ -9,7 +9,7 @@
 [![PandaCSS](https://img.shields.io/badge/PandaCSS-2.0.0--beta.18-F6E05E?logoColor=black)](https://panda-css.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.5-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.5.13-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Biome](https://img.shields.io/badge/Biome-2.5.14-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-7.12.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
@@ -54,7 +54,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals; `reviewRecipe` / `ReviewBadge` + container-query layout)
-- 📈 **Host Dashboard** (modular sections — income, reviews, vans, wallet — with TanStack Charts bars; wallet form uses `@container/wallet` two-column layout)
+- 📈 **Host Dashboard** (modular sections — income, reviews, vans, wallet — with TanStack Charts bars: one color per amount band, end-only radius, user-facing legend; wallet form uses `@container/wallet` two-column layout)
 - 💰 **Financial Management** — `/host/rental-activity` (rental pay/return) vs `/host/wallet-activity` (deposit/withdraw); typed transaction rows + pagination
 - 🏷️ **Van listing chrome** — stored `VanState` (`AVAILABLE` / `IN_REPAIR` / `ON_SALE`); `NEW` derived at read; exclusive card wash + repair/new badge
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
@@ -62,7 +62,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🧑‍💻 **TypeScript** throughout with strict type checking
 - 🧪 **Valibot** isomorphic `schema.ts` (catalogs + `addVanSchema`); nuqs URL maps in feature `parsers.ts`, sharing `vanType.values`
 - 🗄️ **Time-sortable database IDs** with UUID v7 (text columns on D1/SQLite)
-- 🌙 **Dark mode** — SSR `theme` cookie + bootstrap (no FOUC); semantic tokens for light/dark; header toggle uses React `ViewTransition` (`docs/theme-toggle-ssr.md`)
+- 🌙 **Dark mode** — SSR `theme` cookie + bootstrap (no FOUC); semantic tokens for light/dark; header toggle uses React `ViewTransition` (`docs/theme-toggle-ssr.md`); radios `suppressHydrationWarning` for Chromium `caret-color`
 - 🎨 **PandaCSS 2** (typed `css` / patterns / recipes; PostCSS + `panda build`)
 - 📦 **Drizzle ORM** with Cloudflare D1 (SQLite) and relational queries
 - 📋 **List primitives** — `ItemList` for guaranteed arrays (nav, sort); `CollectionList` for async/empty/error collections (`OutcomeState`)
@@ -92,10 +92,10 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **React 19.3** with stable Activity + `ViewTransition` for prerendering and morphs
 - **React Router 8.4.0** (file-based routing, SSR, nested host van detail routes, middleware)
 - **TypeScript 7.0.2** with strict configuration
-- **PandaCSS 2.0.0-beta.18** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`)
+- **PandaCSS 2.0.0-beta.18** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`); `define*` helpers from `@pandacss/dev/define`
 - **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover, select)
-- **Lucide React 1.46.0** for icons (direct imports for performance)
-- **TanStack Charts 0.18.0** for host income/review bars (lazy-loaded via `LazyBarChart`; height-band colors)
+- **Lucide React 1.47.0** for icons (direct imports for performance)
+- **TanStack Charts 0.18.0** for host income/review bars (lazy-loaded via `LazyBarChart`; one bar per period, end-only radius, amount-band colors + labels)
 - **nuqs 2.10.1** for type-safe URL state management via shared parsers
 
 ### Backend & Database
@@ -110,17 +110,17 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Development Tools
 
 - **Vite 8.3.0** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports; core `devtools` option
-- **@vitejs/devtools 0.7.4** - Vite DevTools (`/__devtools/` in `bun run dev`; client/ssr environments)
-- **@vitejs/devtools-rolldown 0.7.4** / **@vitejs/devtools-vite 0.7.4** - Official Rolldown build analysis + Vite plugin inspector
+- **@vitejs/devtools 0.7.5** - Vite DevTools (`/__devtools/` in `bun run dev`; client/ssr environments)
+- **@vitejs/devtools-rolldown 0.7.5** / **@vitejs/devtools-vite 0.7.5** - Official Rolldown build analysis + Vite plugin inspector
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler** (native Rust via `oxc-transform-react`) - Automatic memoization via `@acusti/vite-plugin-react-compiler` (not `@vitejs/plugin-react`'s `react()`; see `docs/rust-react-compiler.md`)
-- **Biome 2.5.13** for linting and formatting with Ultracite integration
+- **Biome 2.5.14** for linting and formatting with Ultracite integration
 - **Ultracite 7.12.0** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock 1.19.0** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.131.2** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
+- **Wrangler 4.134.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
 - **react-doctor 0.9.14** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
-- **fallow 3.25.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
+- **fallow 3.27.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **@types/bun 1.4.2** — `bun:test` / `bun:sqlite` for `tsc` (`tsconfig` `types` includes `"bun"`)
@@ -254,7 +254,7 @@ theme/                      # Authored Panda define* modules (sibling of app/)
 └── view-transitions.ts     # defineViewTransitions
 
 DESIGN.md                   # Semantic design system (Panda tokens, roles, usage)
-panda.config.ts             # defineConfig — include, presets, globalVars, breakpoints, containers
+panda.config.ts             # defineConfig from `@pandacss/dev/define` — include, presets, globalVars, breakpoints, containers
 postcss.config.cjs          # Panda PostCSS plugin
 styled-system/              # Generated Panda helpers (do not edit; import `styled-system/*` via tsconfig path)
 
@@ -900,7 +900,7 @@ Host rental-activity / reviews / wallet-activity return critical summary data im
 />
 ```
 
-Chart series use server SQL aggregations (`resolveChartContext`, `pickChartGranularity`, period/points helpers) so clients receive buckets — not raw transaction rows.
+Chart series use server SQL aggregations (`resolveChartContext`, `pickChartGranularity`, period/points helpers) so clients receive buckets — not raw transaction rows. Each bar is one color for its amount band (`getChartBarPoints`) with `radius: { end }`; legend labels are user-facing ranges (`0–2k` …), not token keys. Skeleton mirrors legend / bars / axis grid.
 
 ### Benefits
 
@@ -1061,15 +1061,15 @@ Configuration in `lint-staged.config.ts`.
 ### PandaCSS 2 & Modern CSS
 
 - **PandaCSS 2.0.0-beta.18** — typed `css` / `cx` / `cva` / `keyframes` / patterns from `styled-system` (generated; do not edit)
-- **Tokens** in `theme/`; `panda.config.ts` wires them; PostCSS via `postcss.config.cjs`; `bun run prepare` runs `panda build`
+- **Tokens** in `theme/`; `define*` helpers (`defineConfig`, `defineTokens`, `defineConditions`, …) import from `@pandacss/dev/define`; `panda.config.ts` wires them; PostCSS via `postcss.config.cjs`; `bun run prepare` runs `panda build`
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — native `<dialog>` panel/fullscreen variants (`starting-style`, `transition-discrete`, Invoker Commands)
 - **Public header** — colocated `keyframes()` compact the bar on scroll (`app/navigation/components/nav.tsx`)
-- **Host nav** — grouped rail; tablet named `host-nav` container; mobile native `popover="auto"` + CSS Anchor + Invoker `toggle-popover` (uncontrolled; see `docs/host-navigation-popover.md`)
+- **Host nav** — grouped rail; tablet named `host-nav` container; mobile native `popover="auto"` + CSS Anchor + Invoker `toggle-popover` (uncontrolled; see `docs/host-navigation-popover.md`); enter via `_open._starting` (opacity + translate)
 - **Reusable keyframes** — parameterized fade / scale / slide in `theme/keyframes.ts`
 - **Reusable view transitions** — `fadeSlide` / `fadeSlideSubtle` / `hero` bags in `theme/view-transitions.ts`; consumers pick `enter` / `exit` / `share` / `update`; unique `view-transition-name` stays on the element
 - **Semantic tokens** — `theme/semantic-tokens.ts` + `DESIGN.md`; consume paths (`surface`, `muted.foreground`, `border.subtle`) not palette primitives at call sites
-- **Dark / light / system** — cookie `theme`; `app/theme/theme-bootstrap.server.ts` sets `html` class + `color-scheme` before paint; header toggle (`app/navigation/components/theme-toggle.tsx`) uses `ViewTransition` (`docs/theme-toggle-ssr.md`)
+- **Dark / light / system** — cookie `theme`; `app/theme/theme-bootstrap.server.ts` sets `html` class + `color-scheme` before paint; header toggle (`app/navigation/components/theme-toggle.tsx`) uses `ViewTransition` (`docs/theme-toggle-ssr.md`); radios `suppressHydrationWarning` for Chromium inlined `caret-color`
 - **Scroll-driven host nav hint** — `supportsScroll` in `theme/conditions.ts` + colocated keyframes in `app/navigation/components/nav.tsx`
 - **Scroll-driven cards** — `scrollReveal` (`app/components/scroll-reveal-recipe.ts`); `view()` timeline via `supportsViewTimeline`; named `collection` container on `gridMax` + `_collectionTwo` stagger
 - **Responsive design** with mobile-first approach and Panda `grid` / `cq` patterns
@@ -1087,7 +1087,7 @@ Configuration in `lint-staged.config.ts`.
 
 ## Code Quality
 
-- **Biome 2.5.13** for linting and formatting with Ultracite integration
+- **Biome 2.5.14** for linting and formatting with Ultracite integration
 - **Ultracite 7.12.0** - AI-friendly linting rules for maximum type safety and accessibility
 - **TypeScript 7.0.2** with strict configuration
 - **Valibot 1.5.0** for runtime validation with regex support for slug validation
@@ -1101,7 +1101,7 @@ Configuration in `lint-staged.config.ts`.
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
 - **Feature schemas** — catalogs in vans `schema.ts`, URL maps in vans `parsers.ts` (share `vanType.values`); pagination parsers still in `pagination/schema.ts`; form actions in host/auth `schema.server.ts`; Van type is uppercase `VanType` (`SIMPLE` / `RUGGED` / `LUXURY`) end-to-end
-- **fallow 3.25.0** - Architecture boundaries (shared `app/middleware|navigation|pagination|seo|theme` vs `app/features/{auth,host,vans}` in `.fallowrc.jsonc`); health caps `maxCrap` 55 / cyclomatic+cognitive 12; rules at `warn` until backlog cleared; Vite DevTools optional peers ignored (`@vitejs/devtools-rolldown`, `@vitejs/devtools-vite`)
+- **fallow 3.27.0** - Architecture boundaries (shared `app/middleware|navigation|pagination|seo|theme` vs `app/features/{auth,host,vans}` in `.fallowrc.jsonc`); health caps `maxCrap` 55 / cyclomatic+cognitive 12; rules at `warn` until backlog cleared; Vite DevTools optional peers ignored (`@vitejs/devtools-rolldown`, `@vitejs/devtools-vite`)
 - **Bun `overrides`** — pin transitive audit fixes (`@opentelemetry/core`, `fast-uri`, `qs`, `turbo-stream`) while `bunfig.toml` keeps `minimumReleaseAge`
 
 ### GitHub Actions
@@ -1110,7 +1110,7 @@ Configuration in `lint-staged.config.ts`.
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
   - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.14`; matches local CLI in `package.json`); self-contained, no Bun install
-  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.25.0` Action (audit CLI `version: 3.22.0`; security CLI `version: 3.25.0`; local CLI `3.25.0` in `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`); `gate: new-only`
+  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.27.0` Action (audit + security CLI `version: 3.27.0`; matches local CLI in `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`); `gate: new-only`
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability. [`.github/dependabot.yml`](.github/dependabot.yml) bumps `github-actions` (grouped) and `bun` daily after a **3-day** `cooldown` (same window as `bunfig.toml` `minimumReleaseAge`); security updates skip the wait

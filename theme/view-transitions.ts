@@ -1,4 +1,4 @@
-import { defineViewTransitions } from "@pandacss/dev";
+import { defineViewTransitions } from "@pandacss/dev/define";
 
 /**
  * Shared vertical fade/slide recipes. Consumers choose the ViewTransition
