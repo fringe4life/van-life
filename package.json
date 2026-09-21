@@ -79,7 +79,7 @@
     "@types/react-dom": "19.3.0",
     "@varlock/cloudflare-integration": "1.5.2",
     "@vitejs/devtools": "0.7.4",
-    "@vitejs/devtools-rolldown": "0.7.4",
+    "@vitejs/devtools-rolldown": "0.7.5",
     "@vitejs/devtools-vite": "0.7.4",
     "drizzle-kit": "1.0.0-rc.4",
     "fallow": "3.25.0",

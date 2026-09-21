@@ -45,7 +45,7 @@
         "@types/react-dom": "19.3.0",
         "@varlock/cloudflare-integration": "1.5.2",
         "@vitejs/devtools": "0.7.4",
-        "@vitejs/devtools-rolldown": "0.7.4",
+        "@vitejs/devtools-rolldown": "0.7.5",
         "@vitejs/devtools-vite": "0.7.4",
         "drizzle-kit": "1.0.0-rc.4",
         "fallow": "3.25.0",
@@ -804,7 +804,7 @@
 
     "@vitejs/devtools-kit": ["@vitejs/devtools-kit@0.7.4", "", { "dependencies": { "@devframes/hub": "^0.10.0", "@devframes/json-render": "^0.10.0", "devframe": "^0.10.0", "local-pkg": "^1.2.1", "nostics": "^1.2.0", "package-manager-detector": "^1.8.0" }, "peerDependencies": { "vite": "*" } }, "sha512-WvEOgZ4XiAz19EjZzmHyh0OYsKrgeBev2tjfLT9kbQM7oLxvtHSNlLmYNEY2nNEcrrcE7seupuJI4zcWotFsug=="],
 
-    "@vitejs/devtools-rolldown": ["@vitejs/devtools-rolldown@0.7.4", "", { "dependencies": { "@rolldown/debug": "^1.2.8", "@vitejs/devtools-kit": "0.7.4", "diff": "^9.0.0", "nostics": "^1.2.0", "pathe": "^2.0.3" } }, "sha512-1Ex4OMN4R8dHNoPdFtWnAa2dYrVymC+BWuJzMOgmvY1e3QODVO6XWeyjnyHvx2PnPWMKEQ/HCefIUMLREGF6fQ=="],
+    "@vitejs/devtools-rolldown": ["@vitejs/devtools-rolldown@0.7.5", "", { "dependencies": { "@rolldown/debug": "^1.2.8", "@vitejs/devtools-kit": "0.7.5", "diff": "^9.0.0", "nostics": "^1.2.0", "pathe": "^2.0.3" } }, "sha512-CwQjwrGaYsuW15sNQ/86v4YHHLTMoHBQABZyNYjXGFczvJfJ+gKaX6uh3myt5+XhmUILsgQyHo7fRhBIDcNZiQ=="],
 
     "@vitejs/devtools-vite": ["@vitejs/devtools-vite@0.7.4", "", { "dependencies": { "@vitejs/devtools-kit": "0.7.4", "envinfo": "^7.21.0", "nostics": "^1.2.0", "pathe": "^2.0.3", "perfect-debounce": "^2.1.0" }, "peerDependencies": { "vite": "*" } }, "sha512-awvclueB6w6uyWEah8miQqy1xUkgOhESg963+kzlE0MKF+SO2TQ0hA4UmlPpYjPb2Fqgo/a0yCFjnHAo/T3aGw=="],
 
@@ -1626,6 +1626,8 @@
 
     "@types/d3-sankey/@types/d3-shape": ["@types/d3-shape@1.3.12", "", { "dependencies": { "@types/d3-path": "^1" } }, "sha512-8oMzcd4+poSLGgV0R1Q1rOlx/xdmozS4Xab7np0eamFFUYq71AU9pOCJEFnkXW2aI/oXdVYJzw6pssbSut7Z9Q=="],
 
+    "@vitejs/devtools-rolldown/@vitejs/devtools-kit": ["@vitejs/devtools-kit@0.7.5", "", { "dependencies": { "@devframes/hub": "^1.0.0", "@devframes/json-render": "^1.0.0", "devframe": "^1.0.0", "local-pkg": "^1.2.1", "nostics": "^1.2.0", "package-manager-detector": "^1.8.0" }, "peerDependencies": { "vite": "*" } }, "sha512-OinQmY1I2CLQchDY+uOqF1HmnrXp/behOVeT0QdY1Smyn4Mlq12bUIZNFTweg+YybqwTluDzvdjCUrUAHYgSzw=="],
+
     "agent-install/commander": ["commander@14.0.3", "", {}, "sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw=="],
 
     "agent-install/yaml": ["yaml@2.8.4", "", { "bin": { "yaml": "bin.mjs" } }, "sha512-ml/JPOj9fOQK8RNnWojA67GbZ0ApXAUlN2UQclwv2eVgTgn7O9gg9o7paZWKMp4g0H3nTLtS9LVzhkpOFIKzog=="],
@@ -1731,6 +1733,12 @@
     "@pandacss/config/rolldown/@rolldown/binding-win32-x64-msvc": ["@rolldown/binding-win32-x64-msvc@1.2.7", "", { "os": "win32", "cpu": "x64" }, "sha512-W/jg5qoRSqjsEv0+dZi4e687mcHqmVuU0P4fK6qS/xjetW2Gmc1W8j//z5nAeNcC8Ttm0hV46IjcYeuVwYhuiw=="],
 
     "@types/d3-sankey/@types/d3-shape/@types/d3-path": ["@types/d3-path@1.0.11", "", {}, "sha512-4pQMp8ldf7UaB/gR8Fvvy69psNHkTpD/pVw3vmEi8iZAB9EPMBruB1JvHO4BIq9QkUUd2lV1F5YXpMNj7JPBpw=="],
+
+    "@vitejs/devtools-rolldown/@vitejs/devtools-kit/@devframes/hub": ["@devframes/hub@1.0.0", "", { "dependencies": { "destr": "^2.0.5", "h3": "^2.0.1-rc.31", "pathe": "^2.0.3", "tinyexec": "^1.3.1", "zigpty": "^0.2.1" }, "peerDependencies": { "@devframes/agentic": "1.0.0", "devframe": "1.0.0" }, "optionalPeers": ["@devframes/agentic"] }, "sha512-L3NyTN5YDQ8LbKg5LjuovXVmsafTOxaMqZ0AHBIIfjK0PGhNWrIIydVrIm6VpoI+ARB/iS6k7sF15J80oBpo2Q=="],
+
+    "@vitejs/devtools-rolldown/@vitejs/devtools-kit/@devframes/json-render": ["@devframes/json-render@1.0.0", "", { "dependencies": { "@json-render/core": "^0.20.0", "zod": "^4.6.5" }, "peerDependencies": { "@devframes/hub": "1.0.0", "devframe": "1.0.0" }, "optionalPeers": ["@devframes/hub"] }, "sha512-8BlYmhdIa473icCnnl14+erhXwLvq2Z5vhdhQWKX5mQ7mnh8psHdFr8lH9fVRYop2PO/O97OzZ+Lxjvlbnce/g=="],
+
+    "@vitejs/devtools-rolldown/@vitejs/devtools-kit/devframe": ["devframe@1.0.0", "", { "dependencies": { "crossws": "^0.4.12", "h3": "^2.0.1-rc.31", "nostics": "^1.2.0", "pathe": "^2.0.3" }, "peerDependencies": { "@devframes/agentic": "1.0.0", "cac": "^7.0.0" }, "optionalPeers": ["@devframes/agentic", "cac"], "bin": { "devframe": "./bin/devframe.mjs" } }, "sha512-u4eeDBJ8Cxd3n19o/cT6SQcoEgASzL9dL51IkYpIDriTNDmR7WBv+o+dufQmabir10KcozoRZqgwvDi/riASAQ=="],
 
     "d3-sankey/d3-array/internmap": ["internmap@1.0.1", "", {}, "sha512-lDB5YccMydFBtasVtxnZ3MRBHuaoE8GKsppq+EchKL2U4nK/DmEpPHNH8MZe5HkMtpSiTSOZwfN0tzYjO/lJEw=="],
 
