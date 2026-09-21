@@ -1,4 +1,4 @@
-import { defineConfig } from "@pandacss/dev";
+import { defineConfig } from "@pandacss/dev/define";
 import presetBase from "@pandacss/preset-base";
 import presetPanda from "@pandacss/preset-panda";
 import { conditions } from "./theme/conditions";
@@ -13,13 +13,10 @@ export default defineConfig({
   exclude: [],
   globalCss,
   globalVars: {
-    "--chart-content-height":
-      "calc(var(--chart-height) - var(--chart-text-height))",
+    "--chart-axis-height": "23px",
     "--chart-height": "350px",
+    "--chart-legend-height": "52px",
     "--chart-text-first-height": "0.875rem",
-    "--chart-text-height":
-      "calc(var(--chart-text-top-margin) + var(--chart-text-first-height))",
-    "--chart-text-top-margin": "0.125rem",
     "--duration-dialog": "500ms",
     "--footer-height": "100px",
     "--global-font-body": "Inter, ui-sans-serif, system-ui, sans-serif",

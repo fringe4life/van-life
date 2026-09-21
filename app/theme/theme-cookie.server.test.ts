@@ -11,7 +11,7 @@ const SET_COOKIE_MAX_AGE = /(?:^|; )\s*Max-Age=([^;]*)/i;
 const setCookieName = (header: string) => header.split("=", 1)[0];
 
 const setCookieMaxAge = (header: string) => {
-  const match = SET_COOKIE_MAX_AGE.exec(header);
+  const match = header.match(SET_COOKIE_MAX_AGE);
   return match?.[1] ?? null;
 };
 

@@ -216,6 +216,9 @@ const ThemeOption = ({
         className={radioClassName}
         name={name}
         onChange={onChange}
+        // Chromium inlines caret-color on clipped radios before hydrate.
+        // Client VDOM has no style; React will not patch it. One-level hatch.
+        suppressHydrationWarning
         type="radio"
         value={choice}
       />

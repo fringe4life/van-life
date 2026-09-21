@@ -15,7 +15,7 @@ const HEAD_CLOSE = "</head>";
 const MAX_SCAN_BYTES = 8192;
 
 export function injectThemeBootstrapHtml(html: string): string {
-  const match = COLOR_SCHEME_META.exec(html);
+  const match: RegExpExecArray | null = COLOR_SCHEME_META.exec(html);
   if (match === null) {
     return html;
   }

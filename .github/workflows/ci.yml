@@ -103,7 +103,7 @@ jobs:
         uses: fallow-rs/fallow@adff2c9f20fe769e2e093b2e99ee09723f6310bd # v3.27.0
         with:
           command: audit
-          version: "3.22.0"
+          version: "3.27.0"
           score: true
           comment: true
           review-comments: true
@@ -114,5 +114,5 @@ jobs:
         uses: fallow-rs/fallow@adff2c9f20fe769e2e093b2e99ee09723f6310bd # v3.27.0
         with:
           command: security
-          version: "3.25.0"
+          version: "3.27.0"
           fail-on-issues: false

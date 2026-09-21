@@ -23,7 +23,7 @@ import {
 import { periodSqlFor } from "~/features/host/utils/chart-period.server";
 import {
   toBucketChartPoints,
-  toTxnChartPoint,
+  toTxnChartPoints,
 } from "~/features/host/utils/chart-points.server";
 import type { ChartGranularity } from "~/features/host/utils/pick-chart-granularity.server";
 import { toRentalTransactionListItem } from "~/features/host/utils/to-transaction-list-item.server";
@@ -78,9 +78,7 @@ export async function getRentalActivityChartData(
       .where(rentalActivityWhere(userId))
       .orderBy(asc(transaction.createdAt));
 
-    return rows.map((row) =>
-      toTxnChartPoint(row.amount, row.createdAt, row.id)
-    );
+    return toTxnChartPoints(rows);
   }
 
   const period = periodSqlFor(granularity);

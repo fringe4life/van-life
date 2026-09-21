@@ -1,4 +1,4 @@
-import { defineGlobalStyles } from "@pandacss/dev";
+import { defineGlobalStyles } from "@pandacss/dev/define";
 
 export const globalCss = defineGlobalStyles({
   ".rating-rail": {

@@ -4,22 +4,20 @@ import { css, cx } from "styled-system/css";
 
 const popoverClassName = css({
   _open: {
+    _starting: {
+      opacity: "0",
+      translate: "0 -0.5rem",
+    },
     display: "block",
     opacity: "1",
     translate: "0 0",
-  },
-  _starting: {
-    _open: {
-      opacity: "1",
-    },
-    opacity: "0",
-    translate: "0 -0.5rem",
   },
   backgroundColor: "popover",
   borderColor: "border.subtle",
   borderStyle: "solid",
   borderWidth: "1",
   color: "popover.foreground",
+  opacity: "0",
   outline: "none",
   padding: "4",
   rounded: "xl",
@@ -28,6 +26,7 @@ const popoverClassName = css({
   transitionDuration: "normal",
   transitionProperty: "opacity,translate,display,overlay",
   transitionTimingFunction: "glide",
+  translate: "0 -0.5rem",
 });
 
 const popoverHeaderClassName = css({
