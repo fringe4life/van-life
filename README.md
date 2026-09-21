@@ -116,8 +116,9 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **React Compiler** (native Rust via `oxc-transform-react`) - Automatic memoization via `@acusti/vite-plugin-react-compiler` (not `@vitejs/plugin-react`'s `react()`; see `docs/rust-react-compiler.md`)
 - **Biome 2.5.14** for linting and formatting with Ultracite integration
 - **Ultracite 7.12.0** - AI-friendly linting rules for maximum type safety and accessibility
-- **Varlock 1.19.0** - Typed env schema (`.env.schema`) with Cloudflare integration
-- **Wrangler 4.134.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
+- **Varlock 1.20.0** - Typed env schema (`.env.schema`) with Cloudflare integration (`@varlock/cloudflare-integration` 1.6.0)
+- **Wrangler 4.135.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
+- **@cloudflare/vite-plugin 1.56.0** - Vite Cloudflare plugin (via `varlockCloudflareVitePlugin`)
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
 - **react-doctor 0.9.14** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **fallow 3.27.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
