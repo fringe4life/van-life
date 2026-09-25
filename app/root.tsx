@@ -75,7 +75,9 @@ export const Layout = ({ children }: Children) => {
     >
       <head>
         <meta charSet="utf-8" />
-        <link href="/camper-van.png" rel="icon" type="image/png" />
+        <link href="/favicon.ico" rel="icon" sizes="any" />
+        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content={colorScheme} name="color-scheme" />
         <Links />

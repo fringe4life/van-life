@@ -21,7 +21,7 @@ Named imports from `"lucide-react"` only:
 
 **Not lucide:** [`app/features/navigation/components/hamburger-icon.tsx`](../app/features/navigation/components/hamburger-icon.tsx) — two `<line>`s, Tailwind `transform-view` (`transform-box: view-box`), `origin-center`, `group-has-open` translate+rotate to X. Lucide `Menu` / `X` cannot do independent bar morph without custom SVG (see below).
 
-**Not icons:** [`public/rvMask.min.svg`](../public/rvMask.min.svg) (~58 KB SVGO’d mask, `md:mask-[url(/rvMask.min.svg)]` on home) and [`public/cloud-5.svg`](../public/cloud-5.svg) (~1.2 KB, `viewBox` + one minified path, about-page mask). Illustrations / masks, not 24×24 stroke UI icons. An icon pack will never replace them.
+**Not icons:** [`public/rvMask.min.svg`](../public/rvMask.min.svg) (~22 KB SVGO’d mask, `md:mask-[url(/rvMask.min.svg)]` on home) and [`public/cloud-5.svg`](../public/cloud-5.svg) (<1 KB, `viewBox` + one minified path, about-page mask). Illustrations / masks, not 24×24 stroke UI icons. An icon pack will never replace them.
 
 ---
 
@@ -141,8 +141,8 @@ Typical **used-icon** payload: small SVG path data + one React wrapper (`createE
 
 Different problem from icon-grid stroke icons.
 
-- **`rvMask.min.svg`:** ~58 KB in `public/` (was ~181 KB editor export: `enable-background`, `xml:space="preserve"`, high-precision decimals). SVGO got it; home CSS mask fetches this file.
-- **`cloud-5.svg`:** ~1.2 KB in `public/` — `viewBox="0 0 1280 717"`, single transformed/minified `<path>` (no potrace `<metadata>`, no `preserveAspectRatio`, no `<g translate/scale>`). Tiny vs rvMask; still illustration, not a 24×24 icon.
+- **`rvMask.min.svg`:** ~22 KB in `public/` (was ~58 KB after the first SVGO pass; original editor export ~181 KB: `enable-background`, `xml:space="preserve"`, high-precision decimals). Home CSS mask fetches this file.
+- **`cloud-5.svg`:** <1 KB in `public/` — `viewBox="0 0 1280 717"`, single transformed/minified `<path>` (no potrace `<metadata>`, no `preserveAspectRatio`, no `<g translate/scale>`). Tiny vs rvMask; still illustration, not a 24×24 icon.
 
 Why SVG files bloat ([SVGO](https://github.com/svg/svgo) `preset-default`): editor metadata (`removeMetadata`, `removeEditorsNSData`, `removeDoctype`, `removeComments`), unused groups (`collapseGroups`, `removeEmptyContainers`), extra precision (`cleanupNumericValues`, `convertPathData`), unused IDs, hidden elems. Inkscape/Illustrator namespaces. Embedded rasters (`<image>`) if present. Path **count** and **decimal places** dominate.
 
@@ -175,7 +175,7 @@ Tools: [SVGO](https://svgo.dev/docs/preset-default/) (official Node CLI; default
 3. **unplugin-icons + `@iconify-json/lucide`:** same artwork, skip the React barrel, compile only used icons. Extra Vite plugin + import syntax (`~icons/lucide/x`). Worth it **after** a slow-build measurement, not before.
 4. **Copy ~18 SVGs into `app/assets` and drop the package:** smallest graph, you own the files, lose Lucide props/context/aliases. Hamburger already custom. Reasonable if you want zero `node_modules` icon barrels; busywork if build is already fine.
 5. **Do not switch to Phosphor / Tabler / Heroicons** for tree-shake or animation. Phosphor documents the same (worse) transpile problem. Heroicons `bars-3` is one path. No pack gives this hamburger’s two-line morph.
-6. **Do not** replace `rvMask` / `cloud-5` with an icon pack. `rvMask.min.svg` already ~58 KB. SVGO `cloud-5` only if it shows in the network panel.
+6. **Do not** replace `rvMask` / `cloud-5` with an icon pack. `rvMask.min.svg` is ~22 KB. `cloud-5.svg` is already <1 KB.
 7. **Keep** [`hamburger-icon.tsx`](../app/features/navigation/components/hamburger-icon.tsx). CSS-only. Not Lottie, not Lucide Menu/X, not Material FILL.
 
 ### Pack comparison (serious candidates)

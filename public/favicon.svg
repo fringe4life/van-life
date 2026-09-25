@@ -1,0 +1,13 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <title>Van Life</title>
+  <path
+    d="M5.2 21.2h2a3.5 3.5 0 0 1 6.8 0h4.2a3.5 3.5 0 0 1 6.8 0h.8c.9 0 1.6-.7 1.6-1.6v-3.2L24.6 12h-1.2V10c0-.9-.7-1.6-1.6-1.6H8.4c-.9 0-1.6.7-1.6 1.6V12H7c-.9 0-1.8.7-1.8 1.6v6c0 .9.7 1.6 1.6 1.6z"
+    fill="#fb923c"
+  />
+  <rect fill="#7bc0b8" height="3.4" rx=".7" width="11.2" x="8.2" y="9.6" />
+  <path d="M23.6 12.6h1.5l2.2 2.6v1.4h-3.7z" fill="#fff7ed" />
+  <circle cx="10.6" cy="21.4" fill="#1c1917" r="2.45" />
+  <circle cx="21.6" cy="21.4" fill="#1c1917" r="2.45" />
+  <circle cx="10.6" cy="21.4" fill="#fff7ed" r=".95" />
+  <circle cx="21.6" cy="21.4" fill="#fff7ed" r=".95" />
+</svg>

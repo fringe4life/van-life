@@ -58,10 +58,10 @@
     "varlock": "1.20.0"
   },
   "devDependencies": {
-    "@acusti/vite-plugin-react-compiler": "0.5.0",
+    "@acusti/vite-plugin-react-compiler": "0.6.0",
     "@biomejs/biome": "2.5.14",
     "@cloudflare/vite-plugin": "1.56.0",
-    "@cloudflare/workers-types": "5.20260918.1",
+    "@cloudflare/workers-types": "5.20260921.1",
     "@fontsource-variable/inter": "5.3.0",
     "@happy-dom/global-registrator": "20.14.5",
     "@pandacss/dev": "2.0.0-beta.18",
@@ -74,7 +74,7 @@
     "@testing-library/react": "16.3.3",
     "@testing-library/user-event": "14.6.7",
     "@types/bun": "1.4.2",
-    "@types/node": "26.6.1",
+    "@types/node": "26.6.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@varlock/cloudflare-integration": "1.6.0",
