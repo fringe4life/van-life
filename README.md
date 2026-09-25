@@ -51,7 +51,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🚌 **Van Management** (CRUD operations, van types, image handling, state management, SEO-friendly slug URLs)
 - 🔍 **Advanced Van Filtering** (modular filter panel on the vans catalog, facet-based state filters, `useVanFilters` hook, multi-select types, optimistic UI, debounced nuqs updates)
 - 📱 **Navigation** — public header compact on scroll + native `<dialog>` mobile drawer; host rail grouped Activity / Listings / Rental workflow, tablet `host-nav` container, mobile native `popover` + CSS Anchor + Invoker Commands; **theme toggle** (`light` / `dark` / `system`)
-- 🖼️ **Image Optimization** (WebP format, responsive images, quality compression, modern formats)
+- 🖼️ **Image Optimization** (WebP, responsive images, quality compression; favicon `svg` + `ico` + apple-touch PNG; home mask ~22KB, about cloud mask <1KB)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals; `reviewRecipe` / `ReviewBadge` + container-query layout)
 - 📈 **Host Dashboard** (modular sections — income, reviews, vans, wallet — with TanStack Charts bars: one color per amount band, end-only radius, user-facing legend; wallet form uses `@container/wallet` two-column layout)
