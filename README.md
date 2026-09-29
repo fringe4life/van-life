@@ -535,7 +535,7 @@ The application uses **human-readable slugs** for van URLs and a centralized SEO
 
 - **`SeoHead` component** (`app/seo/seo-head.tsx`) - title, description, canonical, Open Graph, and Twitter meta
 - **Server-side SEO builders** (`build-page-seo.server.ts`) - per-route title/description/canonical URLs
-- **`SITE_URL` env var** - canonical and OG link base (falls back to request origin)
+- **`SITE_URL` env var** - canonical and OG link base (production schema default is the live origin; localhost-looking values defer to the request origin)
 - **Dynamic `robots.txt`** - production allows public routes, blocks host/auth/api; dev disallows all
 - **Dynamic `sitemap.xml`** - lists public van detail pages from database
 - **`@forge42/seo-tools`** - robots.txt generation
@@ -981,6 +981,7 @@ BETTER_AUTH_SECRET=
 BETTER_AUTH_URL=http://localhost:5173
 
 # SEO (canonical URLs, Open Graph)
+# Schema: production → https://van-life.org; other envs → localhost
 SITE_URL=http://localhost:5173
 
 # drizzle-kit d1-http / remote seed (required in .env.schema)
