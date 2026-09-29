@@ -7,9 +7,6 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from "react-router";
-import type { Route } from "./+types/root";
-import { RouteErrorBoundary } from "./components/route-error-boundary";
-import "./app.css";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import { themeTransition } from "~/navigation/components/theme-toggle-transition";
@@ -23,6 +20,9 @@ import {
   useHtmlThemeClass,
 } from "~/theme/theme";
 import { readStoredTheme } from "~/theme/theme-cookie.server";
+import type { Route } from "./+types/root";
+import stylesheet from "./app.css?url";
+import { RouteErrorBoundary } from "./components/route-error-boundary";
 import type { Children } from "./types";
 
 const layoutGrid = grid({
@@ -42,6 +42,10 @@ const themeTransitionUpdate = {
   [THEME_TRANSITION_TYPE]: themeTransition,
   default: "none",
 } as const;
+
+export const links: Route.LinksFunction = () => [
+  { href: stylesheet, rel: "stylesheet" },
+];
 
 export async function loader({ request }: Route.LoaderArgs) {
   return {

@@ -1,4 +1,5 @@
 import reactCompiler from "@acusti/vite-plugin-react-compiler";
+import pandacss from "@pandacss/vite";
 import { reactRouter } from "@react-router/dev/vite";
 import { varlockCloudflareVitePlugin } from "@varlock/cloudflare-integration";
 import { defineConfig } from "vite";
@@ -19,6 +20,7 @@ export default defineConfig({
   },
   plugins: [
     varlockCloudflareVitePlugin({ viteEnvironment: { name: "ssr" } }),
+    pandacss({ transform: true }),
     // React Router owns JSX/HMR — do not add @vitejs/plugin-react's react()
     reactRouter(),
     reactCompiler(),

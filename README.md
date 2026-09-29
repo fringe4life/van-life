@@ -6,7 +6,7 @@
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.0.0--beta.18-F6E05E?logoColor=black)](https://panda-css.com/)
+[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.0.0--beta.20-F6E05E?logoColor=black)](https://panda-css.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.5-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.14-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
@@ -63,7 +63,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🧪 **Valibot** isomorphic `schema.ts` (catalogs + `addVanSchema`); nuqs URL maps in feature `parsers.ts`, sharing `vanType.values`
 - 🗄️ **Time-sortable database IDs** with UUID v7 (text columns on D1/SQLite)
 - 🌙 **Dark mode** — SSR `theme` cookie + bootstrap (no FOUC); semantic tokens for light/dark; header toggle uses React `ViewTransition` (`docs/theme-toggle-ssr.md`); radios `suppressHydrationWarning` for Chromium `caret-color`
-- 🎨 **PandaCSS 2** (typed `css` / patterns / recipes; PostCSS + `panda build`)
+- 🎨 **PandaCSS 2** (typed `css` / patterns / recipes; `@pandacss/vite` + `panda codegen`)
 - 📦 **Drizzle ORM** with Cloudflare D1 (SQLite) and relational queries
 - 📋 **List primitives** — `ItemList` for guaranteed arrays (nav, sort); `CollectionList` for async/empty/error collections (`OutcomeState`)
 - 🎭 **Panda recipes** (`cva` from `styled-system/css`) — `vanCard`, `transactionRecipe`, `reviewRecipe`, `outcomeState`
@@ -92,7 +92,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **React 19.3** with stable Activity + `ViewTransition` for prerendering and morphs
 - **React Router 8.4.0** (file-based routing, SSR, nested host van detail routes, middleware)
 - **TypeScript 7.0.2** with strict configuration
-- **PandaCSS 2.0.0-beta.18** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`); `define*` helpers from `@pandacss/dev/define`
+- **PandaCSS 2.0.0-beta.20** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`); `define*` helpers from `@pandacss/dev/define`
 - **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover, select)
 - **Lucide React 1.47.0** for icons (direct imports for performance)
 - **TanStack Charts 0.18.0** for host income/review bars (lazy-loaded via `LazyBarChart`; one bar per period, end-only radius, amount-band colors + labels)
@@ -256,7 +256,7 @@ theme/                      # Authored Panda define* modules (sibling of app/)
 
 DESIGN.md                   # Semantic design system (Panda tokens, roles, usage)
 panda.config.ts             # defineConfig from `@pandacss/dev/define` — include, presets, globalVars, breakpoints, containers
-postcss.config.cjs          # Panda PostCSS plugin
+# Panda via @pandacss/vite in vite.config.ts (transform: true)
 styled-system/              # Generated Panda helpers (do not edit; import `styled-system/*` via tsconfig path)
 
 docs/
@@ -1061,8 +1061,8 @@ Configuration in `lint-staged.config.ts`.
 
 ### PandaCSS 2 & Modern CSS
 
-- **PandaCSS 2.0.0-beta.18** — typed `css` / `cx` / `cva` / `keyframes` / patterns from `styled-system` (generated; do not edit)
-- **Tokens** in `theme/`; `define*` helpers (`defineConfig`, `defineTokens`, `defineConditions`, …) import from `@pandacss/dev/define`; `panda.config.ts` wires them; PostCSS via `postcss.config.cjs`; `bun run prepare` runs `panda build`
+- **PandaCSS 2.0.0-beta.20** — typed `css` / `cx` / `cva` / `keyframes` / patterns from `styled-system` (generated; do not edit)
+- **Tokens** in `theme/`; `define*` helpers (`defineConfig`, `defineTokens`, `defineConditions`, …) import from `@pandacss/dev/define`; `panda.config.ts` wires them; `@pandacss/vite` injects CSS and folds static style calls; `bun run prepare` runs `panda codegen`
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — native `<dialog>` panel/fullscreen variants (`starting-style`, `transition-discrete`, Invoker Commands)
 - **Public header** — colocated `keyframes()` compact the bar on scroll (`app/navigation/components/nav.tsx`)
