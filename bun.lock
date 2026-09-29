@@ -46,7 +46,7 @@
         "@varlock/cloudflare-integration": "1.6.0",
         "@vitejs/devtools": "0.7.6",
         "@vitejs/devtools-rolldown": "0.7.5",
-        "@vitejs/devtools-vite": "0.7.5",
+        "@vitejs/devtools-vite": "0.7.6",
         "drizzle-kit": "1.0.0-rc.4",
         "fallow": "3.27.0",
         "husky": "9.1.7",
@@ -806,7 +806,7 @@
 
     "@vitejs/devtools-rolldown": ["@vitejs/devtools-rolldown@0.7.5", "", { "dependencies": { "@rolldown/debug": "^1.2.8", "@vitejs/devtools-kit": "0.7.5", "diff": "^9.0.0", "nostics": "^1.2.0", "pathe": "^2.0.3" } }, "sha512-CwQjwrGaYsuW15sNQ/86v4YHHLTMoHBQABZyNYjXGFczvJfJ+gKaX6uh3myt5+XhmUILsgQyHo7fRhBIDcNZiQ=="],
 
-    "@vitejs/devtools-vite": ["@vitejs/devtools-vite@0.7.5", "", { "dependencies": { "@vitejs/devtools-kit": "0.7.5", "envinfo": "^7.21.0", "nostics": "^1.2.0", "pathe": "^2.0.3", "perfect-debounce": "^2.1.0" }, "peerDependencies": { "vite": "*" } }, "sha512-P6NN6SGRscGJWMnI9LTXpeHqK0qvfJACVMNB3qQ3CtIMtwOrXGlQNodkYOdxR4BsCJOwXdccWL58ycUu4vDprg=="],
+    "@vitejs/devtools-vite": ["@vitejs/devtools-vite@0.7.6", "", { "dependencies": { "@vitejs/devtools-kit": "0.7.6", "envinfo": "^7.21.0", "nostics": "^1.3.0", "pathe": "^2.0.3", "perfect-debounce": "^2.1.0" }, "peerDependencies": { "vite": "*" } }, "sha512-/y8ozt0eBqvqLB8iFpQUsvfkJlKpNEtF9+LPDD4RAfBo8zlXwkPsSUmbYnPZ50rmEccOQRtDpl1ezL22Iyio4w=="],
 
     "@web3-storage/multipart-parser": ["@web3-storage/multipart-parser@1.0.0", "", {}, "sha512-BEO6al7BYqcnfX15W2cnGR+Q566ACXAT9UQykORCWW80lmkpWsnEob6zJS1ZVBKsSJC8+7vJkHwlp+lXG1UCdw=="],
 
@@ -1631,10 +1631,6 @@
     "@vitejs/devtools-rolldown/@vitejs/devtools-kit": ["@vitejs/devtools-kit@0.7.5", "", { "dependencies": { "@devframes/hub": "^1.0.0", "@devframes/json-render": "^1.0.0", "devframe": "^1.0.0", "local-pkg": "^1.2.1", "nostics": "^1.2.0", "package-manager-detector": "^1.8.0" }, "peerDependencies": { "vite": "*" } }, "sha512-OinQmY1I2CLQchDY+uOqF1HmnrXp/behOVeT0QdY1Smyn4Mlq12bUIZNFTweg+YybqwTluDzvdjCUrUAHYgSzw=="],
 
     "@vitejs/devtools-rolldown/nostics": ["nostics@1.2.0", "", {}, "sha512-FGqEfhQjrvo1lL8KFifdTQiNwwQHJxC1jtYE1Rc54qF/jxONUNL+kC9gS1krX8Q65PgrQ5fCqH/I4NhWBvdSqg=="],
-
-    "@vitejs/devtools-vite/@vitejs/devtools-kit": ["@vitejs/devtools-kit@0.7.5", "", { "dependencies": { "@devframes/hub": "^1.0.0", "@devframes/json-render": "^1.0.0", "devframe": "^1.0.0", "local-pkg": "^1.2.1", "nostics": "^1.2.0", "package-manager-detector": "^1.8.0" }, "peerDependencies": { "vite": "*" } }, "sha512-OinQmY1I2CLQchDY+uOqF1HmnrXp/behOVeT0QdY1Smyn4Mlq12bUIZNFTweg+YybqwTluDzvdjCUrUAHYgSzw=="],
-
-    "@vitejs/devtools-vite/nostics": ["nostics@1.2.0", "", {}, "sha512-FGqEfhQjrvo1lL8KFifdTQiNwwQHJxC1jtYE1Rc54qF/jxONUNL+kC9gS1krX8Q65PgrQ5fCqH/I4NhWBvdSqg=="],
 
     "agent-install/commander": ["commander@14.0.3", "", {}, "sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw=="],
 
