@@ -1,3 +1,4 @@
+import interLatinHref from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import { NuqsAdapter } from "nuqs/adapters/react-router/v8";
 import { useState, ViewTransition } from "react";
 import {
@@ -44,6 +45,13 @@ const themeTransitionUpdate = {
 } as const;
 
 export const links: Route.LinksFunction = () => [
+  {
+    as: "font",
+    crossOrigin: "anonymous",
+    href: interLatinHref,
+    rel: "preload",
+    type: "font/woff2",
+  },
   { href: stylesheet, rel: "stylesheet" },
 ];
 
