@@ -4,7 +4,7 @@
 
 Van Life uses a warm, light, editorial interface for browsing camper vans and managing host activity. The visual language combines a lightly orange-tinted canvas, dark neutral typography, deliberate orange actions, and compact data-oriented controls. Surfaces should feel layered but not busy: the page canvas separates from the main shell, cards provide a clear reading surface, and accent colors are reserved for actions, status, and purposeful decoration.
 
-The app uses PandaCSS v2 beta (`@pandacss/*` is currently pinned to `2.0.0-beta.16`). Styles are authored as typed Panda style objects, patterns, and recipes. These APIs generate class names that are passed to React's `className`; hand-authored utility vocabulary is not the styling API. The system is intentionally semantic so components consume roles such as `surface`, `muted.foreground`, and `border.subtle` rather than selecting a palette value at the point of use.
+The app uses PandaCSS v2 beta (`@pandacss/*` is currently pinned to `2.0.0-beta.20`). Styles are authored as typed Panda style objects, patterns, and recipes. These APIs generate class names that are passed to React's `className`; hand-authored utility vocabulary is not the styling API. The system is intentionally semantic so components consume roles such as `surface`, `muted.foreground`, and `border.subtle` rather than selecting a palette value at the point of use.
 
 ## Source of Truth
 
@@ -16,14 +16,14 @@ The app uses PandaCSS v2 beta (`@pandacss/*` is currently pinned to `2.0.0-beta.
   - Keyframes: [`theme/keyframes.ts`](./theme/keyframes.ts) (`defineKeyframes`)
   - Global Panda CSS: [`theme/global-styles.ts`](./theme/global-styles.ts) (`defineGlobalStyles`)
   - Named view-transition bags: [`theme/view-transitions.ts`](./theme/view-transitions.ts) (`defineViewTransitions`)
-- Panda PostCSS integration: [`postcss.config.cjs`](./postcss.config.cjs)
+- Panda Vite integration: [`vite.config.ts`](./vite.config.ts) (`@pandacss/vite`, `transform: true`)
 - Generated Panda helpers and CSS: [`styled-system`](./styled-system) — generated output; import as `styled-system/css` / `styled-system/patterns` (`tsconfig` path). Do not edit it directly.
 - Authored global CSS: [`app/app.css`](./app/app.css)
 - Shared style helpers: [`app/styles.ts`](./app/styles.ts)
 - Shared UI primitives and recipes: [`app/components/ui`](./app/components/ui)
 - Domain-specific van presentation: [`app/features/vans/components`](./app/features/vans/components)
 
-`theme/` owns tokens, semantic aliases, keyframes, global Panda CSS, custom conditions, and named view-transition definitions. `panda.config.ts` wires those modules into `defineConfig` and still owns breakpoints, container names/sizes, `globalVars`, and compiler options. `postcss.config.cjs` runs Panda's PostCSS plugin. `vite.config.ts` owns the Vite and React Router build; it is not the token source and does not contain a separate styling theme.
+`theme/` owns tokens, semantic aliases, keyframes, global Panda CSS, custom conditions, and named view-transition definitions. `panda.config.ts` wires those modules into `defineConfig` and still owns breakpoints, container names/sizes, `globalVars`, and compiler options. `@pandacss/vite` generates `styled-system`, injects CSS, and rewrites static style calls at build time. `vite.config.ts` owns the Vite and React Router build; it is not the token source and does not contain a separate styling theme.
 
 `app/app.css` is reserved for global CSS that is intentionally authored outside Panda's object model: the Inter `@font-face`, document view-transition selectors, and scroll-driven animation classes. It is not a second token file. Visual-diff reports and screenshots are evidence for maintaining the system, not runtime inputs.
 

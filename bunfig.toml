@@ -20,6 +20,7 @@ minimumReleaseAgeExcludes = [
   "@pandacss/preset-base",
   "@pandacss/preset-panda",
   "@pandacss/types",
+  "@pandacss/vite",
   "@tanstack/charts",
   "react-router",
   "@react-router/dev",
