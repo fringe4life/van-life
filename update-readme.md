@@ -73,5 +73,5 @@ Please update README.md based on the codebase. Keep sections accurate and concis
 ## Post-update
 
 - Run Biome format: `bun fix`
-- Generate commit message: see `git-commit-msg.md`
-- Optional full ship (branch, commit, push, PR): see `git-pull-request.md` (uses commit format above)
+- Commit: use global `git-commit` skill
+- Optional full ship (branch, commit, push, PR): use global `prepare-pr` skill
