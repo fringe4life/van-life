@@ -80,7 +80,7 @@
     "@varlock/cloudflare-integration": "1.6.0",
     "@vitejs/devtools": "0.7.6",
     "@vitejs/devtools-rolldown": "0.7.5",
-    "@vitejs/devtools-vite": "0.7.5",
+    "@vitejs/devtools-vite": "0.7.6",
     "drizzle-kit": "1.0.0-rc.4",
     "fallow": "3.27.0",
     "husky": "9.1.7",
