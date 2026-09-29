@@ -13,7 +13,7 @@
 | Router | `react-router` / `@react-router/dev` **8.3.1**, framework mode, `ssr: true` |
 | React | **19.3** canary |
 | Runtime | Cloudflare Workers (`workers/app.ts` → `createRequestHandler`) |
-| Styles | Panda CSS **2.0.0-beta.16**; semantic tokens already use `_dark` |
+| Styles | Panda CSS **2.0.0**; semantic tokens already use `_dark` |
 | Document shell | [`app/root.tsx`](../app/root.tsx) `Layout` export renders `<html>` |
 | HTML stream | [`app/entry.server.tsx`](../app/entry.server.tsx) `handleRequest` — injects the no-cookie theme script **outside** React |
 | Chrome layout | [`app/routes/layout/layout.tsx`](../app/routes/layout/layout.tsx) is **Nav / main / footer**, not the document |
