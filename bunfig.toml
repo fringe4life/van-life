@@ -19,6 +19,7 @@ minimumReleaseAgeExcludes = [
   "@pandacss/postcss",
   "@pandacss/preset-base",
   "@pandacss/preset-panda",
+  "@pandacss/transformer",
   "@pandacss/types",
   "@pandacss/vite",
   "@tanstack/charts",

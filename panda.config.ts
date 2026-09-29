@@ -41,8 +41,7 @@ export default defineConfig({
     "./app/**/.server/**/*.{js,jsx,ts,tsx}",
   ],
   optimize: {
-    removeUnusedKeyframes: false,
-    // ENABLE THESE AGAIN AFTER MIGRATION TO PANDACSS IS COMPLETE
+    removeUnusedKeyframes: true,
     removeUnusedStyles: true,
     removeUnusedTokens: true,
     smartCompoundVariants: true,

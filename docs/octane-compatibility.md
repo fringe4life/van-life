@@ -15,7 +15,7 @@
 - React `19.3.0-canary-eb8feb71-20260814`.
 - nuqs 2.10.1 with `NuqsAdapter` from `nuqs/adapters/react-router/v8`, client `useQueryStates`, `nuqs/server` serializers/loaders.
 - `@tanstack/charts` 0.16.0 via `@tanstack/charts/react` (not recharts).
-- Panda CSS 2.0.0-beta (`css()` / `cx()` class strings; no `@base-ui/react`, no Radix).
+- Panda CSS 2.0.0 (`css()` / `cx()` class strings; no `@base-ui/react`, no Radix).
 - better-auth 1.7.3 (`better-auth/minimal` + `auth.handler(request)` + drizzle D1 adapter). No `better-auth/react` client in this tree.
 - Bun, varlock.
 

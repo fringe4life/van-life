@@ -4,7 +4,7 @@
 
 Van Life uses a warm, light, editorial interface for browsing camper vans and managing host activity. The visual language combines a lightly orange-tinted canvas, dark neutral typography, deliberate orange actions, and compact data-oriented controls. Surfaces should feel layered but not busy: the page canvas separates from the main shell, cards provide a clear reading surface, and accent colors are reserved for actions, status, and purposeful decoration.
 
-The app uses PandaCSS v2 beta (`@pandacss/*` is currently pinned to `2.0.0-beta.20`). Styles are authored as typed Panda style objects, patterns, and recipes. These APIs generate class names that are passed to React's `className`; hand-authored utility vocabulary is not the styling API. The system is intentionally semantic so components consume roles such as `surface`, `muted.foreground`, and `border.subtle` rather than selecting a palette value at the point of use.
+The app uses PandaCSS v2 (`@pandacss/*` pinned to `2.0.0`). Styles are authored as typed Panda style objects, patterns, and recipes. These APIs generate class names that are passed to React's `className`; hand-authored utility vocabulary is not the styling API. The system is intentionally semantic so components consume roles such as `surface`, `muted.foreground`, and `border.subtle` rather than selecting a palette value at the point of use.
 
 ## Source of Truth
 

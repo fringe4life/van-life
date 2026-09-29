@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-26
 
-**Packages (this repo):** `react-router` / `@react-router/dev` **8.4.0**, Vite via RR framework plugin, `@pandacss/dev` **2.0.0-beta.18**, PostCSS entry via [`postcss.config.cjs`](../postcss.config.cjs).
+**Packages (this repo):** `react-router` / `@react-router/dev` **8.4.0**, Vite via RR framework plugin, `@pandacss/dev` **2.0.0**, PostCSS entry via [`postcss.config.cjs`](../postcss.config.cjs).
 
 ## Question
 
