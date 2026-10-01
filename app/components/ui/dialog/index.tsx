@@ -31,6 +31,8 @@ const dialogBase = css({
 });
 
 // Top-level `css()` bindings — transform folds these; object-literal values do not.
+// Always `_backdrop` — bare `backdrop:` is a non-condition nest and silently
+// bails the Panda source transform (https://github.com/chakra-ui/panda/issues/3853).
 const dialogFullscreen = css({
   _backdrop: {
     backgroundColor: "transparent",
@@ -73,6 +75,19 @@ const dialogPanel = css({
   translate: "0 -1rem",
 });
 
+/**
+ * Workaround: top-level `css()` variant map instead of `cva` — open
+ * `dialogVariants({ variant })` would keep residual recipe + unused
+ * `.raw`/`config` (same dual-API gap as button).
+ *
+ * @remarks
+ * Still required on `@pandacss/vite@2.0.0` / `@pandacss/dev@2.0.0`.
+ * No upstream issue yet for unused-`.raw` residual emit. Drop when Panda
+ * ships string-only residual recipes; re-verify layout chunk after clean
+ * `styled-system` + `build`.
+ *
+ * @see https://github.com/fringe4life/van-life/issues/270 — tracking
+ */
 const dialogByVariant = {
   fullscreen: dialogFullscreen,
   panel: dialogPanel,
