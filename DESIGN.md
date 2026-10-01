@@ -299,7 +299,7 @@ Preserve view-transition names and animation variables when changing layout or c
 
 ### Buttons and links
 
-[`button-variants.ts`](./app/components/ui/button-variants.ts) is the source of truth for button variants. Keep the existing `default`, `destructive`, `ghost`, `link`, `outline`, and `secondary` API, plus the `default`, `sm`, `lg`, and `icon` sizes. The recipe uses `cva()` from `styled-system/css`; `Button` combines its output with `cx()` and accepts a generated `className` override.
+[`button-variants.ts`](./app/components/ui/button-variants.ts) is the source of truth for button variants. Keep the existing `default`, `destructive`, `ghost`, `link`, `outline`, and `secondary` API, plus the `default`, `sm`, `lg`, and `icon` sizes. Styles are top-level `css()` maps composed with `cx()` (not residual `cva`) so open-props `buttonVariants({ size, variant })` does not ship unused `.raw`/`config`; see [#270](https://github.com/fringe4life/van-life/issues/270). `Button` accepts a generated `className` override.
 
 - Primary action: `backgroundColor: "primary"` with `color: "primary.foreground"`.
 - Destructive action: `backgroundColor: "destructive"` with `color: "destructive.foreground"`.
@@ -325,7 +325,7 @@ Inputs and textareas use `input.background`, `input.foreground`, `input`, `place
 
 ### Dialogs and navigation
 
-[`dialog.tsx`](./app/components/ui/dialog.tsx) uses a `cva()` recipe with Panda conditions such as `_open`, `_starting`, and `_backdrop`. Fullscreen mobile navigation and panel dialogs share the inverse backdrop role and accent content surface. Closed native dialogs must remain `display: none`; never add an unconditional `display` style that overrides the browser's closed-dialog behavior. Scope layout styles to `_open` when a dialog needs an open-state display value.
+[`dialog/index.tsx`](./app/components/ui/dialog/index.tsx) uses top-level `css()` bindings plus a variant map (same unused-`.raw` residual gap as buttons; [#270](https://github.com/fringe4life/van-life/issues/270)) with Panda conditions such as `_open`, `_starting`, and `_backdrop` — never bare `backdrop:`. Fullscreen mobile navigation and panel dialogs share the inverse backdrop role and accent content surface. Closed native dialogs must remain `display: none`; never add an unconditional `display` style that overrides the browser's closed-dialog behavior. Scope layout styles to `_open` when a dialog needs an open-state display value.
 
 Desktop and mobile navigation share the primary hover role. The mobile drawer uses the named `groupOpenMobileNav` condition and the configured dialog duration/glide easing. Keep the hamburger's semantic button labels, dialog relationships, focus behavior, and close controls intact.
 

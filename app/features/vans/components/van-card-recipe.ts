@@ -1,30 +1,37 @@
-import { css } from "styled-system/css";
+import { cva } from "styled-system/css";
 import type { ListingChrome } from "~/features/vans/types";
 
-const vanCardByState = {
-  AVAILABLE: "",
-  IN_REPAIR: css({
+const vanCardStateVariants = {
+  AVAILABLE: {
+    outline: "none",
+  },
+  IN_REPAIR: {
     backgroundColor: "status.repair/10",
     borderColor: "status.repair",
     borderStyle: "solid",
     borderWidth: "2",
-  }),
-  NEW: css({
+  },
+  NEW: {
     backgroundColor: "status.new/10",
     borderColor: "status.new",
     borderStyle: "solid",
     borderWidth: "2",
-  }),
-  ON_SALE: css({
+  },
+  ON_SALE: {
     backgroundColor: "status.sale/10",
     borderColor: "status.sale",
     borderStyle: "solid",
     borderWidth: "2",
-  }),
-} as const satisfies Record<ListingChrome, string>;
+  },
+} as const satisfies Record<ListingChrome, Record<string, unknown>>;
 
-function vanCard({ state }: { state: ListingChrome }) {
-  return vanCardByState[state];
-}
+const vanCard = cva({
+  defaultVariants: {
+    state: "AVAILABLE",
+  },
+  variants: {
+    state: vanCardStateVariants,
+  },
+});
 
 export { vanCard };
