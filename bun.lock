@@ -27,7 +27,7 @@
         "@acusti/vite-plugin-react-compiler": "0.6.0",
         "@biomejs/biome": "2.5.14",
         "@cloudflare/vite-plugin": "1.60.2",
-        "@cloudflare/workers-types": "5.20260926.1",
+        "@cloudflare/workers-types": "5.20260928.1",
         "@fontsource-variable/inter": "5.3.0",
         "@happy-dom/global-registrator": "20.14.5",
         "@pandacss/dev": "2.0.0",
@@ -163,7 +163,7 @@
 
     "@cloudflare/workerd-windows-64": ["@cloudflare/workerd-windows-64@1.20260925.1", "", { "os": "win32", "cpu": "x64" }, "sha512-mG0JYuF6HVCgXSsNeB5os8Vtdprk5jHPysviKNNMHJSLA3Q1djFjSmK4+pnQR/zOAgzNo0HJ+Tpcz+tZj1Q7fQ=="],
 
-    "@cloudflare/workers-types": ["@cloudflare/workers-types@5.20260926.1", "", {}, "sha512-jLtwSjBFtXucrEIj584vNk/k9OwgW4ij7/nK40hnCw137/0ilqfkTlYIUTWlTEbUX2V/+XVBijzZha9spdQTUw=="],
+    "@cloudflare/workers-types": ["@cloudflare/workers-types@5.20260928.1", "", {}, "sha512-B/El15v5HqZyuyfR7Z0W443iA6Ml4nZjaR8rgHyW612r8reO+1JaDKtNbP3CPdzVIM2egp98by3NlpMm5pKbcg=="],
 
     "@cspotcode/source-map-support": ["@cspotcode/source-map-support@0.8.1", "", { "dependencies": { "@jridgewell/trace-mapping": "0.3.9" } }, "sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw=="],
 
