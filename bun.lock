@@ -33,7 +33,7 @@
         "@pandacss/dev": "2.0.0",
         "@pandacss/mcp": "2.0.0",
         "@pandacss/preset-base": "2.0.0",
-        "@pandacss/preset-panda": "2.0.0",
+        "@pandacss/preset-panda": "2.1.1",
         "@pandacss/vite": "2.1.1",
         "@react-router/dev": "8.4.0",
         "@testing-library/dom": "10.4.2",
@@ -585,7 +585,7 @@
 
     "@pandacss/preset-base": ["@pandacss/preset-base@2.0.0", "", { "dependencies": { "@pandacss/types": "2.0.0" } }, "sha512-2QcZtX+78DL3w/NlONCZj2UPcMNunv7PEIdceGTF+VS6MD4YoAxK/EGKZo5kB4IizepPjZFWNZCWLmHb6OsPDw=="],
 
-    "@pandacss/preset-panda": ["@pandacss/preset-panda@2.0.0", "", { "dependencies": { "@pandacss/types": "2.0.0" } }, "sha512-evGC1u5iOyG/FHG5XymPaSuMQZFneK19kAYr1iFIG9Fihez5tjVk0VF2ywTDumpygDG1IbdsJUJ3Fo+LnLdCog=="],
+    "@pandacss/preset-panda": ["@pandacss/preset-panda@2.1.1", "", { "dependencies": { "@pandacss/types": "2.1.1" } }, "sha512-c7xaDhGkor/vM3nir6HlMFRmxE3s5uqgQCmrLybaA4s7BjRGsIl48qRv2nSpOHQstWXI/iBg7BvbKgGFZ/m+Sg=="],
 
     "@pandacss/transformer": ["@pandacss/transformer@2.1.1", "", { "dependencies": { "@pandacss/compiler": "2.1.1", "@pandacss/compiler-shared": "2.1.1", "unplugin": "^2.3.11" }, "peerDependencies": { "rollup": ">=3.0.0", "vite": ">=6.0.0", "webpack": ">=5.0.0" }, "optionalPeers": ["rollup", "vite", "webpack"] }, "sha512-DYM8bbIse1yWy4/BlCNoEnxbb3CyBKb2xX4N0tA2aCN3EJZMCG8/gj17u+WH9rzOa8RJDDqStsr2RG7BIPEjLQ=="],
 
@@ -1644,6 +1644,8 @@
     "@pandacss/config/rolldown": ["rolldown@1.2.7", "", { "dependencies": { "@oxc-project/types": "=0.148.0", "@rolldown/pluginutils": "^1.0.0" }, "optionalDependencies": { "@rolldown/binding-android-arm-eabi": "1.2.7", "@rolldown/binding-android-arm64": "1.2.7", "@rolldown/binding-darwin-arm64": "1.2.7", "@rolldown/binding-darwin-x64": "1.2.7", "@rolldown/binding-freebsd-x64": "1.2.7", "@rolldown/binding-linux-arm-gnueabihf": "1.2.7", "@rolldown/binding-linux-arm64-gnu": "1.2.7", "@rolldown/binding-linux-arm64-musl": "1.2.7", "@rolldown/binding-linux-ppc64-gnu": "1.2.7", "@rolldown/binding-linux-s390x-gnu": "1.2.7", "@rolldown/binding-linux-x64-gnu": "1.2.7", "@rolldown/binding-linux-x64-musl": "1.2.7", "@rolldown/binding-openharmony-arm64": "1.2.7", "@rolldown/binding-win32-arm64-msvc": "1.2.7", "@rolldown/binding-win32-x64-msvc": "1.2.7" }, "bin": { "rolldown": "./bin/cli.mjs" } }, "sha512-g0EtLvBjTUB7jhyV0S/TCup3v/XSVl45vUIGbOGU4QPiyjTenCe4mKuFvW9fEgYmS2Fo42AUssRmNuMziXdrig=="],
 
     "@pandacss/postcss/@pandacss/compiler-shared": ["@pandacss/compiler-shared@2.0.0", "", { "dependencies": { "@pandacss/types": "2.0.0" } }, "sha512-ESZnwZGlz43afQmvUexjksFgjE/x5weXNVX+8fBsk6AkIcezhVuOs+Nmwj9IiMMJI3osW1+eV8QbGKxWDzzqnQ=="],
+
+    "@pandacss/preset-panda/@pandacss/types": ["@pandacss/types@2.1.1", "", {}, "sha512-ycF8sYdqg8mu2cdfdR2hM/pLRpSxBVkD2kJkCBhWAr+KvKb5SoRRNeERSzizgENDUKmThcWHF3N0kSFMA1Rt9A=="],
 
     "@pandacss/transformer/@pandacss/compiler": ["@pandacss/compiler@2.1.1", "", { "dependencies": { "@napi-rs/wasm-runtime": "^1.1.6", "@pandacss/compiler-shared": "2.1.1", "@pandacss/config": "2.1.1", "@pandacss/types": "2.1.1" }, "optionalDependencies": { "@pandacss/compiler-darwin-arm64": "2.1.1", "@pandacss/compiler-darwin-x64": "2.1.1", "@pandacss/compiler-linux-arm64-gnu": "2.1.1", "@pandacss/compiler-linux-arm64-musl": "2.1.1", "@pandacss/compiler-linux-x64-gnu": "2.1.1", "@pandacss/compiler-linux-x64-musl": "2.1.1", "@pandacss/compiler-win32-arm64-msvc": "2.1.1", "@pandacss/compiler-win32-x64-msvc": "2.1.1" } }, "sha512-6TYp665nklAyFVq2BoLA0qlvxbpX7uZTaweeBH+KABVQuK8T6wUZOSfXcOHQxWQ9kak6M2gFzz7PR8+BXQJgVg=="],
 
