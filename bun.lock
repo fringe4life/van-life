@@ -32,7 +32,7 @@
         "@happy-dom/global-registrator": "20.14.5",
         "@pandacss/dev": "2.1.1",
         "@pandacss/mcp": "2.0.0",
-        "@pandacss/preset-base": "2.0.0",
+        "@pandacss/preset-base": "2.1.1",
         "@pandacss/preset-panda": "2.1.1",
         "@pandacss/vite": "2.1.1",
         "@react-router/dev": "8.4.0",
@@ -583,7 +583,7 @@
 
     "@pandacss/postcss": ["@pandacss/postcss@2.1.1", "", { "dependencies": { "@pandacss/compiler": "2.1.1", "@pandacss/compiler-shared": "2.1.1" }, "peerDependencies": { "postcss": ">=8" } }, "sha512-PX5qnlojrj2HhlOhZ2m5Az9b8DaqAmt+yFA8nZp4xPFRcl4+LKyYFSUlTsKD5bknSpmD9155Thdvo8yOpys3ZA=="],
 
-    "@pandacss/preset-base": ["@pandacss/preset-base@2.0.0", "", { "dependencies": { "@pandacss/types": "2.0.0" } }, "sha512-2QcZtX+78DL3w/NlONCZj2UPcMNunv7PEIdceGTF+VS6MD4YoAxK/EGKZo5kB4IizepPjZFWNZCWLmHb6OsPDw=="],
+    "@pandacss/preset-base": ["@pandacss/preset-base@2.1.1", "", { "dependencies": { "@pandacss/types": "2.1.1" } }, "sha512-km9p/6m5gGyVdVPEc7/YPBGP0wiRqPhbvWdQaJSFlyluzQUFeGzycF7ZTi4heYKmUpVfNm0D56QM+gcxL4FVog=="],
 
     "@pandacss/preset-panda": ["@pandacss/preset-panda@2.1.1", "", { "dependencies": { "@pandacss/types": "2.1.1" } }, "sha512-c7xaDhGkor/vM3nir6HlMFRmxE3s5uqgQCmrLybaA4s7BjRGsIl48qRv2nSpOHQstWXI/iBg7BvbKgGFZ/m+Sg=="],
 
@@ -1638,8 +1638,6 @@
     "@pandacss/config/rolldown": ["rolldown@1.2.7", "", { "dependencies": { "@oxc-project/types": "=0.148.0", "@rolldown/pluginutils": "^1.0.0" }, "optionalDependencies": { "@rolldown/binding-android-arm-eabi": "1.2.7", "@rolldown/binding-android-arm64": "1.2.7", "@rolldown/binding-darwin-arm64": "1.2.7", "@rolldown/binding-darwin-x64": "1.2.7", "@rolldown/binding-freebsd-x64": "1.2.7", "@rolldown/binding-linux-arm-gnueabihf": "1.2.7", "@rolldown/binding-linux-arm64-gnu": "1.2.7", "@rolldown/binding-linux-arm64-musl": "1.2.7", "@rolldown/binding-linux-ppc64-gnu": "1.2.7", "@rolldown/binding-linux-s390x-gnu": "1.2.7", "@rolldown/binding-linux-x64-gnu": "1.2.7", "@rolldown/binding-linux-x64-musl": "1.2.7", "@rolldown/binding-openharmony-arm64": "1.2.7", "@rolldown/binding-win32-arm64-msvc": "1.2.7", "@rolldown/binding-win32-x64-msvc": "1.2.7" }, "bin": { "rolldown": "./bin/cli.mjs" } }, "sha512-g0EtLvBjTUB7jhyV0S/TCup3v/XSVl45vUIGbOGU4QPiyjTenCe4mKuFvW9fEgYmS2Fo42AUssRmNuMziXdrig=="],
 
     "@pandacss/mcp/@pandacss/compiler": ["@pandacss/compiler@2.0.0", "", { "dependencies": { "@napi-rs/wasm-runtime": "^1.1.6", "@pandacss/compiler-shared": "2.0.0", "@pandacss/config": "2.0.0", "@pandacss/types": "2.0.0" }, "optionalDependencies": { "@pandacss/compiler-darwin-arm64": "2.0.0", "@pandacss/compiler-darwin-x64": "2.0.0", "@pandacss/compiler-linux-arm64-gnu": "2.0.0", "@pandacss/compiler-linux-arm64-musl": "2.0.0", "@pandacss/compiler-linux-x64-gnu": "2.0.0", "@pandacss/compiler-linux-x64-musl": "2.0.0", "@pandacss/compiler-win32-arm64-msvc": "2.0.0", "@pandacss/compiler-win32-x64-msvc": "2.0.0" } }, "sha512-cxbpsNhxbm8AlBjrwSWe3H9jszhXYwfAh5Z/GFnEreoDwjI9vcXWKMs3sxG5g/DI7hnJ+lqL47azMQRl506Vfw=="],
-
-    "@pandacss/preset-base/@pandacss/types": ["@pandacss/types@2.0.0", "", {}, "sha512-7R7FjgN+4O9f/HFYJ7TpSREYCjOaHkfzdR1QtJTp6Sgwa/4OT+DDt9FsLG1fNVyXhkSWRcXCwUvsSCuIRUV18w=="],
 
     "@poppinss/colors/kleur": ["kleur@4.1.5", "", {}, "sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ=="],
 
