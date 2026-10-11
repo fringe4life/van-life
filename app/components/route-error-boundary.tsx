@@ -85,7 +85,7 @@ const RouteErrorBoundary = ({
     errorFallback,
     fallback,
   });
-  const retryTo = pathname?.trim() || "/";
+  const retryTo = pathname.trim() || "/";
 
   if (isRouteErrorResponse(error) && error.status === HTTP_STATUS.NOT_FOUND) {
     const state = mergeOutcomeState(

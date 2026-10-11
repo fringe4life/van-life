@@ -18,6 +18,9 @@ export default defineConfig({
     },
     environments: ["client", "ssr"],
   },
+  optimizeDeps: {
+    include: ["valibot", "lucide-react", "date-fns", "@tanstack/charts"],
+  },
   plugins: [
     varlockCloudflareVitePlugin({ viteEnvironment: { name: "ssr" } }),
     pandacss({ transform: true }),
@@ -30,5 +33,10 @@ export default defineConfig({
   },
   server: {
     forwardConsole: true,
+  },
+  ssr: {
+    optimizeDeps: {
+      include: ["valibot", "lucide-react", "date-fns", "@tanstack/charts"],
+    },
   },
 });

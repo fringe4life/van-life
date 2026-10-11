@@ -33,9 +33,17 @@
     "ultracite:upgrade": "ultracite upgrade --pm bun"
   },
   "overrides": {
+    "@modelcontextprotocol/client": "2.3.0",
+    "@modelcontextprotocol/sdk": "1.32.0",
     "@opentelemetry/core": "2.10.0",
-    "fast-uri": "3.1.6",
+    "brace-expansion": "5.0.12",
+    "fast-uri": "3.1.8",
+    "hono": "4.13.13",
+    "ip-address": "10.7.3",
+    "proxy-addr": "2.0.8",
     "qs": "6.16.0",
+    "sharp": "0.35.5",
+    "source-map-js": "1.2.2",
     "turbo-stream": "3.2.1"
   },
   "dependencies": {
@@ -49,7 +57,7 @@
     "invokers-polyfill": "1.0.4",
     "isbot": "5.2.2",
     "lucide-react": "1.52.0",
-    "nuqs": "2.10.1",
+    "nuqs": "2.10.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-router": "8.4.0",
@@ -58,17 +66,17 @@
     "varlock": "1.21.1"
   },
   "devDependencies": {
-    "@acusti/vite-plugin-react-compiler": "0.6.0",
+    "@acusti/vite-plugin-react-compiler": "0.8.0",
     "@biomejs/biome": "2.5.15",
-    "@cloudflare/vite-plugin": "1.62.5",
-    "@cloudflare/workers-types": "5.20261006.1",
+    "@cloudflare/vite-plugin": "1.63.1",
+    "@cloudflare/workers-types": "5.20261008.1",
     "@fontsource-variable/inter": "5.3.0",
     "@happy-dom/global-registrator": "20.14.5",
-    "@pandacss/dev": "2.1.1",
-    "@pandacss/mcp": "2.1.1",
-    "@pandacss/preset-base": "2.1.1",
-    "@pandacss/preset-panda": "2.1.1",
-    "@pandacss/vite": "2.1.1",
+    "@pandacss/dev": "2.1.2",
+    "@pandacss/mcp": "2.1.2",
+    "@pandacss/preset-base": "2.1.2",
+    "@pandacss/preset-panda": "2.1.2",
+    "@pandacss/vite": "2.1.2",
     "@react-router/dev": "8.4.0",
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "7.0.1",
@@ -83,14 +91,14 @@
     "@vitejs/devtools-rolldown": "0.7.6",
     "@vitejs/devtools-vite": "0.7.6",
     "drizzle-kit": "1.0.0-rc.4",
-    "fallow": "3.31.0",
+    "fallow": "3.32.0",
     "husky": "9.1.7",
     "lint-staged": "17.6.0",
     "react-doctor": "0.9.17",
     "typescript": "7.0.2",
-    "ultracite": "^7.12.4",
-    "vite": "8.3.3",
-    "wrangler": "4.147.0"
+    "ultracite": "^7.12.2",
+    "vite": "8.3.4",
+    "wrangler": "4.149.0"
   },
   "engines": {
     "node": ">=22"

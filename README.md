@@ -6,14 +6,14 @@
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.0.0-F6E05E?logoColor=black)](https://panda-css.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.5-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
-[![nuqs](https://img.shields.io/badge/nuqs-2.10.1-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.5.14-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
-[![Ultracite](https://img.shields.io/badge/Ultracite-7.12.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
+[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.1.2-F6E05E?logoColor=black)](https://panda-css.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.7-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![nuqs](https://img.shields.io/badge/nuqs-2.10.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
+[![Biome](https://img.shields.io/badge/Biome-2.5.15-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Ultracite](https://img.shields.io/badge/Ultracite-7.12.2-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.4-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
-[![Vite](https://img.shields.io/badge/Vite-8.3.0-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8.3.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.3.0-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![Valibot](https://img.shields.io/badge/Valibot-1.5.0-000000?logo=valibot&logoColor=white)](https://valibot.dev/)
 
@@ -73,7 +73,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - ⚡ **Performance Optimized** with deferred loader promises (`app/components/deferred/*`), lazy charts, code splitting, and immutable array methods
 - 🧯 **Outcome + route errors** — shared `OutcomeState` empty/error chrome; `RouteErrorBoundary`; nested public/host `*` 404s keep layout chrome
 - 🧊 **HTTP cache headers** — `PRIVATE_NO_STORE` for host/auth; `PUBLIC_SHORT_CACHE` + `Vary: Cookie` for catalog; leaf `headers` exports via `forwardDataHeaders`
-- 🔗 **URL State Management** with nuqs 2.10.1 for type-safe search parameters
+- 🔗 **URL State Management** with nuqs 2.10.2 for type-safe search parameters
 - 🌐 **View Transitions** — React 19.3 `<ViewTransition>` + reusable Panda bags (`fadeSlide`, `fadeSlideSubtle`, `hero`) for auth, sortable titles, van details, deferred lists, and home/about heroes (`viewTransitionHero`); pagination / theme / van-card keep local recipes
 - 📜 **Scroll-driven cards** — `scrollReveal` recipe (`lift` vans, `sweep` transactions, `tilt` reviews) on CSS `view()` timeline; `@supports` fallback stays static
 - 🔄 **nuqs + `startTransition`** — route `useTransition()` passed into `useQueryStates` (search, filters, pagination, sort) so URL updates share one pending UI
@@ -92,11 +92,11 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **React 19.3** with stable Activity + `ViewTransition` for prerendering and morphs
 - **React Router 8.4.0** (file-based routing, SSR, nested host van detail routes, middleware)
 - **TypeScript 7.0.2** with strict configuration
-- **PandaCSS 2.0.0** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`); `define*` helpers from `@pandacss/dev/define`
+- **PandaCSS 2.1.2** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`); `define*` helpers from `@pandacss/dev/define`
 - **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover, select)
 - **Lucide React 1.47.0** for icons (direct imports for performance)
-- **TanStack Charts 0.18.0** for host income/review bars (lazy-loaded via `LazyBarChart`; one bar per period, end-only radius, amount-band colors + labels)
-- **nuqs 2.10.1** for type-safe URL state management via shared parsers
+- **TanStack Charts 1.0.0** for host income/review bars (lazy-loaded via `LazyBarChart`; one bar per period, end-only radius, amount-band colors + labels)
+- **nuqs 2.10.2** for type-safe URL state management via shared parsers
 
 ### Backend & Database
 
@@ -109,19 +109,19 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 ### Development Tools
 
-- **Vite 8.3.0** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports; core `devtools` option
+- **Vite 8.3.4** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports; core `devtools` option
 - **@vitejs/devtools 0.7.5** - Vite DevTools (`/__devtools/` in `bun run dev`; client/ssr environments)
 - **@vitejs/devtools-rolldown 0.7.5** / **@vitejs/devtools-vite 0.7.5** - Official Rolldown build analysis + Vite plugin inspector
 - **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
 - **React Compiler** (native Rust via `oxc-transform-react`) - Automatic memoization via `@acusti/vite-plugin-react-compiler` (not `@vitejs/plugin-react`'s `react()`; see `docs/rust-react-compiler.md`)
 - **Biome 2.5.14** for linting and formatting with Ultracite integration
-- **Ultracite 7.12.0** - AI-friendly linting rules for maximum type safety and accessibility
+- **Ultracite 7.12.2** - AI-friendly linting rules for maximum type safety and accessibility
 - **Varlock 1.20.0** - Typed env schema (`.env.schema`) with Cloudflare integration (`@varlock/cloudflare-integration` 1.6.0)
-- **Wrangler 4.135.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
-- **@cloudflare/vite-plugin 1.56.0** - Vite Cloudflare plugin (via `varlockCloudflareVitePlugin`)
+- **Wrangler 4.149.0** - Cloudflare Workers CLI for deploy, D1 migrations, and typegen
+- **@cloudflare/vite-plugin 1.63.1** - Vite Cloudflare plugin (via `varlockCloudflareVitePlugin`)
 - **drizzle-kit 1.0.0-rc.4** - Schema migrations (`d1-http` remote; `drizzle.local.config.ts` for local Studio)
 - **react-doctor 0.9.14** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
-- **fallow 3.27.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
+- **fallow 3.32.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
 - **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **@types/bun 1.4.2** — `bun:test` / `bun:sqlite` for `tsc` (`tsconfig` `types` includes `"bun"`)
@@ -129,7 +129,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 ### Build System
 
-- **Vite 8.3.0** - Rolldown pipeline, `build.target: "esnext"`, `server.forwardConsole`
+- **Vite 8.3.4** - Rolldown pipeline, `build.target: "esnext"`, `server.forwardConsole`
 - **React Compiler** - `@acusti/vite-plugin-react-compiler` + `oxc-transform-react` (do not add `react()` from `@vitejs/plugin-react`; see `docs/rust-react-compiler.md`)
 - **Automatic optimizations** - React Compiler handles memoization without manual `useMemo`/`useCallback`
 - **Path aliases** - Native Vite `resolve.tsconfigPaths` (no `vite-tsconfig-paths` plugin)
@@ -409,7 +409,7 @@ return err({ kind: "insufficient_funds", message: "Cannot afford…" });
 
 ## URL State Management with nuqs
 
-The application uses **nuqs 2.10.1** for type-safe URL state management:
+The application uses **nuqs 2.10.2** for type-safe URL state management:
 
 ### Features
 
@@ -1062,7 +1062,7 @@ Configuration in `lint-staged.config.ts`.
 
 ### PandaCSS 2 & Modern CSS
 
-- **PandaCSS 2.0.0** — typed `css` / `cx` / `cva` / `keyframes` / patterns from `styled-system` (generated; do not edit)
+- **PandaCSS 2.1.2** — typed `css` / `cx` / `cva` / `keyframes` / patterns from `styled-system` (generated; do not edit)
 - **Tokens** in `theme/`; `define*` helpers (`defineConfig`, `defineTokens`, `defineConditions`, …) import from `@pandacss/dev/define`; `panda.config.ts` wires them; `@pandacss/vite` injects CSS and folds static style calls; `bun run prepare` runs `panda codegen`
 - **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
 - **Mobile nav animations** — native `<dialog>` panel/fullscreen variants (`starting-style`, `transition-discrete`, Invoker Commands)
@@ -1103,7 +1103,7 @@ Configuration in `lint-staged.config.ts`.
 - **nuqs** for type-safe URL state management
 - **Drizzle** with typed schema in `app/db/schema/`
 - **Feature schemas** — catalogs in vans `schema.ts`, URL maps in vans `parsers.ts` (share `vanType.values`); pagination parsers still in `pagination/schema.ts`; form actions in host/auth `schema.server.ts`; Van type is uppercase `VanType` (`SIMPLE` / `RUGGED` / `LUXURY`) end-to-end
-- **fallow 3.27.0** - Architecture boundaries (shared `app/middleware|navigation|pagination|seo|theme` vs `app/features/{auth,host,vans}` in `.fallowrc.jsonc`); health caps `maxCrap` 55 / cyclomatic+cognitive 12; rules at `warn` until backlog cleared; Vite DevTools optional peers ignored (`@vitejs/devtools-rolldown`, `@vitejs/devtools-vite`)
+- **fallow 3.32.0** - Architecture boundaries (shared `app/middleware|navigation|pagination|seo|theme` vs `app/features/{auth,host,vans}` in `.fallowrc.jsonc`); health caps `maxCrap` 55 / cyclomatic+cognitive 12; rules at `warn` until backlog cleared; Vite DevTools optional peers ignored (`@vitejs/devtools-rolldown`, `@vitejs/devtools-vite`)
 - **Bun `overrides`** — pin transitive audit fixes (`@opentelemetry/core`, `fast-uri`, `qs`, `turbo-stream`) while `bunfig.toml` keeps `minimumReleaseAge`
 
 ### GitHub Actions
@@ -1112,7 +1112,7 @@ Configuration in `lint-staged.config.ts`.
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
   - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.14`; matches local CLI in `package.json`); self-contained, no Bun install
-  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.27.0` Action (audit + security CLI `version: 3.27.0`; matches local CLI in `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`); `gate: new-only`
+  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.27.0` Action (audit + security CLI `version: 3.27.0`; local CLI is `fallow` 3.32.0 in `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`); `gate: new-only`
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability. [`.github/dependabot.yml`](.github/dependabot.yml) bumps `github-actions` (grouped) and `bun` daily after a **3-day** `cooldown` (same window as `bunfig.toml` `minimumReleaseAge`); security updates skip the wait
