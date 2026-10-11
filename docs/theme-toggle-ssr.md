@@ -151,13 +151,7 @@ return data({ ok: true }, {
 
 Panda default `_dark` is **`.dark &`** ([conditional styles reference](https://panda-css.com/docs/concepts/conditional-styles)): the **ancestor** (typically `<html>`) needs class `dark`. Putting `dark` on `<body>` also works for descendants, but `<html>` is what `next-themes` / `remix-themes` / UA `color-scheme` expect.
 
-This repo’s `Layout` today:
-
-```tsx
-<html className={css({ backgroundColor: "background" })} dir="ltr" lang="en">
-```
-
-`backgroundColor: "background"` already follows the `_dark` semantic token. Until `<html>` (or an ancestor — there is none) has `.dark`, **all those tokens stay on `base`**.
+This repo’s `Layout` today puts theme classes on `<html>` via `htmlThemeClassName(theme)` and paints the full-bleed shell with `backgroundColor: "surface"` on the root layout grid (not a separate document `background` token). Until `<html>` (or an ancestor — there is none) has `.dark`, **all `_dark` tokens stay on `base`**.
 
 ---
 
@@ -275,7 +269,7 @@ Expected CSS: one block `.dark .token`, plus `@media (prefers-color-scheme: dark
 
 1. **`createCookie("theme")`** in a `*.server.ts` module. Values: `"light"` \| `"dark"`; missing = system. `httpOnly: true`, `path: "/"`, `sameSite: "lax"`, long `maxAge`. `secure` only in production.
 2. **Root `loader` in `app/root.tsx`:** parse cookie, return `{ theme }`. No `Set-Cookie` on GET.
-3. **Root `Layout`:** `useRouteLoaderData("root")`. If `theme === "dark"` → `class` includes `dark`. If `theme === "light"` → `class` includes `light`. Always keep the existing Panda `css({ backgroundColor: "background" })`. Set `<meta name="color-scheme" content={…} />` **before** `<Links />`. `color-scheme` CSS on `<html>` to match.
+3. **Root `Layout`:** `useRouteLoaderData("root")`. Drive `<html>` class via `htmlThemeClassName(theme)` (`dark` / `light`). Paint the shell with `backgroundColor: "surface"` on the layout grid (full-bleed). Set `<meta name="color-scheme" content={…} />` **before** `<Links />`. `color-scheme` on `<html>` to match.
 4. **Panda:** keep `_dark` tokens. Put `.dark` on `<html>` for overrides. For first visit, **either** extend `dark` with a verified media-query block **or** a blocking script injected from `entry.server` only when `theme` is missing ([`app/theme/theme-bootstrap.server.ts`](../app/theme/theme-bootstrap.server.ts)). Do not rewrite tokens to `_osDark`.
 5. **Resource route** (e.g. `app/routes/theme.ts`, registered in [`app/routes.ts`](../app/routes.ts)): `action` only. Validate body. `serialize` cookie. Return `data()`.
 6. **Nav toggle:** `fetcher.Form method="post" action="/theme"` with `preventScrollReset`. Optimistic: `html.classList` in the submit handler **and/or** `fetcher.formData`. Light / Dark / System. Not `useEffect` on mount.
@@ -329,13 +323,14 @@ export async function loader({ request }: Route.LoaderArgs) {
 export function Layout({ children }: Children) {
   const data = useRouteLoaderData("root") as { theme?: "light" | "dark" | null } | undefined;
   const theme = data?.theme ?? null;
-  const htmlClass = cx(
-    css({ backgroundColor: "background", colorScheme: theme ?? "light dark" }),
-    theme === "dark" && "dark",
-    theme === "light" && "light",
-  );
   return (
-    <html className={htmlClass} dir="ltr" lang="en" suppressHydrationWarning={theme == null}>
+    <html
+      className={htmlThemeClassName(theme)}
+      dir="ltr"
+      lang="en"
+      style={{ colorScheme: theme ?? "light dark" }}
+      suppressHydrationWarning={theme == null}
+    >
       <head>
         <meta charSet="utf-8" />
         <meta name="color-scheme" content={theme ?? "light dark"} />

@@ -29,12 +29,12 @@ import type { Children } from "./types";
 const layoutGrid = grid({
   gap: "0",
   gridTemplateAreas: '". nav ." ". content ." "footer footer footer"',
-  gridTemplateColumns: "{spacing.padding-inline} 1fr {spacing.padding-inline}",
+  gridTemplateColumns:
+    "minmax({spacing.padding-inline}, 1fr) minmax(0, {sizes.shell}) minmax({spacing.padding-inline}, 1fr)",
   gridTemplateRows: "var(--header-height) 1fr var(--footer-height)",
 });
 
 const themeTransitionRootClassName = css({
-  backgroundColor: "background",
   inlineSize: "full",
   minBlockSize: "100dvh",
 });
@@ -76,10 +76,7 @@ export const Layout = ({ children }: Children) => {
 
   return (
     <html
-      className={cx(
-        css({ backgroundColor: "background" }),
-        htmlThemeClassName(theme)
-      )}
+      className={htmlThemeClassName(theme)}
       dir="ltr"
       lang="en"
       style={{ colorScheme }}
@@ -111,8 +108,6 @@ export const Layout = ({ children }: Children) => {
                   css({
                     backgroundColor: "surface",
                     inlineSize: "full",
-                    marginInline: "auto",
-                    maxInlineSize: "shell",
                     minBlockSize: "100dvh",
                   })
                 )}

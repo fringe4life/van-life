@@ -10,9 +10,6 @@ export const semanticTokens = defineSemanticTokens({
         value: { _dark: "{colors.warmGray.50}", base: "{colors.neutral.900}" },
       },
     },
-    background: {
-      value: { _dark: "{colors.warmGray.950}", base: "oklch(98% 0.012 75)" },
-    },
     border: {
       accent: { value: "{colors.orange.400/60}" },
       DEFAULT: {
@@ -34,7 +31,6 @@ export const semanticTokens = defineSemanticTokens({
         },
       },
     },
-    "brand-decorative": { value: "{colors.orange.400}" },
     card: {
       DEFAULT: {
         value: { _dark: "{colors.warmGray.800}", base: "{colors.white}" },
@@ -72,11 +68,6 @@ export const semanticTokens = defineSemanticTokens({
     foreground: {
       value: { _dark: "{colors.warmGray.50}", base: "{colors.neutral.900}" },
     },
-    heroGradient: {
-      end: { value: "{colors.yellow.200}" },
-      start: { value: "{colors.indigo.300}" },
-      via: { value: "{colors.green.300}" },
-    },
     input: {
       background: {
         value: { _dark: "{colors.warmGray.850}", base: "{colors.neutral.200}" },
@@ -92,9 +83,6 @@ export const semanticTokens = defineSemanticTokens({
       },
     },
     muted: {
-      DEFAULT: {
-        value: { _dark: "{colors.umber.900}", base: "{colors.orange.100}" },
-      },
       foreground: {
         value: { _dark: "{colors.warmGray.300}", base: "{colors.neutral.600}" },
       },
@@ -238,14 +226,6 @@ export const semanticTokens = defineSemanticTokens({
         foreground: {
           value: { _dark: "{colors.terracotta.950}", base: "{colors.white}" },
         },
-      },
-    },
-    warning: {
-      DEFAULT: {
-        value: { _dark: "{colors.warmAmber.400}", base: "oklch(52% 0.12 85)" },
-      },
-      foreground: {
-        value: { _dark: "{colors.warmAmber.950}", base: "{colors.white}" },
       },
     },
   },

@@ -1,32 +1,7 @@
 [install]
 linker = "isolated"
 minimumReleaseAge = 259200
-minimumReleaseAgeExcludes = [
-  "@pandacss/cli",
-  "@pandacss/compiler",
-  "@pandacss/compiler-darwin-arm64",
-  "@pandacss/compiler-darwin-x64",
-  "@pandacss/compiler-linux-arm64-gnu",
-  "@pandacss/compiler-linux-arm64-musl",
-  "@pandacss/compiler-linux-x64-gnu",
-  "@pandacss/compiler-linux-x64-musl",
-  "@pandacss/compiler-shared",
-  "@pandacss/compiler-win32-arm64-msvc",
-  "@pandacss/compiler-win32-x64-msvc",
-  "@pandacss/config",
-  "@pandacss/dev",
-  "@pandacss/mcp",
-  "@pandacss/postcss",
-  "@pandacss/preset-base",
-  "@pandacss/preset-panda",
-  "@pandacss/transformer",
-  "@pandacss/types",
-  "@pandacss/vite",
-  "@tanstack/charts",
-  "react-router",
-  "@react-router/dev",
-  "@react-router/node"
-]
+minimumReleaseAgeExcludes = []
 
 [test]
 # happydom first: static import of @testing-library/* before register() makes screen queries throw

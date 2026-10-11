@@ -2,9 +2,9 @@
 
 ## Overview
 
-Van Life uses a warm, light, editorial interface for browsing camper vans and managing host activity. The visual language combines a lightly orange-tinted canvas, dark neutral typography, deliberate orange actions, and compact data-oriented controls. Surfaces should feel layered but not busy: the page canvas separates from the main shell, cards provide a clear reading surface, and accent colors are reserved for actions, status, and purposeful decoration.
+Van Life uses a warm, light, editorial interface for browsing camper vans and managing host activity. The visual language combines a lightly orange-tinted main surface, dark neutral typography, deliberate orange actions, and compact data-oriented controls. Surfaces should feel layered but not busy: the main surface anchors the page, cards provide a clear reading surface, and accent colors are reserved for actions, status, and purposeful decoration.
 
-The app uses PandaCSS v2 (`@pandacss/*` pinned to `2.0.0`). Styles are authored as typed Panda style objects, patterns, and recipes. These APIs generate class names that are passed to React's `className`; hand-authored utility vocabulary is not the styling API. The system is intentionally semantic so components consume roles such as `surface`, `muted.foreground`, and `border.subtle` rather than selecting a palette value at the point of use.
+The app uses PandaCSS v2 (`@pandacss/*` pinned to `2.1.2`). Styles are authored as typed Panda style objects, patterns, and recipes. These APIs generate class names that are passed to React's `className`; hand-authored utility vocabulary is not the styling API. The system is intentionally semantic so components consume roles such as `surface`, `muted.foreground`, and `border.subtle` rather than selecting a palette value at the point of use.
 
 ## Source of Truth
 
@@ -80,8 +80,7 @@ Use semantic tokens for ordinary component styling. A raw value is justified onl
 
 | Token path | Typical Panda usage | Role | Use |
 | --- | --- | --- | --- |
-| `background` | `backgroundColor: "background"` | Outer page background | The document canvas around the application shell. |
-| `surface` | `backgroundColor: "surface"` | Main shell surface | The warm inner page surface behind route content. |
+| `surface` | `backgroundColor: "surface"` | Main application surface | The warm page surface behind the route content and shared shell. |
 | `surface.muted` | `backgroundColor: "surface.muted"` | Quiet warm surface | Secondary panels, outline badges, filter affordances, and low-emphasis sections. |
 | `surface.accent` | `backgroundColor: "surface.accent"` | Strong warm surface | Highlighted callouts, review bands, dialog content, and emphasized sections. |
 | `card` / `card.foreground` | `backgroundColor: "card"` / `color: "card.foreground"` | Elevated reading surface | Cards, forms, and content that must remain distinct from the shell. |
@@ -110,7 +109,6 @@ Use the `.foreground` token when a role is used as a filled control or badge. Us
 | --- | --- | --- |
 | `destructive` / `destructive.foreground` | Errors and unavailable actions | Form errors, error icons, unable-to-pay messaging, unavailable actions, and negative emphasis. |
 | `success` / `success.foreground` | Completed or pending-positive state | Success icons, pending navigation feedback, and positive inline emphasis. |
-| `warning` / `warning.foreground` | Caution | Future warning messaging and chart roles; do not substitute it for a domain status. |
 
 ```tsx
 <StatusButton status={status} variant="destructive">
@@ -148,10 +146,8 @@ The [`vanCard`](./app/features/vans/components/van-card-recipe.ts) recipe uses t
 
 ### Decorative and visualization roles
 
-- `brand-decorative` is for intentional light-orange decoration, not primary actions.
 - `rating` is reserved for review stars and rating rails. Use `color: "rating"` or `stroke: "rating"` in a Panda style object; there is no separate `stroke-rating` utility token.
 - `chart.1` through `chart.5` form the visualization palette. The dashboard bar chart uses `color: "chart.1"` and the chart library consumes `currentColor`.
-- `heroGradient.start`, `heroGradient.via`, and `heroGradient.end` are semantic gradient stops for future hero consumers. The current home overlay keeps its authored `indigo.300`, `green.300`, and `yellow.200` references localized to the gradient definition.
 - `skeleton` and `skeleton.highlight` control loading placeholders and the shimmer helper.
 
 ### Primitive palette
@@ -228,7 +224,7 @@ grid({
 | `cq({ name: ... })` | Names a container for component-local responsive conditions. |
 | `@card/md`, `@form/xl`, etc. | Named container conditions generated from Panda's container names and sizes. |
 
-The main shell is centered with `maxInlineSize: "shell"` and `marginInline: "auto"`. Route content sits in the middle shell grid column. Public hero imagery may break out with `fullLayout`; dashboard bands use the same inline padding as the shell so their edges align with the rest of the application.
+The shared shell uses a centered grid track capped at `sizes.shell`, with responsive gutters on either side. The outer grid spans the viewport so the footer can use the full width while route content stays within the centered track. Public hero imagery may break out with `fullLayout`; dashboard bands use the same inline padding as the shell so their edges align with the rest of the application.
 
 ### Semantic grid areas
 

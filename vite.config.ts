@@ -6,6 +6,13 @@ import { defineConfig } from "vite";
 
 const shouldAnalyze = process.env.VITE_ANALYZE === "true";
 
+const optimizeDepsInclude = [
+  "valibot",
+  "lucide-react",
+  "date-fns",
+  "@tanstack/charts",
+] as const;
+
 export default defineConfig({
   build: {
     target: "esnext",
@@ -17,6 +24,9 @@ export default defineConfig({
       withApp: shouldAnalyze,
     },
     environments: ["client", "ssr"],
+  },
+  optimizeDeps: {
+    include: [...optimizeDepsInclude],
   },
   plugins: [
     varlockCloudflareVitePlugin({ viteEnvironment: { name: "ssr" } }),
@@ -30,5 +40,10 @@ export default defineConfig({
   },
   server: {
     forwardConsole: true,
+  },
+  ssr: {
+    optimizeDeps: {
+      include: [...optimizeDepsInclude],
+    },
   },
 });
