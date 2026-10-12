@@ -8,7 +8,7 @@
         "@better-auth/drizzle-adapter": "1.7.7",
         "@forge42/seo-tools": "1.4.5",
         "@tanstack/charts": "1.1.0",
-        "@varlock/bitwarden-plugin": "2.0.1",
+        "@varlock/bitwarden-plugin": "2.0.2",
         "better-auth": "1.7.7",
         "date-fns": "5.0.0-alpha.0",
         "drizzle-orm": "1.0.0-rc.4",
@@ -801,7 +801,7 @@
 
     "@typescript/typescript-win32-x64": ["@typescript/typescript-win32-x64@7.0.2", "", { "os": "win32", "cpu": "x64" }, "sha512-0BQ3HkAHHlKLSp1qRvf3SUhGpGsDuhB/jgFw75guyqbxJqEaS0Cw/VFO8i2nHglJUzQCRtMMR/IBAKE3ETMC4g=="],
 
-    "@varlock/bitwarden-plugin": ["@varlock/bitwarden-plugin@2.0.1", "", { "peerDependencies": { "varlock": "^1.17.1" } }, "sha512-x7+TbGUdA1u+uVWPpiWh7r6AXakL3A9qpcQip/xybuy5Nf1oSK+J7uzMY++fYwbq4NxMdA6fFYMexngzvSh+Vg=="],
+    "@varlock/bitwarden-plugin": ["@varlock/bitwarden-plugin@2.0.2", "", { "peerDependencies": { "varlock": "^1.22.0" } }, "sha512-oY6d7MInabo4SCMOeswipFp0N1Au9881cdLvXVsAbZALbjwGEWym7lzs8Zw9yKuART4nI5V2KJuMzcIb70wVsw=="],
 
     "@varlock/cloudflare-integration": ["@varlock/cloudflare-integration@1.6.0", "", { "peerDependencies": { "@cloudflare/vite-plugin": ">=1", "varlock": "^1.20.0", "vite": ">=5", "wrangler": ">=3" }, "optionalPeers": ["@cloudflare/vite-plugin", "vite", "wrangler"], "bin": { "varlock-wrangler": "bin/varlock-wrangler.js" } }, "sha512-HPtAQRVQ3AZRMzmnmHBZQaxZS/1tT0bmjbW+J4iALtuKXp8tI3X8EitlXlq4Kv23c2f8qpua4DSUUPxsylIRTw=="],
 
