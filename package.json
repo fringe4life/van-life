@@ -76,7 +76,7 @@
     "@pandacss/mcp": "2.1.2",
     "@pandacss/preset-base": "2.1.2",
     "@pandacss/preset-panda": "2.1.2",
-    "@pandacss/vite": "2.1.2",
+    "@pandacss/vite": "2.2.0",
     "@react-router/dev": "8.4.0",
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "7.0.1",
