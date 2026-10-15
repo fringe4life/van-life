@@ -74,7 +74,7 @@
     "@happy-dom/global-registrator": "20.14.6",
     "@pandacss/dev": "2.1.2",
     "@pandacss/mcp": "2.2.0",
-    "@pandacss/preset-base": "2.1.2",
+    "@pandacss/preset-base": "2.2.0",
     "@pandacss/preset-panda": "2.2.0",
     "@pandacss/vite": "2.2.0",
     "@react-router/dev": "8.4.0",
