@@ -48,5 +48,28 @@
         "organizeImports": "on"
       }
     }
+  },
+  "linter": {
+    "rules": {
+      "correctness": {
+        /*
+         * Workaround: disable noUndeclaredDependencies so Panda's generated
+         * `styled-system/*` import map (tsconfig paths → gitignored outdir) is
+         * not treated as a missing package.json dependency. Wrong long-term:
+         * the rule should honor tsconfig paths (or an allowlist) instead of us
+         * turning it off.
+         *
+         * Still required on @biomejs/biome@2.5.15 (+ ultracite^8 presets that
+         * enable the rule) with @pandacss/*@2.2.0 and importMap/outdir
+         * `styled-system`. Drop when Biome resolves tsconfig paths for this
+         * rule; re-enable and re-verify `bun run check` on styled-system imports.
+         *
+         * @see https://github.com/biomejs/biome/issues/10607 — open
+         * @see https://github.com/biomejs/biome/pull/10620 — closed unmerged
+         * @see https://github.com/fringe4life/van-life/issues/353 — tracking
+         */
+        "noUndeclaredDependencies": "off"
+      }
+    }
   }
 }
