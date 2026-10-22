@@ -47,7 +47,7 @@
     "turbo-stream": "3.2.1"
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "1.7.10",
+    "@better-auth/drizzle-adapter": "1.7.11",
     "@forge42/seo-tools": "1.4.5",
     "@tanstack/charts": "1.1.0",
     "@varlock/bitwarden-plugin": "2.0.2",
