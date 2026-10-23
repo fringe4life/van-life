@@ -1,7 +1,8 @@
 [install]
 linker = "isolated"
 minimumReleaseAge = 259200
-minimumReleaseAgeExcludes = []
+# body-parser@2.4.0 patches GHSA-27r3-jxmh-p828; drop from excludes once ≥3d old
+minimumReleaseAgeExcludes = ["body-parser"]
 
 [test]
 # happydom first: static import of @testing-library/* before register() makes screen queries throw
