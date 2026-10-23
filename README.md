@@ -2,12 +2,12 @@
 
 <div align="center">
 
-[![React Router](https://img.shields.io/badge/React%20Router-8.4.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-8.5.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.2.0-F6E05E?logoColor=black)](https://panda-css.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.10-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.3.0-F6E05E?logoColor=black)](https://panda-css.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.12-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.5.15-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-8.0.1-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)

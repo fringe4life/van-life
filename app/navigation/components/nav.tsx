@@ -53,7 +53,7 @@ const navShellScroll = keyframes({
 const scrollAnimation = css({
   _supportsScroll: {
     animationName: navShellScroll,
-    animationRange: "0 token(nav-shell-scroll-range)",
+    animationRange: "0 var(--nav-shell-scroll-range)",
     animationTimeline: "scroll()",
     animationTimingFunction: "glide",
   },
