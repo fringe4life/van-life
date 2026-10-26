@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: Drizzle rc.5 `SqliteProxyExecutors` overloads use `any` in driver.d.ts */
 import { drizzle, type SqliteProxyExecutors } from "drizzle-orm/sqlite-proxy";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import { relations } from "./relations";
@@ -127,29 +128,69 @@ export function createD1HttpDb(credentials: D1HttpCredentials) {
     return parseRawResults(data.result[0]?.results);
   };
 
-  const executors = {
-    all: (sql, params, rowMode) =>
-      queryRaw(sql, params).then(({ columns, rows }) => {
-        if (rowMode === "object") {
-          return rows.map((row) => rowToObject(columns, row));
-        }
-        return rows;
-      }),
-    get: (sql, params, rowMode) =>
-      queryRaw(sql, params).then(({ columns, rows }) => {
-        const [first] = rows;
-        if (first === undefined) {
-          return;
-        }
-        if (rowMode === "object") {
-          return rowToObject(columns, first);
-        }
-        return first;
-      }),
-    run: async (sql, params) => {
-      await queryRaw(sql, params);
-    },
-  } as SqliteProxyExecutors;
+  async function all(
+    sql: string,
+    params: any[],
+    rowMode?: "array"
+  ): Promise<any[][]>;
+  async function all(
+    sql: string,
+    params: any[],
+    rowMode: "object"
+  ): Promise<Record<string, any>[]>;
+  async function all(
+    sql: string,
+    params: any[],
+    rowMode?: "array" | "object"
+  ): Promise<Record<string, any>[]>;
+  async function all(
+    sql: string,
+    params: any[],
+    rowMode?: "array" | "object"
+  ): Promise<any[][] | Record<string, any>[]> {
+    const { columns, rows } = await queryRaw(sql, params);
+    if (rowMode === "object") {
+      return rows.map((row) => rowToObject(columns, row));
+    }
+    return rows;
+  }
+
+  async function get(
+    sql: string,
+    params: any[],
+    rowMode?: "array"
+  ): Promise<any[] | undefined>;
+  async function get(
+    sql: string,
+    params: any[],
+    rowMode: "object"
+  ): Promise<Record<string, any> | undefined>;
+  async function get(
+    sql: string,
+    params: any[],
+    rowMode?: "array" | "object"
+  ): Promise<Record<string, any> | undefined>;
+  async function get(
+    sql: string,
+    params: any[],
+    rowMode?: "array" | "object"
+  ): Promise<any[] | Record<string, any> | undefined> {
+    const { columns, rows } = await queryRaw(sql, params);
+    const [first] = rows;
+    if (first === undefined) {
+      return undefined;
+    }
+    if (rowMode === "object") {
+      return rowToObject(columns, first);
+    }
+    return first;
+  }
+
+  const run: SqliteProxyExecutors["run"] = async (sql, params) => {
+    await queryRaw(sql, params);
+  };
+
+  const executors: SqliteProxyExecutors = { all, get, run };
 
   return drizzle(executors, { relations });
 }

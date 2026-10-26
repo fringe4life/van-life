@@ -73,7 +73,7 @@ const scrollAnimation = css({
       borderStyle: "solid",
       borderWidth: "1px",
       content: '""',
-      inset: "0",
+      inset: "-1px",
       opacity: "0",
       pointerEvents: "none",
       position: "absolute",

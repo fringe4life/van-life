@@ -2,35 +2,6 @@
   "name": "van-life",
   "private": true,
   "type": "module",
-  "exports": {
-    "./css": {
-      "types": "./styled-system/css/index.d.ts",
-      "default": "./styled-system/css/index.js"
-    },
-    "./css/*": {
-      "types": "./styled-system/css/*.d.ts",
-      "default": "./styled-system/css/*.js"
-    },
-    "./patterns": {
-      "types": "./styled-system/patterns/index.d.ts",
-      "default": "./styled-system/patterns/index.js"
-    },
-    "./patterns/*": {
-      "types": "./styled-system/patterns/*.d.ts",
-      "default": "./styled-system/patterns/*.js"
-    },
-    "./tokens": {
-      "types": "./styled-system/tokens/index.d.ts",
-      "default": "./styled-system/tokens/index.js"
-    },
-    "./helpers": {
-      "types": "./styled-system/helpers.d.ts",
-      "default": "./styled-system/helpers.js"
-    },
-    "./types": {
-      "types": "./styled-system/types/index.d.ts"
-    }
-  },
   "scripts": {
     "analyze": "VITE_ANALYZE=true varlock run -- react-router build",
     "build": "varlock run -- react-router build",
