@@ -10,7 +10,7 @@ const AUTH_PATH_PREFIXES = [
 
 const DEFAULT_REDIRECT = href("/host");
 
-const PATH_SEPARATOR_REGEX = /[?#]/;
+const PATH_SEPARATOR_REGEX = /[?#]/u;
 
 /**
  * Build a return path from React Router's normalized `url` arg

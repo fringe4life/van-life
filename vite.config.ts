@@ -33,7 +33,9 @@ export default defineConfig({
     pandacss({ transform: true }),
     // React Router owns JSX/HMR — do not add @vitejs/plugin-react's react()
     reactRouter(),
-    reactCompiler(),
+    reactCompiler({
+      compiler: { panicThreshold: "critical_errors", reportDiagnostics: true },
+    }),
   ],
   resolve: {
     tsconfigPaths: true,

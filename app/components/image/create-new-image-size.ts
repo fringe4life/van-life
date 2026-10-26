@@ -25,9 +25,9 @@ export function createNewImageSizeWithAspectRatio(
 
   // Remove any existing height parameter since we're using aspect ratio
   if (result.includes("h=")) {
-    result = result.replace(/h=\d+/g, "");
+    result = result.replace(/h=\d+/gu, "");
     // Clean up any double ampersands
-    result = result.replace(/&&/g, "&");
+    result = result.replace(/&&/gu, "&");
   }
 
   // Add or update aspect ratio parameter

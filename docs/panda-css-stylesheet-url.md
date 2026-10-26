@@ -118,7 +118,7 @@ None of these are proven FOUC or payload wins for this repo’s SSR path (see be
 | Layer order comes from the **CSS contents** (order declaration / layer blocks), not from `?url` vs side-effect | [Panda cascade layers](https://panda-css.com/docs/concepts/cascade-layers); [panda#1938](https://github.com/chakra-ui/panda/issues/1938) |
 | Historical `?url` prod bugs made **side-effect the safer workaround** until Vite 5.1 | [remix#7786](https://github.com/remix-run/remix/issues/7786); fixed in Vite 5.1 ([vite#15259](https://github.com/vitejs/vite/pull/15259)) |
 | This app’s `app.css` is not “layers only” — it also holds the Inter `@font-face`. [`DESIGN.md`](../DESIGN.md) reserves the same file for view-transition and scroll-driven rules; those rules are not in the file today. Both loading methods still PostCSS the same file | [`app/app.css`](../app/app.css); [`DESIGN.md`](../DESIGN.md) |
-| Switching requires a `links` export and may change the literal `href` (hashed `/assets/…` vs stub `/app.css`); bootstrap **inject position** still keys off color-scheme meta, but the test fixture’s hardcoded `/app.css` string is illustrative | [`theme-bootstrap.server.ts`](../app/theme/theme-bootstrap.server.ts); test stub in [`theme-bootstrap.server.test.ts`](../app/theme/theme-bootstrap.server.test.ts) |
+| This repo loads root CSS via `import stylesheet from "./app.css?url"` in [`app/root.tsx`](../app/root.tsx) `links()` — hashed `/assets/…` in production | [`app/root.tsx`](../app/root.tsx) |
 
 **When side-effect is fine:** single global stylesheet imported from `root.tsx`, RR framework + Vite, PostCSS/Panda already wired, no need for per-route stylesheet URLs in `links()`. That is this repo today.
 
@@ -128,7 +128,7 @@ None of these are proven FOUC or payload wins for this repo’s SSR path (see be
 
 | Concern | Loading method impact |
 | --- | --- |
-| Theme flash | Driven by **class/`color-scheme` before paint**, not by `?url` vs side-effect. Cookie SSR + blocking script before CSS — see [theme-toggle-ssr.md](./theme-toggle-ssr.md). Script injects after `<meta name="color-scheme">`, before stylesheet links that appear later in `<head>`. |
+| Theme flash | Driven by **`data-theme` / `color-scheme` before paint**, not by `?url` vs side-effect. Cookie SSR + `light-dark()` tokens — see [theme-toggle-ssr.md](./theme-toggle-ssr.md). `<meta name="color-scheme">` stays before `<Links />`. |
 | Render-blocking CSS | Both methods end as `<link rel="stylesheet">` in SSR HTML for this app’s root CSS (manifest `route.css` or `links()`). External stylesheets are render-blocking by default in browsers; neither pattern is “critical CSS extraction.” |
 | Critical CSS | RR Vite plugin exposes optional `unstable_getCriticalCss` in **dev** only (virtual `@react-router/critical.css`). Not a production claim tied to `?url`. (`@react-router/dev` server entry generation in installed `vite.js`.) |
 | Layer-order FOUC / wrong specificity | Requires wrong **layer order across stylesheets** or foreign CSS defining the same layer names (e.g. Tailwind `utilities` colliding with Panda — [panda#3337](https://github.com/chakra-ui/panda/issues/3337) blamed Next/Vercel + shared layer names, fixed by renaming Panda layers). Not fixed by switching to `?url` alone. |
@@ -166,9 +166,9 @@ Reasons:
 
 1. React Router **documents** side-effect CSS as valid and simplest; framework mode already promotes it to `<link>` via `route.css` + `<Links />`.
 2. Panda’s `?url` note is about **Vite URL resolution for the install recipe**, not a layer-correctness requirement. This repo already has the layer-order entry line and PostCSS plugin.
-3. Theme / FOUC contract depends on **meta + bootstrap script before CSS links** and cookie SSR classes — unchanged by `?url` vs side-effect when both produce render-blocking links in `<Links />`.
+3. Theme / FOUC contract depends on **meta + `data-theme` / `light-dark()`** and cookie SSR — unchanged by `?url` vs side-effect when both produce render-blocking links in `<Links />`.
 4. Atomic CSS wins (unused-style removal, tokens, single atomic sheet) come from **Panda config / codegen**, already enabled — orthogonal to the import style.
-5. Optional later switch to `?url` + `links()` is fine for **doc parity** or explicit `href` control; treat as cosmetic. If done, update any hardcoded stylesheet stub strings and confirm production `href` still sits after the theme bootstrap inject.
+5. Root CSS already uses `?url` + `links()`; keep `<meta name="color-scheme">` before stylesheet links in `Layout`.
 
 **Do not expect** measured CSS payload or runtime gains from the switch.
 
@@ -226,6 +226,5 @@ Reasons:
 - [`panda.config.ts`](../panda.config.ts)
 - [`vite.config.ts`](../vite.config.ts)
 - [`postcss.config.cjs`](../postcss.config.cjs)
-- [`app/theme/theme-bootstrap.server.ts`](../app/theme/theme-bootstrap.server.ts)
-- [`app/theme/theme-bootstrap.server.test.ts`](../app/theme/theme-bootstrap.server.test.ts)
+- [`app/theme/theme.ts`](../app/theme/theme.ts)
 - [`docs/theme-toggle-ssr.md`](./theme-toggle-ssr.md)

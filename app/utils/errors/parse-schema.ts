@@ -41,7 +41,7 @@ export function validateSchema<TSchema extends GenericSchema>(
   } satisfies ValidationFailure;
 }
 
-const ARRAY_INDEX_SEGMENT = /^\d+$/;
+const ARRAY_INDEX_SEGMENT = /^\d+$/u;
 
 /**
  * Longest allowlisted prefix of a Valibot dot path.

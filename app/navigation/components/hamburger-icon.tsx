@@ -1,5 +1,12 @@
 import { cva } from "styled-system/css";
 
+/*
+ * Biome 2.6+ CSS-in-JS parse rejects `var(--token)` string literals inside
+ * style objects. Keep the value in a plain const; biome-ignore cannot suppress
+ * parse diagnostics.
+ */
+const hamburgerTransitionDuration = "var(--duration-dialog)";
+
 const hamburgerBar = cva({
   base: {
     _groupHasOpenHamburger: {
@@ -9,7 +16,7 @@ const hamburgerBar = cva({
       },
     },
     transformOrigin: "center",
-    transitionDuration: "var(--duration-dialog)",
+    transitionDuration: hamburgerTransitionDuration,
     transitionProperty: "translate,rotate",
     transitionTimingFunction: "ease-spring",
   },

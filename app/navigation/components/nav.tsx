@@ -25,24 +25,19 @@ interface NavProps {
   hasToken: boolean;
 }
 
-const navShellScroll = keyframes({
+// Layout-only keyframes. Animating `background-color` / border colors bakes the
+// used `light-dark()` value into the scroll timeline, so theme toggles leave the
+// chrome stuck on the old scheme while non-animated text updates.
+const navShellScrollLayout = keyframes({
   from: {
-    backgroundColor: "surface",
     blockSize: "var(--header-height)",
-    borderBlockStartColor: "transparent",
-    borderBottomColor: "transparent",
-    borderInlineColor: "transparent",
     borderRadius: "0",
     boxShadow: "none",
     paddingBlock: "7",
     translate: "0 0",
   },
   to: {
-    backgroundColor: "card",
     blockSize: "var(--nav-shell-compact-height)",
-    borderBlockStartColor: "border",
-    borderBottomColor: "border.accent",
-    borderInlineColor: "border",
     borderRadius: "full",
     boxShadow: "sm",
     paddingBlock: "2",
@@ -50,12 +45,41 @@ const navShellScroll = keyframes({
   },
 });
 
+const navShellScrollChrome = keyframes({
+  from: { opacity: "0" },
+  to: { opacity: "1" },
+});
+
+const scrollTimeline = {
+  // Keep end keyframes after the range so the pill does not snap back to the
+  // full header once scroll passes `--nav-shell-scroll-range`.
+  animationFillMode: "both",
+  animationRange: "0 var(--nav-shell-scroll-range)",
+  animationTimeline: "scroll()",
+  animationTimingFunction: "glide",
+} as const;
+
 const scrollAnimation = css({
   _supportsScroll: {
-    animationName: navShellScroll,
-    animationRange: "0 var(--nav-shell-scroll-range)",
-    animationTimeline: "scroll()",
-    animationTimingFunction: "glide",
+    ...scrollTimeline,
+    _before: {
+      ...scrollTimeline,
+      animationName: navShellScrollChrome,
+      backgroundColor: "card",
+      borderBlockStartColor: "border",
+      borderBottomColor: "border.accent",
+      borderInlineColor: "border",
+      borderRadius: "inherit",
+      borderStyle: "solid",
+      borderWidth: "1px",
+      content: '""',
+      inset: "-1px",
+      opacity: "0",
+      pointerEvents: "none",
+      position: "absolute",
+      zIndex: -1,
+    },
+    animationName: navShellScrollLayout,
   },
 });
 

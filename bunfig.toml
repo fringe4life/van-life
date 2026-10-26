@@ -1,8 +1,18 @@
 [install]
 linker = "isolated"
 minimumReleaseAge = 259200
-# body-parser@2.4.0 patches GHSA-27r3-jxmh-p828; drop from excludes once ≥3d old
-minimumReleaseAgeExcludes = ["body-parser"]
+minimumReleaseAgeExcludes = [
+  "ultracite",
+  "@biomejs/biome",
+  "@biomejs/cli-darwin-arm64",
+  "@biomejs/cli-darwin-x64",
+  "@biomejs/cli-linux-arm64",
+  "@biomejs/cli-linux-arm64-musl",
+  "@biomejs/cli-linux-x64",
+  "@biomejs/cli-linux-x64-musl",
+  "@biomejs/cli-win32-arm64",
+  "@biomejs/cli-win32-x64",
+]
 
 [test]
 # happydom first: static import of @testing-library/* before register() makes screen queries throw

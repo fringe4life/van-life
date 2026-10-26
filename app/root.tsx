@@ -13,12 +13,10 @@ import { grid } from "styled-system/patterns";
 import { themeTransition } from "~/navigation/components/theme-toggle-transition";
 import type { ThemeChoice } from "~/theme/schema";
 import {
-  colorSchemeForTheme,
-  htmlThemeClassName,
+  htmlThemeAttribute,
   THEME_TRANSITION_TYPE,
   THEME_VIEW_TRANSITION_NAME,
   ThemeChangeContext,
-  useHtmlThemeClass,
 } from "~/theme/theme";
 import { readStoredTheme } from "~/theme/theme-cookie.server";
 import type { Route } from "./+types/root";
@@ -69,26 +67,17 @@ export const Layout = ({ children }: Children) => {
   const [themeChoice, setThemeChoice] = useState<ThemeChoice>(
     cookieTheme ?? "system"
   );
-  const theme = useHtmlThemeClass(
-    themeChoice === "system" ? null : themeChoice
-  );
-  const colorScheme = colorSchemeForTheme(theme);
+  const themeAttribute = htmlThemeAttribute(themeChoice);
 
   return (
-    <html
-      className={htmlThemeClassName(theme)}
-      dir="ltr"
-      lang="en"
-      style={{ colorScheme }}
-      suppressHydrationWarning={cookieTheme === null}
-    >
+    <html data-theme={themeAttribute} dir="ltr" lang="en">
       <head>
         <meta charSet="utf-8" />
         <link href="/favicon.ico" rel="icon" sizes="any" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
         <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta content={colorScheme} name="color-scheme" />
+        <meta content="light dark" name="color-scheme" />
         <Links />
       </head>
       <body>
@@ -98,9 +87,10 @@ export const Layout = ({ children }: Children) => {
             name={THEME_VIEW_TRANSITION_NAME}
             update={themeTransitionUpdate}
           >
+            {/* Same data-theme as <html> so the ViewTransition sees an inner mutation. */}
             <div
               className={themeTransitionRootClassName}
-              data-theme={themeChoice}
+              data-theme={themeAttribute}
             >
               <div
                 className={cx(

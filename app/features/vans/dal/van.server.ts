@@ -22,7 +22,7 @@ import { getCursorMetadata } from "~/pagination/utils/get-cursor-metadata.server
 import type { List, Prettify, Search } from "~/types";
 import type { VanFilters } from "../types";
 
-const WHITESPACE_REGEX = /\s+/;
+const WHITESPACE_REGEX = /\s+/u;
 
 function buildVanTypeCondition(types: List<string>): SQL | undefined {
   const vanTypes = vanType.parseMany(types ?? []);

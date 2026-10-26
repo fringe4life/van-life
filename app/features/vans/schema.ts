@@ -58,14 +58,14 @@ export const addVanSchema = object({
     minValue(0),
     maxValue(50)
   ),
-  imageUrl: pipe(string(), url(), regex(/unsplash.*[?&]w=/)),
+  imageUrl: pipe(string(), url(), regex(/unsplash.*[?&]w=/u)),
   name: pipe(
     string(),
     trim(),
     minLength(1),
     maxLength(60),
     regex(
-      /^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$/,
+      /^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$/u,
       "Letters, numbers, single spaces only"
     )
   ),

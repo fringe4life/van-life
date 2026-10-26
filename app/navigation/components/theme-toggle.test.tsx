@@ -8,24 +8,23 @@ import { renderToString } from "react-dom/server";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { ThemeToggle } from "./theme-toggle";
 
-const HYDRATION_MISMATCH = /hydrated but some attributes/;
+const HYDRATION_MISMATCH = /hydrated but some attributes/u;
 
 const themeToggleTree = (
   theme: "dark" | "light" | null = null,
   ui: ReactNode = <ThemeToggle />
 ) => {
-  const Fixture = () => ui;
   const router = createMemoryRouter(
     [
       {
-        Component: Fixture,
         children: [
           {
             action: () => ({ ok: true, theme: "dark" }),
             path: "theme",
           },
         ],
-        HydrateFallback: Fixture,
+        element: ui,
+        hydrateFallbackElement: ui,
         id: "root",
         loader: () => ({ theme }),
         path: "/",
@@ -69,7 +68,7 @@ describe("ThemeToggle", () => {
     }
   });
 
-  it("applies the html class on click before the action settles", async () => {
+  it("sets data-theme on click before the action settles", async () => {
     const user = userEvent.setup();
     renderThemeToggle(null);
 
@@ -80,8 +79,7 @@ describe("ThemeToggle", () => {
 
     await user.click(darkRadio);
 
-    expect(document.documentElement.classList.contains("dark")).toBe(true);
-    expect(document.documentElement.style.colorScheme).toBe("dark");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
   });
 
   it("gives the mobile-nav instance its own popover id", () => {

@@ -73,9 +73,9 @@ const FILTER_QUERY_KEYS = [
   "types",
 ] as const;
 
-const ALL_VANS_LINK = /back to all vans/i;
-const FILTERED_VANS_LINK = /back to filtered vans/i;
-const FILTERED_TEXT = /filtered/i;
+const ALL_VANS_LINK = /back to all vans/iu;
+const FILTERED_VANS_LINK = /back to filtered vans/iu;
+const FILTERED_TEXT = /filtered/iu;
 
 const createLoaderData = (
   overrides: Partial<VanDetailLoaderData> = {}

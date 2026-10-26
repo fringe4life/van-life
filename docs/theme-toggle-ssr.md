@@ -6,6 +6,21 @@
 
 **Answer:** Do **not** port `next-themes`. That library stores the choice in `localStorage`, so the Worker cannot put the right class on the first HTML. The proven RR equivalent is a **cookie on the document request** plus the class (or `data-theme`) on `<html>` in the **root `Layout` export**, so SSR HTML and the hydrate VDOM already match. React Router has **no** dedicated “dark mode” page; the mapping is the official **cookies + root `Layout` + `useRouteLoaderData("root")`** APIs. `remix-themes` is the maintained analogue of `next-themes` for RR, but this repo is better served by ~30 lines of `createCookie` + Layout class + a resource-route `action`. First visit with no cookie still cannot see OS preference on the Worker unless a Client Hint is present (not Baseline). Close that gap with either a **blocking `<head>` script** (what `next-themes` / `remix-themes` do) or a **Panda `_dark` condition that also matches `prefers-color-scheme` unless `.light` is set**. Do **not** apply the theme in `useEffect` on `document.documentElement` — that is the flash.
 
+## Current implementation in this repo (Oct 2026)
+
+Shipped theme work (#372) uses **CSS `light-dark()` semantic tokens** and optional **`data-theme` on `<html>`** for stored light/dark overrides. System preference needs **no** cookie and **no** blocking bootstrap script.
+
+| Piece | Code |
+| --- | --- |
+| Cookie + loader | [`app/theme/theme-cookie.server.ts`](../app/theme/theme-cookie.server.ts), root `loader` in [`app/root.tsx`](../app/root.tsx) |
+| Document attribute | [`htmlThemeAttribute()`](../app/theme/theme.ts) → `<html data-theme={…}>` only when light/dark is stored |
+| Colors | [`theme/semantic-tokens.ts`](../theme/semantic-tokens.ts) `light-dark(base, dark)`; [`theme/global-styles.ts`](../theme/global-styles.ts) `color-scheme: light dark` with `[data-theme]` overrides |
+| Client updates | [`applyDocumentTheme()`](../app/theme/theme.ts) sets/removes `data-theme`; toggle in [`theme-toggle.tsx`](../app/navigation/components/theme-toggle.tsx) |
+| View transition | [`theme-toggle-transition.ts`](../app/navigation/components/theme-toggle-transition.ts) + inner `data-theme` wrapper in `Layout` (see [`docs/react-view-transition.md`](./react-view-transition.md)) |
+| Removed | `theme-bootstrap.server.ts` stream inject — do not restore for new work |
+
+Older sections below still explain cookie/FOUC tradeoffs and historical bootstrap patterns for comparison.
+
 ## Repo context
 
 | Piece | This app |
@@ -14,8 +29,8 @@
 | React | **19.3** canary |
 | Runtime | Cloudflare Workers (`workers/app.ts` → `createRequestHandler`) |
 | Styles | Panda CSS **2.0.0**; semantic tokens already use `_dark` |
-| Document shell | [`app/root.tsx`](../app/root.tsx) `Layout` export renders `<html>` |
-| HTML stream | [`app/entry.server.tsx`](../app/entry.server.tsx) `handleRequest` — injects the no-cookie theme script **outside** React |
+| Document shell | [`app/root.tsx`](../app/root.tsx) `Layout` export renders `<html data-theme>` when a stored override exists |
+| HTML stream | [`app/entry.server.tsx`](../app/entry.server.tsx) `handleRequest` — streams `ServerRouter` only (no theme bootstrap inject) |
 | Chrome layout | [`app/routes/layout/layout.tsx`](../app/routes/layout/layout.tsx) is **Nav / main / footer**, not the document |
 | Public HTML cache | [`app/constants/cache-headers.ts`](../app/constants/cache-headers.ts) `PUBLIC_SHORT_CACHE_HEADERS` = `public, max-age=…` + `Vary: Cookie` |
 
@@ -61,7 +76,7 @@ Race if you only do this:
 
 Cloudflare Rocket Loader defers inline scripts and **breaks** this pattern. `next-themes` documents `scriptProps={{ 'data-cfasync': 'false' }}`. Same attribute if this app ever enables Rocket Loader.
 
-This app does **not** put that `<script>` in `Layout`. React 19 logs `Encountered a script tag while rendering React component` and **does not execute** JSX `<script>` on the client ([facebook/react#34008](https://github.com/facebook/react/issues/34008)). The parser-run copy still has to be in the **SSR HTML**. [`app/entry.server.tsx`](../app/entry.server.tsx) races `readStoredTheme` with `renderToReadableStream` (`Promise.all`), then [`injectThemeBootstrapIntoStream`](../app/theme/theme-bootstrap.server.ts) splices the tag after `<meta name="color-scheme">` (still before `<Links />` CSS) only when the cookie is missing. Do **not** run this in [`app/entry.client.tsx`](../app/entry.client.tsx) — that module loads after first paint.
+This app **no longer** injects a blocking theme script from [`app/entry.server.tsx`](../app/entry.server.tsx). First visit with no cookie relies on **`color-scheme: light dark`** and Panda **`light-dark()`** tokens (see **Current implementation** above). Historical bootstrap/stream-inject notes below are for comparison only.
 
 ### B. Cookie on the document request (better on Workers)
 
@@ -151,7 +166,7 @@ return data({ ok: true }, {
 
 Panda default `_dark` is **`.dark &`** ([conditional styles reference](https://panda-css.com/docs/concepts/conditional-styles)): the **ancestor** (typically `<html>`) needs class `dark`. Putting `dark` on `<body>` also works for descendants, but `<html>` is what `next-themes` / `remix-themes` / UA `color-scheme` expect.
 
-This repo’s `Layout` today puts theme classes on `<html>` via `htmlThemeClassName(theme)` and paints the full-bleed shell with `backgroundColor: "surface"` on the root layout grid (not a separate document `background` token). Until `<html>` (or an ancestor — there is none) has `.dark`, **all `_dark` tokens stay on `base`**.
+This repo’s `Layout` sets **`data-theme`** via `htmlThemeAttribute(themeChoice)` when the user stored light or dark; system omits the attribute so OS `color-scheme` drives `light-dark()` tokens. The shell uses `backgroundColor: "surface"` on the root layout grid.
 
 ---
 
@@ -267,13 +282,13 @@ Expected CSS: one block `.dark .token`, plus `@media (prefers-color-scheme: dark
 
 ## Recommended approach for this app
 
-1. **`createCookie("theme")`** in a `*.server.ts` module. Values: `"light"` \| `"dark"`; missing = system. `httpOnly: true`, `path: "/"`, `sameSite: "lax"`, long `maxAge`. `secure` only in production.
-2. **Root `loader` in `app/root.tsx`:** parse cookie, return `{ theme }`. No `Set-Cookie` on GET.
-3. **Root `Layout`:** `useRouteLoaderData("root")`. Drive `<html>` class via `htmlThemeClassName(theme)` (`dark` / `light`). Paint the shell with `backgroundColor: "surface"` on the layout grid (full-bleed). Set `<meta name="color-scheme" content={…} />` **before** `<Links />`. `color-scheme` on `<html>` to match.
-4. **Panda:** keep `_dark` tokens. Put `.dark` on `<html>` for overrides. For first visit, **either** extend `dark` with a verified media-query block **or** a blocking script injected from `entry.server` only when `theme` is missing ([`app/theme/theme-bootstrap.server.ts`](../app/theme/theme-bootstrap.server.ts)). Do not rewrite tokens to `_osDark`.
-5. **Resource route** (e.g. `app/routes/theme.ts`, registered in [`app/routes.ts`](../app/routes.ts)): `action` only. Validate body. `serialize` cookie. Return `data()`.
-6. **Nav toggle:** `fetcher.Form method="post" action="/theme"` with `preventScrollReset`. Optimistic: `html.classList` in the submit handler **and/or** `fetcher.formData`. Light / Dark / System. Not `useEffect` on mount.
-7. **Cache:** leave `Vary: Cookie` on public HTML. Never cache themed HTML without it.
+1. **`createCookie("theme")`** in [`app/theme/theme-cookie.server.ts`](../app/theme/theme-cookie.server.ts). Values: `"light"` \| `"dark"`; missing = system.
+2. **Root `loader`:** parse cookie, return `{ theme }`. No `Set-Cookie` on GET.
+3. **Root `Layout`:** `useRouteLoaderData("root")` + client `themeChoice`. `<html data-theme={htmlThemeAttribute(…)}>` when stored override exists. `<meta name="color-scheme" content="light dark" />` before `<Links />`. Shell `backgroundColor: "surface"`.
+4. **Panda:** semantic colors via `light-dark()` in [`theme/semantic-tokens.ts`](../theme/semantic-tokens.ts); global `color-scheme` in [`theme/global-styles.ts`](../theme/global-styles.ts). `[data-theme="light"|"dark"]` overrides when set.
+5. **Theme POST** via existing toggle action (see [`theme-toggle.tsx`](../app/navigation/components/theme-toggle.tsx)).
+6. **Nav toggle:** optimistic `applyDocumentTheme` + POST; Light / Dark / System. Not `useEffect` on mount.
+7. **Cache:** leave `Vary: Cookie` on public HTML.
 
 ---
 
@@ -296,13 +311,12 @@ Enough to implement later. APIs only.
 
 ```
 app/theme/theme-cookie.server.ts       createCookie + parse/serialize helpers
-app/theme/theme-bootstrap.server.ts     blocking script string + HTML/stream inject
-app/entry.server.tsx                  Promise.all(cookie, render); inject if cookie missing
-app/root.tsx                           loader + Layout class / meta (no <script>)
-app/routes/theme.ts                    resource action (no default export)
-app/routes.ts                          top-level route("theme", …) next to signout — not inside layout()
-app/navigation/components/nav.tsx      fetcher.Form toggle (or a small ThemeToggle next to it)
-theme/conditions.ts                    only if extending `dark` for system-without-cookie
+app/theme/theme.ts                     htmlThemeAttribute, applyDocumentTheme
+app/entry.server.tsx                   renderToReadableStream(ServerRouter) only
+app/root.tsx                           loader + Layout data-theme + ViewTransition wrapper
+app/navigation/components/theme-toggle.tsx   toggle + POST + applyDocumentTheme
+theme/semantic-tokens.ts               light-dark() semantic colors
+theme/global-styles.ts                 color-scheme + data-theme overrides
 ```
 
 [`app/routes.ts`](../app/routes.ts) already registers resource routes (`signout`, `robots.txt`, `sitemap.xml`) **outside** `layout("./routes/layout/layout.tsx")`. Theme POST belongs there so it is not wrapped in Nav/footer HTML. Local pattern: [`app/routes/auth/sign-out.ts`](../app/routes/auth/sign-out.ts).
@@ -317,27 +331,28 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 ```
 
-**Layout (sketch):**
+**Layout (sketch — matches shipped code):**
 
 ```tsx
 export function Layout({ children }: Children) {
-  const data = useRouteLoaderData("root") as { theme?: "light" | "dark" | null } | undefined;
-  const theme = data?.theme ?? null;
+  const loaderData = useRouteLoaderData("root");
+  const [themeChoice, setThemeChoice] = useState<ThemeChoice>(
+    loaderData?.theme ?? "system",
+  );
+  const themeAttribute = htmlThemeAttribute(themeChoice);
+
   return (
-    <html
-      className={htmlThemeClassName(theme)}
-      dir="ltr"
-      lang="en"
-      style={{ colorScheme: theme ?? "light dark" }}
-      suppressHydrationWarning={theme == null}
-    >
+    <html data-theme={themeAttribute} dir="ltr" lang="en">
       <head>
         <meta charSet="utf-8" />
-        <meta name="color-scheme" content={theme ?? "light dark"} />
+        <meta name="color-scheme" content="light dark" />
         <Links />
       </head>
       <body>
-        {children}
+        <ThemeChangeContext value={setThemeChoice}>
+          {/* inner data-theme for ViewTransition — see app/root.tsx */}
+          {children}
+        </ThemeChangeContext>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -346,9 +361,7 @@ export function Layout({ children }: Children) {
 }
 ```
 
-`suppressHydrationWarning` on `<html>` **only** if a no-cookie script mutates class/style before hydrate. If first-visit theming is **pure CSS** (`:root:not(.light)` + media), omit the flag.
-
-**`entry.server` (this app):** after `renderToReadableStream`, if `readStoredTheme` is `null`, pipe the body through `injectThemeBootstrapIntoStream`. Cookie parse and render are independent — wrap them in `Promise.all` so they do not waterfall ([`entry.server.tsx`](https://reactrouter.com/api/framework-conventions/entry.server.tsx)).
+**`entry.server` (this app):** stream `ServerRouter` with `renderToReadableStream` only — no theme inject ([`entry.server.tsx`](../app/entry.server.tsx)).
 
 **Action (sketch):**
 
@@ -482,7 +495,6 @@ React 19: a `<script>` in a component is **not** executed on the client ([facebo
 - [`app/root.tsx`](../app/root.tsx)
 - [`app/entry.server.tsx`](../app/entry.server.tsx)
 - [`app/entry.client.tsx`](../app/entry.client.tsx)
-- [`app/theme/theme-bootstrap.server.ts`](../app/theme/theme-bootstrap.server.ts)
 - [`app/routes/layout/layout.tsx`](../app/routes/layout/layout.tsx)
 - [`theme/semantic-tokens.ts`](../theme/semantic-tokens.ts)
 - [`theme/conditions.ts`](../theme/conditions.ts)
