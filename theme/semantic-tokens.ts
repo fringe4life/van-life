@@ -1,231 +1,112 @@
 import { defineSemanticTokens } from "@pandacss/dev/define";
 
+/** Single CSS color; `light-dark()` follows used `color-scheme` (OS or `data-theme`). */
+const color = (base: string, dark = base) => ({
+  value: dark === base ? base : `light-dark(${base}, ${dark})`,
+});
+
 export const semanticTokens = defineSemanticTokens({
   colors: {
     accent: {
-      DEFAULT: {
-        value: { _dark: "{colors.umber.800}", base: "{colors.orange.200}" },
-      },
-      foreground: {
-        value: { _dark: "{colors.warmGray.50}", base: "{colors.neutral.900}" },
-      },
+      DEFAULT: color("{colors.orange.200}", "{colors.umber.800}"),
+      foreground: color("{colors.neutral.900}", "{colors.warmGray.50}"),
     },
     border: {
-      accent: { value: "{colors.orange.400/60}" },
-      DEFAULT: {
-        value: {
-          _dark: "{colors.warmGray.600}",
-          base: "{colors.neutral.900/15}",
-        },
-      },
-      strong: {
-        value: {
-          _dark: "{colors.warmGray.500}",
-          base: "{colors.neutral.600/45}",
-        },
-      },
-      subtle: {
-        value: {
-          _dark: "{colors.warmGray.700}",
-          base: "{colors.neutral.900/10}",
-        },
-      },
+      accent: color("{colors.orange.400/60}"),
+      DEFAULT: color("{colors.neutral.900/15}", "{colors.warmGray.600}"),
+      strong: color("{colors.neutral.600/45}", "{colors.warmGray.500}"),
+      subtle: color("{colors.neutral.900/10}", "{colors.warmGray.700}"),
     },
     card: {
-      DEFAULT: {
-        value: { _dark: "{colors.warmGray.800}", base: "{colors.white}" },
-      },
-      foreground: {
-        value: { _dark: "{colors.warmGray.50}", base: "{colors.neutral.900}" },
-      },
+      DEFAULT: color("{colors.white}", "{colors.warmGray.800}"),
+      foreground: color("{colors.neutral.900}", "{colors.warmGray.50}"),
     },
     chart: {
-      "1": { value: "{colors.orange.400}" },
-      "2": {
-        value: { _dark: "{colors.sage.400}", base: "oklch(50% 0.14 150)" },
-      },
-      "3": {
-        value: { _dark: "{colors.warmSky.400}", base: "oklch(37% 0.08 220)" },
-      },
-      "4": {
-        value: { _dark: "{colors.warmAmber.400}", base: "oklch(52% 0.12 85)" },
-      },
-      "5": {
-        value: {
-          _dark: "{colors.terracotta.400}",
-          base: "{colors.orange.600}",
-        },
-      },
+      "1": color("{colors.orange.400}"),
+      "2": color("oklch(50% 0.14 150)", "{colors.sage.400}"),
+      "3": color("oklch(37% 0.08 220)", "{colors.warmSky.400}"),
+      "4": color("oklch(52% 0.12 85)", "{colors.warmAmber.400}"),
+      "5": color("{colors.orange.600}", "{colors.terracotta.400}"),
     },
     destructive: {
-      DEFAULT: {
-        value: { _dark: "{colors.warmRose.400}", base: "oklch(50% 0.18 25)" },
-      },
-      foreground: {
-        value: { _dark: "{colors.warmRose.950}", base: "{colors.white}" },
-      },
+      DEFAULT: color("oklch(50% 0.18 25)", "{colors.warmRose.400}"),
+      foreground: color("{colors.white}", "{colors.warmRose.950}"),
     },
-    foreground: {
-      value: { _dark: "{colors.warmGray.50}", base: "{colors.neutral.900}" },
-    },
+    foreground: color("{colors.neutral.900}", "{colors.warmGray.50}"),
     input: {
-      background: {
-        value: { _dark: "{colors.warmGray.850}", base: "{colors.neutral.200}" },
-      },
-      DEFAULT: {
-        value: {
-          _dark: "{colors.warmGray.500}",
-          base: "{colors.neutral.600/80}",
-        },
-      },
-      foreground: {
-        value: { _dark: "{colors.warmGray.50}", base: "{colors.neutral.900}" },
-      },
+      background: color("{colors.neutral.200}", "{colors.warmGray.850}"),
+      DEFAULT: color("{colors.neutral.600/80}", "{colors.warmGray.500}"),
+      foreground: color("{colors.neutral.900}", "{colors.warmGray.50}"),
     },
     muted: {
-      foreground: {
-        value: { _dark: "{colors.warmGray.300}", base: "{colors.neutral.600}" },
-      },
+      foreground: color("{colors.neutral.600}", "{colors.warmGray.300}"),
     },
-    "on-image": { value: "{colors.white}" },
-    placeholder: {
-      value: { _dark: "{colors.warmGray.400}", base: "{colors.neutral.400}" },
-    },
+    "on-image": color("{colors.white}"),
+    placeholder: color("{colors.neutral.400}", "{colors.warmGray.400}"),
     popover: {
-      DEFAULT: {
-        value: { _dark: "{colors.warmGray.800}", base: "{colors.white}" },
-      },
-      foreground: {
-        value: { _dark: "{colors.warmGray.50}", base: "{colors.neutral.900}" },
-      },
+      DEFAULT: color("{colors.white}", "{colors.warmGray.800}"),
+      foreground: color("{colors.neutral.900}", "{colors.warmGray.50}"),
     },
     primary: {
-      DEFAULT: { value: "{colors.orange.400}" },
-      foreground: {
-        value: { _dark: "{colors.umber.950}", base: "{colors.white}" },
-      },
+      DEFAULT: color("{colors.orange.400}"),
+      foreground: color("{colors.white}", "{colors.umber.950}"),
     },
-    rating: { value: "{colors.orange.400}" },
-    ring: { value: "{colors.orange.400}" },
+    rating: color("{colors.orange.400}"),
+    ring: color("{colors.orange.400}"),
     secondary: {
-      DEFAULT: {
-        value: { _dark: "{colors.warmGray.100}", base: "{colors.neutral.900}" },
-      },
-      foreground: {
-        value: { _dark: "{colors.warmGray.825}", base: "{colors.white}" },
-      },
+      DEFAULT: color("{colors.neutral.900}", "{colors.warmGray.100}"),
+      foreground: color("{colors.white}", "{colors.warmGray.825}"),
     },
     skeleton: {
-      DEFAULT: {
-        value: { _dark: "{colors.warmGray.700}", base: "{colors.gray.300}" },
-      },
-      highlight: {
-        value: { _dark: "{colors.warmGray.600}", base: "{colors.gray.200}" },
-      },
+      DEFAULT: color("{colors.gray.300}", "{colors.warmGray.700}"),
+      highlight: color("{colors.gray.200}", "{colors.warmGray.600}"),
     },
     status: {
       new: {
-        DEFAULT: {
-          value: { _dark: "{colors.warmGray.200}", base: "{colors.van.new}" },
-        },
-        foreground: {
-          value: { _dark: "{colors.warmGray.825}", base: "{colors.white}" },
-        },
+        DEFAULT: color("{colors.van.new}", "{colors.warmGray.200}"),
+        foreground: color("{colors.white}", "{colors.warmGray.825}"),
       },
       repair: {
-        DEFAULT: {
-          value: {
-            _dark: "{colors.warmAmber.400}",
-            base: "{colors.van.repair}",
-          },
-        },
-        foreground: {
-          value: {
-            _dark: "{colors.warmAmber.950}",
-            base: "{colors.neutral.900}",
-          },
-        },
+        DEFAULT: color("{colors.van.repair}", "{colors.warmAmber.400}"),
+        foreground: color("{colors.neutral.900}", "{colors.warmAmber.950}"),
       },
       sale: {
-        DEFAULT: {
-          value: { _dark: "{colors.sage.400}", base: "{colors.van.sale}" },
-        },
-        foreground: {
-          value: { _dark: "{colors.sage.950}", base: "{colors.white}" },
-        },
+        DEFAULT: color("{colors.van.sale}", "{colors.sage.400}"),
+        foreground: color("{colors.white}", "{colors.sage.950}"),
       },
       unavailable: {
-        DEFAULT: {
-          value: { _dark: "{colors.warmRose.400}", base: "oklch(50% 0.18 25)" },
-        },
-        foreground: {
-          value: { _dark: "{colors.warmRose.950}", base: "{colors.white}" },
-        },
+        DEFAULT: color("oklch(50% 0.18 25)", "{colors.warmRose.400}"),
+        foreground: color("{colors.white}", "{colors.warmRose.950}"),
       },
     },
     success: {
-      DEFAULT: {
-        value: { _dark: "{colors.sage.400}", base: "oklch(50% 0.14 150)" },
-      },
-      foreground: {
-        value: { _dark: "{colors.sage.950}", base: "{colors.white}" },
-      },
+      DEFAULT: color("oklch(50% 0.14 150)", "{colors.sage.400}"),
+      foreground: color("{colors.white}", "{colors.sage.950}"),
     },
     surface: {
-      accent: {
-        value: { _dark: "{colors.umber.800}", base: "{colors.orange.200}" },
-      },
-      DEFAULT: {
-        value: {
-          _dark: "{colors.warmGray.900}",
-          base: "oklch(97.7% 0.019 74)",
-        },
-      },
+      accent: color("{colors.orange.200}", "{colors.umber.800}"),
+      DEFAULT: color("oklch(97.7% 0.019 74)", "{colors.warmGray.900}"),
       inverse: {
-        DEFAULT: {
-          value: { _dark: "{colors.warmGray.975}", base: "oklch(27.4% 0 0)" },
-        },
-        foreground: {
-          value: { _dark: "{colors.warmGray.300}", base: "oklch(82% 0 0)" },
-        },
+        DEFAULT: color("oklch(27.4% 0 0)", "{colors.warmGray.975}"),
+        foreground: color("oklch(82% 0 0)", "{colors.warmGray.300}"),
       },
-      muted: {
-        value: { _dark: "{colors.umber.900}", base: "{colors.orange.100}" },
-      },
+      muted: color("{colors.orange.100}", "{colors.umber.900}"),
       overlay: {
-        DEFAULT: {
-          value: {
-            _dark: "{colors.warmGray.800/70.2}",
-            base: "rgb(255 255 255 / 0.702)",
-          },
-        },
-        muted: {
-          value: {
-            _dark: "{colors.warmGray.800/54.9}",
-            base: "rgb(255 255 255 / 0.549)",
-          },
-        },
+        DEFAULT: color(
+          "rgb(255 255 255 / 0.702)",
+          "{colors.warmGray.800/70.2}"
+        ),
+        muted: color("rgb(255 255 255 / 0.549)", "{colors.warmGray.800/54.9}"),
       },
     },
     type: {
       rugged: {
-        DEFAULT: {
-          value: { _dark: "{colors.seafoam.400}", base: "{colors.teal.800}" },
-        },
-        foreground: {
-          value: { _dark: "{colors.seafoam.950}", base: "{colors.white}" },
-        },
+        DEFAULT: color("{colors.teal.800}", "{colors.seafoam.400}"),
+        foreground: color("{colors.white}", "{colors.seafoam.950}"),
       },
       simple: {
-        DEFAULT: {
-          value: {
-            _dark: "{colors.terracotta.400}",
-            base: "{colors.orange.600}",
-          },
-        },
-        foreground: {
-          value: { _dark: "{colors.terracotta.950}", base: "{colors.white}" },
-        },
+        DEFAULT: color("{colors.orange.600}", "{colors.terracotta.400}"),
+        foreground: color("{colors.white}", "{colors.terracotta.950}"),
       },
     },
   },

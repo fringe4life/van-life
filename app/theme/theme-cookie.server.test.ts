@@ -6,13 +6,13 @@ import {
   THEME_COOKIE_NAME,
 } from "./theme-cookie.server";
 
-const SET_COOKIE_MAX_AGE = /(?:^|; )\s*Max-Age=([^;]*)/i;
+const SET_COOKIE_MAX_AGE = /(?:^|; )\s*Max-Age=(?<maxAge>[^;]*)/iu;
 
 const setCookieName = (header: string) => header.split("=", 1)[0];
 
 const setCookieMaxAge = (header: string) => {
   const match = header.match(SET_COOKIE_MAX_AGE);
-  return match?.[1] ?? null;
+  return match?.groups?.maxAge ?? null;
 };
 
 describe("theme cookie", () => {

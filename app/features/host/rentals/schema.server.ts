@@ -6,7 +6,7 @@ import { uuidv7Schema } from "~/dal/schema.server";
  */
 const slugSchema = pipe(
   string(),
-  regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Lowercase letters, numbers, hyphens"),
+  regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u, "Lowercase letters, numbers, hyphens"),
   maxLength(70)
 );
 

@@ -21,6 +21,15 @@ const transactionMeta = {
   },
 } as const satisfies Record<TransactionType, { label: string; title: string }>;
 
+/*
+ * Biome 2.6+ CSS-in-JS parse rejects quoted grid-template-areas string
+ * literals inside style objects (`'"a b"'` / `` `"a b"` ``). Keep values in
+ * plain consts so the CSS parser never sees them. biome-ignore cannot suppress
+ * parse diagnostics.
+ */
+const transactionGridAreasSm = '"details amount"';
+const transactionGridAreasBase = '"details" "amount"';
+
 const transactionCard = cva({
   base: {
     alignItems: { "@transaction/sm": "center", base: "start" },
@@ -29,8 +38,8 @@ const transactionCard = cva({
     columnGap: { "@transaction/sm": "6" },
     display: "grid",
     gridTemplateAreas: {
-      "@transaction/sm": '"details amount"',
-      base: '"details" "amount"',
+      "@transaction/sm": transactionGridAreasSm,
+      base: transactionGridAreasBase,
     },
     gridTemplateColumns: {
       "@transaction/sm": "minmax(0,1.4fr) minmax(10rem,0.6fr)",

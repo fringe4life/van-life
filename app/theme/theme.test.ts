@@ -1,31 +1,29 @@
 import { describe, expect, it } from "bun:test";
-import {
-  applyDocumentTheme,
-  colorSchemeForTheme,
-  htmlThemeClassName,
-} from "./theme";
+import { applyDocumentTheme, htmlThemeAttribute } from "./theme";
 
 describe("theme helpers", () => {
-  it("maps stored theme to html class and color-scheme", () => {
-    expect(htmlThemeClassName("dark")).toBe("dark");
-    expect(htmlThemeClassName("light")).toBe("light");
-    expect(htmlThemeClassName(null)).toBeUndefined();
-    expect(colorSchemeForTheme("dark")).toBe("dark");
-    expect(colorSchemeForTheme("light")).toBe("light");
-    expect(colorSchemeForTheme(null)).toBe("light dark");
+  it("maps stored theme to data-theme and omits system", () => {
+    expect(htmlThemeAttribute("dark")).toBe("dark");
+    expect(htmlThemeAttribute("light")).toBe("light");
+    expect(htmlThemeAttribute("system")).toBeUndefined();
+    expect(htmlThemeAttribute(null)).toBeUndefined();
   });
 
-  it("toggles html class and color-scheme without leaving the other class", () => {
+  it("sets data-theme without leaving classes or inline color-scheme", () => {
     document.documentElement.className = "panda dark";
-    applyDocumentTheme("light");
-    expect(document.documentElement.classList.contains("light")).toBe(true);
-    expect(document.documentElement.classList.contains("dark")).toBe(false);
-    expect(document.documentElement.style.colorScheme).toBe("light");
+    document.documentElement.style.colorScheme = "dark";
+    document.documentElement.setAttribute("data-theme", "dark");
 
-    applyDocumentTheme("system");
+    applyDocumentTheme("light");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
     expect(document.documentElement.classList.contains("light")).toBe(false);
     expect(document.documentElement.classList.contains("dark")).toBe(false);
-    expect(document.documentElement.style.colorScheme).toBe("light dark");
+    expect(document.documentElement.style.colorScheme).toBe("");
     expect(document.documentElement.classList.contains("panda")).toBe(true);
+
+    applyDocumentTheme("system");
+    expect(document.documentElement.hasAttribute("data-theme")).toBe(false);
+    expect(document.documentElement.classList.contains("light")).toBe(false);
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
   });
 });

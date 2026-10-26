@@ -2,13 +2,12 @@ import { defineConditions } from "@pandacss/dev/define";
 
 export const conditions = defineConditions({
   extend: {
-    // Semantic tokens still compile to `.dark { --vars }` only; first-visit
-    // OS theme uses the head bootstrap script. This @slot covers `_dark` utilities.
     collectionTwo: "@container collection (min-width: 39.5rem)",
+    // `_dark` utilities: explicit override or OS when no light override.
     dark: {
-      ".dark &": "@slot",
+      "[data-theme=dark] &": "@slot",
       "@media (prefers-color-scheme: dark)": {
-        ":root:not(.light) &": "@slot",
+        ":root:not([data-theme=light]) &": "@slot",
       },
     },
     groupHasOpenHamburger: ".group\\/hamburger:has([open]) &",

@@ -2,7 +2,7 @@ import type { DataArray } from "~/features/host/types";
 
 const BAND_COUNT = 5;
 const MAX_BAND_FRACTION_DIGITS = 6;
-const TRAILING_ZERO_REGEX = /\.0$/;
+const TRAILING_ZERO_REGEX = /\.0$/u;
 
 export const CHART_HEIGHT_BAND_COLORS = [
   "var(--colors-chart-1)",

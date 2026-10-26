@@ -1,4 +1,4 @@
-import { drizzle } from "drizzle-orm/sqlite-proxy";
+import { drizzle, type SqliteProxyExecutors } from "drizzle-orm/sqlite-proxy";
 import { tryCatch } from "~/utils/errors/try-catch.server";
 import { relations } from "./relations";
 
@@ -19,17 +19,47 @@ interface D1HttpResponse {
   success: boolean;
 }
 
-type SqliteProxyMethod = "run" | "all" | "values" | "get";
+interface ParsedRawResults {
+  columns: string[];
+  rows: unknown[][];
+}
 
-function extractRows(results: unknown[] | D1RawResults | undefined): unknown[] {
+function parseRawResults(
+  results: unknown[] | D1RawResults | undefined
+): ParsedRawResults {
   if (!results) {
-    return [];
+    return { columns: [], rows: [] };
   }
   // `/query` → object rows[]; `/raw` → { columns, rows }
   if (Array.isArray(results)) {
-    return results;
+    if (results.length === 0) {
+      return { columns: [], rows: [] };
+    }
+    const [first] = results;
+    if (Array.isArray(first)) {
+      return { columns: [], rows: results as unknown[][] };
+    }
+    const columns = Object.keys(first as Record<string, unknown>);
+    const rows = (results as Record<string, unknown>[]).map((row) =>
+      columns.map((column) => row[column])
+    );
+    return { columns, rows };
   }
-  return results.rows ?? [];
+  return {
+    columns: results.columns ?? [],
+    rows: results.rows ?? [],
+  };
+}
+
+function rowToObject(
+  columns: string[],
+  row: unknown[]
+): Record<string, unknown> {
+  const record: Record<string, unknown> = {};
+  for (const [index, column] of columns.entries()) {
+    record[column] = row[index];
+  }
+  return record;
 }
 
 function d1HttpError(response: Response, body: string, cause?: unknown): Error {
@@ -84,21 +114,6 @@ async function fetchD1Raw(
   return data;
 }
 
-function toProxyRows(
-  data: D1HttpResponse,
-  method: SqliteProxyMethod
-): { rows: unknown[] } {
-  const rows = extractRows(data.result[0]?.results);
-
-  // `get` expects a single row array; everything else expects row arrays.
-  if (method === "get") {
-    // biome-ignore lint/suspicious/noUnnecessaryConditions: way to seed d1 in production
-    return { rows: (rows[0] as unknown[]) ?? [] };
-  }
-
-  return { rows };
-}
-
 /**
  * Drizzle client over Cloudflare D1 HTTP API.
  * sqlite-proxy expects raw row arrays (`unknown[][]`), so use the `/raw` endpoint.
@@ -107,16 +122,36 @@ export function createD1HttpDb(credentials: D1HttpCredentials) {
   const { accountId, databaseId, token } = credentials;
   const baseUrl = `https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/database/${databaseId}`;
 
-  const remoteCallback = async (
-    sql: string,
-    params: unknown[],
-    method: SqliteProxyMethod
-  ) => {
+  const queryRaw = async (sql: string, params: unknown[]) => {
     const data = await fetchD1Raw(baseUrl, token, sql, params);
-    return toProxyRows(data, method);
+    return parseRawResults(data.result[0]?.results);
   };
 
-  return drizzle(remoteCallback, { relations });
+  const executors = {
+    all: (sql, params, rowMode) =>
+      queryRaw(sql, params).then(({ columns, rows }) => {
+        if (rowMode === "object") {
+          return rows.map((row) => rowToObject(columns, row));
+        }
+        return rows;
+      }),
+    get: (sql, params, rowMode) =>
+      queryRaw(sql, params).then(({ columns, rows }) => {
+        const [first] = rows;
+        if (first === undefined) {
+          return;
+        }
+        if (rowMode === "object") {
+          return rowToObject(columns, first);
+        }
+        return first;
+      }),
+    run: async (sql, params) => {
+      await queryRaw(sql, params);
+    },
+  } as SqliteProxyExecutors;
+
+  return drizzle(executors, { relations });
 }
 
 export type D1HttpDb = ReturnType<typeof createD1HttpDb>;

@@ -20,6 +20,14 @@ export const globalCss = defineGlobalStyles({
     textWrap: "balance",
   },
   html: {
+    // Attribute on `:root`, or `:has` if `data-theme` is on a descendant.
+    "&[data-theme=dark], &:has([data-theme=dark])": {
+      colorScheme: "dark",
+    },
+    "&[data-theme=light], &:has([data-theme=light])": {
+      colorScheme: "light",
+    },
+    colorScheme: "light dark",
     fontFamily: "sans",
     scrollbarGutter: "stable",
     scrollbarWidth: "thin",
