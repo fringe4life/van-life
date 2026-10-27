@@ -69,7 +69,7 @@
     "varlock": "1.23.0"
   },
   "devDependencies": {
-    "@acusti/vite-plugin-react-compiler": "0.9.0",
+    "@acusti/vite-plugin-react-compiler": "0.10.0",
     "@biomejs/biome": "2.6.3",
     "@cloudflare/vite-plugin": "1.65.0",
     "@cloudflare/workers-types": "5.20261024.1",
