@@ -50,7 +50,7 @@
     "zod": "4.6.7"
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "1.7.13",
+    "@better-auth/drizzle-adapter": "1.7.14",
     "@forge42/seo-tools": "1.4.5",
     "@tanstack/charts": "1.1.0",
     "@varlock/bitwarden-plugin": "2.0.2",
