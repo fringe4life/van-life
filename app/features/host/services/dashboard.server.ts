@@ -2,11 +2,11 @@ import type { AppDb } from "~/db/client.server";
 import { getRentalActivityStats } from "~/features/host/dal/rental-activity.server";
 import { getAverageReviewRating } from "~/features/host/dal/review-analytics.server";
 import { getAccountSummary } from "~/features/host/dal/wallet-movement.server";
+import { formatRangeLabel } from "~/features/host/utils/money-timeline";
 import { toTransactionAggStats } from "~/features/host/utils/resolve-chart-context.server";
 import { getHostVans } from "~/features/vans/dal/host-van.server";
 import type { UUIDv7 } from "~/types/ids.server";
 import { tryCatch } from "~/utils/errors/try-catch.server";
-import { elapsedDaysFromRange } from "~/utils/get-elapsed-time.server";
 
 const HOST_VANS_LIMIT = 2;
 
@@ -33,7 +33,10 @@ export async function loadHostDashboard(db: AppDb, userId: UUIDv7) {
 
   return {
     avgRating: avgRating ?? 0,
-    elapsedDays: elapsedDaysFromRange(firstAt, lastAt),
+    // Same label the financial routes put in their header slot, so the slot
+    // reads as one value across the host pages.
+    rangeLabel:
+      firstAt && lastAt ? formatRangeLabel(firstAt, lastAt) : "No rentals yet",
     sumIncome: total,
     transactionSummary: transactionSummary ?? 0,
     vansPromise,

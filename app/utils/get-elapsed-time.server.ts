@@ -1,7 +1,18 @@
-import { differenceInDays } from "date-fns";
 import type { Maybe } from "~/types";
 
 const NO_ELAPSED_DAYS = 0 as const;
+
+const MS_PER_DAY = 86_400_000;
+
+/**
+ * UTC calendar-day index. Whole-day arithmetic on the UTC date keeps DST out of
+ * the span, which is what `differenceInDays` gave us before date-fns was dropped.
+ */
+const utcDayIndex = (date: Date): number =>
+  Math.floor(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) /
+      MS_PER_DAY
+  );
 
 /**
  * Inclusive day span from SQL `MIN`/`MAX` createdAt (or any first/last pair).
@@ -14,7 +25,7 @@ export const elapsedDaysFromRange = (
     return NO_ELAPSED_DAYS;
   }
 
-  return differenceInDays(lastAt, firstAt) + 1;
+  return utcDayIndex(lastAt) - utcDayIndex(firstAt) + 1;
 };
 
 /**

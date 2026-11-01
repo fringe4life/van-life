@@ -1,9 +1,10 @@
 import type { AppDb } from "~/db/client.server";
 import {
-  getHostReviewsChartData,
+  getHostReviewRatingCounts,
   getHostReviewsPaginated,
 } from "~/features/host/dal/review.server";
 import type { HostPaginatedPageParams } from "~/features/host/services/income.server";
+import { toRatingMix } from "~/features/host/utils/rating-mix";
 import { toPagination } from "~/pagination/utils/to-pagination.server";
 import type { UUIDv7 } from "~/types/ids.server";
 import { tryCatch } from "~/utils/errors/try-catch.server";
@@ -29,17 +30,15 @@ export async function loadReviewsPage(
     })
   );
 
-  const { data: chartData } = await tryCatch(() =>
-    getHostReviewsChartData(db, userId)
+  const { data: ratingCounts } = await tryCatch(() =>
+    getHostReviewRatingCounts(db, userId)
   );
 
-  const points = chartData ?? [];
-  // Sum of histogram bars = total reviews (avoids a second COUNT query)
-  const reviewCount = points.reduce((sum, point) => sum + point.amount, 0);
+  const ratingMix = toRatingMix(ratingCounts ?? []);
 
   return {
-    chartData: points,
     pagePromise,
-    reviewCount,
+    ratingMix,
+    reviewCount: ratingMix.total,
   };
 }

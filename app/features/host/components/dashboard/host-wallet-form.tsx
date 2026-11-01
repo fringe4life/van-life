@@ -92,7 +92,7 @@ const HostWalletForm = ({
             marginBlockEnd: { "@wallet/lg": "0", base: "4" },
           })}
         >
-          Add or Withdraw Money
+          Deposit or withdraw
         </h3>
         <fetcher.Form
           className={cx(
@@ -110,7 +110,7 @@ const HostWalletForm = ({
               padding: "0",
             })}
           >
-            <legend className={visuallyHidden()}>Transaction type</legend>
+            <legend className={visuallyHidden()}>Deposit or withdrawal</legend>
 
             <div className={hstack({ gap: "4" })}>
               <Label>

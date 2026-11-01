@@ -9,17 +9,33 @@ import {
 } from "~/constants/cache-headers";
 import { VanDetailCard } from "~/features/vans/components/host-detail";
 import { getHostVanDetailNavItems } from "~/features/vans/components/host-detail/get-host-van-detail-nav-items";
-import { getHostVanBySlug } from "~/features/vans/dal/host-van.server";
 import { authContext } from "~/middleware/contexts/auth";
 import { dbContext } from "~/middleware/contexts/db";
 import { withSearch } from "~/pagination/utils/with-search";
 import { notFound } from "~/utils/errors/not-found";
-import { tryCatch } from "~/utils/errors/try-catch.server";
 import type { Route } from "./+types/index";
 
 export const headers = forwardDataHeaders;
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  /**
+   * Workaround: `.server` modules imported here rather than at module scope, because
+   * a static import survives React Router's client export removal and then trips its
+   * `.server` resolver, so the route's client bundle never loads.
+   *
+   * @remarks
+   * Still required on `@react-router/dev@8.5.1` with `vite@8.3.5` in `vite serve`.
+   * Drop when upstream ships a fix; re-verify this module returns 200 and the page
+   * hydrates. Full note: `app/routes/host/rental-activity.tsx`.
+   *
+   * @see https://github.com/remix-run/react-router/issues/14997 — open
+   * @see https://github.com/fringe4life/van-life/issues/402 — tracking
+   */
+  const [{ getHostVanBySlug }, { tryCatch }] = await Promise.all([
+    import("~/features/vans/dal/host-van.server"),
+    import("~/utils/errors/try-catch.server"),
+  ]);
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
 

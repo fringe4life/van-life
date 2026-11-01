@@ -1,7 +1,7 @@
 import { ViewTransition } from "react";
 import { data } from "react-router";
 import { css, cx } from "styled-system/css";
-import { grid } from "styled-system/patterns";
+import { cq, flex, grid } from "styled-system/patterns";
 import { DeferredPaginated } from "~/components/deferred/paginated";
 import { PendingUI } from "~/components/pending-ui";
 import { Sortable } from "~/components/sortable";
@@ -11,25 +11,45 @@ import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
-import { LazyBarChart } from "~/features/host/components/bar-chart/lazy-bar-chart";
+import { LazyMoneyTimeline } from "~/features/host/components/money-timeline/lazy-money-timeline";
+import { MoneyLedger } from "~/features/host/components/money-timeline/money-ledger";
 import { RentalTransaction } from "~/features/host/components/transaction/rental-transaction";
 import { TransactionListSkeleton } from "~/features/host/components/transaction/transaction-list-skeleton";
 import type { RentalTransactionProps } from "~/features/host/components/transaction/transaction-types";
-import { loadIncomePage } from "~/features/host/services/income.server";
-import { getChartMagnitudeMax } from "~/features/host/utils/chart-height-bands";
+import { moneyLabels } from "~/features/host/utils/money-labels";
 import { VanHeader } from "~/features/vans/components/van-header";
-import { displayPrice } from "~/features/vans/utils/display-price";
 import { authContext } from "~/middleware/contexts/auth";
 import { dbContext } from "~/middleware/contexts/db";
-import {
-  loadHostSearchParams,
-  parsePaginationCursor,
-} from "~/pagination/loaders.server";
 import { gridMax } from "~/styles";
 import type { Route } from "./+types/rental-activity";
 export const headers = forwardDataHeaders;
 
+const { inflow: rentalInflow, outflow: rentalOutflow } = moneyLabels.rental;
+
+/** Items already match the card props now that the chart band is gone. */
+const toRentalTransactionProps = (item: RentalTransactionProps) => item;
+
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
+  /**
+   * Workaround: these `.server` modules are imported here, not at the top of the
+   * module, because a static import survives React Router's client export removal
+   * and then trips its `.server` resolver — the route's client bundle never loads
+   * and the page never hydrates.
+   *
+   * @remarks
+   * Still required on `@react-router/dev@8.5.1` with `vite@8.3.5` in `vite serve`.
+   * Drop when upstream ships a fix; re-verify this module returns 200 and the page
+   * hydrates. The framework docs allow a loader to import `.server` files.
+   *
+   * @see https://github.com/remix-run/react-router/issues/14997 — open
+   * @see https://github.com/fringe4life/van-life/issues/402 — tracking
+   */
+  const [{ loadHostSearchParams, parsePaginationCursor }, { loadIncomePage }] =
+    await Promise.all([
+      import("~/pagination/loaders.server"),
+      import("~/features/host/services/income.server"),
+    ]);
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
@@ -44,100 +64,90 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   return data(page, { headers: PRIVATE_NO_STORE_HEADERS });
 };
 
-const renderIncomeItemProps = (
-  item: RentalTransactionProps,
-  chartMagnitudeMax: number
-) => ({
-  ...item,
-  chartMagnitudeMax,
-});
-
 const HostRentalActivity = ({ loaderData }: Route.ComponentProps) => {
-  const { chartData, elapsedDays, pagePromise, sumIncome, txnCount } =
-    loaderData;
-  const chartMagnitudeMax = getChartMagnitudeMax(chartData);
-  const renderRentalTransactionProps = (item: RentalTransactionProps) =>
-    renderIncomeItemProps(item, chartMagnitudeMax);
+  const { pagePromise, timeline, txnCount } = loaderData;
 
   return (
     <PendingUI
       as="section"
-      className={grid({
-        contain: "content",
-        gap: "0",
-        gridTemplateRows:
-          // biome-ignore assist/source/noDuplicateClasses: css styles
-          "repeat(3, min-content) var(--chart-height) min-content 1fr min-content",
-      })}
+      className={cx(
+        cq({ name: "activity" }),
+        grid({
+          contain: "content",
+          gap: "0",
+          gridTemplateRows: "repeat(4, min-content) 1fr",
+        })
+      )}
     >
       <title>Rental Activity | Van Life</title>
       <meta
-        content="View rental payments and adjustments from completed rentals"
+        content="Rental payments received and sent for completed rentals"
         name="description"
       />
-      <VanHeader>Rental activity</VanHeader>
-
-      <ViewTransition
-        {...viewTransitionShare}
-        name={chromeViewTransitionName.elapsedDays}
+      <div
+        className={flex({
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "3",
+          justifyContent: "space-between",
+        })}
       >
-        <p
-          className={css({
-            marginBlock: "3",
-          })}
+        <VanHeader>Rental activity</VanHeader>
+
+        <ViewTransition
+          {...viewTransitionShare}
+          name={chromeViewTransitionName.hostRange}
         >
-          Rental activity, last{" "}
-          <span
+          <p
             className={css({
               color: "muted.foreground",
-              fontWeight: "bold",
-              textDecoration: "underline",
+              fontSize: "sm",
+              fontVariantNumeric: "tabular-nums",
+              margin: "0",
             })}
           >
-            {elapsedDays} days
-          </span>
-        </p>
-      </ViewTransition>
-      <ViewTransition
-        {...viewTransitionShare}
-        name={chromeViewTransitionName.incomeAmount}
-      >
-        <p
-          className={css({
-            fontSize: { base: "3xl", md: "5xl", sm: "4xl" },
-            fontWeight: "extrabold",
-            marginBlockEnd: "6",
-          })}
-        >
-          {displayPrice(sumIncome)}
-        </p>
-      </ViewTransition>
+            {timeline?.rangeLabel}
+          </p>
+        </ViewTransition>
+      </div>
 
-      {/*
-        Option: defer chart like the list — return chartPromise from loader (don't await),
-        wrap with DeferredAwait + BarChartSkeleton fallback, then LazyBarChart inside.
-        Unblocks TTFB when aggregation is slow; list defer alone already feels fast.
-      */}
-      <LazyBarChart
-        data={chartData}
-        emptyState={{ title: "No rental earnings yet" }}
+      {timeline ? (
+        <MoneyLedger
+          inflow={timeline.inflowTotal}
+          inflowLabel={rentalInflow.ledger}
+          net={timeline.netTotal}
+          netLabel={moneyLabels.rental.net}
+          outflow={timeline.outflowTotal}
+          outflowLabel={rentalOutflow.ledger}
+        />
+      ) : null}
+
+      <LazyMoneyTimeline
+        data={timeline}
+        emptyState={{ title: moneyLabels.rental.empty }}
         errorState={{ title: "Something went wrong" }}
+        inflowLabel={rentalInflow.ledger}
         noMatchState={null}
+        outflowLabel={rentalOutflow.ledger}
       />
-      <Sortable itemCount={txnCount} title="Rental activity" />
+
+      <Sortable
+        className={css({ marginBlockStart: "5" })}
+        itemCount={txnCount}
+        title="Rental activity"
+      />
       <DeferredPaginated
         as="div"
         Component={RentalTransaction}
         className={cx(gridMax, css({ marginBlockStart: "6" }))}
         emptyState={{
-          description:
-            "Complete a rental and its payment activity will appear here.",
-          title: "No rental earnings yet",
+          description: "Complete a rental and its payments will appear here.",
+          title: "No rental payments yet",
         }}
         errorState={{ title: "Something went wrong" }}
         fallback={<TransactionListSkeleton />}
         noMatchState={null}
-        renderProps={renderRentalTransactionProps}
+        renderProps={toRentalTransactionProps}
         resolve={pagePromise}
       />
     </PendingUI>

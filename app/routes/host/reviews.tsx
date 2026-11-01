@@ -1,30 +1,24 @@
+import { ViewTransition } from "react";
 import { data } from "react-router";
 import { css, cx } from "styled-system/css";
-import { grid } from "styled-system/patterns";
+import { flex, grid } from "styled-system/patterns";
 import { DeferredPaginated } from "~/components/deferred/paginated";
 import { PendingUI } from "~/components/pending-ui";
 import { Sortable } from "~/components/sortable";
+import { chromeViewTransitionName } from "~/components/view-transition-names";
+import { viewTransitionShare } from "~/components/view-transition-share";
 import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
 import type { ReviewModel, UserModel } from "~/db/client.server";
-import { LazyBarChart } from "~/features/host/components/bar-chart/lazy-bar-chart";
+import { RatingMix } from "~/features/host/components/review/rating-mix";
+import { RatingStars } from "~/features/host/components/review/rating-stars";
 import { Review } from "~/features/host/components/review/review";
 import { ReviewListSkeleton } from "~/features/host/components/review/review-list-skeleton";
-import { normalizeReviewRating } from "~/features/host/components/review/review-recipe";
-import { loadReviewsPage } from "~/features/host/services/reviews.server";
-import {
-  type ChartHeightBandVariant,
-  getChartHeightBandVariantByPointId,
-} from "~/features/host/utils/chart-height-bands";
 import { VanHeader } from "~/features/vans/components/van-header";
 import { authContext } from "~/middleware/contexts/auth";
 import { dbContext } from "~/middleware/contexts/db";
-import {
-  loadHostSearchParams,
-  parsePaginationCursor,
-} from "~/pagination/loaders.server";
 import { gridMax } from "~/styles";
 import type { Prettify } from "~/types";
 import type { Route } from "./+types/reviews";
@@ -32,6 +26,21 @@ import type { Route } from "./+types/reviews";
 export const headers = forwardDataHeaders;
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
+  /**
+   * Workaround: these `.server` modules are imported here, not at the top of the
+   * module, because a static import survives React Router's client export removal
+   * and then trips its `.server` resolver. See `app/routes/host/rental-activity.tsx`
+   * for the full note.
+   *
+   * @see https://github.com/remix-run/react-router/issues/14997 — open
+   * @see https://github.com/fringe4life/van-life/issues/402 — tracking
+   */
+  const [{ loadHostSearchParams, parsePaginationCursor }, { loadReviewsPage }] =
+    await Promise.all([
+      import("~/pagination/loaders.server"),
+      import("~/features/host/services/reviews.server"),
+    ]);
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
@@ -48,13 +57,15 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 type ReviewListItem = Prettify<ReviewModel & { user: Pick<UserModel, "name"> }>;
 
-const renderReviewItemProps = (
-  { user, text, rating, updatedAt, createdAt, id }: ReviewListItem,
-  heightBandByRatingId: ReadonlyMap<string, ChartHeightBandVariant>
-) => ({
+const renderReviewItemProps = ({
+  createdAt,
+  id,
+  rating,
+  text,
+  updatedAt,
+  user,
+}: ReviewListItem) => ({
   date: updatedAt ?? createdAt,
-  heightBand:
-    heightBandByRatingId.get(String(normalizeReviewRating(rating))) ?? "one",
   id,
   name: user.name,
   rating,
@@ -62,45 +73,45 @@ const renderReviewItemProps = (
 });
 
 const HostReviews = ({ loaderData }: Route.ComponentProps) => {
-  const { chartData, pagePromise, reviewCount } = loaderData;
-  const heightBandByRatingId = getChartHeightBandVariantByPointId(chartData);
-  const renderReviewProps = (item: ReviewListItem) =>
-    renderReviewItemProps(item, heightBandByRatingId);
+  const { pagePromise, ratingMix, reviewCount } = loaderData;
 
   return (
     <PendingUI
       as="section"
-      className={cx(
-        grid({
-          contain: "content",
-          gap: "0",
-          gridTemplateRows:
-            // biome-ignore assist/source/noDuplicateClasses: grid template rows
-            "min-content var(--chart-height) min-content 1fr min-content",
-        })
-      )}
+      className={grid({
+        contain: "content",
+        gap: "0",
+        gridTemplateRows: "min-content 1fr",
+      })}
     >
       <title>Reviews | Van Life</title>
       <meta
         content="View reviews and ratings from your van rentals"
         name="description"
       />
-      <VanHeader>Your Reviews</VanHeader>
 
-      {/*
-        Option: defer chart like the list — return chartPromise from loader (don't await),
-        wrap with DeferredAwait + BarChartSkeleton fallback, then LazyBarChart inside.
-        Unblocks TTFB when aggregation is slow; list defer alone already feels fast.
-      */}
-      <LazyBarChart
-        data={chartData}
-        emptyState={{ title: "You have no reviews" }}
-        errorState={{
-          description: "Please try again.",
-          title: "Something went wrong",
-        }}
-        noMatchState={null}
-      />
+      <div
+        className={flex({
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "3",
+          justifyContent: "space-between",
+        })}
+      >
+        <VanHeader>Your Reviews</VanHeader>
+
+        {reviewCount > 0 ? (
+          <ViewTransition
+            {...viewTransitionShare}
+            name={chromeViewTransitionName.hostRating}
+          >
+            <RatingStars rating={ratingMix.average} />
+          </ViewTransition>
+        ) : null}
+      </div>
+
+      {reviewCount > 0 ? <RatingMix {...ratingMix} /> : null}
+
       <Sortable itemCount={reviewCount} title="Reviews" />
 
       <DeferredPaginated
@@ -111,7 +122,7 @@ const HostReviews = ({ loaderData }: Route.ComponentProps) => {
         errorState={{ title: "Something went wrong" }}
         fallback={<ReviewListSkeleton />}
         noMatchState={null}
-        renderProps={renderReviewProps}
+        renderProps={renderReviewItemProps}
         resolve={pagePromise}
       />
     </PendingUI>

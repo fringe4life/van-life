@@ -1,7 +1,10 @@
+import { ViewTransition } from "react";
 import { href } from "react-router";
 import { css, cx } from "styled-system/css";
 import { hstack } from "styled-system/patterns";
 import { CustomLink } from "~/components/links/custom-link";
+import { chromeViewTransitionName } from "~/components/view-transition-names";
+import { viewTransitionShare } from "~/components/view-transition-share";
 import { RatingStars } from "~/features/host/components/review/rating-stars";
 
 interface HostReviewSectionProps {
@@ -30,7 +33,13 @@ const HostReviewSection = ({ avgRating }: HostReviewSectionProps) => (
         textShadow: "sm",
       })}
     >
-      Your Avg Review <RatingStars rating={avgRating} />
+      Your Avg Review{" "}
+      <ViewTransition
+        {...viewTransitionShare}
+        name={chromeViewTransitionName.hostRating}
+      >
+        <RatingStars rating={avgRating} />
+      </ViewTransition>
     </div>
     <CustomLink
       className={css({

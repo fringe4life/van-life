@@ -7,24 +7,22 @@ import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
-import { listActiveRentals } from "~/features/host/services/rental.server";
+import type { listActiveRentals as listActiveRentalsQuery } from "~/features/host/services/rental.server";
 import { VanCard } from "~/features/vans/components/van-card";
 import { VanHeader } from "~/features/vans/components/van-header";
 import { authContext } from "~/middleware/contexts/auth";
 import { dbContext } from "~/middleware/contexts/db";
 import { Pagination } from "~/pagination/components/pagination";
 import { PaginationOffsetTransition } from "~/pagination/components/pagination-offset-transition";
-import {
-  loadHostSearchParams,
-  parsePaginationCursor,
-} from "~/pagination/loaders.server";
 import { pageSliceKey } from "~/pagination/utils/page-slice-key";
 import { gridMax } from "~/styles";
 import type { Prettify } from "~/types";
 import type { Route } from "./+types/rentals";
 
 type ActiveRental = Prettify<
-  NonNullable<Awaited<ReturnType<typeof listActiveRentals>>["items"]>[number]
+  NonNullable<
+    Awaited<ReturnType<typeof listActiveRentalsQuery>>["items"]
+  >[number]
 >;
 
 const renderRentalVanCardProps = (rental: ActiveRental, index: number) => ({
@@ -51,6 +49,27 @@ const renderRentalVanCardProps = (rental: ActiveRental, index: number) => ({
 export const headers = forwardDataHeaders;
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
+  /**
+   * Workaround: `.server` modules imported here rather than at module scope, because
+   * a static import survives React Router's client export removal and then trips its
+   * `.server` resolver, so the route's client bundle never loads.
+   *
+   * @remarks
+   * Still required on `@react-router/dev@8.5.1` with `vite@8.3.5` in `vite serve`.
+   * Drop when upstream ships a fix; re-verify this module returns 200 and the page
+   * hydrates. Full note: `app/routes/host/rental-activity.tsx`.
+   *
+   * @see https://github.com/remix-run/react-router/issues/14997 — open
+   * @see https://github.com/fringe4life/van-life/issues/402 — tracking
+   */
+  const [
+    { loadHostSearchParams, parsePaginationCursor },
+    { listActiveRentals },
+  ] = await Promise.all([
+    import("~/pagination/loaders.server"),
+    import("~/features/host/services/rental.server"),
+  ]);
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
 

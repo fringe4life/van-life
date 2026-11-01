@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![React Router](https://img.shields.io/badge/React%20Router-8.5.0-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
+[![React Router](https://img.shields.io/badge/React%20Router-8.5.1-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PandaCSS](https://img.shields.io/badge/PandaCSS-2.4.0-F6E05E?logoColor=black)](https://panda-css.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.12-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.14-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
-[![Biome](https://img.shields.io/badge/Biome-2.6.3-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
+[![Biome](https://img.shields.io/badge/Biome-2.6.4-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-8.1.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--rc.5-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
 [![Cloudflare D1](https://img.shields.io/badge/Cloudflare%20D1-SQLite-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
@@ -95,7 +95,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **PandaCSS 2.1.2** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`); `define*` helpers from `@pandacss/dev/define`
 - **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover, select)
 - **Lucide React 1.47.0** for icons (direct imports for performance)
-- **TanStack Charts 1.0.0** for host income/review bars (lazy-loaded via `LazyBarChart`; one bar per period, end-only radius, amount-band colors + labels)
+- **TanStack Charts 1.1.0** for the host money timeline (lazy-loaded via `LazyMoneyTimeline`; bars stacked by inflow/outflow with a cumulative net line; reviews use `RatingMix`, not the chart library)
 - **nuqs 2.10.2** for type-safe URL state management via shared parsers
 
 ### Backend & Database
@@ -166,10 +166,11 @@ app/
 │   │   ├── schema.server.ts   # Login/sign-up Valibot schemas
 │   │   └── types.ts           # Login/sign-up field keys + field-error types
 │   ├── host/
-│   │   ├── components/ # Host UI (van-form, charts, dashboard, reviews, transaction/, host-nav/)
+│   │   ├── components/ # Host UI (van-form, money-timeline, dashboard, reviews, transaction/, host-nav/)
 │   │   │   ├── dashboard/  # host-income-section, host-review-section, host-vans-section, host-wallet-form
 │   │   │   ├── host-nav/   # Grouped rail + tablet container + mobile popover
-│   │   │   ├── review/     # Review + review-recipe / review-badge
+│   │   │   ├── money-timeline/ # MoneyTimeline + ledger + skeleton (lazy via LazyMoneyTimeline)
+│   │   │   ├── review/     # Review, RatingMix, review-recipe / review-badge
 │   │   │   └── transaction/ # Transaction, rental/wallet rows, transaction-recipe / badge
 │   │   ├── constants/  # host-nav-items, host-nav-groups, host-nav-types
 │   │   ├── dal/        # rental-activity, wallet-movement, review, transaction-sort
@@ -178,7 +179,7 @@ app/
 │   │   ├── rentals/
 │   │   │   └── schema.server.ts  # Rental action schemas
 │   │   ├── schema.server.ts  # Host money form + transaction-type Valibot `is`
-│   │   └── utils/      # Chart period/points, height-bands, pickChartGranularity, resolveChartContext
+│   │   └── utils/      # Chart period, money-timeline, rating-mix, resolveChartContext
 │   └── vans/
 │       ├── components/ # Van UI (VanCard, van-card-recipe, VanDetail, van-filters/, vans-list/)
 │       │   ├── host-detail/  # VanDetailCard + details/pricing/photos + nav items
@@ -878,13 +879,13 @@ toggleOptimistic({ type: 'toggle' });
 
 ### Lazy Loading with React.lazy()
 
-Heavy components like charts are code-split using `React.lazy()` and `Suspense` via `LazyBarChart` → `bar-chart.tsx` (`@tanstack/charts`; no `.client` suffix):
+Heavy chart UI is code-split using `React.lazy()` and `Suspense` via `LazyMoneyTimeline` → `money-timeline.tsx` (`@tanstack/charts`; no `.client` suffix):
 
 ```tsx
-const BarChartComponent = lazy(() => import("./bar-chart"));
+const MoneyTimelineChart = lazy(() => import("./money-timeline"));
 
-<Suspense fallback={<Skeleton />}>
-  <BarChartComponent data={chartData} />
+<Suspense fallback={<MoneyTimelineSkeleton />}>
+  <MoneyTimelineChart series={series} />
 </Suspense>;
 ```
 
@@ -901,7 +902,7 @@ Host rental-activity / reviews / wallet-activity return critical summary data im
 />
 ```
 
-Chart series use server SQL aggregations (`resolveChartContext`, `pickChartGranularity`, period/points helpers) so clients receive buckets — not raw transaction rows. Each bar is one color for its amount band (`getChartBarPoints`) with `radius: { end }`; legend labels are user-facing ranges (`0–2k` …), not token keys. Skeleton mirrors legend / bars / axis grid.
+Money routes share one timeline: SQL aggregates by period and type (`resolveChartContext`, `periodSqlFor`, `toMoneyTimeline`), zero-fills empty buckets, and colours bars with `chart.inflow` / `chart.outflow` plus a cumulative net line. Reviews skip the chart library entirely — `RatingMix` tallies star glyphs from `COUNT … GROUP BY rating`. Skeletons mirror the live layout so the lazy swap does not shift.
 
 ### Benefits
 

@@ -2,7 +2,7 @@ import { defineGlobalStyles } from "@pandacss/dev/define";
 
 export const globalCss = defineGlobalStyles({
   ".rating-rail": {
-    "--_rating-fill": "var(--rating-band-color, {colors.rating})",
+    "--_rating-fill": "{colors.rating}",
     "--_rating-percent":
       "clamp(0%, calc(var(--rating) / var(--star-count) * 100%), 100%)",
     background:
@@ -15,6 +15,17 @@ export const globalCss = defineGlobalStyles({
     insetInlineStart: "0",
     overflow: "hidden",
     position: "absolute",
+  },
+  /**
+   * React `<ViewTransition>` does not honour `prefers-reduced-motion`. Kill
+   * the CSS VT animations so named morphs still swap content without motion.
+   * @see https://react.dev/reference/react/ViewTransition#always-check-prefers-reduced-motion
+   */
+  "@media (prefers-reduced-motion: reduce)": {
+    "::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*)":
+      {
+        animation: "none !important",
+      },
   },
   "h1,h2,h3,h4,h5,h6": {
     textWrap: "balance",

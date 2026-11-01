@@ -1,5 +1,4 @@
 import { css } from "styled-system/css";
-import { getChartHeightBand } from "~/features/host/utils/chart-height-bands";
 import { Transaction } from "./transaction";
 import type { RentalTransactionProps } from "./transaction-types";
 
@@ -31,26 +30,15 @@ const RentalTransactionDetails = ({
   </p>
 );
 
-interface RentalTransactionComponentProps extends RentalTransactionProps {
-  chartMagnitudeMax: number;
-}
-
 const RentalTransaction = ({
   amount,
-  chartMagnitudeMax,
   createdAt,
   id,
   rentDuration,
   rentName,
   type,
-}: RentalTransactionComponentProps) => (
-  <Transaction
-    amount={amount}
-    createdAt={createdAt}
-    heightBand={getChartHeightBand(amount, chartMagnitudeMax).variant}
-    id={id}
-    type={type}
-  >
+}: RentalTransactionProps) => (
+  <Transaction amount={amount} createdAt={createdAt} id={id} type={type}>
     <RentalTransactionDetails rentDuration={rentDuration} rentName={rentName} />
   </Transaction>
 );

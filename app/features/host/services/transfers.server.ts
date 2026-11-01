@@ -1,10 +1,14 @@
 import type { AppDb } from "~/db/client.server";
 import {
   getUserTransactionsPaginated,
-  getUserTransferChartData,
   getUserTransferStats,
+  getUserTransferTimeline,
 } from "~/features/host/dal/wallet-movement.server";
 import type { HostPaginatedPageParams } from "~/features/host/services/income.server";
+import {
+  pickTimelineGranularity,
+  toMoneyTimeline,
+} from "~/features/host/utils/money-timeline";
 import {
   resolveChartContext,
   toTransactionAggStats,
@@ -38,22 +42,28 @@ export async function loadTransfersPage(
     getUserTransferStats(db, userId)
   );
 
-  const { total, ...stats } = toTransactionAggStats(rawStats);
+  const stats = toTransactionAggStats(rawStats);
+  const { count, elapsedDays } = resolveChartContext(stats);
+  const granularity = pickTimelineGranularity(elapsedDays);
 
-  const { count, elapsedDays, granularity } = resolveChartContext({
-    ...stats,
-  });
-
-  const { data: chartData } = await tryCatch(() =>
-    getUserTransferChartData(db, userId, granularity)
+  const { data: timelineRows, error: timelineError } = await tryCatch(() =>
+    getUserTransferTimeline(db, userId, granularity)
   );
 
+  // Failed query → null so LazyMoneyTimeline shows errorState, not false zeros.
+  const timeline = timelineError
+    ? null
+    : toMoneyTimeline({
+        firstAt: stats.firstAt,
+        granularity,
+        lastAt: stats.lastAt,
+        rows: timelineRows ?? [],
+      });
+
   return {
-    chartData: chartData ?? [],
     elapsedDays,
-    granularity,
     pagePromise,
-    sumAmount: total,
+    timeline,
     txnCount: count,
   };
 }

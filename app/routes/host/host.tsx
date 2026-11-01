@@ -12,9 +12,6 @@ import { HostReviewSection } from "~/features/host/components/dashboard/host-rev
 import { HostVansSection } from "~/features/host/components/dashboard/host-vans-section";
 import { HostWalletForm } from "~/features/host/components/dashboard/host-wallet-form";
 import { useHostWallet } from "~/features/host/hooks/use-host-wallet";
-import { moneySchema } from "~/features/host/schema.server";
-import { loadHostDashboard } from "~/features/host/services/dashboard.server";
-import { depositOrWithdraw } from "~/features/host/services/wallet.server";
 import { MONEY_ECHO_FIELDS, MONEY_FORM_FIELDS } from "~/features/host/types";
 import { DEPOSIT } from "~/features/vans/constants/vans-constants";
 import { authContext } from "~/middleware/contexts/auth";
@@ -28,7 +25,6 @@ import {
   schemaErrorsToFieldErrors,
   validateSchema,
 } from "~/utils/errors/parse-schema";
-import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/host";
 
 type HostWalletActionData = FormActionResultFrom<
@@ -40,6 +36,23 @@ type HostWalletActionData = FormActionResultFrom<
 export const headers = forwardDataHeaders;
 
 export const loader = async ({ context }: Route.LoaderArgs) => {
+  /**
+   * Workaround: `.server` module imported here rather than at module scope, because
+   * a static import survives React Router's client export removal and then trips its
+   * `.server` resolver, so the route's client bundle never loads.
+   *
+   * @remarks
+   * Still required on `@react-router/dev@8.5.1` with `vite@8.3.5` in `vite serve`.
+   * Drop when upstream ships a fix; re-verify this module returns 200 and the page
+   * hydrates. Full note: `app/routes/host/rental-activity.tsx`.
+   *
+   * @see https://github.com/remix-run/react-router/issues/14997 — open
+   * @see https://github.com/fringe4life/van-life/issues/402 — tracking
+   */
+  const { loadHostDashboard } = await import(
+    "~/features/host/services/dashboard.server"
+  );
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
@@ -55,6 +68,14 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
 };
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
+  // Workaround: same `.server` import reason as the loader above (#402).
+  const [{ moneySchema }, { depositOrWithdraw }, { toActionResultOrThrow }] =
+    await Promise.all([
+      import("~/features/host/schema.server"),
+      import("~/features/host/services/wallet.server"),
+      import("~/utils/errors/to-action-result.server"),
+    ]);
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
@@ -96,8 +117,8 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
   const {
     vansPromise,
     avgRating,
-    elapsedDays,
     name,
+    rangeLabel,
     sumIncome,
     transactionSummary,
   } = loaderData;
@@ -112,10 +133,10 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
         name="description"
       />
       <HostIncomeSection
-        elapsedDays={elapsedDays}
         isBalancePending={wallet.isPending}
         name={name}
         optimisticBalance={wallet.optimisticBalance}
+        rangeLabel={rangeLabel}
         sumIncome={sumIncome}
       />
       <HostReviewSection avgRating={avgRating} />

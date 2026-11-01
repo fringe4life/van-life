@@ -14,17 +14,13 @@ import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
-import { rentVanSchema } from "~/features/host/rentals/schema.server";
-import { rentVan } from "~/features/host/services/rental.server";
 import { VanCard } from "~/features/vans/components/van-card";
-import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
 import { authContext } from "~/middleware/contexts/auth";
 import { dbContext } from "~/middleware/contexts/db";
 import { badRequest } from "~/utils/errors/bad-request";
 import { notFound } from "~/utils/errors/not-found";
 import { validateSchema } from "~/utils/errors/parse-schema";
 import { serverError } from "~/utils/errors/server-error";
-import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/rental-detail";
 
 type RentActionData = FormActionFailure<string>;
@@ -32,6 +28,23 @@ type RentActionData = FormActionFailure<string>;
 export const headers = forwardDataHeaders;
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  /**
+   * Workaround: `.server` module imported here rather than at module scope, because
+   * a static import survives React Router's client export removal and then trips its
+   * `.server` resolver, so the route's client bundle never loads.
+   *
+   * @remarks
+   * Still required on `@react-router/dev@8.5.1` with `vite@8.3.5` in `vite serve`.
+   * Drop when upstream ships a fix; re-verify this module returns 200 and the page
+   * hydrates. Full note: `app/routes/host/rental-activity.tsx`.
+   *
+   * @see https://github.com/remix-run/react-router/issues/14997 — open
+   * @see https://github.com/fringe4life/van-life/issues/402 — tracking
+   */
+  const { loadVanBySlug } = await import(
+    "~/features/vans/services/van-detail.server"
+  );
+
   const db = context.get(dbContext);
   const result = await loadVanBySlug(db, params.vanSlug);
 
@@ -52,6 +65,14 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 };
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
+  // Workaround: same `.server` import reason as the loader above (#402).
+  const [{ rentVanSchema }, { rentVan }, { toActionResultOrThrow }] =
+    await Promise.all([
+      import("~/features/host/rentals/schema.server"),
+      import("~/features/host/services/rental.server"),
+      import("~/utils/errors/to-action-result.server"),
+    ]);
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
 

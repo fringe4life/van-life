@@ -2,7 +2,6 @@ import { and, asc, count, desc, eq, type SQL } from "drizzle-orm";
 import type { AppDb } from "~/db/client.server";
 import { user } from "~/db/schema/auth";
 import { rent, review } from "~/db/schema/van";
-import type { ChartPoint } from "~/features/host/utils/chart-points.server";
 import {
   COMMON_SORT_CONFIGS,
   type OrderByClause,
@@ -11,7 +10,11 @@ import type { PaginationParams } from "~/pagination/types";
 import { createKeysetCursorPredicate } from "~/pagination/utils/create-keyset-cursor.server";
 import { resolveSortedCursor } from "~/pagination/utils/resolve-sorted-cursor.server";
 import type { UUIDv7 } from "~/types/ids.server";
-import { MAX_RATING } from "../constants/constants";
+
+export interface HostReviewRatingCount {
+  count: number;
+  rating: number;
+}
 
 function mapReviewOrderBy(orderByClause: OrderByClause) {
   return Object.entries(orderByClause).map(([field, dir]) => {
@@ -91,32 +94,20 @@ export async function getHostReviewsPaginated(
 }
 
 /**
- * Star histogram for host reviews. Always returns ratings 1..5 (zeros filled).
- * ≤5 rows — not one row per review.
+ * Star histogram for host reviews: one row per rating the host received (≤5),
+ * not one row per review. Ratings nobody gave are filled in by the presenter.
  */
-export async function getHostReviewsChartData(
+export async function getHostReviewRatingCounts(
   db: AppDb,
   userId: UUIDv7
-): Promise<ChartPoint[]> {
-  const rows = await db
+): Promise<HostReviewRatingCount[]> {
+  return await db
     .select({
-      amount: count().mapWith(Number),
+      count: count().mapWith(Number),
       rating: review.rating,
     })
     .from(review)
     .innerJoin(rent, eq(review.rentId, rent.id))
     .where(hostReviewsWhere(userId))
-    .groupBy(review.rating)
-    .orderBy(asc(review.rating));
-
-  const byRating = new Map(rows.map((row) => [row.rating, row.amount]));
-
-  return Array.from({ length: MAX_RATING }, (_, index) => {
-    const rating = index + 1;
-    return {
-      amount: byRating.get(rating) ?? 0,
-      id: String(rating),
-      name: String(rating),
-    };
-  });
+    .groupBy(review.rating);
 }

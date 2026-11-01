@@ -11,7 +11,7 @@ Not Baseline. Safari stable still missing. Cloudflare Workers has **no supported
 | D1 / SQLite | `INTEGER` unix ms. SQL default `cast(unixepoch('subsecond') * 1000 as integer)` |
 | Drizzle 1.0.0-rc.4 | `integer(..., { mode: "timestamp_ms" })` → JS `Date` ([source](https://github.com/drizzle-team/drizzle-orm/blob/main/drizzle-orm/src/sqlite-core/columns/integer.ts)) |
 | `$onUpdate` | `() => new Date()` on auth + review |
-| `date-fns` 5.0.0-alpha.0 | **one** import: `differenceInDays` in [`app/utils/get-elapsed-time.server.ts`](../app/utils/get-elapsed-time.server.ts) |
+| ~~`date-fns` 5.0.0-alpha.0~~ | **Removed 2026-11-01.** Its one call (`differenceInDays` in [`app/utils/get-elapsed-time.server.ts`](../app/utils/get-elapsed-time.server.ts)) is now UTC calendar-day arithmetic on `Date`; the dependency and its `optimizeDeps` entry are gone. |
 | Display | `Intl.DateTimeFormat` + `Date.toISOString()` / `toLocaleDateString()` |
 | Loaders | `Date` crosses RR via turbo-stream 3.2.1 (this repo overrides it) |
 | better-auth 1.7.3 | drizzle adapter writes `Date` into `timestamp_ms` columns |
@@ -243,7 +243,7 @@ Phased adoption (least risk):
 
 1. Polyfill Worker (`/implementation`) + `entry.client` (`/global`). Add `esnext.temporal` to tsconfig.
 2. `instantMs` helper + migrate **non-auth** tables. Keep loader `Date` via `new Date(instant.epochMilliseconds)`.
-3. Replace `get-elapsed-time` with Instant/PlainDate; remove `date-fns`.
+3. Replace `get-elapsed-time` with Instant/PlainDate (`date-fns` is already removed).
 4. Display: Instant or formatted strings; drop `toLocaleDateString()` hydration mismatch (already TODO on reviews).
 5. Auth columns later, if ever.
 

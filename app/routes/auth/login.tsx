@@ -16,9 +16,7 @@ import {
 import { AUTH_VT, AuthCard } from "~/features/auth/components/auth-card";
 import { AuthForm } from "~/features/auth/components/auth-form";
 import { useAuthForm } from "~/features/auth/hooks/use-auth-form";
-import { loginSchema } from "~/features/auth/schema.server";
 import { LOGIN_ECHO_FIELDS, LOGIN_FORM_FIELDS } from "~/features/auth/types";
-import { getAuth } from "~/lib/auth.server";
 import { hasAuthContext } from "~/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/middleware/functions/has-auth-middleware";
 import {
@@ -30,7 +28,6 @@ import {
   schemaErrorsToFieldErrors,
   validateSchema,
 } from "~/utils/errors/parse-schema";
-import { tryCatch } from "~/utils/errors/try-catch.server";
 
 import type { Route } from "./+types/login";
 
@@ -55,6 +52,25 @@ export function loader({ context, request }: Route.LoaderArgs) {
 }
 
 export async function action({ request }: Route.ActionArgs) {
+  /**
+   * Workaround: `.server` modules imported here rather than at module scope, because
+   * a static import survives React Router's client export removal and then trips its
+   * `.server` resolver, so the route's client bundle never loads.
+   *
+   * @remarks
+   * Still required on `@react-router/dev@8.5.1` with `vite@8.3.5` in `vite serve`.
+   * Drop when upstream ships a fix; re-verify this module returns 200 and the page
+   * hydrates. Full note: `app/routes/host/rental-activity.tsx`.
+   *
+   * @see https://github.com/remix-run/react-router/issues/14997 — open
+   * @see https://github.com/fringe4life/van-life/issues/402 — tracking
+   */
+  const [{ loginSchema }, { getAuth }, { tryCatch }] = await Promise.all([
+    import("~/features/auth/schema.server"),
+    import("~/lib/auth.server"),
+    import("~/utils/errors/try-catch.server"),
+  ]);
+
   const formData = Object.fromEntries(await request.formData());
   const echoValues = pickFormValues(formData, LOGIN_ECHO_FIELDS);
 

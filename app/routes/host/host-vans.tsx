@@ -35,10 +35,6 @@ import {
 } from "~/features/vans/hooks/host-vans-list-reducer";
 import { useDisplayHostVans } from "~/features/vans/hooks/use-display-host-vans";
 import { addVanSchema } from "~/features/vans/schema";
-import {
-  createHostVan,
-  loadHostVansPage,
-} from "~/features/vans/services/host-vans.server";
 import type {
   HostVanListItem,
   VanFormFieldErrors,
@@ -91,6 +87,23 @@ const hostVansActionSuccessSchema = looseObject({
 export const headers = forwardDataHeaders;
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
+  /**
+   * Workaround: `.server` module imported here rather than at module scope, because
+   * a static import survives React Router's client export removal and then trips its
+   * `.server` resolver, so the route's client bundle never loads.
+   *
+   * @remarks
+   * Still required on `@react-router/dev@8.5.1` with `vite@8.3.5` in `vite serve`.
+   * Drop when upstream ships a fix; re-verify this module returns 200 and the page
+   * hydrates. Full note: `app/routes/host/rental-activity.tsx`.
+   *
+   * @see https://github.com/remix-run/react-router/issues/14997 — open
+   * @see https://github.com/fringe4life/van-life/issues/402 — tracking
+   */
+  const { loadHostVansPage } = await import(
+    "~/features/vans/services/host-vans.server"
+  );
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
@@ -100,6 +113,11 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 };
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
+  // Workaround: same `.server` import reason as the loader above (#402).
+  const { createHostVan } = await import(
+    "~/features/vans/services/host-vans.server"
+  );
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
