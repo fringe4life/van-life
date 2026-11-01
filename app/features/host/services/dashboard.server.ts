@@ -3,6 +3,7 @@ import { getRentalActivityStats } from "~/features/host/dal/rental-activity.serv
 import { getAverageReviewRating } from "~/features/host/dal/review-analytics.server";
 import { getAccountSummary } from "~/features/host/dal/wallet-movement.server";
 import { formatRangeLabel } from "~/features/host/utils/money-timeline";
+import { roundReviewAverage } from "~/features/host/utils/rating-mix";
 import { toTransactionAggStats } from "~/features/host/utils/resolve-chart-context.server";
 import { getHostVans } from "~/features/vans/dal/host-van.server";
 import type { UUIDv7 } from "~/types/ids.server";
@@ -32,7 +33,7 @@ export async function loadHostDashboard(db: AppDb, userId: UUIDv7) {
   const { firstAt, lastAt, total } = toTransactionAggStats(rawIncomeStats);
 
   return {
-    avgRating: avgRating ?? 0,
+    avgRating: roundReviewAverage(avgRating ?? 0),
     // Same label the financial routes put in their header slot, so the slot
     // reads as one value across the host pages.
     rangeLabel:

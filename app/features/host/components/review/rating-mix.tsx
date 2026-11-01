@@ -97,7 +97,11 @@ const RatingRow = ({ bucket }: { bucket: RatingBucket }): ReactNode => (
       </span>
     </span>
 
-    <span aria-hidden="true" className={glyphField}>
+    <span
+      aria-hidden="true"
+      className={glyphField}
+      title={`${bucket.count} reviews`}
+    >
       {Array.from(
         { length: Math.min(bucket.count, MAX_RATING_GLYPHS) },
         (_, index) => (
@@ -105,6 +109,18 @@ const RatingRow = ({ bucket }: { bucket: RatingBucket }): ReactNode => (
           <StarIcon className={glyph} key={`${bucket.rating}-${index}`} />
         )
       )}
+      {bucket.count > MAX_RATING_GLYPHS ? (
+        <span
+          className={css({
+            color: "muted.foreground",
+            fontSize: "xs",
+            fontWeight: "bold",
+            lineHeight: "1",
+          })}
+        >
+          …
+        </span>
+      ) : null}
     </span>
 
     <span className={cx(numeric, css({ fontSize: "sm", fontWeight: "bold" }))}>

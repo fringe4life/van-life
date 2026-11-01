@@ -6,7 +6,8 @@ const MS_PER_DAY = 86_400_000;
 
 /**
  * UTC calendar-day index. Whole-day arithmetic on the UTC date keeps DST out of
- * the span, which is what `differenceInDays` gave us before date-fns was dropped.
+ * the span. date-fns `differenceInDays` measured local full-day periods instead;
+ * this is the UTC calendar behaviour the app wants after that dependency left.
  */
 const utcDayIndex = (date: Date): number =>
   Math.floor(

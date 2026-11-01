@@ -38,6 +38,11 @@ function toRatingBuckets(counts: readonly RatingCount[]): RatingBucket[] {
   });
 }
 
+/** One decimal place — shared by the reviews tally and the dashboard morph. */
+export function roundReviewAverage(average: number): number {
+  return Math.round(average * 10) / 10;
+}
+
 function toAverageRating(buckets: readonly RatingBucket[]): number {
   const total = sumCounts(buckets);
 
@@ -50,7 +55,7 @@ function toAverageRating(buckets: readonly RatingBucket[]): number {
     0
   );
 
-  return Math.round((weightedTotal / total) * 10) / 10;
+  return roundReviewAverage(weightedTotal / total);
 }
 
 export function toRatingMix(counts: readonly RatingCount[]): RatingMixData {
