@@ -1,23 +1,27 @@
 import { cva } from "styled-system/css";
 import { TransactionType } from "~/db/enums";
-import type { ChartHeightBandVariant } from "~/features/host/utils/chart-height-bands";
+import { moneyLabels } from "~/features/host/utils/money-labels";
 
+/**
+ * Rail badge = which ledger; title = direction word from `moneyLabels`.
+ * Vocabulary decision: #403.
+ */
 const transactionMeta = {
   [TransactionType.DEPOSIT]: {
-    label: "Deposit",
-    title: "Wallet funded",
+    label: "Wallet",
+    title: moneyLabels.wallet.inflow.card,
   },
   [TransactionType.RENTAL_PAYMENT]: {
-    label: "Rental payment",
-    title: "Payment received",
+    label: "Rental",
+    title: moneyLabels.rental.inflow.card,
   },
   [TransactionType.RENTAL_RETURN]: {
-    label: "Rental return",
-    title: "Payment adjusted",
+    label: "Rental",
+    title: moneyLabels.rental.outflow.card,
   },
   [TransactionType.WITHDRAW]: {
-    label: "Withdrawal",
-    title: "Payout sent",
+    label: "Wallet",
+    title: moneyLabels.wallet.outflow.card,
   },
 } as const satisfies Record<TransactionType, { label: string; title: string }>;
 
@@ -30,10 +34,12 @@ const transactionMeta = {
 const transactionGridAreasSm = '"details amount"';
 const transactionGridAreasBase = '"details" "amount"';
 
+/** Rail colour reads direction; the card tint stays a type cue. */
 const transactionCard = cva({
   base: {
     alignItems: { "@transaction/sm": "center", base: "start" },
     alignSelf: "start",
+    borderColor: "border.subtle",
     borderLeftWidth: "4",
     columnGap: { "@transaction/sm": "6" },
     display: "grid",
@@ -52,32 +58,22 @@ const transactionCard = cva({
     type: "RENTAL_PAYMENT",
   },
   variants: {
-    heightBand: {
-      five: { borderInlineStartColor: "chart.5" },
-      four: { borderInlineStartColor: "chart.4" },
-      one: { borderInlineStartColor: "chart.1" },
-      three: { borderInlineStartColor: "chart.3" },
-      two: { borderInlineStartColor: "chart.2" },
-    } satisfies Record<
-      ChartHeightBandVariant,
-      { borderInlineStartColor: string }
-    >,
     type: {
       DEPOSIT: {
         backgroundColor: "surface.accent/40",
-        borderColor: "border.accent",
+        borderInlineStartColor: "chart.inflow",
       },
       RENTAL_PAYMENT: {
         backgroundColor: "primary/10",
-        borderColor: "primary",
+        borderInlineStartColor: "chart.inflow",
       },
       RENTAL_RETURN: {
         backgroundColor: "secondary/5",
-        borderColor: "secondary",
+        borderInlineStartColor: "chart.outflow",
       },
       WITHDRAW: {
         backgroundColor: "surface.muted/50",
-        borderColor: "border.strong",
+        borderInlineStartColor: "chart.outflow",
       },
     },
   },

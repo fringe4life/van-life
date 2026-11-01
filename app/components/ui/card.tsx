@@ -7,6 +7,7 @@ const Card = ({ className, ...props }: ComponentProps<"div">) => (
     className={cx(
       css({
         backgroundColor: "card",
+        borderColor: "border.subtle",
         borderStyle: "solid",
         borderWidth: "1",
         color: "card.foreground",

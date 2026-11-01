@@ -19,24 +19,13 @@ import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
-import { parseUuidV7 } from "~/dal/parse-uuidv7.server";
-import {
-  completeReturnRental,
-  type HostRentedVan,
-  loadReturnRentalContext,
-} from "~/features/host/services/rental.server";
+import type { HostRentedVan } from "~/features/host/services/rental.server";
 import { VanCard } from "~/features/vans/components/van-card";
 import { getCost } from "~/features/vans/utils/get-cost";
 import { authContext } from "~/middleware/contexts/auth";
 import { dbContext } from "~/middleware/contexts/db";
 import { getHostRedirectUrl } from "~/middleware/utils/auth-redirect";
-import {
-  domainErrorToServiceResult,
-  isDomainError,
-  throwDomainHttp,
-} from "~/utils/errors/domain-error.server";
 import { notFound } from "~/utils/errors/not-found";
-import { toActionResultOrThrow } from "~/utils/errors/to-action-result.server";
 import type { Route } from "./+types/return-rental";
 
 interface SharedRentalData {
@@ -50,10 +39,32 @@ const fetchSharedDataMiddleware: Route.MiddlewareFunction = async (
   { params, context },
   next
 ) => {
+  /**
+   * Workaround: `.server` modules imported here rather than at module scope, because
+   * a static import survives React Router's client export removal and then trips its
+   * `.server` resolver, so the route's client bundle never loads.
+   *
+   * @remarks
+   * Still required on `@react-router/dev@8.5.1` with `vite@8.3.5` in `vite serve`.
+   * Drop when upstream ships a fix; re-verify this module returns 200 and the page
+   * hydrates. Full note: `app/routes/host/rental-activity.tsx`.
+   *
+   * @see https://github.com/remix-run/react-router/issues/14997 — open
+   * @see https://github.com/fringe4life/van-life/issues/402 — tracking
+   */
+  const [{ parseUuidV7 }, { loadReturnRentalContext }, { throwDomainHttp }] =
+    await Promise.all([
+      import("~/dal/parse-uuidv7.server"),
+      import("~/features/host/services/rental.server"),
+      import("~/utils/errors/domain-error.server"),
+    ]);
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
 
-  let rentId: ReturnType<typeof parseUuidV7>;
+  // Asserted because `throwDomainHttp` above a destructured binding is not seen
+  // as a `never` return for definite-assignment analysis; the catch always throws.
+  let rentId!: ReturnType<typeof parseUuidV7>;
   try {
     rentId = parseUuidV7(params.rentId, "Invalid rental id");
   } catch (error) {
@@ -93,6 +104,19 @@ export const loader = ({ context }: Route.LoaderArgs) => {
 };
 
 export const action = async ({ params, context }: Route.ActionArgs) => {
+  // Workaround: same `.server` import reason as the middleware above (#402).
+  const [
+    { parseUuidV7 },
+    { completeReturnRental },
+    { domainErrorToServiceResult, isDomainError },
+    { toActionResultOrThrow },
+  ] = await Promise.all([
+    import("~/dal/parse-uuidv7.server"),
+    import("~/features/host/services/rental.server"),
+    import("~/utils/errors/domain-error.server"),
+    import("~/utils/errors/to-action-result.server"),
+  ]);
+
   const user = context.get(authContext);
   const db = context.get(dbContext);
   const { rent, money } = context.get(sharedRentalDataContext);

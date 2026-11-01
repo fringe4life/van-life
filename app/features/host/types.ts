@@ -1,11 +1,3 @@
-import type { Amount, Id, Prettify } from "~/types";
-
-export type DataArray = Prettify<{ name: string } & Amount & Id>[];
-
-export interface Data<T> {
-  data: T;
-}
-
 export const MONEY_FORM_FIELDS = ["amount"] as const;
 
 /** Safe subset replayed to the client (amount + deposit/withdraw type). */

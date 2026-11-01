@@ -3,29 +3,38 @@ import { OutcomeState } from "~/components/outcome-state";
 import type { CollectionOutcomeProps } from "~/components/types";
 import { chromeViewTransitionName } from "~/components/view-transition-names";
 import { viewTransitionPage } from "~/components/view-transition-share";
-import type { Data, DataArray } from "~/features/host/types";
+import type { MoneyTimelineData } from "~/features/host/utils/money-timeline";
 import type { Maybe, Prettify } from "~/types";
 import { getCollectionState } from "~/utils/errors/get-collection-state";
-import { BarChartSkeleton } from "./bar-chart-skeleton";
+import { MoneyTimelineSkeleton } from "./money-timeline-skeleton";
 
-type LazyBarChartProps = Prettify<
-  Data<Maybe<DataArray>> & CollectionOutcomeProps
+type LazyMoneyTimelineProps = Prettify<
+  CollectionOutcomeProps & {
+    data: Maybe<MoneyTimelineData>;
+    inflowLabel: string;
+    outflowLabel: string;
+  }
 >;
 
-const BarChartComponent = lazy(() => import("./bar-chart"));
-const LazyBarChart = ({
+const MoneyTimelineComponent = lazy(() => import("./money-timeline"));
+
+/** Shared by both money routes; direction labels are the only difference. */
+const LazyMoneyTimeline = ({
   data,
   emptyState,
   errorState,
+  inflowLabel,
   noMatchState,
   noMatchWhen,
-}: LazyBarChartProps) => {
-  const collectionState = getCollectionState(data, {
+  outflowLabel,
+}: LazyMoneyTimelineProps) => {
+  const collectionState = getCollectionState(data?.buckets ?? null, {
     emptyState,
     errorState,
     noMatchState,
     noMatchWhen,
   });
+
   if (!collectionState.ok) {
     return (
       <ViewTransition
@@ -43,11 +52,20 @@ const LazyBarChart = ({
       </ViewTransition>
     );
   }
+
+  if (!data) {
+    return null;
+  }
+
   return (
-    <Suspense fallback={<BarChartSkeleton />}>
-      <BarChartComponent data={collectionState.data} />
+    <Suspense fallback={<MoneyTimelineSkeleton />}>
+      <MoneyTimelineComponent
+        data={data}
+        inflowLabel={inflowLabel}
+        outflowLabel={outflowLabel}
+      />
     </Suspense>
   );
 };
 
-export { LazyBarChart };
+export { LazyMoneyTimeline };

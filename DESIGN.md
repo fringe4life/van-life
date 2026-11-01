@@ -147,7 +147,7 @@ The [`vanCard`](./app/features/vans/components/van-card-recipe.ts) recipe uses t
 ### Decorative and visualization roles
 
 - `rating` is reserved for review stars and rating rails. Use `color: "rating"` or `stroke: "rating"` in a Panda style object; there is no separate `stroke-rating` utility token.
-- `chart.1` through `chart.5` form the visualization palette. The dashboard bar chart uses `color: "chart.1"` and the chart library consumes `currentColor`.
+- `chart.inflow` and `chart.outflow` are the money palette: inflow is money arriving (rental payments, wallet deposits), outflow is money leaving (rental returns, withdrawals). They are the only data colours in the timeline — magnitude is carried by bar height and the currency axis, never by hue.
 - `skeleton` and `skeleton.highlight` control loading placeholders and the shimmer helper.
 
 ### Primitive palette
@@ -334,8 +334,10 @@ Reusable anchored mini-panels use the `Popover`, `PopoverHeader`, `PopoverTitle`
 - `VanFilters` uses `surface.overlay` and `surface.overlay.muted` on compact layouts and the `border.accent` rail on desktop.
 - `Sortable` uses `backgroundColor: "primary"` and `color: "primary.foreground"` for the selected sort control.
 - `Pagination` uses `muted.foreground` for no-results messaging, outline buttons for prev/next, and `Select` for page size (row-density Lucide icons when `appearance: base-select` is supported).
-- Dashboard charts use the `chart.*` token family. The bar chart uses `color: "chart.1"`, while the chart mark uses `currentColor`.
-- Skeleton charts use `bgSkeleton` with runtime values such as `"--skeleton-color": "{colors.chart.1}"` and `"--skeleton-highlight": "{colors.surface.accent}"`; do not reintroduce obsolete color variable names.
+- Both money routes render one shared `MoneyTimeline` ([`money-timeline.tsx`](./app/features/host/components/money-timeline/money-timeline.tsx)): bars stacked by direction above and below zero on a single currency axis, plus a cumulative-net line. The route supplies only the direction labels (payments received/sent, deposits/withdrawals); the palette is `chart.inflow`/`chart.outflow`. Totals sit in `MoneyLedger` above the chart, and a period/transaction-count line replaces the old "last N days" copy. Transaction cards colour their left rail by direction for the same reason.
+- Reviews do not use the chart palette or a chart library. The reviews heading row carries the average as a star run on the right of the title — its `<img>` alt text carries the number — and `RatingMix` ([`rating-mix.tsx`](./app/features/host/components/review/rating-mix.tsx)) renders one star glyph per review with counts and shares, reading the `rating` role and sizing itself from the `rating-mix` container (`@rating-mix/2xl`, `@rating-mix/lg`) rather than the viewport. A review card's rail is filled by its own rating and never reads chart data.
+- Data visualization is never wrapped in a `Card`: the timeline and the rating tally sit directly on the page surface, separated by rules rather than by a panel fill and border. A chart inside `Card` reads as a form or sidebar block and shrinks the plot for nothing.
+- Timeline skeletons mirror the real block (caption, two-direction bars, legend) using `bgSkeleton` with `"--skeleton-highlight": "{colors.surface.accent}"`, and take their height from `TIMELINE_CHART_HEIGHT_PX` in [`chart-tokens.ts`](./app/features/host/components/money-timeline/chart-tokens.ts) so the lazy swap does not shift layout.
 
 ### Van cards and status treatments
 

@@ -1,21 +1,11 @@
-import { beforeAll, describe, expect, it, mock } from "bun:test";
-
-const differenceInDays = mock((later: Date, earlier: Date) =>
-  Math.floor((later.getTime() - earlier.getTime()) / (1000 * 60 * 60 * 24))
-);
-
-mock.module("date-fns", () => ({
-  differenceInDays,
-}));
-
-const { elapsedDaysFromRange, formatElapsedDaysLabel, rentDurationLabel } =
-  await import("./get-elapsed-time.server");
+import { describe, expect, it } from "bun:test";
+import {
+  elapsedDaysFromRange,
+  formatElapsedDaysLabel,
+  rentDurationLabel,
+} from "./get-elapsed-time.server";
 
 describe("elapsedDaysFromRange", () => {
-  beforeAll(() => {
-    differenceInDays.mockClear();
-  });
-
   it("returns 0 when either bound is missing", () => {
     const date = new Date("2024-01-01T00:00:00Z");
 

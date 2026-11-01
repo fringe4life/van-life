@@ -8,7 +8,7 @@
     ".env.schema"
   ],
   "dynamicallyLoaded": [
-    "app/features/host/components/bar-chart/bar-chart.tsx",
+    "app/features/host/components/money-timeline/money-timeline.tsx",
     "app/test/happydom.ts",
     "app/test/testing-library.ts"
   ],
@@ -57,7 +57,8 @@
     // Build-time only: route/vite config (app/routes.ts, vite.config.ts, react-router.config.ts)
     "@react-router/dev",
     "wrangler",
-    // Vite DevTools optional peers — auto-mounted when present, never imported
+    // Vite DevTools — CLI bin / optional peers, never static-imported
+    "@vitejs/devtools",
     "@vitejs/devtools-rolldown",
     "@vitejs/devtools-vite"
   ],

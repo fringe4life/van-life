@@ -19,11 +19,10 @@ import {
   transactionKeysetPredicate,
 } from "~/features/host/dal/transaction-sort.server";
 import { periodSqlFor } from "~/features/host/utils/chart-period.server";
-import {
-  toBucketChartPoints,
-  toTxnChartPoints,
-} from "~/features/host/utils/chart-points.server";
-import type { ChartGranularity } from "~/features/host/utils/pick-chart-granularity.server";
+import type {
+  MoneyTimelineRow,
+  TimelineGranularity,
+} from "~/features/host/utils/money-timeline";
 import { toWalletTransactionListItem } from "~/features/host/utils/to-transaction-list-item.server";
 import { COMMON_SORT_CONFIGS } from "~/lib/generic-sorting.server";
 import type { PaginationParams } from "~/pagination/types";
@@ -44,10 +43,6 @@ function walletMovementWhere(userId: UUIDv7) {
  * - WITHDRAW: negate (stored positive; represents outflow)
  */
 const signedTransferAmountSql = sql<number>`sum(case when ${transaction.type} = ${TransactionType.WITHDRAW} then -${transaction.amount} else ${transaction.amount} end)`;
-
-function signedTransferAmount(amount: number, type: string) {
-  return type === TransactionType.WITHDRAW ? -amount : amount;
-}
 
 /** Signed wallet balance — all types, same WITHDRAW rule as transfer stats. */
 export async function getAccountSummary(db: AppDb, userId: UUIDv7) {
@@ -73,46 +68,31 @@ export async function getUserTransferStats(db: AppDb, userId: UUIDv7) {
   return result;
 }
 
-/** Chart points for wallet movements. Empty periods skipped. */
-export async function getUserTransferChartData(
+/**
+ * Timeline rows for wallet movements: one row per `(period, type)`, empty
+ * periods filled by the presenter. `abs()` matters here — WITHDRAW is stored
+ * positive — so direction is decided by `type` downstream, not by the sign.
+ * Query plan and deferred tuning options: `periodSqlFor` in
+ * `~/features/host/utils/chart-period.server`.
+ */
+export async function getUserTransferTimeline(
   db: AppDb,
   userId: UUIDv7,
-  granularity: ChartGranularity
-) {
-  if (granularity === "txn") {
-    const rows = await db
-      .select({
-        amount: transaction.amount,
-        createdAt: transaction.createdAt,
-        id: transaction.id,
-        type: transaction.type,
-      })
-      .from(transaction)
-      .where(walletMovementWhere(userId))
-      .orderBy(asc(transaction.createdAt));
-
-    return toTxnChartPoints(
-      rows.map((row) => ({
-        amount: signedTransferAmount(row.amount, row.type),
-        createdAt: row.createdAt,
-        id: row.id,
-      }))
-    );
-  }
-
+  granularity: TimelineGranularity
+): Promise<MoneyTimelineRow[]> {
   const period = periodSqlFor(granularity);
 
-  const rows = await db
+  return await db
     .select({
-      amount: signedTransferAmountSql.mapWith(Number),
-      name: period,
+      amount: sql<number>`sum(abs(${transaction.amount}))`.mapWith(Number),
+      peak: sql<number>`max(abs(${transaction.amount}))`.mapWith(Number),
+      period,
+      type: transaction.type,
     })
     .from(transaction)
     .where(walletMovementWhere(userId))
-    .groupBy(period)
+    .groupBy(period, transaction.type)
     .orderBy(asc(period));
-
-  return toBucketChartPoints(rows);
 }
 
 export async function getUserTransactionsPaginated(

@@ -9,7 +9,6 @@ const shouldAnalyze = process.env.VITE_ANALYZE === "true";
 const optimizeDepsInclude = [
   "valibot",
   "lucide-react",
-  "date-fns",
   "@tanstack/charts",
 ] as const;
 

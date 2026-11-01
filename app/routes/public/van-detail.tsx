@@ -8,9 +8,6 @@ import {
   PUBLIC_SHORT_CACHE_HEADERS,
 } from "~/constants/cache-headers";
 import VanDetail from "~/features/vans/components/van-detail";
-import { loadVansSearchParams } from "~/features/vans/loaders.server";
-import { buildVanDetailPageSeo } from "~/features/vans/seo.server";
-import { loadVanBySlug } from "~/features/vans/services/van-detail.server";
 import { dbContext } from "~/middleware/contexts/db";
 import { buildVanUrl } from "~/pagination/utils/build-search-params";
 import { SeoHead } from "~/seo/seo-head";
@@ -25,6 +22,29 @@ export const loader = async ({
   request,
   context,
 }: Route.LoaderArgs) => {
+  /**
+   * Workaround: `.server` modules imported here rather than at module scope, because
+   * a static import survives React Router's client export removal and then trips its
+   * `.server` resolver, so the route's client bundle never loads.
+   *
+   * @remarks
+   * Still required on `@react-router/dev@8.5.1` with `vite@8.3.5` in `vite serve`.
+   * Drop when upstream ships a fix; re-verify this module returns 200 and the page
+   * hydrates. Full note: `app/routes/host/rental-activity.tsx`.
+   *
+   * @see https://github.com/remix-run/react-router/issues/14997 — open
+   * @see https://github.com/fringe4life/van-life/issues/402 — tracking
+   */
+  const [
+    { loadVansSearchParams },
+    { buildVanDetailPageSeo },
+    { loadVanBySlug },
+  ] = await Promise.all([
+    import("~/features/vans/loaders.server"),
+    import("~/features/vans/seo.server"),
+    import("~/features/vans/services/van-detail.server"),
+  ]);
+
   const db = context.get(dbContext);
 
   const { cursor, limit, search, types, excludeInRepair, onlyOnSale } =

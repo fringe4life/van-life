@@ -9,17 +9,18 @@ import { displayPrice } from "~/features/vans/utils/display-price";
 import type { Maybe } from "~/types";
 
 interface HostIncomeSectionProps {
-  elapsedDays: number;
   isBalancePending: boolean;
   name: Maybe<string>;
   optimisticBalance: number;
+  /** Same `MMM YYYY – MMM YYYY` label the financial routes show in this slot. */
+  rangeLabel: string;
   sumIncome: number;
 }
 
 const HostIncomeSection = ({
   name,
   sumIncome,
-  elapsedDays,
+  rangeLabel,
   optimisticBalance,
   isBalancePending,
 }: HostIncomeSectionProps) => (
@@ -82,20 +83,26 @@ const HostIncomeSection = ({
           fontWeight: { base: "light", sm: "normal" },
         })}
       >
-        Rents last{" "}
-        <span
-          className={css({
-            fontWeight: { sm: "medium" },
-            textDecoration: "underline",
-          })}
+        Net, rentals{" "}
+        <ViewTransition
+          {...viewTransitionShare}
+          name={chromeViewTransitionName.hostRange}
         >
-          {elapsedDays} days
-        </span>
+          <span
+            className={css({
+              fontVariantNumeric: "tabular-nums",
+              fontWeight: { sm: "medium" },
+              textDecoration: "underline",
+            })}
+          >
+            {rangeLabel}
+          </span>
+        </ViewTransition>
       </dt>
 
       <ViewTransition
         {...viewTransitionShare}
-        name={chromeViewTransitionName.incomeAmount}
+        name={chromeViewTransitionName.moneyNet}
       >
         <dd
           className={css({

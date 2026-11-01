@@ -1,9 +1,25 @@
 import { css } from "styled-system/css";
-import { getChartHeightBand } from "~/features/host/utils/chart-height-bands";
+import { TransactionType } from "~/db/enums";
 import { Transaction } from "./transaction";
-import type { WalletTransactionProps } from "./transaction-types";
+import type {
+  WalletTransactionProps,
+  WalletTransactionType,
+} from "./transaction-types";
 
-const WalletTransactionDetails = () => (
+/**
+ * The title already names the movement (Deposit / Withdrawal), so the detail line
+ * carries its effect on the balance. Vocabulary: #403.
+ */
+const walletEffectByType = {
+  [TransactionType.DEPOSIT]: "Added to your balance",
+  [TransactionType.WITHDRAW]: "Taken from your balance",
+} as const satisfies Record<WalletTransactionType, string>;
+
+const WalletTransactionDetails = ({
+  type,
+}: {
+  type: WalletTransactionType;
+}) => (
   <p
     className={css({
       color: "foreground",
@@ -11,29 +27,18 @@ const WalletTransactionDetails = () => (
       fontWeight: "semibold",
     })}
   >
-    Wallet movement
+    {walletEffectByType[type]}
   </p>
 );
 
-interface WalletTransactionComponentProps extends WalletTransactionProps {
-  chartMagnitudeMax: number;
-}
-
 const WalletTransaction = ({
   amount,
-  chartMagnitudeMax,
   createdAt,
   id,
   type,
-}: WalletTransactionComponentProps) => (
-  <Transaction
-    amount={amount}
-    createdAt={createdAt}
-    heightBand={getChartHeightBand(amount, chartMagnitudeMax).variant}
-    id={id}
-    type={type}
-  >
-    <WalletTransactionDetails />
+}: WalletTransactionProps) => (
+  <Transaction amount={amount} createdAt={createdAt} id={id} type={type}>
+    <WalletTransactionDetails type={type} />
   </Transaction>
 );
 

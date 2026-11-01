@@ -18,7 +18,6 @@ import {
   THEME_VIEW_TRANSITION_NAME,
   ThemeChangeContext,
 } from "~/theme/theme";
-import { readStoredTheme } from "~/theme/theme-cookie.server";
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 import { RouteErrorBoundary } from "./components/route-error-boundary";
@@ -54,6 +53,11 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export async function loader({ request }: Route.LoaderArgs) {
+  // Imported inside the loader, not at module scope: a top-level `.server`
+  // import makes the client graph resolve a server-only module, which fails the
+  // import analysis and leaves the app unhydrated.
+  const { readStoredTheme } = await import("~/theme/theme-cookie.server");
+
   return {
     theme: await readStoredTheme(request.headers.get("Cookie")),
   };

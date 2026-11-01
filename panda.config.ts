@@ -13,9 +13,6 @@ export default defineConfig({
   exclude: [],
   globalCss,
   globalVars: {
-    "--chart-axis-height": "23px",
-    "--chart-height": "350px",
-    "--chart-legend-height": "52px",
     "--chart-text-first-height": "0.875rem",
     "--duration-dialog": "500ms",
     "--footer-height": "100px",
@@ -58,7 +55,9 @@ export default defineConfig({
       },
       containerNames: [
         "wallet",
+        "activity",
         "review",
+        "rating-mix",
         "card",
         "card-full",
         "collection",

@@ -6,10 +6,6 @@ import { scrollReveal } from "~/components/scroll-reveal-recipe";
 import { Card, CardContent } from "~/components/ui/card";
 import type { ReviewModel, UserModel } from "~/db/client.server";
 import { MAX_RATING } from "~/features/host/constants/constants";
-import {
-  CHART_HEIGHT_BAND_COLOR_BY_VARIANT,
-  type ChartHeightBandVariant,
-} from "~/features/host/utils/chart-height-bands";
 import type { Prettify } from "~/types";
 import { RatingStars } from "./rating-stars";
 import { ReviewBadge } from "./review-badge";
@@ -22,13 +18,11 @@ type ReviewProps = Prettify<
       "user" | "rent" | "createdAt" | "updatedAt" | "rentId" | "userId"
     > & {
       date: Date;
-      heightBand: ChartHeightBandVariant;
     }
 >;
 
 type RatingRailStyle = CSSProperties & {
   "--rating": number;
-  "--rating-band-color": string;
 };
 
 const reviewMetadataLabel = css({
@@ -51,13 +45,10 @@ const reviewMetadataLabel = css({
   textTransform: "uppercase",
 });
 
-const Review = ({ date, heightBand, id, name, rating, text }: ReviewProps) => {
+const Review = ({ date, id, name, rating, text }: ReviewProps) => {
   const headingId = `review-${id}-title`;
   const normalizedRating = normalizeReviewRating(rating);
-  const railStyle: RatingRailStyle = {
-    "--rating": normalizedRating,
-    "--rating-band-color": CHART_HEIGHT_BAND_COLOR_BY_VARIANT[heightBand],
-  };
+  const railStyle: RatingRailStyle = { "--rating": normalizedRating };
 
   return (
     <div
@@ -110,7 +101,6 @@ const Review = ({ date, heightBand, id, name, rating, text }: ReviewProps) => {
               position: "absolute",
             })
           )}
-          data-height-band={heightBand}
           data-rating={normalizedRating}
         />
 
@@ -160,7 +150,7 @@ const Review = ({ date, heightBand, id, name, rating, text }: ReviewProps) => {
               <span
                 aria-hidden="true"
                 className={css({
-                  color: "var(--rating-band-color, {colors.rating})",
+                  color: "rating",
                   fontSize: "4xl",
                   fontWeight: "extrabold",
                   lineHeight: "none",

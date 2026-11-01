@@ -57,28 +57,23 @@ describe("toTransactionAggStats", () => {
 });
 
 describe("resolveChartContext", () => {
-  it("derives count, elapsedDays, and granularity from stats", () => {
-    const firstAt = new Date("2024-01-01T00:00:00Z");
-    const lastAt = new Date("2024-02-01T00:00:00Z");
-
+  it("derives count and the inclusive day span from stats", () => {
     const result = resolveChartContext({
       count: 100,
-      firstAt,
-      lastAt,
+      firstAt: new Date("2024-01-01T00:00:00Z"),
+      lastAt: new Date("2024-02-01T00:00:00Z"),
     });
 
-    expect(result.count).toBe(100);
-    expect(result.elapsedDays).toBe(32);
-    expect(result.granularity).toBe("week");
+    expect(result).toEqual({ count: 100, elapsedDays: 32 });
   });
 
-  it("uses txn granularity when count is small", () => {
+  it("reports no elapsed days for an empty ledger", () => {
     const result = resolveChartContext({
-      count: 5,
-      firstAt: new Date("2020-01-01T00:00:00Z"),
-      lastAt: new Date("2024-01-01T00:00:00Z"),
+      count: 0,
+      firstAt: null,
+      lastAt: null,
     });
 
-    expect(result.granularity).toBe("txn");
+    expect(result.elapsedDays).toBe(0);
   });
 });

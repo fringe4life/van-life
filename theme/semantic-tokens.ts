@@ -22,11 +22,10 @@ export const semanticTokens = defineSemanticTokens({
       foreground: color("{colors.neutral.900}", "{colors.warmGray.50}"),
     },
     chart: {
-      "1": color("{colors.orange.400}"),
-      "2": color("oklch(50% 0.14 150)", "{colors.sage.400}"),
-      "3": color("oklch(37% 0.08 220)", "{colors.warmSky.400}"),
-      "4": color("oklch(52% 0.12 85)", "{colors.warmAmber.400}"),
-      "5": color("{colors.orange.600}", "{colors.terracotta.400}"),
+      /** Money arriving: rental payments and wallet deposits. */
+      inflow: color("oklch(37% 0.08 220)", "{colors.warmSky.400}"),
+      /** Money leaving: rental returns and wallet withdrawals. */
+      outflow: color("{colors.orange.600}", "{colors.terracotta.400}"),
     },
     destructive: {
       DEFAULT: color("oklch(50% 0.18 25)", "{colors.warmRose.400}"),

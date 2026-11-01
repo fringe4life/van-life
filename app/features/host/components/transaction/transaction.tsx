@@ -2,7 +2,6 @@ import { css, cx } from "styled-system/css";
 import { cq, grid, visuallyHidden, wrap } from "styled-system/patterns";
 import { scrollReveal } from "~/components/scroll-reveal-recipe";
 import { Card, CardContent } from "~/components/ui/card";
-import type { ChartHeightBandVariant } from "~/features/host/utils/chart-height-bands";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import type { Children, Prettify } from "~/types";
 import { TransactionBadge } from "./transaction-badge";
@@ -17,15 +16,12 @@ const transactionDateFormatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-type TransactionShellProps = Prettify<
-  Children & TransactionProps & { heightBand?: ChartHeightBandVariant }
->;
+type TransactionShellProps = Prettify<Children & TransactionProps>;
 
 const Transaction = ({
   amount,
   children,
   createdAt,
-  heightBand,
   id,
   type,
 }: TransactionShellProps) => {
@@ -42,8 +38,7 @@ const Transaction = ({
     >
       <Card
         aria-labelledby={headingId}
-        className={transactionCard({ heightBand, type })}
-        data-height-band={heightBand}
+        className={transactionCard({ type })}
         role="article"
       >
         <CardContent className={css({ display: "contents" })}>
@@ -95,11 +90,14 @@ const Transaction = ({
               className={cx(
                 css({
                   color: "foreground",
-                  fontSize: "2xl",
+                  // Narrow cards stack the amount under the details column; drop a
+                  // step there so five-figure amounts stay on one line.
+                  fontSize: { "@transaction/sm": "2xl", base: "xl" },
                   fontVariantNumeric: "tabular-nums",
                   fontWeight: "extrabold",
                   letterSpacing: "tighter",
                   textTransform: "uppercase",
+                  whiteSpace: "nowrap",
                 })
               )}
             >
