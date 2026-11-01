@@ -131,44 +131,42 @@ export function formatAxisAmount(value: number): string {
   return `${sign}${thousands.toFixed(digits).replace(TRAILING_ZERO, "")}k`;
 }
 
-/** Every bucket key across the range, empty or not, in chronological order. */
-function listPeriodKeys(
-  firstAt: Date,
-  lastAt: Date,
-  granularity: TimelineGranularity
-): string[] {
+const isOnOrBeforeMonth = (
+  year: number,
+  month: number,
+  lastYear: number,
+  lastMonth: number
+): boolean => year < lastYear || (year === lastYear && month <= lastMonth);
+
+/** Month keys from firstAt through lastAt, capped at MAX_TIMELINE_BUCKETS. */
+function listMonthKeys(firstAt: Date, lastAt: Date): string[] {
   const keys: string[] = [];
+  let year = firstAt.getUTCFullYear();
+  let month = firstAt.getUTCMonth();
+  const lastYear = lastAt.getUTCFullYear();
+  const lastMonth = lastAt.getUTCMonth();
 
-  if (granularity === "month") {
-    let year = firstAt.getUTCFullYear();
-    let month = firstAt.getUTCMonth();
-    const lastYear = lastAt.getUTCFullYear();
-    const lastMonth = lastAt.getUTCMonth();
+  while (isOnOrBeforeMonth(year, month, lastYear, lastMonth)) {
+    keys.push(`${year}-${pad(month + 1)}`);
 
-    let withinMonthRange =
-      year < lastYear || (year === lastYear && month <= lastMonth);
-
-    while (withinMonthRange) {
-      keys.push(`${year}-${pad(month + 1)}`);
-
-      if (keys.length >= MAX_TIMELINE_BUCKETS) {
-        break;
-      }
-
-      month += 1;
-
-      if (month === 12) {
-        month = 0;
-        year += 1;
-      }
-
-      withinMonthRange =
-        year < lastYear || (year === lastYear && month <= lastMonth);
+    if (keys.length >= MAX_TIMELINE_BUCKETS) {
+      break;
     }
 
-    return keys;
+    month += 1;
+
+    if (month === 12) {
+      month = 0;
+      year += 1;
+    }
   }
 
+  return keys;
+}
+
+/** Day keys from firstAt through lastAt, capped at MAX_TIMELINE_BUCKETS. */
+function listDayKeys(firstAt: Date, lastAt: Date): string[] {
+  const keys: string[] = [];
   const start = Date.UTC(
     firstAt.getUTCFullYear(),
     firstAt.getUTCMonth(),
@@ -189,6 +187,17 @@ function listPeriodKeys(
   }
 
   return keys;
+}
+
+/** Every bucket key across the range, empty or not, in chronological order. */
+function listPeriodKeys(
+  firstAt: Date,
+  lastAt: Date,
+  granularity: TimelineGranularity
+): string[] {
+  return granularity === "month"
+    ? listMonthKeys(firstAt, lastAt)
+    : listDayKeys(firstAt, lastAt);
 }
 
 interface BucketAccumulator {
