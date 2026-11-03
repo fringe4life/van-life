@@ -6,10 +6,11 @@ import { type IconProps, IconShell } from "./icon";
  * Light. All eight rays are always drawn — four rays around a disc reads as a
  * crosshair, not a sun. The states then separate on hue and mass:
  *
- *   rest     ink outline
+ *   rest     currentColor outline
  *   hover    amber, disc lit, rays bloom (`icon-shine`)
- *   held     brand orange, disc lit, rays orbiting at 9s — the ring never
- *            touches the disc, so it turns cleanly without smearing the body.
+ *   held     amber, disc lit, rays settled — a selected sun states its colour
+ *            and stops. A spin inside a three-way segmented control would
+ *            compete with the selection (#426).
  *            `_groupHeld`: the header trigger wears this glyph too, and a
  *            button holds a value without containing the radio that set it.
  *   dark     amber and lit at rest, because it is the way back out
@@ -27,11 +28,7 @@ const sunRays = css({
     color: "warmAmber.400",
   },
   _groupHeld: {
-    animationDuration: "9s",
-    animationIterationCount: "infinite",
-    animationName: "icon-spin",
-    animationTimingFunction: "linear",
-    color: "primary",
+    color: "warmAmber.400",
   },
   _groupHover: {
     animationDuration: "620ms",
@@ -51,7 +48,7 @@ const sunRays = css({
 const sunCore = css({
   _dark: { color: "warmAmber.400", fillOpacity: 1 },
   _groupFocusVisible: { color: "warmAmber.400", fillOpacity: 1 },
-  _groupHeld: { color: "primary", fillOpacity: 1 },
+  _groupHeld: { color: "warmAmber.400", fillOpacity: 1 },
   _groupHover: { color: "warmAmber.400", fillOpacity: 1 },
   color: "inherit",
   fill: "currentColor",

@@ -31,11 +31,11 @@ const PackageOpenIcon = ({
     <path d="M4.8 9.8h14.4l-1.3 9.4H6.1z" />
     <rect
       className={tapeClassName}
-      height="7.2"
-      rx="1.3"
-      width="3.2"
-      x="10.4"
-      y="11.4"
+      height="6.2"
+      rx="1.1"
+      width="2.5"
+      x="10.75"
+      y="11.9"
     />
   </IconShell>
 );

@@ -11,7 +11,13 @@ export const conditions = defineConditions({
       },
     },
     groupCurrent: ".group[aria-current='page'] &",
-    groupFocusVisible: ".group:focus-visible &",
+    /*
+     * Keyboard focus on the owning control. A segmented control puts focus on
+     * the radio inside a `<label class="group">`, so the label itself never
+     * matches `:focus-visible`; `:has()` is what gives those glyphs the same
+     * beat as the button-owned ones.
+     */
+    groupFocusVisible: ".group:focus-visible &, .group:has(:focus-visible) &",
     groupHasOpenHamburger: ".group\\/hamburger:has([open]) &",
     /*
      * "This control is holding this value." The theme glyphs light on this

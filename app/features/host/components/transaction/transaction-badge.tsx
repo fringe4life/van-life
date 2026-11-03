@@ -61,7 +61,7 @@ const transactionIcons = {
   [TransactionType.RENTAL_PAYMENT]: MoneyInIcon,
   [TransactionType.RENTAL_RETURN]: MoneyOutIcon,
   [TransactionType.WITHDRAW]: ArrowUpFromLineIcon,
-} satisfies Record<TransactionType, IconComponent>;
+} as const satisfies Record<TransactionType, IconComponent>;
 
 interface TransactionBadgeProps {
   type: TransactionType;

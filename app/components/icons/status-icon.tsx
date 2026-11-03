@@ -91,7 +91,7 @@ const strokeDefaults = {
   pathLength: 1,
   strokeDasharray: 1,
   strokeDashoffset: 0,
-};
+} as const;
 
 const burst = css({
   _motionReduce: { animationName: "none" },

@@ -188,6 +188,11 @@ export const keyframes = defineKeyframes({
     "62%": { opacity: "1", scale: "1.03", translate: "0 0" },
     "100%": { opacity: "1", scale: "1", translate: "0 0" },
   },
+  /* A selected moon's two stars breathe, offset by half a period (#427). */
+  "icon-twinkle": {
+    "0%, 100%": { opacity: "0.4" },
+    "50%": { opacity: "1" },
+  },
   "icon-wax": {
     "0%": { translate: "0 0" },
     "45%": { translate: "-1.3px 0" },

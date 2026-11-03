@@ -70,6 +70,13 @@ const paidCaption = css({ paddingInlineStart: "3" });
 type SegmentStyle = CSSProperties & { inlineSize: string };
 
 /**
+ * `+` only when the figure is an inflow. A sign-flipped total keeps its own
+ * minus rather than printing a `+−` that reads as a typo.
+ */
+const toSignedAmount = (value: number): string =>
+  value >= 0 ? `+${displayPrice(value)}` : displayPrice(value);
+
+/**
  * The two-sided split behind "Rentals, both sides" (#411, #453).
  *
  * Plain CSS on purpose: a 6px proportional bar is two positioned segments and a
@@ -82,8 +89,13 @@ const RentalSplitBar = ({
   earnedAsHost,
   paidAsRenter,
 }: RentalSplitBarProps): ReactNode => {
-  const inflowValue = Math.abs(earnedAsHost);
-  const outflowValue = Math.abs(paidAsRenter);
+  /*
+   * Stored signs are kept, so `earnedAsHost` goes negative when host-issued
+   * returns outweigh payments. A side whose sign has flipped draws nothing
+   * rather than a full-length bar in the wrong direction.
+   */
+  const inflowValue = Math.max(earnedAsHost, 0);
+  const outflowValue = Math.max(paidAsRenter, 0);
   const scale = Math.max(inflowValue, outflowValue) || 1;
 
   const inflowStyle: SegmentStyle = {
@@ -103,9 +115,7 @@ const RentalSplitBar = ({
       </div>
       <div className={captions}>
         <p className={cx(caption, earnedCaption)}>
-          <span className={captionAmount}>
-            {`+${displayPrice(earnedAsHost)}`}
-          </span>{" "}
+          <span className={captionAmount}>{toSignedAmount(earnedAsHost)}</span>{" "}
           <span>earned as host</span>
         </p>
         <p className={cx(caption, paidCaption)}>

@@ -80,4 +80,13 @@ const build = async (): Promise<void> => {
   console.log(`  range:  ${MONEY_UNICODE_RANGE}`);
 };
 
-await build();
+try {
+  await build();
+} catch (error) {
+  // The common failure is a missing `@fontsource/space-mono` (no `bun install`).
+  console.error(
+    "Money subset failed. Is @fontsource/space-mono installed, and app/fonts/money writable?"
+  );
+  console.error(error instanceof Error ? error.message : error);
+  process.exitCode = 1;
+}

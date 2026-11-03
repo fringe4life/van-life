@@ -30,7 +30,13 @@ export default defineConfig({
     "--star-gap": "0.5rem",
     "--star-size": "1.25rem",
   },
-  hash: true,
+  /*
+   * Hash class names, keep token variable names. Hashing the variables too
+   * would break every literal `var(--colors-chart-inflow)` the chart and the
+   * skeleton hand to `@tanstack/charts`, and buys nothing over the class-name
+   * win (docs/research/svg-optimisation.md §3.1).
+   */
+  hash: { className: true, cssVar: false },
   importMap: "styled-system",
   include: [
     "./app/**/*.{js,jsx,ts,tsx}",
