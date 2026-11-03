@@ -1,7 +1,7 @@
-import { FilterIcon } from "lucide-react";
 import type { TransitionStartFunction } from "react";
 import { css, cx } from "styled-system/css";
 import { flex, grid, hstack } from "styled-system/patterns";
+import { FilterIcon } from "~/components/icons/filter-icon";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { useVanFilters } from "~/features/vans/hooks/use-van-filters";
@@ -73,6 +73,7 @@ const VanFilters = ({
             )}
           >
             <FilterIcon
+              active={hasFilters}
               aria-hidden
               className={css({
                 blockSize: "4",

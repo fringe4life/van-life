@@ -213,10 +213,29 @@ const hostNavMobileTriggerClassName = css({
   paddingInline: "2",
 });
 
+/**
+ * The trigger is the whole button, so hovering it already shows a surface
+ * change; the glyph adds the one thing a disclosure needs, which is which way
+ * the panel is. It reads the button's own `aria-expanded`, so there is no
+ * second piece of state to keep in step.
+ *
+ * Rotation cannot move the button's box, so the anchored panel does not shift
+ * when the glyph turns. Under reduced motion the turn still happens — an open
+ * panel should still read as open — it just happens instantly.
+ */
 const hostNavMobileTriggerIconClassName = css({
+  _motionReduce: { transitionDuration: "0s" },
+  "[aria-expanded='true'] &": {
+    color: "primary",
+    rotate: "180deg",
+  },
   blockSize: "4",
+  color: "currentColor",
   flexShrink: "0",
   inlineSize: "4",
+  transitionDuration: "normal",
+  transitionProperty: "rotate,color",
+  transitionTimingFunction: "glide",
 });
 
 const hostNavMobilePopoverClassName = css({

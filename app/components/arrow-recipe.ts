@@ -16,6 +16,17 @@ export const arrowRecipe = cva({
       scale: "1 !important",
       translate: "0 !important",
     },
+    /*
+     * Under reduced motion the arrow keeps the colour change and loses the
+     * travel. The reset lives at one class and is forced: the group rules below
+     * are two classes, so an unforced reset here would lose the cascade in the
+     * same way a top-level `@media` does inside a glyph (see
+     * `icons/arrow-right-icon.tsx`).
+     */
+    _motionReduce: {
+      scale: "1 !important",
+      translate: "0 !important",
+    },
     color: "muted.foreground",
     flexShrink: 0,
     scale: "1",

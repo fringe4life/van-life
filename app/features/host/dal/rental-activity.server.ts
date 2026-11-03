@@ -29,6 +29,7 @@ import { toRentalTransactionListItem } from "~/features/host/utils/to-transactio
 import { COMMON_SORT_CONFIGS } from "~/lib/generic-sorting.server";
 import type { PaginationParams } from "~/pagination/types";
 import { resolveSortedCursor } from "~/pagination/utils/resolve-sorted-cursor.server";
+import type { Maybe } from "~/types";
 import type { UUIDv7 } from "~/types/ids.server";
 
 const renter = alias(user, "renter");
@@ -45,19 +46,46 @@ function rentalActivityWhere(userId: UUIDv7) {
   );
 }
 
+/**
+ * The same rental rows, split by which side of the trade the user was on.
+ * `RENTAL_ACTIVITY_TYPES` filters on `userId` only, so an account that both
+ * hosts and rents mixes earned and spent money in one total (#411). Stored
+ * signs are kept, so a host-issued return counts against host earnings.
+ */
+const earnedAsHostSql = sql<number>`sum(case when ${rent.hostId} = ${transaction.userId} then ${transaction.amount} else 0 end)`;
+const paidAsRenterSql = sql<number>`sum(case when ${rent.hostId} <> ${transaction.userId} then ${transaction.amount} else 0 end)`;
+
 /** Rental pay + receive aggregates (`RENTAL_RETURN` amounts already negative). */
 export async function getRentalActivityStats(db: AppDb, userId: UUIDv7) {
   const [result] = await db
     .select({
       count: count(),
+      earnedAsHost: earnedAsHostSql.mapWith(Number),
       firstAt: min(transaction.createdAt),
       lastAt: max(transaction.createdAt),
+      paidAsRenter: paidAsRenterSql.mapWith(Number),
       total: sum(transaction.amount).mapWith(Number),
     })
     .from(transaction)
+    // A rental row always belongs to a rent, so this join never multiplies rows;
+    // it only exposes `rent.hostId`, which is what tells the two sides apart.
+    .leftJoin(rent, eq(transaction.rentId, rent.id))
     .where(rentalActivityWhere(userId));
 
   return result;
+}
+
+interface RentalActivitySideRow {
+  earnedAsHost?: Maybe<number>;
+  paidAsRenter?: Maybe<number>;
+}
+
+/** Nullish normalisation for the side split, so a failed row reads as zero. */
+export function toRentalActivitySplit(row: Maybe<RentalActivitySideRow>) {
+  return {
+    earnedAsHost: Number(row?.earnedAsHost ?? 0),
+    paidAsRenter: Number(row?.paidAsRenter ?? 0),
+  };
 }
 
 /**

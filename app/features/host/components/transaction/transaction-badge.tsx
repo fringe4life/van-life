@@ -1,11 +1,14 @@
-import {
-  ArrowDownLeft,
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  RotateCcw,
-} from "lucide-react";
-import { css, cva, cx } from "styled-system/css";
+import { cva } from "styled-system/css";
 import { square } from "styled-system/patterns";
+import {
+  ArrowDownToLineIcon,
+  ArrowUpFromLineIcon,
+} from "~/components/icons/arrow-line-icon";
+import type { IconComponent } from "~/components/icons/icon";
+import {
+  MoneyInIcon,
+  MoneyOutIcon,
+} from "~/components/icons/money-transfer-icon";
 import { Badge } from "~/components/ui/badge";
 import { TransactionType } from "~/db/enums";
 import { transactionMeta } from "./transaction-recipe";
@@ -46,12 +49,19 @@ const transactionBadge = cva({
   },
 });
 
+/*
+ * Vendored glyphs (#439–#442). Wallet movement is an arrow onto or off a line;
+ * rental movement is one diagonal arrow with its head at either end. Each glyph
+ * owns its direction tint, so the badge no longer forces a colour on the whole
+ * icon: the wallet line inherits `foreground` from here, and the arrows read
+ * `chart.inflow` / `chart.outflow` from `money-ink.ts`.
+ */
 const transactionIcons = {
-  [TransactionType.DEPOSIT]: ArrowDownToLine,
-  [TransactionType.RENTAL_PAYMENT]: ArrowDownLeft,
-  [TransactionType.RENTAL_RETURN]: RotateCcw,
-  [TransactionType.WITHDRAW]: ArrowUpFromLine,
-} satisfies Record<TransactionType, typeof ArrowDownLeft>;
+  [TransactionType.DEPOSIT]: ArrowDownToLineIcon,
+  [TransactionType.RENTAL_PAYMENT]: MoneyInIcon,
+  [TransactionType.RENTAL_RETURN]: MoneyOutIcon,
+  [TransactionType.WITHDRAW]: ArrowUpFromLineIcon,
+} as const satisfies Record<TransactionType, IconComponent>;
 
 interface TransactionBadgeProps {
   type: TransactionType;
@@ -68,13 +78,7 @@ const TransactionBadge = ({ type }: TransactionBadgeProps) => {
       title={label}
       variant="outline"
     >
-      <Icon
-        aria-hidden="true"
-        className={cx(
-          square({ size: "3.5" }),
-          css({ color: "foreground", flexShrink: "0" })
-        )}
-      />
+      <Icon aria-hidden="true" className={square({ size: "3.5" })} />
       {label}
     </Badge>
   );

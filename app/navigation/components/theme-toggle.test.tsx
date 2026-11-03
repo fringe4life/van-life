@@ -82,6 +82,23 @@ describe("ThemeToggle", () => {
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
   });
 
+  it("marks the compact trigger as holding the current theme", () => {
+    // No cookie: system is the held choice.
+    renderThemeToggle(null);
+
+    // The button owns the value without containing the radio, so the glyphs
+    // need a marker of their own or the sun and monitor render unlit here.
+    const trigger = screen.getByRole("button", { name: "Color theme: System" });
+    expect(trigger).toHaveAttribute("data-held", "true");
+    expect(trigger).toHaveClass("group");
+
+    const [checked] = screen.getAllByRole("radio", { name: "System" });
+    expect(checked?.closest("label")).toHaveAttribute("data-held", "true");
+
+    const [unchecked] = screen.getAllByRole("radio", { name: "Light" });
+    expect(unchecked?.closest("label")).not.toHaveAttribute("data-held");
+  });
+
   it("gives the mobile-nav instance its own popover id", () => {
     renderThemeToggle(
       null,

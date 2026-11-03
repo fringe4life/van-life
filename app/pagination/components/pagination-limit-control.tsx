@@ -1,10 +1,3 @@
-import {
-  AlignJustifyIcon,
-  type LucideIcon,
-  Rows2Icon,
-  Rows3Icon,
-  Rows4Icon,
-} from "lucide-react";
 import { useQueryStates } from "nuqs";
 import {
   type ChangeEvent,
@@ -13,6 +6,13 @@ import {
 } from "react";
 import { css, cx } from "styled-system/css";
 import { square } from "styled-system/patterns";
+import type { IconComponent } from "~/components/icons/icon";
+import {
+  RowsFourIcon,
+  RowsManyIcon,
+  RowsThreeIcon,
+  RowsTwoIcon,
+} from "~/components/icons/rows-icon";
 import { Select } from "~/components/ui/select";
 import { useSupportsBaseSelect } from "~/hooks/use-supports-base-select";
 import { DEFAULT_LIMIT, LIMITS } from "~/pagination/pagination-constants";
@@ -21,11 +21,11 @@ import { parseLimit } from "~/pagination/schema";
 import type { Limits } from "~/pagination/types";
 
 const LIMIT_ICONS = {
-  5: Rows2Icon,
-  10: Rows3Icon,
-  20: Rows4Icon,
-  50: AlignJustifyIcon,
-} as const satisfies Record<Limits, LucideIcon>;
+  5: RowsTwoIcon,
+  10: RowsThreeIcon,
+  20: RowsFourIcon,
+  50: RowsManyIcon,
+} as const satisfies Record<Limits, IconComponent>;
 
 const limitIconClassName = cx(
   square({ size: "4" }),
@@ -48,6 +48,7 @@ export const PaginationLimitControl = ({
   });
   const supportsBaseSelect = useSupportsBaseSelect();
   const currentLimit = limit ?? DEFAULT_LIMIT;
+  const CurrentLimitIcon = LIMIT_ICONS[currentLimit];
 
   const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const nextLimit = parseLimit(Number(event.currentTarget.value));
@@ -67,6 +68,9 @@ export const PaginationLimitControl = ({
       className={limitSelectClassName}
       name="limit"
       onChange={handleLimitChange}
+      selectedIcon={
+        <CurrentLimitIcon aria-hidden="true" className={limitIconClassName} />
+      }
       value={currentLimit.toString()}
     >
       {LIMITS.map((limitOption) => {

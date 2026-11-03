@@ -94,7 +94,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **TypeScript 7.0.2** with strict configuration
 - **PandaCSS 2.1.2** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`); `define*` helpers from `@pandacss/dev/define`
 - **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover, select)
-- **Lucide React 1.47.0** for icons (direct imports for performance)
+- **Custom SVG glyph set** in `app/components/icons` — vendored `IconShell` components, one per glyph, animated with CSS on ancestor state only (no icon package, no icon font, no animation library)
 - **TanStack Charts 1.1.0** for the host money timeline (lazy-loaded via `LazyMoneyTimeline`; bars stacked by inflow/outflow with a cumulative net line; reviews use `RatingMix`, not the chart library)
 - **nuqs 2.10.2** for type-safe URL state management via shared parsers
 
@@ -276,7 +276,9 @@ docs/
 ├── cursor-pagination-limit-and-component-split.md # Pagination limit vs cursor split
 ├── host-navigation-popover.md # Host rail / tablet / native popover contract
 ├── dialog-hydration.md     # Native dialog hydration notes
-├── icon-packs.md           # Icon pack notes
+├── icon-packs.md           # Icon pack comparison (historical; see research/)
+├── research/
+│   └── svg-optimisation.md # Measured glyph cost, inline vs <use>, SVGO findings
 ├── invokers-polyfill.md    # Invoker Commands polyfill
 └── temporal-api.md         # Temporal.Instant notes (not shipped; polyfill required)
 

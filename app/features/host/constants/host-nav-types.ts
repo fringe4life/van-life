@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+import type { IconComponent } from "~/components/icons/icon";
 
 export type HostNavGroupId = "activity" | "listings" | "rental-workflow";
 export type HostNavCurrentBehavior = "route" | "never";
@@ -15,7 +15,7 @@ export interface HostNavItem {
   currentBehavior: HostNavCurrentBehavior;
   end?: boolean;
   group: HostNavGroupId;
-  icon: LucideIcon;
+  icon: IconComponent;
   id: string;
   label: HostNavLabel;
   to: string;

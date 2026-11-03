@@ -1,10 +1,8 @@
-import {
-  type LucideIcon,
-  PackageOpen,
-  SearchX,
-  TriangleAlert,
-} from "lucide-react";
 import type { ReactNode } from "react";
+import type { IconComponent } from "~/components/icons/icon";
+import { PackageOpenIcon } from "~/components/icons/package-open-icon";
+import { SearchXIcon } from "~/components/icons/search-x-icon";
+import { TriangleAlertIcon } from "~/components/icons/triangle-alert-icon";
 import type {
   OutcomeHeadingLevel,
   OutcomeKind,
@@ -17,11 +15,11 @@ const DEFAULT_LABELS: Record<OutcomeKind, string> = {
   "no-match": "No matches",
 };
 
-const DEFAULT_ICONS: Record<OutcomeKind, LucideIcon> = {
-  empty: PackageOpen,
-  error: TriangleAlert,
-  "no-match": SearchX,
-};
+const DEFAULT_ICONS = {
+  empty: PackageOpenIcon,
+  error: TriangleAlertIcon,
+  "no-match": SearchXIcon,
+} as const satisfies Record<OutcomeKind, IconComponent>;
 
 const DEFAULT_HEADING_LEVEL: OutcomeHeadingLevel = "h2";
 
@@ -31,7 +29,7 @@ type ResolvedOutcomeStateConfig = Omit<
 > & {
   headingId: string;
   headingLevel: OutcomeHeadingLevel;
-  icon: LucideIcon;
+  icon: IconComponent;
   label: string;
 };
 

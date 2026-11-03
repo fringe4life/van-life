@@ -1,12 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
-  "entry": [
-    "app/root.{ts,tsx,js,jsx}",
-    "panda.config.ts",
-    "vite.config.ts",
-    "workers/app.ts",
-    ".env.schema"
-  ],
+  "entry": ["panda.config.ts", "vite.config.ts", ".env.schema"],
   "dynamicallyLoaded": [
     "app/features/host/components/money-timeline/money-timeline.tsx",
     "app/test/happydom.ts",
@@ -40,27 +34,17 @@
     "unused-dependency-overrides": "off",
     "private-type-leaks": "off"
   },
-  "ignorePatterns": ["worker-configuration.d.ts", "doctor.config.ts"],
+  "ignorePatterns": ["doctor.config.ts"],
   // Panda outdir is gitignored codegen (`styled-system` in .gitignore).
   // Built-in pandacss plugin only keeps panda.config.ts as an entry;
   // it does not register the generated import map. Specifier globs
   // silence unresolved-import; they do not change the module graph.
   "ignoreUnresolvedImports": ["styled-system", "styled-system/**"],
   "ignoreDependencies": [
-    "@acusti/vite-plugin-react-compiler",
-    "isbot",
-    "react-doctor",
     "@varlock/bitwarden-plugin",
-    "@cloudflare/vite-plugin",
     "@fontsource-variable/inter",
     "@pandacss/mcp",
-    // Build-time only: route/vite config (app/routes.ts, vite.config.ts, react-router.config.ts)
-    "@react-router/dev",
-    "wrangler",
-    // Vite DevTools — CLI bin / optional peers, never static-imported
-    "@vitejs/devtools",
-    "@vitejs/devtools-rolldown",
-    "@vitejs/devtools-vite"
+    "@fontsource/space-mono"
   ],
   "duplicates": {
     "enabled": true,

@@ -1,11 +1,13 @@
 import { describe, expect, it } from "bun:test";
-import { PackageOpen, SearchX, TriangleAlert } from "lucide-react";
+import { PackageOpenIcon } from "~/components/icons/package-open-icon";
+import { SearchXIcon } from "~/components/icons/search-x-icon";
+import { TriangleAlertIcon } from "~/components/icons/triangle-alert-icon";
 import { getOutcomeStateVisibility, resolveOutcomeStateConfig } from "./utils";
 
 const defaultCases = [
-  { icon: PackageOpen, kind: "empty" as const, label: "Empty" },
-  { icon: TriangleAlert, kind: "error" as const, label: "Error" },
-  { icon: SearchX, kind: "no-match" as const, label: "No matches" },
+  { icon: PackageOpenIcon, kind: "empty" as const, label: "Empty" },
+  { icon: TriangleAlertIcon, kind: "error" as const, label: "Error" },
+  { icon: SearchXIcon, kind: "no-match" as const, label: "No matches" },
 ];
 
 describe("resolveOutcomeStateConfig", () => {
@@ -29,7 +31,7 @@ describe("resolveOutcomeStateConfig", () => {
       config: {
         headingId: "custom-heading",
         headingLevel: "h1",
-        icon: SearchX,
+        icon: SearchXIcon,
         label: "Custom state",
         title: "State title",
       },
@@ -39,7 +41,7 @@ describe("resolveOutcomeStateConfig", () => {
 
     expect(resolved.headingId).toBe("custom-heading");
     expect(resolved.headingLevel).toBe("h1");
-    expect(resolved.icon).toBe(SearchX);
+    expect(resolved.icon).toBe(SearchXIcon);
     expect(resolved.label).toBe("Custom state");
   });
 });

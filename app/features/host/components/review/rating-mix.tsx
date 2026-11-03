@@ -1,8 +1,8 @@
-import { StarIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { ViewTransition } from "react";
 import { css, cx } from "styled-system/css";
 import { cq, flex } from "styled-system/patterns";
+import { StarGlyph } from "~/components/icons/star-icon";
 import { chromeViewTransitionName } from "~/components/view-transition-names";
 import { viewTransitionPage } from "~/components/view-transition-share";
 import type {
@@ -16,12 +16,19 @@ import type {
  */
 const MAX_RATING_GLYPHS = 48;
 
+/**
+ * At 8–9px a filled star's arms thin out into an asterisk, so the silhouette is
+ * stroked in its own fill colour: the path is unchanged, the mark just gets
+ * heavier where it would otherwise disappear. A size-specific class rather than
+ * a second drawing (#423).
+ */
 const glyph = css({
   "@rating-mix/lg": { blockSize: "9px", inlineSize: "9px" },
   blockSize: "8px",
   fill: "rating",
   inlineSize: "8px",
-  stroke: "none",
+  stroke: "rating",
+  strokeWidth: 1.2,
 });
 
 const glyphField = css({
@@ -77,7 +84,7 @@ const RatingRow = ({ bucket }: { bucket: RatingBucket }): ReactNode => (
     )}
   >
     <span className={flex({ alignItems: "center", gap: "1.5" })}>
-      <StarIcon
+      <StarGlyph
         aria-hidden="true"
         className={css({
           blockSize: "13px",
@@ -106,7 +113,7 @@ const RatingRow = ({ bucket }: { bucket: RatingBucket }): ReactNode => (
         { length: Math.min(bucket.count, MAX_RATING_GLYPHS) },
         (_, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: the run is a positional tally of identical glyphs, not a keyed list of records
-          <StarIcon className={glyph} key={`${bucket.rating}-${index}`} />
+          <StarGlyph className={glyph} key={`${bucket.rating}-${index}`} />
         )
       )}
       {bucket.count > MAX_RATING_GLYPHS ? (

@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { css, cx } from "styled-system/css";
 import { useSupportsBaseSelect } from "~/hooks/use-supports-base-select";
 
@@ -27,6 +27,11 @@ const selectClassName = css({
     },
   },
   _supportsBaseSelect: {
+    "& > button": {
+      alignItems: "center",
+      display: "inline-flex",
+      gap: "2",
+    },
     "& option": {
       _checked: {
         color: "primary",
@@ -116,13 +121,36 @@ const selectClassName = css({
   transitionProperty: "colors",
 });
 
+/*
+ * `<selectedcontent>` clones the selected option's markup, but the clone is
+ * taken when the button is inserted — before the option children exist — and
+ * Chrome does not refresh it when an option's content changes afterwards. A
+ * select that needs a glyph in its closed state therefore renders that glyph
+ * itself and hides any clone, which would otherwise show a second one.
+ */
+const selectedIconSlotClassName = css({
+  _supportsBaseSelect: {
+    "& selectedcontent svg": { display: "none" },
+  },
+});
+
+interface SelectProps extends ComponentProps<"select"> {
+  /**
+   * Rendered inside the customizable-select button, before the cloned option
+   * content. Use it when the closed control has to show something the browser
+   * will not clone — see `selectedIconSlotClassName`.
+   */
+  selectedIcon?: ReactNode;
+}
+
 function Select({
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledBy,
   className,
   children,
+  selectedIcon,
   ...props
-}: ComponentProps<"select">) {
+}: SelectProps) {
   const supportsBaseSelect = useSupportsBaseSelect();
   const pickerName = ariaLabelledBy ? undefined : (ariaLabel ?? "Select");
 
@@ -130,7 +158,11 @@ function Select({
     <select
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
-      className={cx(selectClassName, className)}
+      className={cx(
+        selectClassName,
+        selectedIcon ? selectedIconSlotClassName : undefined,
+        className
+      )}
       {...props}
     >
       {supportsBaseSelect ? (
@@ -139,6 +171,7 @@ function Select({
           aria-labelledby={ariaLabelledBy}
           type="button"
         >
+          {selectedIcon}
           <selectedcontent />
         </button>
       ) : null}

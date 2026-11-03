@@ -1,7 +1,7 @@
-import { StarIcon } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { css, cx } from "styled-system/css";
 import { flex, visuallyHidden } from "styled-system/patterns";
+import { StarGlyph } from "~/components/icons/star-icon";
 import type { ReviewModel } from "~/db/client.server";
 import { MAX_RATING } from "~/features/host/constants/constants";
 import type { Prettify } from "~/types";
@@ -36,22 +36,19 @@ const Star = ({ rating, starIndex }: StarProps): ReactNode => {
         position: "relative",
       })}
     >
-      <StarIcon
+      <StarGlyph
         className={css({
           blockSize: "var(--star-size)",
           inlineSize: "var(--star-size)",
-          stroke: "var(--rating-band-color, {colors.rating})",
+          stroke: "rating",
         })}
       />
 
       <div
-        className={cx(
-          "rating-star-fill",
-          css({ color: "var(--rating-band-color, {colors.rating})" })
-        )}
+        className={cx("rating-star-fill", css({ color: "rating" }))}
         style={starStyle}
       >
-        <StarIcon
+        <StarGlyph
           className={css({
             blockSize: "var(--star-size)",
             fill: "currentColor",

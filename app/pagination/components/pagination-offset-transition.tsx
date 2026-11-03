@@ -143,7 +143,6 @@ const PaginationOffsetTransition = ({
   const [pendingDirection, setPendingDirection] = useState<Direction | null>(
     null
   );
-
   const bumpPageEpoch = (direction: Direction) => {
     setPendingDirection(direction);
   };

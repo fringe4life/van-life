@@ -4,11 +4,24 @@ function subscribeSupportsBaseSelect() {
   return () => undefined;
 }
 
+let capability: boolean | undefined;
+
+interface ComputedStyleLike {
+  getPropertyValue: (property: string) => string;
+}
+
 /**
- * Trust computed `appearance`, not `CSS.supports` alone. Engines like happy-dom
- * report `true` for unknown values without implementing customizable select.
+ * Confirm the engine honours `base-select` rather than merely parsing it.
+ *
+ * `getComputedStyle` only resolves against an element that is in the document.
+ * A detached `<select>` reports an empty `appearance` even where customizable
+ * select is supported, so probing one off-document pins this check to `false`
+ * on every browser — which is exactly how the glyphs became invisible.
+ *
+ * The probe is therefore attached, read and removed inside one synchronous
+ * call: zero-sized, invisible, inert and never painted.
  */
-export function getSupportsBaseSelect(): boolean {
+function detectSupportsBaseSelect(): boolean {
   if (typeof document === "undefined") {
     return false;
   }
@@ -18,11 +31,52 @@ export function getSupportsBaseSelect(): boolean {
   if (!CSS.supports("appearance", "base-select")) {
     return false;
   }
+
+  const { body } = document;
+  if (!body) {
+    return false;
+  }
+
   const probe = document.createElement("select");
+  probe.setAttribute("aria-hidden", "true");
   probe.style.setProperty("appearance", "base-select");
-  return (
-    globalThis.getComputedStyle(probe as never).appearance === "base-select"
-  );
+  probe.style.setProperty("block-size", "0");
+  probe.style.setProperty("inline-size", "0");
+  probe.style.setProperty("pointer-events", "none");
+  probe.style.setProperty("position", "absolute");
+  probe.style.setProperty("visibility", "hidden");
+  probe.tabIndex = -1;
+  // The Worker typings ship a second DOM declaration set that does not line up
+  // with lib.dom, so both boundary calls are cast; at runtime these are an
+  // ordinary <select> and an ordinary body.
+  body.append(probe as never);
+
+  try {
+    const style = globalThis.getComputedStyle(
+      probe as never
+    ) as unknown as ComputedStyleLike;
+    return style.getPropertyValue("appearance") === "base-select";
+  } finally {
+    probe.remove();
+  }
+}
+
+/**
+ * Cached capability read. The answer cannot change during a session, and this
+ * is called from `useSyncExternalStore`'s snapshot on every render — which has
+ * to stay free of repeated DOM work.
+ */
+export function getSupportsBaseSelect(): boolean {
+  if (typeof document === "undefined") {
+    return false;
+  }
+  capability ??= detectSupportsBaseSelect();
+  return capability;
+}
+
+/** Test seam: drop the cached answer so a new probe is taken. */
+export function resetSupportsBaseSelect(): void {
+  capability = undefined;
 }
 
 /**

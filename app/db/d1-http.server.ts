@@ -25,20 +25,32 @@ interface ParsedRawResults {
   rows: unknown[][];
 }
 
+const EMPTY_RAW_RESULTS: ParsedRawResults = { columns: [], rows: [] };
+
+/** Early-exit empty shapes before shape-specific parsing. */
+function guardEmptyRawResults(
+  results: unknown[] | D1RawResults | undefined
+): results is undefined | [] {
+  if (!results) {
+    return true;
+  }
+  return Array.isArray(results) && results.length === 0;
+}
+
 function parseRawResults(
   results: unknown[] | D1RawResults | undefined
 ): ParsedRawResults {
-  if (!results) {
-    return { columns: [], rows: [] };
+  if (guardEmptyRawResults(results)) {
+    return EMPTY_RAW_RESULTS;
   }
   // `/query` → object rows[]; `/raw` → { columns, rows }
   if (Array.isArray(results)) {
-    if (results.length === 0) {
-      return { columns: [], rows: [] };
-    }
     const [first] = results;
     if (Array.isArray(first)) {
-      return { columns: [], rows: results as unknown[][] };
+      return {
+        columns: EMPTY_RAW_RESULTS.columns,
+        rows: results as unknown[][],
+      };
     }
     const columns = Object.keys(first as Record<string, unknown>);
     const rows = (results as Record<string, unknown>[]).map((row) =>
@@ -47,8 +59,8 @@ function parseRawResults(
     return { columns, rows };
   }
   return {
-    columns: results.columns ?? [],
-    rows: results.rows ?? [],
+    columns: results.columns ?? EMPTY_RAW_RESULTS.columns,
+    rows: results.rows ?? EMPTY_RAW_RESULTS.rows,
   };
 }
 
