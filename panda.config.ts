@@ -16,9 +16,6 @@ export default defineConfig({
     "--chart-text-first-height": "0.875rem",
     "--duration-dialog": "500ms",
     "--footer-height": "100px",
-    // Literal, not `var(--fonts-sans)`: `hash: true` renames the emitted token
-    // variables, so the stack has to be repeated here until #451 settles it.
-    "--global-font-body": "Inter, ui-sans-serif, system-ui, sans-serif",
     "--header-height": "104px",
     "--mobile-menu-width": "min(100vw, 25rem)",
     "--nav-control-inset-block":

@@ -39,6 +39,14 @@ export const globalCss = defineGlobalStyles({
       transitionDuration: "0.01ms !important",
     },
   },
+  /**
+   * The body face comes from the token, not from a copied stack (#451). Panda's
+   * preset declares `body { font-family: var(--global-font-body, ...) }`, so the
+   * override has to be a real declaration here — this rule wins on source order.
+   */
+  body: {
+    fontFamily: "sans",
+  },
   "h1,h2,h3,h4,h5,h6": {
     textWrap: "balance",
   },
