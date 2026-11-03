@@ -1,8 +1,35 @@
 import type { ComponentProps, ReactNode } from "react";
 import { css, cx } from "styled-system/css";
+import { ChevronIcon } from "~/components/icons/chevron-icon";
 import { useSupportsBaseSelect } from "~/hooks/use-supports-base-select";
 
-const fallbackChevron = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23161616' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`;
+/*
+ * The disclosure arrow is ours on both paths (#458). `base-select` hides the
+ * UA's `::picker-icon`, whose shape we can never set, and the legacy path drops
+ * the background-image data URI with its hard-coded hex: the vendored
+ * `ChevronIcon` is drawn once, positioned over the control, and follows
+ * `currentColor`. Same geometry as the pagination arrows and the host trigger,
+ * at the same 16px.
+ */
+const wrapperClassName = css({
+  "&:has(select:open) [data-select-disclosure]": { rotate: "180deg" },
+  display: "inline-flex",
+  inlineSize: "fit-content",
+  position: "relative",
+});
+
+const disclosureClassName = css({
+  blockSize: "4",
+  color: "muted.foreground",
+  inlineSize: "4",
+  insetInlineEnd: "3",
+  pointerEvents: "none",
+  position: "absolute",
+  top: "1/2",
+  transitionDuration: "normal",
+  transitionProperty: "rotate",
+  translate: "0 -50%",
+});
 
 const selectClassName = css({
   _disabled: {
@@ -58,17 +85,18 @@ const selectClassName = css({
       gap: "2",
       overflow: "hidden",
     },
+    // The UA's picker icon is a filled pointer we cannot redraw; ours replaces it.
+    "&::picker-icon": {
+      display: "none",
+    },
     alignItems: "center",
     appearance: "base-select",
     backgroundImage: "none",
     display: "flex",
     gap: "2",
-    paddingInlineEnd: "4",
-  },
-  "&::picker-icon": {
-    color: "muted.foreground",
-    transitionDuration: "normal",
-    transitionProperty: "rotate",
+    // The chevron is an absolutely positioned sibling, so it contributes no
+    // width of its own: the control has to reserve its inset plus its box.
+    paddingInlineEnd: "9",
   },
   "&::picker(select)": {
     appearance: "base-select",
@@ -88,9 +116,6 @@ const selectClassName = css({
     transitionProperty: "opacity, translate, display, overlay",
     translate: "0 -0.5rem",
   },
-  "&:open::picker-icon": {
-    rotate: "180deg",
-  },
   "&:open::picker(select)": {
     opacity: 1,
     translate: "0 0",
@@ -103,10 +128,6 @@ const selectClassName = css({
   },
   appearance: "none",
   backgroundColor: "card",
-  backgroundImage: fallbackChevron,
-  backgroundPosition: "right 0.75rem center",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "1rem",
   blockSize: "9",
   borderColor: "input",
   borderRadius: "md",
@@ -155,28 +176,38 @@ function Select({
   const pickerName = ariaLabelledBy ? undefined : (ariaLabel ?? "Select");
 
   return (
-    <select
-      aria-label={ariaLabel}
-      aria-labelledby={ariaLabelledBy}
-      className={cx(
-        selectClassName,
-        selectedIcon ? selectedIconSlotClassName : undefined,
-        className
-      )}
-      {...props}
-    >
-      {supportsBaseSelect ? (
-        <button
-          aria-label={pickerName}
-          aria-labelledby={ariaLabelledBy}
-          type="button"
-        >
-          {selectedIcon}
-          <selectedcontent />
-        </button>
-      ) : null}
-      {children}
-    </select>
+    <span className={wrapperClassName}>
+      <select
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        className={cx(
+          selectClassName,
+          selectedIcon ? selectedIconSlotClassName : undefined,
+          className
+        )}
+        {...props}
+      >
+        {supportsBaseSelect ? (
+          <button
+            aria-label={pickerName}
+            aria-labelledby={ariaLabelledBy}
+            type="button"
+          >
+            {selectedIcon}
+            <selectedcontent />
+          </button>
+        ) : null}
+        {children}
+      </select>
+      {/* Decorative: the select already announces itself and its value. */}
+      <span
+        aria-hidden="true"
+        className={disclosureClassName}
+        data-select-disclosure=""
+      >
+        <ChevronIcon direction="down" size={16} />
+      </span>
+    </span>
   );
 }
 

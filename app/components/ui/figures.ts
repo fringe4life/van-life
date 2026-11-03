@@ -23,8 +23,47 @@ import { css } from "styled-system/css";
  * two weights the money faces ship. Asking for `semibold` or `extrabold` renders
  * as 700 while the CSS reads as something else.
  *
+ * ## Why Space Mono, measured (#448)
+ *
+ * Candidates were subset to `MONEY_GLYPHS` with `bun run fonts:subset-money`'s
+ * own pipeline and rendered at the two sizes money actually uses — a 16px row
+ * price and a 36px display total — against `$1,234.56`, `-$1,234.56`, `$0.00`,
+ * `$12.50`, `$999,999.99`.
+ *
+ * | Candidate | Weights in the family | Latin woff2 (400 / 700) | Subset (400 / 700) | Both |
+ * | --- | --- | --- | --- | --- |
+ * | Space Mono (shipped) | 400, 700 + italics | 16,520 / 16,724 B | 5,476 / 5,660 B | **11,136 B** |
+ * | IBM Plex Mono | 100–700 + italics | 14,708 / 14,908 B | 3,904 / 3,952 B | 7,856 B |
+ * | JetBrains Mono | 100–800 + italics | 21,168 / 21,908 B | 3,588 / 3,620 B | 7,208 B |
+ * | Inter + `tabular-nums` | variable 100–900 | in the body file | — | 0 B |
+ *
+ * All three monospace candidates are SIL OFL 1.1, so licence separates nothing.
+ * Only Space Mono ships exactly the two weights money uses, which is why the
+ * weight rule below has no third case to pick.
+ *
+ * Measured advance for `$1,234.56`: **88.1 px at 16px / 198.1 px at 36px** in
+ * Space Mono, and **86.4 / 194.3 px** in both Plex and JetBrains — a 2% premium,
+ * not the gulf the screenshots suggest. All three are wider than Inter's tabular
+ * figures at the same size, which is why a money span is its own element rather
+ * than the body face with a variant. `1` carries a flag in all three and a foot
+ * in Space Mono and Plex only; `l` is a bare stem everywhere, so the pair
+ * separates by the flag alone whoever ships. `0` is a plain oval in Space Mono
+ * and Plex, and dotted in JetBrains — the clearest zero of the three, and the
+ * most technical in texture.
+ *
+ * **Decision: Space Mono stays, and the reason is neither bytes nor width.** It
+ * costs 3.3 kB more than Plex and 3.9 kB more than JetBrains, and it is 2%
+ * wider; those are the honest costs. What buys it is mass: at 700 it is the
+ * heaviest of the three, with slab-like terminals and tight counters, so a `5xl`
+ * net reads as a statement where Plex reads as a very good ledger and JetBrains
+ * as an instrument. These figures are the subject of their block, and that is
+ * the one role a second face is allowed to serve. Reopening needs a
+ * display-size comparison inside the real band, not a smaller file — Plex is the
+ * candidate to try first if the net ever feels too heavy.
+ *
  * @see https://github.com/fringe4life/van-life/issues/408 — the rule and the
  * money-versus-statistics decision
+ * @see https://github.com/fringe4life/van-life/issues/448 — this record
  */
 const money = css({
   fontFamily: "mono",

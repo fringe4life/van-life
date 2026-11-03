@@ -59,6 +59,20 @@ const currencyCaption = css({
   textTransform: "uppercase",
 });
 
+/**
+ * Axis numerals follow the same rule as every other aligned figure: Inter with
+ * tabular figures (#449). `@tanstack/charts` 1.1.0 exposes `fontSize` and
+ * `fontWeight` on `tickLabels` but neither a family nor `font-variant-numeric`,
+ * so the ticks are reached through the rendered `<text>` instead. They stay in
+ * Inter on purpose: the labels are `4k`, `−2k`, `0`, and the money subset has no
+ * letters — an axis rendering `k` in a second face is the exact bug the glyph
+ * list exists to prevent.
+ */
+const plot = css({
+  "& text": { fontVariantNumeric: "tabular-nums" },
+  inlineSize: "full",
+});
+
 const legend = css({
   borderBlockStart: "1px solid",
   borderColor: "border.subtle",
@@ -209,7 +223,7 @@ const MoneyTimelineComponent = ({
         <p className={currencyCaption}>USD</p>
         {/* Inline size only: the scene's own height sizes this box, so the grid
             row grows to the chart instead of clipping it into the sort row. */}
-        <div className={css({ inlineSize: "full" })}>
+        <div className={plot}>
           <Chart
             ariaLabel={ariaLabel}
             definition={definition}
