@@ -23,8 +23,39 @@ import { css } from "styled-system/css";
  * two weights the money faces ship. Asking for `semibold` or `extrabold` renders
  * as 700 while the CSS reads as something else.
  *
+ * ## Why Space Mono, measured (#448)
+ *
+ * Candidates were subset to `MONEY_GLYPHS` with `bun run fonts:subset-money`'s
+ * own pipeline and rendered at the two sizes money actually uses — a 16px row
+ * price and a 36px display total — against `$1,234.56`, `-$1,234.56`, `$0.00`,
+ * `$12.50`, `$999,999.99`.
+ *
+ * | Candidate | Latin woff2 (400 / 700) | Subset (400 / 700) | Both |
+ * | --- | --- | --- | --- |
+ * | Space Mono (shipped) | 16,520 / 16,724 B | 5,476 / 5,660 B | **11,136 B** |
+ * | IBM Plex Mono | 14,708 / 14,908 B | 3,904 / 3,952 B | 7,856 B |
+ * | JetBrains Mono | 21,168 / 21,908 B | 3,588 / 3,620 B | 7,208 B |
+ * | Inter + `tabular-nums` | 0 added | — | 0 B |
+ *
+ * At both sizes Space Mono is the widest of the three and the only one whose
+ * `$` carries a bar for the full height of the figure; its `1` keeps a foot, its
+ * `0` is a plain oval, and its comma hangs clearly below the baseline. IBM Plex
+ * Mono is the narrowest and cheapest; JetBrains Mono has the most explicit zero
+ * and the smallest subset. Subset size does not track source size — JetBrains
+ * has the largest latin file and the smallest subset.
+ *
+ * **Decision: Space Mono stays, and the reason is not the bytes.** It is the
+ * most expensive of the three by 3.3 kB against Plex, and that is the honest
+ * cost of the decision. What buys it is the display voice: these figures are the
+ * subject of their block, and Space Mono's wider rhythm and unbracketed digits
+ * hold a `5xl` net where the two narrower faces read as small writing scaled up.
+ * Reopening this needs a display-size comparison in the real band, not a smaller
+ * file — if the net and balance ever feel too wide at `5xl`, IBM Plex Mono is the
+ * candidate to try first.
+ *
  * @see https://github.com/fringe4life/van-life/issues/408 — the rule and the
  * money-versus-statistics decision
+ * @see https://github.com/fringe4life/van-life/issues/448 — this record
  */
 const money = css({
   fontFamily: "mono",
