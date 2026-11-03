@@ -1,17 +1,39 @@
-import { Info, LogIn, LogOut, Truck, User } from "lucide-react";
 import { href } from "react-router";
 import { css } from "styled-system/css";
+import { InfoIcon } from "~/components/icons/info-icon";
+import { LogInIcon } from "~/components/icons/log-in-icon";
+import { LogOutIcon } from "~/components/icons/log-out-icon";
+import { UserIcon } from "~/components/icons/user-icon";
+import { VanIcon } from "~/components/icons/van-icon";
 import { linkClassName, navLinkClassName } from "../styles";
 import type { NavItem } from "../types";
 
-const navIconClassName = css({ aspectRatio: "square" });
+const navIconClassName = css({
+  blockSize: "26px",
+  flexShrink: "0",
+  inlineSize: "26px",
+});
+
+/*
+ * Label is the disambiguator, not the headline: 12px and quieter than the 26px
+ * glyph. Opacity rather than a muted colour so the link's own hover colour
+ * still reads through.
+ */
+const navLabelClassName = css({
+  _groupCurrent: { opacity: 1 },
+  _groupHover: { opacity: 1 },
+  ".pending &": { color: "success", opacity: 1 },
+  fontSize: "xs",
+  letterSpacing: "0.01em",
+  opacity: 0.72,
+});
 
 const pageNavItems = [
   {
     children: (
       <>
-        <Info className={navIconClassName} />
-        <span>About</span>
+        <InfoIcon className={navIconClassName} />
+        <span className={navLabelClassName}>About</span>
       </>
     ),
     id: "about",
@@ -24,8 +46,8 @@ const pageNavItems = [
   {
     children: (
       <>
-        <Truck className={navIconClassName} />
-        <span>Vans</span>
+        <VanIcon className={navIconClassName} />
+        <span className={navLabelClassName}>Vans</span>
       </>
     ),
     id: "vans",
@@ -38,8 +60,8 @@ const authenticatedNavItems = [
   {
     children: (
       <>
-        <User className={navIconClassName} />
-        <span>Host</span>
+        <UserIcon className={navIconClassName} />
+        <span className={navLabelClassName}>Host</span>
       </>
     ),
     id: "host",
@@ -49,8 +71,8 @@ const authenticatedNavItems = [
   {
     children: (
       <>
-        <LogOut className={navIconClassName} />
-        <span>Sign out</span>
+        <LogOutIcon className={navIconClassName} />
+        <span className={navLabelClassName}>Sign out</span>
       </>
     ),
     id: "signout",
@@ -63,8 +85,8 @@ const signedOutNavItems = [
   {
     children: (
       <>
-        <LogIn className={navIconClassName} />
-        <span>Login</span>
+        <LogInIcon className={navIconClassName} />
+        <span className={navLabelClassName}>Login</span>
       </>
     ),
     id: "login",

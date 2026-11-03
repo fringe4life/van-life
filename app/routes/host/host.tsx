@@ -7,8 +7,7 @@ import {
   forwardDataHeaders,
   PRIVATE_NO_STORE_HEADERS,
 } from "~/constants/cache-headers";
-import { HostIncomeSection } from "~/features/host/components/dashboard/host-income-section";
-import { HostReviewSection } from "~/features/host/components/dashboard/host-review-section";
+import { HostSummaryBand } from "~/features/host/components/dashboard/host-summary-band";
 import { HostVansSection } from "~/features/host/components/dashboard/host-vans-section";
 import { HostWalletForm } from "~/features/host/components/dashboard/host-wallet-form";
 import { useHostWallet } from "~/features/host/hooks/use-host-wallet";
@@ -117,8 +116,10 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
   const {
     vansPromise,
     avgRating,
+    earnedAsHost,
     name,
-    rangeLabel,
+    paidAsRenter,
+    reviewCount,
     sumIncome,
     transactionSummary,
   } = loaderData;
@@ -132,14 +133,16 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
         content="Your Van Life host dashboard - manage your vans, view income, and track rentals"
         name="description"
       />
-      <HostIncomeSection
+      <HostSummaryBand
+        avgRating={avgRating}
+        earnedAsHost={earnedAsHost}
         isBalancePending={wallet.isPending}
         name={name}
         optimisticBalance={wallet.optimisticBalance}
-        rangeLabel={rangeLabel}
+        paidAsRenter={paidAsRenter}
+        reviewCount={reviewCount}
         sumIncome={sumIncome}
       />
-      <HostReviewSection avgRating={avgRating} />
       <HostWalletForm
         fetcher={wallet.fetcher}
         isDepositing={wallet.isDepositing}

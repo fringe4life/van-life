@@ -8,6 +8,7 @@ import { css, cx, viewTransition } from "styled-system/css";
 import { flex, grid } from "styled-system/patterns";
 import { ItemList } from "~/components/item-list";
 import { Button } from "~/components/ui/button";
+import { tabularNums } from "~/components/ui/figures";
 import { chromeViewTransitionName } from "~/components/view-transition-names";
 import {
   DEFAULT_CURSOR,
@@ -126,7 +127,7 @@ const Sortable = ({
             fontWeight: "bold",
           })}
         >
-          {title} ({itemCount})
+          {title} (<span className={tabularNums}>{itemCount}</span>)
         </h3>
       </ViewTransition>
 

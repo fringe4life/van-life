@@ -155,6 +155,8 @@ export const mobileNavSectionListClassName = vstack({
 });
 
 export const linkClassName = cx(
+  // `group` lets a glyph style itself against the owning link's state.
+  "group",
   css({
     _focusVisible: {
       outlineColor: "ring",
@@ -178,12 +180,14 @@ export const linkClassName = cx(
   hstack({ gap: "2" })
 );
 
+/*
+ * Pending feedback lives on the label, never on the link: React Router's
+ * `pending` class recolours inherited text, and recolouring the link would
+ * wash out whatever colour a glyph has claimed for its moving part.
+ */
 export const navLinkClassName = cx(
   linkClassName,
   css({
-    "&.pending": {
-      color: "success",
-    },
     "&[aria-current='page']": {
       textDecoration: "underline",
       textUnderlineOffset: "4px",

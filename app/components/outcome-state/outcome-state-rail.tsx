@@ -1,8 +1,8 @@
-import type { LucideIcon } from "lucide-react";
+import type { IconComponent } from "~/components/icons/icon";
 import type { OutcomeStateStyles } from "./types";
 
 interface OutcomeStateRailProps {
-  Icon: LucideIcon;
+  Icon: IconComponent;
   label: string;
   styles: OutcomeStateStyles;
 }

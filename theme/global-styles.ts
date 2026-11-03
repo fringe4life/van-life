@@ -26,6 +26,18 @@ export const globalCss = defineGlobalStyles({
       {
         animation: "none !important",
       },
+    /**
+     * Glyph motion (#412). A glyph part animates from `.group:hover`,
+     * `.group:focus-visible` or an ancestor attribute selector, so a reset at a
+     * single class loses the cascade and the part keeps moving. This is the
+     * whole set's guard, one media query rather than a branch per glyph, and it
+     * is scoped to SVG descendants so no ordinary surface loses its transition.
+     * Colour still lands: it snaps instead of easing.
+     */
+    "svg :is(g, path, line, polyline, polygon, circle, rect, ellipse)": {
+      animation: "none !important",
+      transitionDuration: "0.01ms !important",
+    },
   },
   "h1,h2,h3,h4,h5,h6": {
     textWrap: "balance",

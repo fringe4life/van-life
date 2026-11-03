@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { ViewTransition } from "react";
 import { css, cx } from "styled-system/css";
+import { money } from "~/components/ui/figures";
 import { chromeViewTransitionName } from "~/components/view-transition-names";
 import { viewTransitionShare } from "~/components/view-transition-share";
 import { displayPrice } from "~/features/vans/utils/display-price";
@@ -30,14 +31,17 @@ const termLabel = css({
   gap: "2",
 });
 
-const netValue = css({
-  fontSize: { "@activity/2xl": "5xl", base: "4xl" },
-  fontVariantNumeric: "tabular-nums",
-  fontWeight: "extrabold",
-  letterSpacing: "tighter",
-  lineHeight: "1.05",
-  margin: "0",
-});
+const netValue = cx(
+  money,
+  css({
+    fontSize: { "@activity/2xl": "5xl", base: "4xl" },
+    // `bold` is the heaviest Space Mono ships; there is no 800 to ask for.
+    fontWeight: "bold",
+    letterSpacing: "tighter",
+    lineHeight: "1.05",
+    margin: "0",
+  })
+);
 
 const item = css({
   "@activity/2xl": {
@@ -57,12 +61,14 @@ const itemTerm = css({
   marginBlockEnd: "0",
 });
 
-const itemValue = css({
-  fontSize: { "@activity/2xl": "lg", base: "base" },
-  fontVariantNumeric: "tabular-nums",
-  fontWeight: "bold",
-  margin: "0",
-});
+const itemValue = cx(
+  money,
+  css({
+    fontSize: { "@activity/2xl": "lg", base: "base" },
+    fontWeight: "bold",
+    margin: "0",
+  })
+);
 
 interface MoneyLedgerProps {
   inflow: number;

@@ -1,8 +1,10 @@
 import type { AppDb } from "~/db/client.server";
-import { getRentalActivityStats } from "~/features/host/dal/rental-activity.server";
-import { getAverageReviewRating } from "~/features/host/dal/review-analytics.server";
+import {
+  getRentalActivityStats,
+  toRentalActivitySplit,
+} from "~/features/host/dal/rental-activity.server";
+import { getReviewSummary } from "~/features/host/dal/review-analytics.server";
 import { getAccountSummary } from "~/features/host/dal/wallet-movement.server";
-import { formatRangeLabel } from "~/features/host/utils/money-timeline";
 import { roundReviewAverage } from "~/features/host/utils/rating-mix";
 import { toTransactionAggStats } from "~/features/host/utils/resolve-chart-context.server";
 import { getHostVans } from "~/features/vans/dal/host-van.server";
@@ -21,23 +23,25 @@ export async function loadHostDashboard(db: AppDb, userId: UUIDv7) {
   );
 
   const [
-    { data: avgRating },
+    { data: reviewSummary },
     { data: transactionSummary },
     { data: rawIncomeStats },
   ] = await Promise.all([
-    tryCatch(() => getAverageReviewRating(db, userId)),
+    tryCatch(() => getReviewSummary(db, userId)),
     tryCatch(() => getAccountSummary(db, userId)),
     tryCatch(() => getRentalActivityStats(db, userId)),
   ]);
 
-  const { firstAt, lastAt, total } = toTransactionAggStats(rawIncomeStats);
+  const { total } = toTransactionAggStats(rawIncomeStats);
+  const { earnedAsHost, paidAsRenter } = toRentalActivitySplit(rawIncomeStats);
 
   return {
-    avgRating: roundReviewAverage(avgRating ?? 0),
-    // Same label the financial routes put in their header slot, so the slot
-    // reads as one value across the host pages.
-    rangeLabel:
-      firstAt && lastAt ? formatRangeLabel(firstAt, lastAt) : "No rentals yet",
+    avgRating: roundReviewAverage(reviewSummary?.average ?? 0),
+    // Every figure in the summary band is all-time, so the band states that once
+    // in its header slot instead of repeating a window per number (#453).
+    earnedAsHost,
+    paidAsRenter,
+    reviewCount: reviewSummary?.count ?? 0,
     sumIncome: total,
     transactionSummary: transactionSummary ?? 0,
     vansPromise,

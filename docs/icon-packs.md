@@ -1,6 +1,9 @@
 # Icon packs vs lucide-react (van-life)
 
-**Date:** 2026-08-29. Stack: React Router 8 + Vite 8 (Rolldown) + React 19 SPA. Package: [`lucide-react`](https://www.npmjs.com/package/lucide-react) **1.34.0** (ISC). Official guide: [Lucide for React](https://lucide.dev/guide/packages/lucide-react).
+**Date:** 2026-08-29. **Status:** historical — the comparison below is why the pack was dropped, not a recommendation. No icon package ships; see §6.
+Stack: React Router 8 + Vite 8 (Rolldown) + React 19 SPA. Package examined: [`lucide-react`](https://www.npmjs.com/package/lucide-react) **1.34.0** (ISC). Official guide: [Lucide for React](https://lucide.dev/guide/packages/lucide-react).
+
+**See also:** [`docs/research/svg-optimisation.md`](./research/svg-optimisation.md) — what the owned glyph set actually costs once it ships (45% of `/`'s HTML is inline SVG, and 18.2 kB of that is class text), why a `<use>` sprite cannot keep per-part animation, and what SVGO would and would not be safe on. This file covers *which pack*; that one covers *how the glyphs we now own are optimised and delivered*.
 
 Question: named imports from a huge icon barrel — does Vite “go over all of them”? Should this app switch packs for tree-shaking or hamburger morph?
 
@@ -14,12 +17,17 @@ Named imports from `"lucide-react"` only:
 | [`app/features/navigation/utils/get-nav-items.tsx`](../app/features/navigation/utils/get-nav-items.tsx) | `Info`, `LogIn`, `LogOut`, `Truck`, `User` |
 | [`app/features/host/components/review/rating-stars.tsx`](../app/features/host/components/review/rating-stars.tsx) | `StarIcon` |
 | [`app/components/status-button.tsx`](../app/components/status-button.tsx) | `Check`, `Loader2`, `X` |
-| [`app/features/pagination/components/pagination.tsx`](../app/features/pagination/components/pagination.tsx) | `ChevronLeftIcon`, `ChevronRightIcon` |
 | [`app/features/host/constants/host-nav-items.tsx`](../app/features/host/constants/host-nav-items.tsx) | `ArrowRightLeft`, `Car`, `KeySquare`, `LayoutDashboard`, `SquarePlus`, `Star`, `Wallet` |
 
-~19 names, ~18 unique glyphs (`Star` / `StarIcon` are aliases). No `LucideProvider`, no `lucide-react/dynamic`.
+Pagination used to sit in that table (`ChevronLeftIcon` / `ChevronRightIcon`). It no longer imports from the pack: the pager arrows are [`chevron-icon.tsx`](../app/components/icons/chevron-icon.tsx) with `morph="arrow"` (#432 / #433). The barbs close and the shaft grows on hover and focus-visible; a press adds three thin speed lines out of the tail, 28ms apart, plus a 9% stretch along the travel. They run off `data-pulse`, which is the pending direction the pager already tracks — no timer, so the burst is as long as the page actually takes and no longer. The limit control's density marks are [`rows-icon.tsx`](../app/components/icons/rows-icon.tsx) (#434 – #437).
 
-**Not lucide:** [`app/features/navigation/components/hamburger-icon.tsx`](../app/features/navigation/components/hamburger-icon.tsx) — two `<line>`s, Tailwind `transform-view` (`transform-box: view-box`), `origin-center`, `group-has-open` translate+rotate to X. Lucide `Menu` / `X` cannot do independent bar morph without custom SVG (see below).
+The transaction badges are vendored too: [`arrow-line-icon.tsx`](../app/components/icons/arrow-line-icon.tsx) for deposits and withdrawals (#439 / #442) and [`money-transfer-icon.tsx`](../app/components/icons/money-transfer-icon.tsx) for rental payments and returns (#440 / #441). Each glyph is tinted by direction through [`money-ink.ts`](../app/components/icons/money-ink.ts), which maps `chart.inflow` / `chart.outflow` to the two movements. The rental mark is a single diagonal arrow; a banknote was drawn first and dropped because at 14px in the badge it read as a rectangle with a slash.
+
+The status button was the last consumer. [`status-icon.tsx`](../app/components/icons/status-icon.tsx) holds all three marks (#429 – #431) at one optical box, because the button swaps them in an absolutely centred overlay and a size or weight difference between them reads as the button jumping: a spinning burst, a check that draws on and holds, a cross that snaps in and shakes once. The burst is a Catherine wheel — six rays, alternating long and short, around a solid spark. A 300° rim with a hub and four treads was drawn first and read as a dartboard at 20px, which is why there is no ring in it now. A closed ring plus radial marks is a target; the alternation of the rays is what makes a turn visible instead.
+
+~15 names, ~14 unique glyphs (`Star` / `StarIcon` are aliases) — **all of them vendored as of #429 – #431**, so the table above is history rather than a current import list. The removal is complete: no file under `app/` imports the pack, `lucide-react` is out of `package.json` and `bun.lock`, out of `optimizeDepsInclude` in [`vite.config.ts`](../vite.config.ts), and out of the stack list in [`README.md`](../README.md). No `LucideProvider`, no `lucide-react/dynamic`.
+
+**Not lucide:** [`app/navigation/components/hamburger-icon.tsx`](../app/navigation/components/hamburger-icon.tsx) — two `<line>`s, Tailwind `transform-view` (`transform-box: view-box`), `origin-center`, `group-has-open` translate+rotate to X. Lucide `Menu` / `X` cannot do independent bar morph without custom SVG (see below).
 
 **Not icons:** [`public/rvMask.min.svg`](../public/rvMask.min.svg) (~22 KB SVGO’d mask, `md:mask-[url(/rvMask.min.svg)]` on home) and [`public/cloud-5.svg`](../public/cloud-5.svg) (<1 KB, `viewBox` + one minified path, about-page mask). Illustrations / masks, not 24×24 stroke UI icons. An icon pack will never replace them.
 
@@ -166,17 +174,26 @@ Tools: [SVGO](https://svgo.dev/docs/preset-default/) (official Node CLI; default
 
 ---
 
-## 6. Recommendation for **this** repo
+## 6. What this repo does instead of a pack
 
-~18 Lucide glyphs + **one custom hamburger** + two **illustration masks**.
+**No icon package ships here.** Every glyph is a vendored inline SVG component in [`app/components/icons/`](../app/components/icons), 33 components across 25 modules, built on `IconShell` in [`icon.tsx`](../app/components/icons/icon.tsx). `lucide-react` is not a dependency; the whole set is 6,484 B gzip of client JS. The pack comparison above is kept as the record of *why* — not as a live recommendation.
 
-1. **Stay on `lucide-react` named imports** for UI icons. Runtime tree-shake is the supported path. Shared wrapper is small vs 18 path tables. Look already matches.
-2. **If Vite/Rolldown transform time is a measured problem** (profile, don’t guess): alias deep imports per [lucide#3354](https://github.com/lucide-icons/lucide/issues/3354) (`lucide-react/icons/x` → `dist/esm/icons/x.mjs`). **Do not** add `lucide-react/dynamic`. **Do not** wait for official `exports` — they reverted it for **Cloudflare workers**, which this app deploys to.
-3. **unplugin-icons + `@iconify-json/lucide`:** same artwork, skip the React barrel, compile only used icons. Extra Vite plugin + import syntax (`~icons/lucide/x`). Worth it **after** a slow-build measurement, not before.
-4. **Copy ~18 SVGs into `app/assets` and drop the package:** smallest graph, you own the files, lose Lucide props/context/aliases. Hamburger already custom. Reasonable if you want zero `node_modules` icon barrels; busywork if build is already fine.
-5. **Do not switch to Phosphor / Tabler / Heroicons** for tree-shake or animation. Phosphor documents the same (worse) transpile problem. Heroicons `bars-3` is one path. No pack gives this hamburger’s two-line morph.
-6. **Do not** replace `rvMask` / `cloud-5` with an icon pack. `rvMask.min.svg` is ~22 KB. `cloud-5.svg` is already <1 KB.
-7. **Keep** [`hamburger-icon.tsx`](../app/features/navigation/components/hamburger-icon.tsx). CSS-only. Not Lottie, not Lucide Menu/X, not Material FILL.
+The properties that decided it, in the order they mattered:
+
+1. **Inner nodes have to carry classes.** A pack's `iconNode` produces paths with no `className`, so nothing inside a glyph can be targeted. Motion per part — barbs folding, streaks firing, wheels turning — needs elements we own. This is the requirement every candidate pack fails.
+2. **One interaction model, not 33 one-offs.** `IconShell` fixes the contract: 24 grid, `fill="none"`, `stroke="currentColor"`, stroke 1.6, round caps and joins, `aria-hidden` unless a `title` is passed, sizing owned by the caller. Colour at rest is always inherited.
+3. **Motion is CSS on ancestor state.** Glyphs read `:hover`, `:focus-visible`, `[aria-current='page']`, `[data-pulse]`, `[data-held]` from the owning element through the conditions in [`theme/conditions.ts`](../theme/conditions.ts), with keyframes in [`theme/keyframes.ts`](../theme/keyframes.ts). Nothing mounts, nothing hydrates, and `prefers-reduced-motion` collapses to colour-only in one media query.
+4. **The literal rule.** Every `css()` carrying an `animationName`, delay, duration, `transformOrigin` or transition token is a top-level literal call. Panda extracts statically, so a factory that takes a keyframe name silently emits a class with no rule behind it — the bug #417 / #418 fixed for the sign-in barbs. Variant grids are fine; parameterised `css()` is not.
+
+Still true, and still worth knowing:
+
+- **Do not** add a sprite pipeline or `unplugin-icons`. A `<use>` reference puts its content in a shadow tree where host selectors do not match, which would kill every per-part animation here; see [`docs/research/svg-optimisation.md`](./research/svg-optimisation.md) §2 for the spec quotes and the measurements.
+- **Do not** switch to Phosphor / Tabler / Heroicons for tree-shake or animation. Same static-path limitation, worse barrels.
+- **Do not** replace `rvMask` / `cloud-5` with an icon pack. `rvMask.min.svg` is ~22 KB. `cloud-5.svg` is already <1 KB. They are masks, not 24×24 stroke UI glyphs.
+- **Keep** [`hamburger-icon.tsx`](../app/navigation/components/hamburger-icon.tsx) inside the icon set's conventions even though it predates it: two `<line>`s, CSS transform, no pack can do that morph.
+- **Do not** add SVGO or SVGR steps: the path data is generated from geometry constants at module load, and `preset-default` would merge paths, flatten animation groups and prefix the class names the stylesheet keys on. The conservative allowlist, if one is ever needed, is in the research doc §4.4.
+
+The open questions left in this area — markup weight, geometry freezing and a CI budget — are tracked as #465 and its children under [#413](https://github.com/fringe4life/van-life/issues/413).
 
 ### Pack comparison (serious candidates)
 

@@ -16,6 +16,8 @@ export default defineConfig({
     "--chart-text-first-height": "0.875rem",
     "--duration-dialog": "500ms",
     "--footer-height": "100px",
+    // Literal, not `var(--fonts-sans)`: `hash: true` renames the emitted token
+    // variables, so the stack has to be repeated here until #451 settles it.
     "--global-font-body": "Inter, ui-sans-serif, system-ui, sans-serif",
     "--header-height": "104px",
     "--mobile-menu-width": "min(100vw, 25rem)",
@@ -31,6 +33,7 @@ export default defineConfig({
     "--star-gap": "0.5rem",
     "--star-size": "1.25rem",
   },
+  hash: true,
   importMap: "styled-system",
   include: [
     "./app/**/*.{js,jsx,ts,tsx}",
@@ -67,6 +70,7 @@ export default defineConfig({
         "detail",
         "outcome-state",
         "host-nav",
+        "summary",
       ],
       containerSizes: {
         "2xl": "44rem",
@@ -75,11 +79,6 @@ export default defineConfig({
         md: "26rem",
         shell: "80rem",
         sm: "12rem",
-      },
-      fonts: {
-        sans: {
-          value: "Inter, ui-sans-serif, system-ui, sans-serif",
-        },
       },
       keyframes,
       semanticTokens,

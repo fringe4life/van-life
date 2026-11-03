@@ -1,4 +1,3 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import {
   addTransitionType,
@@ -7,8 +6,12 @@ import {
 } from "react";
 import { hstack } from "styled-system/patterns";
 import { arrowRecipe } from "~/components/arrow-recipe";
+import { ChevronIcon } from "~/components/icons/chevron-icon";
 import { Button } from "~/components/ui/button";
-import { useBumpPaginationPageEpoch } from "~/pagination/components/pagination-page-epoch";
+import {
+  useBumpPaginationPageEpoch,
+  usePaginationPendingDirection,
+} from "~/pagination/components/pagination-page-epoch";
 import { cursorPaginationParsers } from "~/pagination/parsers";
 import type { Direction, PaginationProps } from "~/pagination/types";
 import type { Id, Prettify } from "~/types";
@@ -37,6 +40,14 @@ export const PaginationControl = <T extends Id>({
     startTransition,
   });
   const bumpPageEpoch = useBumpPaginationPageEpoch();
+  /*
+   * The pulse rides the pending direction that already exists (#432 / #433) —
+   * no timer, no extra state. It lasts exactly as long as the gesture is real:
+   * one burst on a fast page, repeated streaks while a slice is still loading.
+   * These buttons are inside the keyed slice, so a pulse of their own would be
+   * replaced mid-gesture anyway.
+   */
+  const pulseDirection = usePaginationPendingDirection();
   const { hasNextPage, hasPreviousPage } = paginationMetadata;
 
   const handlePageChange = (direction: Direction) => {
@@ -67,22 +78,32 @@ export const PaginationControl = <T extends Id>({
       <Button
         aria-label="Previous page"
         className="group"
+        data-pulse={pulseDirection === "backward" ? "true" : undefined}
         disabled={!hasPreviousPage}
         onClick={handlePreviousPage}
         size="icon"
         variant="outline"
       >
-        <ChevronLeftIcon className={previousArrowClassName} />
+        <ChevronIcon
+          className={previousArrowClassName}
+          direction="left"
+          morph="arrow"
+        />
       </Button>
       <Button
         aria-label="Next page"
         className="group"
+        data-pulse={pulseDirection === "forward" ? "true" : undefined}
         disabled={!hasNextPage}
         onClick={handleNextPage}
         size="icon"
         variant="outline"
       >
-        <ChevronRightIcon className={nextArrowClassName} />
+        <ChevronIcon
+          className={nextArrowClassName}
+          direction="right"
+          morph="arrow"
+        />
       </Button>
     </div>
   );

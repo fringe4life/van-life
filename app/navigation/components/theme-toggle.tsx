@@ -1,9 +1,12 @@
-import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import type { ChangeEventHandler } from "react";
 import { addTransitionType, startTransition } from "react";
 import { href, useFetcher, useRouteLoaderData } from "react-router";
 import { css, cx } from "styled-system/css";
 import { hstack, visuallyHidden } from "styled-system/patterns";
+import type { IconComponent } from "~/components/icons/icon";
+import { MonitorIcon } from "~/components/icons/monitor-icon";
+import { MoonIcon } from "~/components/icons/moon-icon";
+import { SunIcon } from "~/components/icons/sun-icon";
 import { Popover } from "~/components/ui/popover";
 import { closeClosestPopover } from "~/components/ui/popover/utils";
 import { isThemeChoice, THEME_CHOICES, type ThemeChoice } from "~/theme/schema";
@@ -35,7 +38,7 @@ const THEME_ICONS = {
   dark: MoonIcon,
   light: SunIcon,
   system: MonitorIcon,
-} as const;
+} as const satisfies Record<ThemeChoice, IconComponent>;
 
 const THEME_LABELS = {
   dark: "Dark",
@@ -176,7 +179,7 @@ const themeTogglePopoverOptionClassName = css({
 const themeIconClassName = css({
   aspectRatio: "square",
   flexShrink: "0",
-  inlineSize: "4",
+  inlineSize: "18px",
 });
 
 const legendClassName = visuallyHidden();
@@ -205,9 +208,13 @@ const ThemeOption = ({
 
   return (
     <label
-      className={
+      className={cx(
+        // `group` carries the glyph's hover and reveal states; `data-held` is
+        // what lights it, so the same marker works on the button below.
+        "group",
         compact ? themeTogglePopoverOptionClassName : themeToggleOptionClassName
-      }
+      )}
+      data-held={theme === choice ? "true" : undefined}
       key={choice}
     >
       <input
@@ -291,10 +298,17 @@ const ThemeToggle = ({ instance = "nav" }: ThemeToggleProps) => {
           instance === "nav" ? themeToggleNavCompactClassName : undefined
         )}
       >
+        {/*
+         * The trigger stands in for the chosen option: the same `group` the
+         * glyphs read, plus `data-held` because a button owns a value without
+         * containing the radio that set it. Without it the sun and the monitor
+         * render their resting outlines here while the popover lights them.
+         */}
         <button
           aria-controls={popoverId}
           aria-label={`Color theme: ${THEME_LABELS[theme]}`}
-          className={cx(themeToggleButtonClassName, triggerClassName)}
+          className={cx("group", themeToggleButtonClassName, triggerClassName)}
+          data-held="true"
           popoverTarget={popoverId}
           popoverTargetAction="toggle"
           type="button"

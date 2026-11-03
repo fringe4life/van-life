@@ -1,5 +1,6 @@
-import { css } from "styled-system/css";
+import { css, cx } from "styled-system/css";
 import { flex } from "styled-system/patterns";
+import { money } from "~/components/ui/figures";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import { getDiscountedPrice } from "~/utils/pricing";
 import type { VanProps } from "../types";
@@ -15,15 +16,20 @@ const VanPrice = ({ van: { price, discount } }: VanPriceProps) => {
     return (
       <div className={flex({ alignItems: "baseline", gap: "2" })}>
         <span
-          className={css({
-            color: "muted.foreground",
-            textDecoration: "line-through",
-          })}
+          className={cx(
+            money,
+            css({
+              color: "muted.foreground",
+              textDecoration: "line-through",
+            })
+          )}
         >
           {priceToDisplay}
         </span>
 
-        <span className={css({ fontSize: "xl", fontWeight: "bold" })}>
+        <span
+          className={cx(money, css({ fontSize: "xl", fontWeight: "bold" }))}
+        >
           {displayPrice(discountedPrice)}
         </span>
         <span>/day</span>
@@ -33,7 +39,7 @@ const VanPrice = ({ van: { price, discount } }: VanPriceProps) => {
 
   return (
     <span className={css({ "@card-full/xl": { fontSize: "xl" } })}>
-      {priceToDisplay} <span>/day</span>
+      <span className={money}>{priceToDisplay}</span> <span>/day</span>
     </span>
   );
 };

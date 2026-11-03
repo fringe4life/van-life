@@ -2,6 +2,7 @@ import { css, cx } from "styled-system/css";
 import { cq, grid, visuallyHidden, wrap } from "styled-system/patterns";
 import { scrollReveal } from "~/components/scroll-reveal-recipe";
 import { Card, CardContent } from "~/components/ui/card";
+import { money, tabularNums } from "~/components/ui/figures";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import type { Children, Prettify } from "~/types";
 import { TransactionBadge } from "./transaction-badge";
@@ -93,8 +94,8 @@ const Transaction = ({
                   // Narrow cards stack the amount under the details column; drop a
                   // step there so five-figure amounts stay on one line.
                   fontSize: { "@transaction/sm": "2xl", base: "xl" },
-                  fontVariantNumeric: "tabular-nums",
-                  fontWeight: "extrabold",
+                  // Space Mono ships 400 and 700 only — ask for what exists.
+                  fontWeight: "bold",
                   letterSpacing: "tighter",
                   textTransform: "uppercase",
                   whiteSpace: "nowrap",
@@ -102,15 +103,18 @@ const Transaction = ({
               )}
             >
               <span className={visuallyHidden()}>Transaction amount: </span>
-              {displayPrice(amount)}
+              <span className={money}>{displayPrice(amount)}</span>
             </p>
             <time
-              className={css({
-                color: "muted.foreground",
-                fontSize: "sm",
-                textAlign: "right",
-                whiteSpace: "nowrap",
-              })}
+              className={cx(
+                tabularNums,
+                css({
+                  color: "muted.foreground",
+                  fontSize: "sm",
+                  textAlign: "right",
+                  whiteSpace: "nowrap",
+                })
+              )}
               dateTime={createdAt.toISOString()}
             >
               {transactionDateFormatter.format(createdAt)}

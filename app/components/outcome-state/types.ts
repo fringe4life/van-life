@@ -1,5 +1,5 @@
-import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import type { IconComponent } from "~/components/icons/icon";
 import type { CustomLinkProps } from "~/components/links/custom-link";
 import type { outcomeStateRecipe } from "./outcome-state-recipe";
 
@@ -25,7 +25,7 @@ export interface OutcomeStateConfig {
   description?: ReactNode;
   headingId?: string;
   headingLevel?: OutcomeHeadingLevel;
-  icon?: LucideIcon;
+  icon?: IconComponent;
   label?: string;
   metadata?: ReactNode;
   primaryAction?: OutcomeStateAction;

@@ -19,6 +19,7 @@ The app uses PandaCSS v2 (`@pandacss/*` pinned to `2.1.2`). Styles are authored 
 - Panda Vite integration: [`vite.config.ts`](./vite.config.ts) (`@pandacss/vite`, `transform: true`)
 - Generated Panda helpers and CSS: [`styled-system`](./styled-system) — generated output; import as `styled-system/css` / `styled-system/patterns` (`tsconfig` path). Do not edit it directly.
 - Authored global CSS: [`app/app.css`](./app/app.css)
+- Generated money font subset: [`app/fonts/money`](./app/fonts/money) (woff2 + `money.css`, rebuilt by `bun run fonts:subset-money` from [`app/fonts/money-glyphs.ts`](./app/fonts/money-glyphs.ts))
 - Shared style helpers: [`app/styles.ts`](./app/styles.ts)
 - Shared UI primitives and recipes: [`app/components/ui`](./app/components/ui)
 - Domain-specific van presentation: [`app/features/vans/components`](./app/features/vans/components)
@@ -180,15 +181,38 @@ Use explicit border styles when a component owns a visible border, for example `
 
 ## Typography
 
-- Font family: use `fontFamily: "sans"`, backed by the variable Inter face declared in [`app/app.css`](./app/app.css) and registered as `fonts.sans` in [`theme/tokens.ts`](./theme/tokens.ts). Panda emits the generated `--fonts-sans` variable; do not introduce a second font-family variable.
+- Body font: use `fontFamily: "sans"` for all text. It is the variable Inter face declared in [`app/app.css`](./app/app.css) and registered as `fonts.sans` in [`theme/tokens.ts`](./theme/tokens.ts). Panda emits `--fonts-sans` from that token; the token is the only place the stack is defined.
+- Money font: `fontFamily: "mono"` is Space Mono and is used for money and nothing else. Its `@font-face` rules arrive through [`app/fonts/money/money.css`](./app/fonts/money/money.css), imported by [`app/app.css`](./app/app.css) and produced by `bun run fonts:subset-money`; see [Money and tabular figures](#money-and-tabular-figures).
 - Use Panda's named font-size tokens: `xs`, `sm`, `base`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, and `5xl`. `2xs` is the authored token for the very small inverse-footer attribution.
 - Use responsive Panda objects for route-scale headings, for example `fontSize: { base: "2xl", sm: "3xl", md: "4xl" }`.
 - Headings use strong weights (`bold` through `extrabold`) and balanced wrapping. Global heading `textWrap: "balance"` is configured in Panda.
 - Supporting copy uses `color: "muted.foreground"` when it is metadata or helper text, not a raw gray token.
 - Use the configured line-height names `4` through `10` when a component needs a deliberate line-height. Keep heading letter spacing restrained; use a custom value only for an intentional display treatment.
-- Avoid introducing another font family without a clear editorial or data-display need.
+- Do not introduce a third family. A new face has to earn a role in the table below.
+
+### Money and tabular figures
+
+Two distinct questions, and "money versus statistics" is only a proxy for them:
+
+1. **Does the numeral need to align?** Every numeral in a column, or one that updates in place, gets `tabular-nums`.
+2. **Is the numeral the subject of its block?** Only then does it leave Inter.
+
+| Role | Test | Treatment |
+| --- | --- | --- |
+| Money | A displayed currency amount from `displayPrice()` | `money` from [`figures.ts`](./app/components/ui/figures.ts) — `fonts.mono` plus `lining-nums tabular-nums` |
+| Aligned statistic | Count, percentage, average, rating, date, range label | `tabularNums` from [`figures.ts`](./app/components/ui/figures.ts) — Inter with tabular figures |
+| Label | A numeral inline with prose, such as a count inside a heading | Body face; inherits surrounding weight, no rule needed |
+| Input | Any numeral a user can type | Body face; never the money subset, whose `unicode-range` cannot cover arbitrary input |
+
+Rules that follow from it:
+
+- Money carries two decimals always, so it needs decimal alignment; statistics are integers or one-decimal and need only column alignment. Tabular figures solve both, so a second family is justified by hierarchy, not by alignment.
+- The money subset covers digits, separators, currency marks and dashes only. Keep prose out of a `money` element: a `/day` suffix, a label or a duration stays in Inter and gets its own element.
+- Space Mono ships `normal` (400) and `bold` (700) only. Money styles use those two weights and nothing between them: `semibold`, `extrabold` and `black` all resolve to 700 while the CSS claims otherwise, so the stylesheet stops describing what renders.
+- Both money subsets are preloaded in [`app/root.tsx`](./app/root.tsx) because money paints on the public lists as well as the host routes. That default has one known cost: the index route paints no money — the landing chrome is a heading, a button and a footer — yet pays 11.1 kB for both faces, because a `<link rel=preload>` fetches unconditionally while `@font-face` stays lazy. Recorded in [#452](https://github.com/fringe4life/van-life/issues/452); the cheaper shape is a route-level `links` export on the routes that paint money, not another global preload.
 
 ## Spacing and Layout
+
 
 The application uses Panda's spacing scale and a small set of named layout tokens. Style objects may use token names directly:
 
@@ -231,6 +255,8 @@ The shared shell uses a centered grid track capped at `sizes.shell`, with respon
 Use `gridTemplateAreas` and `gridArea` when a parent grid has stable semantic regions such as `nav`, `content`, `footer`, `filters`, `results`, `image`, `details`, `metadata`, or `action`. The parent owns the responsive area map; direct children receive the matching area name. Keep area names local to the component rather than promoting them to design tokens.
 
 A wrapper is not an obstacle to named areas. If it owns a meaningful grouping or styling role, assign the wrapper one outer area and make it a nested grid. Prefer `subgrid` only when the child must inherit shared parent tracks; do not use it merely to avoid a small local template. Preserve DOM/source order when changing visual placement.
+
+The dashboard summary band is the worked example of a container-driven section. [`HostSummaryBand`](./app/features/host/components/dashboard/host-summary-band.tsx) names the `summary` container, and the band's own width picks the step: figures stacked below 36rem, two figures in one row from `@summary/lg`, and full-width statement lines from `@summary/4xl`. Two rules follow. Bound a middle step with a range condition (`@summary/lgTo4xl`) rather than relying on a wider size out-ranking it in the cascade. And a section whose figures share one basis states it once — the band's "All time" caption sits in the same header slot the financial routes use for their range — instead of qualifying one number and leaving the next one open.
 
 Keep explicit numeric placement for intrinsic or dynamic arrangements where names add no clarity, including auto-fit list helpers, repeated metric pairs, chart/list sequencing, pagination, and other data-flow grids. Always-stacked forms such as `AuthForm` do not need named areas. Components that own a full-card link overlay must keep interactive action regions above that overlay.
 
@@ -303,7 +329,7 @@ Preserve view-transition names and animation variables when changing layout or c
 - Outline action: `backgroundColor: "card"`, `color: "card.foreground"`, and `borderColor: "foreground"`.
 - Ghost action: neutral by default; use `backgroundColor: "accent"` and `color: "accent.foreground"` on hover.
 
-Use [`StatusButton`](./app/components/status-button.tsx) for asynchronous form actions so pending, success, and error states preserve the button's dimensions. Links use `css()`/`cx()` composition and the shared navigation helpers in [`app/features/navigation/styles.ts`](./app/features/navigation/styles.ts). Pending route links use `color: "success"`; active links use an underline so state is not conveyed by color alone.
+Use [`StatusButton`](./app/components/status-button.tsx) for asynchronous form actions so pending, success, and error states preserve the button's dimensions. Its three marks live in [`status-icon.tsx`](./app/components/icons/status-icon.tsx) at one 20px box, and the button stays at full opacity while a status shows — a faded glyph is not a legible one — while `disabled` still blocks the second submit. Links use `css()`/`cx()` composition and the shared navigation helpers in [`app/features/navigation/styles.ts`](./app/features/navigation/styles.ts). Pending route links use `color: "success"`; active links use an underline so state is not conveyed by color alone.
 
 ### Badges
 
@@ -333,8 +359,8 @@ Reusable anchored mini-panels use the `Popover`, `PopoverHeader`, `PopoverTitle`
 
 - `VanFilters` uses `surface.overlay` and `surface.overlay.muted` on compact layouts and the `border.accent` rail on desktop.
 - `Sortable` uses `backgroundColor: "primary"` and `color: "primary.foreground"` for the selected sort control.
-- `Pagination` uses `muted.foreground` for no-results messaging, outline buttons for prev/next, and `Select` for page size (row-density Lucide icons when `appearance: base-select` is supported).
-- Both money routes render one shared `MoneyTimeline` ([`money-timeline.tsx`](./app/features/host/components/money-timeline/money-timeline.tsx)): bars stacked by direction above and below zero on a single currency axis, plus a cumulative-net line. The route supplies only the direction labels (payments received/sent, deposits/withdrawals); the palette is `chart.inflow`/`chart.outflow`. Totals sit in `MoneyLedger` above the chart, and a period/transaction-count line replaces the old "last N days" copy. Transaction cards colour their left rail by direction for the same reason.
+- `Pagination` uses `muted.foreground` for no-results messaging, outline buttons for prev/next, and `Select` for page size. The pager arrows are one custom glyph, [`chevron-icon.tsx`](./app/components/icons/chevron-icon.tsx) with `morph="arrow"`: at rest it is a chevron, and on the button's hover or focus-visible the barbs fold in and the shaft grows out of the tip. `arrowRecipe` keeps owning colour and travel; the glyph owns only geometry.
+- Both money routes render one shared `MoneyTimeline` ([`money-timeline.tsx`](./app/features/host/components/money-timeline/money-timeline.tsx)): bars stacked by direction above and below zero on a single currency axis, plus a cumulative-net line. The route supplies only the direction labels (payments received/sent, deposits/withdrawals); the palette is `chart.inflow`/`chart.outflow`. Totals sit in `MoneyLedger` above the chart, and a period/transaction-count line replaces the old "last N days" copy. Transaction cards colour their left rail by direction for the same reason, and the badge glyph repeats it: the rental arrow takes `chart.inflow` / `chart.outflow` whole, and in the wallet pair only the arrow is tinted while the line stays `foreground` ([`money-ink.ts`](./app/components/icons/money-ink.ts)).
 - Reviews do not use the chart palette or a chart library. The reviews heading row carries the average as a star run on the right of the title — its `<img>` alt text carries the number — and `RatingMix` ([`rating-mix.tsx`](./app/features/host/components/review/rating-mix.tsx)) renders one star glyph per review with counts and shares, reading the `rating` role and sizing itself from the `rating-mix` container (`@rating-mix/2xl`, `@rating-mix/lg`) rather than the viewport. A review card's rail is filled by its own rating and never reads chart data.
 - Data visualization is never wrapped in a `Card`: the timeline and the rating tally sit directly on the page surface, separated by rules rather than by a panel fill and border. A chart inside `Card` reads as a form or sidebar block and shrinks the plot for nothing.
 - Timeline skeletons mirror the real block (caption, two-direction bars, legend) using `bgSkeleton` with `"--skeleton-highlight": "{colors.surface.accent}"`, and take their height from `TIMELINE_CHART_HEIGHT_PX` in [`chart-tokens.ts`](./app/features/host/components/money-timeline/chart-tokens.ts) so the lazy swap does not shift layout.

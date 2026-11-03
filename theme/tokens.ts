@@ -80,6 +80,9 @@ export const tokens = defineTokens({
     },
   },
   easings: {
+    air: {
+      value: "cubic-bezier(0.16, 1, 0.3, 1)",
+    },
     glide: {
       value:
         "linear(0,0.013 1%,0.051 2.2%,0.404 9.8%,0.51 12.6%,0.602 15.5%,0.683 18.7%,0.754 22.2%,0.813 26%,0.861 30.2%,0.9 34.8%,0.931 40%,0.972 52.7%,0.992 70.2%,1 100%)",
@@ -97,6 +100,15 @@ export const tokens = defineTokens({
     "2xs": { value: "0.5rem" },
   },
   fonts: {
+    /**
+     * Money only (#408). The faces declared in `app/fonts/money/money.css` are
+     * digit-and-currency subsets, so this stack is never used for prose — the
+     * fallbacks below are what a stray letter would render in.
+     */
+    mono: {
+      value:
+        '"Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+    },
     sans: {
       value: "Inter, ui-sans-serif, system-ui, sans-serif",
     },

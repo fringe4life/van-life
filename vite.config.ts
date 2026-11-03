@@ -6,11 +6,7 @@ import { defineConfig } from "vite";
 
 const shouldAnalyze = process.env.VITE_ANALYZE === "true";
 
-const optimizeDepsInclude = [
-  "valibot",
-  "lucide-react",
-  "@tanstack/charts",
-] as const;
+const optimizeDepsInclude = ["valibot", "@tanstack/charts"] as const;
 
 export default defineConfig({
   build: {
