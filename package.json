@@ -93,7 +93,7 @@
     "@vitejs/devtools-rolldown": "0.8.0",
     "@vitejs/devtools-vite": "0.8.0",
     "drizzle-kit": "1.0.0-rc.5",
-    "fallow": "3.37.0",
+    "fallow": "3.38.0",
     "husky": "9.1.7",
     "lint-staged": "17.6.0",
     "react-doctor": "0.9.18",
