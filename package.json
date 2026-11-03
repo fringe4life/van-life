@@ -58,7 +58,7 @@
     "drizzle-orm": "1.0.0-rc.5",
     "invokers-polyfill": "1.0.4",
     "isbot": "5.2.2",
-    "lucide-react": "1.64.0",
+    "lucide-react": "1.65.0",
     "nuqs": "2.10.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
