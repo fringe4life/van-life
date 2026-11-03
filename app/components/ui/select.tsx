@@ -94,7 +94,9 @@ const selectClassName = css({
     backgroundImage: "none",
     display: "flex",
     gap: "2",
-    paddingInlineEnd: "4",
+    // The chevron is an absolutely positioned sibling, so it contributes no
+    // width of its own: the control has to reserve its inset plus its box.
+    paddingInlineEnd: "9",
   },
   "&::picker(select)": {
     appearance: "base-select",

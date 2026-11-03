@@ -18,7 +18,7 @@ import { MONEY_GLYPHS, MONEY_UNICODE_RANGE } from "./money-glyphs";
  */
 const REPRESENTATIVE_AMOUNTS = [
   0, 0.05, 4, 12.5, 1234.56, -1234.56, 999_999.99,
-];
+] as const;
 
 const toCoveredRange = (char: string): string =>
   `U+${(char.codePointAt(0) ?? 0).toString(16).toUpperCase().padStart(4, "0")}`;

@@ -30,28 +30,36 @@ import { css } from "styled-system/css";
  * price and a 36px display total — against `$1,234.56`, `-$1,234.56`, `$0.00`,
  * `$12.50`, `$999,999.99`.
  *
- * | Candidate | Latin woff2 (400 / 700) | Subset (400 / 700) | Both |
- * | --- | --- | --- | --- |
- * | Space Mono (shipped) | 16,520 / 16,724 B | 5,476 / 5,660 B | **11,136 B** |
- * | IBM Plex Mono | 14,708 / 14,908 B | 3,904 / 3,952 B | 7,856 B |
- * | JetBrains Mono | 21,168 / 21,908 B | 3,588 / 3,620 B | 7,208 B |
- * | Inter + `tabular-nums` | 0 added | — | 0 B |
+ * | Candidate | Weights in the family | Latin woff2 (400 / 700) | Subset (400 / 700) | Both |
+ * | --- | --- | --- | --- | --- |
+ * | Space Mono (shipped) | 400, 700 + italics | 16,520 / 16,724 B | 5,476 / 5,660 B | **11,136 B** |
+ * | IBM Plex Mono | 100–700 + italics | 14,708 / 14,908 B | 3,904 / 3,952 B | 7,856 B |
+ * | JetBrains Mono | 100–800 + italics | 21,168 / 21,908 B | 3,588 / 3,620 B | 7,208 B |
+ * | Inter + `tabular-nums` | variable 100–900 | in the body file | — | 0 B |
  *
- * At both sizes Space Mono is the widest of the three and the only one whose
- * `$` carries a bar for the full height of the figure; its `1` keeps a foot, its
- * `0` is a plain oval, and its comma hangs clearly below the baseline. IBM Plex
- * Mono is the narrowest and cheapest; JetBrains Mono has the most explicit zero
- * and the smallest subset. Subset size does not track source size — JetBrains
- * has the largest latin file and the smallest subset.
+ * All three monospace candidates are SIL OFL 1.1, so licence separates nothing.
+ * Only Space Mono ships exactly the two weights money uses, which is why the
+ * weight rule below has no third case to pick.
  *
- * **Decision: Space Mono stays, and the reason is not the bytes.** It is the
- * most expensive of the three by 3.3 kB against Plex, and that is the honest
- * cost of the decision. What buys it is the display voice: these figures are the
- * subject of their block, and Space Mono's wider rhythm and unbracketed digits
- * hold a `5xl` net where the two narrower faces read as small writing scaled up.
- * Reopening this needs a display-size comparison in the real band, not a smaller
- * file — if the net and balance ever feel too wide at `5xl`, IBM Plex Mono is the
- * candidate to try first.
+ * Measured advance for `$1,234.56`: **88.1 px at 16px / 198.1 px at 36px** in
+ * Space Mono, and **86.4 / 194.3 px** in both Plex and JetBrains — a 2% premium,
+ * not the gulf the screenshots suggest. All three are wider than Inter's tabular
+ * figures at the same size, which is why a money span is its own element rather
+ * than the body face with a variant. `1` carries a flag in all three and a foot
+ * in Space Mono and Plex only; `l` is a bare stem everywhere, so the pair
+ * separates by the flag alone whoever ships. `0` is a plain oval in Space Mono
+ * and Plex, and dotted in JetBrains — the clearest zero of the three, and the
+ * most technical in texture.
+ *
+ * **Decision: Space Mono stays, and the reason is neither bytes nor width.** It
+ * costs 3.3 kB more than Plex and 3.9 kB more than JetBrains, and it is 2%
+ * wider; those are the honest costs. What buys it is mass: at 700 it is the
+ * heaviest of the three, with slab-like terminals and tight counters, so a `5xl`
+ * net reads as a statement where Plex reads as a very good ledger and JetBrains
+ * as an instrument. These figures are the subject of their block, and that is
+ * the one role a second face is allowed to serve. Reopening needs a
+ * display-size comparison inside the real band, not a smaller file — Plex is the
+ * candidate to try first if the net ever feels too heavy.
  *
  * @see https://github.com/fringe4life/van-life/issues/408 — the rule and the
  * money-versus-statistics decision
