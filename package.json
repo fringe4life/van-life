@@ -97,7 +97,7 @@
     "fallow": "3.38.0",
     "husky": "9.1.7",
     "lint-staged": "17.6.0",
-    "react-doctor": "0.9.18",
+    "react-doctor": "0.9.19",
     "subset-font": "^2.9.0",
     "typescript": "7.0.2",
     "ultracite": "^8.1.0",
