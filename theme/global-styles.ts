@@ -47,7 +47,21 @@ export const globalCss = defineGlobalStyles({
   body: {
     fontFamily: "sans",
   },
-  "h1,h2,h3,h4,h5,h6": {
+  /**
+   * Compression from the token scale (#476). The geometric-humanist stack sets
+   * wider than Inter at display size, so the tracking goes negative where the
+   * glyph is large and nearly neutral where it is not. The value also has to
+   * survive Avenir, Montserrat, Corbel and URW Gothic, which are not the same
+   * width as each other: −0.022em is the one number that leaves all four
+   * legible at 40px. Call sites that set their own `letterSpacing` (eyebrows,
+   * host nav) still win — utilities beat this rule.
+   */
+  "h1,h2,h3": {
+    letterSpacing: "display",
+    textWrap: "balance",
+  },
+  "h4,h5,h6": {
+    letterSpacing: "title",
     textWrap: "balance",
   },
   html: {
@@ -60,6 +74,15 @@ export const globalCss = defineGlobalStyles({
     },
     colorScheme: "light dark",
     fontFamily: "sans",
+    /**
+     * Weight comes from the cut the face ships (#476). Off, `medium` and `bold`
+     * resolve to the nearest real cut instead of a smeared fake one, so a
+     * heading reads the same weight on Corbel as on Montserrat. `medium` is the
+     * heaviest accent the stack all honours — no call site asks for 600. The cost is
+     * stated in `docs/typography.md`: on URW Gothic a 400 request has nowhere
+     * to go but 300, and on Avenir 600 and 700 both land on 800.
+     */
+    fontSynthesis: "none",
     scrollbarGutter: "stable",
     scrollbarWidth: "thin",
   },

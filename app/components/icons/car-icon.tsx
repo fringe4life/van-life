@@ -16,67 +16,64 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const frontWheel = css({
-  _groupCurrent: { color: "primary" },
-  _groupFocusVisible: {
-    animationDuration: "820ms",
+  _cur: { color: "primary" },
+  _foc: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "icon-quarter-turn",
     animationTimingFunction: "glide",
     color: "primary",
   },
-  _groupHover: {
-    animationDuration: "820ms",
+  _hov: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "icon-quarter-turn",
     animationTimingFunction: "glide",
     color: "primary",
   },
-  _motionReduce: { animationName: "none", color: "primary" },
   color: "inherit",
   transformBox: "view-box",
   transformOrigin: "7.6px 17.4px",
-  transitionDuration: "200ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });
 
 const rearWheel = css({
-  _groupCurrent: { color: "primary" },
-  _groupFocusVisible: {
-    animationDuration: "820ms",
+  _cur: { color: "primary" },
+  _foc: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "icon-quarter-turn",
     animationTimingFunction: "glide",
     color: "primary",
   },
-  _groupHover: {
-    animationDuration: "820ms",
+  _hov: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "icon-quarter-turn",
     animationTimingFunction: "glide",
     color: "primary",
   },
-  _motionReduce: { animationName: "none", color: "primary" },
   color: "inherit",
   transformBox: "view-box",
   transformOrigin: "16.4px 17.4px",
-  transitionDuration: "200ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });
 
 const carBody = css({
-  _groupFocusVisible: {
-    animationDuration: "560ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-sink",
     animationTimingFunction: "spring",
   },
-  _groupHover: {
-    animationDuration: "560ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-sink",
     animationTimingFunction: "spring",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "fill-box",
   transformOrigin: "center bottom",
 });

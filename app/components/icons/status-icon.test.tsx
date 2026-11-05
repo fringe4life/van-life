@@ -43,15 +43,19 @@ const STATUS_GLYPHS = [
 
 describe("status glyph set", () => {
   it("draws all three on the same box and stroke as the button slot", () => {
+    const classNames: string[] = [];
     for (const { node } of STATUS_GLYPHS) {
       const svg = containerOf(node).querySelector("svg");
       if (!svg) {
         throw new Error("expected an svg");
       }
       expect(svg.getAttribute("viewBox")).toBe("0 0 24 24");
-      expect(svg.getAttribute("stroke-width")).toBe("2");
-      expect(svg.getAttribute("fill")).toBe("none");
+      // Stroke/fill live on the shared CSS class (#466 C), not attributes.
+      expect(svg.getAttribute("stroke-width")).toBeNull();
+      expect(svg.getAttribute("fill")).toBeNull();
+      classNames.push(svg.getAttribute("class") ?? "");
     }
+    expect(new Set(classNames).size).toBe(1);
   });
 
   it("bursts into six rays instead of a ring a reader would read as a target", () => {

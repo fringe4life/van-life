@@ -2,11 +2,6 @@ import type { VanType } from "~/db/enums";
 import type { Prettify } from "~/types";
 import type { VanStateFilterKey } from "./van-state-filter-config";
 
-/** Shared `useId()` prefix for filter checkbox ids. */
-export interface FilterBaseId {
-  baseId: string;
-}
-
 /** Static facet definition (key + label). */
 interface VanStateFilterDef {
   key: VanStateFilterKey;

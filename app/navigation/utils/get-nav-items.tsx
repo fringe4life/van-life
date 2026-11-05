@@ -10,7 +10,6 @@ import type { NavItem } from "../types";
 
 const navIconClassName = css({
   blockSize: "26px",
-  flexShrink: "0",
   inlineSize: "26px",
 });
 
@@ -20,8 +19,8 @@ const navIconClassName = css({
  * still reads through.
  */
 const navLabelClassName = css({
-  _groupCurrent: { opacity: 1 },
-  _groupHover: { opacity: 1 },
+  _cur: { opacity: 1 },
+  _hov: { opacity: 1 },
   ".pending &": { color: "success", opacity: 1 },
   fontSize: "xs",
   letterSpacing: "0.01em",
@@ -61,7 +60,7 @@ const authenticatedNavItems = [
     children: (
       <>
         <UserIcon className={navIconClassName} />
-        <span className={navLabelClassName}>Host</span>
+        <span className={navLabelClassName}>Account</span>
       </>
     ),
     id: "host",

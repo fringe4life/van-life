@@ -11,49 +11,47 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const hostInk = css({
-  _groupCurrent: { color: "primary" },
-  _groupFocusVisible: { color: "primary" },
-  _groupHover: { color: "primary" },
+  _cur: { color: "primary" },
+  _foc: { color: "primary" },
+  _hov: { color: "primary" },
   color: "inherit",
-  transitionDuration: "200ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });
 
 const hostHead = css({
-  _groupFocusVisible: {
-    animationDuration: "620ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-lift",
     animationTimingFunction: "spring",
   },
-  _groupHover: {
-    animationDuration: "620ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-lift",
     animationTimingFunction: "spring",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "fill-box",
   transformOrigin: "center",
 });
 
 const hostShoulders = css({
-  _groupCurrent: { fillOpacity: 0.16 },
-  _groupFocusVisible: {
-    animationDuration: "560ms",
+  _cur: { fillOpacity: 0.16 },
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-broaden",
     animationTimingFunction: "glide",
   },
-  _groupHover: {
-    animationDuration: "560ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-broaden",
     animationTimingFunction: "glide",
   },
-  _motionReduce: { animationName: "none" },
   fill: "currentColor",
   fillOpacity: 0,
   transformBox: "fill-box",
   transformOrigin: "center bottom",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "fill-opacity",
   transitionTimingFunction: "air",
 });

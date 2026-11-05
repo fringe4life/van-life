@@ -37,8 +37,10 @@ import { type IconProps, IconShell } from "./icon";
  * is left dashed in its resting markup.
  */
 
-const STROKE = 2;
 const GRID_CENTER = 12;
+
+/** Status glyphs sit one step heavier than the static set (see file header). */
+const statusStroke = css({ strokeWidth: "2" });
 
 /*
  * The burst. Rays are placed rather than hand-written so the alternation cannot
@@ -94,7 +96,7 @@ const strokeDefaults = {
 } as const;
 
 const burst = css({
-  _motionReduce: { animationName: "none" },
+  _red: { animationName: "none" },
   animationDuration: "1.05s",
   animationIterationCount: "infinite",
   animationName: "icon-spin",
@@ -107,18 +109,18 @@ const burst = css({
 const sparkInk = css({ fill: "currentColor", stroke: "none" });
 
 const checkDraw = css({
-  _motionReduce: { animationName: "none" },
+  _red: { animationName: "none" },
   animationDelay: "40ms",
-  animationDuration: "320ms",
+  animationDuration: "slow",
   animationFillMode: "both",
   animationName: "status-stroke-in",
   animationTimingFunction: "springSoft",
 });
 
 const crossDraw = css({
-  _motionReduce: { animationName: "none" },
+  _red: { animationName: "none" },
   animationDelay: "0ms",
-  animationDuration: "160ms",
+  animationDuration: "fast",
   animationFillMode: "both",
   animationName: "status-stroke-in",
   animationTimingFunction: "springSoft",
@@ -128,8 +130,8 @@ const crossDraw = css({
 const crossTrailing = css({ animationDelay: "20ms" });
 
 const crossShake = css({
-  _motionReduce: { animationName: "none" },
-  animationDuration: "300ms",
+  _red: { animationName: "none" },
+  animationDuration: "slow",
   animationName: "status-cross-shake",
   animationTimingFunction: "air",
   transformBox: "view-box",
@@ -137,7 +139,7 @@ const crossShake = css({
 });
 
 const SpinnerIcon = ({ className, size, ...rest }: IconProps): ReactElement => (
-  <IconShell className={className} size={size} strokeWidth={STROKE} {...rest}>
+  <IconShell className={cx(statusStroke, className)} size={size} {...rest}>
     <g className={burst}>
       <path d={RAY_PATH} />
       <circle
@@ -151,13 +153,13 @@ const SpinnerIcon = ({ className, size, ...rest }: IconProps): ReactElement => (
 );
 
 const CheckIcon = ({ className, size, ...rest }: IconProps): ReactElement => (
-  <IconShell className={className} size={size} strokeWidth={STROKE} {...rest}>
+  <IconShell className={cx(statusStroke, className)} size={size} {...rest}>
     <path className={checkDraw} d={CHECK_PATH} {...strokeDefaults} />
   </IconShell>
 );
 
 const CrossIcon = ({ className, size, ...rest }: IconProps): ReactElement => (
-  <IconShell className={className} size={size} strokeWidth={STROKE} {...rest}>
+  <IconShell className={cx(statusStroke, className)} size={size} {...rest}>
     <g className={crossShake}>
       <path
         className={cx(crossDraw, crossTrailing)}

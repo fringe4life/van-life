@@ -15,7 +15,6 @@ export default defineConfig({
   globalVars: {
     "--chart-text-first-height": "0.875rem",
     "--duration-dialog": "500ms",
-    "--footer-height": "100px",
     "--header-height": "104px",
     "--mobile-menu-width": "min(100vw, 25rem)",
     "--nav-control-inset-block":
@@ -30,13 +29,7 @@ export default defineConfig({
     "--star-gap": "0.5rem",
     "--star-size": "1.25rem",
   },
-  /*
-   * Hash class names, keep token variable names. Hashing the variables too
-   * would break every literal `var(--colors-chart-inflow)` the chart and the
-   * skeleton hand to `@tanstack/charts`, and buys nothing over the class-name
-   * win (docs/research/svg-optimisation.md §3.1).
-   */
-  hash: { className: true, cssVar: false },
+  hash: true,
   importMap: "styled-system",
   include: [
     "./app/**/*.{js,jsx,ts,tsx}",
@@ -69,6 +62,7 @@ export default defineConfig({
         "collection",
         "mobile-nav",
         "transaction",
+        "transaction-head",
         "form",
         "detail",
         "outcome-state",

@@ -81,14 +81,14 @@ const chevronBody = css({
    * The 9% elongation against a 5% squeeze is what reads as speed; an even
    * scale would just look bigger.
    */
-  _groupPulse: {
-    _motionReduce: { scale: "1 1" },
+  _pul: {
+    _red: { scale: "1 1" },
     color: "primary",
     scale: "1.09 0.95",
   },
   transformBox: "view-box",
   transformOrigin: "center",
-  transitionDuration: "180ms",
+  transitionDuration: "normal",
   transitionProperty: "color,scale",
   transitionTimingFunction: "glide",
 });
@@ -113,52 +113,52 @@ const directionClassName = {
  * point stays open and only the colour changes.
  */
 const barbUpperMorph = css({
+  _foc: {
+    _red: { rotate: "0deg", transitionDuration: "0s" },
+    rotate: "15deg",
+  },
   _groupDisabled: {
     rotate: "0deg !important",
     transitionDuration: "0s",
   },
-  _groupFocusVisible: {
-    _motionReduce: { rotate: "0deg", transitionDuration: "0s" },
-    rotate: "15deg",
-  },
-  _groupHover: {
-    _motionReduce: { rotate: "0deg", transitionDuration: "0s" },
+  _hov: {
+    _red: { rotate: "0deg", transitionDuration: "0s" },
     rotate: "15deg",
   },
   /* Press closes the point too: on a touch pager there is no hover to do it. */
-  _groupPulse: {
-    _motionReduce: { rotate: "0deg", transitionDuration: "0s" },
+  _pul: {
+    _red: { rotate: "0deg", transitionDuration: "0s" },
     rotate: "15deg",
   },
   rotate: "0deg",
   transformBox: "fill-box",
   transformOrigin: "0% 100%",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "rotate",
   transitionTimingFunction: "glide",
 });
 
 const barbLowerMorph = css({
+  _foc: {
+    _red: { rotate: "0deg", transitionDuration: "0s" },
+    rotate: "-15deg",
+  },
   _groupDisabled: {
     rotate: "0deg !important",
     transitionDuration: "0s",
   },
-  _groupFocusVisible: {
-    _motionReduce: { rotate: "0deg", transitionDuration: "0s" },
+  _hov: {
+    _red: { rotate: "0deg", transitionDuration: "0s" },
     rotate: "-15deg",
   },
-  _groupHover: {
-    _motionReduce: { rotate: "0deg", transitionDuration: "0s" },
-    rotate: "-15deg",
-  },
-  _groupPulse: {
-    _motionReduce: { rotate: "0deg", transitionDuration: "0s" },
+  _pul: {
+    _red: { rotate: "0deg", transitionDuration: "0s" },
     rotate: "-15deg",
   },
   rotate: "0deg",
   transformBox: "fill-box",
   transformOrigin: "100% 100%",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "rotate",
   transitionTimingFunction: "glide",
 });
@@ -171,25 +171,25 @@ const barbLowerMorph = css({
  * movement — it just skips the 240ms.
  */
 const shaftReveal = css({
+  _foc: {
+    _red: { opacity: "1", scale: "1 1", transitionDuration: "0s" },
+    opacity: "1",
+    scale: "1 1",
+  },
   _groupDisabled: {
     opacity: "0 !important",
     scale: "1 0.35 !important",
     transitionDuration: "0s",
   },
-  _groupFocusVisible: {
-    _motionReduce: { opacity: "1", scale: "1 1", transitionDuration: "0s" },
-    opacity: "1",
-    scale: "1 1",
-  },
-  _groupHover: {
-    _motionReduce: { opacity: "1", scale: "1 1", transitionDuration: "0s" },
+  _hov: {
+    _red: { opacity: "1", scale: "1 1", transitionDuration: "0s" },
     opacity: "1",
     scale: "1 1",
   },
   /* In flight the shaft is out — a streak trail behind a bare chevron reads as
    * debris rather than as an arrow, especially on a touch pager with no hover. */
-  _groupPulse: {
-    _motionReduce: { opacity: "1", scale: "1 1", transitionDuration: "0s" },
+  _pul: {
+    _red: { opacity: "1", scale: "1 1", transitionDuration: "0s" },
     opacity: "1",
     scale: "1 1",
   },
@@ -197,7 +197,7 @@ const shaftReveal = css({
   scale: "1 0.35",
   transformBox: "fill-box",
   transformOrigin: "50% 100%",
-  transitionDuration: "240ms",
+  transitionDuration: "normal",
   transitionProperty: "opacity,scale",
   transitionTimingFunction: "glide",
 });
@@ -221,9 +221,9 @@ const STREAK_STROKE = 1;
  * lines firing on the same frame shimmer — 28ms apart, they burst.
  */
 const streakPulse = css({
-  _groupPulse: {
-    _motionReduce: { animationName: "none", opacity: "0.65" },
-    animationDuration: "560ms",
+  _pul: {
+    _red: { animationName: "none", opacity: "0.65" },
+    animationDuration: "slowest",
     animationIterationCount: "infinite",
     animationName: "page-streak",
     animationTimingFunction: "air",

@@ -22,54 +22,51 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const signInArrow = css({
-  _groupCurrent: { color: "primary", translate: "1.4px 0" },
-  _groupFocusVisible: {
-    animationDuration: "620ms",
+  _cur: { color: "primary", translate: "1.4px 0" },
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-arrow-in",
     animationTimingFunction: "glide",
     color: "primary",
   },
-  _groupHover: {
-    animationDuration: "620ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-arrow-in",
     animationTimingFunction: "glide",
     color: "primary",
   },
-  _motionReduce: { animationName: "none", color: "primary" },
   color: "inherit",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });
 
 const barbUpper = css({
-  _groupFocusVisible: {
-    animationDuration: "620ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-barb-ccw",
     animationTimingFunction: "glide",
   },
-  _groupHover: {
-    animationDuration: "620ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-barb-ccw",
     animationTimingFunction: "glide",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "view-box",
   transformOrigin: "15.2px 12px",
 });
 
 const barbLower = css({
-  _groupFocusVisible: {
-    animationDuration: "620ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-barb-cw",
     animationTimingFunction: "glide",
   },
-  _groupHover: {
-    animationDuration: "620ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-barb-cw",
     animationTimingFunction: "glide",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "view-box",
   transformOrigin: "15.2px 12px",
 });

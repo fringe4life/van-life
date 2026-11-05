@@ -1,4 +1,4 @@
-import { cva, keyframes } from "styled-system/css";
+import { css, cx, keyframes } from "styled-system/css";
 
 /**
  * Scroll-linked keyframes deliberately include a visible middle plateau. The
@@ -78,87 +78,103 @@ const scrollTilt = keyframes({
   },
 });
 
-const scrollReveal = cva({
-  base: {
-    _collectionTwo: {
-      _even: {
-        "--scroll-reveal-exit-rotate": "-2deg",
-        "--scroll-reveal-exit-x": "-2rem",
-        "--scroll-reveal-exit-y": "-1.5rem",
-        "--scroll-reveal-from-rotate": "2deg",
-        "--scroll-reveal-from-x": "2rem",
-        "--scroll-reveal-from-y": "1.5rem",
-      },
-      _odd: {
-        "--scroll-reveal-exit-rotate": "2deg",
-        "--scroll-reveal-exit-x": "2rem",
-        "--scroll-reveal-exit-y": "-1.5rem",
-        "--scroll-reveal-from-rotate": "-2deg",
-        "--scroll-reveal-from-x": "-2rem",
-        "--scroll-reveal-from-y": "1.5rem",
-      },
-    },
+type ScrollRevealVariant = "lift" | "sweep" | "tilt";
+
+const scrollRevealBase = css({
+  _collectionTwo: {
     _even: {
-      "--scroll-reveal-exit-blur": "0.5rem",
-      "--scroll-reveal-exit-rotate": "-1deg",
-      "--scroll-reveal-exit-scale": "0.965",
-      "--scroll-reveal-exit-y": "-3.25rem",
-      "--scroll-reveal-from-blur": "0.5rem",
-      "--scroll-reveal-from-rotate": "1deg",
-      "--scroll-reveal-from-scale": "0.965",
-      "--scroll-reveal-from-y": "3.25rem",
+      "--scroll-reveal-exit-rotate": "-2deg",
+      "--scroll-reveal-exit-x": "-2rem",
+      "--scroll-reveal-exit-y": "-1.5rem",
+      "--scroll-reveal-from-rotate": "2deg",
+      "--scroll-reveal-from-x": "2rem",
+      "--scroll-reveal-from-y": "1.5rem",
     },
     _odd: {
-      "--scroll-reveal-exit-blur": "0.35rem",
-      "--scroll-reveal-exit-rotate": "1deg",
-      "--scroll-reveal-exit-scale": "0.97",
-      "--scroll-reveal-from-blur": "0.35rem",
-      "--scroll-reveal-from-rotate": "-1deg",
-      "--scroll-reveal-from-scale": "0.97",
-    },
-    _supportsViewTimeline: {
-      animationDuration: "1ms",
-      animationFillMode: "both",
-      animationRange: "entry 0% exit 100%",
-      animationTimeline: "view()",
-    },
-    // Keep the progressive-enhancement fallback visible and untransformed.
-    "--scroll-reveal-exit-blur": "0px",
-    "--scroll-reveal-exit-rotate": "0deg",
-    "--scroll-reveal-exit-scale": "0.96",
-    "--scroll-reveal-exit-x": "0px",
-    "--scroll-reveal-exit-y": "-2.5rem",
-    "--scroll-reveal-from-blur": "0px",
-    "--scroll-reveal-from-rotate": "0deg",
-    "--scroll-reveal-from-scale": "0.96",
-    "--scroll-reveal-from-x": "0px",
-    "--scroll-reveal-from-y": "2.5rem",
-  },
-  defaultVariants: {
-    variant: "lift",
-  },
-  variants: {
-    variant: {
-      lift: {
-        _supportsViewTimeline: {
-          animationName: scrollLift,
-          animationTimingFunction: "springSoft",
-        },
-      },
-      sweep: {
-        _supportsViewTimeline: {
-          animationName: scrollSweep,
-          animationTimingFunction: "glide",
-        },
-      },
-      tilt: {
-        _supportsViewTimeline: {
-          animationName: scrollTilt,
-          animationTimingFunction: "spring",
-        },
-      },
+      "--scroll-reveal-exit-rotate": "2deg",
+      "--scroll-reveal-exit-x": "2rem",
+      "--scroll-reveal-exit-y": "-1.5rem",
+      "--scroll-reveal-from-rotate": "-2deg",
+      "--scroll-reveal-from-x": "-2rem",
+      "--scroll-reveal-from-y": "1.5rem",
     },
   },
+  _even: {
+    "--scroll-reveal-exit-blur": "0.5rem",
+    "--scroll-reveal-exit-rotate": "-1deg",
+    "--scroll-reveal-exit-scale": "0.965",
+    "--scroll-reveal-exit-y": "-3.25rem",
+    "--scroll-reveal-from-blur": "0.5rem",
+    "--scroll-reveal-from-rotate": "1deg",
+    "--scroll-reveal-from-scale": "0.965",
+    "--scroll-reveal-from-y": "3.25rem",
+  },
+  _odd: {
+    "--scroll-reveal-exit-blur": "0.35rem",
+    "--scroll-reveal-exit-rotate": "1deg",
+    "--scroll-reveal-exit-scale": "0.97",
+    "--scroll-reveal-from-blur": "0.35rem",
+    "--scroll-reveal-from-rotate": "-1deg",
+    "--scroll-reveal-from-scale": "0.97",
+  },
+  _supportsViewTimeline: {
+    animationDuration: "1ms",
+    animationFillMode: "both",
+    animationRange: "entry 0% exit 100%",
+    animationTimeline: "view()",
+  },
+  // Keep the progressive-enhancement fallback visible and untransformed.
+  "--scroll-reveal-exit-blur": "0px",
+  "--scroll-reveal-exit-rotate": "0deg",
+  "--scroll-reveal-exit-scale": "0.96",
+  "--scroll-reveal-exit-x": "0px",
+  "--scroll-reveal-exit-y": "-2.5rem",
+  "--scroll-reveal-from-blur": "0px",
+  "--scroll-reveal-from-rotate": "0deg",
+  "--scroll-reveal-from-scale": "0.96",
+  "--scroll-reveal-from-x": "0px",
+  "--scroll-reveal-from-y": "2.5rem",
 });
+
+/**
+ * Workaround: top-level `css()` maps instead of `cva` so open
+ * `scrollReveal({ variant })` does not pull the full recipe runtime into the
+ * client bundle (#471 / #269).
+ *
+ * @remarks
+ * Still required on `@pandacss/vite@2.4.0` / `@pandacss/dev@2.4.0`.
+ * Drop when Panda emits string-only residual recipes; re-verify no `cva-*.js`
+ * after clean `styled-system` + `build`.
+ *
+ * @see https://github.com/fringe4life/van-life/issues/471 — tracking
+ */
+const scrollRevealByVariant = {
+  lift: css({
+    _supportsViewTimeline: {
+      animationName: scrollLift,
+      animationTimingFunction: "springSoft",
+    },
+  }),
+  sweep: css({
+    _supportsViewTimeline: {
+      animationName: scrollSweep,
+      animationTimingFunction: "glide",
+    },
+  }),
+  tilt: css({
+    _supportsViewTimeline: {
+      animationName: scrollTilt,
+      animationTimingFunction: "spring",
+    },
+  }),
+} as const satisfies Record<ScrollRevealVariant, string>;
+
+function scrollReveal({
+  variant = "lift",
+}: {
+  variant?: ScrollRevealVariant;
+} = {}) {
+  return cx(scrollRevealBase, scrollRevealByVariant[variant]);
+}
 
 export { scrollReveal };

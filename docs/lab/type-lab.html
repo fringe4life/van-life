@@ -1,0 +1,999 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Type lab — van-life</title>
+    <style>
+:root {
+  color-scheme: light dark;
+  --surface: light-dark(oklch(97.7% 0.019 74), #1d1c19);
+  --surface-muted: light-dark(oklch(94.72% 0.041 73.17), #302a22);
+  --card: light-dark(#fff, #26241f);
+  --fg: light-dark(oklch(20.02% 0 0), #f6f0e7);
+  --muted: light-dark(oklch(42.02% 0 0), #bcb3a7);
+  --border: light-dark(oklch(20.02% 0 0 / 0.14), #494238);
+  --border-subtle: light-dark(oklch(20.02% 0 0 / 0.1), #39352e);
+  --accent: light-dark(oklch(91.55% 0.067 73.33), #3e2f21);
+  --primary: oklch(75.76% 0.159 55.93);
+  --success: light-dark(oklch(50% 0.14 150), #83b997);
+  --sans: Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--surface);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 auto;
+  max-inline-size: 84rem;
+  padding: 2.5rem clamp(1rem, 4vw, 3rem) 6rem;
+}
+
+h1, h2, h3 { letter-spacing: -0.022em; text-wrap: balance; }
+h1 { font-size: clamp(2rem, 4vw, 2.6rem); font-weight: 700; line-height: 1.05; margin: 0 0 0.4rem; }
+h2 { font-size: 1.4rem; font-weight: 700; line-height: 1.2; margin: 0; }
+h3 { font-size: 0.875rem; font-weight: 600; letter-spacing: normal; margin: 0; }
+p { margin: 0; }
+
+a { color: inherit; }
+
+.lede { color: var(--muted); max-inline-size: 62ch; }
+
+.facts { display: flex; flex-wrap: wrap; gap: 1.6rem; margin: 1.4rem 0 0; }
+.fact { display: flex; flex-direction: column-reverse; gap: 0.25rem; }
+.fact dt { color: var(--muted); font-size: 0.5rem; letter-spacing: 0.12em; margin: 0; text-transform: uppercase; }
+.fact dd { font-size: 1.4rem; font-variant-numeric: tabular-nums; font-weight: 700; line-height: 1; margin: 0; }
+
+.top { border-block-end: 1px solid var(--border-subtle); padding-block-end: 1.6rem; }
+.caveat {
+  border-inline-start: 2px solid var(--primary);
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  margin-block-start: 1.4rem;
+  max-inline-size: 78ch;
+  padding-inline-start: 0.8rem;
+}
+
+nav.jump {
+  border-block-end: 1px solid var(--border-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding-block: 0.75rem;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 2;
+}
+.jump a {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  text-decoration: none;
+}
+.jump a:hover { background: var(--accent); }
+
+section { margin-block-start: 3rem; scroll-margin-top: 4rem; }
+.section-head { align-items: baseline; display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: space-between; }
+.section-blurb { color: var(--muted); font-size: 0.875rem; line-height: 1.6; margin-block-start: 0.3rem; max-inline-size: 72ch; }
+.count { color: var(--muted); font-family: var(--mono); font-size: 0.6875rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.stack-card {
+  background: var(--card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+  margin-block-start: 1.2rem;
+  overflow: hidden;
+}
+.stack-row {
+  display: grid;
+  gap: 0.4rem 1.5rem;
+  grid-template-columns: 13rem minmax(0, 1fr);
+  padding: 0.85rem 1.1rem;
+}
+.stack-row + .stack-row { border-block-start: 1px solid var(--border-subtle); }
+.stack-name { font-weight: 600; }
+.stack-meta { color: var(--muted); font-size: 0.6875rem; line-height: 1.5; }
+.stack-weights { font-family: var(--mono); font-size: 0.6875rem; }
+
+.stack-code, .code {
+  background: var(--surface-muted);
+  border-block-start: 1px solid var(--border-subtle);
+  color: var(--muted);
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  padding: 0.7rem 1.1rem;
+  white-space: pre-wrap;
+}
+
+.table-wrap { border: 1px solid var(--border-subtle); border-radius: 0.75rem; margin-block-start: 1rem; overflow-x: auto; }
+table { border-collapse: collapse; inline-size: 100%; min-inline-size: 46rem; }
+[data-fixed] .state::after, [data-state="fixed"] .state::after { content: "always resolves"; color: var(--muted); }
+th, td { text-align: start; vertical-align: baseline; }
+thead th {
+  border-block-end: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  padding: 0.7rem 1.1rem;
+  text-transform: uppercase;
+}
+tbody th { inline-size: 13rem; padding: 0.9rem 1.1rem; vertical-align: top; }
+tbody td { border-inline-start: 1px solid var(--border-subtle); padding: 0.9rem 1.1rem; }
+.row-role { display: block; font-size: 0.8125rem; font-weight: 600; }
+.row-face { color: var(--muted); display: block; font-family: var(--mono); font-size: 0.625rem; margin-block-start: 0.25rem; }
+.row-note { color: var(--muted); display: block; font-size: 0.625rem; margin-block-start: 0.25rem; }
+.sample { margin: 0; overflow-wrap: break-word; }
+caption { caption-side: bottom; color: var(--muted); font-size: 0.6875rem; padding: 0.7rem 1.1rem; text-align: start; }
+
+.cards { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 25rem), 1fr)); margin-block-start: 1rem; }
+.card { background: var(--card); border: 1px solid var(--border-subtle); border-radius: 0.75rem; display: flex; flex-direction: column; overflow: hidden; }
+.card-head { align-items: center; display: flex; gap: 0.7rem; padding: 0.7rem 1rem; }
+.card-index { color: var(--muted); font-family: var(--mono); font-size: 0.625rem; font-variant-numeric: tabular-nums; }
+.card-name { flex: 1; min-inline-size: 0; }
+.chip { border-radius: 999px; flex-shrink: 0; font-size: 0.625rem; font-weight: 500; letter-spacing: 0.06em; padding: 0.1rem 0.5rem; text-transform: uppercase; }
+.chip--works { background: color-mix(in oklab, var(--success) 14%, transparent); color: var(--success); }
+.chip--depends { background: color-mix(in oklab, var(--primary) 16%, transparent); color: light-dark(oklch(45% 0.14 45), oklch(80% 0.13 60)); }
+.chip--no-op { background: var(--surface-muted); color: var(--muted); }
+
+.specimen { background: var(--surface-muted); color: var(--fg); font-family: var(--sans); overflow: hidden; padding: 1.1rem 1rem; }
+.specimen-text { margin: 0; overflow-wrap: break-word; }
+.echo { border-block-start: 1px dashed var(--border-subtle); color: var(--muted); margin: 0; padding: 0.7rem 1rem; }
+.note { color: var(--muted); font-size: 0.75rem; line-height: 1.6; padding: 0.7rem 1rem; }
+.mono { font-family: var(--mono); }
+
+.rules { display: grid; gap: 0.8rem; margin: 1rem 0 0; padding-inline-start: 1.1rem; }
+.rules li { color: var(--muted); max-inline-size: 84ch; }
+.rules strong, .rules code { color: var(--fg); }
+code { font-family: var(--mono); font-size: 0.9em; }
+
+[data-state="checking"] .state::after { content: "checking"; color: var(--muted); }
+[data-state="present"] .state::after { content: "installed"; color: var(--success); }
+[data-state="absent"] .state::after { content: "not installed"; color: var(--muted); }
+[data-state="winner"] .state::after { content: "painting this page"; color: var(--primary); }
+[data-state="absent"] .stack-name,
+[data-state="absent"] .stack-specimen { opacity: 0.42; }
+.state { font-family: var(--mono); font-size: 0.625rem; }
+.stack-specimen { font-size: 1.1rem; margin: 0; overflow-wrap: anywhere; }
+tbody[data-stack] tr[data-state="winner"] { background: color-mix(in oklab, var(--accent) 42%, transparent); }
+</style>
+  </head>
+  <body>
+<header class="top">
+  <h1>Type lab</h1>
+  <p class="lede">Every card is the same markup with one declaration changed, on copy the app already paints. The system stack is the whole font budget.</p>
+  <dl class="facts">
+    <div class="fact"><dt>Font bytes</dt><dd>0 kB</dd></div>
+    <div class="fact"><dt>Stacks</dt><dd>2</dd></div>
+    <div class="fact"><dt>Treatments</dt><dd>30</dd></div>
+    <div class="fact"><dt>At-rules</dt><dd>3</dd></div>
+  </dl>
+  <p class="caveat">
+    A static file, not a route (#476). It is outside <code>app/</code> and
+    <code>public/</code>, so nothing here reaches a build; <code>.fallowrc.jsonc</code>
+    lists it under <code>ignorePatterns</code>. Serve the repo root over http
+    (<code>bun x serve .</code>) and open <code>/docs/lab/type-lab.html</code>.
+    No font files are loaded — every specimen is a system stack.
+  </p>
+</header>
+
+<nav aria-label="Sections" class="jump">
+  <a href="#stack">Stack</a>
+  <a href="#baseline">Baseline</a>
+  <a href="#compression">Compression and shaping</a>
+  <a href="#shadow">Shadow</a>
+  <a href="#paint">Emphasis and rules</a>
+  <a href="#finish">Finish</a>
+  <a href="#at-rules">At-rules</a>
+  <a href="#findings">Findings</a>
+</nav>
+
+<section id="stack">
+  <div class="section-head">
+    <div>
+      <h2>Stack</h2>
+      <p class="section-blurb">
+        Two stacks, copied verbatim from Modern Font Stacks:
+        <a href="https://github.com/system-fonts/modern-font-stacks#geometric-humanist">geometric humanist</a>
+        for text,
+        <a href="https://github.com/system-fonts/modern-font-stacks#monospace-code">monospace code</a>
+        for money. Each name is the face that lands on one OS; the browser skips
+        what the machine does not have. The status column is measured below, not
+        assumed.
+      </p>
+    </div>
+    <span class="count">13 names · 2 sinks</span>
+  </div>
+
+  <div class="stack-card">
+    <div class="stack-row">
+      <span class="stack-name">Geometric humanist</span>
+      <p class="stack-specimen" style="font-family:Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif">Modest Explorer — $42.00 /day · 0123456789</p>
+    </div>
+    <code class="stack-code">font-family: Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro, sans-serif;</code>
+    <div class="stack-row">
+      <span class="stack-name">Monospace code</span>
+      <p class="stack-specimen" style="font-family:ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace">Modest Explorer — $42.00 /day · 0123456789</p>
+    </div>
+    <code class="stack-code">font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;</code>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Family in the stack</th>
+          <th scope="col">Weights it ships</th>
+          <th scope="col">Why it is there</th>
+          <th scope="col">Status in this browser</th>
+        </tr>
+      </thead>
+      <tbody data-stack="sans">
+        <tr data-family="Avenir" data-sink="sans-serif" data-state="checking">
+          <th scope="row"><span class="stack-name">Avenir</span></th>
+          <td class="stack-weights">300, 400, 500, 800, 900</td>
+          <td class="stack-meta">macOS and iOS ship it. Avenir rather than Avenir Next, whose light is too thin for text.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="Montserrat" data-sink="sans-serif" data-state="checking">
+          <th scope="row"><span class="stack-name">Montserrat</span></th>
+          <td class="stack-weights">100–900</td>
+          <td class="stack-meta">No OS ships it. Lands only where it is installed, which is here.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="Corbel" data-sink="sans-serif" data-state="checking">
+          <th scope="row"><span class="stack-name">Corbel</span></th>
+          <td class="stack-weights">300, 400, 700</td>
+          <td class="stack-meta">Windows, Vista onward.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="URW Gothic" data-sink="sans-serif" data-state="checking">
+          <th scope="row"><span class="stack-name">URW Gothic</span></th>
+          <td class="stack-weights">300, 600</td>
+          <td class="stack-meta">The Avant Garde clone most Linux distros package.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="source-sans-pro" data-sink="sans-serif" data-state="checking">
+          <th scope="row"><span class="stack-name">source-sans-pro</span></th>
+          <td class="stack-weights">400, 600, 700</td>
+          <td class="stack-meta">Android's family name for Source Sans Pro. Nothing else installs it.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="sans-serif" data-fixed="yes" data-sink="sans-serif" data-state="checking">
+          <th scope="row"><span class="stack-name">sans-serif</span></th>
+          <td class="stack-weights">OS default</td>
+          <td class="stack-meta">The generic floor. Anything geometric about the result ends here.</td>
+          <td class="state"></td>
+        </tr>
+      </tbody>
+      <tbody data-stack="mono">
+        <tr data-family="ui-monospace" data-fixed="yes" data-sink="monospace" data-state="checking">
+          <th scope="row"><span class="stack-name">ui-monospace</span></th>
+          <td class="stack-weights">300–800</td>
+          <td class="stack-meta">SF Mono through Safari on Apple platforms. Elsewhere it maps to the platform mono, which is why it wins here and looks like whatever sits below it.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="Cascadia Code" data-sink="monospace" data-state="checking">
+          <th scope="row"><span class="stack-name">Cascadia Code</span></th>
+          <td class="stack-weights">200–700</td>
+          <td class="stack-meta">Windows 11 with Terminal. A ligature face before it is a plain mono.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="Source Code Pro" data-sink="monospace" data-state="checking">
+          <th scope="row"><span class="stack-name">Source Code Pro</span></th>
+          <td class="stack-weights">200–800</td>
+          <td class="stack-meta">Adobe's face. Installed here, absent from a stock desktop.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="Menlo" data-sink="monospace" data-state="checking">
+          <th scope="row"><span class="stack-name">Menlo</span></th>
+          <td class="stack-weights">400, 700</td>
+          <td class="stack-meta">macOS, everywhere.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="Consolas" data-sink="monospace" data-state="checking">
+          <th scope="row"><span class="stack-name">Consolas</span></th>
+          <td class="stack-weights">400, 700</td>
+          <td class="stack-meta">Windows, everywhere since Vista.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="DejaVu Sans Mono" data-sink="monospace" data-state="checking">
+          <th scope="row"><span class="stack-name">DejaVu Sans Mono</span></th>
+          <td class="stack-weights">400, 700</td>
+          <td class="stack-meta">Linux, and the face most distros alias as `monospace`.</td>
+          <td class="state"></td>
+        </tr>
+        <tr data-family="monospace" data-fixed="yes" data-sink="monospace" data-state="checking">
+          <th scope="row"><span class="stack-name">monospace</span></th>
+          <td class="stack-weights">OS default</td>
+          <td class="stack-meta">Droid Sans Mono on Android, the floor everywhere else.</td>
+          <td class="state"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="baseline">
+  <div class="section-head">
+    <div>
+      <h2>Baseline</h2>
+      <p class="section-blurb">
+        One string per role, at the size the app paints it, with no treatment
+        applied. Two columns: the Modern Font Stacks pair the app ships (#476),
+        and the plain <code>ui-sans-serif</code> / <code>ui-monospace</code>
+        pair so the coverage claim is visible rather than assumed. Bundled
+        Inter / Space Mono are gone — the comparison that justified dropping
+        them is closed.
+      </p>
+    </div>
+    <span class="count">8 roles · 2 stacks</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Role</th>
+          <th scope="col">Shipped — geometric humanist / monospace code</th>
+          <th scope="col">Before — ui-sans-serif / ui-monospace</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">
+            <span class="row-role">display</span>
+            <span class="row-face">fonts.sans</span>
+            <span class="row-note">home hero, on photography, bold</span>
+          </th>
+          <td><p class="sample" style="font-family:Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08">You got the travel plans, we got the travel vans.</p></td>
+          <td><p class="sample" style="font-family:ui-sans-serif, system-ui, sans-serif;font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08">You got the travel plans, we got the travel vans.</p></td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="row-role">heading</span>
+            <span class="row-face">fonts.sans</span>
+            <span class="row-note">route heading, bold</span>
+          </th>
+          <td><p class="sample" style="font-family:Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;font-size:30px;font-weight:700;letter-spacing:-0.022em;line-height:1.15">Explore our van options</p></td>
+          <td><p class="sample" style="font-family:ui-sans-serif, system-ui, sans-serif;font-size:30px;font-weight:700;letter-spacing:-0.022em;line-height:1.15">Explore our van options</p></td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="row-role">title</span>
+            <span class="row-face">fonts.sans</span>
+            <span class="row-note">van card title, bold</span>
+          </th>
+          <td><p class="sample" style="font-family:Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;font-size:24px;font-weight:700;letter-spacing:-0.022em;line-height:1.2">Modest Explorer</p></td>
+          <td><p class="sample" style="font-family:ui-sans-serif, system-ui, sans-serif;font-size:24px;font-weight:700;letter-spacing:-0.022em;line-height:1.2">Modest Explorer</p></td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="row-role">body</span>
+            <span class="row-face">fonts.sans</span>
+            <span class="row-note">the default reading size</span>
+          </th>
+          <td><p class="sample" style="font-family:Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;font-size:16px;line-height:1.55">Add adventure to your life by joining the #vanlife movement. Rent the perfect van to make your perfect road trip.</p></td>
+          <td><p class="sample" style="font-family:ui-sans-serif, system-ui, sans-serif;font-size:16px;line-height:1.55">Add adventure to your life by joining the #vanlife movement. Rent the perfect van to make your perfect road trip.</p></td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="row-role">label</span>
+            <span class="row-face">fonts.sans</span>
+            <span class="row-note">eyebrow, uppercase, tracked out</span>
+          </th>
+          <td><p class="sample" style="font-family:Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase">Roadbook</p></td>
+          <td><p class="sample" style="font-family:ui-sans-serif, system-ui, sans-serif;font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase">Roadbook</p></td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="row-role">nav</span>
+            <span class="row-face">fonts.sans</span>
+            <span class="row-note">nav link</span>
+          </th>
+          <td><p class="sample" style="font-family:Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;font-size:16px;font-weight:500;letter-spacing:0.01em">Vans</p></td>
+          <td><p class="sample" style="font-family:ui-sans-serif, system-ui, sans-serif;font-size:16px;font-weight:500;letter-spacing:0.01em">Vans</p></td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="row-role">price</span>
+            <span class="row-face">fonts.mono</span>
+            <span class="row-note">card price, 16px</span>
+          </th>
+          <td><p class="sample" style="font-family:ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;font-size:16px;line-height:1.5">$42.00</p></td>
+          <td><p class="sample" style="font-family:ui-monospace, monospace;font-size:16px;line-height:1.5">$42.00</p></td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="row-role">moneyLarge</span>
+            <span class="row-face">fonts.mono</span>
+            <span class="row-note">ledger net, bold</span>
+          </th>
+          <td><p class="sample" style="font-family:ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;font-size:40px;font-weight:bold;letter-spacing:-0.025em;line-height:1.05">$3,486.50</p></td>
+          <td><p class="sample" style="font-family:ui-monospace, monospace;font-size:40px;font-weight:bold;letter-spacing:-0.025em;line-height:1.05">$3,486.50</p></td>
+        </tr>
+      </tbody>
+    </table>
+    <caption>
+      Both columns carry the tracking the app ships (−0.022em on display,
+      −0.012em on titles), so the comparison isolates the stack.
+    </caption>
+  </div>
+</section>
+
+<section id="compression">
+  <div class="section-head">
+    <div>
+      <h2>Compression and shaping</h2>
+      <p class="section-blurb">Tracking, width and shaping: what recovers Inter's density without a file.</p>
+    </div>
+    <span class="count">14 treatments</span>
+  </div>
+  <div class="cards">
+    <article class="card" id="t-track-010">
+    <header class="card-head">
+      <span class="card-index">01</span>
+      <h3 class="card-name">Track −0.01em</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.01em;line-height:1.08">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;letter-spacing:-0.01em">Family Explorer — $80.00 /day</p>
+    <code class="code">letter-spacing: -0.01em</code>
+    <p class="note">The smallest step that reads as a change on a system face. Safe on body-adjacent headings.</p>
+  </article>
+    <article class="card" id="t-track-020">
+    <header class="card-head">
+      <span class="card-index">02</span>
+      <h3 class="card-name">Track −0.02em</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.02em;line-height:1.08">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;letter-spacing:-0.02em">Family Explorer — $80.00 /day</p>
+    <code class="code">letter-spacing: -0.02em</code>
+    <p class="note">What this repo now ships on h1–h3. Recovers most of Inter's density at 30px and up.</p>
+  </article>
+    <article class="card" id="t-track-030">
+    <header class="card-head">
+      <span class="card-index">03</span>
+      <h3 class="card-name">Track −0.03em</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.03em;line-height:1.08">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;letter-spacing:-0.03em">Family Explorer — $80.00 /day</p>
+    <code class="code">letter-spacing: -0.03em</code>
+    <p class="note">The edge. Fine on the hero, where letters have room; at 16px the apertures start to close.</p>
+  </article>
+    <article class="card" id="t-track-viewport">
+    <header class="card-head">
+      <span class="card-index">04</span>
+      <h3 class="card-name">Viewport-scaled tracking</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:clamp(-0.034em, calc(-0.014em - 0.22vw), -0.006em);line-height:1.08">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;letter-spacing:clamp(-0.034em, calc(-0.014em - 0.22vw), -0.006em)">Family Explorer — $80.00 /day</p>
+    <code class="code">letter-spacing: clamp(-0.034em, calc(-0.014em - 0.22vw), -0.006em)</code>
+    <p class="note">Tracking tied to the rendered size rather than the element's role, so a heading that scales down on a phone also un-tightens. One declaration replaces a breakpoint map.</p>
+  </article>
+    <article class="card" id="t-word-space">
+    <header class="card-head">
+      <span class="card-index">05</span>
+      <h3 class="card-name">Word space −0.012em</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:16px;line-height:1.55;word-spacing:-0.012em">Add adventure to your life by joining the #vanlife movement. Rent the perfect van to make your perfect road trip.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;word-spacing:-0.012em">Family Explorer — $80.00 /day</p>
+    <code class="code">word-spacing: -0.012em</code>
+    <p class="note">Narrows the gaps between words, not between letters. On a system face the word gap is generous, so this buys a little line length without touching the glyphs.</p>
+  </article>
+    <article class="card" id="t-track-body">
+    <header class="card-head">
+      <span class="card-index">06</span>
+      <h3 class="card-name">Body track −0.006em</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:16px;line-height:1.55;letter-spacing:-0.006em">Add adventure to your life by joining the #vanlife movement. Rent the perfect van to make your perfect road trip.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;letter-spacing:-0.006em">Family Explorer — $80.00 /day</p>
+    <code class="code">letter-spacing: -0.006em</code>
+    <p class="note">A third of a pixel at 16px. Takes the loose edge off a system face's paragraphs without the text reading as tracked — the step most sites never try, because it is invisible until it is removed.</p>
+  </article>
+    <article class="card" id="t-width-axis">
+    <header class="card-head">
+      <span class="card-index">07</span>
+      <h3 class="card-name">Width axis 93%</h3>
+      <span class="chip chip--no-op">no-op</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08;font-stretch:93%">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;font-stretch:93%">Family Explorer — $80.00 /day</p>
+    <code class="code">font-stretch: 93%</code>
+    <p class="note">Condenses a variable-width face. No face in either stack ships a width axis — only a bundled variable family, or SF, responds — so this is inert here and kept because it is the first thing people try.</p>
+  </article>
+    <article class="card" id="t-metric-adjust">
+    <header class="card-head">
+      <span class="card-index">08</span>
+      <h3 class="card-name">Metric normalisation</h3>
+      <span class="chip chip--depends">depends</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:16px;line-height:1.55;font-size-adjust:from-font">Add adventure to your life by joining the #vanlife movement. Rent the perfect van to make your perfect road trip.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;font-size-adjust:from-font">Family Explorer — $80.00 /day</p>
+    <code class="code">font-size-adjust: from-font</code>
+    <p class="note">Keeps x-height constant when a fallback lands instead of the intended face. Matters the moment one page mixes a system face with a bundled one.</p>
+  </article>
+    <article class="card" id="t-optical">
+    <header class="card-head">
+      <span class="card-index">09</span>
+      <h3 class="card-name">Optical sizing</h3>
+      <span class="chip chip--no-op">no-op</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08;font-optical-sizing:auto">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;font-optical-sizing:auto">Family Explorer — $80.00 /day</p>
+    <code class="code">font-optical-sizing: auto</code>
+    <p class="note">No-op for a face reached through a system stack: the installed font may have an optical axis, but it is not addressable from CSS (and <code>"opsz" auto</code> is not a valid <code>font-variation-settings</code> value anyway). The browser's own sizing still applies.</p>
+  </article>
+    <article class="card" id="t-synthetic-off">
+    <header class="card-head">
+      <span class="card-index">10</span>
+      <h3 class="card-name">No synthetic bold</h3>
+      <span class="chip chip--works">shipped</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08;font-synthesis:none">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;font-synthesis:none;font-weight:700">Family Explorer — $80.00 /day</p>
+    <code class="code">font-synthesis: none; font-weight: 700</code>
+    <p class="note">Now global (#476). Refuses the browser's smeared fake weight, so a weight request resolves to the cut the face actually ships. Ask for 800 with this on and Avenir or Montserrat give you a real 800 while Corbel gives you 700 — never a smear.</p>
+  </article>
+    <article class="card" id="t-small-caps">
+    <header class="card-head">
+      <span class="card-index">11</span>
+      <h3 class="card-name">Small caps</h3>
+      <span class="chip chip--no-op">no-op</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:24px;font-weight:700;letter-spacing:0.05em;line-height:1.2;font-variant-caps:all-small-caps">Modest Explorer</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;font-variant-caps:all-small-caps;letter-spacing:0.05em">Family Explorer — $80.00 /day</p>
+    <code class="code">font-variant-caps: all-small-caps; letter-spacing: 0.05em</code>
+    <p class="note">Synthesised when the face carries no small-caps table, which is all of them. The app now sets <code>font-synthesis: none</code>, so this card is the one place the fake is still shown: in the app it would render as plain lowercase instead.</p>
+  </article>
+    <article class="card" id="t-balance">
+    <header class="card-head">
+      <span class="card-index">12</span>
+      <h3 class="card-name">Balanced wrapping</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08;max-inline-size:24ch;text-wrap:balance">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;max-inline-size:24ch;text-wrap:balance">Family Explorer — $80.00 /day</p>
+    <code class="code">text-wrap: balance</code>
+    <p class="note">Already global on headings. On a ragged two- or three-line display block it evens the lines without changing a single glyph.</p>
+  </article>
+    <article class="card" id="t-hyphens">
+    <header class="card-head">
+      <span class="card-index">13</span>
+      <h3 class="card-name">Hyphenation</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:16px;line-height:1.55;hyphens:auto;max-inline-size:26ch">Add adventure to your life by joining the #vanlife movement. Rent the perfect van to make your perfect road trip.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;hyphens:auto;max-inline-size:26ch">Family Explorer — $80.00 /day</p>
+    <code class="code">hyphens: auto</code>
+    <p class="note">Trades a tighter column for hyphens. The system face's hyphen is short and the ragged edge becomes orderly.</p>
+  </article>
+    <article class="card" id="t-slashed-zero">
+    <header class="card-head">
+      <span class="card-index">14</span>
+      <h3 class="card-name">Slashed zero</h3>
+      <span class="chip chip--depends">depends</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:16px;line-height:1.5;font-variant-numeric:slashed-zero tabular-nums">$42.00</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;font-variant-numeric:slashed-zero tabular-nums">Family Explorer — $80.00 /day</p>
+    <code class="code">font-variant-numeric: slashed-zero tabular-nums</code>
+    <p class="note">Separates 0 from O in a figure. Many system monos ship the table; a few do not, and then this is silently inert. Worth checking on the price line specifically, where a zero next to a letter is ambiguous.</p>
+  </article>
+  </div>
+</section>
+
+<section id="shadow">
+  <div class="section-head">
+    <div>
+      <h2>Shadow</h2>
+      <p class="section-blurb">text-shadow composites per glyph. A tight, low-contrast pair reads as weight; a wide, coloured one reads as effect.</p>
+    </div>
+    <span class="count">11 treatments</span>
+  </div>
+  <div class="cards">
+    <article class="card" id="t-emboss">
+    <header class="card-head">
+      <span class="card-index">01</span>
+      <h3 class="card-name">Hairline emboss</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:24px;font-weight:700;letter-spacing:-0.022em;line-height:1.2;text-shadow:0 1px 0 light-dark(rgb(255 255 255 / 0.7), rgb(255 255 255 / 0.08)), 0 -1px 0 light-dark(rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.65))">Modest Explorer</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:0 1px 0 light-dark(rgb(255 255 255 / 0.7), rgb(255 255 255 / 0.08)), 0 -1px 0 light-dark(rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.65))">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: 0 1px 0 light, 0 -1px 0 dark</code>
+    <p class="note">One light line under the glyph and one dark line above it. At 1px and low alpha this reads as weight, not as a shadow — the most useful trick here.</p>
+  </article>
+    <article class="card" id="t-ink-bleed">
+    <header class="card-head">
+      <span class="card-index">02</span>
+      <h3 class="card-name">Ink bleed</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:16px;line-height:1.55;text-shadow:0 0 1px currentColor">Add adventure to your life by joining the #vanlife movement. Rent the perfect van to make your perfect road trip.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:0 0 1px currentColor">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: 0 0 1px currentColor</code>
+    <p class="note">A zero-offset shadow in the text colour. Thickens the stems by roughly 4% without a weight the face does not have — the closest thing to a variable weight here.</p>
+  </article>
+    <article class="card" id="t-shadow-outline">
+    <header class="card-head">
+      <span class="card-index">03</span>
+      <h3 class="card-name">Shadow outline</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08;text-shadow:1px 0 0 currentColor, -1px 0 0 currentColor, 0 1px 0 currentColor, 0 -1px 0 currentColor">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:1px 0 0 currentColor, -1px 0 0 currentColor, 0 1px 0 currentColor, 0 -1px 0 currentColor">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: 1px 0 0 currentColor, -1px 0 0 currentColor, 0 1px 0 currentColor, 0 -1px 0 currentColor</code>
+    <p class="note">The standards-only way to get what text-stroke gives: four 1px shadows in the text colour. It thickens every edge equally, needs no prefix, and is the replacement for the stroke cards that used to sit here.</p>
+  </article>
+    <article class="card" id="t-edge-warmth">
+    <header class="card-head">
+      <span class="card-index">04</span>
+      <h3 class="card-name">Edge warmth</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08;text-shadow:0 0 1px color-mix(in oklab, var(--colors-accent) 12%, transparent), 0 0 14px color-mix(in oklab, var(--colors-accent) 18%, transparent)">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:0 0 1px color-mix(in oklab, var(--colors-accent) 12%, transparent), 0 0 14px color-mix(in oklab, var(--colors-accent) 18%, transparent)">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: 0 0 1px accent/12, 0 0 14px accent/18</code>
+    <p class="note">The accent at twelve and eighteen percent. Enough that a heading picks up the surface's temperature, not enough to read as orange — above roughly a quarter it stops being a tint and becomes a treatment.</p>
+  </article>
+    <article class="card" id="t-chromatic">
+    <header class="card-head">
+      <span class="card-index">05</span>
+      <h3 class="card-name">Registration split</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08;text-shadow:-0.75px 0 0 color-mix(in oklab, var(--colors-primary) 38%, transparent), 0.75px 0 0 color-mix(in oklab, var(--colors-accent) 34%, transparent)">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:-0.75px 0 0 color-mix(in oklab, var(--colors-primary) 38%, transparent), 0.75px 0 0 color-mix(in oklab, var(--colors-accent) 34%, transparent)">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: -0.75px 0 primary/38, 0.75px 0 accent/34</code>
+    <p class="note">Two colours, three quarters of a pixel apart, at roughly a third alpha. At 1px and 70% it read as a focus error rather than a printed misregistration; this is the width where it reads as ink.</p>
+  </article>
+    <article class="card" id="t-ambient">
+    <header class="card-head">
+      <span class="card-index">06</span>
+      <h3 class="card-name">Ambient lift</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:24px;font-weight:700;letter-spacing:-0.022em;line-height:1.2;text-shadow:0 1px 1px light-dark(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.5)), 0 14px 30px light-dark(rgb(120 80 40 / 0.16), rgb(0 0 0 / 0.55))">Modest Explorer</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:0 1px 1px light-dark(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.5)), 0 14px 30px light-dark(rgb(120 80 40 / 0.16), rgb(0 0 0 / 0.55))">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: 0 1px 1px black/10, 0 14px 30px warm/16</code>
+    <p class="note">A contact shadow plus a wide warm one. The glyph lifts off the surface without any colour entering the type itself.</p>
+  </article>
+    <article class="card" id="t-sticker">
+    <header class="card-head">
+      <span class="card-index">07</span>
+      <h3 class="card-name">Solid offset</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:24px;font-weight:700;letter-spacing:-0.022em;line-height:1.2;text-shadow:2px 2px 0 color-mix(in oklab, var(--colors-accent) 45%, transparent)">Modest Explorer</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:2px 2px 0 color-mix(in oklab, var(--colors-accent) 45%, transparent)">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: 2px 2px 0 accent/45</code>
+    <p class="note">A hard offset in a translucent accent. Belongs on a badge or an empty-state headline and nowhere else — on a section heading it is the fastest way to make a page look like a template.</p>
+  </article>
+    <article class="card" id="t-aura">
+    <header class="card-head">
+      <span class="card-index">08</span>
+      <h3 class="card-name">Three-step aura</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08;text-shadow:0 0 1px color-mix(in oklab, var(--colors-accent) 10%, transparent), 0 0 10px color-mix(in oklab, var(--colors-accent) 12%, transparent), 0 0 32px color-mix(in oklab, var(--colors-accent) 9%, transparent)">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:0 0 1px color-mix(in oklab, var(--colors-accent) 10%, transparent), 0 0 10px color-mix(in oklab, var(--colors-accent) 12%, transparent), 0 0 32px color-mix(in oklab, var(--colors-accent) 9%, transparent)">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: 0 0 1px accent/10, 0 0 10px accent/12, 0 0 32px accent/9</code>
+    <p class="note">The accent at three radii and single-digit alpha. Survives a dark surface without a stroke and never crosses into orange type — the widest radius is the one doing the work.</p>
+  </article>
+    <article class="card" id="t-engrave">
+    <header class="card-head">
+      <span class="card-index">09</span>
+      <h3 class="card-name">Engraved</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:24px;font-weight:700;letter-spacing:-0.022em;line-height:1.2;text-shadow:1px 0 0 light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.05)), -1px 0 0 light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.05)), 0 1px 0 light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.05)), 0 -1px 0 light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.05))">Modest Explorer</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:1px 0 0 light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.05)), -1px 0 0 light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.05)), 0 1px 0 light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.05)), 0 -1px 0 light-dark(rgb(0 0 0 / 0.16), rgb(255 255 255 / 0.05))">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: ±1px 0 and 0 ±1px in low-alpha black</code>
+    <p class="note">Four hairline shadows around the glyph, all dark. Carves the letter into the surface instead of raising it — the inverse of the emboss pair.</p>
+  </article>
+    <article class="card" id="t-brand-cast">
+    <header class="card-head">
+      <span class="card-index">10</span>
+      <h3 class="card-name">Brand cast</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:16px;line-height:1.5;text-shadow:0 6px 14px color-mix(in oklab, var(--colors-accent) 18%, transparent), 0 1px 0 light-dark(rgb(255 255 255 / 0.35), rgb(0 0 0 / 0.3))">$42.00</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:0 6px 14px color-mix(in oklab, var(--colors-accent) 18%, transparent), 0 1px 0 light-dark(rgb(255 255 255 / 0.35), rgb(0 0 0 / 0.3))">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: 0 6px 14px accent/18</code>
+    <p class="note">One warm shadow under the figure at eighteen percent, plus the letterpress highlight. Ties a mono price to the accent without the digits ever becoming orange.</p>
+  </article>
+    <article class="card" id="t-on-photo">
+    <header class="card-head">
+      <span class="card-index">11</span>
+      <h3 class="card-name">On-photo legibility</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08;text-shadow:0 2px 12px rgb(0 0 0 / 0.55), 0 0 2px rgb(0 0 0 / 0.8)">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-shadow:0 2px 12px rgb(0 0 0 / 0.55), 0 0 2px rgb(0 0 0 / 0.8)">Family Explorer — $80.00 /day</p>
+    <code class="code">text-shadow: 0 2px 12px black/55, 0 0 2px black/80</code>
+    <p class="note">What the hero already uses: a wide soft shadow plus a tight one, both black. The only shadow in this set that is doing accessibility work.</p>
+  </article>
+  </div>
+</section>
+
+<section id="paint">
+  <div class="section-head">
+    <div>
+      <h2>Emphasis and rules</h2>
+      <p class="section-blurb">Emphasis, rules and washes — the paint levers that are standard CSS and survive at body size. Stroke and gradient fills are gone: both need a prefix or a transparent fill, and neither belongs on non-interactive type.</p>
+    </div>
+    <span class="count">3 treatments</span>
+  </div>
+  <div class="cards">
+    <article class="card" id="t-highlighter">
+    <header class="card-head">
+      <span class="card-index">01</span>
+      <h3 class="card-name">Highlighter wash</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:24px;font-weight:700;letter-spacing:-0.022em;line-height:1.2;background-image:linear-gradient(color-mix(in oklab, var(--colors-accent) 45%, transparent) 0 100%);background-position:0 86%;background-repeat:no-repeat;background-size:100% 38%;box-decoration-break:clone;display:inline;padding-inline:0.12em">Modest Explorer</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;background-image:linear-gradient(color-mix(in oklab, var(--colors-accent) 45%, transparent) 0 100%);background-position:0 86%;background-repeat:no-repeat;background-size:100% 38%;box-decoration-break:clone;display:inline;padding-inline:0.12em">Family Explorer — $80.00 /day</p>
+    <code class="code">background: linear-gradient(accent/45 0 100%) 0 86% / 100% 38% no-repeat</code>
+    <p class="note">A marker wash behind the lower third of a word. The only use that survives contact with the card design is a status or sale word inside a label or filter row — behind a van name it adds a second highlight to a surface that already has one.</p>
+  </article>
+    <article class="card" id="t-emphasis">
+    <header class="card-head">
+      <span class="card-index">02</span>
+      <h3 class="card-name">Emphasis marks</h3>
+      <span class="chip chip--depends">depends</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;text-emphasis:dot;text-emphasis-color:var(--colors-accent)">Roadbook</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-emphasis:dot;text-emphasis-color:var(--colors-accent)">Family Explorer — $80.00 /day</p>
+    <code class="code">text-emphasis: dot; text-emphasis-color: var(--colors-accent)</code>
+    <p class="note">Ruby-style marks above each glyph. A CJK emphasis mechanism, so on Latin text it accents every letter — useful only as a one-word label.</p>
+  </article>
+    <article class="card" id="t-underline">
+    <header class="card-head">
+      <span class="card-index">03</span>
+      <h3 class="card-name">Brand rule under</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:24px;font-weight:700;letter-spacing:-0.022em;line-height:1.2;text-decoration:underline;text-decoration-color:color-mix(in oklab, var(--colors-accent) 80%, transparent);text-decoration-skip-ink:auto;text-decoration-thickness:0.12em;text-underline-offset:0.16em">Modest Explorer</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;text-decoration:underline;text-decoration-color:color-mix(in oklab, var(--colors-accent) 80%, transparent);text-decoration-skip-ink:auto;text-decoration-thickness:0.12em;text-underline-offset:0.16em">Family Explorer — $80.00 /day</p>
+    <code class="code">text-decoration-thickness: 0.12em; text-underline-offset: 0.16em</code>
+    <p class="note">An underline at rule weight rather than link weight, offset far enough to clear the descenders. Colour carries the brand without touching the glyph.</p>
+  </article>
+  </div>
+</section>
+
+<section id="finish">
+  <div class="section-head">
+    <div>
+      <h2>Finish</h2>
+      <p class="section-blurb">Element-level filters and blends. Cheap to reason about, more expensive to paint, and they hit layout bounds. Multiply is the one worth keeping, and only for a status word.</p>
+    </div>
+    <span class="count">2 treatments</span>
+  </div>
+  <div class="cards">
+    <article class="card" id="t-filter-lift">
+    <header class="card-head">
+      <span class="card-index">01</span>
+      <h3 class="card-name">Element drop shadow</h3>
+      <span class="chip chip--works">works</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:36px;font-weight:700;letter-spacing:-0.022em;line-height:1.08;filter:drop-shadow(0 8px 18px rgb(0 0 0 / 0.35));padding-block-end:0.12em">You got the travel plans, we got the travel vans.</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;filter:drop-shadow(0 8px 18px rgb(0 0 0 / 0.35));padding-block-end:0.12em">Family Explorer — $80.00 /day</p>
+    <code class="code">filter: drop-shadow(0 8px 18px rgb(0 0 0 / 0.35))</code>
+    <p class="note">Applies to the element's alpha, so it follows the glyph shape exactly like text-shadow — but it rasterises the element, clips at its bounds, and the padding has to make room.</p>
+  </article>
+    <article class="card" id="t-multiply">
+    <header class="card-head">
+      <span class="card-index">02</span>
+      <h3 class="card-name">Ink multiply</h3>
+      <span class="chip chip--depends">depends</span>
+    </header>
+    <div class="specimen">
+      <p class="specimen-text" style="font-family:var(--sans);font-size:24px;font-weight:700;letter-spacing:-0.022em;line-height:1.2;color:color-mix(in oklab, var(--colors-accent) 85%, black);mix-blend-mode:multiply">Modest Explorer</p>
+    </div>
+    <p class="echo" style="font-family:var(--sans);font-size:15px;line-height:1.6;color:color-mix(in oklab, var(--colors-accent) 85%, black);mix-blend-mode:multiply">Family Explorer — $80.00 /day</p>
+    <code class="code">mix-blend-mode: multiply; color: color-mix(in oklab, var(--colors-accent) 85%, black)</code>
+    <p class="note">Brand ink that darkens whatever is behind it. Correct on the light surface; on the dark one the same declaration disappears into the background.</p>
+  </article>
+  </div>
+</section>
+
+<section id="at-rules">
+  <div class="section-head">
+    <div>
+      <h2>At-rules</h2>
+      <p class="section-blurb">
+        What can only be written as a rule rather than a declaration — and the
+        one entry here that genuinely reshapes an installed face.
+      </p>
+    </div>
+    <span class="count">3 rules</span>
+  </div>
+  <div class="cards">
+    <article class="card" id="a-metric-face">
+      <header class="card-head"><h3 class="card-name">A local() face with metric overrides</h3></header>
+      <div class="specimen"><p class="sample mono" style="font-family:'Metric Alias', Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;font-size:24px;font-weight:700;line-height:normal">$3,486.50</p>
+      <p class="sample mono" style="font-family:Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;font-size:24px;font-weight:700;line-height:normal;margin-block-start:0.4rem">$3,486.50</p>
+      <p class="note" style="padding:0.4rem 0 0">Metric Alias above, the stack alone below — the box height is the override</p></div>
+      <code class="code">@font-face {
+  font-family: "Metric Inter";
+  src: local("Arial"), local("Liberation Sans"),
+       local("DejaVu Sans"), local("Segoe UI");
+  size-adjust: 100%;
+  ascent-override: 90.2%;
+  descent-override: 22.48%;
+  line-gap-override: 0%;
+}</code>
+      <p class="note">The one at-rule that genuinely customises a system face: reuse an installed font but replace its line box, so a fallback reserves Inter's height. Zero bytes, no download, and it is the real fix for the swap shift (#450).</p>
+    </article>
+    <article class="card" id="a-feature-values">
+      <header class="card-head"><h3 class="card-name">@font-feature-values / font-variant-alternates</h3></header>
+      <div class="specimen"><p class="sample" style="font-family:'System Numerals', Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;font-size:24px">4021 shipped, 142 booked</p>
+      <p class="note" style="padding:0.4rem 0 0">Identical to the bare stack: no styleset registry to reach</p></div>
+      <code class="code">@font-feature-values "System Numerals" {
+  @styleset { open-four: 1; }
+}
+/* then */ .n { font-variant-alternates: styleset(open-four) }</code>
+      <p class="note">Valid CSS, inert here. A system face exposes no styleset registry to the page, so this only pays off with a bundled OpenType family. Included because it is the syntax people reach for first.</p>
+    </article>
+    <article class="card" id="a-box-trim">
+      <header class="card-head"><h3 class="card-name">text-box-trim behind @supports</h3></header>
+      <div class="specimen"><p class="sample mono" style="font-family:ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;font-size:24px;border-block:1px dashed var(--border);padding-block:0.4rem">Heading, untrimmed</p>
+      <p class="sample mono" style="font-family:ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;font-size:24px;border-block:1px dashed var(--border);padding-block:0.4rem;text-box-trim:trim-both;text-box-edge:cap alphabetic">Heading, trim-both</p></div>
+      <code class="code">@supports (text-box-trim: trim-both) {
+  .trim-cap {
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+  }
+}</code>
+      <p class="note">Trims the leading above cap height and below the baseline, so a 40px number can sit flush in its row without a negative margin. Chrome 133+ and Safari 18.2+; the @supports guard keeps the fallback honest.</p>
+    </article>
+  </div>
+</section>
+
+<section id="findings">
+  <h2>Findings</h2>
+  <ul class="rules">
+    <li><strong>The stack is a coverage claim, not a look.</strong> Five of the
+      six sans names resolve on any one machine, and the six mono names collapse
+      to one or two. What the pair buys is that each OS lands on a geometric face
+      instead of its UI default; what it does not buy is the same face everywhere.
+      The measured column above is the honest answer, and it changes per machine.</li>
+    <li><strong>Weight coverage is the trade, and it is now paid three times
+      over.</strong> 800 exists on Avenir and Montserrat only; Corbel stops at
+      700, URW Gothic at 600, source-sans-pro at 700. So display moved to
+      <code>bold</code>, UI accents moved to <code>medium</code>, and
+      <code>font-synthesis: none</code> went global: every weight is a real cut,
+      never a smear. What that costs is rounding — Avenir answers 700 with 800,
+      Corbel and source-sans-pro answer 500 with 400, URW Gothic answers anything
+      under 600 with 300 — visible in the baseline column above.</li>
+    <li><strong>Shadows work per glyph.</strong> <code>text-shadow</code>
+      composites on the glyph outline, takes any number of layers, first layer on
+      top. Under 1px and below 20% alpha it stops reading as a shadow and starts
+      reading as weight.</li>
+    <li><strong>Filters work per element.</strong> <code>filter: drop-shadow()</code>
+      follows glyph alpha like a shadow, but it is one shadow, it rasterises, and
+      it clips at the element's box.</li>
+    <li><strong>Tracking does what a lighter weight cannot.</strong> A geometric
+      face sets wider than Inter at the same size, so −0.022em on display and
+      −0.006em on body is the cheapest correction available: no bytes, no extra
+      paint, and it survives every platform.</li>
+    <li><strong>Variable axes are closed.</strong> A face reached through a
+      system name exposes no <code>font-variation-settings</code> and, in
+      practice, no styleset registry. The one genuine hook is
+      <code>@font-face</code> with <code>src: local()</code> plus
+      <code>size-adjust</code> and the metric overrides.</li>
+  </ul>
+</section>
+
+<script>
+  // Which names in the two stacks the viewing machine actually has. Not
+  // document.fonts.check(): it answers true for a missing family whenever some
+  // face can render the text. Width against the generic is the reliable test.
+  (function probe() {
+    const SAMPLE = "Handgloves 0123456789 $5,335.75";
+    const context = document.createElement("canvas").getContext("2d");
+    if (!context) return;
+
+    const width = (family) => {
+      context.font = '72px ' + family;
+      return context.measureText(SAMPLE).width;
+    };
+
+    for (const row of document.querySelectorAll("tr[data-family]")) {
+      // Keywords and generics cannot be missing, and their face is by
+      // definition the same as the sink, so the width test cannot see them.
+      if (row.hasAttribute("data-fixed")) {
+        row.dataset.state = "fixed";
+        continue;
+      }
+      const name = row.dataset.family;
+      const sink = row.dataset.sink;
+      const absent = Math.abs(width('"' + name + '", ' + sink) - width(sink)) < 0.5;
+      row.dataset.state = absent ? "absent" : "present";
+    }
+
+    for (const stack of document.querySelectorAll("tbody[data-stack]")) {
+      const winner = stack.querySelector(
+        '[data-state="present"], [data-state="fixed"]'
+      );
+      if (winner) winner.dataset.state = "winner";
+    }
+  })();
+</script>
+  </body>
+</html>

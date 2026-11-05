@@ -150,11 +150,10 @@ const labelLink = css({
  * from, so the two never have to out-rank each other in the cascade.
  */
 const labelIcon = css({
-  _groupFocusVisible: { color: "primary" },
-  _groupHover: { color: "primary" },
+  _foc: { color: "primary" },
+  _hov: { color: "primary" },
   blockSize: "3.5",
   color: "muted.foreground",
-  flexShrink: "0",
   inlineSize: "3.5",
   transitionDuration: "200ms",
   transitionProperty: "color",
@@ -168,7 +167,7 @@ const amount = cx(
   money,
   css({
     fontSize: { "@summary/4xl": "5xl", base: "3xl" },
-    // `bold` is the heaviest Space Mono ships; there is no 800 to ask for.
+    // `bold` is the heaviest cut system monos ship; there is no 800 to ask for.
     fontWeight: "bold",
     gridArea: "amount",
     justifySelf: { "@summary/4xl": "end" },

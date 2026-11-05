@@ -23,47 +23,45 @@ const SPARKLE_PATH =
   "M19.6 2.6 20.32 3.48 21.2 4.2 20.32 4.92 19.6 5.8 18.88 4.92 18 4.2 18.88 3.48Z";
 
 const starBody = css({
-  _groupFocusVisible: {
-    animationDuration: "520ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-overshoot",
     animationTimingFunction: "spring",
   },
-  _groupHover: {
-    animationDuration: "520ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-overshoot",
     animationTimingFunction: "spring",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "fill-box",
   transformOrigin: "center",
 });
 
 const starFill = css({
-  _groupCurrent: { fillOpacity: "0.85" },
-  _groupFocusVisible: { fillOpacity: "0.85" },
-  _groupHover: { fillOpacity: "0.85" },
+  _cur: { fillOpacity: "0.85" },
+  _foc: { fillOpacity: "0.85" },
+  _hov: { fillOpacity: "0.85" },
   fill: "rating",
   fillOpacity: "0",
   stroke: "none",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "fill-opacity",
   transitionTimingFunction: "air",
 });
 
 const starSparkle = css({
-  _groupFocusVisible: {
-    animationDuration: "260ms",
+  _foc: {
+    animationDuration: "slow",
     animationFillMode: "forwards",
     animationName: "icon-sparkle",
     animationTimingFunction: "air",
   },
-  _groupHover: {
-    animationDuration: "260ms",
+  _hov: {
+    animationDuration: "slow",
     animationFillMode: "forwards",
     animationName: "icon-sparkle",
     animationTimingFunction: "air",
   },
-  _motionReduce: { animationName: "none" },
   fill: "rating",
   opacity: "0",
   stroke: "none",
@@ -72,14 +70,20 @@ const starSparkle = css({
 });
 
 const starGlint = css({
-  _groupCurrent: {
+  /*
+   * The glint is a sweep, not a mark: with the animation gone there is nothing
+   * worth showing, and a static bar across the star reads as a scratch. So the
+   * reduced-motion endpoint of this state is absence — stated inside the state
+   * that owns it, which keeps the selector at the state's own weight.
+   */
+  _cur: {
+    _red: { opacity: "0" },
     animationDuration: "6s",
     animationIterationCount: "infinite",
     animationName: "icon-glint",
     animationTimingFunction: "linear",
     opacity: "1",
   },
-  _motionReduce: { animationName: "none", opacity: "0" },
   color: "warmAmber.400",
   opacity: "0",
 });

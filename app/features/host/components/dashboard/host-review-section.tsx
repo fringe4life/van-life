@@ -48,11 +48,10 @@ const reviewLink = css({
  * hovered or focused, which is the moment it is pointing at something.
  */
 const reviewIcon = css({
-  _groupFocusVisible: { color: "primary" },
-  _groupHover: { color: "primary" },
+  _foc: { color: "primary" },
+  _hov: { color: "primary" },
   blockSize: "3.5",
   color: "muted.foreground",
-  flexShrink: "0",
   inlineSize: "3.5",
   transitionDuration: "200ms",
   transitionProperty: "color",

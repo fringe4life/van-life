@@ -21,14 +21,18 @@ const wrapperClassName = css({
 const disclosureClassName = css({
   blockSize: "4",
   color: "muted.foreground",
+  // Centred with `insetBlock: 0` + auto margins rather than `top: 50%` (#479):
+  // Panda resolves `top` against the *spacing* scale, so the `1/2` sizes token
+  // emitted nothing and `translate: 0 -50%` hung the glyph above the border.
+  // Auto margins also survive a control that grows past `blockSize: 9`.
   inlineSize: "4",
+  insetBlock: "0",
   insetInlineEnd: "3",
+  marginBlock: "auto",
   pointerEvents: "none",
   position: "absolute",
-  top: "1/2",
   transitionDuration: "normal",
   transitionProperty: "rotate",
-  translate: "0 -50%",
 });
 
 const selectClassName = css({

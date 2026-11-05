@@ -1,13 +1,9 @@
-@import "./fonts/money/money.css";
-
 /* ─── IMPORTS & FONTS ────────────────────────────────────────────────────── */
 @layer reset, base, tokens, recipes, utilities;
 
-@font-face {
-  font-family: Inter;
-  font-style: normal;
-  font-display: swap;
-  font-weight: 100 900;
-  src: url("@fontsource-variable/inter/files/inter-latin-wght-normal.woff2")
-    format("woff2-variations");
-}
+/*
+ * Prefer Panda (`css()`, `globalCss`, tokens) over rules here. Panda hashes,
+ * minifies, and dedupes what it owns; hand-written CSS in this file does not.
+ * Fonts (#476): `fonts.sans` / `fonts.mono` are the preset system stacks — no
+ * `@font-face`, no font files.
+ */

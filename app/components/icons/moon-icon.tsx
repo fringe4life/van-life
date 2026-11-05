@@ -16,26 +16,25 @@ import { type IconProps, IconShell } from "./icon";
 
 const moonCrescent = css({
   _dark: { color: "warmSky.400", fillOpacity: 0.24 },
-  _groupFocusVisible: {
-    animationDuration: "760ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-glow",
     animationTimingFunction: "air",
     color: "warmSky.400",
     fillOpacity: 0.16,
   },
-  _groupHeld: { fillOpacity: 0.28 },
-  _groupHover: {
-    animationDuration: "760ms",
+  _held: { fillOpacity: 0.28 },
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-glow",
     animationTimingFunction: "air",
     color: "warmSky.400",
     fillOpacity: 0.16,
   },
-  _motionReduce: { animationName: "none" },
   color: "inherit",
   fill: "currentColor",
   fillOpacity: 0,
-  transitionDuration: "240ms",
+  transitionDuration: "normal",
   transitionProperty: "fill-opacity,color",
   transitionTimingFunction: "air",
 });
@@ -49,8 +48,8 @@ const moonCrescent = css({
  */
 const starLeading = css({
   _dark: { color: "warmSky.400", opacity: 1 },
-  _groupFocusVisible: { opacity: 1 },
-  _groupHeld: {
+  _foc: { opacity: 1 },
+  _held: {
     animationDelay: "0s",
     animationDuration: "4s",
     animationIterationCount: "infinite",
@@ -59,19 +58,19 @@ const starLeading = css({
     color: "warmSky.400",
     opacity: 1,
   },
-  _groupHover: { opacity: 1 },
+  _hov: { opacity: 1 },
   color: "inherit",
   fill: "currentColor",
   opacity: 0,
-  transitionDuration: "240ms",
+  transitionDuration: "normal",
   transitionProperty: "opacity,color",
   transitionTimingFunction: "air",
 });
 
 const starTrailing = css({
   _dark: { color: "warmSky.400", opacity: 1 },
-  _groupFocusVisible: { opacity: 1 },
-  _groupHeld: {
+  _foc: { opacity: 1 },
+  _held: {
     animationDelay: "-2s",
     animationDuration: "4s",
     animationIterationCount: "infinite",
@@ -80,11 +79,11 @@ const starTrailing = css({
     color: "warmSky.400",
     opacity: 1,
   },
-  _groupHover: { opacity: 1 },
+  _hov: { opacity: 1 },
   color: "inherit",
   fill: "currentColor",
   opacity: 0,
-  transitionDuration: "240ms",
+  transitionDuration: "normal",
   transitionProperty: "opacity,color",
   transitionTimingFunction: "air",
 });

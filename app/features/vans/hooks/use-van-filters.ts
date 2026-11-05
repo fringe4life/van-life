@@ -2,7 +2,6 @@ import { defaultRateLimit, useQueryStates } from "nuqs";
 import {
   startTransition as startReactTransition,
   type TransitionStartFunction,
-  useId,
 } from "react";
 import type { VanType } from "~/db/enums";
 import {
@@ -31,7 +30,6 @@ const useVanFilters = (
   const [urlState, setUrlState] = useQueryStates(vansFilterUrlParsers, {
     startTransition,
   });
-  const baseId = useId();
 
   const { types, excludeInRepair, onlyOnSale } = urlState;
   const validTypes = vanType.parseMany(types);
@@ -139,7 +137,6 @@ const useVanFilters = (
 
   return {
     badgeCount,
-    baseId,
     clearFilters,
     optimisticTypes,
     setStateFilter,

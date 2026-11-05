@@ -11,61 +11,65 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const aboutRing = css({
-  _groupCurrent: { opacity: 0.3, scale: "1.14" },
-  _groupFocusVisible: {
-    animationDuration: "620ms",
+  _cur: { opacity: 0.3, scale: "1.14" },
+  /*
+   * Opacity is the held look; `icon-ping` is only the route to it. Under
+   * reduce the global guard kills the animation, so without this endpoint the
+   * ring stays at the base `opacity: 0`.
+   */
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-ping",
     animationTimingFunction: "air",
+    opacity: 0.3,
   },
-  _groupHover: {
-    animationDuration: "620ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-ping",
     animationTimingFunction: "air",
+    opacity: 0.3,
   },
-  _motionReduce: { animationName: "none", opacity: 0.3, scale: "1.12" },
   opacity: 0,
   transformBox: "fill-box",
   transformOrigin: "center",
 });
 
 const aboutInk = css({
-  _groupCurrent: { color: "primary" },
-  _groupFocusVisible: { color: "primary" },
-  _groupHover: { color: "primary" },
+  _cur: { color: "primary" },
+  _foc: { color: "primary" },
+  _hov: { color: "primary" },
   color: "inherit",
-  transitionDuration: "200ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });
 
 const aboutDot = css({
-  _groupFocusVisible: {
-    animationDuration: "520ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-drop",
     animationTimingFunction: "spring",
   },
-  _groupHover: {
-    animationDuration: "520ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-drop",
     animationTimingFunction: "spring",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "fill-box",
   transformOrigin: "center",
 });
 
 const aboutStem = css({
-  _groupFocusVisible: {
-    animationDuration: "460ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-grow",
     animationTimingFunction: "air",
   },
-  _groupHover: {
-    animationDuration: "460ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-grow",
     animationTimingFunction: "air",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "fill-box",
   transformOrigin: "top",
 });

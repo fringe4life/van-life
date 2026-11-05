@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { css } from "styled-system/css";
+import { css, cx } from "styled-system/css";
 import { type IconProps, IconShell } from "./icon";
 
 /*
@@ -23,12 +23,14 @@ const alertInk = css({
   stroke: "none",
 });
 
+const alertStroke = css({ strokeWidth: "1.7" });
+
 const TriangleAlertIcon = ({
   className,
   size,
   ...rest
 }: IconProps): ReactElement => (
-  <IconShell className={className} size={size} strokeWidth={1.7} {...rest}>
+  <IconShell className={cx(alertStroke, className)} size={size} {...rest}>
     <path d="m21.73 18.2-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21.2h16a2 2 0 0 0 1.73-3" />
     <rect
       className={alertInk}

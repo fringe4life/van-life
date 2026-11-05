@@ -10,40 +10,38 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const monitorScreen = css({
-  _groupFocusVisible: {
-    animationDuration: "420ms",
+  _foc: {
+    animationDuration: "slower",
     animationName: "icon-flicker",
     animationTimingFunction: "air",
     color: "warmSky.400",
   },
-  _groupHeld: { fillOpacity: 0.18 },
-  _groupHover: {
-    animationDuration: "420ms",
+  _held: { fillOpacity: 0.18 },
+  _hov: {
+    animationDuration: "slower",
     animationName: "icon-flicker",
     animationTimingFunction: "air",
     color: "warmSky.400",
   },
-  _motionReduce: { animationName: "none" },
   color: "inherit",
   fill: "currentColor",
   fillOpacity: 0,
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "fill-opacity,color",
   transitionTimingFunction: "air",
 });
 
 const monitorStand = css({
-  _groupFocusVisible: {
-    animationDuration: "560ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-lift",
     animationTimingFunction: "spring",
   },
-  _groupHover: {
-    animationDuration: "560ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-lift",
     animationTimingFunction: "spring",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "fill-box",
   transformOrigin: "center top",
 });

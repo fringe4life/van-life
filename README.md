@@ -66,7 +66,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🎨 **PandaCSS 2** (typed `css` / patterns / recipes; `@pandacss/vite` + `panda codegen`)
 - 📦 **Drizzle ORM** with Cloudflare D1 (SQLite) and relational queries
 - 📋 **List primitives** — `ItemList` for guaranteed arrays (nav, sort); `CollectionList` for async/empty/error collections (`OutcomeState`)
-- 🎭 **Panda recipes** (`cva` from `styled-system/css`) — `vanCard`, `transactionRecipe`, `reviewRecipe`, `outcomeState`
+- 🎭 **Panda style maps** (top-level `css()` + variant lookups; no client `cva` runtime) — `vanCard`, `transactionRecipe`, `reviewRecipe`, `outcomeState`
 - 🧩 **Host van detail** — nested routes (`/host/vans/:vanSlug`, `/pricing`, `/photos`); layout `Outlet` + `VanDetailCard`; leaf routes read parent loader via matches
 - 📊 **Sortable Data Tables** with reusable sorting components
 - 📱 **Responsive Design** with mobile-first approach
@@ -92,7 +92,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **React 19.3** with stable Activity + `ViewTransition` for prerendering and morphs
 - **React Router 8.4.0** (file-based routing, SSR, nested host van detail routes, middleware)
 - **TypeScript 7.0.2** with strict configuration
-- **PandaCSS 2.1.2** — tokens in `theme/`, recipes/patterns (`css`, `cx`, `cva` from `styled-system`); `define*` helpers from `@pandacss/dev/define`
+- **PandaCSS 2.1.2** — tokens in `theme/`, patterns + static `css`/`cx` from `styled-system`; `define*` helpers from `@pandacss/dev/define`
 - **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover, select)
 - **Custom SVG glyph set** in `app/components/icons` — vendored `IconShell` components, one per glyph, animated with CSS on ancestor state only (no icon package, no icon font, no animation library)
 - **TanStack Charts 1.1.0** for the host money timeline (lazy-loaded via `LazyMoneyTimeline`; bars stacked by inflow/outflow with a cumulative net line; reviews use `RatingMix`, not the chart library)
@@ -112,7 +112,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **Vite 8.3.4** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports; core `devtools` option
 - **@vitejs/devtools 0.7.5** - Vite DevTools (`/__devtools/` in `bun run dev`; client/ssr environments)
 - **@vitejs/devtools-rolldown 0.7.5** / **@vitejs/devtools-vite 0.7.5** - Official Rolldown build analysis + Vite plugin inspector
-- **@fontsource-variable/inter** - Self-hosted Inter (latin variable subset, ~48KB)
+- **System font stacks, zero font bytes** - `fonts.sans` / `fonts.mono` are the [Modern Font Stacks](https://github.com/system-fonts/modern-font-stacks) geometric-humanist and monospace-code pairs; no `@font-face`, no font packages (see `docs/typography.md`)
 - **React Compiler** (native Rust via `oxc-transform-react`) - Automatic memoization via `@acusti/vite-plugin-react-compiler` (not `@vitejs/plugin-react`'s `react()`; see `docs/rust-react-compiler.md`)
 - **Biome 2.5.14** for linting and formatting with Ultracite integration
 - **Ultracite 7.12.2** - AI-friendly linting rules for maximum type safety and accessibility
@@ -1065,9 +1065,9 @@ Configuration in `lint-staged.config.ts`.
 
 ### PandaCSS 2 & Modern CSS
 
-- **PandaCSS 2.1.2** — typed `css` / `cx` / `cva` / `keyframes` / patterns from `styled-system` (generated; do not edit)
+- **PandaCSS 2.1.2** — typed `css` / `cx` / `keyframes` / patterns from `styled-system` (generated; do not edit); variants are top-level `css()` maps so the `cva` runtime stays out of the client bundle (#471)
 - **Tokens** in `theme/`; `define*` helpers (`defineConfig`, `defineTokens`, `defineConditions`, …) import from `@pandacss/dev/define`; `panda.config.ts` wires them; `@pandacss/vite` injects CSS and folds static style calls; `bun run prepare` runs `panda codegen`
-- **Inter font** via `@fontsource-variable/inter` (latin variable woff2 only)
+- **Type** via two system stacks in `theme/tokens.ts` — geometric humanist for text, monospace code for money; no `@font-face`, no preload, no bytes. The type lab is a static file at `docs/lab/type-lab.html`, not a route (`docs/typography.md`)
 - **Mobile nav animations** — native `<dialog>` panel/fullscreen variants (`starting-style`, `transition-discrete`, Invoker Commands)
 - **Public header** — colocated `keyframes()` compact the bar on scroll (`app/navigation/components/nav.tsx`)
 - **Host nav** — grouped rail; tablet named `host-nav` container; mobile native `popover="auto"` + CSS Anchor + Invoker `toggle-popover` (uncontrolled; see `docs/host-navigation-popover.md`); enter via `_open._starting` (opacity + translate)
@@ -1083,7 +1083,7 @@ Configuration in `lint-staged.config.ts`.
 ### Custom Design System
 
 - **Theme tokens** in `theme/tokens.ts` + `theme/semantic-tokens.ts` — palette primitives + semantic roles; see `DESIGN.md`
-- **Component variants** using Panda `cva` (`button-variants.ts`, `badge-variants.ts`, `vanCard`, `dialogVariants`, `outcomeState`, `popover`, `select`)
+- **Component variants** via top-level `css()` maps (`button-variants.ts`, `badge-variants.ts`, `vanCard`, `dialogVariants`, `outcomeState`, `popover`, `select`)
 - **Van card chrome** — `vanCard` recipe in `van-card-recipe.ts`; scroll reveal via `scrollReveal({ variant: "lift" })`
 - **Named container queries** — host wallet / outcome-state / `collection` layouts via Panda `cq` and `gridTemplateAreas`
 - **Type-safe styling** with TypeScript token paths throughout

@@ -35,7 +35,7 @@ const netValue = cx(
   money,
   css({
     fontSize: { "@activity/2xl": "5xl", base: "4xl" },
-    // `bold` is the heaviest Space Mono ships; there is no 800 to ask for.
+    // `bold` is the heaviest cut system monos ship; there is no 800 to ask for.
     fontWeight: "bold",
     letterSpacing: "tighter",
     lineHeight: "1.05",

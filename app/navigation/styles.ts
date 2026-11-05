@@ -1,11 +1,18 @@
 import { css, cx } from "styled-system/css";
 import { hstack, vstack } from "styled-system/patterns";
 
+/**
+ * `bold`, not `black` (#476): only Avenir and Montserrat ship a 900, so the mark
+ * lost its weight on Windows and Linux. 700 is the heaviest cut every face in
+ * the stack honours, and it is what the header already resolved to on Windows.
+ * Distinct from the page headings that also use `bold` by scale, case and
+ * tracking rather than by weight — and it stays above the nav links at `medium`.
+ */
 export const brandClassName = css({
   alignItems: "center",
   display: "inline-flex",
   fontSize: { base: "xl", xs: "2xl" },
-  fontWeight: "black",
+  fontWeight: "bold",
   minBlockSize: "48px",
   textTransform: "uppercase",
 });
@@ -112,7 +119,7 @@ export const mobileNavButtonClassName = css({
 });
 
 export const mobileNavDrawerClassName = css({
-  _groupOpenMobileNav: {
+  _nmv: {
     _starting: {
       opacity: "0",
       translate: "-100% 0",

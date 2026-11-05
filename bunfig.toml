@@ -1,18 +1,7 @@
 [install]
 linker = "isolated"
 minimumReleaseAge = 259200
-minimumReleaseAgeExcludes = [
-  "ultracite",
-  "@biomejs/biome",
-  "@biomejs/cli-darwin-arm64",
-  "@biomejs/cli-darwin-x64",
-  "@biomejs/cli-linux-arm64",
-  "@biomejs/cli-linux-arm64-musl",
-  "@biomejs/cli-linux-x64",
-  "@biomejs/cli-linux-x64-musl",
-  "@biomejs/cli-win32-arm64",
-  "@biomejs/cli-win32-x64",
-]
+minimumReleaseAgeExcludes = []
 
 [test]
 # happydom first: static import of @testing-library/* before register() makes screen queries throw

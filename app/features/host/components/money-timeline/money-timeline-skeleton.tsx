@@ -7,6 +7,7 @@ import { viewTransitionPage } from "~/components/view-transition-share";
 import { bgSkeleton } from "~/styles";
 import {
   INFLOW_FILL,
+  moneyChartClassName,
   OUTFLOW_FILL,
   TIMELINE_CHART_HEIGHT_PX,
 } from "./chart-tokens";
@@ -153,7 +154,10 @@ const MoneyTimelineSkeleton = (): ReactNode => (
     {...viewTransitionPage}
     name={chromeViewTransitionName.hostChart}
   >
-    <div aria-hidden="true" className={css({ marginBlockStart: "5" })}>
+    <div
+      aria-hidden="true"
+      className={cx(moneyChartClassName, css({ marginBlockStart: "5" }))}
+    >
       <div className={legendChip} style={{ inlineSize: "2rem" }} />
 
       {/*

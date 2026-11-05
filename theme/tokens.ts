@@ -101,17 +101,38 @@ export const tokens = defineTokens({
   },
   fonts: {
     /**
-     * Money only (#408). The faces declared in `app/fonts/money/money.css` are
-     * digit-and-currency subsets, so this stack is never used for prose — the
-     * fallbacks below are what a stray letter would render in.
+     * System stacks from Modern Font Stacks (#476), copied verbatim. Nothing is
+     * downloaded: `sans` carries every role that used to be Inter, `mono` is
+     * still what `money` asks for, so the two-role split survives the swap.
+     *
+     * Verbatim is the point. Each stack is the output of that project's
+     * per-OS coverage maths, and inserting a name or appending a safety generic
+     * re-opens the question the stack was assembled to close. Where the pair
+     * lands on macOS, Windows, Linux and Android, and the weights each face
+     * actually ships, is tabulated in `docs/typography.md`.
+     *
+     * @see https://github.com/system-fonts/modern-font-stacks#geometric-humanist
+     * @see https://github.com/system-fonts/modern-font-stacks#monospace-code
      */
     mono: {
       value:
-        '"Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+        'ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace',
     },
     sans: {
-      value: "Inter, ui-sans-serif, system-ui, sans-serif",
+      value:
+        'Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro, sans-serif',
     },
+  },
+  letterSpacings: {
+    /**
+     * Headings only (#476). The geometric-humanist stack sets wider and more
+     * open than Inter at display size — Avenir and its stand-ins are drawn for
+     * signage, not for a text column — so the display sizes carry a negative
+     * track the body face does not. `display` covers `h1`–`h3`, `title` the
+     * rest.
+     */
+    display: { value: "-0.022em" },
+    title: { value: "-0.012em" },
   },
   lineHeights: {
     "4": { value: "1rem" },

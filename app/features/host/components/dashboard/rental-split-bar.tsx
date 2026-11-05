@@ -56,9 +56,9 @@ const caption = css({
 
 /**
  * The figure is the subject of the caption, so it takes the money face; the
- * words that follow stay in Inter, because the subset is digits, separators and
- * currency marks only (#408). `normal` weight keeps the CSS honest: Space Mono
- * ships 400 and 700, so an inherited 500 would render as 400 anyway.
+ * words that follow stay in the body stack (#408). `normal` weight keeps the
+ * CSS honest: system monos typically ship 400 and 700, so an inherited 500
+ * would round anyway.
  */
 const captionAmount = cx(money, css({ fontWeight: "normal" }));
 

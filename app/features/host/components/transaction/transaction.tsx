@@ -1,5 +1,5 @@
 import { css, cx } from "styled-system/css";
-import { cq, grid, visuallyHidden, wrap } from "styled-system/patterns";
+import { cq, flex, grid, visuallyHidden } from "styled-system/patterns";
 import { scrollReveal } from "~/components/scroll-reveal-recipe";
 import { Card, CardContent } from "~/components/ui/card";
 import { money, tabularNums } from "~/components/ui/figures";
@@ -18,6 +18,50 @@ const transactionDateFormatter = new Intl.DateTimeFormat("en-US", {
 });
 
 type TransactionShellProps = Prettify<Children & TransactionProps>;
+
+/**
+ * The details column carries the shared size for the header, because the title
+ * is a child of the row that queries its own width (#481). Sizes step with the
+ * card, not the viewport: the column is 149px at the two-column step and 198px
+ * on the desktop grid, and the title has to stay on one line under the badge at
+ * both. The clamp is a literal so Panda can extract it.
+ */
+const detailsColumn = css({
+  fontSize: "clamp(0.9375rem, 0.75rem + 1.04cqi, 1.1875rem)",
+  gridArea: "details",
+  minInlineSize: "0",
+});
+
+const headerRow = css({
+  borderBottomWidth: "thin",
+  borderColor: "border.subtle",
+  paddingBlockEnd: "4",
+});
+
+const titleText = css({
+  fontSize: "inherit",
+  fontWeight: "bold",
+  letterSpacing: "tight",
+  lineHeight: "1.25",
+  minInlineSize: "0",
+  wordBreak: "break-word",
+});
+
+const amountText = css({
+  color: "foreground",
+  fontSize: "clamp(1.125rem, 1rem + 1.04cqi, 1.5rem)",
+  fontWeight: "bold",
+  letterSpacing: "tighter",
+  textTransform: "uppercase",
+  whiteSpace: "nowrap",
+});
+
+const dateText = css({
+  color: "muted.foreground",
+  fontSize: "clamp(0.75rem, 0.7rem + 0.13cqi, 0.875rem)",
+  textAlign: "right",
+  whiteSpace: "nowrap",
+});
 
 const Transaction = ({
   amount,
@@ -43,28 +87,21 @@ const Transaction = ({
         role="article"
       >
         <CardContent className={css({ display: "contents" })}>
-          <div className={css({ gridArea: "details", minInlineSize: "0" })}>
+          <div className={detailsColumn}>
             <div
               className={cx(
-                wrap({ alignItems: "center", gap: "2" }),
-                css({
-                  borderBottomWidth: "thin",
-                  borderColor: "border.subtle",
-                  paddingBlockEnd: "4",
-                })
+                cq({ name: "transaction-head" }),
+                flex({
+                  alignItems: "center",
+                  gap: "1.5",
+                  minInlineSize: "0",
+                  wrap: "nowrap",
+                }),
+                headerRow
               )}
             >
               <TransactionBadge type={type} />
-              <h3
-                className={css({
-                  fontSize: "lg",
-                  fontWeight: "bold",
-                  letterSpacing: "tight",
-                  minInlineSize: "0",
-                  wordBreak: "break-word",
-                })}
-                id={headingId}
-              >
+              <h3 className={titleText} id={headingId}>
                 {title}
               </h3>
             </div>
@@ -87,34 +124,12 @@ const Transaction = ({
               })
             )}
           >
-            <p
-              className={cx(
-                css({
-                  color: "foreground",
-                  // Narrow cards stack the amount under the details column; drop a
-                  // step there so five-figure amounts stay on one line.
-                  fontSize: { "@transaction/sm": "2xl", base: "xl" },
-                  // Space Mono ships 400 and 700 only — ask for what exists.
-                  fontWeight: "bold",
-                  letterSpacing: "tighter",
-                  textTransform: "uppercase",
-                  whiteSpace: "nowrap",
-                })
-              )}
-            >
+            <p className={amountText}>
               <span className={visuallyHidden()}>Transaction amount: </span>
               <span className={money}>{displayPrice(amount)}</span>
             </p>
             <time
-              className={cx(
-                tabularNums,
-                css({
-                  color: "muted.foreground",
-                  fontSize: "sm",
-                  textAlign: "right",
-                  whiteSpace: "nowrap",
-                })
-              )}
+              className={cx(tabularNums, dateText)}
               dateTime={createdAt.toISOString()}
             >
               {transactionDateFormatter.format(createdAt)}

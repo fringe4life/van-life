@@ -1,80 +1,106 @@
-import { startTransition } from "react";
+import { useCallback } from "react";
 import { css, cx } from "styled-system/css";
 import { grid } from "styled-system/patterns";
 import type { Prettify } from "~/types";
-import { FilterCheckboxRow } from "./filter-checkbox-row";
-import type {
-  FilterBaseId,
-  VanStateFilterChange,
-  VanStateFilterFacet,
-} from "./types";
+import { FilterOption, type FilterTone } from "./filter-option";
+import type { VanStateFilterChange, VanStateFilterFacet } from "./types";
+import type { VanStateFilterKey } from "./van-state-filter-config";
 
-type VanStateFilterRowProps = Prettify<
-  FilterBaseId &
-    VanStateFilterChange & {
-      facet: VanStateFilterFacet;
-    }
+type VanStateFilterSectionProps = Prettify<
+  VanStateFilterChange & {
+    facets: readonly VanStateFilterFacet[];
+  }
 >;
 
+type VanStateFilterRowProps = Prettify<
+  VanStateFilterChange & {
+    facet: VanStateFilterFacet;
+  }
+>;
+
+/*
+ * Each facet filters a van state, so its key fills with that state's own colour
+ * — the amber a van in repair wears, the green of a sale. The label carries the
+ * meaning as well; the fill is a confirmation, never the only signal.
+ */
+const toneByKey = {
+  excludeInRepair: "repair",
+  onlyOnSale: "sale",
+} as const satisfies Record<VanStateFilterKey, FilterTone>;
+
+const pendingClassName = css({
+  opacity: 0.75,
+});
+
+const sectionClassName = css({
+  borderWidth: "0",
+  margin: "0",
+  minInlineSize: "0",
+  padding: "0",
+});
+
+const legendClassName = css({
+  color: "muted.foreground",
+  fontSize: "xs",
+  fontWeight: "medium",
+  letterSpacing: "0.08em",
+  lg: {
+    color: "foreground",
+    fontSize: "sm",
+    letterSpacing: "normal",
+    paddingBlock: "1.5",
+    textTransform: "none",
+  },
+  paddingBlock: "0",
+  paddingInlineEnd: "0",
+  /* Matches the row's inset so the caption sits over the keys, not the tint. */
+  paddingInlineStart: "2",
+  textTransform: "uppercase",
+});
+
 const VanStateFilterRow = ({
-  baseId,
   facet,
   onCheckedChange,
 }: VanStateFilterRowProps) => {
-  const handleCheckedChange = (checked: boolean) => {
-    startTransition(() => {
+  const handleChange = useCallback(
+    (checked: boolean) => {
       onCheckedChange(facet.key, checked);
-    });
-  };
+    },
+    [facet.key, onCheckedChange]
+  );
 
   return (
-    <FilterCheckboxRow
+    <FilterOption
       checked={facet.checked}
-      className={cx(facet.isPending && css({ opacity: 0.75 }))}
-      id={`${baseId}-van-filter-${facet.key}`}
+      className={cx(facet.isPending && pendingClassName)}
       label={facet.label}
-      onChange={handleCheckedChange}
+      onChange={handleChange}
+      tone={toneByKey[facet.key]}
     />
   );
 };
 
-type VanStateFilterSectionProps = Prettify<
-  FilterBaseId &
-    VanStateFilterChange & {
-      facets: readonly VanStateFilterFacet[];
-    }
->;
-
 const VanStateFilterSection = ({
-  baseId,
   facets,
   onCheckedChange,
 }: VanStateFilterSectionProps) => (
   <fieldset
     className={cx(
+      sectionClassName,
       grid({
-        columns: { lg: 1, sm: 2 },
-        gap: "1",
-      }),
-      css({
-        padding: "1",
-        paddingBlockStart: "3",
+        /*
+         * One column until `md`: "Exclude in repair" needs ~138px with its key,
+         * which a half-width column only affords once the page gutter has taken
+         * its 3rem.
+         */
+        columns: { base: 1, lg: 1, md: 2 },
+        gap: "0.5",
       })
     )}
   >
-    <legend
-      className={css({
-        fontSize: "sm",
-        fontWeight: "medium",
-        paddingBlock: "1.5",
-        paddingInline: "2",
-      })}
-    >
-      State Filters
-    </legend>
+    <legend className={legendClassName}>State Filters</legend>
     {facets.map((facet) => (
       <VanStateFilterRow
-        baseId={baseId}
         facet={facet}
         key={facet.key}
         onCheckedChange={onCheckedChange}
