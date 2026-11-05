@@ -63,15 +63,15 @@ const SiteFooter = ({ hasToken }: SiteFooterProps) => (
           {/*
            * The market illustration keeps its own linework but loses its colour:
            * the artwork's green is not in the palette, and orange is the page's
-           * only accent. Eager because a short page shows the footer on arrival.
+           * only accent. Lazy + async so it never races home/about/van heroes for
+           * bandwidth; short pages still paint it before the user scrolls far.
            */}
           <img
             alt=""
             className={vanArtClassName}
-            decoding="sync"
-            fetchPriority="high"
+            decoding="async"
             height={1200}
-            loading="eager"
+            loading="lazy"
             src="/rvMask.min.svg"
             width={1200}
           />

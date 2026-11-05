@@ -12,15 +12,22 @@ import { type IconProps, IconShell } from "./icon";
 
 const aboutRing = css({
   _cur: { opacity: 0.3, scale: "1.14" },
+  /*
+   * Opacity is the held look; `icon-ping` is only the route to it. Under
+   * reduce the global guard kills the animation, so without this endpoint the
+   * ring stays at the base `opacity: 0`.
+   */
   _foc: {
     animationDuration: "slowest",
     animationName: "icon-ping",
     animationTimingFunction: "air",
+    opacity: 0.3,
   },
   _hov: {
     animationDuration: "slowest",
     animationName: "icon-ping",
     animationTimingFunction: "air",
+    opacity: 0.3,
   },
   opacity: 0,
   transformBox: "fill-box",

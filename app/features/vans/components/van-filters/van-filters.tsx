@@ -36,9 +36,11 @@ const railClassName = css({
 });
 
 /*
- * Compact: a native disclosure. Same DOM at every width; `display` is the only
- * thing that changes, so no control is duplicated and nothing in the shadow of
- * a hidden branch can take focus.
+ * Compact disclosure chrome. The filter *options* are still two trees — one
+ * inside `<details>` and one in the rail body — toggled with `display`
+ * (#482). Collapsing them into one `<details>` would make the rail depend on
+ * `::details-content` for correctness on older engines. The duplication is
+ * DOM-only: both trees share the same section components.
  *
  * `::details-content` (Baseline 2025) is what animates open/close. Unsupported
  * engines ignore the pseudo — the panel still toggles, just without the motion.

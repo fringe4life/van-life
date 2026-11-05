@@ -25,11 +25,24 @@ The set is 33 hand-authored glyph components on `IconShell` with per-part Panda 
 
 **Direction: keep inline components. Spend the effort on markup weight, not on delivery — and start with Panda's own config, not with hand-written CSS.** Follow-ups are filed as children of #465.
 
+### Post A–C ship (2026-11-06)
+
+Levers A–C landed (`hash: true`, 3-char conditions, `IconShell` presentation attrs → CSS). Numbers vs the §1 baseline below; full write-up was posted on #466.
+
+| Metric | Baseline (2026-11-03) | After A–C | Δ |
+| --- | ---: | ---: | ---: |
+| `app-*.css` raw | 114,440 | **88,585** | **−23%** |
+| `app-*.css` gzip-9 | 21,772 | **24,762** | **+14%** (accepted hash trade-off) |
+| `/` class-attr text | 18,160 | **7,060** | **−61%** |
+| `/` SVG share of HTML | 45% | **36%** | — |
+| Longest class attribute | 611 | **136** | −78% (under-100 / lever D skipped) |
+| All 35 glyphs (React/Panda external) | 38,917 / 6,484 | **37,210 / 6,629** | raw −4% |
+
 ---
 
-## 1. What ships today (measured)
+## 1. What shipped at the research baseline (measured)
 
-Measured on this branch (`feat/custom-svg-icons`) with `bun run build` and the running dev SSR server. Commands are in §9.
+Measured on `feat/custom-svg-icons` (2026-11-03) with `bun run build` and the running dev SSR server. Commands are in §9. Treat as the pre-A–C baseline; see the table above for post-change numbers.
 
 ### 1.1 Build output
 

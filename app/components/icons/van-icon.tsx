@@ -12,19 +12,18 @@ import { type IconProps, IconShell } from "./icon";
  * Only the moving parts take hue: the wheels and rays go `primary`, the beam
  * goes `warmAmber.400`, and every static stroke stays `currentColor`.
  *
- * Reduced motion is handled in two places, and neither of them is a
- * `_red` inside a state condition: Panda emits such a rule without its
- * state prefix, so `.rays { opacity: 1 }` lands inside the media query and the
- * glyph is lit on every route, hovering or not.
+ * Reduced motion for this glyph:
  *
  *   1. `theme/global-styles.ts` drops every SVG animation under reduce.
- *   2. The states themselves carry the *end state* as a plain declaration —
- *      `opacity: 1` on the rays and `0.6` on the beam — and the keyframes
- *      animate toward that same value where motion is allowed.
+ *   2. Each interactive state carries its *end appearance* as a plain
+ *      declaration (`opacity: 1` on the rays, `0.6` on the beam) so the look
+ *      survives without the keyframe. Keyframes only animate toward that look.
  *
- * So a state is always described by what it looks like, and the animation is
- * only ever the route to that look. An idle link is idle under every motion
- * preference.
+ * Nested `_red` inside a state (`_hov: { _red: { … } }`) is valid and is what
+ * siblings like chevron/star use when they need a same-weight cancel. What
+ * fails is a *top-level* `_red` that resets colour/opacity without a state
+ * prefix — that can light an idle glyph on every route (#460). This file
+ * needs neither form: the global guard plus explicit end-states are enough.
  */
 
 const vanWheel = css({
