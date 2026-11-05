@@ -22,7 +22,7 @@ const funnelFill = css({
   fill: "primary",
   fillOpacity: "0",
   stroke: "none",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "fill-opacity",
   transitionTimingFunction: "air",
 });

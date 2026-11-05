@@ -146,7 +146,7 @@ const HeroText = () => (
         backdropFilter: "auto",
         color: "{colors.on-image}",
         fontSize: { base: "2xl", md: "4xl", sm: "3xl" },
-        fontWeight: "extrabold",
+        fontWeight: "bold",
         lineHeight: { base: "8", md: "10", sm: "9" },
         maxInlineSize: "20ch",
         padding: 1,

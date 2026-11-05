@@ -20,34 +20,32 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const keyInk = css({
-  _groupCurrent: { color: "primary" },
-  _groupFocusVisible: {
-    animationDuration: "560ms",
+  _cur: { color: "primary" },
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-squish",
     animationTimingFunction: "spring",
     color: "primary",
   },
-  _groupHover: {
-    animationDuration: "560ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-squish",
     animationTimingFunction: "spring",
     color: "primary",
   },
-  _motionReduce: { animationName: "none" },
   color: "inherit",
   transformBox: "fill-box",
   transformOrigin: "center",
-  transitionDuration: "200ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });
 
 const keyTurn = css({
-  _groupCurrent: { rotate: "-8deg" },
-  _motionReduce: { rotate: "0deg" },
+  _cur: { rotate: "-8deg" },
   transformBox: "view-box",
   transformOrigin: "16.2px 7.7px",
-  transitionDuration: "380ms",
+  transitionDuration: "slower",
   transitionProperty: "rotate",
   transitionTimingFunction: "glide",
 });

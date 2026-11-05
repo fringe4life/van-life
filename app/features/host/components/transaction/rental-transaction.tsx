@@ -1,5 +1,6 @@
-import { css } from "styled-system/css";
+import { css, cx } from "styled-system/css";
 import { Transaction } from "./transaction";
+import { transactionDetailText } from "./transaction-recipe";
 import type { RentalTransactionProps } from "./transaction-types";
 
 interface RentalTransactionDetailsProps {
@@ -7,17 +8,16 @@ interface RentalTransactionDetailsProps {
   rentName: string;
 }
 
+const rentalDetail = cx(
+  transactionDetailText,
+  css({ color: "foreground", fontWeight: "medium" })
+);
+
 const RentalTransactionDetails = ({
   rentDuration,
   rentName,
 }: RentalTransactionDetailsProps) => (
-  <p
-    className={css({
-      color: "foreground",
-      fontSize: "sm",
-      fontWeight: "semibold",
-    })}
-  >
+  <p className={rentalDetail}>
     {rentName}
     <span
       className={css({

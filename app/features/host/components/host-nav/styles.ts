@@ -224,7 +224,7 @@ const hostNavMobileTriggerClassName = css({
  * panel should still read as open — it just happens instantly.
  */
 const hostNavMobileTriggerIconClassName = css({
-  _motionReduce: { transitionDuration: "0s" },
+  _red: { transitionDuration: "0s" },
   "[aria-expanded='true'] &": {
     color: "primary",
     rotate: "180deg",

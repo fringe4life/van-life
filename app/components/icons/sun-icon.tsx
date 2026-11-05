@@ -11,7 +11,7 @@ import { type IconProps, IconShell } from "./icon";
  *   held     amber, disc lit, rays settled — a selected sun states its colour
  *            and stops. A spin inside a three-way segmented control would
  *            compete with the selection (#426).
- *            `_groupHeld`: the header trigger wears this glyph too, and a
+ *            `_held`: the header trigger wears this glyph too, and a
  *            button holds a value without containing the radio that set it.
  *   dark     amber and lit at rest, because it is the way back out
  *
@@ -21,39 +21,38 @@ import { type IconProps, IconShell } from "./icon";
 
 const sunRays = css({
   _dark: { color: "warmAmber.400", scale: "1.06" },
-  _groupFocusVisible: {
-    animationDuration: "620ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "icon-shine",
     animationTimingFunction: "spring",
     color: "warmAmber.400",
   },
-  _groupHeld: {
+  _held: {
     color: "warmAmber.400",
   },
-  _groupHover: {
-    animationDuration: "620ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "icon-shine",
     animationTimingFunction: "spring",
     color: "warmAmber.400",
   },
-  _motionReduce: { animationName: "none" },
   color: "inherit",
   transformBox: "fill-box",
   transformOrigin: "center",
-  transitionDuration: "180ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "spring",
 });
 
 const sunCore = css({
   _dark: { color: "warmAmber.400", fillOpacity: 1 },
-  _groupFocusVisible: { color: "warmAmber.400", fillOpacity: 1 },
-  _groupHeld: { color: "warmAmber.400", fillOpacity: 1 },
-  _groupHover: { color: "warmAmber.400", fillOpacity: 1 },
+  _foc: { color: "warmAmber.400", fillOpacity: 1 },
+  _held: { color: "warmAmber.400", fillOpacity: 1 },
+  _hov: { color: "warmAmber.400", fillOpacity: 1 },
   color: "inherit",
   fill: "currentColor",
   fillOpacity: 0,
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "fill-opacity,color",
   transitionTimingFunction: "air",
 });

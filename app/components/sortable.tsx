@@ -85,7 +85,7 @@ const Sortable = ({
         css({
           backgroundColor: "primary",
           color: "primary.foreground",
-          fontWeight: "semibold",
+          fontWeight: "medium",
         })
     ),
     onClick: () => handleSortChange(item.value),

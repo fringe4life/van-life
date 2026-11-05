@@ -35,52 +35,52 @@ const LOWER_BARB = `M${round(20.2 - RUN)} ${round(12 + RISE)} 20.2 12`;
 const SHAFT = `M3.9 12h${round(20.2 - 3.9)}`;
 
 const arrowBody = css({
-  _groupFocusVisible: {
-    _motionReduce: { translate: "0 0" },
+  _foc: {
+    _red: { translate: "0 0" },
     translate: "1.6px 0",
   },
-  _groupHover: {
-    _motionReduce: { translate: "0 0" },
+  _hov: {
+    _red: { translate: "0 0" },
     translate: "1.6px 0",
   },
   transformBox: "view-box",
   transformOrigin: "center",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "translate",
   transitionTimingFunction: "glide",
 });
 
 /* Closing toward the shaft is clockwise for the upper barb, counter for the lower. */
 const barbUpper = css({
-  _groupFocusVisible: {
-    _motionReduce: { rotate: "0deg" },
+  _foc: {
+    _red: { rotate: "0deg" },
     rotate: "10deg",
   },
-  _groupHover: {
-    _motionReduce: { rotate: "0deg" },
+  _hov: {
+    _red: { rotate: "0deg" },
     rotate: "10deg",
   },
   rotate: "0deg",
   transformBox: "view-box",
   transformOrigin: "20.2px 12px",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "rotate",
   transitionTimingFunction: "glide",
 });
 
 const barbLower = css({
-  _groupFocusVisible: {
-    _motionReduce: { rotate: "0deg" },
+  _foc: {
+    _red: { rotate: "0deg" },
     rotate: "-10deg",
   },
-  _groupHover: {
-    _motionReduce: { rotate: "0deg" },
+  _hov: {
+    _red: { rotate: "0deg" },
     rotate: "-10deg",
   },
   rotate: "0deg",
   transformBox: "view-box",
   transformOrigin: "20.2px 12px",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "rotate",
   transitionTimingFunction: "glide",
 });

@@ -14,60 +14,67 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const walletInk = css({
-  _groupCurrent: { color: "primary" },
+  _cur: { color: "primary" },
   color: "inherit",
-  transitionDuration: "200ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });
 
 const walletBody = css({
-  _groupCurrent: { fillOpacity: "0.12" },
+  _cur: { fillOpacity: "0.12" },
   fill: "primary",
   fillOpacity: "0",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "fill-opacity",
   transitionTimingFunction: "air",
 });
 
 const walletFlap = css({
-  _groupFocusVisible: {
-    animationDuration: "620ms",
+  _foc: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "icon-flap-lift",
     animationTimingFunction: "glide",
     color: "primary",
   },
-  _groupHover: {
-    animationDuration: "620ms",
+  _hov: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "icon-flap-lift",
     animationTimingFunction: "glide",
     color: "primary",
   },
-  _motionReduce: { animationName: "none", color: "primary" },
   color: "inherit",
   transformBox: "fill-box",
   transformOrigin: "left bottom",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });
 
 const walletCoin = css({
-  _groupFocusVisible: {
-    animationDuration: "760ms",
+  /*
+   * The coin is described twice: the drop animation, and the place it lands.
+   * `animation-fill-mode: forwards` used to be the only thing holding it at
+   * `opacity: 1`, so once the guard removes the animation under reduced motion
+   * the coin vanished while the flap still lifted. The endpoint is stated here
+   * so the state survives without its motion.
+   */
+  _foc: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "icon-coin-drop",
     animationTimingFunction: "glide",
+    opacity: "1",
   },
-  _groupHover: {
-    animationDuration: "760ms",
+  _hov: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "icon-coin-drop",
     animationTimingFunction: "glide",
+    opacity: "1",
   },
-  _motionReduce: { animationName: "none", opacity: "1" },
   fill: "warmAmber.400",
   opacity: "0",
   stroke: "none",

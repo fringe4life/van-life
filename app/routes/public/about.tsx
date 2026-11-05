@@ -222,7 +222,7 @@ const About = ({ loaderData }: Route.ComponentProps) => (
             <h3
               className={css({
                 fontSize: { "@card/xl": "3xl", base: "xl", sm: "2xl" },
-                fontWeight: "extrabold",
+                fontWeight: "bold",
                 lineHeight: "tight",
                 maxInlineSize: "620px",
               })}

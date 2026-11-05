@@ -11,36 +11,49 @@ import { type IconProps, IconShell } from "./icon";
  *
  * Only the moving parts take hue: the wheels and rays go `primary`, the beam
  * goes `warmAmber.400`, and every static stroke stays `currentColor`.
+ *
+ * Reduced motion is handled in two places, and neither of them is a
+ * `_red` inside a state condition: Panda emits such a rule without its
+ * state prefix, so `.rays { opacity: 1 }` lands inside the media query and the
+ * glyph is lit on every route, hovering or not.
+ *
+ *   1. `theme/global-styles.ts` drops every SVG animation under reduce.
+ *   2. The states themselves carry the *end state* as a plain declaration —
+ *      `opacity: 1` on the rays and `0.6` on the beam — and the keyframes
+ *      animate toward that same value where motion is allowed.
+ *
+ * So a state is always described by what it looks like, and the animation is
+ * only ever the route to that look. An idle link is idle under every motion
+ * preference.
  */
 
 const vanWheel = css({
-  _groupCurrent: {
+  _cur: {
     animationDuration: "1.9s",
     animationIterationCount: "infinite",
     animationName: "icon-spin",
     animationTimingFunction: "linear",
     color: "primary",
   },
-  _groupFocusVisible: {
+  _foc: {
     animationDuration: "1s",
     animationName: "icon-spin",
     animationTimingFunction: "glide",
     color: "primary",
   },
-  _groupHover: {
+  _hov: {
     animationDuration: "1s",
     animationName: "icon-spin",
     animationTimingFunction: "glide",
     color: "primary",
   },
-  _motionReduce: { animationName: "none", color: "primary" },
   color: "inherit",
   transformBox: "fill-box",
   transformOrigin: "center",
 });
 
 const vanRays = css({
-  _groupCurrent: {
+  _cur: {
     animationDuration: "1.5s",
     animationIterationCount: "infinite",
     animationName: "van-ray-drift",
@@ -48,46 +61,48 @@ const vanRays = css({
     color: "primary",
     opacity: 1,
   },
-  _groupFocusVisible: {
-    animationDuration: "420ms",
+  _foc: {
+    animationDuration: "slower",
     animationFillMode: "forwards",
     animationName: "van-ray-out",
     animationTimingFunction: "air",
     color: "primary",
+    opacity: 1,
   },
-  _groupHover: {
-    animationDuration: "420ms",
+  _hov: {
+    animationDuration: "slower",
     animationFillMode: "forwards",
     animationName: "van-ray-out",
     animationTimingFunction: "air",
     color: "primary",
+    opacity: 1,
   },
-  _motionReduce: { animationName: "none", color: "primary", opacity: 1 },
   color: "inherit",
   opacity: 0,
 });
 
 const vanBeam = css({
-  _groupCurrent: {
+  _cur: {
     animationDuration: "3.2s",
     animationIterationCount: "infinite",
     animationName: "van-beam-breathe",
     animationTimingFunction: "ease-in-out",
     opacity: 0.6,
   },
-  _groupFocusVisible: {
-    animationDuration: "480ms",
+  _foc: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "van-beam-in",
     animationTimingFunction: "springSoft",
+    opacity: 0.6,
   },
-  _groupHover: {
-    animationDuration: "480ms",
+  _hov: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "van-beam-in",
     animationTimingFunction: "springSoft",
+    opacity: 0.6,
   },
-  _motionReduce: { animationName: "none", opacity: 0.6 },
   fill: "warmAmber.400",
   opacity: 0,
   transformBox: "fill-box",
@@ -95,33 +110,32 @@ const vanBeam = css({
 });
 
 const vanCab = css({
-  _groupCurrent: { fill: "primary", fillOpacity: 0.34 },
-  _groupFocusVisible: { fill: "primary", fillOpacity: 0.34 },
-  _groupHover: { fill: "primary", fillOpacity: 0.34 },
+  _cur: { fill: "primary", fillOpacity: 0.34 },
+  _foc: { fill: "primary", fillOpacity: 0.34 },
+  _hov: { fill: "primary", fillOpacity: 0.34 },
   fill: "transparent",
-  transitionDuration: "200ms",
+  transitionDuration: "normal",
   transitionProperty: "fill",
   transitionTimingFunction: "air",
 });
 
 const vanSquish = css({
-  _groupCurrent: {
+  _cur: {
     animationDuration: "2.4s",
     animationIterationCount: "infinite",
     animationName: "van-idle",
     animationTimingFunction: "ease-in-out",
   },
-  _groupFocusVisible: {
-    animationDuration: "560ms",
+  _foc: {
+    animationDuration: "slowest",
     animationName: "van-squish",
     animationTimingFunction: "spring",
   },
-  _groupHover: {
-    animationDuration: "560ms",
+  _hov: {
+    animationDuration: "slowest",
     animationName: "van-squish",
     animationTimingFunction: "spring",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "fill-box",
   transformOrigin: "center bottom",
 });

@@ -1,4 +1,3 @@
-import interLatinHref from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import { NuqsAdapter } from "nuqs/adapters/react-router/v8";
 import { useState, ViewTransition } from "react";
 import {
@@ -21,8 +20,6 @@ import {
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 import { RouteErrorBoundary } from "./components/route-error-boundary";
-import spaceMono400Href from "./fonts/money/space-mono-400.woff2?url";
-import spaceMono700Href from "./fonts/money/space-mono-700.woff2?url";
 import type { Children } from "./types";
 
 const layoutGrid = grid({
@@ -30,7 +27,8 @@ const layoutGrid = grid({
   gridTemplateAreas: '". nav ." ". content ." "footer footer footer"',
   gridTemplateColumns:
     "minmax({spacing.padding-inline}, 1fr) minmax(0, {sizes.shell}) minmax({spacing.padding-inline}, 1fr)",
-  gridTemplateRows: "var(--header-height) 1fr var(--footer-height)",
+  /* The footer row is `auto` so the footer owns its own height. */
+  gridTemplateRows: "var(--header-height) 1fr auto",
 });
 
 const themeTransitionRootClassName = css({
@@ -43,39 +41,9 @@ const themeTransitionUpdate = {
   default: "none",
 } as const;
 
+// No font preloads (#476): both faces resolve to system stacks, so there is
+// nothing to fetch.
 export const links: Route.LinksFunction = () => [
-  {
-    as: "font",
-    crossOrigin: "anonymous",
-    href: interLatinHref,
-    rel: "preload",
-    type: "font/woff2",
-  },
-  // Money appears on every public list and every host route — a van card price
-  // or a ledger total — so both subsets are preloaded globally rather than
-  // gated by a route list that would drift from what actually paints them.
-  //
-  // Known cost (#452): the index route paints no money at all — the landing
-  // chrome is a heading, a button and a footer — yet it downloads these two
-  // files (5,476 B + 5,660 B). A `@font-face` would stay lazy; a `<link
-  // rel=preload>` cannot. If the 11 kB starts to matter, move these two links
-  // into the `links` export of the six routes that paint money (`/vans`,
-  // `/vans/:id`, `/vans/:id/host`, `/host`, and both activity routes) instead
-  // of adding another global preload.
-  {
-    as: "font",
-    crossOrigin: "anonymous",
-    href: spaceMono400Href,
-    rel: "preload",
-    type: "font/woff2",
-  },
-  {
-    as: "font",
-    crossOrigin: "anonymous",
-    href: spaceMono700Href,
-    rel: "preload",
-    type: "font/woff2",
-  },
   { href: stylesheet, rel: "stylesheet" },
 ];
 

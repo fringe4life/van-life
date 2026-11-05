@@ -15,91 +15,87 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const shortLeft = css({
-  _groupFocusVisible: {
+  _foc: {
     animationDelay: "0ms",
-    animationDuration: "520ms",
+    animationDuration: "slowest",
     animationName: "icon-tile-in",
     animationTimingFunction: "spring",
   },
-  _groupHover: {
+  _hov: {
     animationDelay: "0ms",
-    animationDuration: "520ms",
+    animationDuration: "slowest",
     animationName: "icon-tile-in",
     animationTimingFunction: "spring",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "fill-box",
   transformOrigin: "center",
 });
 
 const tallRight = css({
-  _groupCurrent: { fillOpacity: "0.16" },
-  _groupFocusVisible: {
+  _cur: { fillOpacity: "0.16" },
+  _foc: {
     animationDelay: "60ms",
-    animationDuration: "520ms",
+    animationDuration: "slowest",
     animationName: "icon-tile-in",
     animationTimingFunction: "spring",
     fillOpacity: "0.14",
   },
-  _groupHover: {
+  _hov: {
     animationDelay: "60ms",
-    animationDuration: "520ms",
+    animationDuration: "slowest",
     animationName: "icon-tile-in",
     animationTimingFunction: "spring",
     fillOpacity: "0.14",
   },
-  _motionReduce: { animationName: "none" },
   fill: "primary",
   fillOpacity: "0",
   transformBox: "fill-box",
   transformOrigin: "center",
-  transitionDuration: "220ms",
+  transitionDuration: "normal",
   transitionProperty: "fill-opacity",
   transitionTimingFunction: "air",
 });
 
 const tallLeft = css({
-  _groupFocusVisible: {
+  _foc: {
     animationDelay: "120ms",
-    animationDuration: "520ms",
+    animationDuration: "slowest",
     animationName: "icon-tile-in",
     animationTimingFunction: "spring",
   },
-  _groupHover: {
+  _hov: {
     animationDelay: "120ms",
-    animationDuration: "520ms",
+    animationDuration: "slowest",
     animationName: "icon-tile-in",
     animationTimingFunction: "spring",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "fill-box",
   transformOrigin: "center",
 });
 
 const shortRight = css({
-  _groupFocusVisible: {
+  _foc: {
     animationDelay: "180ms",
-    animationDuration: "520ms",
+    animationDuration: "slowest",
     animationName: "icon-tile-in",
     animationTimingFunction: "spring",
   },
-  _groupHover: {
+  _hov: {
     animationDelay: "180ms",
-    animationDuration: "520ms",
+    animationDuration: "slowest",
     animationName: "icon-tile-in",
     animationTimingFunction: "spring",
   },
-  _motionReduce: { animationName: "none" },
   transformBox: "fill-box",
   transformOrigin: "center",
 });
 
 const dashboardInk = css({
-  _groupCurrent: { color: "primary" },
-  _groupFocusVisible: { color: "primary" },
-  _groupHover: { color: "primary" },
+  _cur: { color: "primary" },
+  _foc: { color: "primary" },
+  _hov: { color: "primary" },
   color: "inherit",
-  transitionDuration: "200ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });

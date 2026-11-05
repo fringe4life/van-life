@@ -16,7 +16,24 @@ import type { Route as RootRoute } from "../../+types/root";
 const THEME_FETCHER_KEY = "theme";
 
 const THEME_TOGGLE_INSTANCES = {
+  /*
+   * The footer sits on `surface.inverse`, where the nav's `border` and
+   * `surface.muted` have nothing to read against, so it keeps the same three
+   * choices in the inverse pairing. It never collapses to the popover: the
+   * group is the only control there.
+   */
+  footer: {
+    compact: false,
+    group: true,
+    inverse: true,
+    popoverClassName: css({ positionAnchor: "--footer-theme-toggle-trigger" }),
+    popoverId: "footer-theme-toggle-popover",
+    triggerClassName: css({ anchorName: "--footer-theme-toggle-trigger" }),
+  },
   "mobile-nav": {
+    compact: true,
+    group: false,
+    inverse: false,
     popoverClassName: css({
       positionAnchor: "--mobile-nav-theme-toggle-trigger",
     }),
@@ -26,6 +43,9 @@ const THEME_TOGGLE_INSTANCES = {
     }),
   },
   nav: {
+    compact: true,
+    group: true,
+    inverse: false,
     popoverClassName: css({ positionAnchor: "--theme-toggle-trigger" }),
     popoverId: "theme-toggle-popover",
     triggerClassName: css({ anchorName: "--theme-toggle-trigger" }),
@@ -78,6 +98,56 @@ const themeToggleOptionClassName = css({
   backgroundColor: "transparent",
   blockSize: "var(--nav-control-size)",
   color: "foreground",
+  cursor: "pointer",
+  display: "inline-flex",
+  flexShrink: "0",
+  inlineSize: "var(--nav-control-size)",
+  justifyContent: "center",
+  minBlockSize: "var(--nav-control-size)",
+  minInlineSize: "var(--nav-control-size)",
+  padding: "0",
+  transitionDuration: "normal",
+  transitionProperty: "colors",
+});
+
+/*
+ * Literal twins of the group and option classes rather than a factory: Panda
+ * reads these values statically, so a parameterised `hstack`/`css` would emit a
+ * class with no rule behind it.
+ */
+const themeToggleInverseGroupClassName = hstack({
+  backgroundColor: "surface.inverse.foreground/10",
+  borderColor: "surface.inverse.foreground/20",
+  borderRadius: "md",
+  borderStyle: "solid",
+  borderWidth: "1px",
+  display: "inline-flex",
+  gap: "0",
+  margin: "0",
+  minInlineSize: "0",
+  overflow: "hidden",
+  padding: "0",
+});
+
+const themeToggleInverseOptionClassName = css({
+  _focusWithin: {
+    outlineColor: "ring",
+    outlineOffset: "-3px",
+    outlineStyle: "solid",
+    outlineWidth: "3px",
+    zIndex: 1,
+  },
+  _hover: {
+    backgroundColor: "surface.inverse.foreground/15",
+  },
+  "&:has(:checked)": {
+    backgroundColor: "accent",
+    color: "accent.foreground",
+  },
+  alignItems: "center",
+  backgroundColor: "transparent",
+  blockSize: "var(--nav-control-size)",
+  color: "surface.inverse.foreground",
   cursor: "pointer",
   display: "inline-flex",
   flexShrink: "0",
@@ -192,6 +262,7 @@ const readRootTheme = (
 interface ThemeOptionProps {
   choice: ThemeChoice;
   compact?: boolean;
+  inverse?: boolean;
   name?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   theme: ThemeChoice;
@@ -200,11 +271,15 @@ interface ThemeOptionProps {
 const ThemeOption = ({
   choice,
   compact = false,
+  inverse = false,
   name = "theme",
   onChange,
   theme,
 }: ThemeOptionProps) => {
   const Icon = THEME_ICONS[choice];
+  const inlineOptionClassName = inverse
+    ? themeToggleInverseOptionClassName
+    : themeToggleOptionClassName;
 
   return (
     <label
@@ -212,7 +287,7 @@ const ThemeOption = ({
         // `group` carries the glyph's hover and reveal states; `data-held` is
         // what lights it, so the same marker works on the button below.
         "group",
-        compact ? themeTogglePopoverOptionClassName : themeToggleOptionClassName
+        compact ? themeTogglePopoverOptionClassName : inlineOptionClassName
       )}
       data-held={theme === choice ? "true" : undefined}
       key={choice}
@@ -240,8 +315,14 @@ interface ThemeToggleProps {
 }
 
 const ThemeToggle = ({ instance = "nav" }: ThemeToggleProps) => {
-  const { popoverClassName, popoverId, triggerClassName } =
-    THEME_TOGGLE_INSTANCES[instance];
+  const {
+    compact,
+    group,
+    inverse,
+    popoverClassName,
+    popoverId,
+    triggerClassName,
+  } = THEME_TOGGLE_INSTANCES[instance];
   const fetcher = useFetcher({ key: THEME_FETCHER_KEY });
   const loaderData = useRouteLoaderData("root") as
     | RootRoute.ComponentProps["loaderData"]
@@ -278,12 +359,19 @@ const ThemeToggle = ({ instance = "nav" }: ThemeToggleProps) => {
 
   return (
     <fetcher.Form action={href("/theme")} method="post" preventScrollReset>
-      {instance === "nav" ? (
-        <fieldset className={themeToggleGroupClassName}>
+      {group ? (
+        <fieldset
+          className={
+            inverse
+              ? themeToggleInverseGroupClassName
+              : themeToggleGroupClassName
+          }
+        >
           <legend className={legendClassName}>Color theme</legend>
           {THEME_CHOICES.map((choice) => (
             <ThemeOption
               choice={choice}
+              inverse={inverse}
               key={choice}
               onChange={onThemeChange}
               theme={theme}
@@ -292,49 +380,58 @@ const ThemeToggle = ({ instance = "nav" }: ThemeToggleProps) => {
         </fieldset>
       ) : null}
 
-      <div
-        className={cx(
-          themeToggleCompactClassName,
-          instance === "nav" ? themeToggleNavCompactClassName : undefined
-        )}
-      >
-        {/*
-         * The trigger stands in for the chosen option: the same `group` the
-         * glyphs read, plus `data-held` because a button owns a value without
-         * containing the radio that set it. Without it the sun and the monitor
-         * render their resting outlines here while the popover lights them.
-         */}
-        <button
-          aria-controls={popoverId}
-          aria-label={`Color theme: ${THEME_LABELS[theme]}`}
-          className={cx("group", themeToggleButtonClassName, triggerClassName)}
-          data-held="true"
-          popoverTarget={popoverId}
-          popoverTargetAction="toggle"
-          type="button"
+      {compact ? (
+        <div
+          className={cx(
+            themeToggleCompactClassName,
+            instance === "nav" ? themeToggleNavCompactClassName : undefined
+          )}
         >
-          <ActiveThemeIcon aria-hidden="true" className={themeIconClassName} />
-        </button>
-        <Popover
-          className={cx(themeTogglePopoverClassName, popoverClassName)}
-          id={popoverId}
-          popover="auto"
-        >
-          <fieldset className={themeTogglePopoverOptionsClassName}>
-            <legend className={legendClassName}>Color theme</legend>
-            {THEME_CHOICES.map((choice) => (
-              <ThemeOption
-                choice={choice}
-                compact
-                key={choice}
-                name={`theme-${instance}`}
-                onChange={onThemeChange}
-                theme={theme}
-              />
-            ))}
-          </fieldset>
-        </Popover>
-      </div>
+          {/*
+           * The trigger stands in for the chosen option: the same `group` the
+           * glyphs read, plus `data-held` because a button owns a value without
+           * containing the radio that set it. Without it the sun and the monitor
+           * render their resting outlines here while the popover lights them.
+           */}
+          <button
+            aria-controls={popoverId}
+            aria-label={`Color theme: ${THEME_LABELS[theme]}`}
+            className={cx(
+              "group",
+              themeToggleButtonClassName,
+              triggerClassName
+            )}
+            data-held="true"
+            popoverTarget={popoverId}
+            popoverTargetAction="toggle"
+            type="button"
+          >
+            <ActiveThemeIcon
+              aria-hidden="true"
+              className={themeIconClassName}
+            />
+          </button>
+          <Popover
+            className={cx(themeTogglePopoverClassName, popoverClassName)}
+            id={popoverId}
+            popover="auto"
+          >
+            <fieldset className={themeTogglePopoverOptionsClassName}>
+              <legend className={legendClassName}>Color theme</legend>
+              {THEME_CHOICES.map((choice) => (
+                <ThemeOption
+                  choice={choice}
+                  compact
+                  key={choice}
+                  name={`theme-${instance}`}
+                  onChange={onThemeChange}
+                  theme={theme}
+                />
+              ))}
+            </fieldset>
+          </Popover>
+        </div>
+      ) : null}
     </fetcher.Form>
   );
 };

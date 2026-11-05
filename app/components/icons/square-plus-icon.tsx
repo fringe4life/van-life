@@ -17,25 +17,24 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const plusInk = css({
-  _groupFocusVisible: {
-    animationDuration: "520ms",
+  _foc: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "icon-plus-add",
     animationTimingFunction: "spring",
     color: "primary",
   },
-  _groupHover: {
-    animationDuration: "520ms",
+  _hov: {
+    animationDuration: "slowest",
     animationFillMode: "forwards",
     animationName: "icon-plus-add",
     animationTimingFunction: "spring",
     color: "primary",
   },
-  _motionReduce: { animationName: "none", color: "primary" },
   color: "inherit",
   transformBox: "fill-box",
   transformOrigin: "center",
-  transitionDuration: "240ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });

@@ -26,6 +26,7 @@ import {
   INFLOW_DIRECTION,
   INFLOW_FILL,
   LINE_FILL,
+  moneyChartClassName,
   OUTFLOW_DIRECTION,
   OUTFLOW_FILL,
   TIMELINE_CHART_HEIGHT_PX,
@@ -60,13 +61,13 @@ const currencyCaption = css({
 });
 
 /**
- * Axis numerals follow the same rule as every other aligned figure: Inter with
- * tabular figures (#449). `@tanstack/charts` 1.1.0 exposes `fontSize` and
+ * Axis numerals follow the same rule as every other aligned figure: body face
+ * with tabular figures (#449, #476). `@tanstack/charts` exposes `fontSize` and
  * `fontWeight` on `tickLabels` but neither a family nor `font-variant-numeric`,
- * so the ticks are reached through the rendered `<text>` instead. They stay in
- * Inter on purpose: the labels are `4k`, `−2k`, `0`, and the money subset has no
- * letters — an axis rendering `k` in a second face is the exact bug the glyph
- * list exists to prevent.
+ * so the ticks are reached through the rendered `<text>` instead. They stay on
+ * the sans stack on purpose: the labels are `4k`, `−2k`, `0`, and money mono is
+ * for currency amounts — an axis rendering `k` in a second face is the exact
+ * mix the figure roles exist to prevent.
  */
 const plot = css({
   "& text": { fontVariantNumeric: "tabular-nums" },
@@ -219,7 +220,7 @@ const MoneyTimelineComponent = ({
       name={chromeViewTransitionName.hostChart}
     >
       {/* Plotted straight on the page surface: a chart is not a card. */}
-      <div className={css({ marginBlockStart: "5" })}>
+      <div className={cx(moneyChartClassName, css({ marginBlockStart: "5" }))}>
         <p className={currencyCaption}>USD</p>
         {/* Inline size only: the scene's own height sizes this box, so the grid
             row grows to the chart instead of clipping it into the sort row. */}

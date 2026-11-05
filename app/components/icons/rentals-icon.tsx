@@ -14,41 +14,47 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const rentalsInk = css({
-  _groupCurrent: { color: "primary" },
-  _groupFocusVisible: { color: "primary" },
-  _groupHover: { color: "primary" },
+  _cur: { color: "primary" },
+  _foc: { color: "primary" },
+  _hov: { color: "primary" },
   color: "inherit",
-  transitionDuration: "200ms",
+  transitionDuration: "normal",
   transitionProperty: "color",
   transitionTimingFunction: "air",
 });
 
 const outboundArrow = css({
-  _groupCurrent: {
+  _cur: {
     animationDuration: "3s",
     animationIterationCount: "infinite",
     animationName: "icon-exchange-right",
     animationTimingFunction: "linear",
   },
-  _groupFocusVisible: { translate: "2.4px 0" },
-  _groupHover: { translate: "2.4px 0" },
-  _motionReduce: { animationName: "none", translate: "0 0" },
-  transitionDuration: "420ms",
+  /* Travel is the gesture here, so reduced motion keeps the arrows home; the
+   * cancel sits inside each state rather than in a bare top-level rule. */
+  _foc: {
+    _red: { translate: "0 0" },
+    translate: "2.4px 0",
+  },
+  _hov: { _red: { translate: "0 0" }, translate: "2.4px 0" },
+  transitionDuration: "slower",
   transitionProperty: "translate",
   transitionTimingFunction: "glide",
 });
 
 const returnArrow = css({
-  _groupCurrent: {
+  _cur: {
     animationDuration: "3s",
     animationIterationCount: "infinite",
     animationName: "icon-exchange-left",
     animationTimingFunction: "linear",
   },
-  _groupFocusVisible: { translate: "-2.4px 0" },
-  _groupHover: { translate: "-2.4px 0" },
-  _motionReduce: { animationName: "none", translate: "0 0" },
-  transitionDuration: "420ms",
+  _foc: {
+    _red: { translate: "0 0" },
+    translate: "-2.4px 0",
+  },
+  _hov: { _red: { translate: "0 0" }, translate: "-2.4px 0" },
+  transitionDuration: "slower",
   transitionProperty: "translate",
   transitionTimingFunction: "glide",
 });

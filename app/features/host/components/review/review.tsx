@@ -152,7 +152,7 @@ const Review = ({ date, id, name, rating, text }: ReviewProps) => {
                 className={css({
                   color: "rating",
                   fontSize: "4xl",
-                  fontWeight: "extrabold",
+                  fontWeight: "bold",
                   lineHeight: "none",
                   marginInlineEnd: "1",
                   textAlign: "end",

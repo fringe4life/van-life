@@ -38,6 +38,12 @@ jobs:
       - name: Test
         run: bun run test
 
+      - name: Build
+        run: bun run build
+
+      - name: Assert no Panda cva runtime
+        run: bun run assert:panda-cva
+
   # Real Bitwarden resolve — master push only (not PR).
   # VARLOCK_ENV=development enables .env.bitwarden import.
   varlock:

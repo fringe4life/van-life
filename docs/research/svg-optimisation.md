@@ -277,7 +277,7 @@ print(len(gzip.compress(html.encode(), 9)))
 EOF
 ```
 
-The measurement script used for §1.1 and §1.4 lived in `/tmp` and is not committed; if the numbers are to be defended long-term they belong in a `scripts/measure-icons.ts` beside `scripts/subset-money-font.ts`.
+The measurement script used for §1.1 and §1.4 lived in `/tmp` and is not committed; if the numbers are to be defended long-term they belong in a `scripts/measure-icons.ts`.
 
 The §3.1 figures come from a throwing-away harness that server-renders nine glyphs (`renderToStaticMarkup`) and reports markup bytes, class text, token count, longest attribute and gzip of each — run it once on the tree as it stands, then again with the lever flipped:
 

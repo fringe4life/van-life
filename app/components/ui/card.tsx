@@ -29,7 +29,7 @@ const CardHeader = ({ className, ...props }: ComponentProps<"div">) => (
 const CardTitle = ({ className, ...props }: ComponentProps<"div">) => (
   <div
     className={cx(
-      css({ fontWeight: "semibold", textAlign: "balance" }),
+      css({ fontWeight: "medium", textAlign: "balance" }),
       className
     )}
     {...props}

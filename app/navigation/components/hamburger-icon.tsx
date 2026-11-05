@@ -1,4 +1,4 @@
-import { cva } from "styled-system/css";
+import { css } from "styled-system/css";
 
 /*
  * Biome 2.6+ CSS-in-JS parse rejects `var(--token)` string literals inside
@@ -7,36 +7,46 @@ import { cva } from "styled-system/css";
  */
 const hamburgerTransitionDuration = "var(--duration-dialog)";
 
-const hamburgerBar = cva({
-  base: {
-    _groupHasOpenHamburger: {
-      _starting: {
-        rotate: "0",
-        translate: "0",
-      },
-    },
-    transformOrigin: "center",
-    transitionDuration: hamburgerTransitionDuration,
-    transitionProperty: "translate,rotate",
-    transitionTimingFunction: "ease-spring",
-  },
-  variants: {
-    position: {
-      bottom: {
-        _groupHasOpenHamburger: {
-          rotate: "-45deg",
-          translate: "0 -2px",
-        },
-      },
-      top: {
-        _groupHasOpenHamburger: {
-          rotate: "45deg",
-          translate: "0 4px",
-        },
-      },
+const hamburgerBarBase = css({
+  _hmb: {
+    _starting: {
+      rotate: "0",
+      translate: "0",
     },
   },
+  transformOrigin: "center",
+  transitionDuration: hamburgerTransitionDuration,
+  transitionProperty: "translate,rotate",
+  transitionTimingFunction: "ease-spring",
 });
+
+/**
+ * Workaround: top-level `css()` maps instead of `cva` so open
+ * `hamburgerBar({ position })` does not pull the full recipe runtime into the
+ * client bundle (#471 / #269).
+ *
+ * @remarks
+ * Still required on `@pandacss/vite@2.4.0` / `@pandacss/dev@2.4.0`.
+ * Drop when Panda emits string-only residual recipes; re-verify no `cva-*.js`
+ * after clean `styled-system` + `build`.
+ *
+ * @see https://github.com/fringe4life/van-life/issues/471 — tracking
+ */
+const hamburgerBarByPosition = {
+  bottom: css({
+    _hmb: {
+      rotate: "-45deg",
+      translate: "0 -2px",
+    },
+  }),
+  top: css({
+    _hmb: {
+      rotate: "45deg",
+      translate: "0 4px",
+    },
+  }),
+} as const;
+
 interface HamburgerIconProps {
   className?: string;
   size?: number;
@@ -72,14 +82,14 @@ const HamburgerIcon = ({ size = 20, className }: HamburgerIconProps) => (
     width={size}
   >
     <line
-      className={hamburgerBar({ position: "top" })}
+      className={`${hamburgerBarBase} ${hamburgerBarByPosition.top}`}
       x1="3"
       x2="21"
       y1="8"
       y2="8"
     />
     <line
-      className={hamburgerBar({ position: "bottom" })}
+      className={`${hamburgerBarBase} ${hamburgerBarByPosition.bottom}`}
       x1="3"
       x2="21"
       y1="16"
