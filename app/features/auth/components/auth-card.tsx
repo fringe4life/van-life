@@ -1,5 +1,5 @@
 import { type ReactNode, ViewTransition } from "react";
-import { viewTransition } from "styled-system/css";
+import { viewTransition } from "styled-system/css/view-transition";
 import { grid } from "styled-system/patterns";
 import {
   Card,

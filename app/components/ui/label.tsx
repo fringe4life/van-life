@@ -1,6 +1,8 @@
 import type { ComponentProps } from "react";
 
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+
+import { cx } from "styled-system/css/cx";
 import { hstack } from "styled-system/patterns";
 
 function Label({ className, ...props }: ComponentProps<"label">) {

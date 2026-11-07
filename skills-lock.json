@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "drizzle": {
+      "source": "./node_modules/drizzle-kit/skills",
+      "sourceType": "local",
+      "computedHash": "27540b3acc549af69f3882a32f4daa68b2efea9c8724d4506631770cd4b13c88",
+      "installMode": "copy"
+    },
     "fallow": {
       "source": "fallow-rs/fallow-skills",
       "sourceType": "github",

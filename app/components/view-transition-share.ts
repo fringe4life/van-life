@@ -1,4 +1,4 @@
-import { viewTransition } from "styled-system/css";
+import { viewTransition } from "styled-system/css/view-transition";
 import type { ViewTransitionTune } from "~/components/types";
 
 /** Named morph. Mute enter/exit, and share on pager types so list remounts stay quiet. */

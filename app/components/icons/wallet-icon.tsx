@@ -1,11 +1,11 @@
 import type { ReactElement } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { type IconProps, IconShell } from "./icon";
 
 /*
  * Wallet. The long back panel is the hinge — it lifts on `glide` at its left
  * edge, taking `primary` because it is the part that opens — and a coin falls
- * in behind it, squashing on landing. The coin is `warmAmber.400`: the only
+ * in behind it, squashing on landing. The coin is `glyph.amber`: the only
  * light in the glyph, and the only thing that is not ink.
  *
  * The current route takes the whole outline to `primary` and washes the body,
@@ -75,7 +75,7 @@ const walletCoin = css({
     animationTimingFunction: "glide",
     opacity: "1",
   },
-  fill: "warmAmber.400",
+  fill: "glyph.amber",
   opacity: "0",
   stroke: "none",
   transformBox: "fill-box",

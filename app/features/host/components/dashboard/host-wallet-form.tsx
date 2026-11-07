@@ -1,6 +1,7 @@
 import type { ChangeEventHandler, SubmitEventHandler } from "react";
 import type { FetcherWithComponents } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { cq, grid, hstack, visuallyHidden } from "styled-system/patterns";
 import { Field } from "~/components/form/field";
 import type { FormActionResultFrom } from "~/components/form/form-action-result";

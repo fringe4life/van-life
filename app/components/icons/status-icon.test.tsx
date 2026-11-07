@@ -50,9 +50,10 @@ describe("status glyph set", () => {
         throw new Error("expected an svg");
       }
       expect(svg.getAttribute("viewBox")).toBe("0 0 24 24");
-      // Stroke/fill live on the shared CSS class (#466 C), not attributes.
+      // Stroke lives on the shared CSS class (#466 C). Fill stays an attribute
+      // so a caller fill class can paint (#506).
       expect(svg.getAttribute("stroke-width")).toBeNull();
-      expect(svg.getAttribute("fill")).toBeNull();
+      expect(svg.getAttribute("fill")).toBe("none");
       classNames.push(svg.getAttribute("class") ?? "");
     }
     expect(new Set(classNames).size).toBe(1);

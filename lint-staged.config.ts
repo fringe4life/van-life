@@ -32,6 +32,9 @@ const runFallowDeadCode = (files: readonly string[]): void => {
 };
 
 export default {
+  // `dedupe` rewrites bun.lock when ranges already allow collapsing versions;
+  // lint-staged re-stages it (#497).
+  "{package.json,bun.lock}": () => "bun run dedupe",
   "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": () => "bun fix",
   "**/*.{js,jsx,ts,tsx}": () =>
     "bunx react-doctor --staged --blocking warning --no-score -y",

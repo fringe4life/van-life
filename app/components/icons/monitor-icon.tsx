@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { type IconProps, IconShell } from "./icon";
 
 /*
@@ -14,14 +14,14 @@ const monitorScreen = css({
     animationDuration: "slower",
     animationName: "icon-flicker",
     animationTimingFunction: "air",
-    color: "warmSky.400",
+    color: "glyph.sky",
   },
   _held: { fillOpacity: 0.18 },
   _hov: {
     animationDuration: "slower",
     animationName: "icon-flicker",
     animationTimingFunction: "air",
-    color: "warmSky.400",
+    color: "glyph.sky",
   },
   color: "inherit",
   fill: "currentColor",

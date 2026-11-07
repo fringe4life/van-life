@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { ViewTransition } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { flex } from "styled-system/patterns";
 import { chromeViewTransitionName } from "~/components/view-transition-names";
 import { viewTransitionPage } from "~/components/view-transition-share";

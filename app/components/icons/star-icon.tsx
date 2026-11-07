@@ -1,5 +1,5 @@
 import { type ReactElement, useId } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { type IconProps, IconShell } from "./icon";
 
 /*
@@ -84,7 +84,7 @@ const starGlint = css({
     animationTimingFunction: "linear",
     opacity: "1",
   },
-  color: "warmAmber.400",
+  color: "glyph.amber",
   opacity: "0",
 });
 

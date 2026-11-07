@@ -1,4 +1,4 @@
-import { cx } from "styled-system/css";
+import { cx } from "styled-system/css/cx";
 import { cq } from "styled-system/patterns";
 import { ItemList } from "~/components/item-list";
 import { Card } from "~/components/ui/card";
@@ -21,12 +21,12 @@ const renderHostNavGroupProps = (group: HostNavGroupData) => ({
 
 const HostNav = () => (
   <nav
-    aria-label="Host navigation"
+    aria-label="Account sections"
     className={cx(cq({ name: "host-nav" }), hostNavClassName)}
   >
     <Card className={hostNavSurfaceClassName}>
       <div className={hostNavKickerClassName}>
-        Host index
+        Account
         <strong>Seven routes, three jobs</strong>
       </div>
       <ItemList

@@ -1,4 +1,5 @@
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { flex } from "styled-system/patterns";
 import { money } from "~/components/ui/figures";
 import { displayPrice } from "~/features/vans/utils/display-price";

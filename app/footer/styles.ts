@@ -1,4 +1,4 @@
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { buttonVariants } from "~/components/ui/button-variants";
 
 /**

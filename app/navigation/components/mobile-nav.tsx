@@ -1,6 +1,7 @@
 import type { MouseEvent } from "react";
 import { href } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { cq, visuallyHidden } from "styled-system/patterns";
 import { ItemList } from "~/components/item-list";
 import { CustomLink } from "~/components/links/custom-link";

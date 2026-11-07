@@ -7,7 +7,8 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { grid } from "styled-system/patterns";
 import { themeTransition } from "~/navigation/components/theme-toggle-transition";
 import type { ThemeChoice } from "~/theme/schema";

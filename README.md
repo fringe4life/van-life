@@ -6,8 +6,8 @@
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.4.0-F6E05E?logoColor=black)](https://panda-css.com/)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.14-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
+[![PandaCSS](https://img.shields.io/badge/PandaCSS-2.5.0-F6E05E?logoColor=black)](https://panda-css.com/)
+[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.17-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
 [![Biome](https://img.shields.io/badge/Biome-2.6.4-000000?logo=biome&logoColor=white)](https://biomejs.dev/)
 [![Ultracite](https://img.shields.io/badge/Ultracite-8.1.0-000000?logo=ultracite&logoColor=white)](https://ultracite.dev/)
@@ -54,7 +54,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - 🖼️ **Image Optimization** (WebP, responsive images, quality compression; favicon `svg` + `ico` + apple-touch PNG; home mask ~22KB, about cloud mask <1KB)
 - 💸 **Rental System** (rent, return, and manage van rentals)
 - ⭐ **Review System** (rate and review rentals; `reviewRecipe` / `ReviewBadge` + container-query layout)
-- 📈 **Host Dashboard** (modular sections — income, reviews, vans, wallet — with TanStack Charts bars: one color per amount band, end-only radius, user-facing legend; wallet form uses `@container/wallet` two-column layout)
+- 📈 **Host Dashboard** (modular sections — income, reviews, vans, wallet — with Chartlite grouped inflow/outflow bars + cumulative net line, user-facing legend; wallet form uses `@container/wallet` two-column layout)
 - 💰 **Financial Management** — `/host/rental-activity` (rental pay/return) vs `/host/wallet-activity` (deposit/withdraw); typed transaction rows + pagination
 - 🏷️ **Van listing chrome** — stored `VanState` (`AVAILABLE` / `IN_REPAIR` / `ON_SALE`); `NEW` derived at read; exclusive card wash + repair/new badge
 - 💲 **Dynamic Pricing** (discount system with strikethrough original prices)
@@ -93,9 +93,9 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **React Router 8.4.0** (file-based routing, SSR, nested host van detail routes, middleware)
 - **TypeScript 7.0.2** with strict configuration
 - **PandaCSS 2.1.2** — tokens in `theme/`, patterns + static `css`/`cx` from `styled-system`; `define*` helpers from `@pandacss/dev/define`
-- **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, checkbox, dialog, input, label, textarea, popover, select)
+- **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, dialog, input, label, textarea, popover, select)
 - **Custom SVG glyph set** in `app/components/icons` — vendored `IconShell` components, one per glyph, animated with CSS on ancestor state only (no icon package, no icon font, no animation library)
-- **TanStack Charts 1.1.0** for the host money timeline (lazy-loaded via `LazyMoneyTimeline`; bars stacked by inflow/outflow with a cumulative net line; reviews use `RatingMix`, not the chart library)
+- **Chartlite 1.1.0** (`@chartlite/react`) for the host money timeline (lazy-loaded via `LazyMoneyTimeline`; grouped inflow/outflow bars + cumulative net line; reviews use `RatingMix`, not the chart library)
 - **nuqs 2.10.2** for type-safe URL state management via shared parsers
 
 ### Backend & Database
@@ -110,8 +110,8 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ### Development Tools
 
 - **Vite 8.3.4** - Rolldown-based tooling; native `resolve.tsconfigPaths` for `~/` imports; core `devtools` option
-- **@vitejs/devtools 0.7.5** - Vite DevTools (`/__devtools/` in `bun run dev`; client/ssr environments)
-- **@vitejs/devtools-rolldown 0.7.5** / **@vitejs/devtools-vite 0.7.5** - Official Rolldown build analysis + Vite plugin inspector
+- **@vitejs/devtools 0.8.2** - Vite DevTools (`/__devtools/` in `bun run dev`; client/ssr environments)
+- **@vitejs/devtools-rolldown 0.8.2** / **@vitejs/devtools-vite 0.8.2** - Official Rolldown build analysis + Vite plugin inspector
 - **System font stacks, zero font bytes** - `fonts.sans` / `fonts.mono` are the [Modern Font Stacks](https://github.com/system-fonts/modern-font-stacks) geometric-humanist and monospace-code pairs; no `@font-face`, no font packages (see `docs/typography.md`)
 - **React Compiler** (native Rust via `oxc-transform-react`) - Automatic memoization via `@acusti/vite-plugin-react-compiler` (not `@vitejs/plugin-react`'s `react()`; see `docs/rust-react-compiler.md`)
 - **Biome 2.5.14** for linting and formatting with Ultracite integration
@@ -143,7 +143,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 ```
 app/
 ├── components/          # Reusable UI components
-│   ├── ui/             # Panda recipe wrappers: button, dialog, checkbox, badge, card, input, label, textarea, popover, select
+│   ├── ui/             # Panda recipe wrappers: button, dialog, badge, card, input, label, textarea, popover, select
 │   ├── form/           # Field, FormError, FormActionResult types, fetcher status → StatusButton helpers
 │   ├── deferred/       # Await / Items / Paginated / Transition (Suspense + Await + ViewTransition)
 │   ├── image/          # Progressive image primitive (moved from features/image)
@@ -881,7 +881,7 @@ toggleOptimistic({ type: 'toggle' });
 
 ### Lazy Loading with React.lazy()
 
-Heavy chart UI is code-split using `React.lazy()` and `Suspense` via `LazyMoneyTimeline` → `money-timeline.tsx` (`@tanstack/charts`; no `.client` suffix):
+Heavy chart UI is code-split using `React.lazy()` and `Suspense` via `LazyMoneyTimeline` → `money-timeline.tsx` (`@chartlite/react`; no `.client` suffix):
 
 ```tsx
 const MoneyTimelineChart = lazy(() => import("./money-timeline"));
@@ -1021,6 +1021,8 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run db:seed:remote` – Seed remote D1 via HTTP API
 - `bun run db:studio:local` – Drizzle Studio against local Miniflare SQLite
 - `bun run db:studio:remote` – Drizzle Studio against remote D1 (`d1-http`)
+- `bun run dedupe` – Collapse removable lockfile duplicates (`bun dedupe`)
+- `bun run dedupe:check` – Fail if the lockfile still has removable duplicates
 - `bun run fix` – Auto-fix issues with Ultracite (format + lint)
 - `bun run check` – Run Ultracite checks (no fix)
 - `bun run doctor` – Run Ultracite doctor
@@ -1043,17 +1045,19 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 This project uses **Husky** with **lint-staged** for automated pre-commit checks:
 
 - **Pre-commit hook** (`bunx lint-staged`) runs automatically before each commit
-- **lint-staged** runs Ultracite, react-doctor, typecheck, tests, and fallow on staged files
+- **lint-staged** runs Ultracite, react-doctor, typecheck, tests, fallow, and `bun dedupe` when `package.json` / `bun.lock` are staged
 - **Automatic formatting** with Ultracite on staged files
 - **Commit blocking** if any checks fail
+- **CI** runs `bun run dedupe:check` so removable lockfile duplicates fail the Quality job (#497)
 
 The pre-commit hook ensures code quality by:
 
 1. Running `bun fix` (Ultracite) on staged files via lint-staged
-2. Running `react-doctor --staged` on JS/TS files
-3. Running `bun typecheck` and `bun test` on TypeScript files
-4. Running `fallow dead-code --file …` on staged TS/TSX files (boundaries + dead code)
-5. Blocking the commit if any step fails
+2. Running `bun run dedupe` when `package.json` or `bun.lock` is staged
+3. Running `react-doctor --staged` on JS/TS files
+4. Running `bun typecheck` and `bun test` on TypeScript files
+5. Running `fallow dead-code --file …` on staged TS/TSX files (boundaries + dead code)
+6. Blocking the commit if any step fails
 
 Configuration in `lint-staged.config.ts`.
 

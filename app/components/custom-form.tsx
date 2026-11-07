@@ -1,6 +1,7 @@
 import type React from "react";
 import { Form } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import useIsNavigating from "~/hooks/use-is-navigating";
 
 const CustomForm = ({

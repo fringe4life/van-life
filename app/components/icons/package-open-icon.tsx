@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { type IconProps, IconShell } from "./icon";
 
 /*
@@ -9,7 +9,7 @@ import { type IconProps, IconShell } from "./icon";
  * with five paths, which at 20px inside the 36px rail marker turns into a
  * smudge. Three shapes read here — a lid lying behind, the body, and the tape.
  *
- * The tape is the one brand detail in the glyph, in `warmAmber.400` — the same
+ * The tape is the one brand detail in the glyph, in `glyph.amber` — the same
  * amber as the wallet coin and the star glint — and it is a filled band rather
  * than a hairline so it survives the render size.
  *
@@ -18,7 +18,7 @@ import { type IconProps, IconShell } from "./icon";
  * page is still loading, which is the one thing an empty state must not imply.
  */
 
-const tapeClassName = css({ fill: "warmAmber.400", stroke: "none" });
+const tapeClassName = css({ fill: "glyph.amber", stroke: "none" });
 
 const PackageOpenIcon = ({
   className,

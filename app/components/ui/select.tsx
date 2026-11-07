@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { ChevronIcon } from "~/components/icons/chevron-icon";
 import { useSupportsBaseSelect } from "~/hooks/use-supports-base-select";
 

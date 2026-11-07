@@ -1,4 +1,4 @@
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { Image } from "~/components/image/image";
 import type { VanProps } from "~/features/vans/types";
 

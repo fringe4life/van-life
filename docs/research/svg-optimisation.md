@@ -38,6 +38,8 @@ Levers A–C landed (`hash: true`, 3-char conditions, `IconShell` presentation a
 | Longest class attribute | 611 | **136** | −78% (under-100 / lever D skipped) |
 | All 35 glyphs (React/Panda external) | 38,917 / 6,484 | **37,210 / 6,629** | raw −4% |
 
+Post-ship hygiene ([#496](https://github.com/fringe4life/van-life/issues/496)): glyph accents read `glyph.amber` / `glyph.sky` (not palette primitives); app CSS helpers import leaf `styled-system/css/{css,cx,…}` modules so clean builds no longer print `panda_call_unextractable` on generated `cva.js` / `sva.js`. Decision notes live in [`DESIGN.md`](../../DESIGN.md).
+
 ---
 
 ## 1. What shipped at the research baseline (measured)

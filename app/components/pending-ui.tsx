@@ -1,5 +1,6 @@
 import type { ElementType, ReactNode } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import useIsNavigating from "~/hooks/use-is-navigating";
 import type { Prettify } from "~/types";
 

@@ -1,5 +1,6 @@
 import { href, isRouteErrorResponse, useLocation } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { HTTP_STATUS } from "~/constants/http-constants";
 import { getRouteErrorMessage } from "~/utils/errors/get-route-error-message";
 import { OutcomeState } from "./outcome-state";

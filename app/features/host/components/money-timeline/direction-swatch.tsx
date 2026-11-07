@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import type { MoneyDirection } from "~/features/host/utils/money-timeline";
 
 /** Corner cut reads as a ledger slip, tying totals and legend to the bars. */

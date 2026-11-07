@@ -1,6 +1,6 @@
 import { ViewTransition } from "react";
 import { data, Outlet } from "react-router";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { SiteFooter } from "~/footer/components/site-footer";
 import { hasAuthContext } from "~/middleware/contexts/has-auth";
 import { hasAuthMiddleware } from "~/middleware/functions/has-auth-middleware";

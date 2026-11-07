@@ -1,4 +1,5 @@
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { cq, grid, wrap } from "styled-system/patterns";
 import { Card, CardContent } from "~/components/ui/card";
 import { bgSkeleton } from "~/styles";

@@ -1,4 +1,4 @@
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import type { VanProps } from "~/features/vans/types";
 
 function Details({ van }: VanProps) {

@@ -1,6 +1,7 @@
 import { type SubmitEventHandler, useId } from "react";
 import { Form } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { cq, grid } from "styled-system/patterns";
 import { Field } from "~/components/form/field";
 import { FormError } from "~/components/form/form-error";

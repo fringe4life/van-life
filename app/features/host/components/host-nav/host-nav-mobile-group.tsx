@@ -1,5 +1,5 @@
 import type { MouseEventHandler } from "react";
-import { cx } from "styled-system/css";
+import { cx } from "styled-system/css/cx";
 import { ItemList } from "~/components/item-list";
 import { PopoverItem, PopoverSection } from "~/components/ui/popover";
 import {

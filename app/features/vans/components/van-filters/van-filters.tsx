@@ -1,5 +1,6 @@
 import type { TransitionStartFunction } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { flex, grid, hstack } from "styled-system/patterns";
 import { ChevronIcon } from "~/components/icons/chevron-icon";
 import { FilterIcon } from "~/components/icons/filter-icon";
@@ -125,9 +126,8 @@ const summaryChevronClassName = css({
 });
 
 /*
- * Two captions side by side. Each group keeps one column of options until the
- * page gutter takes its 3rem at `md`, where the extra width becomes columns
- * inside the group instead of empty space at the end of a row.
+ * Two captions side by side. Each group keeps one column of options; a
+ * half-panel at 640–1023 is not wide enough for three type keys (#495).
  */
 const compactPanelClassName = cx(
   grid({ columns: 2, gap: "4" }),

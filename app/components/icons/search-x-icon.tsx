@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { type IconProps, IconShell } from "./icon";
 
 /*
@@ -12,14 +12,14 @@ import { type IconProps, IconShell } from "./icon";
  *
  * So the glass is empty and one amber slash crosses it. That is the whole
  * message — nothing under this lens — and it is a single clean stroke at any
- * size, in the same `warmAmber.400` as the wallet coin and the star glint.
+ * size, in the same `glyph.amber` as the wallet coin and the star glint.
  *
  * Static: the state comes from the filter panel, not from a reader action, and
  * a beat beside announced content is noise. The sweep this ticket once proposed
  * is gone.
  */
 
-const slashClassName = css({ stroke: "warmAmber.400" });
+const slashClassName = css({ stroke: "glyph.amber" });
 
 const SearchXIcon = ({ className, size, ...rest }: IconProps): ReactElement => (
   <IconShell className={className} size={size} {...rest}>

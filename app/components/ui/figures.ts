@@ -1,4 +1,4 @@
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 
 /**
  * Numeric typography for the two roles this app renders (#408, #476).

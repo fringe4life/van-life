@@ -5,7 +5,7 @@ import {
   redirect,
   useNavigation,
 } from "react-router";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { vstack } from "styled-system/patterns";
 import { CustomForm } from "~/components/custom-form";
 import { FormError } from "~/components/form/form-error";

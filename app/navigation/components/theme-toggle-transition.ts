@@ -1,4 +1,5 @@
-import { keyframes, viewTransition } from "styled-system/css";
+import { keyframes } from "styled-system/css/keyframes";
+import { viewTransition } from "styled-system/css/view-transition";
 
 /**
  *  "theme-circle-reveal": {

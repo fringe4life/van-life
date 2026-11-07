@@ -1,4 +1,5 @@
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 
 type ButtonSize = "default" | "icon" | "lg" | "sm";
 type ButtonVariant =
@@ -103,6 +104,9 @@ const buttonByVariant = {
       textDecoration: "underline",
       textUnderlineOffset: "4",
     },
+    // Page surface, not `primary` (~2.3:1 on the cream). Clear-all already
+    // opted out; the variant has to carry the pairing (#495).
+    color: "foreground",
   }),
   outline: css({
     backgroundColor: "card",

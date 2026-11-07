@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 
 const Input = ({ className, type, ...props }: ComponentProps<"input">) => (
   <input

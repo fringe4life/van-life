@@ -1,6 +1,7 @@
 import { useTransition } from "react";
 import { data } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { grid } from "styled-system/patterns";
 import { RouteErrorBoundary } from "~/components/route-error-boundary";
 import { SearchInput } from "~/components/search-input";

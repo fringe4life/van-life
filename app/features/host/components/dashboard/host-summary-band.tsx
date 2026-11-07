@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { cq } from "styled-system/patterns";
 import type { Maybe } from "~/types";
 import { HostIncomeSection } from "./host-income-section";

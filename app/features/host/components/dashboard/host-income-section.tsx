@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { ViewTransition } from "react";
 import { href } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { flex, grid, gridItem } from "styled-system/patterns";
 import { ArrowRightIcon } from "~/components/icons/arrow-right-icon";
 import { CustomLink } from "~/components/links/custom-link";

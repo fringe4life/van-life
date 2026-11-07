@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { cq, flex, grid, visuallyHidden, wrap } from "styled-system/patterns";
 import { LocalTime } from "~/components/local-time";
 import { scrollReveal } from "~/components/scroll-reveal-recipe";

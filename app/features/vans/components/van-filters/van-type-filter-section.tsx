@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { grid } from "styled-system/patterns";
 import { VanType } from "~/db/enums";
 import { VAN_TYPE_VALUES } from "~/features/vans/schema";
@@ -101,11 +102,11 @@ const VanTypeFilterSection = ({
       sectionClassName,
       grid({
         /*
-         * One column inside its half of the compact panel until the page gutter
-         * takes 3rem at `md`, where three types fit a row without the longest
-         * label ("rugged") crowding its key. The rail goes back to one column.
+         * One column in the compact half-panel and in the rail. Three columns
+         * at `md` assumed a 3rem gutter had created room; that gutter ate the
+         * 768–1023 band instead, and "rugged" plus its key crowded (~109px).
          */
-        columns: { base: 1, lg: 1, md: 3 },
+        columns: 1,
         gap: "0.5",
       })
     )}
