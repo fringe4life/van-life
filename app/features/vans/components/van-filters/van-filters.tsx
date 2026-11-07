@@ -158,8 +158,11 @@ const railBodyClassName = css({
 });
 
 const clearAllClassName = css({
+  // `&&` beats `variant="link"` `color: foreground` in stylesheet order.
+  "&&": {
+    color: { _hover: "foreground", base: "muted.foreground" },
+  },
   blockSize: "auto",
-  color: { _hover: "foreground", base: "muted.foreground" },
   /*
    * The option rows set a pointer because their `<input>` is hidden; the one
    * button in the same block has to match, or the row above it becomes the only

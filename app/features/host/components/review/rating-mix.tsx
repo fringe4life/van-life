@@ -49,6 +49,8 @@ const glyphField = css({
  * four-column grid whose Share column could shrink past the heading.
  */
 const tally = css({
+  // Gap lives on this inner grid, not the named container: `@rating-mix/lg`
+  // only matches descendants (#480 / Qodo).
   "@rating-mix/lg": { columnGap: "4" },
   columnGap: "2.5",
   display: "grid",
@@ -172,37 +174,39 @@ const RatingMix = ({ buckets }: RatingMixData): ReactNode => (
   >
     <section
       aria-label="Rating breakdown"
-      className={cx(cq({ name: "rating-mix" }), tally)}
+      className={cq({ name: "rating-mix" })}
     >
-      <div
-        className={cx(
-          tallyRow,
-          css({
-            borderBlockEnd: "1px solid",
-            borderColor: "border.subtle",
-            paddingBlockEnd: "2.5",
-          })
-        )}
-      >
-        <span className={tallyHeading}>Rating</span>
-        <span aria-hidden="true" />
-        <span className={cx(tallyHeading, numeric)}>Reviews</span>
-        <span className={cx(tallyHeading, numeric)}>Share</span>
-      </div>
+      <div className={tally}>
+        <div
+          className={cx(
+            tallyRow,
+            css({
+              borderBlockEnd: "1px solid",
+              borderColor: "border.subtle",
+              paddingBlockEnd: "2.5",
+            })
+          )}
+        >
+          <span className={tallyHeading}>Rating</span>
+          <span aria-hidden="true" />
+          <span className={cx(tallyHeading, numeric)}>Reviews</span>
+          <span className={cx(tallyHeading, numeric)}>Share</span>
+        </div>
 
-      {/* Ruled ledger rows on the page surface: a breakdown is not a panel. */}
-      <ul
-        className={css({
-          display: "contents",
-          listStyle: "none",
-          margin: "0",
-          padding: "0",
-        })}
-      >
-        {buckets.map((bucket) => (
-          <RatingRow bucket={bucket} key={bucket.rating} />
-        ))}
-      </ul>
+        {/* Ruled ledger rows on the page surface: a breakdown is not a panel. */}
+        <ul
+          className={css({
+            display: "contents",
+            listStyle: "none",
+            margin: "0",
+            padding: "0",
+          })}
+        >
+          {buckets.map((bucket) => (
+            <RatingRow bucket={bucket} key={bucket.rating} />
+          ))}
+        </ul>
+      </div>
     </section>
   </ViewTransition>
 );
