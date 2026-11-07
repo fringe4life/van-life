@@ -1,5 +1,7 @@
 import { type ComponentPropsWithoutRef, ViewTransition } from "react";
-import { css, cx, viewTransition } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
+import { viewTransition } from "styled-system/css/view-transition";
 import { cq, flex, grid } from "styled-system/patterns";
 import { createWebPSrcSet } from "~/components/image/create-optimized-src-set";
 import { Image } from "~/components/image/image";

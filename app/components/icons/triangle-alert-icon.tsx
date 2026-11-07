@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { type IconProps, IconShell } from "./icon";
 
 /*
@@ -13,13 +14,13 @@ import { type IconProps, IconShell } from "./icon";
  * The outline keeps the pack's rounded-corner triangle, because that shape is
  * doing real work: it is recognisable at 20px on a saturated field, where a
  * straight-cornered triangle looks like a warning label. The exclamation is
- * filled `warmAmber.400` rather than stroked, which is what keeps it legible
+ * filled `glyph.amber` rather than stroked, which is what keeps it legible
  * white-on-red, and it is one unit heavier than the frame so the mark reads
  * before the shape does.
  */
 
 const alertInk = css({
-  fill: "warmAmber.400",
+  fill: "glyph.amber",
   stroke: "none",
 });
 

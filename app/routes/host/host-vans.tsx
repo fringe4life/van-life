@@ -13,7 +13,8 @@ import {
   useFetcher,
   useLocation,
 } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { grid } from "styled-system/patterns";
 import { is, literal, looseObject } from "valibot";
 import { CollectionList } from "~/components/collection-list";

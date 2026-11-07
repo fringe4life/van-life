@@ -1,4 +1,4 @@
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { grid } from "styled-system/patterns";
 
 const gridMax = grid({

@@ -5,7 +5,7 @@ import {
   useState,
   ViewTransition,
 } from "react";
-import { viewTransition } from "styled-system/css";
+import { viewTransition } from "styled-system/css/view-transition";
 import {
   PaginationPageEpochContext,
   PaginationPagerClearContext,

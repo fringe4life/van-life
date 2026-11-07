@@ -1,5 +1,6 @@
 import { href } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { DeferredItems } from "~/components/deferred/items";
 import { HOST_VANS_EMPTY_MESSAGE } from "~/features/host/constants/constants";
 import { VanCard } from "~/features/vans/components/van-card";

@@ -1,4 +1,5 @@
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { MAX_RATING } from "~/features/host/constants/constants";
 
 type ReviewScore = 1 | 2 | 3 | 4 | 5;

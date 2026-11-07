@@ -20,7 +20,7 @@ and a11y contracts live in the owning module. Long evidence lives in `docs/`.
 | Glyphs | `app/components/icons` → [`docs/icon-packs.md`](./docs/icon-packs.md) |
 | Type evidence (stacks, weights, money) | [`docs/typography.md`](./docs/typography.md) |
 | Hand CSS outside Panda's object model | `app/app.css` — not a second token file |
-| Generated helpers | `styled-system/*` — import, never edit |
+| Generated helpers | `styled-system/*` — import, never edit. CSS helpers: leaf paths (`styled-system/css/css`, `…/cx`, …), not the `css/index` barrel — barrel `export *` of `cva`/`sva` trips `panda_call_unextractable` under `@pandacss/vite` `transform: true` ([#496](https://github.com/fringe4life/van-life/issues/496), [dollar-holler#283](https://github.com/fringe4life/dollar-holler/issues/283)) |
 
 ## Colour
 
@@ -33,6 +33,9 @@ Consume semantic roles from `theme/semantic-tokens.ts`. Primitives in
 - Availability (`status.*`), van type (`type.*`), and action availability are
   three families — a visual change in one must not redefine another.
 - Orange is *earned*: action, route, rating, or deliberate emphasis.
+- Glyph accents: `glyph.amber` (sun, star glint, wallet coin, van beam, package
+  tape, search slash, alert mark) and `glyph.sky` (moon, monitor). Money marks
+  stay on `chart.inflow` / `chart.outflow` via [`money-ink.ts`](./app/components/icons/money-ink.ts).
 
 Prefer an existing role over a new token; prefer a token over a raw value. A raw
 value is justified only for a real layout constraint, a runtime custom property,

@@ -4,7 +4,9 @@ import {
   type TransitionStartFunction,
   ViewTransition,
 } from "react";
-import { css, cx, viewTransition } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
+import { viewTransition } from "styled-system/css/view-transition";
 import { flex, grid } from "styled-system/patterns";
 import { ItemList } from "~/components/item-list";
 import { Button } from "~/components/ui/button";

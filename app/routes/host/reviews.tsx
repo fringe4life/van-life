@@ -1,6 +1,7 @@
 import { ViewTransition } from "react";
 import { data } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { flex, grid } from "styled-system/patterns";
 import { DeferredPaginated } from "~/components/deferred/paginated";
 import { PendingUI } from "~/components/pending-ui";

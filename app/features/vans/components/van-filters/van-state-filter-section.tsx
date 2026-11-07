@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { grid } from "styled-system/patterns";
 import type { Prettify } from "~/types";
 import { FilterOption, type FilterTone } from "./filter-option";
@@ -89,11 +90,10 @@ const VanStateFilterSection = ({
       sectionClassName,
       grid({
         /*
-         * One column until `md`: "Exclude in repair" needs ~138px with its key,
-         * which a half-width column only affords once the page gutter has taken
-         * its 3rem.
+         * One column in the compact half-panel and in the rail. Two columns at
+         * `md` assumed the 3rem gutter had created room (#495).
          */
-        columns: { base: 1, lg: 1, md: 2 },
+        columns: 1,
         gap: "0.5",
       })
     )}

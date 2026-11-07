@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { flex, visuallyHidden } from "styled-system/patterns";
 import { StarGlyph } from "~/components/icons/star-icon";
 import type { ReviewModel } from "~/db/client.server";
@@ -33,6 +34,7 @@ const Star = ({ rating, starIndex }: StarProps): ReactNode => {
       className={css({
         blockSize: "var(--star-size)",
         inlineSize: "var(--star-size)",
+        overflow: "hidden",
         position: "relative",
       })}
     >

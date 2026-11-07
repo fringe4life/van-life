@@ -4,7 +4,8 @@ import {
   startTransition as startReactTransition,
   type TransitionStartFunction,
 } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { square } from "styled-system/patterns";
 import type { IconComponent } from "~/components/icons/icon";
 import {

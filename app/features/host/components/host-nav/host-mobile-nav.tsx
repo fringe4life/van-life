@@ -82,7 +82,7 @@ const HostMobileNav = (): ReactElement => {
   }, []);
 
   return (
-    <nav aria-label="Host navigation" className={hostNavMobileClassName}>
+    <nav aria-label="Account sections" className={hostNavMobileClassName}>
       <div className={hostNavMobileBarClassName}>
         <HostNavLink item={currentItem} />
         <button

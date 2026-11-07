@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { ViewTransition } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { money } from "~/components/ui/figures";
 import { chromeViewTransitionName } from "~/components/view-transition-names";
 import { viewTransitionShare } from "~/components/view-transition-share";

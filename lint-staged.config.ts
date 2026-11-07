@@ -32,6 +32,15 @@ const runFallowDeadCode = (files: readonly string[]): void => {
 };
 
 export default {
+  // `dedupe` rewrites bun.lock when ranges already allow collapsing versions.
+  // lint-staged only re-stages files that were already in the index, so when
+  // only package.json is staged the lockfile rewrite would miss the commit
+  // (#497). Stage it ourselves.
+  "{package.json,bun.lock}": () => {
+    runCommand("bun", ["run", "dedupe"]);
+    runCommand("git", ["add", "bun.lock"]);
+    return [];
+  },
   "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": () => "bun fix",
   "**/*.{js,jsx,ts,tsx}": () =>
     "bunx react-doctor --staged --blocking warning --no-score -y",

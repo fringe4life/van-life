@@ -1,6 +1,8 @@
 import type { ComponentProps } from "react";
 
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+
+import { cx } from "styled-system/css/cx";
 
 const Card = ({ className, ...props }: ComponentProps<"div">) => (
   <div

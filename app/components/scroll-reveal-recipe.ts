@@ -1,4 +1,6 @@
-import { css, cx, keyframes } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
+import { keyframes } from "styled-system/css/keyframes";
 
 /**
  * Scroll-linked keyframes deliberately include a visible middle plateau. The

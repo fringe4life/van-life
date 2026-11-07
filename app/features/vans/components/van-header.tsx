@@ -1,5 +1,5 @@
 import { type ComponentPropsWithoutRef, ViewTransition } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { chromeViewTransitionName } from "~/components/view-transition-names";
 import { viewTransitionShare } from "~/components/view-transition-share";
 

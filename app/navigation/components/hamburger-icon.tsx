@@ -1,4 +1,4 @@
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 
 /*
  * Biome 2.6+ CSS-in-JS parse rejects `var(--token)` string literals inside

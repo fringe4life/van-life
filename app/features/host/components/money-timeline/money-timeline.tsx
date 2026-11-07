@@ -1,53 +1,48 @@
 /**
- * TanStack Charts money timeline. Use `LazyMoneyTimeline` from
- * `./lazy-money-timeline` so `@tanstack/charts` is code-split via React.lazy().
+ * Chartlite money timeline. Use `LazyMoneyTimeline` from
+ * `./lazy-money-timeline` so `@chartlite/react` is code-split via React.lazy().
+ *
+ * Spike for #504: ComboChart (grouped inflow/outflow bars + cumulative line).
+ * Chartlite does not stack combo bars, so diverging series sit side-by-side
+ * rather than TanStack’s same-band stack.
  */
 // react-doctor-disable-next-line react-doctor/prefer-dynamic-import
-import { barY, defineChart, dot, lineY } from "@tanstack/charts";
-import { Chart } from "@tanstack/charts/react";
-import { scaleBand } from "@tanstack/charts/scales/band";
-import { scaleLinear } from "@tanstack/charts/scales/linear";
-import { scaleOrdinal } from "@tanstack/charts/scales/ordinal";
+import { ComboChart } from "@chartlite/react";
 import type { ReactNode } from "react";
-import { useMemo, ViewTransition } from "react";
-import { css, cx } from "styled-system/css";
+import { ViewTransition } from "react";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { flex } from "styled-system/patterns";
+import { tabularNums } from "~/components/ui/figures";
 import { chromeViewTransitionName } from "~/components/view-transition-names";
 import { viewTransitionPage } from "~/components/view-transition-share";
 import {
   formatAxisAmount,
-  type MoneyDirection,
   type MoneyTimelineBucket,
   type MoneyTimelineData,
 } from "~/features/host/utils/money-timeline";
 import { displayPrice } from "~/features/vans/utils/display-price";
 import {
-  ENDPOINT_FILL,
-  INFLOW_DIRECTION,
   INFLOW_FILL,
   LINE_FILL,
   moneyChartClassName,
-  OUTFLOW_DIRECTION,
   OUTFLOW_FILL,
   TIMELINE_CHART_HEIGHT_PX,
 } from "./chart-tokens";
 import { DirectionSwatch } from "./direction-swatch";
 
-const BAR_RADIUS_PX = 3;
-const ENDPOINT_RADIUS_PX = 4;
-const LINE_STROKE_WIDTH_PX = 2;
-const BAND_PADDING = 0.4;
+const SERIES_INFLOW = "inflow";
+const SERIES_OUTFLOW = "outflow";
+const SERIES_CUMULATIVE = "cumulative";
+const CUMULATIVE_SERIES_NAME = "Cumulative net";
 
-interface TimelineBarRow {
-  direction: MoneyDirection;
-  key: string;
-  period: string;
-  value: number;
-}
-
-interface TimelineLineRow {
+/** Row objects for Chartlite’s series-first format (open string index). */
+interface TimelineComboRow {
   cumulative: number;
-  period: string;
+  inflow: number;
+  outflow: number;
+  x: string;
+  [key: string]: number | string;
 }
 
 const currencyCaption = css({
@@ -61,18 +56,17 @@ const currencyCaption = css({
 });
 
 /**
- * Axis numerals follow the same rule as every other aligned figure: body face
- * with tabular figures (#449, #476). `@tanstack/charts` exposes `fontSize` and
- * `fontWeight` on `tickLabels` but neither a family nor `font-variant-numeric`,
- * so the ticks are reached through the rendered `<text>` instead. They stay on
- * the sans stack on purpose: the labels are `4k`, `−2k`, `0`, and money mono is
- * for currency amounts — an axis rendering `k` in a second face is the exact
- * mix the figure roles exist to prevent.
+ * Chartlite already sets `font-variant-numeric: tabular-nums` on the SVG root;
+ * keep the rule on the wrapper so our legend figures stay aligned with ticks
+ * (#449, #476). Sans face on purpose: axis labels are `4k` / `−2k`, not money
+ * mono currency amounts.
  */
-const plot = css({
-  "& text": { fontVariantNumeric: "tabular-nums" },
-  inlineSize: "full",
-});
+const plot = cx(
+  tabularNums,
+  css({
+    inlineSize: "full",
+  })
+);
 
 const legend = css({
   borderBlockStart: "1px solid",
@@ -96,99 +90,16 @@ const lineMark = css({
   inlineSize: "18px",
 });
 
-/**
- * Long-form bar rows (one per direction) stack implicitly, positive above zero
- * and negative below, so each period reads as received on top of sent. The
- * cumulative line sits on the same currency axis.
- */
-const createTimelineDefinition = (buckets: readonly MoneyTimelineBucket[]) => {
-  const barRows: TimelineBarRow[] = [];
-  const lineRows: TimelineLineRow[] = [];
-  const labelByPeriod = new Map<string, string>();
-  /** Month starts survive label thinning so the year rollover stays on the axis. */
-  const keepLabels: string[] = [];
-
-  for (const bucket of buckets) {
-    labelByPeriod.set(bucket.key, bucket.label);
-
-    if (bucket.key.endsWith("-01")) {
-      keepLabels.push(bucket.key);
-    }
-
-    if (bucket.inflow > 0) {
-      barRows.push({
-        direction: "in",
-        key: `${bucket.key}-in`,
-        period: bucket.key,
-        value: bucket.inflow,
-      });
-    }
-
-    if (bucket.outflow > 0) {
-      barRows.push({
-        direction: "out",
-        key: `${bucket.key}-out`,
-        period: bucket.key,
-        value: -bucket.outflow,
-      });
-    }
-
-    lineRows.push({ cumulative: bucket.cumulative, period: bucket.key });
-  }
-
-  const lastPoint = lineRows.at(-1);
-
-  return defineChart({
-    color: {
-      scale: scaleOrdinal(
-        [INFLOW_DIRECTION, OUTFLOW_DIRECTION],
-        [INFLOW_FILL, OUTFLOW_FILL]
-      ),
-    },
-
-    marks: [
-      barY(barRows, {
-        color: "direction",
-        key: "key",
-        radius: { end: BAR_RADIUS_PX },
-        x: "period",
-        y: "value",
-      }),
-      lineY(lineRows, {
-        stroke: LINE_FILL,
-        strokeWidth: LINE_STROKE_WIDTH_PX,
-        x: "period",
-        y: "cumulative",
-      }),
-      dot(lastPoint ? [lastPoint] : [], {
-        fill: ENDPOINT_FILL,
-        r: ENDPOINT_RADIUS_PX,
-        stroke: LINE_FILL,
-        strokeWidth: LINE_STROKE_WIDTH_PX,
-        x: "period",
-        y: "cumulative",
-      }),
-    ],
-    scales: {
-      x: {
-        axis: {
-          tickLabels: { thin: { keep: keepLabels } },
-          ticks: {
-            format: (value) =>
-              labelByPeriod.get(String(value)) ?? String(value),
-          },
-        },
-        scale: () => scaleBand<string>().padding(BAND_PADDING),
-      },
-      y: {
-        axis: { ticks: { format: formatAxisAmount } },
-        grid: true,
-        nice: true,
-        scale: scaleLinear,
-      },
-    },
-  });
-};
+const toComboRows = (
+  buckets: readonly MoneyTimelineBucket[]
+): TimelineComboRow[] =>
+  buckets.map((bucket) => ({
+    cumulative: bucket.cumulative,
+    inflow: bucket.inflow,
+    /** Negative so bars hang below zero beside the inflow column. */
+    outflow: bucket.outflow > 0 ? -bucket.outflow : 0,
+    x: bucket.key,
+  }));
 
 interface MoneyTimelineProps {
   data: MoneyTimelineData;
@@ -209,10 +120,28 @@ const MoneyTimelineComponent = ({
   );
   const ariaLabel = `${inflowLabel} and ${outflowLabel} by period from ${data.rangeLabel}, with cumulative net ending at ${displayPrice(closingNet)}. Largest single movement ${displayPrice(largestMovement)}.`;
 
-  const definition = useMemo(
-    () => createTimelineDefinition(data.buckets),
-    [data.buckets]
+  // React Compiler memoizes derived values — no manual useMemo/useCallback.
+  const labelsByPeriod = new Map(
+    data.buckets.map((bucket) => [bucket.key, bucket.label] as const)
   );
+  const formatPeriodTick = (value: string | number) =>
+    labelsByPeriod.get(String(value)) ?? String(value);
+  const comboData = {
+    data: toComboRows(data.buckets),
+    series: [
+      { dataKey: SERIES_INFLOW, name: inflowLabel, type: "bar" as const },
+      { dataKey: SERIES_OUTFLOW, name: outflowLabel, type: "bar" as const },
+      {
+        dataKey: SERIES_CUMULATIVE,
+        name: CUMULATIVE_SERIES_NAME,
+        type: "line" as const,
+      },
+    ],
+  };
+
+  if (data.buckets.length === 0) {
+    return null;
+  }
 
   return (
     <ViewTransition
@@ -225,10 +154,17 @@ const MoneyTimelineComponent = ({
         {/* Inline size only: the scene's own height sizes this box, so the grid
             row grows to the chart instead of clipping it into the sort row. */}
         <div className={plot}>
-          <Chart
-            ariaLabel={ariaLabel}
-            definition={definition}
+          <ComboChart
+            aria-label={ariaLabel}
+            colors={[INFLOW_FILL, OUTFLOW_FILL, LINE_FILL]}
+            cssVars
+            curve="linear"
+            data={comboData}
             height={TIMELINE_CHART_HEIGHT_PX}
+            legend={false}
+            showPoints={false}
+            valueFormatter={formatAxisAmount}
+            xFormatter={formatPeriodTick}
           />
         </div>
 
@@ -253,7 +189,7 @@ const MoneyTimelineComponent = ({
           </span>
           <span className={legendItem}>
             <span aria-hidden="true" className={lineMark} />
-            Cumulative net
+            {CUMULATIVE_SERIES_NAME}
           </span>
         </div>
       </div>

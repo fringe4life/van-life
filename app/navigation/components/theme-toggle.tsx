@@ -1,7 +1,8 @@
 import type { ChangeEventHandler } from "react";
 import { addTransitionType, startTransition } from "react";
 import { href, useFetcher, useRouteLoaderData } from "react-router";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { hstack, visuallyHidden } from "styled-system/patterns";
 import type { IconComponent } from "~/components/icons/icon";
 import { MonitorIcon } from "~/components/icons/monitor-icon";

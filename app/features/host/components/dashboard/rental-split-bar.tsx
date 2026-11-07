@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { flex } from "styled-system/patterns";
 import { money } from "~/components/ui/figures";
 import { displayPrice } from "~/features/vans/utils/display-price";
@@ -116,7 +117,7 @@ const RentalSplitBar = ({
       <div className={captions}>
         <p className={cx(caption, earnedCaption)}>
           <span className={captionAmount}>{toSignedAmount(earnedAsHost)}</span>{" "}
-          <span>earned as host</span>
+          <span>earned as owner</span>
         </p>
         <p className={cx(caption, paidCaption)}>
           <span className={captionAmount}>{displayPrice(paidAsRenter)}</span>{" "}

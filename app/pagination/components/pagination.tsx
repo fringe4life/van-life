@@ -3,7 +3,8 @@ import {
   type TransitionStartFunction,
   ViewTransition,
 } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { hstack } from "styled-system/patterns";
 import { PaginationControl } from "~/pagination/components/pagination-control";
 import { PaginationLimitControl } from "~/pagination/components/pagination-limit-control";

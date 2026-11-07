@@ -1,5 +1,5 @@
 import { ViewTransition } from "react";
-import { viewTransition } from "styled-system/css";
+import { viewTransition } from "styled-system/css/view-transition";
 import type { Children, Prettify } from "~/types";
 
 type DeferredTransitionProps = Prettify<

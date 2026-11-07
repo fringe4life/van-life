@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { type IconProps, IconShell } from "./icon";
 
 /*
@@ -10,7 +10,7 @@ import { type IconProps, IconShell } from "./icon";
  *   beam     springSoft glow blooming
  *
  * Only the moving parts take hue: the wheels and rays go `primary`, the beam
- * goes `warmAmber.400`, and every static stroke stays `currentColor`.
+ * goes `glyph.amber`, and every static stroke stays `currentColor`.
  *
  * Reduced motion for this glyph:
  *
@@ -102,7 +102,7 @@ const vanBeam = css({
     animationTimingFunction: "springSoft",
     opacity: 0.6,
   },
-  fill: "warmAmber.400",
+  fill: "glyph.amber",
   opacity: 0,
   transformBox: "fill-box",
   transformOrigin: "left center",

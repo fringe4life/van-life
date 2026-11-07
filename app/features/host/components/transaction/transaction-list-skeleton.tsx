@@ -1,4 +1,5 @@
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { TransactionSkeleton } from "~/features/host/components/transaction/transaction-skeleton";
 import { PaginatedItemsSkeleton } from "~/pagination/components/paginated-items-skeleton";
 import { gridMax } from "~/styles";

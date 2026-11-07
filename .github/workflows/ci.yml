@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Lockfile dedupe check
+        run: bun run dedupe:check
+
       - name: Ultracite check
         run: bun run check
 

@@ -1,4 +1,5 @@
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { Transaction } from "./transaction";
 import { transactionDetailText } from "./transaction-recipe";
 import type { RentalTransactionProps } from "./transaction-types";

@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { type IconProps, IconShell } from "./icon";
 
 /*

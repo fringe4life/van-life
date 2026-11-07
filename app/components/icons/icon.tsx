@@ -1,5 +1,6 @@
 import type { ComponentType, ReactElement, ReactNode, SVGProps } from "react";
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 
 /**
  * Shared contract for the custom SVG set. Replaces `LucideIcon`.
@@ -7,9 +8,9 @@ import { css, cx } from "styled-system/css";
  * Glyphs are 24x24, stroke 1.6, `currentColor` at rest. Sizing is owned by the
  * caller through `size` or `className`, never by the glyph.
  *
- * Presentation defaults live in CSS (#466 C) so every instance drops five
- * attributes. Override via a class (e.g. status glyphs at stroke 2) — CSS beats
- * SVG presentation attributes, so a `strokeWidth` prop alone would not win.
+ * Stroke defaults live in CSS (#466 C) so a class (e.g. status glyphs at
+ * stroke 2) beats a presentation attribute. `fill` stays an attribute: a
+ * caller `fill` class must win, or the rating rail cannot paint (#506).
  */
 interface IconProps
   extends Omit<SVGProps<SVGSVGElement>, "fill" | "stroke" | "viewBox"> {
@@ -25,7 +26,6 @@ interface IconShellProps extends IconProps {
 
 const iconRoot = css({
   display: "block",
-  fill: "none",
   flexShrink: "0",
   overflow: "visible",
   stroke: "currentColor",
@@ -45,6 +45,7 @@ const IconShell = ({
   <svg
     aria-hidden={title ? undefined : "true"}
     className={cx(iconRoot, className)}
+    fill="none"
     height={size}
     role={title ? "img" : undefined}
     viewBox="0 0 24 24"

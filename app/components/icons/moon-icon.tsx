@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { type IconProps, IconShell } from "./icon";
 
 /*
@@ -15,12 +15,12 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const moonCrescent = css({
-  _dark: { color: "warmSky.400", fillOpacity: 0.24 },
+  _dark: { color: "glyph.sky", fillOpacity: 0.24 },
   _foc: {
     animationDuration: "slowest",
     animationName: "icon-glow",
     animationTimingFunction: "air",
-    color: "warmSky.400",
+    color: "glyph.sky",
     fillOpacity: 0.16,
   },
   _held: { fillOpacity: 0.28 },
@@ -28,7 +28,7 @@ const moonCrescent = css({
     animationDuration: "slowest",
     animationName: "icon-glow",
     animationTimingFunction: "air",
-    color: "warmSky.400",
+    color: "glyph.sky",
     fillOpacity: 0.16,
   },
   color: "inherit",
@@ -47,7 +47,7 @@ const moonCrescent = css({
  * phase offset.
  */
 const starLeading = css({
-  _dark: { color: "warmSky.400", opacity: 1 },
+  _dark: { color: "glyph.sky", opacity: 1 },
   _foc: { opacity: 1 },
   _held: {
     animationDelay: "0s",
@@ -55,7 +55,7 @@ const starLeading = css({
     animationIterationCount: "infinite",
     animationName: "icon-twinkle",
     animationTimingFunction: "air",
-    color: "warmSky.400",
+    color: "glyph.sky",
     opacity: 1,
   },
   _hov: { opacity: 1 },
@@ -68,7 +68,7 @@ const starLeading = css({
 });
 
 const starTrailing = css({
-  _dark: { color: "warmSky.400", opacity: 1 },
+  _dark: { color: "glyph.sky", opacity: 1 },
   _foc: { opacity: 1 },
   _held: {
     animationDelay: "-2s",
@@ -76,7 +76,7 @@ const starTrailing = css({
     animationIterationCount: "infinite",
     animationName: "icon-twinkle",
     animationTimingFunction: "air",
-    color: "warmSky.400",
+    color: "glyph.sky",
     opacity: 1,
   },
   _hov: { opacity: 1 },

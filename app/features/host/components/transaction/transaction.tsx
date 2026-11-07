@@ -1,4 +1,5 @@
-import { css, cx } from "styled-system/css";
+import { css } from "styled-system/css/css";
+import { cx } from "styled-system/css/cx";
 import { cq, flex, grid, visuallyHidden } from "styled-system/patterns";
 import { scrollReveal } from "~/components/scroll-reveal-recipe";
 import { Card, CardContent } from "~/components/ui/card";

@@ -1,5 +1,5 @@
 import { ViewTransition } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { Badge } from "~/components/ui/badge";
 import { viewTransitionShare } from "~/components/view-transition-share";
 import { formatEnumLabel } from "~/features/vans/utils/format-enum";

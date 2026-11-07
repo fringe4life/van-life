@@ -32,6 +32,15 @@ export const semanticTokens = defineSemanticTokens({
       foreground: color("{colors.white}", "{colors.warmRose.950}"),
     },
     foreground: color("{colors.neutral.900}", "{colors.warmGray.50}"),
+    /**
+     * Glyph accents (#496). Primitives stay in `theme/tokens.ts`; icons read
+     * these roles only — amber for sun / star glint / coin / tape / slash /
+     * van beam / alert mark; sky for moon / monitor.
+     */
+    glyph: {
+      amber: color("{colors.warmAmber.400}"),
+      sky: color("{colors.warmSky.400}"),
+    },
     input: {
       background: color("{colors.neutral.200}", "{colors.warmGray.850}"),
       DEFAULT: color("{colors.neutral.600/80}", "{colors.warmGray.500}"),
@@ -120,7 +129,11 @@ export const semanticTokens = defineSemanticTokens({
     "padding-inline": {
       value: {
         base: "0.75rem",
-        md: "3rem",
+        // 3rem only once the filter rail exists. A `md`+`lg` pair is unsafe
+        // here: Panda emits `lg` then `md` in the token layer, so 1.5rem
+        // would win at 1280. Compact stays two columns until `lg`, so the
+        // 768–1023 gain stays in the catalog (#495).
+        lg: "3rem",
       },
     },
   },

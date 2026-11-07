@@ -1,4 +1,4 @@
-import { cx } from "styled-system/css";
+import { cx } from "styled-system/css/cx";
 import { CustomLink } from "~/components/links/custom-link";
 import { buttonVariants } from "~/components/ui/button-variants";
 import type {

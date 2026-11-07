@@ -128,9 +128,9 @@ const Host = ({ loaderData }: Route.ComponentProps) => {
 
   return (
     <PendingUI as="section">
-      <title>Host Dashboard | Van Life</title>
+      <title>Dashboard | Van Life</title>
       <meta
-        content="Your Van Life host dashboard - manage your vans, view income, and track rentals"
+        content="Your Van Life dashboard — manage your vans, view income, and track rentals"
         name="description"
       />
       <HostSummaryBand

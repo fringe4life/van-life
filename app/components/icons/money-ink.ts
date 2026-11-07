@@ -1,4 +1,4 @@
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 
 /*
  * Direction ink for the money glyphs (#439–#442).

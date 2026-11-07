@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { css } from "styled-system/css";
+import { css } from "styled-system/css/css";
 import { type IconProps, IconShell } from "./icon";
 
 /*
@@ -20,21 +20,21 @@ import { type IconProps, IconShell } from "./icon";
  */
 
 const sunRays = css({
-  _dark: { color: "warmAmber.400", scale: "1.06" },
+  _dark: { color: "glyph.amber", scale: "1.06" },
   _foc: {
     animationDuration: "slowest",
     animationName: "icon-shine",
     animationTimingFunction: "spring",
-    color: "warmAmber.400",
+    color: "glyph.amber",
   },
   _held: {
-    color: "warmAmber.400",
+    color: "glyph.amber",
   },
   _hov: {
     animationDuration: "slowest",
     animationName: "icon-shine",
     animationTimingFunction: "spring",
-    color: "warmAmber.400",
+    color: "glyph.amber",
   },
   color: "inherit",
   transformBox: "fill-box",
@@ -45,10 +45,10 @@ const sunRays = css({
 });
 
 const sunCore = css({
-  _dark: { color: "warmAmber.400", fillOpacity: 1 },
-  _foc: { color: "warmAmber.400", fillOpacity: 1 },
-  _held: { color: "warmAmber.400", fillOpacity: 1 },
-  _hov: { color: "warmAmber.400", fillOpacity: 1 },
+  _dark: { color: "glyph.amber", fillOpacity: 1 },
+  _foc: { color: "glyph.amber", fillOpacity: 1 },
+  _held: { color: "glyph.amber", fillOpacity: 1 },
+  _hov: { color: "glyph.amber", fillOpacity: 1 },
   color: "inherit",
   fill: "currentColor",
   fillOpacity: 0,
