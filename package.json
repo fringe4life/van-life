@@ -101,7 +101,7 @@
     "react-doctor": "0.9.22",
     "typescript": "7.0.2",
     "ultracite": "^8.1.1",
-    "vite": "8.3.5",
+    "vite": "8.3.6",
     "wrangler": "4.156.2"
   },
   "engines": {
