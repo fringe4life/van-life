@@ -53,7 +53,7 @@
     "zod": "4.6.7"
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "1.7.17",
+    "@better-auth/drizzle-adapter": "1.7.18",
     "@chartlite/core": "1.1.0",
     "@chartlite/react": "1.1.0",
     "@forge42/seo-tools": "1.4.5",
