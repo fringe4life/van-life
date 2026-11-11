@@ -1,9 +1,10 @@
 # Native Actions egress firewall (technical preview).
 # Docs: https://github.com/github-early-access/actions-native-egress-firewall
 #
-# Phase 1 (this file): mode: log — record outbound DNS/HTTP(S); do not deny.
-# Install/build jobs remain network-open until a follow-up sets mode: enforce
-# with an allowlist built from CI summaries/artifacts (issue #529).
+# Phase 2: mode: enforce — deny hosts outside `allow` (+ GitHub defaults).
+# Allowlist built from firewall-decisions artifacts on CI / Dependabot runs
+# after #535 (log mode). Defaults already cover github.com, codeload.github.com,
+# *actions.githubusercontent.com, *blob.core.windows.net.
 #
 # This file is repo-editable. .github/CODEOWNERS requires @fringe4life review
 # on changes. Technical preview has no org/enterprise egress ceiling yet —
@@ -11,5 +12,31 @@
 #
 # Jobs need permissions.contents: read so the runner can load this file.
 # Path is fixed: .github/egress-firewall.yaml (not under workflows/).
-mode: log
-allow: []
+mode: enforce
+allow:
+  # Package registries / language tooling
+  - registry.npmjs.org
+  - pypi.org
+  - files.pythonhosted.org
+
+  # GitHub APIs / assets (beyond defaults)
+  - api.github.com
+  - release-assets.githubusercontent.com
+  - pkg.github.com
+  - uploads.github.com
+  - copilot-proxy.githubusercontent.com
+
+  # Varlock + Bitwarden (Quality / Varlock jobs)
+  - ph.varlock.dev
+  - api.bitwarden.com
+  - identity.bitwarden.com
+
+  # Cloudflare (Workers / telemetry touched in Quality)
+  - sparrow.cloudflare.com
+  - workers.cloudflare.com
+
+  # React Doctor (summary + telemetry; Socket side-channel on some PRs)
+  - www.react.doctor
+  - api.axiom.co
+  - "*.ingest.us.sentry.io"
+  - firewall-api.socket.dev

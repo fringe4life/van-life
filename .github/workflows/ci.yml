@@ -36,6 +36,11 @@ jobs:
       - name: Lockfile dedupe check
         run: bun run dedupe:check
 
+      # Bare `bun audit` exits 0 even with printed vulns; --audit-level makes it fail.
+      # Floor is high until ultracite/react-doctor transitive moderate/low noise clears (#540).
+      - name: Dependency audit
+        run: bun run audit
+
       - name: Ultracite check
         run: bun run check
 

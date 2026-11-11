@@ -39,6 +39,8 @@ export default {
   "{package.json,bun.lock}": () => {
     runCommand("bun", ["run", "dedupe"]);
     runCommand("git", ["add", "bun.lock"]);
+    // Same floor as CI Quality (`bun run audit` → high+).
+    runCommand("bun", ["run", "audit"]);
     return [];
   },
   "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": () => "bun fix",
