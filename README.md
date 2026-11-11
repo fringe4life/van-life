@@ -1118,8 +1118,8 @@ Configuration in `lint-staged.config.ts`.
 - **CI** (`.github/workflows/ci.yml`) — least-privilege permissions:
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
-  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.14`; matches local CLI in `package.json`); self-contained, no Bun install
-  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.27.0` Action (audit + security CLI `version: 3.27.0`; local CLI is `fallow` 3.32.0 in `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`); `gate: new-only`
+  - **React Doctor** (PR only; `issues: write` for sticky summary; `review-comments` / `commit-status` off) — SHA-pinned `millionco/react-doctor@v2.4.0` Action (`version: 0.9.14`; local CLI in `package.json`); self-contained, no Bun install; job check is the gate (`blocking: warning`)
+  - **Fallow** (PR only; `contents: read` only — annotations, no PR comment / review / Check Run write) — SHA-pinned `fallow-rs/fallow@v3.41.0` Action (audit + security CLI `version: 3.27.0`; local CLI is `fallow` 3.32.0 in `package.json`); soft gate (`fail-on-issues: false`); `gate: new-only`
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability. [`.github/dependabot.yml`](.github/dependabot.yml) bumps `github-actions` (grouped) and `bun` daily after a **3-day** `cooldown` (same window as `bunfig.toml` `minimumReleaseAge`); security updates skip the wait
