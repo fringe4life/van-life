@@ -1,4 +1,4 @@
-import { type ChangeEvent, startTransition } from "react";
+import type { ChangeEvent } from "react";
 import { css } from "styled-system/css/css";
 import { cx } from "styled-system/css/cx";
 import type { Prettify } from "~/types";
@@ -189,9 +189,9 @@ const FilterOption = ({
   tone,
 }: FilterOptionProps) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    startTransition(() => {
-      onChange(event.currentTarget.checked);
-    });
+    // Transition ownership lives in useVanFilters (URL sync). Nested
+    // startTransition here raced optimistic/draft updates under rapid clicks.
+    onChange(event.currentTarget.checked);
   };
 
   return (

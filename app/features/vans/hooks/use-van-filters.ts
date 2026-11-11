@@ -1,21 +1,26 @@
-import { defaultRateLimit, useQueryStates } from "nuqs";
+import { useQueryStates } from "nuqs";
 import {
   startTransition as startReactTransition,
   type TransitionStartFunction,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
 } from "react";
 import type { VanType } from "~/db/enums";
 import {
   VAN_STATE_FILTERS,
   type VanStateFilterKey,
 } from "~/features/vans/components/van-filters/van-state-filter-config";
-import { useOptimisticBooleanFilter } from "~/features/vans/hooks/use-optimistic-boolean-filter";
-import { useOptimisticTypesFilter } from "~/features/vans/hooks/use-optimistic-types-filter";
+import {
+  filterStateKey,
+  planUrlDraftSync,
+  type VanFiltersDraftAction,
+  vanFiltersDraftReducer,
+} from "~/features/vans/hooks/van-filters-draft-reducer";
 import { vansFilterUrlParsers } from "~/features/vans/parsers";
-import { vanType } from "~/features/vans/schema";
 import {
   activeFilterCount,
-  getLimitUrlUpdates,
-  isRemovingFilter,
   snapshotFilterState,
   type VanFilterUrlState,
 } from "~/features/vans/utils/van-filter-url";
@@ -31,114 +36,91 @@ const useVanFilters = (
     startTransition,
   });
 
-  const { types, excludeInRepair, onlyOnSale } = urlState;
-  const validTypes = vanType.parseMany(types);
+  const committed = snapshotFilterState(urlState);
+  const committedKey = filterStateKey(committed);
 
-  const [optimisticTypes, toggleOptimisticType, resetOptimisticTypes] =
-    useOptimisticTypesFilter(validTypes);
-  const [
-    optimisticExcludeInRepair,
-    toggleOptimisticExcludeInRepair,
-    resetOptimisticExcludeInRepair,
-  ] = useOptimisticBooleanFilter(excludeInRepair ?? false);
-  const [
-    optimisticOnlyOnSale,
-    toggleOptimisticOnlyOnSale,
-    resetOptimisticOnlyOnSale,
-  ] = useOptimisticBooleanFilter(onlyOnSale ?? false);
+  const [draft, dispatch] = useReducer(vanFiltersDraftReducer, committed);
+  const draftKey = filterStateKey(draft);
+  const draftRef = useRef(draft);
+  useEffect(() => {
+    draftRef.current = draft;
+  }, [draft]);
 
-  const optimisticByKey = {
-    excludeInRepair: optimisticExcludeInRepair,
-    onlyOnSale: optimisticOnlyOnSale,
-  } as const;
+  const [seenUrlKey, setSeenUrlKey] = useState(committedKey);
+  const [authoredKeys, setAuthoredKeys] = useState(() => new Set<string>());
 
-  const committedByKey = {
-    excludeInRepair: excludeInRepair ?? false,
-    onlyOnSale: onlyOnSale ?? false,
-  } as const;
+  // Sync URL → draft during render (React 19). Authored keys skip hydrate so
+  // intermediate navigations from rapid clicks do not wipe later draft facets.
+  const syncPlan = planUrlDraftSync({
+    authoredKeys,
+    committedKey,
+    draftKey,
+    seenUrlKey,
+  });
+  if (syncPlan.kind === "catchUp") {
+    setSeenUrlKey(syncPlan.seenUrlKey);
+    if (authoredKeys.size > 0) {
+      setAuthoredKeys(new Set());
+    }
+  } else if (syncPlan.kind === "authoredCommit") {
+    setSeenUrlKey(syncPlan.seenUrlKey);
+  } else if (syncPlan.kind === "hydrate") {
+    setSeenUrlKey(syncPlan.seenUrlKey);
+    if (authoredKeys.size > 0) {
+      setAuthoredKeys(new Set());
+    }
+    dispatch({ state: committed, type: "hydrate" });
+  }
 
-  const toggleOptimisticByKey = {
-    excludeInRepair: toggleOptimisticExcludeInRepair,
-    onlyOnSale: toggleOptimisticOnlyOnSale,
-  } as const;
-
-  const getCurrentState = () => snapshotFilterState(urlState);
-
-  const commitChange = (
-    next: VanFilterUrlState,
-    urlPatch: Partial<
-      Pick<VanFilterUrlState, "types" | "excludeInRepair" | "onlyOnSale">
-    >,
-    optimisticUpdate: () => void
-  ) => {
-    const current = getCurrentState();
-    const removing = isRemovingFilter(current, next);
-
-    startTransition(async () => {
-      optimisticUpdate();
-      await setUrlState(
-        {
-          ...urlPatch,
-          cursor: DEFAULT_CURSOR,
-          direction: DEFAULT_DIRECTION,
-        },
-        { limitUrlUpdates: getLimitUrlUpdates(removing) }
-      );
+  const pushUrl = (next: VanFilterUrlState) => {
+    const key = filterStateKey(next);
+    setAuthoredKeys((prev) => {
+      if (prev.has(key)) {
+        return prev;
+      }
+      const nextKeys = new Set(prev);
+      nextKeys.add(key);
+      return nextKeys;
     });
+    startTransition(async () => {
+      await setUrlState({
+        ...next,
+        cursor: DEFAULT_CURSOR,
+        direction: DEFAULT_DIRECTION,
+      });
+    });
+  };
+
+  const applyDraftAction = (action: VanFiltersDraftAction) => {
+    const next = vanFiltersDraftReducer(draftRef.current, action);
+    draftRef.current = next;
+    dispatch(action);
+    pushUrl(next);
   };
 
   const toggleType = (type: VanType) => {
-    const current = getCurrentState();
-    const newTypes = current.types.includes(type)
-      ? current.types.filter((t) => t !== type)
-      : [...current.types, type];
-    const next: VanFilterUrlState = { ...current, types: newTypes };
-
-    commitChange(next, { types: next.types }, () => toggleOptimisticType(type));
+    applyDraftAction({ type: "toggleType", vanType: type });
   };
 
   const setStateFilter = (key: VanStateFilterKey, checked: boolean) => {
-    const current = getCurrentState();
-    const next: VanFilterUrlState = { ...current, [key]: checked };
-
-    commitChange(next, { [key]: checked }, () => toggleOptimisticByKey[key]());
+    applyDraftAction({ checked, key, type: "setState" });
   };
 
   const clearFilters = () => {
-    startTransition(async () => {
-      resetOptimisticTypes();
-      resetOptimisticExcludeInRepair();
-      resetOptimisticOnlyOnSale();
-      await setUrlState(
-        {
-          cursor: DEFAULT_CURSOR,
-          direction: DEFAULT_DIRECTION,
-          excludeInRepair: false,
-          onlyOnSale: false,
-          types: [],
-        },
-        { limitUrlUpdates: defaultRateLimit }
-      );
-    });
+    applyDraftAction({ type: "clear" });
   };
 
   const stateFacets = VAN_STATE_FILTERS.map(({ key, label }) => ({
-    checked: optimisticByKey[key],
-    isPending: optimisticByKey[key] !== committedByKey[key],
+    checked: draft[key],
+    isPending: draft[key] !== committed[key],
     key,
     label,
   }));
 
-  const badgeCount = activeFilterCount({
-    excludeInRepair: optimisticExcludeInRepair,
-    onlyOnSale: optimisticOnlyOnSale,
-    types: optimisticTypes,
-  });
-
   return {
-    badgeCount,
+    badgeCount: activeFilterCount(draft),
     clearFilters,
-    optimisticTypes,
+    optimisticTypes: draft.types,
     setStateFilter,
     stateFacets,
     toggleType,
