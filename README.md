@@ -1023,7 +1023,9 @@ Validated and typed via Varlock (`.env.schema` → `env.d.ts`); consumed in app 
 - `bun run db:studio:remote` – Drizzle Studio against remote D1 (`d1-http`)
 - `bun run dedupe` – Collapse removable lockfile duplicates (`bun dedupe`)
 - `bun run dedupe:check` – Fail if the lockfile still has removable duplicates
-- `bun run audit` – Fail on high+ advisories (`bun audit --audit-level=high`)
+- `bun run audit` – Prod tree low+ (`audit:prod`) then full tree high+ (`audit:all`)
+- `bun run audit:prod` – `bun audit --production --audit-level=low`
+- `bun run audit:all` – `bun audit --audit-level=high` (devDep transitive noise allowed below high)
 - `bun run fix` – Auto-fix issues with Ultracite (format + lint)
 - `bun run check` – Run Ultracite checks (no fix)
 - `bun run doctor` – Run Ultracite doctor
@@ -1117,7 +1119,7 @@ Configuration in `lint-staged.config.ts`.
 ### GitHub Actions
 
 - **CI** (`.github/workflows/ci.yml`) — least-privilege permissions:
-  - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, `dedupe:check`, `audit` (high+), Ultracite `check`, `typecheck`, `test`, build
+  - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, `dedupe:check`, `audit` (prod low+ / full high+), Ultracite `check`, `typecheck`, `test`, build
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
   - **React Doctor** (PR only; `issues: write` for sticky summary; `review-comments` / `commit-status` off) — SHA-pinned `millionco/react-doctor@v2.4.0` Action (`version: 0.9.14`; local CLI in `package.json`); self-contained, no Bun install; job check is the gate (`blocking: warning`)
   - **Fallow** (PR only; `contents: read` only — annotations, no PR comment / review / Check Run write) — SHA-pinned `fallow-rs/fallow@v3.41.0` Action (audit + security CLI `version: 3.27.0`; local CLI is `fallow` 3.32.0 in `package.json`); soft gate (`fail-on-issues: false`); `gate: new-only`

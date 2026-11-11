@@ -44,7 +44,7 @@ Settings rows are **not** proven by this file — confirm in the linked UI.
 | Selected / allowlisted actions | Actions → General → Actions permissions | Optional follow-up |
 | Egress firewall | `.github/egress-firewall.yaml` + `runs-on: ubuntu-24.04-firewall` | `mode: enforce` + allowlist (#529 follow-up) |
 | Shrink third-party write scopes | #531 | react-doctor: sticky comment only (`issues: write`); fallow: annotations only (`contents: read`) |
-| Lockfile / deps gates | CI Quality + lint-staged | `dedupe:check` (CI); mutating `dedupe` + `audit` (high+) on lockfile commits (#540) |
+| Lockfile / deps gates | CI Quality + lint-staged | `dedupe:check` (CI); mutating `dedupe` + `audit` (prod low+ / full high+) on lockfile commits (#540) |
 
 ## Egress firewall
 
