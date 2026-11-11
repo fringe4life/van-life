@@ -5,8 +5,8 @@
 This repo uses [workflow dependency lockfiles](https://docs.github.com/en/actions/concepts/security/workflow-dependency-lockfiles).
 
 - **File:** `actions.lock` (machine-generated — do not hand-edit)
-- **Policy:** Settings → Actions → [Policies](https://github.com/fringe4life/van-life/settings/actions/policies) → **Require Lockfile Policy** is **Active** for all workflows
-- **Effect:** a workflow that is not listed in `actions.lock` fails at startup (`startup_failure`), even if its `uses:` lines look fine
+- **Policy:** Settings → Actions → [Policies](https://github.com/fringe4life/van-life/settings/actions/policies) — create/enable **Require lockfile** for all workflows. **Confirm enforcement on that page** before assuming unlocked workflows are blocked (repo Settings are not verified by this file).
+- **Effect when Active:** a workflow that is not listed in `actions.lock` fails at startup (`startup_failure`), even if its `uses:` lines look fine
 
 Readable tags in YAML (`uses: owner/action@v1.2.3`) are expected. The lockfile pins the commit (including transitive nested actions).
 
@@ -36,9 +36,11 @@ Review the lockfile diff: a changed commit SHA means different code will run.
 
 ## Other hardening (not Policies)
 
+Settings rows are **not** proven by this file — confirm in the linked UI.
+
 | Control | Where | Status |
 | --- | --- | --- |
-| Default `GITHUB_TOKEN` read-only | Actions → General → Workflow permissions | On |
+| Default `GITHUB_TOKEN` read-only | Actions → General → Workflow permissions | Confirm in Settings (prefer Read) |
 | Selected / allowlisted actions | Actions → General → Actions permissions | Optional follow-up |
 | Egress firewall | follow-up #529 | Separate PR |
 | Shrink third-party write scopes | follow-up #531 | Separate PR |
