@@ -2,41 +2,46 @@
 # Docs: https://github.com/github-early-access/actions-native-egress-firewall
 #
 # Phase 2: mode: enforce — deny hosts outside `allow` (+ GitHub defaults).
-# Allowlist built from firewall-decisions artifacts on CI / Dependabot runs
-# after #535 (log mode). Defaults already cover github.com, codeload.github.com,
+# Allowlist derived from firewall-decisions-* artifacts after #535 (log) and
+# verified under enforce on this PR (e.g. CI run 42946327623): Quality,
+# React Doctor, Fallow. Defaults already cover github.com, codeload.github.com,
 # *actions.githubusercontent.com, *blob.core.windows.net.
 #
 # This file is repo-editable. .github/CODEOWNERS requires @fringe4life review
 # on changes. Technical preview has no org/enterprise egress ceiling yet —
-# review + branch protection is the repo-side control.
+# review + branch protection is the repo-side control (PR refs can still run
+# with a widened policy until merge; tracked separately).
 #
 # Jobs need permissions.contents: read so the runner can load this file.
 # Path is fixed: .github/egress-firewall.yaml (not under workflows/).
 mode: enforce
 allow:
-  # Package registries / language tooling
+  # Package registries / language tooling (Quality; CodeQL → PyPI)
   - registry.npmjs.org
   - pypi.org
   - files.pythonhosted.org
 
-  # GitHub APIs / assets (beyond defaults)
+  # GitHub APIs / assets beyond defaults (API + release assets on CI;
+  # pkg/uploads/copilot-proxy seen on master Varlock / tooling runs)
   - api.github.com
   - release-assets.githubusercontent.com
   - pkg.github.com
   - uploads.github.com
   - copilot-proxy.githubusercontent.com
 
-  # Varlock + Bitwarden (Quality / Varlock jobs)
+  # Varlock + Bitwarden (Quality ph.varlock.dev; Bitwarden on master Varlock)
   - ph.varlock.dev
   - api.bitwarden.com
   - identity.bitwarden.com
 
-  # Cloudflare (Workers / telemetry touched in Quality)
+  # Cloudflare (observed on Quality under enforce)
   - sparrow.cloudflare.com
   - workers.cloudflare.com
 
-  # React Doctor (summary + telemetry; Socket side-channel on some PRs)
+  # React Doctor (observed under enforce: www.react.doctor, Socket, Sentry ingest)
   - www.react.doctor
   - api.axiom.co
-  - "*.ingest.us.sentry.io"
   - firewall-api.socket.dev
+  # Concrete ingest host from firewall-decisions + wildcard for project-id rotation
+  - o4510226365743104.ingest.us.sentry.io
+  - "*.ingest.us.sentry.io"
