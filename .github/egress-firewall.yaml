@@ -1,0 +1,15 @@
+# Native Actions egress firewall (technical preview).
+# Docs: https://github.com/github-early-access/actions-native-egress-firewall
+#
+# Phase 1 (this file): mode: log — record outbound DNS/HTTP(S); do not deny.
+# Install/build jobs remain network-open until a follow-up sets mode: enforce
+# with an allowlist built from CI summaries/artifacts (issue #529).
+#
+# This file is repo-editable. .github/CODEOWNERS requires @fringe4life review
+# on changes. Technical preview has no org/enterprise egress ceiling yet —
+# review + branch protection is the repo-side control.
+#
+# Jobs need permissions.contents: read so the runner can load this file.
+# Path is fixed: .github/egress-firewall.yaml (not under workflows/).
+mode: log
+allow: []

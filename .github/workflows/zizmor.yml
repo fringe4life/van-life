@@ -14,7 +14,7 @@ permissions: {}
 jobs:
   zizmor:
     name: Zizmor
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-firewall
     cache-mode: read
     permissions:
       contents: read
