@@ -77,6 +77,8 @@ jobs:
           VARLOCK_ENV: development
           BITWARDEN_ACCESS_TOKEN: ${{ secrets.BITWARDEN_ACCESS_TOKEN }}
 
+  # Sticky PR summary only: issues:write. Job check covers gate (blocking).
+  # review-comments / commit-status off → no pull-requests or statuses write.
   react-doctor:
     name: React Doctor
     if: github.event_name == 'pull_request'
@@ -84,9 +86,7 @@ jobs:
     cache-mode: read
     permissions:
       contents: read
-      pull-requests: write
       issues: write
-      statuses: write
     steps:
       - name: Checkout
         uses: actions/checkout@v7.0.1
@@ -100,8 +100,12 @@ jobs:
           scope: changed
           blocking: warning
           version: "0.9.14"
+          comment: true
+          review-comments: false
+          commit-status: false
 
-  # Soft gate: rules mostly warn + fail-on-issues false until cleanup settles.
+  # Soft gate: annotations only (no PR comment / review / Check Run writes).
+  # fail-on-issues false until cleanup settles; Actions job status is the signal.
   fallow:
     name: Fallow
     if: github.event_name == 'pull_request'
@@ -109,8 +113,6 @@ jobs:
     cache-mode: read
     permissions:
       contents: read
-      pull-requests: write
-      checks: write
     steps:
       - name: Checkout
         uses: actions/checkout@v7.0.1
@@ -124,8 +126,9 @@ jobs:
           command: audit
           version: "3.27.0"
           score: true
-          comment: true
-          review-comments: true
+          comment: false
+          review-comments: false
+          annotations: true
           fail-on-issues: false
           gate: new-only
 
@@ -134,4 +137,7 @@ jobs:
         with:
           command: security
           version: "3.27.0"
+          comment: false
+          review-comments: false
+          annotations: true
           fail-on-issues: false

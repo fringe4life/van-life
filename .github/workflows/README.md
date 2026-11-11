@@ -43,7 +43,7 @@ Settings rows are **not** proven by this file — confirm in the linked UI.
 | Default `GITHUB_TOKEN` read-only | Actions → General → Workflow permissions | Confirm in Settings (prefer Read) |
 | Selected / allowlisted actions | Actions → General → Actions permissions | Optional follow-up |
 | Egress firewall | `.github/egress-firewall.yaml` + `runs-on: ubuntu-24.04-firewall` | Log mode first (#529); then `enforce` |
-| Shrink third-party write scopes | follow-up #531 | Separate PR |
+| Shrink third-party write scopes | #531 | react-doctor: sticky comment only (`issues: write`); fallow: annotations only (`contents: read`) |
 
 ## Egress firewall
 
