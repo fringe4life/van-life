@@ -5,7 +5,7 @@
 [![React Router](https://img.shields.io/badge/React%20Router-8.5.1-61DAFB?logo=react&logoColor=white)](https://reactrouter.com/)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-7.1.0--beta-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PandaCSS](https://img.shields.io/badge/PandaCSS-2.5.0-F6E05E?logoColor=black)](https://panda-css.com/)
 [![Better Auth](https://img.shields.io/badge/Better%20Auth-1.7.17-000000?logo=better-auth&logoColor=white)](https://better-auth.com/)
 [![nuqs](https://img.shields.io/badge/nuqs-2.10.2-000000?logo=nuqs&logoColor=white)](https://nuqs.47ng.com/)
@@ -91,7 +91,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 
 - **React 19.3** with stable Activity + `ViewTransition` for prerendering and morphs
 - **React Router 8.4.0** (file-based routing, SSR, nested host van detail routes, middleware)
-- **TypeScript 7.0.2** with strict configuration
+- **TypeScript 7.1.0-beta** with strict configuration
 - **PandaCSS 2.1.2** — tokens in `theme/`, patterns + static `css`/`cx` from `styled-system`; `define*` helpers from `@pandacss/dev/define`
 - **Native HTML** (`<dialog>`, `popover`, CSS Anchor, Invoker Commands, `<select>`) with local Panda recipe wrappers (button, badge, card, dialog, input, label, textarea, popover, select)
 - **Custom SVG glyph set** in `app/components/icons` — vendored `IconShell` components, one per glyph, animated with CSS on ancestor state only (no icon package, no icon font, no animation library)
@@ -123,7 +123,7 @@ A modern full-stack van rental platform built with React Router 8, showcasing ad
 - **react-doctor 0.9.14** - React diagnostics in CI, locally, lint-staged, and via Cursor post-edit hook (`.cursor/hooks/react-doctor.mjs`)
 - **fallow 3.32.0** - Code health, dead code, duplication, complexity, architecture boundaries (`.fallowrc.jsonc`)
 - **Husky 9.1.7** for Git hooks and pre-commit automation with lint-staged
-- **TypeScript 7.0.2** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
+- **TypeScript 7.1.0-beta** (native `tsc`; VS Code `js/ts.experimental.useTsgo` optional)
 - **@types/bun 1.4.2** — `bun:test` / `bun:sqlite` for `tsc` (`tsconfig` `types` includes `"bun"`)
 - **Bun** for fast package management and runtime
 
@@ -1098,7 +1098,7 @@ Configuration in `lint-staged.config.ts`.
 
 - **Biome 2.5.14** for linting and formatting with Ultracite integration
 - **Ultracite 7.12.0** - AI-friendly linting rules for maximum type safety and accessibility
-- **TypeScript 7.0.2** with strict configuration
+- **TypeScript 7.1.0-beta** with strict configuration
 - **Valibot 1.5.0** for runtime validation with regex support for slug validation
 - **Consistent code style:**
   - Tab indentation
@@ -1118,8 +1118,8 @@ Configuration in `lint-staged.config.ts`.
 - **CI** (`.github/workflows/ci.yml`) — least-privilege permissions:
   - **Quality** (`contents: read`) — `VARLOCK_ENV=test` loads `.env.test` (no Bitwarden); Bun install, Ultracite `check`, `typecheck`, `test`
   - **Varlock** (`contents: read`, `push` to `master` only) — `VARLOCK_ENV=development` loads `.env.bitwarden` + `BITWARDEN_ACCESS_TOKEN`
-  - **React Doctor** (PR only; `pull-requests` / `issues` / `statuses: write`) — SHA-pinned `millionco/react-doctor@v2.2.9` Action (`version: 0.9.14`; matches local CLI in `package.json`); self-contained, no Bun install
-  - **Fallow** (PR only; `pull-requests: write`, `checks: write`) — SHA-pinned `fallow-rs/fallow@v3.27.0` Action (audit + security CLI `version: 3.27.0`; local CLI is `fallow` 3.32.0 in `package.json`); audit + health score + PR summary/review comments + Check Run; security scan (soft gate, `fail-on-issues: false`); `gate: new-only`
+  - **React Doctor** (PR only; `issues: write` for sticky summary; `review-comments` / `commit-status` off) — SHA-pinned `millionco/react-doctor@v2.4.0` Action (`version: 0.9.14`; local CLI in `package.json`); self-contained, no Bun install; job check is the gate (`blocking: warning`)
+  - **Fallow** (PR only; `contents: read` only — annotations, no PR comment / review / Check Run write) — SHA-pinned `fallow-rs/fallow@v3.41.0` Action (audit + security CLI `version: 3.27.0`; local CLI is `fallow` 3.32.0 in `package.json`); soft gate (`fail-on-issues: false`); `gate: new-only`
 - **CodeQL** (`.github/workflows/codeql.yml`) — separate security scan on push/PR/schedule to `master`
 - **Secret:** set `BITWARDEN_ACCESS_TOKEN` via `gh secret set BITWARDEN_ACCESS_TOKEN` (Varlock job on `master` only)
 - **Pinned Actions:** third-party `uses:` pin full commit SHAs (version comment beside) to reduce supply-chain tag mutability. [`.github/dependabot.yml`](.github/dependabot.yml) bumps `github-actions` (grouped) and `bun` daily after a **3-day** `cooldown` (same window as `bunfig.toml` `minimumReleaseAge`); security updates skip the wait
