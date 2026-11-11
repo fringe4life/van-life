@@ -38,9 +38,22 @@ allow:
   - sparrow.cloudflare.com
   - workers.cloudflare.com
 
-  # React Doctor (observed under enforce: www.react.doctor, Socket, Sentry ingest)
+  # React Doctor telemetry (observed under enforce).
+  #
+  # Workaround: allow these hosts on the shared repo policy so every firewall
+  # job (Quality, Fallow, …) can reach them — wrong long-term; only React Doctor
+  # should. Native egress has one `.github/egress-firewall.yaml` per ref.
+  #
+  # Still required on Actions native egress firewall technical preview
+  # (`ubuntu-24.04-firewall` + file-based enforce). Drop / narrow when upstream
+  # ships per-job policy; re-verify Quality is denied Sentry and React Doctor
+  # still reaches ingest.
+  #
+  # @see https://github.com/github-early-access/actions-native-egress-firewall/issues/31 — open
+  # @see https://github.com/fringe4life/van-life/issues/543 — tracking
+  # Socket ideal: per-job declarations inside a central ceiling (job may narrow, never widen).
   - www.react.doctor
   - api.axiom.co
   - firewall-api.socket.dev
-  # Wildcard covers rotating o*.ingest.us.sentry.io project hosts (verified under enforce)
+  # Domain wildcard for rotating o*.ingest.us.sentry.io (not a pinned project host).
   - "*.ingest.us.sentry.io"
