@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test";
 import {
   EMPTY_FILTER_STATE,
   filterStateKey,
+  planUrlDraftSync,
   vanFiltersDraftReducer,
 } from "./van-filters-draft-reducer";
 
@@ -63,5 +64,52 @@ describe("vanFiltersDraftReducer", () => {
       vanFiltersDraftReducer(draft, { state: fromUrl, type: "hydrate" })
     ).toEqual(fromUrl);
     expect(filterStateKey(draft)).not.toBe(filterStateKey(fromUrl));
+  });
+});
+
+describe("planUrlDraftSync", () => {
+  const empty = filterStateKey(EMPTY_FILTER_STATE);
+  const simple = filterStateKey({
+    excludeInRepair: false,
+    onlyOnSale: false,
+    types: ["SIMPLE"],
+  });
+  const both = filterStateKey({
+    excludeInRepair: false,
+    onlyOnSale: false,
+    types: ["SIMPLE", "RUGGED"],
+  });
+
+  it("skips hydrate when an authored intermediate URL lands before the latest draft", () => {
+    expect(
+      planUrlDraftSync({
+        authoredKeys: new Set([simple, both]),
+        committedKey: simple,
+        draftKey: both,
+        seenUrlKey: empty,
+      })
+    ).toEqual({ kind: "authoredCommit", seenUrlKey: simple });
+  });
+
+  it("hydrates on foreign URL changes such as back/forward", () => {
+    expect(
+      planUrlDraftSync({
+        authoredKeys: new Set([both]),
+        committedKey: empty,
+        draftKey: both,
+        seenUrlKey: both,
+      })
+    ).toEqual({ kind: "hydrate", seenUrlKey: empty });
+  });
+
+  it("clears authored tracking once committed catches the draft", () => {
+    expect(
+      planUrlDraftSync({
+        authoredKeys: new Set([simple, both]),
+        committedKey: both,
+        draftKey: both,
+        seenUrlKey: simple,
+      })
+    ).toEqual({ kind: "catchUp", seenUrlKey: both });
   });
 });

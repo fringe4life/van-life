@@ -18,6 +18,44 @@ const EMPTY_FILTER_STATE: VanFilterUrlState = {
 const filterStateKey = (state: VanFilterUrlState): string =>
   JSON.stringify(state);
 
+interface UrlDraftSyncInput {
+  authoredKeys: ReadonlySet<string>;
+  committedKey: string;
+  draftKey: string;
+  seenUrlKey: string;
+}
+
+type UrlDraftSyncPlan =
+  | { kind: "noop" }
+  | { kind: "catchUp"; seenUrlKey: string }
+  | { kind: "authoredCommit"; seenUrlKey: string }
+  | { kind: "hydrate"; seenUrlKey: string };
+
+/**
+ * Decide URL→draft sync. Authored intermediate commits (rapid clicks) must not
+ * hydrate; only foreign URL changes (back/forward) do.
+ */
+const planUrlDraftSync = ({
+  authoredKeys,
+  committedKey,
+  draftKey,
+  seenUrlKey,
+}: UrlDraftSyncInput): UrlDraftSyncPlan => {
+  if (committedKey === draftKey) {
+    if (seenUrlKey === committedKey && authoredKeys.size === 0) {
+      return { kind: "noop" };
+    }
+    return { kind: "catchUp", seenUrlKey: committedKey };
+  }
+  if (committedKey === seenUrlKey) {
+    return { kind: "noop" };
+  }
+  if (authoredKeys.has(committedKey)) {
+    return { kind: "authoredCommit", seenUrlKey: committedKey };
+  }
+  return { kind: "hydrate", seenUrlKey: committedKey };
+};
+
 const vanFiltersDraftReducer = (
   state: VanFilterUrlState,
   action: VanFiltersDraftAction
@@ -43,5 +81,10 @@ const vanFiltersDraftReducer = (
   }
 };
 
-export type { VanFiltersDraftAction };
-export { EMPTY_FILTER_STATE, filterStateKey, vanFiltersDraftReducer };
+export type { UrlDraftSyncInput, UrlDraftSyncPlan, VanFiltersDraftAction };
+export {
+  EMPTY_FILTER_STATE,
+  filterStateKey,
+  planUrlDraftSync,
+  vanFiltersDraftReducer,
+};

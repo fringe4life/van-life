@@ -2,7 +2,9 @@ import { useQueryStates } from "nuqs";
 import {
   startTransition as startReactTransition,
   type TransitionStartFunction,
+  useEffect,
   useReducer,
+  useRef,
   useState,
 } from "react";
 import type { VanType } from "~/db/enums";
@@ -12,6 +14,8 @@ import {
 } from "~/features/vans/components/van-filters/van-state-filter-config";
 import {
   filterStateKey,
+  planUrlDraftSync,
+  type VanFiltersDraftAction,
   vanFiltersDraftReducer,
 } from "~/features/vans/hooks/van-filters-draft-reducer";
 import { vansFilterUrlParsers } from "~/features/vans/parsers";
@@ -37,21 +41,47 @@ const useVanFilters = (
 
   const [draft, dispatch] = useReducer(vanFiltersDraftReducer, committed);
   const draftKey = filterStateKey(draft);
-  const [seenUrlKey, setSeenUrlKey] = useState(committedKey);
+  const draftRef = useRef(draft);
+  useEffect(() => {
+    draftRef.current = draft;
+  }, [draft]);
 
-  // Sync URL → draft during render (no refs — React Compiler).
-  // Our own clicks update draft first; committed lags until navigation lands.
-  // Back/forward changes committed away from draft → hydrate.
-  if (committedKey === draftKey) {
-    if (seenUrlKey !== committedKey) {
-      setSeenUrlKey(committedKey);
+  const [seenUrlKey, setSeenUrlKey] = useState(committedKey);
+  const [authoredKeys, setAuthoredKeys] = useState(() => new Set<string>());
+
+  // Sync URL → draft during render (React 19). Authored keys skip hydrate so
+  // intermediate navigations from rapid clicks do not wipe later draft facets.
+  const syncPlan = planUrlDraftSync({
+    authoredKeys,
+    committedKey,
+    draftKey,
+    seenUrlKey,
+  });
+  if (syncPlan.kind === "catchUp") {
+    setSeenUrlKey(syncPlan.seenUrlKey);
+    if (authoredKeys.size > 0) {
+      setAuthoredKeys(new Set());
     }
-  } else if (committedKey !== seenUrlKey) {
-    setSeenUrlKey(committedKey);
+  } else if (syncPlan.kind === "authoredCommit") {
+    setSeenUrlKey(syncPlan.seenUrlKey);
+  } else if (syncPlan.kind === "hydrate") {
+    setSeenUrlKey(syncPlan.seenUrlKey);
+    if (authoredKeys.size > 0) {
+      setAuthoredKeys(new Set());
+    }
     dispatch({ state: committed, type: "hydrate" });
   }
 
   const pushUrl = (next: VanFilterUrlState) => {
+    const key = filterStateKey(next);
+    setAuthoredKeys((prev) => {
+      if (prev.has(key)) {
+        return prev;
+      }
+      const nextKeys = new Set(prev);
+      nextKeys.add(key);
+      return nextKeys;
+    });
     startTransition(async () => {
       await setUrlState({
         ...next,
@@ -61,25 +91,23 @@ const useVanFilters = (
     });
   };
 
-  const toggleType = (type: VanType) => {
-    const action = { type: "toggleType" as const, vanType: type };
-    const next = vanFiltersDraftReducer(draft, action);
+  const applyDraftAction = (action: VanFiltersDraftAction) => {
+    const next = vanFiltersDraftReducer(draftRef.current, action);
+    draftRef.current = next;
     dispatch(action);
     pushUrl(next);
+  };
+
+  const toggleType = (type: VanType) => {
+    applyDraftAction({ type: "toggleType", vanType: type });
   };
 
   const setStateFilter = (key: VanStateFilterKey, checked: boolean) => {
-    const action = { checked, key, type: "setState" as const };
-    const next = vanFiltersDraftReducer(draft, action);
-    dispatch(action);
-    pushUrl(next);
+    applyDraftAction({ checked, key, type: "setState" });
   };
 
   const clearFilters = () => {
-    const action = { type: "clear" as const };
-    const next = vanFiltersDraftReducer(draft, action);
-    dispatch(action);
-    pushUrl(next);
+    applyDraftAction({ type: "clear" });
   };
 
   const stateFacets = VAN_STATE_FILTERS.map(({ key, label }) => ({
