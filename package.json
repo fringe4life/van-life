@@ -5,6 +5,9 @@
   "scripts": {
     "analyze": "VITE_ANALYZE=true varlock run -- react-router build",
     "assert:panda-cva": "bun run scripts/assert-no-panda-cva-runtime.ts",
+    "audit": "bun run audit:prod && bun run audit:all",
+    "audit:all": "bun audit --audit-level=high",
+    "audit:prod": "bun audit --production --audit-level=low",
     "build": "varlock run -- react-router build",
     "check": "ultracite check",
     "db:generate": "drizzle-kit generate",
