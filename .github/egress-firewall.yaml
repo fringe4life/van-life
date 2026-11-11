@@ -42,6 +42,5 @@ allow:
   - www.react.doctor
   - api.axiom.co
   - firewall-api.socket.dev
-  # Concrete ingest host from firewall-decisions + wildcard for project-id rotation
-  - o4510226365743104.ingest.us.sentry.io
+  # Wildcard covers rotating o*.ingest.us.sentry.io project hosts (verified under enforce)
   - "*.ingest.us.sentry.io"
