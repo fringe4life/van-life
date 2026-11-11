@@ -1,0 +1,3 @@
+# Egress allowlist/mode is repo-editable; require owner review so a PR cannot
+# silently widen policy without a human look (native org ceiling not in preview).
+.github/egress-firewall.yaml @fringe4life

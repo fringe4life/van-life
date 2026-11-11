@@ -49,5 +49,7 @@ Settings rows are **not** proven by this file — confirm in the linked UI.
 
 - Policy file: [`.github/egress-firewall.yaml`](../egress-firewall.yaml) (must live there — not under `workflows/`)
 - Runner: `ubuntu-24.04-firewall` (technical preview; ~15–20% slower; log mode can still break some TLS clients)
+- **Phase 1:** `mode: log` only — traffic is recorded, not denied. Enforce + allowlist is a follow-up after audit data exists (#529)
+- **Who can widen policy:** any PR can edit the YAML; [CODEOWNERS](../CODEOWNERS) requires `@fringe4life` review. No org-level egress ceiling in the preview
 - Preview logs: job summary + run artifact — use them to build `allow` before switching `mode: enforce`
 - Ref: [Actions native egress firewall](https://github.com/github-early-access/actions-native-egress-firewall)
