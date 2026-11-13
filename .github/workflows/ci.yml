@@ -127,7 +127,7 @@ jobs:
           persist-credentials: false
 
       - name: Fallow audit
-        uses: fallow-rs/fallow@v3.41.0
+        uses: fallow-rs/fallow@v3.42.0
         with:
           command: audit
           version: "3.27.0"
@@ -139,7 +139,7 @@ jobs:
           gate: new-only
 
       - name: Fallow security
-        uses: fallow-rs/fallow@v3.41.0
+        uses: fallow-rs/fallow@v3.42.0
         with:
           command: security
           version: "3.27.0"
