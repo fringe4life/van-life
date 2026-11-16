@@ -42,7 +42,7 @@
         "@types/node": "26.6.6",
         "@types/react": "19.3.0",
         "@types/react-dom": "19.3.0",
-        "@varlock/cloudflare-integration": "1.6.3",
+        "@varlock/cloudflare-integration": "1.6.4",
         "@vitejs/devtools": "0.8.2",
         "@vitejs/devtools-rolldown": "0.8.2",
         "@vitejs/devtools-vite": "0.8.2",
@@ -806,7 +806,7 @@
 
     "@varlock/bitwarden-plugin": ["@varlock/bitwarden-plugin@2.0.2", "", { "peerDependencies": { "varlock": "^1.22.0" } }, "sha512-oY6d7MInabo4SCMOeswipFp0N1Au9881cdLvXVsAbZALbjwGEWym7lzs8Zw9yKuART4nI5V2KJuMzcIb70wVsw=="],
 
-    "@varlock/cloudflare-integration": ["@varlock/cloudflare-integration@1.6.3", "", { "peerDependencies": { "@cloudflare/vite-plugin": ">=1", "varlock": "^1.24.0", "vite": ">=5", "wrangler": ">=3" }, "optionalPeers": ["@cloudflare/vite-plugin", "vite", "wrangler"], "bin": { "varlock-wrangler": "bin/varlock-wrangler.js" } }, "sha512-J9rnJJ6F6Evswj3kn1rjL5wEW0AmPXj+9glVCmZVHVggpOak2IOf0JidQNyuaBZEeLW7nonRO68ga7hKX7qx9w=="],
+    "@varlock/cloudflare-integration": ["@varlock/cloudflare-integration@1.6.4", "", { "peerDependencies": { "@cloudflare/vite-plugin": ">=1", "varlock": "^1.25.0", "vite": ">=5", "wrangler": ">=3" }, "optionalPeers": ["@cloudflare/vite-plugin", "vite", "wrangler"], "bin": { "varlock-wrangler": "bin/varlock-wrangler.js" } }, "sha512-6zT8kjKwHu1r4rAH8qRoYdYuYAenfrrNcyA/DRuIXUb9Np6gLmMzS/PxqtTi2GGWEaknWPGm7DJU4eMkqiW85A=="],
 
     "@varlock/native-helper-darwin": ["@varlock/native-helper-darwin@1.24.0", "", { "os": "darwin" }, "sha512-/uMRBzTZxdtlwyszdPbamFojDfRQYTNY0l20SoX8UoTXrI+Kq7B3tt2ZDP0WfOhb9EAP1egAewBuGLj8NzemMQ=="],
 
