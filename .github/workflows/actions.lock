@@ -6,7 +6,7 @@ workflows:
     '.github/workflows/ci.yml':
         - 'actions/checkout@v7.0.1'
         - 'dmno-dev/varlock-action@v1.0.5'
-        - 'fallow-rs/fallow@v3.42.0'
+        - 'fallow-rs/fallow@v3.43.0'
         - 'millionco/react-doctor@v2.4.0'
         - 'oven-sh/setup-bun@v2.2.0'
     '.github/workflows/codeql.yml':
@@ -41,14 +41,19 @@ dependencies:
         commit: 'sha1-7141115d0060616e398c5fa9035e67d7820ab2b6'
         owner_id: 148160567
         repo_id: 1049902141
-    'fallow-rs/fallow@v3.42.0':
-        ref: 'v3.42.0'
-        commit: 'sha1-ab762fb12b040889025f7d52902d86c3a26911c0'
+    'fallow-rs/fallow@v3.43.0':
+        ref: 'v3.43.0'
+        commit: 'sha1-65ff0b9feec74cacd8c3bbbfc13731394bb8ef25'
         owner_id: 269229952
         repo_id: 1184090452
         uses:
             - 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9'
-            - 'github/codeql-action@9b3254085494b55a0f7c4c2b3d2d52cc712ce370'
+            - 'github/codeql-action@1fc58d04a4d4374f921bdac573c3811c240f9c26'
+    'github/codeql-action@1fc58d04a4d4374f921bdac573c3811c240f9c26':
+        ref: 'v4.39.2'
+        commit: 'sha1-1fc58d04a4d4374f921bdac573c3811c240f9c26'
+        owner_id: 9919
+        repo_id: 259445878
     'github/codeql-action@9b3254085494b55a0f7c4c2b3d2d52cc712ce370':
         ref: 'v4.39.1'
         commit: 'sha1-9b3254085494b55a0f7c4c2b3d2d52cc712ce370'
