@@ -6,7 +6,7 @@ workflows:
     '.github/workflows/ci.yml':
         - 'actions/checkout@v7.0.1'
         - 'dmno-dev/varlock-action@v1.0.5'
-        - 'fallow-rs/fallow@v3.43.0'
+        - 'fallow-rs/fallow@v3.43.1'
         - 'millionco/react-doctor@v2.4.0'
         - 'oven-sh/setup-bun@v2.2.0'
     '.github/workflows/codeql.yml':
@@ -41,9 +41,9 @@ dependencies:
         commit: 'sha1-7141115d0060616e398c5fa9035e67d7820ab2b6'
         owner_id: 148160567
         repo_id: 1049902141
-    'fallow-rs/fallow@v3.43.0':
-        ref: 'v3.43.0'
-        commit: 'sha1-65ff0b9feec74cacd8c3bbbfc13731394bb8ef25'
+    'fallow-rs/fallow@v3.43.1':
+        ref: 'v3.43.1'
+        commit: 'sha1-8cc305d74aeb77b7ab316388f8ab41cce20a394f'
         owner_id: 269229952
         repo_id: 1184090452
         uses:
