@@ -60,7 +60,7 @@
     "@chartlite/core": "1.1.0",
     "@chartlite/react": "1.1.0",
     "@forge42/seo-tools": "1.4.5",
-    "@varlock/bitwarden-plugin": "2.0.2",
+    "@varlock/bitwarden-plugin": "2.0.3",
     "better-auth": "1.7.23",
     "drizzle-orm": "1.0.0-rc.5",
     "invokers-polyfill": "1.0.4",
