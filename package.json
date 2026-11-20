@@ -101,7 +101,7 @@
     "fallow": "3.43.1",
     "husky": "9.1.7",
     "lint-staged": "17.6.0",
-    "react-doctor": "0.9.22",
+    "react-doctor": "0.9.23",
     "typescript": "7.1.0-beta",
     "ultracite": "^8.2.1",
     "vite": "8.3.8",
