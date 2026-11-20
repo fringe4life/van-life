@@ -102,7 +102,7 @@
     "husky": "9.1.7",
     "lint-staged": "17.6.1",
     "react-doctor": "0.9.23",
-    "typescript": "7.1.0-beta",
+    "typescript": "7.1.0-dev.20261116.1",
     "ultracite": "^8.2.1",
     "vite": "8.3.8",
     "wrangler": "4.161.0"
