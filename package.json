@@ -83,7 +83,7 @@
     "@pandacss/mcp": "2.5.0",
     "@pandacss/preset-base": "2.6.0",
     "@pandacss/preset-panda": "2.5.0",
-    "@pandacss/vite": "2.5.0",
+    "@pandacss/vite": "2.6.0",
     "@react-router/dev": "8.5.1",
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "7.0.1",
