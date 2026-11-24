@@ -6,12 +6,12 @@ workflows:
     '.github/workflows/ci.yml':
         - 'actions/checkout@v7.0.1'
         - 'dmno-dev/varlock-action@v1.0.5'
-        - 'fallow-rs/fallow@v3.44.0'
+        - 'fallow-rs/fallow@v3.45.0'
         - 'millionco/react-doctor@v2.4.0'
         - 'oven-sh/setup-bun@v2.2.0'
     '.github/workflows/codeql.yml':
         - 'actions/checkout@v7.0.1'
-        - 'github/codeql-action@v4.39.3'
+        - 'github/codeql-action@v4.39.4'
     '.github/workflows/zizmor.yml':
         - 'actions/checkout@v7.0.1'
         - 'zizmorcore/zizmor-action@v0.8.1'
@@ -41,9 +41,9 @@ dependencies:
         commit: 'sha1-7141115d0060616e398c5fa9035e67d7820ab2b6'
         owner_id: 148160567
         repo_id: 1049902141
-    'fallow-rs/fallow@v3.44.0':
-        ref: 'v3.44.0'
-        commit: 'sha1-2d55db7a9f0e3501c8be43f64400c47be365e668'
+    'fallow-rs/fallow@v3.45.0':
+        ref: 'v3.45.0'
+        commit: 'sha1-b802ddc49a09ad9df4e9894cdd465f5b51b1b0c8'
         owner_id: 269229952
         repo_id: 1184090452
         uses:
@@ -59,9 +59,9 @@ dependencies:
         commit: 'sha1-9b3254085494b55a0f7c4c2b3d2d52cc712ce370'
         owner_id: 9919
         repo_id: 259445878
-    'github/codeql-action@v4.39.3':
-        ref: 'v4.39.3'
-        commit: 'sha1-33d7b85da1a04171e211befe2c739303b9a4c066'
+    'github/codeql-action@v4.39.4':
+        ref: 'v4.39.4'
+        commit: 'sha1-1bd86f2fdb4b86187fa4059f16f31a3202acc9ea'
         owner_id: 9919
         repo_id: 259445878
     'millionco/react-doctor@v2.4.0':
