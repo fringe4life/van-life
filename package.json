@@ -100,7 +100,7 @@
     "drizzle-kit": "1.0.0-rc.6",
     "fallow": "3.44.0",
     "husky": "9.1.7",
-    "lint-staged": "17.6.1",
+    "lint-staged": "17.6.2",
     "react-doctor": "0.9.23",
     "typescript": "7.1.0-dev.20261116.1",
     "ultracite": "^8.2.1",
