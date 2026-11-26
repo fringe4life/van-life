@@ -84,7 +84,7 @@
     "@pandacss/preset-base": "2.6.0",
     "@pandacss/preset-panda": "2.5.0",
     "@pandacss/vite": "2.6.0",
-    "@react-router/dev": "8.5.1",
+    "@react-router/dev": "8.5.2",
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "8.0.0",
     "@testing-library/react": "16.3.3",
